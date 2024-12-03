@@ -1,0 +1,33 @@
+......................................Notes..................................
+
+Poing No 10 and 11 is left
+
+1)fix the alignment in expense table(DONE)
+
+2)new debit note ( item should we displayed on select bill, also do same thing in credit note when we select invoice).(Done)
+
+3)In payment rec delete the stATUS filed in detail page & remove edit (comment) (DONE)
+
+4) add a column in invoice of blance due which is comming from payment rec, do like that--amount paid - total amount(Done, and amout paid in all list hv 0);  (DONE)                                         
+
+5)show only payment invoice row in payment rec. details. also in payment made(DONE)
+
+6)redirect when grn creted(Unit and tax rate is not displayed on select purchases)(Done)
+
+7)in credit note and debit note do validatation in bill and inovoice dropdown(Done)
+
+8) all purchases modules to and form addresses is convert like in sales modules(Done)
+
+9)in all sales modules when we select items shown only type products items. In purchases module shown all type items list.(Done)
+
+10)see all over-flow logo status in details pages.
+
+11)debit not send mail bg(sidebar) is not highlighted and info(mail contents) is not shown
+
+12)also given a option to convert bill to debit note.(Done)
+
+13)make grn qty is mendatory field(we can shown by default 1 grn qty insted of mendatory).(Done)
+
+14) check dublicate and delete is working fine.(Done)
+
+15)/shown bill id and inovice id in payment made and payemnt rec. (Done)

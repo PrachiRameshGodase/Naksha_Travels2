@@ -1,0 +1,1 @@
+export const ALL_ITEMS_DATA = "ALL_ITEMS_DATA";
