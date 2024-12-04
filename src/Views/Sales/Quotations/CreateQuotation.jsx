@@ -90,6 +90,7 @@ const CreateQuotation = () => {
             {
 
                 item_id: "",
+                item_name:"",
                 unit_id: null,
                 hsn_code: "",
                 quantity: 1,

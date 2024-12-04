@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
-const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls }) => {
-
+const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls , className2}) => {
+  
   const {
     isOpen,
     setIsOpen,
@@ -26,15 +26,15 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
   //   setSearchTerm(''); // Reset search term on select
   // };
 
-  if (type === "taxRate") {
-    options = searchTerm?.length === 0 ? options : options?.filter(option =>
-      option?.tax_percentge?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    );
-  }
+  // if (type === "taxRate") {
+  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
+  //     option?.tax_percentge?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  //   );
+  // }
 
-
+  
   return (
-    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown}>
+    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "items" ? { minWidth: "10%", border:"1px solid #d0d7de", borderRadius:"5px" } : {}}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
         <svg
@@ -66,7 +66,9 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
             ref={inputRef}
           />
           <div className="dropdownoptoscroll">
+         
             {options?.map((option, index) => (
+              
               <div key={option.id}
                 onClick={() => handleSelect(option)}
                 ref={(el) => (optionRefs.current[index] = el)}
@@ -76,6 +78,7 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
                   (index === focusedOptionIndex ? " focusedoption" : "")
                 }
               >
+                
                 {option.tax_percentge}
               </div>
             ))}

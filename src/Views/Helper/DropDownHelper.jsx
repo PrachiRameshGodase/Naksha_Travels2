@@ -40,7 +40,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             }
 
             setIsOpen(false);
-            setSearchTerm('');
+            // setSearchTerm('');
             setFocusedOptionIndex(-1);
             dropdownRef.current.focus();
         }
@@ -60,12 +60,18 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
         if (isOpen) {
             handleSearch();
         }
-        else {
-            setSearchTerm("");
-        }
+        // else {
+        //     setSearchTerm("");
+        // }
     }, [searchTerm]);
 
     // custom Search
+    // if (type === "select_item") {
+    //     options = searchTerm?.length === 0 ? options : options?.filter(option =>
+    //         option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    //     );
+    // }
+
     if (type === "sub_categories") {
         options = searchTerm?.length === 0 ? options : options?.filter(option =>
             option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())

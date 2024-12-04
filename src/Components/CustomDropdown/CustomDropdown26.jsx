@@ -1,83 +1,156 @@
-import React, { forwardRef, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
-import { RiSearch2Line } from 'react-icons/ri';
+import React, { forwardRef, useEffect, useRef } from "react";
+import { GoPlus } from "react-icons/go";
+import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import { useSelector } from "react-redux";
+import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 
-const CustomDropdown26= forwardRef((props, ref) => {
+const CustomDropdown26 = forwardRef((props, ref) => {
   const {
     options,
     value,
-    onChange,
-    placeholder = "Search or type...",
-    name,
     setShowPopup,
+    onChange,
+    name,
+    type,
+    setItemData,
+    defaultOption,
+    extracssclassforscjkls,
+    className,
+    itemData,
   } = props;
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const nextFocusRef = useRef(null);
 
-  const handleInputChange = (e) => {
-    const input = e.target.value;
-    setSearchTerm(input);
+  const {
+    isOpen,
+    setIsOpen,
+    searchTerm,
+    setSearchTerm,
+    dropdownRef,
+    inputRef,
+    optionRefs,
+    handleKeyDown,
+    handleSelect,
+    focusedOptionIndex,
+  } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
+
+  const itemList = useSelector((state) => state?.itemList);
+  const categoryLists = useSelector((state) => state?.categoryList);
+
+  const combinedRef = (node) => {
+    dropdownRef.current = node;
+    if (ref) ref.current = node;
   };
 
-  const handleOptionSelect = (option) => {
-    onChange(option);
-    setSearchTerm(option.name);
-    setIsOpen(false);
-  };
+  // Handle outside click to close dropdown and set input value
+  // useEffect(() => {
+  //   const handleOutsideClick = (e) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+  //       setIsOpen(false); // Close the dropdown
+  //       if (searchTerm && searchTerm.trim()) {
+  //         setItemData((prev) => ({ ...prev, item_name: searchTerm })); // Set typed value
+  //       }
+  //     }
+  //   };
 
-  const handleBlur = () => {
-    // If the search term doesn't match an option, treat it as a custom value
-    if (!options.some((opt) => opt.name === searchTerm)) {
-      onChange({ id: null, name: searchTerm });
-    }
-    setIsOpen(false);
-  };
+  //   document.addEventListener("mousedown", handleOutsideClick);
+  //   return () => document.removeEventListener("mousedown", handleOutsideClick);
+  // }, [searchTerm, setIsOpen, setItemData]);
 
-  const filteredOptions = options.filter((option) =>
-    option.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter options based on the search term
+  // const filteredOptions = options.filter((option) =>
+  //   option?.name?.toLowerCase().includes(searchTerm?.toLowerCase())
+  // );
 
   return (
-    <div className="custom-dropdown" ref={dropdownRef} style={{ position: 'relative' }}>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={searchTerm}
-        onChange={handleInputChange}
-        onFocus={() => setIsOpen(true)}
-        onBlur={handleBlur}
-        className="dropdown-search-input"
-        autoComplete="off"
-        ref={ref}
-      />
+    <div
+      tabIndex="0"
+      ref={combinedRef}
+      className={`customdropdownx12s86 ${extracssclassforscjkls}`}
+      onKeyDown={handleKeyDown}
+      style={{ position: className ? "static" : "relative" }}
+    >
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className={"dropdown-selected customdropdownx12s86" + (value ? " filledcolorIn" : "")}
+      >
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value); // Update the search term
+            onChange({
+              target: { name: "item_name", value: e.target.value },
+            }); 
+          }}
+          // onChange={(e) => setSearchTerm(e.target.value)} // Update the search term on input change
+          className="dropdown-search customdropdownx12s86"
+          autoFocus
+          ref={inputRef}
+        />
+      </div>
       {isOpen && (
-        <div className="dropdown-options" style={{ position: 'absolute', top: '100%', zIndex: 10 }}>
-          <RiSearch2Line id="newsvgsearchicox2" />
-          {useSelector((state) => state?.itemList)?.loading ? (
+        <div className={`dropdown-options`} id={className}>
+          {itemList?.loading || categoryLists?.loading ? (
             <TableViewSkeletonDropdown />
           ) : (
-            <div className="dropdown-scroll">
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map((option) => (
+            <>
+              <div className="dropdownoptoscroll">
+                {options?.map((option, index) => (
                   <div
                     key={option.id}
-                    onClick={() => handleOptionSelect(option)}
-                    className="dropdown-option"
+                    onClick={() => {
+                      handleSelect(option);
+                      setSearchTerm(option.name); // Update input box with selected option
+                      onChange({
+                        target: { name: "item_id", value: option.id, option },
+                      }); 
+                    }}
+                    ref={(el) => (optionRefs.current[index] = el)}
+                    className={
+                      "dropdown-option" +
+                      (option.id == value ? " selectedoption" : "") +
+                      (index === focusedOptionIndex ? " focusedoption" : "") +
+                      (option.active == 0 ? " inactive-category" : "")
+                    }
+                    {...(option.active == 0
+                      ? {
+                          "data-tooltip-content":
+                            "To select this option, activate it; it's currently inactive.",
+                          "data-tooltip-id": "my-tooltip",
+                          "data-tooltip-place": "right",
+                        }
+                      : {})}
                   >
-                    {option.name}
+                    {option?.name}
+                    {option?.category?.name ? ` / ${option.category.name}` : ""}
+                    {option?.sub_category?.name
+                      ? ` / ${option.sub_category.name}`
+                      : ""}
                   </div>
-                ))
-              ) : (
-                <div className="dropdown-option centeraligntext">No options found</div>
+                ))}
+              </div>
+              {options?.length === 0 && (
+                <>
+                  <div className="notdatafound02">
+                    <iframe
+                      src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json"
+                      frameBorder="0"
+                    ></iframe>
+                  </div>
+                  <div className="dropdown-option centeraligntext">
+                    No options found
+                  </div>
+                </>
               )}
-            </div>
+            </>
           )}
-          <div className="add-new-button">
-            <p style={{ cursor: 'pointer' }} onClick={() => setShowPopup(true)}>
-              Add {name.replace('_id', '').replace(/_/g, ' ')}
+
+          <div className="lastbuttonsecofdropdown">
+            <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
+              Add Item
+              <GoPlus />
             </p>
           </div>
         </div>
