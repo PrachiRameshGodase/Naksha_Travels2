@@ -59,7 +59,7 @@ const ItemSelect = ({
 
   const [taxDetails, setTaxDetails] = useState([]);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
-
+  const unitList = ShowMasterData("2");
   const handleDropdownToggle = (index) => {
     setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
   };
@@ -211,8 +211,6 @@ const ItemSelect = ({
     if (field === "item_name") {
       newItems[index].item_name = value;
       newItems[index].item_id = null;
-      newItems[index].hsn_code = null;
-      newItems[index].discount = 0;
     }
 
     if (field === "item_name" && value !== "") {
@@ -264,6 +262,7 @@ const ItemSelect = ({
         }
       }
     }
+  
 
     if (field === "quantity" || field === "rate") {
       newItems[index].gross_amount = +item?.rate * +item?.quantity;
@@ -408,6 +407,7 @@ const ItemSelect = ({
             </p>
             <p className="tablsxs1a2x3">Sales Price</p>
             <p className="tablsxs1a3x3">Quantity</p>
+            <p className="tablsxs1a3x3">Unit</p>
             <p className="tablsxs1a4x3">Discount</p>
             <p className="tablsxs1a5x3">Tax</p>
             <p className="tablsxs1a6x3" style={{ marginLeft: "1%" }}>
@@ -489,6 +489,27 @@ const ItemSelect = ({
                       </p>
                     )}
                   </div>
+                  {formData?.items?.map((item, index) =>
+                    item?.item_id == null) &&  <div className="tablsxs1a5x3" id="ITEM_Selection6">
+                    <span>
+                      <CustomDropdown04
+                        options={unitList}
+                        value={item?.unit_id}
+                        onChange={(e) =>
+                          handleItemChange(
+                            index,
+                            "unit_id",
+                            e.target.value,
+                            e.target.option
+                          )
+                        }
+                        name="unit_id"
+                        defaultOption="Units"
+                        type="masters"
+                        extracssclassforscjkls="extracssclassforscjklsitem"
+                      />
+                    </span>
+                  </div>}
 
                   <div className="tablsxs1a5x3">
                     <span>

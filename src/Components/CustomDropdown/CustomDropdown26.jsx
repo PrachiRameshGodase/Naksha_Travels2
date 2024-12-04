@@ -42,25 +42,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  // Handle outside click to close dropdown and set input value
-  // useEffect(() => {
-  //   const handleOutsideClick = (e) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-  //       setIsOpen(false); // Close the dropdown
-  //       if (searchTerm && searchTerm.trim()) {
-  //         setItemData((prev) => ({ ...prev, item_name: searchTerm })); // Set typed value
-  //       }
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleOutsideClick);
-  //   return () => document.removeEventListener("mousedown", handleOutsideClick);
-  // }, [searchTerm, setIsOpen, setItemData]);
-
-  // Filter options based on the search term
-  // const filteredOptions = options.filter((option) =>
-  //   option?.name?.toLowerCase().includes(searchTerm?.toLowerCase())
-  // );
+ 
 
   return (
     <div
@@ -84,7 +66,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
               target: { name: "item_name", value: e.target.value },
             }); 
           }}
-          // onChange={(e) => setSearchTerm(e.target.value)} // Update the search term on input change
+          style={{width:"200px", height:"33px", margin:"10px"}}
           className="dropdown-search customdropdownx12s86"
           autoFocus
           ref={inputRef}
