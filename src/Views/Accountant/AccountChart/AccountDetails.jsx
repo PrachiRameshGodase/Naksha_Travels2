@@ -208,7 +208,7 @@ const AccountDetails = () => {
                   {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance > 0 ? "(Dr)" : "(Cr)"}
                 </p> */}
 
-                <ul style={{ width: "453px" }}>
+                <ul style={{ width: "516px" }}>
 
                   <li>
                     <span> Closing Blance:</span>
@@ -218,9 +218,9 @@ const AccountDetails = () => {
                     </p>
                   </li>
                   <li>
-                    <span style={{ width: "348px" }}>Notes:</span>
+                    <span style={{width:"106px"}}>Notes</span>
                     <h1>:</h1>
-                    <p>
+                    <p style={{width:"300px"}}>
                       {getAccountVal?.accounts?.description || ""}
                     </p>
                   </li>
