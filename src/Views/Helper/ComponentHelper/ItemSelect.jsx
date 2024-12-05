@@ -494,7 +494,11 @@ const ItemSelect = ({
                       </div> */}
                   </div>
 
-                  <div className="tablsxs1a5x3" id="ITEM_Selection6" style={{marginRight:"17px"}}>
+                  <div
+                    className="tablsxs1a5x3"
+                    id="ITEM_Selection6"
+                    style={{ marginRight: "17px" }}
+                  >
                     <span>
                       <CustomDropdown04
                         options={unitList}
@@ -604,7 +608,7 @@ const ItemSelect = ({
                       className="tablsxs1a6x3_rm"
                       id="ITEM_Selection7"
                       key={item.id || index}
-                      style={{marginRight:"20px"}}
+                      style={{ marginRight: "20px" }}
                     >
                       <CustomDropdown13
                         options={tax_rate}
@@ -620,16 +624,16 @@ const ItemSelect = ({
                     </div>
                   ) : (
                     <div
-                     className="tablsxs1a6x3_rm"
-                       id="ITEM_Selection7"
-                      style={{ marginRight:"20px", cursor: "not-allowed" }}
+                      className="tablsxs1a6x3_rm"
+                      id="ITEM_Selection7"
+                      style={{ marginRight: "20px", cursor: "not-allowed" }}
                       key={item.id || index}
                     >
                       {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
                       {item?.tax_name === "Non-Taxable" && (
                         <>{item?.tax_name}</>
                       )}
-                      {item?.tax_name === "Taxable" }
+                      {item?.tax_name === "Taxable"}
                     </div>
                   )}
 
@@ -986,7 +990,17 @@ export const ItemSelectGRM = ({
       updatedTotalCharges = calculateTotalCharges(newCharges);
       setTotalCharges(updatedTotalCharges);
     }
+    if (field === "item_name") {
+      newItems[index].item_name = value;
+      newItems[index].item_id = "";
+      newItems[index].hsn_code = "";
+    }
 
+    if (field === "item_name" && value !== "") {
+      setIsItemSelect(true);
+    } else if (field === "item_name" && value === "") {
+      setIsItemSelect(false);
+    }
     // Update item details
     if (field === "item_id") {
       const selectedItem = itemList?.data?.item?.find(
@@ -1089,6 +1103,7 @@ export const ItemSelectGRM = ({
     const newItems = [...formData?.items];
     newItems[index] = {
       item_id: "",
+      item_name: "",
       tax_amount: 0,
       gr_qty: 0,
       po_qty: null,
@@ -1106,7 +1121,7 @@ export const ItemSelectGRM = ({
       ...formData?.items,
       {
         item_id: "",
-        // item_name: null,
+        item_name: "",
         gr_qty: 0,
         po_qty: null,
         gross_amount: null,
@@ -1230,21 +1245,19 @@ export const ItemSelectGRM = ({
                 <div key={index} className="tablerowtopsxs1">
                   <div className="tablsxs1a1x3">
                     <span id="ITEM_Selection">
-                      <CustomDropdown03
+                      <CustomDropdown26
                         options={itemList?.data?.item || []}
                         value={item?.item_id}
-                        onChange={(e) =>
+                        onChange={(event) =>
                           handleItemChange(
                             index,
-                            "item_id",
-                            e.target.value,
-                            e.target.option
+                            event.target.name,
+                            event.target.value
                           )
                         }
                         name="item_id"
                         type="select_item"
                         setItemData={setItemData}
-                        defaultOption="Select Item"
                         index={index}
                         extracssclassforscjkls={extracssclassforscjkls}
                         itemData={item}
@@ -1375,6 +1388,7 @@ export const ItemSelectGRM = ({
                         type="taxRate"
                         defaultOption="Taxes"
                         extracssclassforscjkls="extracssclassforscjkls grn_tax"
+                       
                       />
                     </div>
                   ) : (
