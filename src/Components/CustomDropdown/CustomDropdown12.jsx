@@ -20,11 +20,11 @@ const CustomDropdown12 = ({ options, value, onChange, name, type, defaultOption 
   } = DropDownHelper(options, onChange, name, type);
 
 
-  if (type === "currency") {
-    options = searchTerm?.length === 0 ? options : options?.filter(option =>
-      option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    );
-  }
+  // if (type === "currency") {
+  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
+  //     option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  //   );
+  // }
   return (
     <div autoFocus ref={dropdownRef} tabIndex="0" className="customdropdownx12s86" onKeyDown={handleKeyDown}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
