@@ -257,8 +257,10 @@
       background: $lightprimary02;
       width: 100%;
       padding: 17px 10px;
-      border-radius: 10px;
+      border-radius: 5px;
       // justify-content: space-between;
+      position: sticky;
+      top: -20px;
 
       .tex5w6x6ws {
         display: flex;
@@ -359,11 +361,11 @@
       }
 
       .xkwls2z1 {
-        width: 30%;
+        width: 45%;
       }
 
       .xkwls2z2 {
-        width: 35%;
+        width: 45%;
       }
 
       .xkwls2z3 {
@@ -383,15 +385,19 @@
       }
 
       .xkwls2z7 {
-        width: 35%;
+        width: 14%;
       }
 
       .xkwls2z8 {
-        width: 30%;
+        width: 55%;
       }
 
       .xkwls2z9 {
         width: 13%;
+      }
+
+      .bbx123 {
+        font-weight: 600;
       }
 
     }

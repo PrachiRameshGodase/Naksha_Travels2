@@ -790,7 +790,7 @@ const InsideItemDetailsBox = ({
                         <div className="table-cellx12_font stockhistoryxjlk41 ">
                           {getDisplayDate(stock?.transaction_date)}
                         </div>
-                        <div className="table-cellx12_font stockhistoryxjlk45 "> <ShowMastersValue type="11" id={stock?.entry_type} /></div>
+                        <div className="table-cellx12_font stockhistoryxjlk45 "> <ShowMastersValue type="11" id={stock?.entity_type} /></div>
                         <div className="table-cellx12_font stockhistoryxjlk43 ">
                           {stock?.inout == "1" ? "IN" : "Out" || ""}
                         </div>
@@ -1403,7 +1403,7 @@ export const InsideWarehouseDetailsBox = ({ itemDetails }) => {
                         </div>
 
                         <div className="table-cellx12_font stockhistoryxjlk42">
-                          {showTransationValue(stock.entry_type)}
+                          {showTransationValue(stock.entity_type)}
                         </div>
 
                         <div className="table-cellx12_font stockhistoryxjlk43">

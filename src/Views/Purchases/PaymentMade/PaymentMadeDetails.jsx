@@ -1,66 +1,74 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { RxCross2 } from 'react-icons/rx'
-import { Link, useNavigate } from 'react-router-dom'
-import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { RxCross2 } from 'react-icons/rx';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
-import { formatDate, formatDate3, generatePDF } from '../../Helper/DateFormat';
+import { formatDate3 } from '../../Helper/DateFormat';
 import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
-
-
 import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import useOutsideClick from '../../Helper/PopupData';
-import { showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
 import { PaymentMadeDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowDropdownContent } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
+import { generatePDF } from '../../Helper/createPDF';
 
 const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
+    const paymentRecStatuss = useSelector(state => state?.paymentRecStatus);
+    const masterData = useSelector(state => state?.masterData?.masterData);
 
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
     const paymentDetail = useSelector(state => state?.paymentRecDetail);
-    // const paymentStatus = useSelector(state => state?.paymentRecStatus);
     const paymentDelete = useSelector(state => state?.paymentRecDelete);
     const payment = paymentDetail?.data?.data?.payment;
 
 
     const dropdownRef = useRef(null);
     const dropdownRef1 = useRef(null);
+    const dropdownRef2 = useRef(null);
+
     useOutsideClick(dropdownRef, () => setShowDropdown(false));
     useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
+    useOutsideClick(dropdownRef2, () => setShowDropdown(false));
 
-
-
+    const [callApi, setCallApi] = useState(0);
     const UrlId = new URLSearchParams(location.search).get("id");
-
-    const handleEditThing = (val) => {
-        const queryParams = new URLSearchParams();
-        queryParams.set("id", UrlId);
-
-        if (val === "edit") {
-            queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
-        } else if (val == "duplicate") {
-            queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
-        }
-
-    };
 
     const changeStatus = (statusVal) => {
         try {
             const sendData = {
                 id: UrlId
             }
+            switch (statusVal) {
+                case 'accepted':
+                    sendData.status = 1
+                    break;
+                case 'decline':
+                    sendData.status = 2
+                    break;
+                case 'sent':
+                    sendData.status = 6
+                    break;
+                default:
+            }
+
             if (statusVal === "delete") {
                 dispatch(paymentRecDelete(sendData, Navigate, "payment-made"))
+            } else {
+                dispatch(paymentRecStatus(sendData))
+                    .then(() => {
+                        setCallApi((prev) => prev + 1);
+                    })
+                    .catch((error) => {
+                        console.error("Error updating payment status:", error);
+                    });
+
             }
+
         } catch (error) {
             console.log("error", error);
         }
@@ -74,10 +82,8 @@ const PaymentMadeDetails = () => {
             };
             dispatch(paymentRecDetail(queryParams));
         }
-    }, [dispatch, UrlId]);
-
-    const totalFinalAmount = payment?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
-
+    }, [dispatch, UrlId, callApi]);
+    const [loading, setLoading] = useState(false);
 
     // pdf & print
     const componentRef = useRef(null);
@@ -85,20 +91,23 @@ const PaymentMadeDetails = () => {
         content: () => componentRef.current,
     });
 
-    // const generatePDF = () => {
-    //     const input = document.getElementById('quotation-content');
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL('image/png');
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, 'PNG', 0, 0);
-    //         pdf.save('quotation.pdf');
-    //     });
-    // };
     // pdf & print
+    const handleDownloadPDF = () => {
+        if (!payment || !masterData) {
+            alert("Data is still loading, please try again.");
+            return;
+        }
+
+        const contentComponent = (
+            <PrintContent data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" />
+        );
+
+        generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
+    };
 
     return (
         <>
-            {paymentDelete?.loading && <MainScreenFreezeLoader />}
+            {(paymentDelete?.loading || paymentRecStatuss?.loading || loading) && <MainScreenFreezeLoader />}
             {paymentDetail?.loading ? <Loader02 /> :
                 <div ref={componentRef} >
                     <Toaster />
@@ -119,44 +128,24 @@ const PaymentMadeDetails = () => {
                                 <p>Edit</p>
                             </div> */}
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
-
-                                <p>PDF/Print</p>
-                                {otherIcons?.arrow_svg}
-                                {showDropdownx1 && (
-                                    <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' onClick={() => generatePDF(invoice?.items)}>
-                                            {otherIcons?.pdf_svg}
-                                            PDF</div>
-                                        <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
-                                            {otherIcons?.print_svg}
-                                            Print</div>
-
-                                    </div>
-                                )}
-
+                            <div className="mainx1">
+                                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                                    PDF/Print
+                                </p>
                             </div>
 
                             <div className="sepc15s63x63"></div>
 
-                            <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
-                                <img src="/Icons/menu-dots-vertical.svg" alt="" />
-                                {showDropdown && (
-                                    <div className="dropdownmenucustom">
+                            {payment?.status != "1" &&
+                                <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
+                                    <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-id="my-tooltip" data-tooltip-content="More Options" data-tooltip-place='bottom' />
+                                    {showDropdown && (
+                                        <ShowDropdownContent quotation={payment} changeStatus={changeStatus} />
+                                    )}
+                                </div>
+                            }
 
-                                        <div className='dmncstomx1' onClick={() => handleEditThing("duplicate")}>
-                                            {otherIcons?.duplicate_svg}
-                                            Duplicate</div>
-
-                                        <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
-                                            {otherIcons?.delete_svg}
-                                            Delete
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            <Link to={"/dashboard/quotation"} className="linkx3">
+                            <Link to={"/dashboard/payment-made"} className="linkx3">
                                 <RxCross2 />
                             </Link>
                         </div>

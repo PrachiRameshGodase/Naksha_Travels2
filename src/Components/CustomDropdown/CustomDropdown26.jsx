@@ -82,7 +82,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
-        style={{width:"314px"}}
+        style={{ width: "314px" }}
       >
         <input
           type="text"
@@ -117,11 +117,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                     }
                     {...(option.active == 0
                       ? {
-                          "data-tooltip-content":
-                            "To select this option, activate it; it's currently inactive.",
-                          "data-tooltip-id": "my-tooltip",
-                          "data-tooltip-place": "right",
-                        }
+                        "data-tooltip-content":
+                          "To select this option, activate it; it's currently inactive.",
+                        "data-tooltip-id": "my-tooltip",
+                        "data-tooltip-place": "right",
+                      }
                       : {})}
                   >
                     {option?.name}

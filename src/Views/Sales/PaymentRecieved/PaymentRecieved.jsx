@@ -234,7 +234,7 @@ const PaymentRecieved = () => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons.quotation_icon}
-                    Payment Number
+                    Payment NO
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs3">
@@ -259,10 +259,10 @@ const PaymentRecieved = () => {
                       Amount
                     </p>
                   </div>
-                  {/* <div className="table-cellx12 quotiosalinvlisxs5">
+                  <div className="table-cellx12 quotiosalinvlisxs5">
                     {otherIcons.status_svg}
                     Status
-                  </div> */}
+                  </div>
                 </div>
 
                 {qutList?.loading ? (
@@ -363,7 +363,7 @@ const PaymentRecieved = () => {
                                   ) || ""}
                                 </p>
                               </div>
-                              {/* <div
+                              <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                               >
@@ -394,7 +394,7 @@ const PaymentRecieved = () => {
                                             ? "Overdue"
                                             : ""}
                                 </p>
-                              </div> */}
+                              </div>
                             </div>
                           )
                         )}

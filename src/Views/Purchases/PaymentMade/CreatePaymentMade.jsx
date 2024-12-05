@@ -77,7 +77,7 @@ const CreatePaymentMade = () => {
         vendor_note: null,
         upload_image: null,
         amt_excess: null,
-        entry_type: 1, // for sale    2-for purchase
+        entity_type: 1, // for sale    2-for purchase
         transaction_id: 0,
 
         entries: [
@@ -125,7 +125,7 @@ const CreatePaymentMade = () => {
                 payment_mode: fetchDetails?.payment_mode || 1,
                 amt_excess: (+fetchDetails?.amt_excess || 0),
                 // this details will be filled when there is one invoice
-                entry_type: fetchDetails?.entry_type, // for sale    2-for purchase
+                entity_type: fetchDetails?.entity_type, // for sale    2-for purchase
                 transaction_id: fetchDetails?.transaction_id,
                 // when there are multiple invoices
 

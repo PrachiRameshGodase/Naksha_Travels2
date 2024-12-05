@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { GoPlus } from 'react-icons/go';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
@@ -22,7 +22,6 @@ const CustomDropdown03 = forwardRef((props, ref) => {
     handleSelect,
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
-
 
   const itemList = useSelector(state => state?.itemList);
   const categoryLists = useSelector(state => state?.categoryList);

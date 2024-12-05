@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import './PdfTemplate.scss';
 import { activeOrg_details, parseJSONofString, showAmountWithCurrencySymbol, showRateWithPercent } from '../../HelperFunctions';
-import { FromToDetails } from '../../../Common/InsideSubModulesCommon/DetailInfo';
-import ItemDetailTable from '../../../Common/InsideSubModulesCommon/ItemDetailTable';
-import ShowMastersValue, { PdfShowMastersValue } from '../../ShowMastersValue';
+import { PdfShowMastersValue } from '../../ShowMastersValue';
 import { otherIcons } from '../../SVGIcons/ItemsIcons/Icons';
 import { currentTime, formatDate3, todayDate } from '../../DateFormat';
 

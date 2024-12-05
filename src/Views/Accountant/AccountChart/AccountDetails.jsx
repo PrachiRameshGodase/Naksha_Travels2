@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar'
 import { Link, useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
-import { accountTableIcons, accountTransactionsTable } from '../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons';
+import { accountTransactionsTable } from '../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons';
 import { accountDelete, accountDetail, accountStatus } from '../../../Redux/Actions/accountsActions';
 import { useDispatch, useSelector } from 'react-redux';
 import NoDataFound from '../../../Components/NoDataFound/NoDataFound';
@@ -13,7 +13,7 @@ import newmenuicoslz from '../../../assets/outlineIcons/othericons/newmenuicoslz
 import useOutsideClick from '../../Helper/PopupData';
 import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
+import { formatString, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
 
 const AccountDetails = () => {
   const dispatch = useDispatch();
@@ -189,26 +189,49 @@ const AccountDetails = () => {
                       No File Attached</p>
                   }
                 </li>
-                <li>
+                {/* <li>
                   <span>Notes</span>
                   <h1>:</h1>
                   <p> {(getAccountVal?.accounts?.description)}</p>
-                </li>
+                </li> */}
               </ul>
             </div>
 
             <div id="coninsd2x3s" >
-              <div className="inidbx1s2 inidbx1s2x21s5" sjtyle={{ width: "400px", height: "300px" }}>
+              <div className="inidbx1s2 inidbx1s2x21s5" style={{ width: "600px", height: "250px" }}>
                 <div className="inidbs1x1a1">
                   <span style={{ zoom: "2" }}> {otherIcons?.doller_svg}</span>
                   Closing Blance
                 </div>
-                <p className='accountx3'>{accDetails?.data?.closing_balance} <br />
-                  {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance < 1 ? "Debit" : "Credit"}
-                </p>
 
+                {/* <p className='accountx3'> {Math.abs(+accDetails?.data?.closing_balance)}
+                  {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance > 0 ? "(Dr)" : "(Cr)"}
+                </p> */}
 
+                <ul style={{ width: "453px" }}>
+
+                  <li>
+                    <span> Closing Blance:</span>
+                    <h1>:</h1>
+                    <p className='accountx3'> {Math.abs(+accDetails?.data?.closing_balance)}
+                      {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance > 0 ? <sub>(Dr)</sub> : <sub> (Cr)</sub>}
+                    </p>
+                  </li>
+                  <li>
+                    <span style={{ width: "348px" }}>Notes:</span>
+                    <h1>:</h1>
+                    <p>
+                      {getAccountVal?.accounts?.description || ""}
+                    </p>
+                  </li>
+                </ul>
+                <div>
+
+                </div>
               </div>
+
+
+
             </div>
           </div>
 
@@ -274,10 +297,14 @@ const AccountDetails = () => {
                           {(formatDate(quotation?.transaction_date)) || ""}
                         </div>
                         <div className="table-cellx12" style={{ width: "20%" }}>
-                          {quotation?.notes || ""}
+                          {quotation?.customer?.display_name || quotation?.vendor?.display_name}
+                        </div>
+                        <div className="table-cellx12" style={{ width: "20%" }}>
+                          {quotation?.entity_no || ""}
                         </div>
                         <div className="table-cellx12" style={{ width: "16%" }}>
-                          {quotation?.entity_type || ""}
+                          {formatString(quotation?.entity_type)}
+                          {/* {quotation?.entity_type || ""} */}
                         </div>
                         <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 x566sd54w2sxw" style={{
                           textAlign: "right",
@@ -290,7 +317,7 @@ const AccountDetails = () => {
                         </div>
                         <div className="table-cellx12" style={{
                           textAlign: "right",
-                          width: "270px"
+                          width: "427px"
                         }}>
                           {showAmountWithCurrencySymbol(quotation?.credit)}
                         </div>

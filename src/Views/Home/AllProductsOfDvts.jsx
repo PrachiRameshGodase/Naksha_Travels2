@@ -295,7 +295,7 @@ const AllProductsOfDvts = () => {
 
                                 </div>
                                 <p className="fixedwrappedjklcw25">
-                                        © 2024 Naksha Travels. All rights reserved.
+                                        © 2024 Megamarket. All rights reserved.
                                 </p>
 
                                 <div class="half-sphere"></div>

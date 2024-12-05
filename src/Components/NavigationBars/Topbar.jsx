@@ -33,7 +33,7 @@ const Topbar = ({ loggedInUserData }) => {
   const [loading, setLoading] = useState(false);
   const notificationPopupRef = useRef(null);
   const warehouseDropdownRef = useRef(null);
-console.log("active_organisation?.name",loggedInUserData )
+
 
   const handleSearchButtonClick = () => {
     setShowSuggestions(!showSuggestions);

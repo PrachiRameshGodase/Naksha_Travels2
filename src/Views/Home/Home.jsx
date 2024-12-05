@@ -5,12 +5,8 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import './home.scss'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchCurrencies, fetchGetCountries, fetchMasterData, fetchTexRates } from '../../Redux/Actions/globalActions';
 import { useDispatch } from 'react-redux';
-import { itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
-import { customersList } from '../../Redux/Actions/customerActions';
 import { callApisOnPageLoad } from '../../Configs/callApisOnPageLoad';
-
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Home = () => {

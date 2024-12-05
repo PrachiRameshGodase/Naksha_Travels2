@@ -36,6 +36,12 @@ export const ShowMasterData = (type) => {
     return filteredData || [];
 };
 
+export const formatString = (str) => {
+    return str
+        .replace(/_/g, " ") // Replace underscores with spaces
+        .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+};
+
 export const ShowAutoGenerateId = (module, showField) => {
     const dispatch = useDispatch();
     const moduleIdList = useSelector(state => state?.autoIdList);

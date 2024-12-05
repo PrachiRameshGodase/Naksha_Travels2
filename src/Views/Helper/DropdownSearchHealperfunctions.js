@@ -3,6 +3,7 @@ import { customersList } from '../../Redux/Actions/customerActions';
 import { categoryList, itemLists } from '../../Redux/Actions/listApisActions';
 import { sendData } from './HelperFunctions';
 
+
 export const DropdownSearchHealperfunctions = (searchTerm, type, dispatch, productType) => {
     if (type === "select_item") {
         dispatch(itemLists({ search: searchTerm, ...sendData, ...productType }));

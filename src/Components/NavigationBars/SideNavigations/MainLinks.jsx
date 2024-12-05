@@ -784,7 +784,7 @@ const MainLinks = ({
         </div>
 
         {/* accountant start */}
-        <div id="" className="menu-itemxse">
+        {/* <div id="" className="menu-itemxse">
           <div
             className={`menu-title ${RequisitionMenuItem.includes(selectedMenuItem) ? "active" : ""
               }`}
@@ -820,18 +820,9 @@ const MainLinks = ({
             >
               Requisition Approval
             </li>
-            {/* <li
-              onClick={() => handleMenuItemClick("requisition")}
-              className={`menu-item ${selectedMenuItem === "requisition" ||
-                selectedMenuItem === "requisition-details"
-                ? "active"
-                : ""
-                }`}
-            >
-              Requisition
-            </li> */}
+           
           </ul>
-        </div>
+        </div> */}
 
         {/* Help section started */}
         <div

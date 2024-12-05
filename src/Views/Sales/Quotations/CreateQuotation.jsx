@@ -90,7 +90,6 @@ const CreateQuotation = () => {
             {
 
                 item_id: "",
-                item_name:"",
                 unit_id: null,
                 hsn_code: "",
                 quantity: 1,
@@ -265,14 +264,13 @@ const CreateQuotation = () => {
                 rate: (+item?.rate),
                 final_amount: (+item?.final_amount),
                 tax_rate: (+item?.tax_rate),
-                hsn_code: (item?.item?.hsn_code),
+                hsn_code: (+item?.hsn_code),
                 tax_amount: (+item?.tax_amount),
                 unit_id: (item?.unit_id),
                 discount: (+item?.discount),
                 discount_type: (+item?.discount_type),
                 item_remark: item?.item_remark,
-                // item_name: item?.item?.name,
-                item_name: item?.item_name,
+                item_name: item?.item?.name,
                 tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
 
             }));
@@ -337,7 +335,7 @@ const CreateQuotation = () => {
 
         }
     }, [quoteDetails, itemId, isEdit]);
-console.log("formData", formData)
+
 
     useEffect(() => {
         setFormData((prev) => ({

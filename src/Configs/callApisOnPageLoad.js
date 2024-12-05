@@ -3,11 +3,9 @@ import { customersList } from "../Redux/Actions/customerActions";
 import { expenseLists } from "../Redux/Actions/expenseActions";
 import { fetchCurrencies, fetchGetCountries, fetchMasterData, fetchTexRates } from "../Redux/Actions/globalActions";
 import { GRNlistActions, GRNreceiptListActions } from "../Redux/Actions/grnActions";
-import { itemLists, vendorsLists, quotationLists, saleOrderLists, purchseOrdersLists, debitNoteLists, creditNoteLists, invoiceLists, accountLists } from "../Redux/Actions/listApisActions";
-import { paymentRecList } from "../Redux/Actions/PaymentRecAction";
+import { itemLists, vendorsLists, quotationLists, saleOrderLists, purchseOrdersLists, debitNoteLists, creditNoteLists, accountLists, categoryList } from "../Redux/Actions/listApisActions";
 import { binViewAction, rackViewAction, warehouseViewAction, zoneViewAction } from "../Redux/Actions/warehouseActions";
 import { sendData } from "../Views/Helper/HelperFunctions";
-
 
 // list api datas
 
@@ -15,6 +13,7 @@ import { sendData } from "../Views/Helper/HelperFunctions";
 
 export const callApisOnPageLoad = (dispatch) => {
     dispatch(itemLists(sendData));
+    dispatch(categoryList(sendData));
     dispatch(customersList(sendData));
     dispatch(quotationLists(sendData));
     dispatch(saleOrderLists(sendData));

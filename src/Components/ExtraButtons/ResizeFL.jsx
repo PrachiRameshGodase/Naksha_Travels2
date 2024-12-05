@@ -23,12 +23,10 @@ const ResizeFL = ({ section }) => {
   return (
     <>
       {section === "reports" ?
-        // <button id='resizebuttonicos45xs6' >
         <>
           {isVisible ? <div className="x45wx5w activexkl5w2" onClick={toggleVisibility}>Expand all</div > : <div className="x45wx5w activexkl5w2" onClick={toggleVisibility}> Collapse all</div>
           }
         </>
-        // </button> 
         :
         <button id='resizebuttonicos45xs6' onClick={toggleVisibility}>
           {isVisible ? <img src={expandIco} alt="" data-tooltip-content="Expand" data-tooltip-place="bottom" data-tooltip-id="my-tooltip" /> : <img src={CompressIco} alt="" data-tooltip-content="Compress" data-tooltip-place="bottom" data-tooltip-id="my-tooltip" />}

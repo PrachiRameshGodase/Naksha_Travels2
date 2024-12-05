@@ -225,7 +225,7 @@ const PaymentMade = () => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons.quotation_icon}
-                    Payment Number
+                    Payment No
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs3">
@@ -381,21 +381,35 @@ const PaymentMade = () => {
 
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 quotiosalinvlisxs5"
+                                className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                               >
-                                <div> <p className={quotation?.status == "1" ? "approved" : quotation?.status == "2" ? "declined" : quotation?.status == "6" ? "sent" : quotation?.status == "0" ? "draft" : quotation?.status == "7" ? "approved" : quotation?.status == "8" ? "approved" : "declined"} >
-
-                                  {
-
-                                    <>
-                                      {quotation?.status == 0 ? "Draft" : quotation?.status == 1 ? "Approved" : ""
-
-                                      }
-                                    </>
+                                <p
+                                  className={
+                                    quotation?.is_approved == "1"
+                                      ? "open"
+                                      : quotation?.is_approved == "0"
+                                        ? "draft"
+                                        : quotation?.is_approved == "2"
+                                          ? "close"
+                                          : quotation?.is_approved == "3"
+                                            ? "pending"
+                                            : quotation?.is_approved == "4"
+                                              ? "overdue"
+                                              : ""
                                   }
-
+                                >
+                                  {quotation?.is_approved == "0"
+                                    ? "Draft"
+                                    : quotation?.is_approved == "1"
+                                      ? "Approved"
+                                      : quotation?.status == "2"
+                                        ? "Close"
+                                        : quotation?.is_approved == "3"
+                                          ? "Pending"
+                                          : quotation?.is_approved == "4"
+                                            ? "Overdue"
+                                            : ""}
                                 </p>
-                                </div>
                               </div>
                             </div>
                           )

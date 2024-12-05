@@ -70,6 +70,7 @@ export const formatDate4 = (date) => {
 };
 
 export const generatePDF = async (data) => {
+    console.log("daaaaaaaaaaaaaaa", data)
     try {
         const fetchData = async () => {
             return data?.map((item, index) => [
@@ -80,11 +81,13 @@ export const generatePDF = async (data) => {
                 item.final_amount,
             ]);
         };
+
         const apiData = await fetchData();
         const tableData = [
             ['S.NO', 'Item & Description', 'Qty', 'Rate', 'Amount'],
             ...apiData,
         ];
+
         // Calculate the total amount
         const totalAmount = apiData.reduce((sum, row) => sum + parseFloat(row[4]), 0).toFixed(2);
         tableData.push(['', '', '', 'Total', totalAmount]);
@@ -156,6 +159,8 @@ export const generatePDF = async (data) => {
 
 
 export const generatePDF1 = async (data) => {
+    console.log("daaaaaaaaaaaaaaassssssssssss", data)
+
     try {
         const fetchData = async () => {
             return data?.map((item, index) => [

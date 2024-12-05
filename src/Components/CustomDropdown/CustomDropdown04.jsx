@@ -3,7 +3,7 @@ import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown04 = forwardRef((props, ref) => {
-  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls } = props;
+  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2 } = props;
   const {
     isOpen,
     setIsOpen,
@@ -32,7 +32,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} >
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width:"100px" } : {}}>
 
         {type === "masters_salutation" ?
           <>

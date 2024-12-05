@@ -88,6 +88,7 @@ const Quotations = () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
+
       const sendData = {
         fy,
         noofrec: itemsPerPage,
