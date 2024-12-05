@@ -82,14 +82,15 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
+        style={{width:"314px"}}
       >
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Type To Add Or Search..."
           value={searchTerm || itemData?.item_name}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          style={{ width: "200px", height: "30px", margin: "10px -7px" }}
+          style={{ minWidth: "309px", height: "30px", margin: "10px -7px" }}
           className="dropdown-search customdropdownx12s86"
           autoFocus
           ref={inputRef}

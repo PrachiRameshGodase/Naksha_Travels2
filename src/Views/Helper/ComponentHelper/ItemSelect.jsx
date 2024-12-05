@@ -494,7 +494,7 @@ const ItemSelect = ({
                       </div> */}
                   </div>
 
-                  <div className="tablsxs1a5x3" id="ITEM_Selection6">
+                  <div className="tablsxs1a5x3" id="ITEM_Selection6" style={{marginRight:"17px"}}>
                     <span>
                       <CustomDropdown04
                         options={unitList}
@@ -604,6 +604,7 @@ const ItemSelect = ({
                       className="tablsxs1a6x3_rm"
                       id="ITEM_Selection7"
                       key={item.id || index}
+                      style={{marginRight:"20px"}}
                     >
                       <CustomDropdown13
                         options={tax_rate}
@@ -619,8 +620,9 @@ const ItemSelect = ({
                     </div>
                   ) : (
                     <div
-                      className="tablsxs1a6x3"
-                      style={{ width: "10%", cursor: "not-allowed" }}
+                     className="tablsxs1a6x3_rm"
+                       id="ITEM_Selection7"
+                      style={{ marginRight:"20px", cursor: "not-allowed" }}
                       key={item.id || index}
                     >
                       {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
