@@ -188,7 +188,7 @@ const ItemSelect = ({
       total_charges: total_charges?.toFixed(2),
       total: total?.toFixed(2),
       taxes: taxes,
-      tax_rate:tax_rate,
+      tax_rate: tax_rate,
       total_gross_amount: gross_amount,
     }));
   }, [
@@ -210,7 +210,8 @@ const ItemSelect = ({
     let discountPercentage = 0;
     if (field === "item_name") {
       newItems[index].item_name = value;
-      newItems[index].item_id = null;
+      newItems[index].item_id = "";
+      newItems[index].hsn_code = "";
     }
 
     if (field === "item_name" && value !== "") {
@@ -227,8 +228,8 @@ const ItemSelect = ({
       newItems[index].unit_id = value;
     }
     if (field === "taxRate") {
-        newItems[index].tax_rate = value;
-      }
+      newItems[index].tax_rate = value;
+    }
     if (field === "item_id" && value !== "") {
       setIsItemSelect(true);
     } else if (field === "item_id" && value === "") {
@@ -262,7 +263,6 @@ const ItemSelect = ({
         }
       }
     }
-  
 
     if (field === "quantity" || field === "rate") {
       newItems[index].gross_amount = +item?.rate * +item?.quantity;
@@ -301,12 +301,12 @@ const ItemSelect = ({
     const newItems = [...formData?.items];
     newItems[index] = {
       item_id: "",
+      item_name: "",
       quantity: 1,
       hsn_code: "",
       gross_amount: 0,
       rate: 0,
       unit_id: null,
-      hsn_code: "",
       type: "",
       final_amount: 0,
       tax_amount: 0,
@@ -347,7 +347,7 @@ const ItemSelect = ({
       ...formData.items,
       {
         item_id: "",
-        item_name:"",
+        item_name: "",
         quantity: 1,
         unit_id: null,
         hsn_code: "",
@@ -361,6 +361,7 @@ const ItemSelect = ({
         discount: 0,
         discount_type: 1,
         item_remark: null,
+        tax_name: "",
       },
     ];
     setFormData({ ...formData, items: newItems });
@@ -396,7 +397,6 @@ const ItemSelect = ({
     }
   }, [searchTrigger, productType]);
 
-  
   return (
     <>
       <div className="f1wrpofcreqsx2" id={invoice_section}>
@@ -409,7 +409,7 @@ const ItemSelect = ({
             <p className="tablsxs1a3x3">Quantity</p>
             <p className="tablsxs1a3x3">Unit</p>
             <p className="tablsxs1a4x3">Discount</p>
-            <p className="tablsxs1a5x3">Tax</p>
+            <p className="tablsxs1a5x3">Tax (%)</p>
             <p className="tablsxs1a6x3" style={{ marginLeft: "1%" }}>
               Amount
             </p>
@@ -483,14 +483,18 @@ const ItemSelect = ({
                       }}
                       style={{ width: "60%" }}
                     />
-                    {item?.unit_id && (
-                      <p>
-                        (<ShowMastersValue type="2" id={item?.unit_id} />)
-                      </p>
-                    )}
+
+                    {/* <div key={index}>
+                        {" "}
+                        {item?.unit_id && (
+                          <p>
+                            (<ShowMastersValue type="2" id={item?.unit_id} />)
+                          </p>
+                        )}
+                      </div> */}
                   </div>
-                  {formData?.items?.map((item, index) =>
-                    item?.item_id == null) &&  <div className="tablsxs1a5x3" id="ITEM_Selection6">
+
+                  <div className="tablsxs1a5x3" id="ITEM_Selection6">
                     <span>
                       <CustomDropdown04
                         options={unitList}
@@ -509,7 +513,7 @@ const ItemSelect = ({
                         extracssclassforscjkls="extracssclassforscjklsitem"
                       />
                     </span>
-                  </div>}
+                  </div>
 
                   <div className="tablsxs1a5x3">
                     <span>
@@ -595,41 +599,36 @@ const ItemSelect = ({
                     </span>
                   </div>
 
-                  {formData?.items?.map((item, index) =>
-                    item?.item_id == null ? (
-                      <div
-                        className="tablsxs1a6x3_rm"
-                        id="ITEM_Selection7"
-                        key={index}
-                      >
-                        <CustomDropdown13
-                          options={tax_rate}
-                          value={item?.tax_rate}
-                          onChange={(e) =>
-                            handleItemChange(index, "tax_rate", e.target.value)
-                          }
-                          name="tax_rate"
-                          type="taxRate"
-                          defaultOption="Taxes"
-                          className2="items"
-                          
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className="tablsxs1a6x3"
-                        style={{ width: "10%", cursor: "not-allowed" }}
-                        key={index}
-                      >
-                        {item?.tax_name === "Taxable" && (
-                          <> {item?.tax_rate} </>
-                        )}
-                        {item?.tax_name === "Non-Taxable" && (
-                          <>{item?.tax_name}</>
-                        )}
-                        {item?.tax_name === "Taxable" && "%"}
-                      </div>
-                    )
+                  {item?.item_id == "" || item?.item_name == "" ? (
+                    <div
+                      className="tablsxs1a6x3_rm"
+                      id="ITEM_Selection7"
+                      key={item.id || index}
+                    >
+                      <CustomDropdown13
+                        options={tax_rate}
+                        value={item?.tax_rate}
+                        onChange={(e) =>
+                          handleItemChange(index, "tax_rate", e.target.value)
+                        }
+                        name="tax_rate"
+                        type="taxRate"
+                        defaultOption="Taxes"
+                        className2="items"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="tablsxs1a6x3"
+                      style={{ width: "10%", cursor: "not-allowed" }}
+                      key={item.id || index}
+                    >
+                      {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
+                      {item?.tax_name === "Non-Taxable" && (
+                        <>{item?.tax_name}</>
+                      )}
+                      {item?.tax_name === "Taxable" }
+                    </div>
                   )}
 
                   <div

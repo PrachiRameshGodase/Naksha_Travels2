@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import { useSelector } from "react-redux";
@@ -37,12 +37,39 @@ const CustomDropdown26 = forwardRef((props, ref) => {
   const itemList = useSelector((state) => state?.itemList);
   const categoryLists = useSelector((state) => state?.categoryList);
 
+  const [isValueSelected, setIsValueSelected] = useState(false);
+
   const combinedRef = (node) => {
     dropdownRef.current = node;
     if (ref) ref.current = node;
   };
 
- 
+  // Handle change in search input
+  const handleInputChange = (e) => {
+    if (!isValueSelected) {
+      setSearchTerm(e.target.value);
+      onChange({
+        target: { name: "item_name", value: e.target.value },
+      });
+    }
+  };
+
+  // Handle selecting an option from the dropdown
+  const handleOptionSelect = (option) => {
+    handleSelect(option);
+    setSearchTerm(option.name);
+    setIsValueSelected(true); // Mark as value selected
+    onChange({
+      target: { name: "item_id", value: option.id, option },
+    });
+  };
+
+  const handleInputBlur = () => {
+    // Check if the entered value is in the itemList, if not, allow it to be edited
+    if (options && !options.some((option) => option.name === searchTerm)) {
+      setIsValueSelected(false);
+    }
+  };
 
   return (
     <div
@@ -54,24 +81,21 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     >
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={"dropdown-selected customdropdownx12s86" + (value ? " filledcolorIn" : "")}
+        className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
       >
         <input
           type="text"
           placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value); // Update the search term
-            onChange({
-              target: { name: "item_name", value: e.target.value },
-            }); 
-          }}
-          style={{width:"200px", height:"33px", margin:"10px"}}
+          value={searchTerm || itemData?.item_name}
+          onChange={handleInputChange}
+          onBlur={handleInputBlur}
+          style={{ width: "200px", height: "30px", margin: "10px -7px" }}
           className="dropdown-search customdropdownx12s86"
           autoFocus
           ref={inputRef}
         />
       </div>
+
       {isOpen && (
         <div className={`dropdown-options`} id={className}>
           {itemList?.loading || categoryLists?.loading ? (
@@ -82,13 +106,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                 {options?.map((option, index) => (
                   <div
                     key={option.id}
-                    onClick={() => {
-                      handleSelect(option);
-                      setSearchTerm(option.name); // Update input box with selected option
-                      onChange({
-                        target: { name: "item_id", value: option.id, option },
-                      }); 
-                    }}
+                    onClick={() => handleOptionSelect(option)}
                     ref={(el) => (optionRefs.current[index] = el)}
                     className={
                       "dropdown-option" +
