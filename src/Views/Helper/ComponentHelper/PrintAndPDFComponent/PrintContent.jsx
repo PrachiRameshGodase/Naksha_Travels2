@@ -100,8 +100,8 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
                   <p>
                     {section} Date: {formatDate3(data?.transaction_date)}
                   </p>
-                  <p>Payment Due: October 04, 2024</p>
-                  <p>Amount Due (USD): $704.30</p>
+                  {/* <p>Payment Due: October 04, 2024</p>
+                  <p>Amount Due (USD): $704.30</p> */}
                 </>
               </div>
             </div>
