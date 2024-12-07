@@ -18,7 +18,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import useOutsideClick from "../../Helper/PopupData";
 import { formatDate3 } from "../../Helper/DateFormat";
-import { FromToDetails, MoreInformation } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import { generatePDF } from "../../Helper/createPDF";
@@ -287,6 +287,7 @@ const CreditNotesDetails = () => {
             </div>
 
             <MoreInformation sale={credit?.sale_person} note={credit?.customer_note} tc={credit?.terms_and_condition} section="Customer" />
+          <TermsAndConditions/>
           </div>
         </div>
       )}

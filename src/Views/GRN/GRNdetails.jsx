@@ -20,7 +20,7 @@ import { showAmountWithCurrencySymbol, showRateWithPercent } from '../Helper/Hel
 import ShowMastersValue from '../Helper/ShowMastersValue';
 import { GrnItemsDetailTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
 // import { GrnItemsDetailTable } from '../Items/ItemDetailTable';
-import { MoreInformation } from '../Common/InsideSubModulesCommon/DetailInfo';
+import { MoreInformation, TermsAndConditions } from '../Common/InsideSubModulesCommon/DetailInfo';
 const PurchaseOrderDetails = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
@@ -222,6 +222,7 @@ const PurchaseOrderDetails = () => {
                         </div>
 
                         <MoreInformation sale={GRNdetail?.sale_person} note={GRNdetail?.vendor_note} tc={GRNdetail?.terms_and_condition} section="Vendor" />
+                        <TermsAndConditions/>
                     </div>
                 </div>
             }

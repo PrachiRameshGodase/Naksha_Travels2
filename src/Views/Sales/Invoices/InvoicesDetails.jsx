@@ -19,7 +19,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowAllStatus1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import { IoMailOpenOutline } from 'react-icons/io5';
 import { parseJSON } from 'date-fns';
 import { parseJSONofString, showRealatedText } from '../../Helper/HelperFunctions';
@@ -334,6 +334,7 @@ const InvoicesDetails = ({ section }) => {
             </div>
 
             <MoreInformation sale={invoice?.sale_person} note={invoice?.customer_note} tc={invoice?.terms_and_condition} section="Customer" />
+            <TermsAndConditions/>
           </div>
         </div >
       }

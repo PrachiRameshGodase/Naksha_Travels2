@@ -20,7 +20,7 @@ import { fetchMasterData } from '../../Redux/Actions/globalActions';
 import { parseJSONofString, showAmountWithCurrencySymbol, ShowAutoGenerateId, showRateWithPercent } from '../Helper/HelperFunctions';
 import { GrnItemsDetailTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
 // import { GrnItemsDetailTable } from '../Items/ItemDetailTable';
-import { MoreInformation } from '../Common/InsideSubModulesCommon/DetailInfo';
+import { MoreInformation, TermsAndConditions } from '../Common/InsideSubModulesCommon/DetailInfo';
 const GRNApprovalDetail = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
@@ -312,6 +312,7 @@ const GRNApprovalDetail = () => {
                             </div>
                         </div>
                         <MoreInformation sale={GRNdetail?.sale_person} note={GRNdetail?.vendor_note} tc={GRNdetail?.terms_and_condition} section="Vendor" />
+                        <TermsAndConditions/>
                     </div>
                 </div>}
             {showComponent && (

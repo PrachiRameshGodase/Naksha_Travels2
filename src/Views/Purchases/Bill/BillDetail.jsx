@@ -32,7 +32,7 @@ import {
 } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import ItemDetailTable from "../../Common/InsideSubModulesCommon/ItemDetailTable";
-import { ShowDropdownContent } from "../../Common/InsideSubModulesCommon/DetailInfo";
+import { ShowDropdownContent, TermsAndConditions } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import { MoreInformation } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import { FromToDetails, FromToDetailsPurchases } from "../../Common/InsideSubModulesCommon/DetailInfo";
 const BillDetail = () => {
@@ -341,6 +341,7 @@ const BillDetail = () => {
               tc={invoice?.terms_and_condition}
               section="Vendor"
             />
+            <TermsAndConditions/>
           </div>
         </div>
       )}

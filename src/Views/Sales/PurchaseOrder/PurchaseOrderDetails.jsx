@@ -36,7 +36,8 @@ import {
   FromToDetailsPurchases,
   ShowAllStatus,
   ShowDropdownContent,
-  ShowAllStatusPurchase
+  ShowAllStatusPurchase,
+  TermsAndConditions
 } from "../../Common/InsideSubModulesCommon/DetailInfo";
 const PurchaseOrderDetails = () => {
   const Navigate = useNavigate();
@@ -301,6 +302,7 @@ const PurchaseOrderDetails = () => {
               tc={purchase?.terms_and_condition}
               section="Vendor"
             />
+            <TermsAndConditions/>
           </div>
         </div>
       )}

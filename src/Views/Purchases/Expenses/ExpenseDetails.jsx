@@ -14,6 +14,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { deleteExpenses, expensesDetails } from '../../../Redux/Actions/expenseActions';
 import { InsideExpenseDetailsBox } from '../../Items/InsideItemDetailsBox';
+import { TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 
 const ExpenseDetails = () => {
     const dispatch = useDispatch();
@@ -176,7 +177,9 @@ const ExpenseDetails = () => {
                         <div id="item-details">
                             <InsideExpenseDetailsBox itemDetails={expenseDetails?.data?.expense} />
                         </div>
+                        <TermsAndConditions/>
                     </div>
+
 
                 </div>}
             <Toaster />

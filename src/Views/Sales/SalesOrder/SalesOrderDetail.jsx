@@ -14,7 +14,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import useOutsideClick from '../../Helper/PopupData';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 
@@ -197,7 +197,7 @@ const SalesOrderDetail = () => {
             </div>
 
             <MoreInformation sale={sale?.sale_person} note={sale?.customer_note} tc={sale?.terms_and_condition} section="Customer" />
-
+            <TermsAndConditions/>
           </div>
         </div>}
       <Toaster />

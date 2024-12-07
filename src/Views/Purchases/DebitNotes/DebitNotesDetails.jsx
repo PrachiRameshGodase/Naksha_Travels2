@@ -17,7 +17,7 @@ import { formatDate, formatDate3, generatePDF } from '../../Helper/DateFormat';
 import { showAmountWithCurrencySymbol, showRateWithPercent } from '../../Helper/HelperFunctions';
 import ShowMastersValue from '../../Helper/ShowMastersValue';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation ,FromToDetailsPurchases} from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation ,FromToDetailsPurchases, TermsAndConditions} from '../../Common/InsideSubModulesCommon/DetailInfo';
 
 const DebitNotesDetails = () => {
     const Navigate = useNavigate();
@@ -271,6 +271,7 @@ const DebitNotesDetails = () => {
                             </div>
                         </div>
                         <MoreInformation sale={debitDetail?.sale_person} note={debitDetail?.vendor_note} tc={debitDetail?.terms_and_condition} section="Vendor" />
+                        <TermsAndConditions/>
                     </div>
                 </div>}
             <Toaster />

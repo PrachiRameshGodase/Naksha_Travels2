@@ -32,6 +32,7 @@ import { creditNotesDetails, creditnoteSend } from "../../Redux/Actions/notesAct
 import { paymentRecSend, paymentRecDetail } from "../../Redux/Actions/PaymentRecAction";
 import { invoiceSend } from "../../Redux/Actions/invoiceActions";
 import { billSend } from "../../Redux/Actions/billActions";
+import { TermsAndConditions } from "../../Views/Common/InsideSubModulesCommon/DetailInfo";
 const modules = {
   toolbar: [
     [{ font: [] }],
@@ -393,9 +394,12 @@ const SendMail = () => {
                     Cancel
                   </button>
                 </div>
+                
+                <TermsAndConditions/>
               </>
             )}
             <Toaster />
+
           </div>
         </>
       )}

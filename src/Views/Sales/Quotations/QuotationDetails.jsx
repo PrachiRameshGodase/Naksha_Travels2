@@ -12,7 +12,7 @@ import useOutsideClick from '../../Helper/PopupData';
 import { useReactToPrint } from 'react-to-print';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import MoreInformation from '../../Common/MoreInformation';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 
@@ -122,6 +122,8 @@ const QuotationDetails = () => {
   return (
     <>
       {(quoteStatus?.loading || quoteDelete?.loading || loading) && <MainScreenFreezeLoader />}
+      {/* <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" /> */}
+
       {quoteDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >
           <div id="Anotherbox" className='formsectionx1'>
@@ -213,8 +215,9 @@ const QuotationDetails = () => {
             </div>
 
             <MoreInformation sale={quotation?.sale_person} note={quotation?.customer_note} tc={quotation?.terms_and_condition} section="Customer" />
-
+            <TermsAndConditions/>
           </div>
+          
         </div>}
       <Toaster />
     </>
