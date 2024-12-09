@@ -22,7 +22,7 @@ import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { todayDate } from '../../Helper/DateFormat';
-import { getCurrencyFormData, handleDropdownError, ShowMasterData } from '../../Helper/HelperFunctions';
+import { getCurrencyFormData, handleDropdownError, ShowMasterData, validateItems } from '../../Helper/HelperFunctions';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
@@ -123,6 +123,7 @@ const CreateDebitNotes = () => {
         ],
     });
 
+    const [itemErrors, setItemErrors] = useState([]);
 
 
     useEffect(() => {
@@ -139,7 +140,7 @@ const CreateDebitNotes = () => {
             const itemsFromApi = fetchDetails.items?.map(item => ({
                 item_id: (+item?.item_id),
                 quantity: (+item?.quantity),
-                item_name: (item?.item_name),
+                item_name: item?.item_name,
                 gross_amount: (+item?.gross_amount),
                 unit_id: (item?.unit_id),
                 rate: (+item?.rate),
@@ -210,11 +211,7 @@ const CreateDebitNotes = () => {
                 setIsVendorSelect(true);
             }
 
-            if (!fetchDetails?.items) {
-                setIsItemSelect(false);
-            } else {
-                setIsItemSelect(true);
-            }
+           
 
             if (filterBillId?.bill_id) {
                 setIsBillSelect(false);
@@ -283,7 +280,7 @@ const CreateDebitNotes = () => {
         });
     };
 
-    // console.log("formdata", formData)
+    
 
     useEffect(() => {
         if (formData?.bill_id) {
@@ -311,12 +308,11 @@ const CreateDebitNotes = () => {
                 ...prev,
                 items: itemsFromApi || []
             }));
-
-            if (!getSelectedBillData.items) {
-                setIsItemSelect(false);
-            } else {
-                setIsItemSelect(true);
+            const errors = validateItems(getSelectedBillData?.items || []);
+            if (errors.length > 0) {
+              setItemErrors(errors);
             }
+            
         }
 
     }, [formData?.bill_id]);
@@ -363,11 +359,14 @@ const CreateDebitNotes = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const buttonName = e.nativeEvent.submitter.name;
+        const errors = validateItems(formData?.items);
 
+        if (errors.length > 0) {
+          setItemErrors(errors);
+          return;
+        }
         if (handleDropdownError(isVendorSelect, vendorRef)) return;
-        if (handleDropdownError(isBillSelect, billRef)) return;
-        if (handleDropdownError(isItemSelect, itemRef)) return;
-
+        
         try {
             const updatedItems = formData.items.map((item) => {
                 const { tax_name, ...itemWithoutTaxName } = item;
@@ -600,8 +599,10 @@ const CreateDebitNotes = () => {
                                             formData={formData}
                                             setFormData={setFormData}
                                             handleChange={handleChange}
-                                            setIsItemSelect={setIsItemSelect}
-                                            isItemSelect={isItemSelect}
+                                            itemErrors={itemErrors}
+                                            setItemErrors={setItemErrors}
+                                            // setIsItemSelect={setIsItemSelect}
+                                            // isItemSelect={isItemSelect}
                                             extracssclassforscjkls={"extracssclassforscjkls"}
                                             dropdownRef2={itemRef}
                                         />

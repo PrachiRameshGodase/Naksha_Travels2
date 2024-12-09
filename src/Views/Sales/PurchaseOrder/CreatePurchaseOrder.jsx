@@ -24,7 +24,7 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 import useOutsideClick from "../../Helper/PopupData";
 import { handleKeyPress } from "../../Helper/KeyPressInstance";
 import { formatDate, todayDate } from "../../Helper/DateFormat";
-import { getCurrencyFormData, handleDropdownError, orgnizationEmail, parseJSONofString, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
+import { getCurrencyFormData, handleDropdownError, orgnizationEmail, parseJSONofString, ShowMasterData, stringifyJSON, validateItems } from "../../Helper/HelperFunctions";
 import NumericInput from "../../Helper/NumericInput";
 import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
@@ -157,7 +157,7 @@ const CreatePurchaseOrder = () => {
     ],
   });
 
-  // console.log("formdaaaaaaaaaaaaaaa", purchseDetail)
+  const [itemErrors, setItemErrors] = useState([]);
 
   useEffect(() => {
     if (
@@ -176,14 +176,14 @@ const CreatePurchaseOrder = () => {
         item_name: item?.item_name,
         gross_amount: +item?.gross_amount,
         rate: +item?.rate,
-        hsn_code: (+item?.hsn_code),
+        hsn_code: item?.hsn_code,
         final_amount: +item?.final_amount,
         tax_rate: +item?.tax_rate,
         tax_amount: +item?.tax_amount,
         discount: +item?.discount,
         discount_type: +item?.discount_type,
         item_remark: item?.item_remark,
-        item_name: item?.item?.name,
+        item_name: item?.item_name,
         tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
       }));
 
@@ -278,12 +278,11 @@ const CreatePurchaseOrder = () => {
       if (purchseDetail.vendor_id) {
         setIsVendorSelect(true);
       }
-
-      if (!purchseDetail.items) {
-        setIsItemSelect(false);
-      } else {
-        setIsItemSelect(true);
+      const errors = validateItems(quoteDetails?.items || []);
+      if (errors.length > 0) {
+        setItemErrors(errors);
       }
+     
     }
   }, [purchseDetail, itemId, isEdit]);
 
@@ -395,7 +394,8 @@ const CreatePurchaseOrder = () => {
       formData,
       isVendorSelect,
       dropdownRef1,
-      isItemSelect,
+      // isItemSelect,
+      setItemErrors,
       dropdownRef2,
       dispatch,
       createPurchases,
@@ -766,8 +766,10 @@ const CreatePurchaseOrder = () => {
                       formData={formData}
                       setFormData={setFormData}
                       handleChange={handleChange}
-                      setIsItemSelect={setIsItemSelect}
-                      isItemSelect={isItemSelect}
+                      itemErrors={itemErrors}
+                      setItemErrors={setItemErrors}
+                      // setIsItemSelect={setIsItemSelect}
+                      // isItemSelect={isItemSelect}
                       extracssclassforscjkls={"extracssclassforscjkls"}
                       dropdownRef2={dropdownRef2}
                       shwoCharges={true}

@@ -14,7 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { billDetails } from "../../../Redux/Actions/billActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import { formatDate, todayDate } from "../../Helper/DateFormat";
-import { getCurrencyFormData, handleDropdownError, ShowMasterData } from "../../Helper/HelperFunctions";
+import { getCurrencyFormData, handleDropdownError, ShowMasterData, validateItems } from "../../Helper/HelperFunctions";
 import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
@@ -109,6 +109,7 @@ const CreateBills = () => {
       },
     ],
   });
+  const [itemErrors, setItemErrors] = useState([]);
 
   useEffect(() => {
     if (
@@ -138,7 +139,7 @@ const CreateBills = () => {
         discount: +item?.discount,
         discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
         item_remark: item?.item_remark,
-        item_name: item?.item?.name,
+        item_name: item?.item_name,
         tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
         unit_id: item?.unit_id,
       }));
@@ -207,10 +208,14 @@ const CreateBills = () => {
       if (fetchDetails?.vendor_id) {
         setIsVendorSelect(true);
       }
-      if (!fetchDetails?.items) {
-        setIsItemSelect(false);
-      } else {
-        setIsItemSelect(true);
+      // if (!fetchDetails?.items) {
+      //   setIsItemSelect(false);
+      // } else {
+      //   setIsItemSelect(true);
+      // }
+      const errors = validateItems(fetchDetails?.items || []);
+      if (errors.length > 0) {
+        setItemErrors(errors);
       }
     }
   }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
@@ -290,7 +295,8 @@ const CreateBills = () => {
       formData,
       isVendorSelect,
       dropdownRef1,
-      isItemSelect,
+      // isItemSelect,
+      setItemErrors,
       dropdownRef2,
       dispatch,
       createPurchases,
@@ -599,8 +605,10 @@ const CreateBills = () => {
                         formData={formData}
                         setFormData={setFormData}
                         handleChange={handleChange}
-                        setIsItemSelect={setIsItemSelect}
-                        isItemSelect={isItemSelect}
+                        itemErrors={itemErrors}
+                        setItemErrors={setItemErrors}
+                        // setIsItemSelect={setIsItemSelect}
+                        // isItemSelect={isItemSelect}
                         extracssclassforscjkls={"extracssclassforscjkls"}
                         dropdownRef2={dropdownRef2}
                       />

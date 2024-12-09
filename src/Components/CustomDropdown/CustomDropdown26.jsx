@@ -70,7 +70,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       setIsValueSelected(false);
     }
   };
-console.log("itemData", itemData)
+  useEffect(() => {
+    setSearchTerm(itemData?.item_name || ""); // Update search term when item_name changes
+  }, [itemData?.item_name]);
+
+
   return (
     <div
       tabIndex="0"
@@ -90,15 +94,15 @@ console.log("itemData", itemData)
           value={searchTerm || itemData?.item_name}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          style={{ minWidth: "309px", height: "30px", margin: "10px -7px",  height: "60px", border:"1px solid #ebdada" }}
-          className="dropdown-search customdropdownx12s86"
+          style={{ minWidth: "321px", height: "30px", margin: "10px -13px",  height: "60px", border:"1px solid #ebdada" }}
+          className="dropdown-search customdropdownx12s86 custom-scrollbar"
           autoFocus
           ref={inputRef}
         />
       </div>
 
       {isOpen && (
-        <div className={`dropdown-options`} id={className}>
+        <div className={`dropdown-options`} id={className} style={{width:"101%"}}>
           {itemList?.loading || categoryLists?.loading ? (
             <TableViewSkeletonDropdown />
           ) : (

@@ -172,7 +172,7 @@
     }
 
     .focusedoption {
-      background-color: $lightprimary02 !important;
+      // background-color: $lightprimary02 !important;
       // color: $white !important;
     }
 
@@ -561,4 +561,21 @@
   display: flex;
   gap: 165px;
   justify-content: flex-start;
+}
+.custom-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+}
+
+/* For Chrome, Edge, and Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ccc; 
+  border-radius: 10px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; 
 }
