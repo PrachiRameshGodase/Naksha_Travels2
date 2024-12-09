@@ -395,7 +395,7 @@ const ItemSelect = ({
             );
         }
     }, [searchTrigger, productType]);
-
+console.log("formData", formData)
     return (
         <>
             <div className="f1wrpofcreqsx2" id={invoice_section}>
@@ -417,7 +417,7 @@ const ItemSelect = ({
                     {formData?.items?.map((item, index) => (
                         <>
                             <div className="table_item_border">
-                                <div key={index} className="tablerowtopsxs1 border_none">
+                                <div key={index} className="tablerowtopsxs1 border_none" style={{padding:"21px 5px"}}>
                                     <div className="tablsxs1a1x3">
                                         <span>
                                             <CustomDropdown26
@@ -626,7 +626,7 @@ const ItemSelect = ({
                                         <div
                                             className="tablsxs1a6x3_rm"
                                             id="ITEM_Selection7"
-                                            style={{ marginRight: "20px", cursor: "not-allowed" }}
+                                            style={{ marginRight: "20px", cursor: "not-allowed" , marginTop:"10px"}}
                                             key={item.id || index}
                                         >
                                             {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
@@ -639,7 +639,7 @@ const ItemSelect = ({
 
                                     <div
                                         className="tablsxs1a7x3"
-                                        style={{ cursor: "not-allowed" }}
+                                        style={{ cursor: "not-allowed", marginTop:"10px" }}
                                     >
                                         {item?.final_amount}
                                     </div>

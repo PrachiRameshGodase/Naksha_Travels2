@@ -70,7 +70,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       setIsValueSelected(false);
     }
   };
-
+console.log("itemData", itemData)
   return (
     <div
       tabIndex="0"
@@ -84,13 +84,13 @@ const CustomDropdown26 = forwardRef((props, ref) => {
         className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
         style={{ width: "314px" }}
       >
-        <input
+        <textarea
           type="text"
           placeholder="Type To Add Or Search..."
           value={searchTerm || itemData?.item_name}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          style={{ minWidth: "309px", height: "30px", margin: "10px -7px" }}
+          style={{ minWidth: "309px", height: "30px", margin: "10px -7px",  height: "60px", border:"1px solid #ebdada" }}
           className="dropdown-search customdropdownx12s86"
           autoFocus
           ref={inputRef}

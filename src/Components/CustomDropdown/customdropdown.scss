@@ -31,6 +31,16 @@
     margin: 10px 10px;
     margin-bottom: 0px;
   }
+  textarea {
+    width: calc(100% - 30px) !important;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px !important;
+    border: 1px solid $stroke !important;
+    @include focusVisible;
+    margin: 10px 10px;
+    margin-bottom: 0px;
+  }
 
   &:focus {
     // border-radius: 5px !important;

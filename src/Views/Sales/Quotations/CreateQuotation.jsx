@@ -43,6 +43,11 @@ const CreateQuotation = () => {
 
     const [isCustomerSelect, setIsCustomerSelect] = useState(false);
     const [isItemSelect, setIsItemSelect] = useState(false);
+    const [isSalePrice, setIsSalePrice] = useState(false);
+    const [isUnitSelect, setIsUnitSelect] = useState(false);
+    const [isTaxSelect, setIsTaxSelect] = useState(false);
+
+    
 
     const [imgLoader, setImgeLoader] = useState("");
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -234,7 +239,34 @@ const CreateQuotation = () => {
                 dropdownRef2.current.focus();
             }, 500);
 
-        } else {
+        }  else if (!isSalePrice) {
+            if (!isPartiallyInViewport(dropdownRef2.current)) {
+                dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            setTimeout(() => {
+                dropdownRef2.current.focus();
+            }, 500);
+
+        } 
+    else if (!isUnitSelect) {
+        if (!isPartiallyInViewport(dropdownRef2.current)) {
+            dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        setTimeout(() => {
+            dropdownRef2.current.focus();
+        }, 500);
+
+    } 
+    else if (!isTaxSelect) {
+        if (!isPartiallyInViewport(dropdownRef2.current)) {
+            dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        setTimeout(() => {
+            dropdownRef2.current.focus();
+        }, 500);
+
+    } 
+        else {
             try {
                 const updatedItems = formData?.items?.map((item) => {
                     const { tax_name, ...itemWithoutTaxName } = item;
@@ -264,13 +296,13 @@ const CreateQuotation = () => {
                 rate: (+item?.rate),
                 final_amount: (+item?.final_amount),
                 tax_rate: (+item?.tax_rate),
-                hsn_code: (+item?.hsn_code),
+                hsn_code: (item?.hsn_code),
                 tax_amount: (+item?.tax_amount),
                 unit_id: (item?.unit_id),
                 discount: (+item?.discount),
                 discount_type: (+item?.discount_type),
                 item_remark: item?.item_remark,
-                item_name: item?.item?.name,
+                item_name: item?.item_name,
                 tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
 
             }));
@@ -329,13 +361,16 @@ const CreateQuotation = () => {
 
             if (!quoteDetails?.items) {
                 setIsItemSelect(false);
+                setIsTaxSelect(false)
+                setIsSalePrice(false)
+                setIsUnitSelect(false)
             } else {
                 setIsItemSelect(true);
             }
 
         }
     }, [quoteDetails, itemId, isEdit]);
-
+// console.log("quoteDetails?.items", )
 
     useEffect(() => {
         setFormData((prev) => ({
