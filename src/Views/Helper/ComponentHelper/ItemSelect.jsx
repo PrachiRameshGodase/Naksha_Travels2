@@ -232,7 +232,7 @@ const ItemSelect = ({
       newItems[index].unit_id = value;
       newErrors[index].unit_id = "";
     }
-    if (field === "tax_rate") {
+    if (field === "taxRate") {
       newItems[index].tax_rate = value;
       newErrors[index].tax_rate = "";
     }
@@ -472,7 +472,7 @@ const ItemSelect = ({
                   </div>
 
                   <div></div>
-                  <div className="tablsxs1a2x3">
+                  <div className="tablsxs1a2x3" style={{marginRight:"2px"}}>
                     <NumericInput
                       value={item?.rate}
                       placeholder="0.00"
@@ -496,7 +496,7 @@ const ItemSelect = ({
                     />
                   </div>
 
-                  <div className="tablsxs1a3x3">
+                  <div className="tablsxs1a3x3" style={{marginRight:"2px"}}>
                     <NumericInput
                       value={item?.quantity}
                       onChange={(e) => {
@@ -527,7 +527,7 @@ const ItemSelect = ({
                   <div
                     className="tablsxs1a5x3"
                     // id="ITEM_Selection6"
-                    style={{ marginRight: "17px" }}
+                    style={{ marginRight: "5px" }}
                   >
                     <span>
                       <CustomDropdown04
@@ -1113,9 +1113,11 @@ export const ItemSelectGRM = ({
         };
       }
       setIsItemSelect(value !== "");
-    } else if (field === "unit_id") {
+    } 
+    else if (field === "unit_id") {
       newItems[index].unit_id = value;
-    } else if (["account_id", "remarks", "vendor_id"].includes(field)) {
+    } 
+    else if (["account_id", "remarks", "vendor_id"].includes(field)) {
       newCharges[index][field] = value;
     } else {
       newItems[index][field] = value;
@@ -1337,7 +1339,7 @@ export const ItemSelectGRM = ({
             {/* {console.log("formdata", formData?.items)} */}
             {formData?.items?.map((item, index) => (
               <>
-                <div key={index} className="tablerowtopsxs1">
+                <div key={index} className="tablerowtopsxs1" style={{padding:"16px 5px"}}>
                   <div className="tablsxs1a1x3">
                     <span id="ITEM_Selection">
                       <CustomDropdown26

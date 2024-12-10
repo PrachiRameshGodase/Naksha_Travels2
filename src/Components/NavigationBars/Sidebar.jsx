@@ -119,6 +119,11 @@ import Masters from "../../Views/Masters/Masters";
 import ManageCurrency from "../../Views/Masters/ManageCurrency";
 import AccountTransaction from "../../Views/Reports/ReportsData/AccountantData/AccountTransaction";
 import SaleReports from "../../Views/Reports/ReportsData/SaleData/SaleReports";
+import Services from "../../Views/Items/Products/Services";
+import Hotels from "../../Views/Items/Products/Hotels/Hotels";
+import HotelDetails from "../../Views/Items/Products/Hotels/HotelDetails";
+import CreateHotel from "../../Views/Items/Products/Hotels/CreateHotel";
+import HotelDetailsMain from "../../Views/Items/Products/Hotels/HotelDetailsMain";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -288,6 +293,14 @@ const Sidebar = ({ loggedInUserData }) => {
         return <ImportItems />;
       case "stock-adjustment":
         return <StockAdjustment />;
+      case "services":
+        return <Services />;
+      case "hotels-services":
+      return <Hotels/>;
+      case "create-hotels":
+      return <CreateHotel/>;
+      case "hotel-details":
+      return < HotelDetailsMain/>;
 
 
 

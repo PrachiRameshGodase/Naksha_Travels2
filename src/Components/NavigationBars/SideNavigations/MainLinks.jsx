@@ -32,6 +32,10 @@ const MainLinks = ({
     "items-categories",
     "category-details",
     "create-categories",
+    "services",
+    "create-hotels",
+    "hotels-services",
+    "hotel-details",
   ];
 
   const categoryMenuItems = [
@@ -272,6 +276,20 @@ const MainLinks = ({
                 }`}
             >
               Categories
+            </li>
+
+            <li
+              onClick={() => handleMenuItemClick("services")}
+              className={`menu-item ${[
+                "items-categories",
+                "create-categories",
+                "category-details",
+              ].includes(selectedMenuItem)
+                ? "active"
+                : ""
+                }`}
+            >
+              Services
             </li>
           </ul>
         </div>

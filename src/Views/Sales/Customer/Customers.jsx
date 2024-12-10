@@ -815,9 +815,7 @@ const SalesOrderList = () => {
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd01"
                               >
-                                {/* {quotation.salutation + " " + quotation.first_name + " " + quotation.last_name || ""} */}
-                                {/* {`${quotation?.salutation || ""} ${quotation?.first_name || ""
-                                  } ${quotation?.last_name || ""}`} */}
+                              
                                 {quotation.display_name || ""}
                               </div>
                               <div

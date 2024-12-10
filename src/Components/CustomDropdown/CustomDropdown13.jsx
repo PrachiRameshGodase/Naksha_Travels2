@@ -38,6 +38,7 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}  style={className2 === "items" ? {  borderRadius:"5px", paddingLeft:"12px" } : {}}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
         <svg
+        style={className2 === "items" ? { marginRight:"4px"} : {}}
           width="13"
           height="7"
           viewBox="0 0 13 7"

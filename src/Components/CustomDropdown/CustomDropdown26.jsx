@@ -86,7 +86,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
-        style={{ width: "314px" }}
+        style={{ width: "314px", top:"110%" }}
       >
         <textarea
           type="text"
@@ -94,7 +94,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           value={searchTerm || itemData?.item_name}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          style={{ minWidth: "321px", height: "30px", margin: "10px -13px",  height: "60px", border:"1px solid #ebdada" }}
+          style={{ minWidth: "321px", height: "30px", margin: "10px -13px",  height: "60px", border:"1px solid #ebdada" ,  resize: "none",}}
           className="dropdown-search customdropdownx12s86 custom-scrollbar"
           autoFocus
           ref={inputRef}
