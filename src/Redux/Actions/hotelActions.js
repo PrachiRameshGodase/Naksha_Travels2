@@ -13,7 +13,13 @@ import { CREATE_HOTEL_ERROR, CREATE_HOTEL_REQUEST, CREATE_HOTEL_ROOM_ERROR, CREA
             toast?.success(response?.data?.message);
             Navigate('/dashboard/hotels-services')
             
-        } else {
+        } 
+        else if (response?.data?.message === "Hotel Updated Successfully") {
+            toast?.success(response?.data?.message);
+            Navigate('/dashboard/hotels-services')
+            
+        } 
+        else {
             toast?.error(response?.data?.message);
         }
 
@@ -67,7 +73,7 @@ export const hotelDetailsAction = (queryParams, setDetail_api_data) => async (di
     }
 };
 
-export const CreateHotelRoomAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
+export const CreateHotelRoomAction = (queryParams, Navigate,itemId) => async (dispatch) => {
     dispatch({ type: CREATE_HOTEL_ROOM_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/hotelroom/create/update`, queryParams);

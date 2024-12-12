@@ -35,7 +35,7 @@ const HotelServicesDetails = (list, loading) => {
 
   useOutsideClick(dropdownRef2, () => setShowDropdown(false));
   useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
-console.log("hotelRoomDetails", hotelRoomDetails)
+ console.log("hotelRoomDetails", hotelRoomDetails)
   useEffect(() => {
     if (UrlId) {
       const queryParams = {
@@ -55,12 +55,7 @@ console.log("hotelRoomDetails", hotelRoomDetails)
   // Initialize state based on the API response
   const [status, setStatus] = useState(hotelRoomData?.status);
   const [isOpen, setIsOpen] = useState(null);
-  // status
-  const statuses = [
-    { name: 'Inactive', value: 0 },
-    { name: 'Active', value: 1 },
-    { name: 'Under Maintenance', value: 2 }
-  ];
+  
 
   const toggleStatus = (index) => {
     setIsOpen(isOpen === index ? null : index); // Toggle only the current dropdown
@@ -165,7 +160,7 @@ console.log("hotelRoomDetails", hotelRoomDetails)
                 <img src="/Icons/pen-clip.svg" alt="" />
                 {/* <p>Edit</p> */}
               </div>
-              <Link className="linkx4" >
+              <Link className="linkx4" to={`/dashboard/hotel-details?id=${hotelRoomData?.hotel_id}`}>
                 <RxCross2 />
               </Link>
             </div>

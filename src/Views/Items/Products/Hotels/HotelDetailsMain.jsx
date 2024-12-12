@@ -23,7 +23,7 @@ const HotelDetailsMain = () => {
   
     const hotelDetails = useSelector(state => state?.hotelDetail);
     const hotelData = hotelDetails?.data?.data?.hotels || {};
-  console.log("hotelDetails", hotelData)
+
     useEffect(() => {
       if (itemId) {
         const queryParams = {

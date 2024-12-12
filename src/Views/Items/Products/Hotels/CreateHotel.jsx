@@ -1,29 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
-import SubmitButton, { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
-import { RxCross2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import NumericInput from "../../../Helper/NumericInput";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import {
   fetchGetCities,
   fetchGetCountries,
   fetchGetStates,
 } from "../../../../Redux/Actions/globalActions";
-import { CreateHotelAction } from "../../../../Redux/Actions/hotelActions";
+import {
+  CreateHotelAction,
+  hotelDetailsAction,
+} from "../../../../Redux/Actions/hotelActions";
+import {
+  SubmitButton2,
+} from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CreateHotel = () => {
-  const Navigate=useNavigate()
+  const Navigate = useNavigate();
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
   const hotelCreates = useSelector((state) => state?.createHotel);
+  const hotelDetails = useSelector((state) => state?.hotelDetail);
+  const hotelData = hotelDetails?.data?.data?.hotels || {};
 
   const countryList = useSelector((state) => state?.countries?.countries);
   const states = useSelector((state) => state?.states?.state);
@@ -42,14 +49,14 @@ const CreateHotel = () => {
     state_id: 0,
     city_id: 0,
     pin_code: "",
-    status:0,
-    ratings:0,
-    upload_documents: []
+    status: 0,
+    ratings: 0,
+    upload_documents: [],
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
-console.log("formData", formData)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -92,26 +99,57 @@ console.log("formData", formData)
     dispatch(fetchGetCountries());
   }, [dispatch]);
 
-
+  useEffect(() => {
+    if (itemId) {
+      const queryParams = {
+        hotel_id: itemId,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(hotelDetailsAction(queryParams));
+    }
+  }, [dispatch, itemId]);
+ 
+  useEffect(() => {
+    if (itemId && isEdit && hotelData) {
+      setFormData({
+        ...formData,
+        id: hotelData?.id,
+        hotel_type: hotelData?.hotel_type,
+        hotel_name: hotelData?.hotel_name,
+        address_line_1: hotelData?.address_line_1,
+        address_line_2: hotelData?.address_line_2,
+        country_id: hotelData?.country_id,
+        state_id: hotelData?.state_id,
+        city_id: hotelData?.city_id,
+        pin_code: hotelData?.pin_code,
+        status: hotelData?.status,
+        ratings: hotelData?.ratings,
+        upload_documents: hotelData?.upload_documents
+          ? JSON.parse(hotelData.upload_documents)
+          : [],
+      });
+    }
+  }, [itemId, isEdit, hotelData]);
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const sendData = {
         ...formData,
-        upload_documents: JSON.stringify(formData?.upload_documents)
-        
-       };
+        upload_documents: JSON.stringify(formData?.upload_documents),
+      };
       dispatch(CreateHotelAction(sendData, Navigate));
     } catch (error) {
       toast.error("Error updating hotel:", error);
     }
   };
+
   return (
     <div>
       <>
-      {statesLoader && <MainScreenFreezeLoader />}
-     {citiesLoader && <MainScreenFreezeLoader />}
+        {statesLoader && <MainScreenFreezeLoader />}
+        {citiesLoader && <MainScreenFreezeLoader />}
         <TopLoadbar />
         {(freezLoadingImg || hotelCreates?.loading) && (
           <MainScreenFreezeLoader />
@@ -311,23 +349,23 @@ console.log("formData", formData)
                         </div>
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
-                    <MultiImageUploadHelp
-                      formData={formData}
-                      setFormData={setFormData}
-                      setFreezLoadingImg={setFreezLoadingImg}
-                      imgLoader={imgLoader}
-                      setImgeLoader={setImgeLoader}
-                    />
-                  </div>
+                        <MultiImageUploadHelp
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgeLoader}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <SubmitButton2
-                // isEdit=""
-                // itemId=""
-                cancel="hotel-services"
-              />
+                  isEdit={isEdit}
+                  itemId={itemId}
+                  cancel="hotel-services"
+                />
               </div>
             </form>
           </div>

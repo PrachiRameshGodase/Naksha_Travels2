@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { hotelListAction } from "../../../../Redux/Actions/hotelActions";
+import ShowMastersValue from "../../../Helper/ShowMastersValue";
 
 const Hotels = () => {
   const navigate = useNavigate();
@@ -236,22 +237,22 @@ const Hotels = () => {
                     <div className="checkmark"></div>
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Hotel Name
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
                     Hotel Type
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.refrence_svg}
                     Address
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Country
                   </div>
@@ -297,19 +298,22 @@ const Hotels = () => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd01"
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.hotel_name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd02"
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {item?.hotel_type || ""}
+                              <ShowMastersValue
+                                type="35"
+                                id={item?.hotel_type}
+                              />
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd03"
+                              className="table-cellx12 quotiosalinvlisxs3"
                               data-tooltip-id="my-tooltip"
                               data-tooltip-content={item?.address_line_1 || ""}
                             >
@@ -322,20 +326,20 @@ const Hotels = () => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd04"
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.country?.name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd04"
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.state?.name || ""}
                             </div>
 
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd04"
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.city?.name || ""}
                             </div>

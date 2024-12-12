@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import HotelServices from "./HotelServices";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { formatDate3 } from "../../../Helper/DateFormat";
+import ShowMastersValue from "../../../Helper/ShowMastersValue";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
@@ -48,36 +49,36 @@ const HotelDetails = ({ data }) => {
                       <li>
                         <span>Hotel Name</span>
                         <h1>:</h1>
-                        <p>{data?.hotel_name ||"-"}</p>
+                        <p>{data?.hotel_name || "-"}</p>
                       </li>
                       <li>
                         <span>Hotel Type</span>
                         <h1>:</h1>
-                        <p>{data?.hotel_type || "-"}</p>
+                        <p>
+                          <ShowMastersValue type="35" id={data?.hotel_type} />
+                        </p>
                       </li>
                       <li>
                         <span>Address</span>
                         <h1>:</h1>
-                        <p>
-                          {data?.address_line_1 ||"-"}
-                        </p>
+                        <p>{data?.address_line_1 || "-"}</p>
                       </li>
                       <li>
                         <span>City</span>
                         <h1>:</h1>
-                        <p>{data?.city?.name ||"-"}</p>
+                        <p>{data?.city?.name || "-"}</p>
                       </li>
                       <li>
                         <span>State</span>
                         <h1>:</h1>
-                        <p>{data?.state?.name ||"-"}</p>
+                        <p>{data?.state?.name || "-"}</p>
                       </li>
                       <li>
                         <span>Country</span>
                         <h1>:</h1>
-                        <p>{data?.country?.name ||"-"}</p>
+                        <p>{data?.country?.name || "-"}</p>
                       </li>
-                     
+
                       <li>
                         <span>Status</span>
                         <h1>:</h1>
@@ -86,11 +87,10 @@ const HotelDetails = ({ data }) => {
                             ? "Active"
                             : data?.status == "1"
                             ? "Inactive"
-                           
                             : ""}
                         </p>
                       </li>
-                      
+
                       {/* <li><span>Attachments</span><h1>:</h1><p><Attachment attachments={images}/></p></li> */}
                     </ul>
                   </div>

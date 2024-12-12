@@ -23,17 +23,13 @@ import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 
 
 const HotelServices = ({data}) => {
-  console.log("data.id", data?.id)
   const dispatch=useDispatch()
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
   const hotelRoomLists=hotelRoomListData?.data?.hotels ||[];
 
- console.log("hotelRoomLists", hotelRoomListData)
-
  
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -139,8 +135,8 @@ const HotelServices = ({data}) => {
     // }
   }, [searchTrigger]);
 
-  const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/hotel-service-details?id=${quotation.id}`);
+  const handleRowClicked = (room) => {
+    navigate(`/dashboard/hotel-service-details?id=${room.id}`);
   };
 
   //logic for checkBox...
@@ -244,20 +240,20 @@ const HotelServices = ({data}) => {
                     <div className="checkmark"></div>
                   </div>
                   
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Room Name
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
                     Occupancy
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.customer_svg}
                     Max Occupancy
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Bed
                   </div>
@@ -265,14 +261,14 @@ const HotelServices = ({data}) => {
                     {otherIcons?.refrence_svg}
                     Meal
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                  <div className="table-cellx12 quotiosalinvlisxs4">
                     {/* <p> */}
                       {otherIcons?.doller_svg}
                       Price
                     {/* </p> */}
 
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6">
+                  <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                     {otherIcons?.status_svg}
                     Status
                   </div>
@@ -309,39 +305,39 @@ const HotelServices = ({data}) => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd01"
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
                               
                               {item?.room_number ||""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd02"
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.occupancy_name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd03"
+                              className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.max_occupancy || ""}
                             </div>
                             
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd05"
+                              className="table-cellx12 quotiosalinvlisxs3"
                             >
                               {item?.bed_name ||""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd06"
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.meal_name ||""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd06"
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.price ||""}
                             </div>
