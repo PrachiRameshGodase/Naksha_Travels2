@@ -1,212 +1,283 @@
-import React, { useEffect, useState } from "react";
-import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import React, { useEffect, useRef, useState } from "react";
+import SubmitButton, {
+  SubmitButton2,
+} from "../../../Common/Pagination/SubmitButton";
 import { RxCross2 } from "react-icons/rx";
-import { BsArrowRight } from "react-icons/bs";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { CreateMasterAction } from "../../../../Redux/Actions/mastersAction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import NumericInput from "../../../Helper/NumericInput";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchGetCities,
+  fetchGetCountries,
+  fetchGetStates,
+} from "../../../../Redux/Actions/globalActions";
+import {
+  CreateHotelAction,
+  CreateHotelRoomAction,
+} from "../../../../Redux/Actions/hotelActions";
+import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 
-const CreateHotelService = ({ popupContent }) => {
-  const dispatch = useDispatch();
+const CreateHotelService = () => {
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
+  const params = new URLSearchParams(location.search);
+  const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+  const hotelRoomCreates = useSelector((state) => state?.createHotelRoom);
 
-  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =
-    popupContent;
-  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-  const [formData, setFormData] = useState({
-    id: 0,
-    // labelid:0,
-    type: showAddPopup?.labelid,
-    room_name: null,
-    value_string: null,
-    value: null,
-  });
-  const masterList = useSelector((state) => state.masterList);
-  const masterDetails = masterList?.data;
+  const hotelType = ShowMasterData("35");
   const occupancy = ShowMasterData("36");
-console.log("occupancy", occupancy)
-  const handleSubmitForm = async (e) => {
-    e.preventDefault();
-    try {
-      const sendData = {
-        ...formData,
-      };
-      dispatch(CreateMasterAction(sendData, Navigate))
-        .then(() => {
-          setshowAddPopup(null);
-          setSearchTrigger((prev) => prev + 1);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      toast.error("Error creating masters:", error);
-    }
-  };
+  const bed = ShowMasterData("38");
+  const meal = ShowMasterData("37");
 
+  const [formData, setFormData] = useState({
+    hotel_id: itemId,
+    room_type: 0,
+    room_number: "",
+    occupancy_id: 0,
+    occupancy_name: null,
+    bed_id: 0,
+    bed_name: null,
+    meal_id: 0,
+    meal_name: null,
+    max_occupancy: 0,
+    amenities: null,
+    availability_status: 1,
+    description: null,
+    upload_documents: [],
+  });
+  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+  const [imgLoader, setImgeLoader] = useState("");
+
+  console.log("formData", formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const occpancyType = occupancy?.find((val) => val?.labelid == value);
+
+    const hotelTypeName = hotelType?.find((val) => val?.labelid == value);
+    const occupancyName = occupancy?.find((val) => val?.labelid == value);
+    const bedName = bed?.find((val) => val?.labelid == value);
+    const mealName = meal?.find((val) => val?.labelid == value);
 
     setFormData((prev) => ({
       ...prev,
-      ...(name === "occupancy" && {
-        occupancy: occpancyType?.label,
+      ...(name === "hotel_type" && {
+        hotel_type_name: hotelTypeName?.label,
       }),
-
+      ...(name === "occupancy_id" && {
+        occupancy_name: occupancyName?.label,
+      }),
+      ...(name === "bed_id" && {
+        bed_name: bedName?.label,
+      }),
+      ...(name === "meal_id" && {
+        meal_name: mealName?.label,
+      }),
       [name]: value,
     }));
   };
 
   useEffect(() => {
-    if (isEditIndividual && showAddPopup) {
-      setFormData({
-        ...formData,
-        id: showAddPopup?.id,
-        labelid: showAddPopup?.labelid,
-        type: showAddPopup?.type,
-        label: showAddPopup?.label,
-        value: showAddPopup?.value,
-        value_string: showAddPopup?.value_string,
-      });
-    }
-  }, [showAddPopup, isEditIndividual]);
+    dispatch(fetchGetCountries());
+  }, [dispatch]);
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const sendData = {
+        ...formData,
+        upload_documents: JSON.stringify(formData?.upload_documents),
+      };
+      dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));
+    } catch (error) {
+      toast.error("Error updating hotel room:", error);
+    }
+  };
+  console.log("itemId", itemId)
   return (
-    <div id="formofcreateitems">
-      <form action="">
-        <div className="itemsformwrap itemformtyop02">
-          <div id="forminside">
-            <div className="secondx2 thirdx2extra">
-              <div className="mainxpopups2">
-                <div className="popup-content02" style={{ height: "65vh" }}>
-                  <div className={``} style={{ height: "fit-content" }}>
-                    <div
-                      id="Anotherbox"
-                      className="formsectionx"
-                      style={{
-                        height: "120px",
-                        background: "white",
-                      }}
-                    >
-                      <div id="leftareax12">
-                        <h1 id="firstheading" className="headingofcreateforems">
-                          {isEditIndividual
-                            ? `Update Hotel Service`
-                            : "Add Hotel Service"}
-                        </h1>
+    <div>
+      <>
+        <TopLoadbar />
+        {(freezLoadingImg || hotelRoomCreates?.loading) && (
+          <MainScreenFreezeLoader />
+        )}
+        <div className="formsectionsgrheigh">
+          <div id="Anotherbox" className="formsectionx2">
+            <div id="leftareax12">
+              <h1 id="firstheading">
+                {otherIcons?.hotel_svg}
+                {isEdit ? "Update Room" : "New Room"}
+              </h1>
+            </div>
+            <div id="buttonsdata">
+              <Link to={"/dashboard/hotels-services"} className="linkx3">
+                <RxCross2 />
+              </Link>
+            </div>
+          </div>
+
+          <div id="formofcreateitems">
+            <form onSubmit={handleFormSubmit}>
+              <div className="relateivdiv">
+                <div className="itemsformwrap">
+                  <div className="f1wrapofcreq">
+                    <div className="f1wrapofcreqx1">
+                      <div className="form_commonblock">
+                        <label>
+                          Room Number/Name<b className="color_red">*</b>
+                        </label>
+                        <span>
+                          {otherIcons.placeofsupply_svg}
+                          <input
+                            value={formData.room_number}
+                            onChange={handleChange}
+                            name="room_number"
+                            placeholder="Enter Room Name"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Occupancy<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Occupancy"
+                            options={occupancy}
+                            value={formData?.occupancy_id}
+                            onChange={handleChange}
+                            name="occupancy_id"
+                            defaultOption="Select Occupancy"
+                            type="masters"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Bed<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Bed"
+                            options={bed}
+                            value={formData?.bed_id}
+                            onChange={handleChange}
+                            name="bed_id"
+                            defaultOption="Select Bed"
+                            type="masters"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Meal<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Meal"
+                            options={meal}
+                            value={formData?.meal_id}
+                            onChange={handleChange}
+                            name="meal_id"
+                            defaultOption="Select Meal"
+                            type="masters"
+                          />
+                        </span>
                       </div>
 
-                      <div id="buttonsdata">
-                        <div
-                          className="linkx3"
-                          onClick={() => setshowAddPopup(null)}
-                        >
-                          <RxCross2 />
+                      <div className="form_commonblock">
+                        <label>Max Occupancy Of Persons</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <NumericInput
+                              name="max_occupancy"
+                              placeholder="Enter Max Occupancy"
+                              value={formData.max_occupancy}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          </span>
                         </div>
                       </div>
-                    </div>
-
-                    {/* <div className="bordersinglestroke"></div> */}
-                    <div id="middlesection" style={{}}>
-                      <div id="formofcreateitems">
-                        <div
-                          className={`itemsformwrap1`}
-                          style={{ paddingBottom: "0px" }}
-                        >
-                          <div id="forminside">
-                            <div className="secondx2">
-                              <div className="form_commonblock">
-                                <label>
-                                  Room Name/Number<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.label}
-                                    onChange={handleChange}
-                                    name="room_name"
-                                    placeholder="Enter Room Name/Number"
-                                  />
-                                </span>
-                              </div>
-                              <div className="form_commonblock">
-                                <label>Occupancy</label>
-                                <span>
-                                  {otherIcons.quantity_svg}
-                                  <CustomDropdown04
-                                    label="Occupancy"
-                                    options={occupancy}
-                                    value={formData?.hotel_type_id}
-                                    onChange={handleChange}
-                                    name="occupancy"
-                                    defaultOption="Select Occupancy"
-                                    type="masters"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="secondtotalsections485s">
-                              <div className="textareaofcreatqsiform">
-                                <label>Description</label>
-                                <div className="show_no_of_text_limit_0121">
-                                  <TextAreaComponentWithTextLimit
-                                    formsValues={{ handleChange, formData }}
-                                    placeholder="Enter description...."
-                                    name="value_string"
-                                    value={formData?.value_string}
-                                  />
-                                </div>
-                              </div>
+                      <div className="form_commonblock">
+                        <label>Amenities</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <input
+                              value={formData.amenities}
+                              onChange={handleChange}
+                              name="amenities"
+                              placeholder="Enter Amenities"
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>Price</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <NumericInput
+                              name="price"
+                              placeholder="Enter Price"
+                              value={formData.price}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="f1wrapofcreqx1">
+                        <div id="imgurlanddesc" className="calctotalsectionx2">
+                          <MultiImageUploadHelp
+                            formData={formData}
+                            setFormData={setFormData}
+                            setFreezLoadingImg={setFreezLoadingImg}
+                            imgLoader={imgLoader}
+                            setImgeLoader={setImgeLoader}
+                          />
+                        </div>
+                        <div className="secondtotalsections485s">
+                          <div className="textareaofcreatqsiform">
+                            <label>Description</label>
+                            <div className="show_no_of_text_limit_0121">
+                              <TextAreaComponentWithTextLimit
+                                formsValues={{ handleChange, formData }}
+                                placeholder="Enter Description...."
+                                name="description"
+                                value={formData?.description}
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "167px",
-                          width: "895px",
-                          position: "absolute",
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${freezLoadingImg ? "disabledbtn" : ""} `}
-                          type="submit"
-                          disabled={freezLoadingImg}
-                        >
-                          {isEditIndividual ? "Update" : "Create"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setshowAddPopup(null)}
-                          // className={`${(createUpdate?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          // disabled={(createUpdate?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
                   </div>
                 </div>
+
+                <SubmitButton2
+                  // isEdit=""
+                  // itemId=""
+                  cancel="hotel-services"
+                />
               </div>
-            </div>
+            </form>
           </div>
         </div>
-      </form>
+        <Toaster reverseOrder={false} />
+      </>
     </div>
   );
 };

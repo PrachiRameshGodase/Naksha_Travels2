@@ -40,46 +40,42 @@ const HotelDetails = ({ data }) => {
                       Basic Details
                     </div>
                     <ul>
-                      <li>
+                      {/* <li>
                         <span>Date</span>
                         <h1>:</h1>
                         <p>{formatDate3(data?.date_time)}</p>
-                      </li>
+                      </li> */}
                       <li>
                         <span>Hotel Name</span>
                         <h1>:</h1>
-                        <p>{data?.production_id}</p>
+                        <p>{data?.hotel_name ||"-"}</p>
                       </li>
                       <li>
                         <span>Hotel Type</span>
                         <h1>:</h1>
-                        <p>{data?.bom?.bom_id}</p>
+                        <p>{data?.hotel_type || "-"}</p>
                       </li>
                       <li>
                         <span>Address</span>
                         <h1>:</h1>
                         <p>
-                          {data?.bom?.bom_type
-                            ? data?.bom?.bom_type == "1"
-                              ? "Single Product"
-                              : "By Product"
-                            : ""}
+                          {data?.address_line_1 ||"-"}
                         </p>
                       </li>
                       <li>
                         <span>City</span>
                         <h1>:</h1>
-                        <p>{data?.batch?.batch_number}</p>
+                        <p>{data?.city?.name ||"-"}</p>
                       </li>
                       <li>
                         <span>State</span>
                         <h1>:</h1>
-                        <p>{data?.order?.order_id}</p>
+                        <p>{data?.state?.name ||"-"}</p>
                       </li>
                       <li>
                         <span>Country</span>
                         <h1>:</h1>
-                        <p>{data?.bom?.item?.name}</p>
+                        <p>{data?.country?.name ||"-"}</p>
                       </li>
                      
                       <li>
@@ -87,13 +83,10 @@ const HotelDetails = ({ data }) => {
                         <h1>:</h1>
                         <p>
                           {data?.status == "0"
-                            ? "Not Started"
+                            ? "Active"
                             : data?.status == "1"
-                            ? "Inprogress"
-                            : data?.status == "2"
-                            ? "Partially Completed"
-                            : data?.status == "3"
-                            ? "Completed"
+                            ? "Inactive"
+                           
                             : ""}
                         </p>
                       </li>
@@ -110,7 +103,7 @@ const HotelDetails = ({ data }) => {
                 <HotelServices
                   list={data?.bom?.scraps}
                   loading=""
-                  productionData={data}
+                  data={data}
                 />
               </div>
             )}

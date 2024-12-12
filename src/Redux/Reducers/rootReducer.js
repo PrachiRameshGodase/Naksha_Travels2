@@ -22,6 +22,7 @@ import { isIdEqualReducer, productTypeReducer } from './ManageStateReducer/manag
 import { createMasterReducer, listMasterReducer } from './masterReducers';
 import { saleByCustomerReducer } from './ReportReducers/SaleReportReducers';
 import { accountTransactionReducer } from './ReportReducers/AccountReportReducers';
+import { createHotelReducer, createHotelRoomReducer, hotelDetailReducer, hotelrOOMDetailReducer, listHotelReducer, listHotelrOOMReducer } from './hotelReducers';
 const reducer = combineReducers({
     addItemsReducer,
 
@@ -32,6 +33,13 @@ const reducer = combineReducers({
     importItems: itemImportReducer,
     exportItems: itemExportReducer,
     activity: itemActivityReducer,
+    //services
+    createHotel:createHotelReducer,
+    hotelList:listHotelReducer,
+    hotelDetail:hotelDetailReducer,
+    createHotelRoom:createHotelRoomReducer,
+    hotelRoomList:listHotelrOOMReducer,
+    hotelRoomDetail:hotelrOOMDetailReducer,
 
     masterData: masterDataReducer,
     autoId: autoGenerateIdReducer,

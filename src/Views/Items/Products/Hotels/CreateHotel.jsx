@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import SubmitButton from "../../../Common/Pagination/SubmitButton";
+import SubmitButton, { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { RxCross2 } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
@@ -14,11 +14,16 @@ import {
   fetchGetCountries,
   fetchGetStates,
 } from "../../../../Redux/Actions/globalActions";
+import { CreateHotelAction } from "../../../../Redux/Actions/hotelActions";
+import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 
 const CreateHotel = () => {
+  const Navigate=useNavigate()
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+  const hotelCreates = useSelector((state) => state?.createHotel);
 
   const countryList = useSelector((state) => state?.countries?.countries);
   const states = useSelector((state) => state?.states?.state);
@@ -29,16 +34,22 @@ const CreateHotel = () => {
   const hotelType = ShowMasterData("35");
 
   const [formData, setFormData] = useState({
-    hotel_type_id: "",
-    hotel_name: "",
-    country_id: "",
-    street_1: "",
-    street_2: "",
-    state_id: "",
-    city_id: "684",
-    zip_code: "",
+    hotel_type: "",
+    hotel_name: null,
+    address_line_1: null,
+    address_line_2: null,
+    country_id: 0,
+    state_id: 0,
+    city_id: 0,
+    pin_code: "",
+    status:0,
+    ratings:0,
+    upload_documents: []
   });
+  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+  const [imgLoader, setImgeLoader] = useState("");
 
+console.log("formData", formData)
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -69,7 +80,7 @@ const CreateHotel = () => {
 
     setFormData((prev) => ({
       ...prev,
-      ...(name === "hotel_type_id" && {
+      ...(name === "hotel_type" && {
         hotel_type_name: hotelTypeName?.label,
       }),
 
@@ -81,37 +92,17 @@ const CreateHotel = () => {
     dispatch(fetchGetCountries());
   }, [dispatch]);
 
-  const customerRef = useRef(null);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const buttonName = e.nativeEvent.submitter.name;
-    const errors = validateItems(formData?.items);
-
-    // if (errors.length > 0) {
-    //   setItemErrors(errors);
-    //   return;
-    // }
-    // if (handleDropdownError(isCustomerSelect, customerRef)) return;
 
     try {
-      const updatedItems = formData?.items?.map((item) => {
-        item;
-      });
-
-      // dispatch(
-      //   updateQuotation(
-      //     {
-      //       ...formData,
-      //       items: updatedItems,
-
-      //     },
-      //     Navigate,
-      //     "quotation",
-      //     isEdit,
-      //     buttonName,
-      //     showAllSequenceId
-      //   )
-      // );
+      const sendData = {
+        ...formData,
+        upload_documents: JSON.stringify(formData?.upload_documents)
+        
+       };
+      dispatch(CreateHotelAction(sendData, Navigate));
     } catch (error) {
       toast.error("Error updating hotel:", error);
     }
@@ -119,10 +110,12 @@ const CreateHotel = () => {
   return (
     <div>
       <>
+      {statesLoader && <MainScreenFreezeLoader />}
+     {citiesLoader && <MainScreenFreezeLoader />}
         <TopLoadbar />
-        {/* {(freezLoadingImg || quoteCreate?.loading || autoId?.loading) && (
+        {(freezLoadingImg || hotelCreates?.loading) && (
           <MainScreenFreezeLoader />
-        )} */}
+        )}
         <div className="formsectionsgrheigh">
           <div id="Anotherbox" className="formsectionx2">
             <div id="leftareax12">
@@ -154,9 +147,9 @@ const CreateHotel = () => {
                           <CustomDropdown04
                             label="Hotel Type"
                             options={hotelType}
-                            value={formData?.hotel_type_id}
+                            value={formData?.hotel_type}
                             onChange={handleChange}
-                            name="hotel_type_id"
+                            name="hotel_type"
                             defaultOption="Select Hotel Type"
                             type="masters"
                           />
@@ -271,32 +264,32 @@ const CreateHotel = () => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Street 1</label>
+                        <label>Address Line 1</label>
 
                         <span>
                           {otherIcons.street_svg}
                           <input
                             autoComplete="off"
                             type="text"
-                            name="street_1"
-                            placeholder="Street 1"
-                            value={formData.street_1}
+                            name="address_line_1"
+                            placeholder="Address Line 1"
+                            value={formData.address_line_1}
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Street 2</label>
+                        <label>Address Line 2</label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.street_svg}
                             <input
                               autoComplete="off"
                               type="text"
-                              name="street_2"
-                              placeholder="Street 2"
-                              value={formData.street_2}
+                              name="address_line_2"
+                              placeholder="address_line_2"
+                              value={formData.address_line_2}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
@@ -304,28 +297,37 @@ const CreateHotel = () => {
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Zip Code</label>
+                        <label>Pin Code</label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.zip_code_svg}
                             <NumericInput
-                              name="zip_code"
-                              placeholder="Enter Zip Code"
-                              value={formData.zip_code}
+                              name="pin_code"
+                              placeholder="Enter Pin Code"
+                              value={formData.pin_code}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
                         </div>
                       </div>
+                      <div id="imgurlanddesc" className="calctotalsectionx2">
+                    <MultiImageUploadHelp
+                      formData={formData}
+                      setFormData={setFormData}
+                      setFreezLoadingImg={setFreezLoadingImg}
+                      imgLoader={imgLoader}
+                      setImgeLoader={setImgeLoader}
+                    />
+                  </div>
                     </div>
                   </div>
                 </div>
 
-                <SubmitButton
-                  isEdit={isEdit}
-                  itemId={itemId}
-                  cancel="hotel-services"
-                />
+                <SubmitButton2
+                // isEdit=""
+                // itemId=""
+                cancel="hotel-services"
+              />
               </div>
             </form>
           </div>

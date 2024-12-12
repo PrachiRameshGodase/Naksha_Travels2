@@ -125,3 +125,18 @@ export const helpStatus = [
 //     },
 
 // ]
+
+export const transport = [
+
+    {
+        "id": 1,
+        "labelid": 1,
+        "label": "Yes",
+    },
+    {
+        "id": 2,
+        "labelid": 2,
+        "label": "No",
+    }
+
+]

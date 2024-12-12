@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../../Helper/DateFormat";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
@@ -12,17 +12,22 @@ import SortBy from "../../../Common/SortBy/SortBy";
 import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import { parseJSONofString, useDebounceSearch } from "../../../Helper/HelperFunctions";
+import {
+  parseJSONofString,
+  useDebounceSearch,
+} from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
+import { hotelListAction } from "../../../../Redux/Actions/hotelActions";
 
 const Hotels = () => {
-  const navigate=useNavigate()
-  const itemPayloads = localStorage.getItem(("salePayload"));
-  const qutList = useSelector((state) => state?.quoteList);
-  const cusList = useSelector((state) => state?.customerList);
-  const qutSend = useSelector((state) => state?.quoteSend);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const itemPayloads = localStorage.getItem("salePayload");
+  const hotelListData = useSelector((state) => state?.hotelList);
+  const hotelLists = hotelListData?.data?.hotels || [];
+  const totalItems = hotelListData?.data?.total_hotels || 0;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -106,26 +111,26 @@ const Hotels = () => {
         }),
       };
 
-      // dispatch(saleOrderLists(sendData));
+      dispatch(hotelListAction(sendData));
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
   }, [searchTrigger]);
 
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (
-      searchTrigger ||
-      parshPayload?.search ||
-      parshPayload?.name ||
-      parshPayload?.sort_by ||
-      parshPayload?.status ||
-      parshPayload?.custom_date ||
-      parshPayload?.from_date ||
-      parshPayload?.currentpage > 1
-    ) {
-      fetchHotels();
-    }
+    // const parshPayload = parseJSONofString(itemPayloads);
+    // if (
+    //   searchTrigger ||
+    //   parshPayload?.search ||
+    //   parshPayload?.name ||
+    //   parshPayload?.sort_by ||
+    //   parshPayload?.status ||
+    //   parshPayload?.custom_date ||
+    //   parshPayload?.from_date ||
+    //   parshPayload?.currentpage > 1
+    // ) {
+    fetchHotels();
+    // }
   }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
@@ -144,37 +149,24 @@ const Hotels = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = qutList?.data?.quotations?.every((row) =>
+    const areAllRowsSelected = hotelListData?.data?.quotations?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, qutList?.data?.quotations]);
+  }, [selectedRows, hotelListData?.data?.quotations]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(
-      selectAll ? [] : qutList?.data?.quotations?.map((row) => row.id)
+      selectAll ? [] : hotelListData?.data?.quotations?.map((row) => row.id)
     );
   };
   //logic for checkBox...
 
-  const dummyData = [
-    {
-      id: 1,
-      date:"",
-      display_name: "Garden Hotel",
-      // customer_type: "Individual",
-      // company_name: "Green Landscape Co.",
-      // email: "gardenhotel@example.com",
-      // work_phone: "123-456-7890",
-      // status: "1", // Approved
-    },
-    
-  ];
   return (
     <>
       <TopLoadbar />
-      {qutSend?.loading && <MainScreenFreezeLoader />}
+      {hotelListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -182,7 +174,7 @@ const Hotels = () => {
               {otherIcons?.warehouse_icon}
               All Hotels
             </h1>
-            {/* <p id="firsttagp">{qutList?.data?.total} Records</p> */}
+            <p id="firsttagp">{totalItems} Records</p>
             <SearchBox
               placeholder="Search In Hotels"
               onSearch={onSearch}
@@ -243,10 +235,7 @@ const Hotels = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.date_svg}
-                    Date
-                  </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Hotel Name
@@ -262,11 +251,17 @@ const Hotels = () => {
                     Address
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>
-                      {otherIcons?.doller_svg}
-                      City
-                    </p>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Country
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    State
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    City
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -274,16 +269,16 @@ const Hotels = () => {
                   </div>
                 </div>
 
-                {qutList?.loading ? (
+                {hotelListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {dummyData?.length >= 1 ? (
+                    {hotelLists?.length >= 1 ? (
                       <>
-                        {dummyData.map((quotation, index) => (
+                        {hotelLists.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
-                              selectedRows.includes(quotation.id)
+                              selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
                             }`}
@@ -294,74 +289,76 @@ const Hotels = () => {
                               id="styl_for_check_box"
                             >
                               <input
-                                checked={selectedRows.includes(quotation.id)}
+                                checked={selectedRows.includes(item?.id)}
                                 type="checkbox"
-                                onChange={() =>
-                                  handleCheckboxChange(quotation.id)
-                                }
+                                onChange={() => handleCheckboxChange(item?.id)}
                               />
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                              {/* "Garden Hotel" */}
-                              {quotation.display_name || "Garden Hotel"}
+                              {item?.hotel_name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd02"
                             >
-                              {quotation.customer_type || ""}
+                              {item?.hotel_type || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd03"
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={item?.address_line_1 || ""}
                             >
-                              {quotation.company_name || ""}
+                              {item?.address_line_1?.split(" ").length > 20
+                                ? item.address_line_1
+                                    .split(" ")
+                                    .slice(0, 20)
+                                    .join(" ") + "..."
+                                : item?.address_line_1 || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd04"
                             >
-                              {quotation.email || ""}
+                              {item?.country?.name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd05"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd04"
                             >
-                              {quotation.work_phone || ""}
+                              {item?.state?.name || ""}
                             </div>
+
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd06"
-                            ></div>
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd04"
+                            >
+                              {item?.city?.name || ""}
+                            </div>
 
                             <div
                               onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                             >
-                              <div>
-                                {" "}
-                                <p
-                                  className={
-                                    quotation?.status == "1"
-                                      ? "approved"
-                                      : quotation?.status == "0"
-                                      ? "draft"
-                                      : quotation?.status == "7"
-                                      ? "approved"
-                                      : ""
-                                  }
-                                >
-                                  {quotation?.status == "0"
-                                    ? "Pending"
-                                    : quotation?.status == "1"
-                                    ? "Approved"
-                                    : ""}
-                                </p>
-                              </div>
+                              <p
+                                className={
+                                  item?.status == "1"
+                                    ? "open"
+                                    : item?.status == "0"
+                                    ? "declined"
+                                    : ""
+                                }
+                              >
+                                {item?.status == "0"
+                                  ? "Active"
+                                  : item?.status == "1"
+                                  ? "Inactive"
+                                  : ""}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -371,12 +368,12 @@ const Hotels = () => {
                     )}
 
                     <PaginationComponent
-                    // itemList={qutList?.data?.total}
-                    // currentPage={currentPage}
-                    // setCurrentPage={setCurrentPage}
-                    // itemsPerPage={itemsPerPage}
-                    // setItemsPerPage={setItemsPerPage}
-                    // setSearchCall={setSearchTrigger}
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
                     />
                   </>
                 )}

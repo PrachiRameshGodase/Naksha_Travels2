@@ -124,6 +124,13 @@ import Hotels from "../../Views/Items/Products/Hotels/Hotels";
 import HotelDetails from "../../Views/Items/Products/Hotels/HotelDetails";
 import CreateHotel from "../../Views/Items/Products/Hotels/CreateHotel";
 import HotelDetailsMain from "../../Views/Items/Products/Hotels/HotelDetailsMain";
+import Flights from "../../Views/Items/Products/Flights/Flights";
+import CreateFlight from "../../Views/Items/Products/Flights/CreateFight";
+import TourPackages from "../../Views/Items/Products/TourPackage/TourPackages";
+import CreateTourPackage from "../../Views/Items/Products/TourPackage/CreateTourPackage";
+import TourPackageDetails from "../../Views/Items/Products/TourPackage/TourPackageDetails";
+import CreateHotelService from "../../Views/Items/Products/Hotels/CreateHotelService";
+import HotelServicesDetails from "../../Views/Items/Products/Hotels/HotelServicesDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -293,16 +300,33 @@ const Sidebar = ({ loggedInUserData }) => {
         return <ImportItems />;
       case "stock-adjustment":
         return <StockAdjustment />;
+        //
+
+        //services
       case "services":
         return <Services />;
       case "hotels-services":
-      return <Hotels/>;
+        return <Hotels/>;
       case "create-hotels":
-      return <CreateHotel/>;
+        return <CreateHotel/>;
       case "hotel-details":
-      return < HotelDetailsMain/>;
+        return < HotelDetailsMain/>;
+      case "create-hotelservices":
+        return <CreateHotelService/>;
+      case "hotel-service-details":
+        return < HotelServicesDetails/>;
 
+      case "flights-services":
+        return <Flights/>;
+      case "create-flights":
+        return <CreateFlight/>;
 
+      case "tour-package-services":
+        return <TourPackages/>;
+      case "create-tour-package":
+        return < CreateTourPackage/>;
+      case "tour-package-details":
+        return <TourPackageDetails/>;
 
       //customers
       case "customers":

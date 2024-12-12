@@ -63,4 +63,16 @@
   .button-like:focus {
     outline: none; /* Optionally remove focus outline */
   }
+  .linkx12 {
+    background-color: #44b678;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .linkx12:hover {
+    background-color: #3a9e5e; /* Optional: Darken background on hover */
+  }
   

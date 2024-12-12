@@ -5,7 +5,9 @@ import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFre
 import { otherIcons } from '../../../Helper/SVGIcons/ItemsIcons/Icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
+import { hotelDetailsAction } from '../../../../Redux/Actions/hotelActions'
+import Loader02 from '../../../../Components/Loaders/Loader02'
 
 const HotelDetailsMain = () => {
     const dispatch = useDispatch();
@@ -19,22 +21,22 @@ const HotelDetailsMain = () => {
     const dropdownRef = useRef(null); // Ref to the dropdown element
     const status = useSelector(state => state?.status);
   
-    const productionDetails = useSelector(state => state?.ProductionDetails);
-    const productionData = productionDetails?.data?.production;
-  
+    const hotelDetails = useSelector(state => state?.hotelDetail);
+    const hotelData = hotelDetails?.data?.data?.hotels || {};
+  console.log("hotelDetails", hotelData)
     useEffect(() => {
       if (itemId) {
         const queryParams = {
-          production_id: itemId,
+          hotel_id: itemId,
           fy: localStorage.getItem('FinancialYear'),
         };
-        // dispatch(ProductionDetails(queryParams));
+        dispatch(hotelDetailsAction(queryParams));
       }
     }, [dispatch, itemId]);
   
     useEffect(() => {
-      setSwitchValue(productionData?.active);
-    }, [productionData]);
+      setSwitchValue(hotelData?.active);
+    }, [hotelData]);
   
     const handleSwitchChange = (e) => {
       const newValue = e.target.value;
@@ -81,11 +83,11 @@ const HotelDetailsMain = () => {
     <>
       {deletedItem?.loading && <MainScreenFreezeLoader />}
       {status?.loading && <MainScreenFreezeLoader />}
-      {productionDetails?.loading ? <Loader0r /> :
+      {hotelDetails?.loading ? <Loader02/> :
         <div className='formsectionsgrheigh'>
           <div id="Anotherbox" className='formsectionx3'>
             <div id="leftareax12">
-              <h1 id="firstheading">{productionData?.production_id}</h1>
+              <h1 id="firstheading">{hotelData?.hotel_name}</h1>
             </div>
             <div id="buttonsdata">
               <div className="switchbuttontext">
@@ -132,7 +134,7 @@ const HotelDetailsMain = () => {
             </div>
           </div>
           <div id="item-details">
-            <HotelDetails data={productionData} />
+            <HotelDetails data={hotelData} />
           </div>
           <Toaster />
         </div>
