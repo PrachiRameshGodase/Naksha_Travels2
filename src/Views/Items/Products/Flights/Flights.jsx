@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../../Helper/DateFormat";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
@@ -20,13 +20,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import CreateFlight from "./CreateFight";
+import {
+  flightdeleteActions,
+  flightListAction,
+  flightstatusActions,
+} from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
+import { MdArrowOutward } from "react-icons/md";
 
 const Flights = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
-  const qutList = useSelector((state) => state?.quoteList);
-  const cusList = useSelector((state) => state?.customerList);
-  const qutSend = useSelector((state) => state?.quoteSend);
+
+  const flightListData = useSelector((state) => state?.flightList);
+  const flightLists = flightListData?.data?.data || [];
+  const totalItems = flightListData?.data?.count || 0;
+  const flightStatusUpdate = useSelector((state) => state?.flightStatus);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -81,7 +91,7 @@ const Flights = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchHotels = useCallback(async () => {
+  const fetchFlights = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -110,30 +120,30 @@ const Flights = () => {
         }),
       };
 
-      // dispatch(saleOrderLists(sendData));
+      dispatch(flightListAction(sendData));
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
   }, [searchTrigger]);
 
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (
-      searchTrigger ||
-      parshPayload?.search ||
-      parshPayload?.name ||
-      parshPayload?.sort_by ||
-      parshPayload?.status ||
-      parshPayload?.custom_date ||
-      parshPayload?.from_date ||
-      parshPayload?.currentpage > 1
-    ) {
-      fetchHotels();
-    }
+    // const parshPayload = parseJSONofString(itemPayloads);
+    // if (
+    //   searchTrigger ||
+    //   parshPayload?.search ||
+    //   parshPayload?.name ||
+    //   parshPayload?.sort_by ||
+    //   parshPayload?.status ||
+    //   parshPayload?.custom_date ||
+    //   parshPayload?.from_date ||
+    //   parshPayload?.currentpage > 1
+    // ) {
+    fetchFlights();
+    // }
   }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/hotel-details?id=${quotation.id}`);
+    navigate(`/dashboard/flight-details?id=${quotation.id}`);
   };
 
   //logic for checkBox...
@@ -148,32 +158,20 @@ const Flights = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = qutList?.data?.quotations?.every((row) =>
+    const areAllRowsSelected = flightLists?.data?.data?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, qutList?.data?.quotations]);
+  }, [selectedRows, flightLists?.data?.data]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(
-      selectAll ? [] : qutList?.data?.quotations?.map((row) => row.id)
+      selectAll ? [] : flightLists?.data?.data?.map((row) => row.id)
     );
   };
   //logic for checkBox...
 
-  const dummyData = [
-    {
-      id: 1,
-      date: "",
-      display_name: "Garden Hotel",
-      // customer_type: "Individual",
-      // company_name: "Green Landscape Co.",
-      // email: "gardenhotel@example.com",
-      // work_phone: "123-456-7890",
-      // status: "1", // Approved
-    },
-  ];
   const [selectedItem, setSelectedItem] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -183,10 +181,59 @@ const Flights = () => {
     setShowPopup(true);
     setIsEdit(false);
   };
+  const handleDeleteFlight = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this flight?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        flight_id: item?.id,
+      };
+      dispatch(flightdeleteActions(sendData, navigate));
+    }
+  };
+  const handleEditFlight = (item) => {
+    setSelectedItem(item);
+    setShowPopup(true);
+    setIsEdit(true);
+  };
+
+  const handleStatusChange = async (item) => {
+    const newValue = item?.status == "1" ? "0" : "1"; // Toggle status
+    const actionText = newValue == "0" ? "Inactive" : "Active";
+
+    // Confirmation modal
+    const result = await Swal.fire({
+      text: `Do you want to make this flight ${actionText}?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed && item?.id) {
+      const sendData = {
+        flight_id: item?.id,
+        status: newValue,
+      };
+      dispatch(flightstatusActions(sendData, navigate))
+        .then(() => {
+          // navigate(`/dashboard/hotel-details?id=${roomId}`);
+        })
+        .catch((error) => {
+          toast.error("Failed to update flight status");
+          console.error("Error updating flight status:", error);
+        });
+    }
+  };
   return (
     <>
       <TopLoadbar />
-      {qutSend?.loading && <MainScreenFreezeLoader />}
+      {(flightStatusUpdate?.loading || flightListData?.loading) && (
+        <MainScreenFreezeLoader />
+      )}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -194,12 +241,12 @@ const Flights = () => {
               {otherIcons?.warehouse_icon}
               All Flights
             </h1>
-            {/* <p id="firsttagp">{qutList?.data?.total} Records</p> */}
-            {/* <SearchBox
-              placeholder="Search In Hotels"
+            <p id="firsttagp">{totalItems} Records</p>
+            <SearchBox
+              placeholder="Search In Flights"
               onSearch={onSearch}
               section={searchTrigger}
-            /> */}
+            />
           </div>
 
           <div id="buttonsdata">
@@ -213,7 +260,7 @@ const Flights = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <DatePicker
+            {/* <DatePicker
               dateRange={dateRange}
               setDateRange={setDateRange}
               setSpecificDate={setSpecificDate}
@@ -221,7 +268,7 @@ const Flights = () => {
               setSearchTrigger={setSearchTrigger}
               searchTrigger={searchTrigger}
               resetPageIfNeeded={resetPageIfNeeded}
-            />
+            /> */}
 
             {/* <FilterBy
               setStatus={setStatus}
@@ -255,35 +302,32 @@ const Flights = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.date_svg}
-                    Date
-                  </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Flight Name
                   </div>
 
-                
-
-                  
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
                   </div>
-                  
+                  <div className="table-cellx12 quotiosalinvlisxs6">
+                    {otherIcons?.status_svg}
+                    Actions
+                  </div>
                 </div>
 
-                {qutList?.loading ? (
+                {flightListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {qutList?.data?.quotations?.length >= 1 ? (
+                    {flightLists?.length >= 1 ? (
                       <>
-                        {dummyData.map((quotation, index) => (
+                        {flightLists?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
-                              selectedRows.includes(quotation.id)
+                              selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
                             }`}
@@ -294,57 +338,67 @@ const Flights = () => {
                               id="styl_for_check_box"
                             >
                               <input
-                                checked={selectedRows.includes(quotation.id)}
+                                checked={selectedRows.includes(item?.id)}
                                 type="checkbox"
-                                onChange={() =>
-                                  handleCheckboxChange(quotation.id)
-                                }
+                                onChange={() => handleCheckboxChange(item?.id)}
                               />
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                              {/* "Garden Hotel" */}
-                              {quotation.display_name || "Garden Hotel"}
+                              {item?.flight_name || ""}
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd02"
-                            >
-                              {quotation.customer_type || ""}
-                            </div>
-                            
-                            
-                            
 
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
-                              <div>
-                                {" "}
-                                <p
-                                  className={
-                                    quotation?.status == "1"
-                                      ? "approved"
-                                      : quotation?.status == "0"
-                                      ? "draft"
-                                      : quotation?.status == "7"
-                                      ? "approved"
-                                      : ""
-                                  }
+                              <p
+                                className={
+                                  item?.status == "1"
+                                    ? "approved"
+                                    : item?.status == "0"
+                                    ? "draft"
+                                    : ""
+                                }
+                              >
+                                {item?.status == "0"
+                                  ? "Inactive"
+                                  : item?.status == "1"
+                                  ? "Active"
+                                  : ""}
+                                <span
+                                  onClick={() => {
+                                    handleStatusChange(item);
+                                  }}
                                 >
-                                  {quotation?.status == "0"
-                                    ? "Pending"
-                                    : quotation?.status == "1"
-                                    ? "Approved"
-                                    : ""}
-                                </p>
-                              </div>
+                                  <MdArrowOutward />
+                                </span>
+                              </p>
                             </div>
-                           
+
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
+                            >
+                              <span
+                                onClick={() => {
+                                  handleEditFlight(item);
+                                }}
+                              >
+                                {otherIcons.edit_svg}
+                              </span>
+                              <span
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => {
+                                  handleDeleteFlight(item);
+                                }}
+                              >
+                                {otherIcons.delete_svg}
+                              </span>
+                            </div>
                           </div>
                         ))}
                       </>
@@ -353,12 +407,12 @@ const Flights = () => {
                     )}
 
                     <PaginationComponent
-                    // itemList={qutList?.data?.total}
-                    // currentPage={currentPage}
-                    // setCurrentPage={setCurrentPage}
-                    // itemsPerPage={itemsPerPage}
-                    // setItemsPerPage={setItemsPerPage}
-                    // setSearchCall={setSearchTrigger}
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
                     />
                   </>
                 )}
@@ -371,7 +425,9 @@ const Flights = () => {
             popupContent={{
               setshowAddPopup: setShowPopup,
               showAddPopup: showPopup,
-              isEdit,
+              isEditIndividual: isEdit,
+              selectedItem,
+
               setSearchTrigger,
             }}
           />

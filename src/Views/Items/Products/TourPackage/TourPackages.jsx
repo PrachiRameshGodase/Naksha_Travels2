@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../../Helper/DateFormat";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
@@ -12,17 +12,24 @@ import SortBy from "../../../Common/SortBy/SortBy";
 import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import { parseJSONofString, useDebounceSearch } from "../../../Helper/HelperFunctions";
+import {
+  parseJSONofString,
+  useDebounceSearch,
+} from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
+import { tourPackageListAction } from "../../../../Redux/Actions/tourPackage";
+import ShowMastersValue from "../../../Helper/ShowMastersValue";
 
 const TourPackages = () => {
-  const navigate=useNavigate()
-  const itemPayloads = localStorage.getItem(("salePayload"));
-  const qutList = useSelector((state) => state?.quoteList);
-  const cusList = useSelector((state) => state?.customerList);
-  const qutSend = useSelector((state) => state?.quoteSend);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const itemPayloads = localStorage.getItem("salePayload");
+  
+  const tourPackageListData = useSelector((state) => state?.tourPackageList);
+  const tourPackageLists = tourPackageListData?.data?.data || [];
+  const totalItems = tourPackageListData?.data?.count || 0;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -77,7 +84,7 @@ const TourPackages = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchHotels = useCallback(async () => {
+  const fetchTourPackages = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -106,30 +113,30 @@ const TourPackages = () => {
         }),
       };
 
-      // dispatch(saleOrderLists(sendData));
+      dispatch(tourPackageListAction(sendData));
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      console.error("Error fetching tour package:", error);
     }
   }, [searchTrigger]);
 
   useEffect(() => {
     const parshPayload = parseJSONofString(itemPayloads);
-    if (
-      searchTrigger ||
-      parshPayload?.search ||
-      parshPayload?.name ||
-      parshPayload?.sort_by ||
-      parshPayload?.status ||
-      parshPayload?.custom_date ||
-      parshPayload?.from_date ||
-      parshPayload?.currentpage > 1
-    ) {
-      fetchHotels();
-    }
+    // if (
+    //   searchTrigger ||
+    //   parshPayload?.search ||
+    //   parshPayload?.name ||
+    //   parshPayload?.sort_by ||
+    //   parshPayload?.status ||
+    //   parshPayload?.custom_date ||
+    //   parshPayload?.from_date ||
+    //   parshPayload?.currentpage > 1
+    // ) {
+    fetchTourPackages();
+    // }
   }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/hotel-details?id=${quotation.id}`);
+    navigate(`/dashboard/tour-package-details?id=${quotation.id}`);
   };
 
   //logic for checkBox...
@@ -144,37 +151,24 @@ const TourPackages = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = qutList?.data?.quotations?.every((row) =>
+    const areAllRowsSelected = tourPackageListData?.data?.data?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, qutList?.data?.quotations]);
+  }, [selectedRows, tourPackageListData?.data?.data]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(
-      selectAll ? [] : qutList?.data?.quotations?.map((row) => row.id)
+      selectAll ? [] : tourPackageListData?.data?.data?.map((row) => row.id)
     );
   };
   //logic for checkBox...
 
-  const dummyData = [
-    {
-      id: 1,
-      date:"",
-      display_name: "Garden Hotel",
-      // customer_type: "Individual",
-      // company_name: "Green Landscape Co.",
-      // email: "gardenhotel@example.com",
-      // work_phone: "123-456-7890",
-      // status: "1", // Approved
-    },
-    
-  ];
   return (
     <>
       <TopLoadbar />
-      {qutSend?.loading && <MainScreenFreezeLoader />}
+      {tourPackageListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -182,7 +176,7 @@ const TourPackages = () => {
               {otherIcons?.warehouse_icon}
               All Tour Packages
             </h1>
-            {/* <p id="firsttagp">{qutList?.data?.total} Records</p> */}
+            <p id="firsttagp">{totalItems} Records</p>
             <SearchBox
               placeholder="Search In Tour Packages"
               onSearch={onSearch}
@@ -201,7 +195,7 @@ const TourPackages = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <DatePicker
+            {/* <DatePicker
               dateRange={dateRange}
               setDateRange={setDateRange}
               setSpecificDate={setSpecificDate}
@@ -209,7 +203,7 @@ const TourPackages = () => {
               setSearchTrigger={setSearchTrigger}
               searchTrigger={searchTrigger}
               resetPageIfNeeded={resetPageIfNeeded}
-            />
+            /> */}
 
             {/* <FilterBy
               setStatus={setStatus}
@@ -243,47 +237,45 @@ const TourPackages = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.date_svg}
-                    Date
-                  </div>
-                  <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Package Name
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
                     Destination
                   </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Hotel Type
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Days
                   </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>
-                      {otherIcons?.doller_svg}
-                      Hotel Type
-                    </p>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Price
                   </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
                   </div>
                 </div>
 
-                {qutList?.loading ? (
+                {tourPackageListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {dummyData?.length >= 1 ? (
+                    {tourPackageLists?.length >= 1 ? (
                       <>
-                        {dummyData.map((quotation, index) => (
+                        {tourPackageLists?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
-                              selectedRows.includes(quotation.id)
+                              selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
                             }`}
@@ -294,71 +286,66 @@ const TourPackages = () => {
                               id="styl_for_check_box"
                             >
                               <input
-                                checked={selectedRows.includes(quotation.id)}
+                                checked={selectedRows.includes(item?.id)}
                                 type="checkbox"
-                                onChange={() =>
-                                  handleCheckboxChange(quotation.id)
-                                }
+                                onChange={() => handleCheckboxChange(item?.id)}
                               />
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd01"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {/* "Garden Hotel" */}
-                              {quotation.display_name || "Garden Hotel"}
+                              {item?.package_name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd02"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {quotation.customer_type || ""}
+                              {item?.destination || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd03"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
                             >
-                              {quotation.company_name || ""}
+                              {" "}
+                              <ShowMastersValue
+                                type="35"
+                                id={item?.hotel_type}
+                              />
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd04"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {quotation.email || ""}
+                              {item?.days || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd05"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {quotation.work_phone || ""}
+                              {item?.price_per_person || ""}
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 x125cd06"
-                            ></div>
 
                             <div
-                              onClick={() => handleRowClicked(quotation)}
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
                               <div>
                                 {" "}
                                 <p
                                   className={
-                                    quotation?.status == "1"
-                                      ? "approved"
-                                      : quotation?.status == "0"
-                                      ? "draft"
-                                      : quotation?.status == "7"
-                                      ? "approved"
+                                    item?.status == "1"
+                                      ? "open"
+                                      : item?.status == "0"
+                                      ? "declined"
                                       : ""
                                   }
                                 >
-                                  {quotation?.status == "0"
-                                    ? "Pending"
-                                    : quotation?.status == "1"
-                                    ? "Approved"
+                                  {item?.status == "1"
+                                    ? "Active"
+                                    : item?.status == "0"
+                                    ? "Inactive"
                                     : ""}
                                 </p>
                               </div>
@@ -371,12 +358,12 @@ const TourPackages = () => {
                     )}
 
                     <PaginationComponent
-                    // itemList={qutList?.data?.total}
-                    // currentPage={currentPage}
-                    // setCurrentPage={setCurrentPage}
-                    // itemsPerPage={itemsPerPage}
-                    // setItemsPerPage={setItemsPerPage}
-                    // setSearchCall={setSearchTrigger}
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
                     />
                   </>
                 )}

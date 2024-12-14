@@ -1,43 +1,35 @@
 import React, { useEffect, useState } from "react";
-import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import { RxCross2 } from "react-icons/rx";
-import { BsArrowRight } from "react-icons/bs";
 import toast from "react-hot-toast";
+import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateMasterAction } from "../../../../Redux/Actions/mastersAction";
 import { useNavigate } from "react-router-dom";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { CreateFlightAction } from "../../../../Redux/Actions/flightActions";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CreateFlight = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const flightCreates = useSelector((state) => state?.createFlight);
 
-  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =
-    popupContent;
+  const {
+    setshowAddPopup,
+    showAddPopup,
+    isEditIndividual,
+    selectedItem,
+    setSearchTrigger,
+  } = popupContent;
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [formData, setFormData] = useState({
-    id: 0,
-    // labelid:0,
     flight_name: null,
-    type: showAddPopup?.labelid,
-    room_name: null,
-    value_string: null,
-    value: null,
-    status:0
   });
-  const masterList = useSelector((state) => state.masterList);
-  const masterDetails = masterList?.data;
-  const occupancy = ShowMasterData("36");
-  console.log("occupancy", occupancy);
+
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     try {
       const sendData = {
         ...formData,
       };
-      dispatch(CreateMasterAction(sendData, Navigate))
+      dispatch(CreateFlightAction(sendData, Navigate))
         .then(() => {
           setshowAddPopup(null);
           setSearchTrigger((prev) => prev + 1);
@@ -46,37 +38,27 @@ const CreateFlight = ({ popupContent }) => {
           console.log(error);
         });
     } catch (error) {
-      toast.error("Error creating masters:", error);
+      toast.error("Error creating flight:", error);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const occpancyType = occupancy?.find((val) => val?.labelid == value);
-
     setFormData((prev) => ({
       ...prev,
-      ...(name === "occupancy" && {
-        occupancy: occpancyType?.label,
-      }),
-
       [name]: value,
     }));
   };
-
   useEffect(() => {
-    if (isEditIndividual && showAddPopup) {
+    if (selectedItem && isEditIndividual) {
       setFormData({
         ...formData,
-        id: showAddPopup?.id,
-        labelid: showAddPopup?.labelid,
-        type: showAddPopup?.type,
-        label: showAddPopup?.label,
-        value: showAddPopup?.value,
-        value_string: showAddPopup?.value_string,
+        id: selectedItem?.id,
+        flight_name: selectedItem?.flight_name,
       });
     }
-  }, [showAddPopup, isEditIndividual]);
+  }, [selectedItem, isEditIndividual]);
+
 
   return (
     <div id="formofcreateitems">
@@ -134,23 +116,6 @@ const CreateFlight = ({ popupContent }) => {
                                   />
                                 </span>
                               </div>
-                              {/* <div className="form_commonblock">
-                                <label>
-                                  Flight Name<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <CustomDropdown04
-                                    label="Hotel Type"
-                                    options={hotelType}
-                                    value={formData?.hotel_type_id}
-                                    onChange={handleChange}
-                                    name="hotel_type_id"
-                                    defaultOption="Select Hotel Type"
-                                    type="masters"
-                                  />
-                                </span>
-                              </div> */}
                             </div>
                           </div>
                         </div>
@@ -165,16 +130,16 @@ const CreateFlight = ({ popupContent }) => {
                           left: "238px",
                           width: "752px",
                           position: "absolute",
-                          marginBottom:"62px"
+                          marginBottom: "62px",
                         }}
                       >
                         <button
                           onClick={handleSubmitForm}
                           id="herobtnskls"
                           //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${freezLoadingImg ? "disabledbtn" : ""} `}
+                          className={`${flightCreates?.loading ||freezLoadingImg ? "disabledbtn" : ""} `}
                           type="submit"
-                          disabled={freezLoadingImg}
+                          disabled={flightCreates?.loading || freezLoadingImg}
                         >
                           {isEditIndividual ? "Update" : "Create"}
                         </button>
@@ -182,8 +147,8 @@ const CreateFlight = ({ popupContent }) => {
                         <button
                           type="button"
                           onClick={() => setshowAddPopup(null)}
-                          // className={`${(createUpdate?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          // disabled={(createUpdate?.loading || freezLoadingImg)}
+                          className={`${(flightCreates?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
+                          disabled={(flightCreates?.loading || freezLoadingImg)}
                         >
                           Cancel
                         </button>

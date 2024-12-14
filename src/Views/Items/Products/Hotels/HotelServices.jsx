@@ -1,25 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../../Helper/DateFormat";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import { Link, useNavigate } from "react-router-dom";
+import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../../Common/SearchBox/SearchBox";
-import SortBy from "../../../Common/SortBy/SortBy";
-import DatePicker from "../../../Common/DatePicker/DatePicker";
-import FilterBy from "../../../Common/FilterBy/FilterBy";
+import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
+import DatePicker from "../../../Common/DatePicker/DatePicker";
+import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
+import SearchBox from "../../../Common/SearchBox/SearchBox";
 import {
   parseJSONofString,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
-import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 
 const HotelServices = ({data}) => {
@@ -28,7 +25,7 @@ const HotelServices = ({data}) => {
   const itemPayloads = localStorage.getItem("salePayload");
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
   const hotelRoomLists=hotelRoomListData?.data?.hotels ||[];
-
+  const totalItems=hotelRoomListData?.data?.count ||0;
  
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -176,14 +173,14 @@ const HotelServices = ({data}) => {
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              All Hotel Services
+              All Room Services
             </h1>
-            {/* <p id="firsttagp">{hotelRoomListData?.data?.total} Records</p> */}
-            {/* <SearchBox
+            <p id="firsttagp">{totalItems} Records</p>
+            <SearchBox
               placeholder="Search In Hotels"
               onSearch={onSearch}
               section={searchTrigger}
-            /> */}
+            />
           </div>
 
           <div id="buttonsdata">
@@ -270,7 +267,7 @@ const HotelServices = ({data}) => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                     {otherIcons?.status_svg}
-                    Status
+                    Availability Status
                   </div>
                  
                 </div>
@@ -370,12 +367,12 @@ const HotelServices = ({data}) => {
                     )} 
 
                     <PaginationComponent
-                    // itemList={hotelRoomListData?.data?.total}
-                    // currentPage={currentPage}
-                    // setCurrentPage={setCurrentPage}
-                    // itemsPerPage={itemsPerPage}
-                    // setItemsPerPage={setItemsPerPage}
-                    // setSearchCall={setSearchTrigger}
+                    itemList={totalItems}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    itemsPerPage={itemsPerPage}
+                    setItemsPerPage={setItemsPerPage}
+                    setSearchCall={setSearchTrigger}
                     />
                   </>
                )} 

@@ -36,8 +36,48 @@ const MainLinks = ({
     "create-hotels",
     "hotels-services",
     "hotel-details",
+    "create-hotelservices",
+    "hotel-service-details",
+    "flights-services",
+    "create-flights",
+    "tour-package-services",
+    "create-tour-package",
+    "tour-package-details",
+    "visas-services",
+    "create-visas",
+    "visas-details",
+    "car-hire-services",
+    "create-car-hire",
+    "car-hire-details",
+    "assists-services",
+    "create-assists",
+    "assists-details",
+    "insurances-services",
+    "create-insurances",
   ];
-
+const servicesMenuItems=[ "services",
+  "create-hotels",
+  "hotels-services",
+  "hotel-details",
+  "create-hotelservices",
+  "hotel-service-details",
+  "flights-services",
+  "create-flights",
+  "tour-package-services",
+  "create-tour-package",
+  "tour-package-details",
+  "visas-services",
+  "create-visas",
+  "visas-details",
+  "car-hire-services",
+  "create-car-hire",
+  "car-hire-details",
+  "assists-services",
+  "create-assists",
+  "assists-details",
+  "insurances-services",
+  "create-insurances",
+]
   const categoryMenuItems = [
     "items-categories",
     "category-details",
@@ -226,11 +266,12 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Items",
             })}
-            className={`menu-title ${itemListMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${
+              itemListMenuItems.includes(selectedMenuItem) ||
               categoryMenuItems.includes(selectedMenuItem)
-              ? "active"
-              : ""
-              }`}
+                ? "active"
+                : ""
+            }`}
             onClick={() => {
               handleMenuClick("items");
               handleShrinkSidebarx1();
@@ -246,48 +287,48 @@ const MainLinks = ({
           </div>
 
           <ul
-            className={`submenu ${activeMenu === "items" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "items" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => handleMenuItemClick("manage-items")}
-              className={`menu-item ${[
-                "manage-items",
-                "create-items",
-                "item-details",
-                "import-items",
-              ].includes(selectedMenuItem)
-                ? "active"
-                : ""
-                }`}
+              className={`menu-item ${
+                [
+                  "manage-items",
+                  "create-items",
+                  "item-details",
+                  "import-items",
+                ].includes(selectedMenuItem)
+                  ? "active"
+                  : ""
+              }`}
             >
               Item List
             </li>
 
             <li
               onClick={() => handleMenuItemClick("items-categories")}
-              className={`menu-item ${[
-                "items-categories",
-                "create-categories",
-                "category-details",
-              ].includes(selectedMenuItem)
-                ? "active"
-                : ""
-                }`}
+              className={`menu-item ${
+                [
+                  "items-categories",
+                  "create-categories",
+                  "category-details",
+                ].includes(selectedMenuItem)
+                  ? "active"
+                  : ""
+              }`}
             >
               Categories
             </li>
 
             <li
               onClick={() => handleMenuItemClick("services")}
-              className={`menu-item ${[
-                "items-categories",
-                "create-categories",
-                "category-details",
-              ].includes(selectedMenuItem)
-                ? "active"
-                : ""
-                }`}
+              className={`menu-item ${
+                servicesMenuItems.includes(selectedMenuItem)
+                  ? "active"
+                  : ""
+              }`}
             >
               Services
             </li>
@@ -301,7 +342,8 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Sales",
             })}
-            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${
+              customersMenuItems.includes(selectedMenuItem) ||
               quotationsMenuItems.includes(selectedMenuItem) ||
               salesOrdersMenuItems.includes(selectedMenuItem) ||
               deliveryChallanMenuItems.includes(selectedMenuItem) ||
@@ -309,9 +351,9 @@ const MainLinks = ({
               invoiceApprovalMenuItems.includes(selectedMenuItem) ||
               creditNotesMenuItems.includes(selectedMenuItem) ||
               paymentReceivedMenuItems.includes(selectedMenuItem)
-              ? "active"
-              : ""
-              }`}
+                ? "active"
+                : ""
+            }`}
             onClick={() => {
               handleMenuClick("sales");
               handleShrinkSidebarx1();
@@ -333,15 +375,17 @@ const MainLinks = ({
           {/* {Sales && ( */}
 
           <ul
-            className={`submenu ${activeMenu === "sales" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "sales" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => {
                 handleMenuItemClick("customers");
               }}
-              className={`menu-item ${customersMenuItems.includes(selectedMenuItem) ? "active" : ""
-                }`}
+              className={`menu-item ${
+                customersMenuItems.includes(selectedMenuItem) ? "active" : ""
+              }`}
             >
               Customers
             </li>
@@ -350,12 +394,13 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("quotation");
               }}
-              className={`menu-item ${selectedMenuItem === "quotation" ||
+              className={`menu-item ${
+                selectedMenuItem === "quotation" ||
                 selectedMenuItem === "create-quotations" ||
                 selectedMenuItem === "quotation-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Quotation
             </li>
@@ -363,12 +408,13 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("sales-orders");
               }}
-              className={`menu-item ${selectedMenuItem === "sales-orders" ||
+              className={`menu-item ${
+                selectedMenuItem === "sales-orders" ||
                 selectedMenuItem === "create-sales-orders" ||
                 selectedMenuItem === "sales-order-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Sales Orders
             </li>
@@ -376,12 +422,13 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("delivery_challan");
               }}
-              className={`menu-item ${selectedMenuItem === "delivery_challan" ||
+              className={`menu-item ${
+                selectedMenuItem === "delivery_challan" ||
                 selectedMenuItem === "delivery-challans-details" ||
                 selectedMenuItem === "create-delivery-challans"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Delivery Challans
             </li>
@@ -389,12 +436,13 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("invoices");
               }}
-              className={`menu-item ${selectedMenuItem === "invoices" ||
+              className={`menu-item ${
+                selectedMenuItem === "invoices" ||
                 selectedMenuItem === "invoice-details" ||
                 selectedMenuItem === "create-invoice"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Invoices
             </li>
@@ -403,11 +451,12 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("invoice-approval");
               }}
-              className={`menu-item ${selectedMenuItem === "invoice-approval" ||
+              className={`menu-item ${
+                selectedMenuItem === "invoice-approval" ||
                 selectedMenuItem === "invoice_approval_details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Invoice Approval
             </li>
@@ -416,10 +465,9 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("pick_list");
               }}
-              className={`menu-item ${selectedMenuItem === "pick_list"
-                ? "active"
-                : ""
-                }`}
+              className={`menu-item ${
+                selectedMenuItem === "pick_list" ? "active" : ""
+              }`}
             >
               Pick List
             </li>
@@ -428,12 +476,13 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("credit-notes");
               }}
-              className={`menu-item ${selectedMenuItem === "credit-notes" ||
+              className={`menu-item ${
+                selectedMenuItem === "credit-notes" ||
                 selectedMenuItem === "creditnote-details" ||
                 selectedMenuItem === "create-credit-note"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Credit Notes
             </li>
@@ -441,13 +490,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("payment-recieved");
               }}
-              className={`menu-item ${selectedMenuItem === "payment-recieved" ||
+              className={`menu-item ${
+                selectedMenuItem === "payment-recieved" ||
                 selectedMenuItem === "payment-recieved-detail" ||
                 selectedMenuItem === "payment-rec-details" ||
                 selectedMenuItem === "create-payment-rec"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Payment Recieved
             </li>
@@ -458,7 +508,8 @@ const MainLinks = ({
 
         <div id="" className="menu-itemxse">
           <div
-            className={`menu-title ${vendorMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${
+              vendorMenuItems.includes(selectedMenuItem) ||
               purchaseOrderMenuItem.includes(selectedMenuItem) ||
               GRNMenuItem.includes(selectedMenuItem) ||
               GRNApprovalMenuItem.includes(selectedMenuItem) ||
@@ -467,9 +518,9 @@ const MainLinks = ({
               ExpensesMenuItem.includes(selectedMenuItem) ||
               PaymentMadeMenuItem.includes(selectedMenuItem) ||
               DebitNoteMenuItem.includes(selectedMenuItem)
-              ? "active"
-              : ""
-              }`}
+                ? "active"
+                : ""
+            }`}
             {...(isSidebarCollapsedx1 && {
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Purchases",
@@ -495,68 +546,74 @@ const MainLinks = ({
           {/* {Purchases && ( */}
 
           <ul
-            className={`submenu ${activeMenu === "Purchases" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "Purchases" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => {
                 handleMenuItemClick("vendors");
               }}
-              className={`menu-item ${selectedMenuItem === "vendors" ||
+              className={`menu-item ${
+                selectedMenuItem === "vendors" ||
                 selectedMenuItem === "vendor-details" ||
                 selectedMenuItem === "create-vendor"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Vendors
             </li>
 
             <li
               onClick={() => handleMenuItemClick("purchase")}
-              className={`menu-item ${selectedMenuItem === "purchase" ||
+              className={`menu-item ${
+                selectedMenuItem === "purchase" ||
                 selectedMenuItem === "create-purchases" ||
                 selectedMenuItem === "purchase" ||
                 selectedMenuItem === "purchase-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Purchase Order
             </li>
             <li
               onClick={() => handleMenuItemClick("grn")}
-              className={`menu-item ${selectedMenuItem === "grn" ||
+              className={`menu-item ${
+                selectedMenuItem === "grn" ||
                 selectedMenuItem === "grn" ||
                 selectedMenuItem == "new-grn" ||
                 selectedMenuItem === "account-chart" ||
                 selectedMenuItem === "create-account-chart" ||
                 selectedMenuItem === "grn-detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               GRN
             </li>
             <li
               onClick={() => handleMenuItemClick("grn_approval")}
-              className={`menu-item ${selectedMenuItem === "grn_approval" ||
+              className={`menu-item ${
+                selectedMenuItem === "grn_approval" ||
                 selectedMenuItem === "grn_approval" ||
                 selectedMenuItem === "grn_approval_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               GRN Approval
             </li>
             <li
               onClick={() => handleMenuItemClick("grn_receipt")}
-              className={`menu-item ${selectedMenuItem === "grn_receipt" ||
+              className={`menu-item ${
+                selectedMenuItem === "grn_receipt" ||
                 selectedMenuItem === "grn_receipt" ||
                 selectedMenuItem === "grn_receipt_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               GRN Receiving Area
             </li>
@@ -565,13 +622,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("bills");
               }}
-              className={`menu-item ${selectedMenuItem === "bills" ||
+              className={`menu-item ${
+                selectedMenuItem === "bills" ||
                 selectedMenuItem === "bills" ||
                 selectedMenuItem === "create-bills" ||
                 selectedMenuItem === "bill-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Bills
             </li>
@@ -579,15 +637,16 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("payment-made");
               }}
-              className={`menu-item ${selectedMenuItem === "payment-made" ||
+              className={`menu-item ${
+                selectedMenuItem === "payment-made" ||
                 // selectedMenuItem==="payment-recieved"||
                 // selectedMenuItem==="payment-recieved-detail"||
                 selectedMenuItem === "payment-made" ||
                 selectedMenuItem === "create-payment-made" ||
                 selectedMenuItem === "payment-made-detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Payment Made
             </li>
@@ -596,13 +655,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("expenses");
               }}
-              className={`menu-item ${selectedMenuItem === "expenses" ||
+              className={`menu-item ${
+                selectedMenuItem === "expenses" ||
                 selectedMenuItem === "expenses" ||
                 selectedMenuItem === "create-expenses" ||
                 selectedMenuItem === "expense-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Expenses
             </li>
@@ -610,13 +670,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("debit-notes");
               }}
-              className={`menu-item ${selectedMenuItem === "debit-notes" ||
+              className={`menu-item ${
+                selectedMenuItem === "debit-notes" ||
                 selectedMenuItem === "debit-notes" ||
                 selectedMenuItem === "create-debit-note" ||
                 selectedMenuItem === "debit-note-detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Debit Notes
             </li>
@@ -626,14 +687,15 @@ const MainLinks = ({
         {/* warehouse */}
         <div id="" className="menu-itemxse">
           <div
-            className={`menu-title ${WarehouseMenuItem.includes(selectedMenuItem) ||
+            className={`menu-title ${
+              WarehouseMenuItem.includes(selectedMenuItem) ||
               ZoneMenuItem.includes(selectedMenuItem) ||
               RacksMenuItem.includes(selectedMenuItem) ||
               // WarehouseItem.includes(selectedMenuItem) ||
               BinMenuItem.includes(selectedMenuItem)
-              ? "active"
-              : ""
-              }`}
+                ? "active"
+                : ""
+            }`}
             {...(isSidebarCollapsedx1 && {
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Warehouse",
@@ -659,20 +721,22 @@ const MainLinks = ({
 
           {/* {Purchases && ( */}
           <ul
-            className={`submenu ${activeMenu === "Warehouse" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "Warehouse" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => {
                 handleMenuItemClick("warehouse");
               }}
-              className={`menu-item ${selectedMenuItem === "warehouse" ||
+              className={`menu-item ${
+                selectedMenuItem === "warehouse" ||
                 selectedMenuItem === "warehouse" ||
                 selectedMenuItem === "create-warehouse" ||
                 selectedMenuItem === "warehouse_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Warehouse
             </li>
@@ -680,13 +744,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("zone");
               }}
-              className={`menu-item ${selectedMenuItem === "zone" ||
+              className={`menu-item ${
+                selectedMenuItem === "zone" ||
                 selectedMenuItem === "zone" ||
                 selectedMenuItem === "create-zone" ||
                 selectedMenuItem === "zone_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Zone
             </li>
@@ -694,13 +759,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("racks");
               }}
-              className={`menu-item ${selectedMenuItem === "racks" ||
+              className={`menu-item ${
+                selectedMenuItem === "racks" ||
                 selectedMenuItem === "racks" ||
                 selectedMenuItem === "create-racks" ||
                 selectedMenuItem === "racks_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Racks
             </li>
@@ -708,13 +774,14 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("bin");
               }}
-              className={`menu-item ${selectedMenuItem === "bin" ||
+              className={`menu-item ${
+                selectedMenuItem === "bin" ||
                 selectedMenuItem === "bin" ||
                 selectedMenuItem === "create-bins" ||
                 selectedMenuItem === "bin_detail"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Bin
             </li>
@@ -723,16 +790,15 @@ const MainLinks = ({
           {/* )} */}
         </div>
 
-
-
         {/* accountant start */}
         <div id="" className="menu-itemxse">
           <div
-            className={`menu-title ${AccountChartMenuItem.includes(selectedMenuItem) ||
+            className={`menu-title ${
+              AccountChartMenuItem.includes(selectedMenuItem) ||
               ManualJournalMenuItem.includes(selectedMenuItem)
-              ? "active"
-              : ""
-              }`}
+                ? "active"
+                : ""
+            }`}
             {...(isSidebarCollapsedx1 && {
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Accountant",
@@ -751,28 +817,31 @@ const MainLinks = ({
             </p>
           </div>
           <ul
-            className={`submenu ${activeMenu === "account" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "account" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => handleMenuItemClick("account-chart")}
-              className={`menu-item ${selectedMenuItem === "account-chart" ||
+              className={`menu-item ${
+                selectedMenuItem === "account-chart" ||
                 selectedMenuItem === "create-account-chart" ||
                 selectedMenuItem === "account-details"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Account chart
             </li>
             <li
               onClick={() => handleMenuItemClick("journal")}
-              className={`menu-item ${selectedMenuItem === "journal" ||
+              className={`menu-item ${
+                selectedMenuItem === "journal" ||
                 selectedMenuItem === "journal-details" ||
                 selectedMenuItem === "create-journal"
-                ? "active"
-                : ""
-                }`}
+                  ? "active"
+                  : ""
+              }`}
             >
               Manual Journal
             </li>
@@ -849,8 +918,9 @@ const MainLinks = ({
           onClick={() => handleMenuItemClick("help")}
         >
           <div
-            className={`menu-title ${HelpMenuItem.includes(selectedMenuItem) ? "active" : ""
-              }`}
+            className={`menu-title ${
+              HelpMenuItem.includes(selectedMenuItem) ? "active" : ""
+            }`}
             {...(isSidebarCollapsedx1 && {
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "help",
@@ -882,8 +952,9 @@ const MainLinks = ({
 
         <div id="" className="menu-itemxse">
           <div
-            className={`menu-title ${MastersMenuItem.includes(selectedMenuItem) ? "active" : ""
-              }`}
+            className={`menu-title ${
+              MastersMenuItem.includes(selectedMenuItem) ? "active" : ""
+            }`}
             {...(isSidebarCollapsedx1 && {
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Masters",
@@ -905,15 +976,17 @@ const MainLinks = ({
           {/* {Purchases && ( */}
 
           <ul
-            className={`submenu ${activeMenu === "masters" ? "opensidebardropdownx5" : ""
-              }`}
+            className={`submenu ${
+              activeMenu === "masters" ? "opensidebardropdownx5" : ""
+            }`}
           >
             <li
               onClick={() => {
                 handleMenuItemClick("create-masters");
               }}
-              className={`menu-item ${selectedMenuItem === "create-masters" ? "active" : ""
-                }`}
+              className={`menu-item ${
+                selectedMenuItem === "create-masters" ? "active" : ""
+              }`}
             >
               Masters
             </li>
@@ -921,8 +994,9 @@ const MainLinks = ({
               onClick={() => {
                 handleMenuItemClick("manage-currency");
               }}
-              className={`menu-item ${selectedMenuItem === "manage-currency" ? "active" : ""
-                }`}
+              className={`menu-item ${
+                selectedMenuItem === "manage-currency" ? "active" : ""
+              }`}
             >
               Currency
             </li>

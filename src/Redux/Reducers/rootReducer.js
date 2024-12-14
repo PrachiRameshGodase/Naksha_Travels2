@@ -22,7 +22,13 @@ import { isIdEqualReducer, productTypeReducer } from './ManageStateReducer/manag
 import { createMasterReducer, listMasterReducer } from './masterReducers';
 import { saleByCustomerReducer } from './ReportReducers/SaleReportReducers';
 import { accountTransactionReducer } from './ReportReducers/AccountReportReducers';
-import { createHotelReducer, createHotelRoomReducer, hotelDetailReducer, hotelrOOMDetailReducer, listHotelReducer, listHotelrOOMReducer } from './hotelReducers';
+import { createHotelReducer, createHotelRoomReducer, hotelDetailReducer, hotelrOOMDetailReducer, hotelRoomStatusReducer, hotelStatusReducer, hoteltDeleteReducer, hoteltRoomDeleteReducer, listHotelReducer, listHotelrOOMReducer } from './hotelReducers';
+import { createTourPackageReducer, listTourPackageReducer, tourPackagedeleteReducer, tourPackageDetailReducer, tourPackagestatusReducer } from './tourPackageReducers';
+import { createFlightReducer, flightdeleteReducer, flightDetailReducer, flightstatusReducer, listFlightReducer } from './flightReducers';
+import { createVisaReducer, listVisaReducer, visadeleteReducer, visaDetailReducer, visastatusReducer } from './visaReducers';
+import { carHiredeleteReducer, carHireDetailReducer, carHirestatusReducer, createcarHireReducer, listCarHireReducer } from './carHireReducers';
+import { assistdeleteReducer, assistDetailReducer, assiststatusReducer, createAssistReducer, listAssistReducer } from './assistReducers';
+import { createInsuranceReducer, InsurancedeleteReducer, InsuranceDetailReducer, InsurancestatusReducer, listInsuranceReducer } from './insuranceReducers';
 const reducer = combineReducers({
     addItemsReducer,
 
@@ -37,10 +43,51 @@ const reducer = combineReducers({
     createHotel:createHotelReducer,
     hotelList:listHotelReducer,
     hotelDetail:hotelDetailReducer,
+    hotelStatus:hotelStatusReducer,
+    hotelDelete:hoteltDeleteReducer,
+
     createHotelRoom:createHotelRoomReducer,
     hotelRoomList:listHotelrOOMReducer,
     hotelRoomDetail:hotelrOOMDetailReducer,
+    hotelRoomStatus:hotelRoomStatusReducer,
+    hotelRoomDelete:hoteltRoomDeleteReducer,
 
+    createTourPackage:createTourPackageReducer,
+    tourPackageList:listTourPackageReducer,
+    tourPackageDetail:tourPackageDetailReducer,
+    tourPackageStatus:tourPackagestatusReducer,
+    tourPackageDelete:tourPackagedeleteReducer,
+
+    createFlight:createFlightReducer,
+    flightList:listFlightReducer,
+    flightDetails:flightDetailReducer,
+    flightStatus:flightstatusReducer,
+    flightDelete:flightdeleteReducer,
+    
+    createVisa:createVisaReducer,
+    visaList:listVisaReducer,
+    visaDetails:visaDetailReducer,
+    visaStatus:visastatusReducer,
+    visaDelete:visadeleteReducer,
+
+    createCarHire:createcarHireReducer,
+    carHireList:listCarHireReducer,
+    carHireDetails:carHireDetailReducer,
+    carHireStatus:carHirestatusReducer,
+    carHireDelete:carHiredeleteReducer,
+
+    createAssist:createAssistReducer,
+    assistList:listAssistReducer,
+    assistDetails:assistDetailReducer,
+    assistStatus:assiststatusReducer,
+    assistDelete:assistdeleteReducer,
+    
+    createInsurance:createInsuranceReducer,
+    insuranceList:listInsuranceReducer,
+    insuranceDetails:InsuranceDetailReducer,
+    insuranceStatus:InsurancestatusReducer,
+    insuranceDelete:InsurancedeleteReducer,
+    
     masterData: masterDataReducer,
     autoId: autoGenerateIdReducer,
     autoIdList: autoGenerateIdListReducer,

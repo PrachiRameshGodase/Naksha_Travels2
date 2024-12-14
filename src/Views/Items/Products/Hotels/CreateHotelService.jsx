@@ -1,28 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
-import { RxCross2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import NumericInput from "../../../Helper/NumericInput";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import {
-  fetchGetCities,
-  fetchGetCountries,
-  fetchGetStates,
+  fetchGetCountries
 } from "../../../../Redux/Actions/globalActions";
 import {
-  CreateHotelAction,
   CreateHotelRoomAction,
+  hotelRoomDetailsAction
 } from "../../../../Redux/Actions/hotelActions";
+import {
+  SubmitButton2,
+} from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CreateHotelService = () => {
   const Navigate = useNavigate();
@@ -30,6 +28,8 @@ const CreateHotelService = () => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
   const hotelRoomCreates = useSelector((state) => state?.createHotelRoom);
+  const hotelRoomDetails = useSelector((state) => state?.hotelRoomDetail);
+  const hotelRoomData = hotelRoomDetails?.data?.data?.room || {};
 
   const hotelType = ShowMasterData("35");
   const occupancy = ShowMasterData("36");
@@ -50,12 +50,12 @@ const CreateHotelService = () => {
     amenities: null,
     availability_status: 1,
     description: null,
+    price: 0,
     upload_documents: [],
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
-  console.log("formData", formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -86,6 +86,40 @@ const CreateHotelService = () => {
     dispatch(fetchGetCountries());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (itemId) {
+      const queryParams = {
+        room_id: itemId,
+      };
+      dispatch(hotelRoomDetailsAction(queryParams));
+    }
+  }, [dispatch, itemId]);
+
+  useEffect(() => {
+    if (itemId && isEdit && hotelRoomData) {
+      setFormData({
+        ...formData,
+        id: hotelRoomData?.id,
+        room_type: hotelRoomData?.room_type,
+        room_number: hotelRoomData?.room_number,
+        occupancy_id: hotelRoomData?.occupancy_id,
+        occupancy_name: hotelRoomData?.occupancy_name,
+        bed_id: hotelRoomData?.bed_id,
+        bed_name: hotelRoomData?.bed_name,
+        meal_id: hotelRoomData?.meal_id,
+        meal_name: hotelRoomData?.meal_name,
+        max_occupancy: hotelRoomData?.max_occupancy,
+        amenities: hotelRoomData?.amenities,
+        price: hotelRoomData?.price,
+        availability_status: hotelRoomData?.availability_status,
+        description: hotelRoomData?.description,
+        upload_documents: hotelRoomData?.upload_documents
+          ? JSON.parse(hotelRoomData.upload_documents)
+          : [],
+      });
+    }
+  }, [itemId, isEdit, hotelRoomData]);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -99,7 +133,7 @@ const CreateHotelService = () => {
       toast.error("Error updating hotel room:", error);
     }
   };
-  console.log("itemId", itemId)
+
   return (
     <div>
       <>
@@ -268,9 +302,9 @@ const CreateHotelService = () => {
                 </div>
 
                 <SubmitButton2
-                  // isEdit=""
-                  // itemId=""
-                  cancel="hotel-services"
+                  isEdit={isEdit}
+                  itemId={itemId}
+                  cancel="create-hotelservices"
                 />
               </div>
             </form>

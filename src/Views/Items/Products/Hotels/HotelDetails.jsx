@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import HotelServices from "./HotelServices";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import { formatDate3 } from "../../../Helper/DateFormat";
+import Attachment from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import HotelServices from "./HotelServices";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
+  const images = JSON.parse(data?.upload_documents || '[]');
+
   return (
     <>
       <>
@@ -91,7 +93,7 @@ const HotelDetails = ({ data }) => {
                         </p>
                       </li>
 
-                      {/* <li><span>Attachments</span><h1>:</h1><p><Attachment attachments={images}/></p></li> */}
+                      <li><span>Attachments</span><h1>:</h1><p><Attachment attachments={images}/></p></li>
                     </ul>
                   </div>
                 </div>

@@ -13,7 +13,7 @@ const Services = () => {
         setSelectedRows(selectAll ? [] : serviceList?.map((row) => row.id));
       };
     const handleRowClicked = (item) => {
-        console.log("item", item)
+        
         navigate(`/dashboard/${item?.route}-services`); 
       };
   return (

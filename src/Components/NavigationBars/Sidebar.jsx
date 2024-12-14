@@ -131,6 +131,17 @@ import CreateTourPackage from "../../Views/Items/Products/TourPackage/CreateTour
 import TourPackageDetails from "../../Views/Items/Products/TourPackage/TourPackageDetails";
 import CreateHotelService from "../../Views/Items/Products/Hotels/CreateHotelService";
 import HotelServicesDetails from "../../Views/Items/Products/Hotels/HotelServicesDetails";
+import Visas from "../../Views/Items/Products/Visa/Visas";
+import CreateVisa from "../../Views/Items/Products/Visa/CreateVisa";
+import CarHires from "../../Views/Items/Products/CarHire/CarHires";
+import CreateCarHires from "../../Views/Items/Products/CarHire/CreateCarHire";
+import CarHireDetails from "../../Views/Items/Products/CarHire/CarHireDetails";
+import Assit from "../../Views/Items/Products/Assits/Assits";
+import CreateAssit from "../../Views/Items/Products/Assits/CreateAssit";
+import AssitDetails from "../../Views/Items/Products/Assits/AssitDetails";
+import CreateInsurance from "../../Views/Items/Products/Insurance/CreateInsurance";
+import Insurances from "../../Views/Items/Products/Insurance/Insurances";
+import VisaDetails from "../../Views/Items/Products/Visa/VisaDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -327,6 +338,32 @@ const Sidebar = ({ loggedInUserData }) => {
         return < CreateTourPackage/>;
       case "tour-package-details":
         return <TourPackageDetails/>;
+
+      case "visas-services":
+        return <Visas/>;
+      case "create-visas":
+        return < CreateVisa/>;
+      case "visas-details":
+        return <VisaDetails/>;
+
+      case "car-hire-services":
+        return <CarHires/>;
+      case "create-car-hire":
+        return < CreateCarHires/>;
+      case "car-hire-details":
+        return <CarHireDetails/>;
+      
+      case "assists-services":
+        return <Assit/>;
+      case "create-assists":
+        return <CreateAssit/>;
+      case "assists-details":
+        return <AssitDetails/>;
+
+      case "insurances-services":
+        return <Insurances/>;
+      case "create-insurances":
+        return <CreateInsurance/>;
 
       //customers
       case "customers":

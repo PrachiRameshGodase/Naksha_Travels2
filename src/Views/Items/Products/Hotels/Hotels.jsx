@@ -194,7 +194,7 @@ const Hotels = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <DatePicker
+            {/* <DatePicker
               dateRange={dateRange}
               setDateRange={setDateRange}
               setSpecificDate={setSpecificDate}
@@ -202,7 +202,7 @@ const Hotels = () => {
               setSearchTrigger={setSearchTrigger}
               searchTrigger={searchTrigger}
               resetPageIfNeeded={resetPageIfNeeded}
-            />
+            /> */}
 
             {/* <FilterBy
               setStatus={setStatus}
@@ -357,9 +357,9 @@ const Hotels = () => {
                                     : ""
                                 }
                               >
-                                {item?.status == "0"
+                                {item?.status == "1"
                                   ? "Active"
-                                  : item?.status == "1"
+                                  : item?.status == "0"
                                   ? "Inactive"
                                   : ""}
                               </p>
