@@ -17,6 +17,11 @@ import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreeze
 import { MultiImageUpload } from "../../Helper/ComponentHelper/ImageUpload";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import BankDetails from "../Vendors/BankDetails";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import Documents from "./Documents";
+import VaccinationDetails from "./VaccinationDetails";
+import InsuranceDetails from "./InsuranceDetails";
+import PaymentDetails from "./PaymentDetails";
 const CreateCustomer = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -53,7 +58,6 @@ const CreateCustomer = () => {
     remarks: "",
     upload_documents: [],
   });
-
 
   useEffect(() => {
     if ((cusId && isEdit) || (cusId && isEdit && isDuplicate)) {
@@ -107,7 +111,6 @@ const CreateCustomer = () => {
   // for set remark data when  duplicate or update
   useEffect(() => {
     if ((user?.id && isEdit) || (user?.id && isDuplicate)) {
-
       setUserData((prevUserData) => ({
         ...prevUserData,
         remarks: user?.remarks,
@@ -125,7 +128,6 @@ const CreateCustomer = () => {
         });
       }
     }
-
   }, [user]);
 
   //fetch all seperate components state data
@@ -190,12 +192,18 @@ const CreateCustomer = () => {
       setSwitchCusData("Contact");
     } else if (switchCusData === "Contact") {
       setSwitchCusData("Bank");
-    }
-    else if (switchCusData === "Bank") {
+    } else if (switchCusData === "Bank") {
+      setSwitchCusData("Payment Details");
+    } else if (switchCusData === "Payment Details") {
       setSwitchCusData("Remark");
-    }
-    else if (switchCusData === "Remark") {
+    } else if (switchCusData === "Remark") {
       setSwitchCusData("Upload Image/Document");
+    } else if (switchCusData === "Upload Image/Document") {
+      setSwitchCusData("Documents");
+    } else if (switchCusData === "Documents") {
+      setSwitchCusData("Vaccination Details");
+    } else if (switchCusData === "Vaccination Details") {
+      setSwitchCusData("Insurance Details");
     }
   };
 
@@ -246,209 +254,139 @@ const CreateCustomer = () => {
         <div className="ccfz1 formsectionx1">
           <div className="insideccfz1">
             <button
-              className={`type-button ${switchCusData === "Basic" && "selectedbtnx2"
-                }`}
+              className={`type-button ${
+                switchCusData === "Basic" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Basic")}
             >
               (1) Basic Details{" "}
-              {tick?.basicTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              {tick?.basicTick && <>{otherIcons.backtick_svg}</>}
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick ? "" : ""}  ${switchCusData === "Address" && "selectedbtnx2"
-                }`}
+              className={`type-button ${tick?.basicTick ? "" : ""}  ${
+                switchCusData === "Address" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Address")}
             >
-              (2) Address{" "}
-              {tick?.addressTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              (2) Address {tick?.addressTick && <>{otherIcons.backtick_svg}</>}
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
-                } ${switchCusData === "Contact" && "selectedbtnx2"}`}
+              className={`type-button ${
+                tick?.basicTick && tick?.addressTick ? "" : ""
+              } ${switchCusData === "Contact" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Contact")}
             >
               (3) Contact Persons{" "}
-              {contactTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              {contactTick && <>{otherIcons.backtick_svg}</>}
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick &&
+              className={`type-button ${
+                tick?.basicTick &&
                 tick?.addressTick &&
                 contactTick &&
                 tick?.addressTick
-                ? ""
-                : ""
-                } ${switchCusData === "Bank" && "selectedbtnx2"}`}
+                  ? ""
+                  : ""
+              } ${switchCusData === "Bank" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Bank")}
             >
               (4) Bank Details
-              {tick?.bankTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              {tick?.bankTick && <>{otherIcons.backtick_svg}</>}
+            </button>
+
+            <button
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick
+                  ? ""
+                  : ""
+              } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
+              onClick={() => setSwitchCusData("Payment Details")}
+            >
+              (4)Payment Details
+              {tick?.bankTick && <>{otherIcons.backtick_svg}</>}
             </button>
 
             {/* remark button */}
             <button
-              className={`type-button ${tick?.basicTick && tick?.addressTick && contactTick && tick?.bankTick ? "" : ""
-                } ${switchCusData === "Remark" && "selectedbtnx2"}`}
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.bankTick
+                  ? ""
+                  : ""
+              } ${switchCusData === "Remark" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Remark")}
             >
-              (4) Remarks{" "}
-              {tick?.remarkTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              (4) Remarks {tick?.remarkTick && <> {otherIcons.backtick_svg}</>}
             </button>
-            {/* remark button */}
 
             <button
-              className={`type-button ${tick?.basicTick &&
+              className={`type-button ${
+                tick?.basicTick &&
                 tick?.addressTick &&
                 contactTick &&
                 tick?.bankTick &&
                 tick.remarkTick
-                ? ""
-                : ""
-                } ${switchCusData === "Upload Image/Document" && "selectedbtnx2"
-                }`}
+                  ? ""
+                  : ""
+              } ${
+                switchCusData === "Upload Image/Document" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Upload Image/Document")}
             >
-              (5) Upload Image/Document{" "}
-              {uploadTick && (
-                <svg
-                  className="absiconofx56"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={18}
-                  height={18}
-                  color={"#cdcdcd"}
-                  fill={"none"}
-                >
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
+              (6) Upload Image/Document{" "}
+              {uploadTick && <>{otherIcons.backtick_svg}</>}
+            </button>
+
+            <button
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick
+                  ? ""
+                  : ""
+              } ${switchCusData === "Documents" && "selectedbtnx2"}`}
+              onClick={() => setSwitchCusData("Documents")}
+            >
+              (7) Documents
+              {tick?.bankTick && <>{otherIcons.backtick_svg}</>}
+            </button>
+            <button
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick
+                  ? ""
+                  : ""
+              } ${switchCusData === "Vaccination Details" && "selectedbtnx2"}`}
+              onClick={() => setSwitchCusData("Vaccination Details")}
+            >
+              (8) Vaccination Details
+              {tick?.bankTick && <>{otherIcons.backtick_svg}</>}
+            </button>
+
+            <button
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick
+                  ? ""
+                  : ""
+              } ${switchCusData === "Insurance Details" && "selectedbtnx2"}`}
+              onClick={() => setSwitchCusData("Insurance Details")}
+            >
+              (9)Insurance Details
+              {tick?.bankTick && <>{otherIcons.backtick_svg}</>}
             </button>
           </div>
         </div>
@@ -497,6 +435,15 @@ const CreateCustomer = () => {
                   tick={tick}
                 />
 
+                <PaymentDetails
+                  switchCusData={switchCusData}
+                  customerData={{ user, isEdit, isDuplicate }}
+                  userData={userData}
+                  setUserData={setUserData}
+                  updateUserData={updateUserData}
+                  setTick={setTick}
+                  tick={tick}
+                />
                 {switchCusData === "Remark" && (
                   <>
                     <div id="secondx2_customer">
@@ -812,28 +759,47 @@ const CreateCustomer = () => {
                                     </div>
                                   </div>
                                 </div>
-                              ) : (<div className="" key={index} style={{ display: "flex", flexDirection: "row", width: "calc(25% - 16px)", alignItems: "center" }}>
-                                <div className="" style={{ marginTop: "2px" }}
-                                >
-                                  {renderFilePreview()}
-                                </div>
-                                {/* <div className="image-details"> */}
+                              ) : (
                                 <div
-                                  className="image-name" style={{ marginLeft: "10px", marginBottom: "4px" }}
-                                  title={imageName}
+                                  className=""
+                                  key={index}
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    width: "calc(25% - 16px)",
+                                    alignItems: "center",
+                                  }}
                                 >
-                                  {truncatedName}
+                                  <div
+                                    className=""
+                                    style={{ marginTop: "2px" }}
+                                  >
+                                    {renderFilePreview()}
+                                  </div>
+                                  {/* <div className="image-details"> */}
+                                  <div
+                                    className="image-name"
+                                    style={{
+                                      marginLeft: "10px",
+                                      marginBottom: "4px",
+                                    }}
+                                    title={imageName}
+                                  >
+                                    {truncatedName}
+                                  </div>
+                                  <div
+                                    className="delete-icon"
+                                    style={{
+                                      marginBottom: "4px",
+                                      marginLeft: "110px",
+                                    }}
+                                    onClick={() => handleDeleteImage(imageUrl)}
+                                  >
+                                    <MdOutlineDeleteForever />
+                                  </div>
+                                  {/* </div> */}
                                 </div>
-                                <div
-                                  className="delete-icon" style={{ marginBottom: "4px", marginLeft: "110px" }}
-                                  onClick={() =>
-                                    handleDeleteImage(imageUrl)
-                                  }
-                                >
-                                  <MdOutlineDeleteForever />
-                                </div>
-                                {/* </div> */}
-                              </div>)}
+                              )}
                             </>
                           );
                         })}
@@ -841,6 +807,36 @@ const CreateCustomer = () => {
                     </div>
                   </>
                 )}
+
+                <Documents
+                  switchCusData={switchCusData}
+                  customerData={{ user, isEdit, isDuplicate }}
+                  userData={userData}
+                  setUserData={setUserData}
+                  updateUserData={updateUserData}
+                  setTick={setTick}
+                  tick={tick}
+                />
+
+                <VaccinationDetails
+                  switchCusData={switchCusData}
+                  customerData={{ user, isEdit, isDuplicate }}
+                  userData={userData}
+                  setUserData={setUserData}
+                  updateUserData={updateUserData}
+                  setTick={setTick}
+                  tick={tick}
+                />
+
+                <InsuranceDetails
+                  switchCusData={switchCusData}
+                  customerData={{ user, isEdit, isDuplicate }}
+                  userData={userData}
+                  setUserData={setUserData}
+                  updateUserData={updateUserData}
+                  setTick={setTick}
+                  tick={tick}
+                />
               </div>
             </div>
             <div className={`actionbar`}>
@@ -859,7 +855,7 @@ const CreateCustomer = () => {
                     e.preventDefault(); // Prevent form submission if Enter is pressed outside of the button
                   }
                 }}
-              //  className={` ${tick?.basicTick ? "" : "disabledfield"} `}
+                //  className={` ${tick?.basicTick ? "" : "disabledfield"} `}
               >
                 {cusId && isDuplicate ? (
                   <p>

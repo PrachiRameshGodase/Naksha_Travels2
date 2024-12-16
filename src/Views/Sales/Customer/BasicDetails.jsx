@@ -1,6 +1,7 @@
 //basic details for customer///
 import React, { useEffect, useRef, useState } from "react";
 import {
+  fetchGetCountries,
   fetchMasterData,
 } from "../../../Redux/Actions/globalActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,8 @@ import {
   ShowMasterData,
 } from "../../Helper/HelperFunctions";
 import { CustomDropdown006 } from "../../../Components/CustomDropdown/CustomDropdown06";
+import DatePicker from "react-datepicker";
+import { formatDate } from "../../Helper/DateFormat";
 
 const BasicDetails = ({
   updateUserData,
@@ -29,6 +32,8 @@ const BasicDetails = ({
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
 
+  const countryList = useSelector((state) => state?.countries?.countries);
+
   const { isDuplicate, isEdit, user } = customerData;
   const { masterData } = useSelector((state) => state?.masterData);
   const [customerDisplayName, setCustomerDisplayName] = useState(false);
@@ -37,7 +42,8 @@ const BasicDetails = ({
   const salutation_options = ShowMasterData("4");
   const paymentTerms = ShowMasterData("8");
   const showdeparment = ShowMasterData("10");
-
+  const customerBloodGroup = ShowMasterData("44");
+  const customerGender = ShowMasterData("45");
 
   const [basicDetails, setBasicDetails] = useState({
     salutation: "",
@@ -62,15 +68,38 @@ const BasicDetails = ({
     opening_balance: "",
     department: "",
     // designation: "",
+    d_o_b: "",
+    gender: "",
+    blood_group: "",
+    citizenship: "",
   });
-
-
+  console.log("basicDetails", basicDetails);
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const selectedCountry =
+      name === "country_id"
+        ? countryList?.country?.find(
+            (country) => country.id === parseInt(value)
+          )
+        : null;
+
+    const bloodGroupName = customerBloodGroup?.find(
+      (val) => val?.labelid == value
+    );
+    const genderName = customerGender?.find((val) => val?.labelid == value);
+
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
+      ...(name === "blood_group" && {
+        blood_group: bloodGroupName?.label,
+      }),
+      ...(name === "gender" && {
+        gender: genderName?.label,
+      }),
+      ...(name === "country_id" && { citizenship: value }),
       [name]: value,
     }));
 
@@ -80,6 +109,10 @@ const BasicDetails = ({
       setShowRegisterdFields(false);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchGetCountries());
+  }, [dispatch]);
 
   const handleChange1 = (selectedItems) => {
     setBasicDetails({
@@ -99,14 +132,14 @@ const BasicDetails = ({
       basicDetails?.salutation == 1
         ? "Mr."
         : basicDetails?.salutation == 2
-          ? "Mrs."
-          : basicDetails?.salutation == 3
-            ? "Ms."
-            : basicDetails?.salutation == 4
-              ? "Miss."
-              : basicDetails?.salutation == 5
-                ? "Dr"
-                : "";
+        ? "Mrs."
+        : basicDetails?.salutation == 3
+        ? "Ms."
+        : basicDetails?.salutation == 4
+        ? "Miss."
+        : basicDetails?.salutation == 5
+        ? "Dr"
+        : "";
     if (basicDetails.first_name && basicDetails.last_name) {
       names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
       if (basicDetails.salutation) {
@@ -168,7 +201,10 @@ const BasicDetails = ({
     setCustomerDisplayName(display_name !== "");
     const updatedDetails = {
       ...basicDetails,
-      department: basicDetails?.department?.length === 0 ? null : JSON?.stringify(basicDetails?.department)
+      department:
+        basicDetails?.department?.length === 0
+          ? null
+          : JSON?.stringify(basicDetails?.department),
     };
     updateUserData(updatedDetails);
   }, [basicDetails]);
@@ -273,27 +309,7 @@ const BasicDetails = ({
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus">
             <div className="iconheading">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width={24}
-                height={24}
-                color={"#525252"}
-                fill={"none"}
-              >
-                <path
-                  d="M22 15.5L14 15.5M22 18.5H14M18 21.5L14.0001 21.4998"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M7 6.5H16.75C18.8567 6.5 19.91 6.5 20.6667 7.00559C20.9943 7.22447 21.2755 7.50572 21.4944 7.83329C22 8.58996 22 9.89331 22 12M12 6.5L11.3666 5.23313C10.8418 4.18358 10.3622 3.12712 9.19926 2.69101C8.6899 2.5 8.10802 2.5 6.94427 2.5C5.1278 2.5 4.21956 2.5 3.53806 2.88032C3.05227 3.15142 2.65142 3.55227 2.38032 4.03806C2 4.71956 2 5.6278 2 7.44427V10.5C2 15.214 2 17.5711 3.46447 19.0355C4.7646 20.3357 6.7682 20.4816 10.5 20.4979"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+              {otherIcons.backdetails_svg}
               <p>Basic Details</p>
             </div>
 
@@ -313,10 +329,11 @@ const BasicDetails = ({
                         <button
                           type="button"
                           key={type?.labelid}
-                          className={`type-button ${basicDetails.customer_type === type?.label
-                            ? "selectedbtn"
-                            : ""
-                            }`}
+                          className={`type-button ${
+                            basicDetails.customer_type === type?.label
+                              ? "selectedbtn"
+                              : ""
+                          }`}
                           onClick={() =>
                             setBasicDetails({
                               ...basicDetails,
@@ -373,7 +390,7 @@ const BasicDetails = ({
 
                     <span>
                       <input
-                        autoComplete='off'
+                        autoComplete="off"
                         type="input"
                         name="first_name"
                         value={basicDetails.first_name}
@@ -384,7 +401,7 @@ const BasicDetails = ({
 
                     <span>
                       <input
-                        autoComplete='off'
+                        autoComplete="off"
                         type="input"
                         name="last_name"
                         value={basicDetails.last_name}
@@ -397,30 +414,9 @@ const BasicDetails = ({
                 <div className="form_commonblock">
                   <label>Email</label>
                   <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                      color={"#525252"}
-                      fill={"none"}
-                    >
-                      <path
-                        d="M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M2.01576 13.4756C2.08114 16.5411 2.11382 18.0739 3.24495 19.2093C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.755 19.2093C21.8862 18.0739 21.9189 16.5411 21.9842 13.4756C22.0053 12.4899 22.0053 11.51 21.9842 10.5244C21.9189 7.45883 21.8862 5.92606 20.755 4.79063C19.6239 3.6552 18.0497 3.61565 14.9012 3.53654C12.9607 3.48778 11.0393 3.48778 9.09882 3.53653C5.95033 3.61563 4.37608 3.65518 3.24495 4.79062C2.11382 5.92605 2.08113 7.45882 2.01576 10.5243C1.99474 11.51 1.99474 12.4899 2.01576 13.4756Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    {otherIcons.email_svg}
                     <input
-                      autoComplete='off'
+                      autoComplete="off"
                       type="email"
                       name="email"
                       value={basicDetails.email}
@@ -444,49 +440,9 @@ const BasicDetails = ({
                   <label className="">Company Name</label>
                   <div id="inputx1">
                     <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#525252"}
-                        fill={"none"}
-                      >
-                        <path
-                          d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M8 9L11 9M8 13L11 13"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M2 22L22 22"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      {otherIcons.company_name_svg}
                       <input
-                        autoComplete='off'
+                        autoComplete="off"
                         style={{ width: "100%" }}
                         type="text"
                         name="company_name"
@@ -651,25 +607,89 @@ const BasicDetails = ({
                   </div>
                 </div>
                 <div className="form_commonblock">
-                  <label>Payemnt Terms</label>
+                  <label>Gender</label>
                   <span>
                     {otherIcons.vendor_svg}
                     <CustomDropdown04
-                      label="Reason Name"
-                      options={paymentTerms}
-                      value={basicDetails?.payment_terms}
+                      label="Gender Name"
+                      options={customerGender}
+                      value={basicDetails?.gender}
                       onChange={handleChange}
-                      name="payment_terms"
-                      defaultOption="Enter Payment Terms"
+                      name="gender"
+                      defaultOption="Select Gender"
                       type="masters"
                     />
                   </span>
+                </div>
+               
+              </div>
+              <div className="height5"></div>
+              <div className="height5"></div>
+            </div>
+            <div className="sections">
+              <div id="fcx3s1parent">
+                <div className="form_commonblock ">
+                  <label>Date Of Birth</label>
+                  <span>
+                    {otherIcons.date_svg}
+                    <DatePicker
+                      selected={basicDetails?.d_o_b}
+                      onChange={(date) =>
+                        setBasicDetails({
+                          ...basicDetails,
+                          d_o_b: formatDate(date),
+                        })
+                      }
+                      name="d_o_b"
+                      placeholderText="Enter Date"
+                      dateFormat="dd-MM-yyyy" // Ensure the date format is consistent
+                    />
+                  </span>
+                </div>
+
+                <div className="form_commonblock">
+                  <label>Blood Group</label>
+                  <span>
+                    {otherIcons.vendor_svg}
+                    <CustomDropdown04
+                      label="Blood Group"
+                      options={customerBloodGroup}
+                      value={basicDetails?.blood_group}
+                      onChange={handleChange}
+                      name="blood_group"
+                      defaultOption="Select Blood Group"
+                      type="masters"
+                    />
+                  </span>
+                </div>
+                <div className="form_commonblock">
+                  <label>Citizenship</label>
+                  <div id="inputx1">
+                    <span>
+                      {otherIcons.country_svg}
+
+                      <select
+                        name="country_id"
+                        value={basicDetails.citizenship}
+                        onChange={(e) => handleChange(e, "country_id")}
+                      >
+                        <option value="">Select Country</option>
+                        {countryList?.country?.map((country) => (
+                          <option key={country.id} value={country.id}>
+                            {country.name}
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  </div>
+                  {/* {countryErr && <p className="error-message">
+                                                        {otherIcons.error_svg}
+                                                        Please select the country name</p>} */}
                 </div>
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
             </div>
-
             <div className="breakerci"></div>
 
             <div id="fcx3s1parent">
@@ -796,7 +816,16 @@ const BasicDetails = ({
                           placeholder="Enter VAT Number"
                         /> */}
 
-                        <input autoComplete='off' style={{ width: "100%" }} type="text" name="gst_no" value={basicDetails?.gst_no} onChange={handleChange} placeholder="Enter VAT Number" /></span>
+                        <input
+                          autoComplete="off"
+                          style={{ width: "100%" }}
+                          type="text"
+                          name="gst_no"
+                          value={basicDetails?.gst_no}
+                          onChange={handleChange}
+                          placeholder="Enter VAT Number"
+                        />
+                      </span>
                     </div>
 
                     {/* {!customerGST && <p className="error-message">
@@ -849,7 +878,7 @@ const BasicDetails = ({
                           />
                         </svg>
                         <input
-                          autoComplete='off'
+                          autoComplete="off"
                           required
                           style={{ width: "100%" }}
                           type="text"
@@ -912,7 +941,7 @@ const BasicDetails = ({
                           />
                         </svg>
                         <input
-                          autoComplete='off'
+                          autoComplete="off"
                           style={{ width: "100%" }}
                           type="text"
                           name="business_leagal_name"
@@ -981,7 +1010,7 @@ const BasicDetails = ({
                       />
                     </svg>
                     <input
-                      autoComplete='off'
+                      autoComplete="off"
                       style={{ width: "100%" }}
                       type="text"
                       name="website"
@@ -992,49 +1021,6 @@ const BasicDetails = ({
                   </span>
                 </div>
               </div>
-
-              {/* <div className="form_commonblock">
-                                <label>Place Of Supply</label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M4.5 6L5.22115 4.46154C5.78045 3.26838 6.06009 2.6718 6.62692 2.3359C7.19375 2 7.92084 2 9.375 2H14.625C16.0792 2 16.8062 2 17.3731 2.3359C17.9399 2.6718 18.2196 3.26838 18.7788 4.46154L19.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="text" name="place_of_supply" value={basicDetails.place_of_supply} onChange={handleChange} placeholder="Place Of Supply" /></span>
-                                </div>
-                               
-                            </div> */}
-            </div>
-            {/* <div className="form_commonblock">
-                            <div id="inputx1">
-                                <div id="imgurlanddesc">
-                                    <MultiImageUpload
-                                        formData={basicDetails}
-                                        setFormData={setBasicDetails}
-                                        setFreezLoadingImg={setFreezLoadingImg}
-                                        imgLoader={imgLoader}
-                                        setImgeLoader={setImgeLoader}
-                                    />
-
-                                </div>
-                            </div>
-                        </div> */}
-
-            <div id="fcx3s1parent">
-              {/* <div className="form_commonblock">
-                                <label className=''>Designation</label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
-                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="text" name="designation" value={basicDetails.designation} onChange={handleChange} placeholder="Enter Designation" /></span>
-                                </div>
-                            </div> */}
             </div>
           </div>
           {showPopup && (
