@@ -23,7 +23,7 @@ import { createMasterReducer, listMasterReducer } from './masterReducers';
 import { saleByCustomerReducer } from './ReportReducers/SaleReportReducers';
 import { accountTransactionReducer } from './ReportReducers/AccountReportReducers';
 import { createHotelReducer, createHotelRoomReducer, hotelDetailReducer, hotelrOOMDetailReducer, hotelRoomStatusReducer, hotelStatusReducer, hoteltDeleteReducer, hoteltRoomDeleteReducer, listHotelReducer, listHotelrOOMReducer } from './hotelReducers';
-import { createTourPackageReducer, listTourPackageReducer, tourPackagedeleteReducer, tourPackageDetailReducer, tourPackagestatusReducer } from './tourPackageReducers';
+import { createItineraryReducer, createTourPackageReducer, itinerarydeleteReducer, itinerarystatusReducer, listItineraryReducer, listTourPackageReducer, tourPackagedeleteReducer, tourPackageDetailReducer, tourPackagestatusReducer } from './tourPackageReducers';
 import { createFlightReducer, flightdeleteReducer, flightDetailReducer, flightstatusReducer, listFlightReducer } from './flightReducers';
 import { createVisaReducer, listVisaReducer, visadeleteReducer, visaDetailReducer, visastatusReducer } from './visaReducers';
 import { carHiredeleteReducer, carHireDetailReducer, carHirestatusReducer, createcarHireReducer, listCarHireReducer } from './carHireReducers';
@@ -57,6 +57,10 @@ const reducer = combineReducers({
     tourPackageDetail:tourPackageDetailReducer,
     tourPackageStatus:tourPackagestatusReducer,
     tourPackageDelete:tourPackagedeleteReducer,
+    createItinerary:createItineraryReducer,
+    itineraryList:listItineraryReducer,
+    itineraryStatus:itinerarystatusReducer,
+    itineraryDelete:itinerarydeleteReducer,
 
     createFlight:createFlightReducer,
     flightList:listFlightReducer,

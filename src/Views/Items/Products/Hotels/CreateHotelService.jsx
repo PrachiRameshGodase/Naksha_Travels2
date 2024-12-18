@@ -46,11 +46,11 @@ const CreateHotelService = () => {
     bed_name: null,
     meal_id: 0,
     meal_name: null,
-    max_occupancy: 0,
+    max_occupancy: null,
     amenities: null,
     availability_status: 1,
     description: null,
-    price: 0,
+    price: null,
     upload_documents: [],
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);

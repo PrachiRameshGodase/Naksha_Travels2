@@ -9,6 +9,7 @@
     transition: 0.3s all;
     width: fit-content;
     display: flex;
+    flex-wrap: wrap; 
     align-items: center;
     gap: 5px;
     padding: 4px;
@@ -31,6 +32,16 @@
         background: $primary06;
         border: 1px solid $primary;
       }
+    }
+
+    .type-button {
+      flex: 0 1 calc(15% - 15px); /* 5 buttons per row with gap handling */
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #f9f9f9;
     }
 
     .selectedbtnx2 {
@@ -1660,4 +1671,51 @@
   border-radius: 8px;
 
 
+}
+/* General Table Styling */
+table.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+/* Table Header Styling */
+.employee-table th {
+  padding: 12px;
+  background-color: #f4f4f4;
+  text-align: left;
+  font-weight: 450;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table Cell Styling */
+.employee-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Table Row Hover Effect */
+.employee-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Table Styling for Small Screens */
+@media (max-width: 768px) {
+  .employee-table {
+    font-size: 12px;
+  }
+  .employee-table th, .employee-table td {
+    padding: 8px;
+  }
+}
+
+/* Optional: Styling for Empty Rows */
+.employee-table td.empty {
+  color: #ccc;
+  font-style: italic;
 }

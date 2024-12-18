@@ -3,6 +3,8 @@ import { GoPlus } from "react-icons/go";
 import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import { useSelector } from "react-redux";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
+import { itemLists } from "../../Redux/Actions/listApisActions";
+import { parseJSONofString } from "../../Views/Helper/HelperFunctions";
 
 const CustomDropdown26 = forwardRef((props, ref) => {
   const {
@@ -58,7 +60,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
   const handleOptionSelect = (option) => {
     handleSelect(option);
     setSearchTerm(option.name);
-    setIsValueSelected(true); // Mark as value selected
+    setIsValueSelected(false); // Mark as value selected
+    
     onChange({
       target: { name: "item_id", value: option.id, option },
     });
@@ -68,13 +71,17 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     // Check if the entered value is in the itemList, if not, allow it to be edited
     if (options && !options.some((option) => option.name === searchTerm)) {
       setIsValueSelected(false);
+   
     }
   };
   useEffect(() => {
-    setSearchTerm(itemData?.item_name || ""); // Update search term when item_name changes
+    if (itemData?.item_name) {
+      setSearchTerm(itemData.item_name);
+    } else {
+      setSearchTerm(""); 
+    }
   }, [itemData?.item_name]);
-
-
+  
   return (
     <div
       tabIndex="0"

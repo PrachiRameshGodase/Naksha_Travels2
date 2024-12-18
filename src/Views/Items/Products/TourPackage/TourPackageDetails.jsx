@@ -10,10 +10,11 @@ import {
   tourPackagedeleteActions,
   tourPackageDetailsAction,
   tourPackagestatusActions,
-} from "../../../../Redux/Actions/tourPackage";
+} from "../../../../Redux/Actions/tourPackageActions";
 import Attachment from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import Itinerary from "./Itinerary";
 
 const TourPackageDetails = () => {
   const navigate = useNavigate();
@@ -23,8 +24,12 @@ const TourPackageDetails = () => {
   // Fetch data from Redux store
   const tourPackageDetails = useSelector((state) => state?.tourPackageDetail);
   const tourPackageData = tourPackageDetails?.data?.data?.data || {};
-  const tourPackageStatusUpdate = useSelector((state) => state?.tourPackageStatus);
-  const tourPackageDeleteUpdate = useSelector((state) => state?.tourPackageDelete);
+  const tourPackageStatusUpdate = useSelector(
+    (state) => state?.tourPackageStatus
+  );
+  const tourPackageDeleteUpdate = useSelector(
+    (state) => state?.tourPackageDelete
+  );
 
   const [activeSection, setActiveSection] = useState("roomDetails");
   const [switchValue, setSwitchValue] = useState(tourPackageData?.status); // State for the switch button value
@@ -99,9 +104,8 @@ const TourPackageDetails = () => {
 
   return (
     <>
-    {(tourPackageStatusUpdate?.loading || tourPackageDeleteUpdate?.loading) && (
-        <MainScreenFreezeLoader />
-      )}
+      {(tourPackageStatusUpdate?.loading ||
+        tourPackageDeleteUpdate?.loading) && <MainScreenFreezeLoader />}
       {tourPackageDetails?.loading ? (
         <Loader02 />
       ) : (
@@ -182,6 +186,14 @@ const TourPackageDetails = () => {
                 onClick={() => setActiveSection("roomDetails")}
               >
                 Tour Package Details
+              </div>
+              <div
+                className={`divac12cs32 ${
+                  activeSection === "itinerary" ? "activediv12cs" : ""
+                }`}
+                onClick={() => setActiveSection("itinerary")}
+              >
+                Itinerary List
               </div>
             </div>
 
@@ -270,6 +282,12 @@ const TourPackageDetails = () => {
                     </div>
                   </div>
                 </>
+              )}
+
+              {activeSection === "itinerary" && (
+                <div className="insidx23s2302">
+                  <Itinerary data={tourPackageData} />
+                </div>
               )}
             </div>
           </div>

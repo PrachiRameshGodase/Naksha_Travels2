@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../../Helper/DateFormat";
@@ -19,17 +19,32 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import { tourPackageListAction } from "../../../../Redux/Actions/tourPackageActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
 
-const TourPackages = () => {
+import {
+  flightdeleteActions,
+  flightListAction,
+  flightstatusActions,
+} from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
+import { MdArrowOutward } from "react-icons/md";
+import CreateItinerary from "./CreateItinerary";
+import {
+  itinerarydeleteActions,
+  itineraryListAction,
+  itinerarystatusActions,
+} from "../../../../Redux/Actions/tourPackageActions";
+import Attachment from "../../../Helper/Attachment";
+
+const Itinerary = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
-  
-  const tourPackageListData = useSelector((state) => state?.tourPackageList);
-  const tourPackageLists = tourPackageListData?.data?.data || [];
-  const totalItems = tourPackageListData?.data?.count || 0;
+
+  const itinaeraryListData = useSelector((state) => state?.itineraryList);
+  const itineraryLists = itinaeraryListData?.data?.data || [];
+  const totalItems = itinaeraryListData?.data?.count || 0;
+  const itineraryStatusUpdate = useSelector((state) => state?.itineraryStatus);
+  console.log("itineraryLists", itinaeraryListData);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -84,59 +99,8 @@ const TourPackages = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchTourPackages = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && {
-          sort_by: selectedSortBy,
-          sort_order: sortOrder,
-        }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
-        }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
-        }),
-      };
-
-      dispatch(tourPackageListAction(sendData));
-    } catch (error) {
-      console.error("Error fetching tour package:", error);
-    }
-  }, [searchTrigger]);
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchTourPackages();
-    // }
-  }, [searchTrigger]);
-
   const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/tour-package-details?id=${quotation.id}`);
+    navigate(`/dashboard/flight-details?id=${quotation.id}`);
   };
 
   //logic for checkBox...
@@ -151,34 +115,102 @@ const TourPackages = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = tourPackageListData?.data?.data?.every((row) =>
+    const areAllRowsSelected = itineraryLists?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, tourPackageListData?.data?.data]);
+  }, [selectedRows, itineraryLists]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : tourPackageListData?.data?.data?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : itineraryLists?.map((row) => row.id));
   };
   //logic for checkBox...
 
+  const [selectedItem, setSelectedItem] = useState({});
+  const [showPopup, setShowPopup] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleClickOnAdd = () => {
+    setSelectedItem({});
+    setShowPopup(true);
+    setIsEdit(false);
+  };
+  const handleDeleteItinerary = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this itinerary?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        itinerary_id: item?.id,
+      };
+      const sendData2={
+        tour_package_id: data?.id,
+      }
+      dispatch(itinerarydeleteActions(sendData, sendData2));
+    }
+  };
+  const handleEditItinerary = (item) => {
+    setSelectedItem(item);
+    setShowPopup(true);
+    setIsEdit(true);
+  };
+
+  const handleStatusChange = async (item) => {
+    const newValue = item?.status == "1" ? "0" : "1"; // Toggle status
+    const actionText = newValue == "0" ? "Inactive" : "Active";
+
+    // Confirmation modal
+    const result = await Swal.fire({
+      text: `Do you want to make this itinerary ${actionText}?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed && item?.id) {
+      const sendData = {
+        itinerary_id: item?.id,
+        status: newValue,
+      };
+      const sendData2={
+        tour_package_id: data?.id,
+      }
+      dispatch(itinerarystatusActions(sendData, sendData2))
+        .then(() => {
+          // navigate(`/dashboard/tour-package-details?id=${item?.id}`);
+        })
+        .catch((error) => {
+          toast.error("Failed to update itinerary status");
+          console.error("Error updating itinerary status:", error);
+        });
+    }
+  };
+  useEffect(() => {
+    const sendData = {
+      tour_package_id: data?.id,
+    };
+    dispatch(itineraryListAction(sendData));
+  }, [data?.id]);
   return (
     <>
       <TopLoadbar />
-      {tourPackageListData?.loading && <MainScreenFreezeLoader />}
+      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading) && (
+        <MainScreenFreezeLoader />
+      )}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              All Tour Packages
+              All Itinerary
             </h1>
             <p id="firsttagp">{totalItems} Records</p>
             <SearchBox
-              placeholder="Search In Tour Packages"
+              placeholder="Search In Itinerary"
               onSearch={onSearch}
               section={searchTrigger}
             />
@@ -214,8 +246,8 @@ const TourPackages = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link className="linkx1" to={"/dashboard/create-tour-package"}>
-              New Tour Package <GoPlus />
+            <Link className="linkx1" onClick={handleClickOnAdd}>
+              New Itinerary <GoPlus />
             </Link>
             <ResizeFL />
           </div>
@@ -238,41 +270,39 @@ const TourPackages = () => {
                     <div className="checkmark"></div>
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs1">
+                  <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
-                    Package Name
-                  </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.customer_svg}
-                    Destination
+                    Day
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
-                    Hotel Type
+                    Day Plan
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Days
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Description
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Price
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Uploaded Document
                   </div>
-
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6">
+                    {otherIcons?.status_svg}
+                    Actions
+                  </div>
                 </div>
 
-                {tourPackageListData?.loading ? (
+                {itinaeraryListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {tourPackageLists?.length >= 1 ? (
+                    {itineraryLists?.length >= 1 ? (
                       <>
-                        {tourPackageLists?.map((item, index) => (
+                        {itineraryLists?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
                               selectedRows.includes(item?.id)
@@ -293,62 +323,82 @@ const TourPackages = () => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs1"
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
                             >
-                              {item?.package_name || ""}
+                              {item?.day || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs1"
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
                             >
-                              {item?.destination || ""}
+                              {item?.day_plan || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs3"
+                              title={item?.description || ""}
+                              style={{ cursor: "pointer" }}
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
                             >
-                              {" "}
-                              <ShowMastersValue
-                                type="35"
-                                id={item?.hotel_type}
+                              {item?.description || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
+                            >
+                              <Attachment
+                                attachments={JSON.parse(
+                                  item?.upload_documents || "[]"
+                                )}
                               />
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
-                              {item?.days || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {item?.price_per_person || ""}
+                              <p
+                                className={
+                                  item?.status == "1"
+                                    ? "approved"
+                                    : item?.status == "0"
+                                    ? "draft"
+                                    : ""
+                                }
+                              >
+                                {item?.status == "0"
+                                  ? "Inactive"
+                                  : item?.status == "1"
+                                  ? "Active"
+                                  : ""}
+                                <span
+                                  onClick={() => {
+                                    handleStatusChange(item);
+                                  }}
+                                >
+                                  <MdArrowOutward />
+                                </span>
+                              </p>
                             </div>
 
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
                             >
-                              <div>
-                                {" "}
-                                <p
-                                  className={
-                                    item?.status == "1"
-                                      ? "open"
-                                      : item?.status == "0"
-                                      ? "declined"
-                                      : ""
-                                  }
-                                >
-                                  {item?.status == "1"
-                                    ? "Active"
-                                    : item?.status == "0"
-                                    ? "Inactive"
-                                    : ""}
-                                </p>
-                              </div>
+                              <span
+                                onClick={() => {
+                                  handleEditItinerary(item);
+                                }}
+                              >
+                                {otherIcons.edit_svg}
+                              </span>
+                              <span
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => {
+                                  handleDeleteItinerary(item);
+                                }}
+                              >
+                                {otherIcons.delete_svg}
+                              </span>
                             </div>
                           </div>
                         ))}
@@ -371,10 +421,22 @@ const TourPackages = () => {
             </div>
           </div>
         </div>
+        {showPopup && (
+          <CreateItinerary
+            popupContent={{
+              setshowAddPopup: setShowPopup,
+              showAddPopup: showPopup,
+              isEditIndividual: isEdit,
+              selectedItem,
+
+              setSearchTrigger,
+            }}
+          />
+        )}
         <Toaster />
       </div>
     </>
   );
 };
 
-export default TourPackages;
+export default Itinerary;

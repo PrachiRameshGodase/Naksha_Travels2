@@ -94,8 +94,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-                formData?.image_url !== null &&
-                formData?.image_url !== "0" ? (
+              formData?.image_url !== null &&
+              formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -112,8 +112,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-                formData?.upload_image !== null &&
-                formData?.upload_image !== "0" ? (
+              formData?.upload_image !== null &&
+              formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -454,7 +454,11 @@ export const MultiImageUploadHelp = ({
               {formData?.upload_documents?.map((image, index) => (
                 <div key={index}>
                   <div id="Show_delete_img_new_vendor">
-                    <p style={{ width: "50%" }}>{image.name}</p>
+                    <p style={{ width: "50%" }} title={image?.name || ""}>
+                      {image?.name?.length > 20
+                        ? `${image?.name.substring(0, 20)}...`
+                        : image?.name}
+                    </p>
 
                     <div onClick={() => handleDeleteImage(image)}>
                       <MdOutlineDeleteForever />
@@ -718,8 +722,9 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                }`}
+              className={`close-button02  close_opop  ${
+                currentPOP ? "close_opop" : ""
+              }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1063,8 +1068,9 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                          }`}
+                        className={`close-button02  close_opop  ${
+                          currentPOP ? "close_opop" : ""
+                        }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
@@ -1159,6 +1165,329 @@ export const MultiImageUploadEmail = ({
             )}
         </div>
       </div>
+    </>
+  );
+};
+
+export const MultiImageUploadDocument = ({
+  formData,
+  setFormData,
+  setFreezLoadingImg,
+  imgLoader,
+  setImgeLoader,
+  index,
+}) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(""); // For the popup
+  const popupRef = useRef(null);
+
+  // Parse upload_documents if it's a JSON string
+  const uploadDocuments = Array.isArray(formData?.upload_documents)
+    ? formData?.upload_documents
+    : JSON.parse(formData?.upload_documents || "[]");
+
+  const handleImageChange = (e) => {
+    setFreezLoadingImg(true);
+    setImgeLoader(true);
+
+    const updatedUploadDocuments = [...uploadDocuments]; // Start with existing docs
+
+    Promise.all(
+      Array.from(e.target.files).map((file) => {
+        const imageRef = ref(imageDB, `Documents/${v4()}`);
+        return uploadBytes(imageRef, file)
+          .then(() => getDownloadURL(imageRef))
+          .then((url) => {
+            updatedUploadDocuments.push({
+              url: url,
+              name: file.name,
+            });
+          })
+          .catch((error) => {
+            setFreezLoadingImg(false);
+            setImgeLoader("fail");
+            console.error("Upload error:", error);
+          });
+      })
+    )
+      .then(() => {
+        setImgeLoader("success");
+        setFreezLoadingImg(false);
+        // Update the formData with stringified JSON
+        setFormData(index, {
+          ...formData,
+          upload_documents: JSON.stringify(updatedUploadDocuments),
+        });
+      })
+      .catch((error) => console.error("Error in uploads:", error));
+  };
+
+  const handleDeleteImage = (imageUrl) => {
+    const updatedUploadDocuments = uploadDocuments.filter(
+      (image) => image.url !== imageUrl
+    );
+
+    setFormData(index, {
+      ...formData,
+      upload_documents: JSON.stringify(updatedUploadDocuments),
+    });
+  };
+
+  const showImagePopup = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    OverflowHideBOdy(true); // Hide body scroll
+    setShowPopup(true);
+  };
+
+  return (
+    <>
+      <div className="form-group">
+        <label>Upload Images/Documents</label>
+        <div className="file-upload" tabIndex="0">
+          <input
+            type="file"
+            id={`file_${index}`}
+            className="inputfile"
+            onChange={handleImageChange}
+            multiple
+          />
+          <label htmlFor={`file_${index}`} className="file-label">
+            <div id="spc5s6">
+              {uploadDocuments.length ? (
+                `${uploadDocuments.length} Images Uploaded`
+              ) : (
+                <>{otherIcons.export_svg} Browse Files</>
+              )}
+            </div>
+          </label>
+        </div>
+
+        {/* Render uploaded documents */}
+        {imgLoader === "success" &&
+          uploadDocuments.map((image, idx) => (
+            <div key={idx} id="Show_delete_img_new_vendor">
+              <p style={{ width: "50%" }} title={image?.name || ""}>
+                {image?.name?.length > 20
+                  ? `${image?.name.substring(0, 20)}...`
+                  : image?.name}
+              </p>
+
+              <div onClick={() => handleDeleteImage(image.url)}>
+                <MdOutlineDeleteForever />
+              </div>
+              <div onClick={() => showImagePopup(image.url)}>
+                <FaEye />
+              </div>
+            </div>
+          ))}
+      </div>
+
+      {/* Popup for viewing images */}
+      {showPopup && (
+        <div
+          className="mainxpopups2"
+          ref={popupRef}
+          style={{ marginTop: "10px" }}
+        >
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setShowPopup(false)}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={selectedImage}
+              alt="Selected Image"
+              height={500}
+              width={500}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export const SingleImageUploadDocument = ({
+  formData,
+  setFormData,
+  setFreezLoadingImg,
+  imgLoader,
+  setImgeLoader,
+  index,
+}) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(""); // For the popup
+  const popupRef = useRef(null);
+
+  // Parse photo if it's a JSON string
+  const photo = formData?.photo ? JSON.parse(formData?.photo || "{}") : null;
+
+  const handleImageChange = (e) => {
+    if (e.target.files.length === 0) return;
+
+    const file = e.target.files[0];
+    setFreezLoadingImg(true);
+    setImgeLoader(true);
+
+    const imageRef = ref(imageDB, `Documents/${v4()}`);
+    uploadBytes(imageRef, file)
+      .then(() => getDownloadURL(imageRef))
+      .then((url) => {
+        const updatedPhoto = {
+          url: url,
+          name: file.name,
+        };
+
+        setFormData(index, {
+          ...formData,
+          photo: JSON.stringify(updatedPhoto),
+        });
+        setImgeLoader("success");
+        setFreezLoadingImg(false);
+      })
+      .catch((error) => {
+        setFreezLoadingImg(false);
+        setImgeLoader("fail");
+        console.error("Upload error:", error);
+      });
+  };
+
+  const handleDeleteImage = () => {
+    setFormData(index, {
+      ...formData,
+      photo: JSON.stringify(null),
+    });
+  };
+
+  const showImagePopup = () => {
+    if (photo?.url) {
+      setSelectedImage(photo.url);
+      OverflowHideBOdy(true); // Hide body scroll
+      setShowPopup(true);
+    }
+  };
+
+  return (
+    <>
+      <div className="form-group" style={{ width: "202px" }}>
+        <div
+          className="file-upload"
+          tabIndex="0"
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              const input = document.getElementById("file");
+              input.click();
+            }
+          }}
+        >
+          <input
+            type="file"
+            name="image_url"
+            id="file"
+            className="inputfile"
+            onChange={handleImageChange}
+            multiple
+            style={{ display: "none" }}
+          />
+          <label
+            htmlFor="file"
+            className="filelabelemail"
+            id="uploadAttachment"
+          >
+            <div
+              id="spc5s6"
+              style={{
+                display: "flex",
+                gap: "5px",
+                padding: "6px",
+                border: "1px solid lightgray", // Light gray border
+                borderRadius: "8px", // Rounded corners
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft box shadow
+              }}
+            >
+              {/* Conditionally render the export icon only if photo is not present */}
+              {!photo?.url && (
+                <span
+                  style={{ marginTop: "5px", fill: "blue", cursor: "pointer" }}
+                >
+                  {otherIcons.export_svg}
+                </span>
+              )}
+
+              <div
+                style={{ marginTop: "3px", cursor: "pointer", display: "flex" }}
+              >
+                <h3
+                  id="AttachmentHeading"
+                  style={{
+                    fontWeight: "300",
+                    color: "blue",
+                    fontSize: "16px",
+                  }}
+                >
+                  <p
+                    title={photo?.name || "No file selected"} // Full name shown on hover
+                    style={{
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      marginLeft: !photo?.url ? "24px" : "0",
+
+                      textOverflow: "ellipsis",
+                      maxWidth: "140px", // Limit the width for truncation
+                    }}
+                  >
+                    {photo?.name?.length > 20
+                      ? `${photo.name.substring(0, 20)}...`
+                      : photo?.name || "No file selected"}
+                  </p>
+                </h3>
+              </div>
+              {imgLoader === "success" && photo && (
+                <div
+                  id="Show_delete_img_new_vendor"
+                  style={{ display: "flex", gap: "2px" }}
+                >
+                  <div
+                    onClick={handleDeleteImage}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <MdOutlineDeleteForever />
+                  </div>
+                  <div onClick={showImagePopup} style={{ cursor: "pointer" }}>
+                    <FaEye />
+                  </div>
+                </div>
+              )}
+            </div>
+          </label>
+        </div>
+      </div>
+
+      {/* Popup for viewing photo */}
+      {showPopup && (
+        <div
+          className="mainxpopups2"
+          ref={popupRef}
+          style={{ marginTop: "10px" }}
+        >
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setShowPopup(false)}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={selectedImage}
+              alt="Selected Photo"
+              height={500}
+              width={500}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };

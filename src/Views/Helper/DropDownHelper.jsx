@@ -213,7 +213,6 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
         dropdownRef,
         inputRef,
         optionRefs,
-        // filteredOptions,
         handleKeyDown,
         handleSelect,
     };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { MultiImageUploadHelp } from "../../Helper/ComponentHelper/ImageUpload";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -6,12 +6,13 @@ import NumericInput from "../../Helper/NumericInput";
 import { formatDate } from "../../Helper/DateFormat";
 
 const InsuranceDetails = ({
-  setUserData,
   switchCusData,
   customerData,
-  tick,
-  setTick,
+  userData,
+  setUserData,
   updateUserData,
+  setTick,
+  tick,
 }) => {
   const { isDuplicate, isEdit, user } = customerData;
 
@@ -23,7 +24,6 @@ const InsuranceDetails = ({
     upload_documents: [],
   });
 
-  console.log("insuranceDetails", insuranceDetails)
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
@@ -34,6 +34,15 @@ const InsuranceDetails = ({
       [name]: value,
     }));
   };
+  useEffect(() => {
+    setUserData((prevData) => ({
+      ...prevData,
+      insurance_details: {
+        ...insuranceDetails,
+        upload_documents: JSON.stringify(insuranceDetails.upload_documents), // Pass as stringified JSON
+      },
+    }));
+  }, [insuranceDetails, setUserData]);
 
   
   return (

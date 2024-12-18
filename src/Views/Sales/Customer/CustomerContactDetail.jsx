@@ -15,6 +15,8 @@ const CustomerContactDetail = ({
 }) => {
   const { isDuplicate, isEdit, user } = customerData;
   const salutation = ShowMasterData("4");
+  const customerGender = ShowMasterData("45");
+  const memberRealtion = ShowMasterData("46");
 
   const [contactPersons, setContactPersons] = useState([
     {
@@ -25,6 +27,8 @@ const CustomerContactDetail = ({
       work_phone: "",
       email: "",
       designation: "",
+      gender: "",
+      relationship: "",
     },
   ]);
 
@@ -45,6 +49,8 @@ const CustomerContactDetail = ({
                 salutation: row?.salutation,
                 work_phone: row?.work_phone,
                 designation: row?.designation,
+                gender: row?.gender,
+                relationship: row?.relationship,
                 id: row?.id,
               };
             } else {
@@ -57,6 +63,8 @@ const CustomerContactDetail = ({
                 salutation: row?.salutation,
                 work_phone: row?.work_phone,
                 designation: row?.designation,
+                gender: row?.gender,
+                relationship: row?.relationship,
                 id: row?.id,
               };
             }
@@ -74,8 +82,17 @@ const CustomerContactDetail = ({
 
   const handleChange = (fieldName, index, value) => {
     const updatedContactPersons = [...contactPersons];
+    const genderName = customerGender?.find((val) => val?.labelid == value);
+    const relationName = memberRealtion?.find((val) => val?.labelid == value);
+
     updatedContactPersons[index] = {
       ...updatedContactPersons[index],
+      ...(fieldName === "gender" && {
+        gender: genderName?.label,
+      }),
+      ...(fieldName === "relationship" && {
+        relationship: relationName?.label,
+      }),
       [fieldName]: value,
     };
     setContactPersons(updatedContactPersons);
@@ -96,7 +113,8 @@ const CustomerContactDetail = ({
         mobile_no: "",
         work_phone: "",
         email: "",
-        designation:""
+        gender: "",
+        designation: "",
       },
     ]);
   };
@@ -118,7 +136,7 @@ const CustomerContactDetail = ({
 
   // Handle errors for country, city, and state fields
   // const handlePersonError = !(
-  //   contactPersons[0]?.first_name 
+  //   contactPersons[0]?.first_name
   // );
   const isEmailValid = /\S+@\S+\.\S+/.test(contactPersons[0]?.email);
   const handleEmailError = contactPersons[0]?.email === "" || !isEmailValid;
@@ -132,7 +150,7 @@ const CustomerContactDetail = ({
     }));
     updateUserData({ contact_persons: updatedContactPersons });
   };
-
+  
   return (
     <>
       {switchCusData === "Contact" ? (
@@ -141,42 +159,8 @@ const CustomerContactDetail = ({
             {contactPersons?.map((person, index) => (
               <div className="x1parenchild54" key={index}>
                 <div className="iconheading">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    height={24}
-                    color={"#525252"}
-                    fill={"none"}
-                  >
-                    <rect
-                      x="4"
-                      y="2"
-                      width="17.5"
-                      height="20"
-                      rx="4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                    <path
-                      d="M10.59 13.7408C9.96125 14.162 8.31261 15.0221 9.31674 16.0983C9.80725 16.624 10.3536 17 11.0404 17H14.9596C15.6464 17 16.1928 16.624 16.6833 16.0983C17.6874 15.0221 16.0388 14.162 15.41 13.7408C13.9355 12.7531 12.0645 12.7531 10.59 13.7408Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                    <path
-                      d="M15 9C15 10.1046 14.1046 11 13 11C11.8954 11 11 10.1046 11 9C11 7.89543 11.8954 7 13 7C14.1046 7 15 7.89543 15 9Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                    <path
-                      d="M5 6L2.5 6M5 12L2.5 12M5 18H2.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <p>Contact Persons {index + 1}</p>
+                  {otherIcons.title_svg}
+                  <p>Family Member {index + 1}</p>
                   {index >= 1 && (
                     <AiOutlineDelete
                       onClick={() => deleteContactPerson(index)}
@@ -195,7 +179,8 @@ const CustomerContactDetail = ({
                           value={person.salutation}
                           onChange={(e) =>
                             handleChange("salutation", index, e.target.value)
-                          } e
+                          }
+                          e
                           name="salutation"
                           defaultOption="Select Salutation"
                           type="masters_salutation"
@@ -208,49 +193,9 @@ const CustomerContactDetail = ({
                       <label className="">First Name</label>
                       <div id="inputx1">
                         <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={"#525252"}
-                            fill={"none"}
-                          >
-                            <path
-                              d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M8 9L11 9M8 13L11 13"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M2 22L22 22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          {otherIcons.name_svg}
                           <input
-                             autoComplete='off'
+                            autoComplete="off"
                             value={person.first_name}
                             onChange={(e) =>
                               handleChange("first_name", index, e.target.value)
@@ -266,50 +211,10 @@ const CustomerContactDetail = ({
                       <label className="">Last Name</label>
                       <div id="inputx1">
                         <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={"#525252"}
-                            fill={"none"}
-                          >
-                            <path
-                              d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M8 9L11 9M8 13L11 13"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M2 22L22 22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          {otherIcons.name_svg}
 
                           <input
-                            autoComplete='off'
+                            autoComplete="off"
                             value={person.last_name}
                             onChange={(e) =>
                               handleChange("last_name", index, e.target.value)
@@ -333,53 +238,9 @@ const CustomerContactDetail = ({
                       <label>Email</label>
                       <div id="inputx1">
                         <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={"#525252"}
-                            fill={"none"}
-                          >
-                            <path
-                              d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M14 17H10"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-
+                          {otherIcons.email_svg}
                           <input
-                          autoComplete='off'
+                            autoComplete="off"
                             type="email"
                             value={person.email}
                             onChange={(e) =>
@@ -402,47 +263,7 @@ const CustomerContactDetail = ({
                       <label className="">Mobile Number</label>
                       <div id="inputx1">
                         <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={"#525252"}
-                            fill={"none"}
-                          >
-                            <path
-                              d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M8 9L11 9M8 13L11 13"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M2 22L22 22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          {otherIcons.mobile_no}
                           <NumericInput
                             value={person.mobile_no}
                             onChange={(e) =>
@@ -454,113 +275,53 @@ const CustomerContactDetail = ({
                         </span>
                       </div>
                     </div>
-
                     <div className="form_commonblock">
-                      <label className="">Work Number</label>
-                      <div id="inputx1">
-                        <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={"#525252"}
-                            fill={"none"}
-                          >
-                            <path
-                              d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M8 9L11 9M8 13L11 13"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M2 22L22 22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                            />
-                            <path
-                              d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-
-                          <NumericInput
-                            value={person.work_phone}
-                            onChange={(e) =>
-                              handleChange("work_phone", index, e.target.value)
-                            }
-                            placeholder="Enter Work Phone"
-                            name="work_phone"
-                          />
-                        </span>
-                      </div>
+                      <label>Gender</label>
+                      <span>
+                        {otherIcons.vendor_svg}
+                        <CustomDropdown04
+                          label="Gender Name"
+                          options={customerGender}
+                          value={person?.gender}
+                          onChange={(e) =>
+                            handleChange("gender", index, e.target.value)
+                          }
+                          name="gender"
+                          defaultOption="Select Gender"
+                          type="masters"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div id="fcx3s1parent">
+                    {" "}
+                    <div className="form_commonblock">
+                      <label>Relationship</label>
+                      <span>
+                        {otherIcons.vendor_svg}
+                        <CustomDropdown04
+                          label="Relationship Name"
+                          options={memberRealtion}
+                          value={person?.relationship}
+                          onChange={(e) =>
+                            handleChange("relationship", index, e.target.value)
+                          }
+                          name="relationship"
+                          defaultOption="Select Relationship"
+                          type="masters"
+                        />
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="form_commonblock">
-                  <label className="">Designation</label>
-                  <div id="inputx1">
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#525252"}
-                        fill={"none"}
-                      >
-                        <path
-                          d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                        />
-                        <path
-                          d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <input
-                        autoComplete='off'
-                        style={{ width: "100%" }}
-                        type="text"
-                        name=" designation"
-                        value={person. designation}
-                        onChange={(e) => handleChange("designation", index, e.target.value)}
-                        placeholder="Enter Designation"
-                      />
-                    </span>
-                  </div>
-                </div>
+
                 <div className="breakerci"></div>
               </div>
-
-
             ))}
           </div>
 
-
-
           <button onClick={addContactPerson} className="addcust" type="button">
-            Add Contact Person
+            Add Family Member
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NumericInput from "../../Helper/NumericInput";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
@@ -20,8 +20,6 @@ const PaymentDetails = ({
     payment_terms: "",
     credit_limit: 0,
   });
-  console.log("paymentDetails", paymentDetails);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     const paymentTermsName = paymentTerms?.find((val) => val?.labelid == value);
@@ -34,6 +32,13 @@ const PaymentDetails = ({
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    setUserData((prevData) => ({
+      ...prevData,
+      payment_details: paymentDetails,
+    }));
+  }, [paymentDetails, setUserData]);
   return (
     <div>
       <div>

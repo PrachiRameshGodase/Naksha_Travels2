@@ -18,7 +18,7 @@ import {
 } from "../../../../Redux/Actions/globalActions";
 import { transport } from "../../../Helper/ComponentHelper/DropdownData";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { CreateTourPackageAction, tourPackageDetailsAction } from "../../../../Redux/Actions/tourPackage";
+import { CreateTourPackageAction, tourPackageDetailsAction } from "../../../../Redux/Actions/tourPackageActions";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 

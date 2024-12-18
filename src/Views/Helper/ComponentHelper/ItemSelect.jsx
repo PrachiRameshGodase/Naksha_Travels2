@@ -350,6 +350,7 @@ const ItemSelect = ({
       total: total?.toFixed(2),
       tax_amount: taxAmount?.toFixed(2),
     });
+    
     setItemErrors(newErrors);
   };
 
@@ -405,6 +406,7 @@ const ItemSelect = ({
 
   useEffect(() => {
     const parshPayload = parseJSONofString(itemPayloads);
+    
     if (parshPayload?.search) {
       dispatch(
         itemLists({
