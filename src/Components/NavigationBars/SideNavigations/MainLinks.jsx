@@ -55,29 +55,30 @@ const MainLinks = ({
     "insurances-services",
     "create-insurances",
   ];
-const servicesMenuItems=[ "services",
-  "create-hotels",
-  "hotels-services",
-  "hotel-details",
-  "create-hotelservices",
-  "hotel-service-details",
-  "flights-services",
-  "create-flights",
-  "tour-package-services",
-  "create-tour-package",
-  "tour-package-details",
-  "visas-services",
-  "create-visas",
-  "visas-details",
-  "car-hire-services",
-  "create-car-hire",
-  "car-hire-details",
-  "assists-services",
-  "create-assists",
-  "assists-details",
-  "insurances-services",
-  "create-insurances",
-]
+  const servicesMenuItems = [
+    "services",
+    "create-hotels",
+    "hotels-services",
+    "hotel-details",
+    "create-hotelservices",
+    "hotel-service-details",
+    "flights-services",
+    "create-flights",
+    "tour-package-services",
+    "create-tour-package",
+    "tour-package-details",
+    "visas-services",
+    "create-visas",
+    "visas-details",
+    "car-hire-services",
+    "create-car-hire",
+    "car-hire-details",
+    "assists-services",
+    "create-assists",
+    "assists-details",
+    "insurances-services",
+    "create-insurances",
+  ];
   const categoryMenuItems = [
     "items-categories",
     "category-details",
@@ -325,12 +326,62 @@ const servicesMenuItems=[ "services",
             <li
               onClick={() => handleMenuItemClick("services")}
               className={`menu-item ${
-                servicesMenuItems.includes(selectedMenuItem)
+                servicesMenuItems.includes(selectedMenuItem) ? "active" : ""
+              }`}
+            >
+              Services
+            </li>
+          </ul>
+        </div>
+        <div className="menu-itemxse">
+          <div
+            {...(isSidebarCollapsedx1 && {
+              "data-tooltip-id": "my-tooltip",
+              "data-tooltip-content": "Items",
+            })}
+            className={`menu-title ${
+              itemListMenuItems.includes(selectedMenuItem) ||
+              categoryMenuItems.includes(selectedMenuItem)
+                ? "active"
+                : ""
+            }`}
+            onClick={() => {
+              handleMenuClick("sales_data");
+              handleShrinkSidebarx1();
+            }}
+          >
+            <span>
+              <img className="svgiconsidebar" src={shopping_cart} alt="" />
+              <p className="dispynonesidebarc5w6s">Sales Data</p>
+            </span>
+            <p className="dispynonesidebarc5w6s">
+              {activeMenu === "sales_data" ? (
+                <IoIosArrowUp />
+              ) : (
+                <IoIosArrowDown />
+              )}
+            </p>
+          </div>
+
+          <ul
+            className={`submenu ${
+              activeMenu === "sales_data" ? "opensidebardropdownx5" : ""
+            }`}
+          >
+            <li
+              onClick={() => handleMenuItemClick("manage-items")}
+              className={`menu-item ${
+                [
+                  "manage-items",
+                  "create-items",
+                  "item-details",
+                  "import-items",
+                ].includes(selectedMenuItem)
                   ? "active"
                   : ""
               }`}
             >
-              Services
+              DSR
             </li>
           </ul>
         </div>

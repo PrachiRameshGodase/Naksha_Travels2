@@ -61,7 +61,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     handleSelect(option);
     setSearchTerm(option.name);
     setIsValueSelected(false); // Mark as value selected
-    
+
     onChange({
       target: { name: "item_id", value: option.id, option },
     });
@@ -71,17 +71,16 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     // Check if the entered value is in the itemList, if not, allow it to be edited
     if (options && !options.some((option) => option.name === searchTerm)) {
       setIsValueSelected(false);
-   
     }
   };
   useEffect(() => {
     if (itemData?.item_name) {
       setSearchTerm(itemData.item_name);
     } else {
-      setSearchTerm(""); 
+      setSearchTerm("");
     }
   }, [itemData?.item_name]);
-  
+
   return (
     <div
       tabIndex="0"
@@ -93,7 +92,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
-        style={{ width: "314px", top:"110%" }}
+        style={{ width: "314px", top: "110%" }}
       >
         <textarea
           type="text"
@@ -101,7 +100,14 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           value={searchTerm || itemData?.item_name}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          style={{ minWidth: "321px", height: "30px", margin: "10px -13px",  height: "60px", border:"1px solid #ebdada" ,  resize: "none",}}
+          style={{
+            minWidth: "321px",
+            height: "30px",
+            margin: "10px -13px",
+            height: "60px",
+            border: "1px solid #ebdada",
+            resize: "none",
+          }}
           className="dropdown-search customdropdownx12s86 custom-scrollbar"
           autoFocus
           ref={inputRef}
@@ -109,7 +115,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       </div>
 
       {isOpen && (
-        <div className={`dropdown-options`} id={className} style={{width:"101%"}}>
+        <div
+          className={`dropdown-options`}
+          id={className}
+          style={{ width: "101%" }}
+        >
           {itemList?.loading || categoryLists?.loading ? (
             <TableViewSkeletonDropdown />
           ) : (
@@ -128,11 +138,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                     }
                     {...(option.active == 0
                       ? {
-                        "data-tooltip-content":
-                          "To select this option, activate it; it's currently inactive.",
-                        "data-tooltip-id": "my-tooltip",
-                        "data-tooltip-place": "right",
-                      }
+                          "data-tooltip-content":
+                            "To select this option, activate it; it's currently inactive.",
+                          "data-tooltip-id": "my-tooltip",
+                          "data-tooltip-place": "right",
+                        }
                       : {})}
                   >
                     {option?.name}

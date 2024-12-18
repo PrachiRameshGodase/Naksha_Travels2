@@ -309,6 +309,7 @@ const ItemSelect = ({
   };
 
   const handleItemReset = (index) => {
+    setSearchTrigger((prev) => prev + 1);
     const newItems = [...formData?.items];
     newItems[index] = {
       item_id: "",
