@@ -6,21 +6,19 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {
-  fetchGetCountries
-} from "../../../../Redux/Actions/globalActions";
+import { fetchGetCountries } from "../../../../Redux/Actions/globalActions";
 import {
   CreateHotelRoomAction,
-  hotelRoomDetailsAction
+  hotelRoomDetailsAction,
 } from "../../../../Redux/Actions/hotelActions";
-import {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import CurrencySelect from "../../../Helper/ComponentHelper/CurrencySelect";
+import { CustomDropdown006 } from "../../../../Components/CustomDropdown/CustomDropdown06";
 
 const CreateHotelService = () => {
   const Navigate = useNavigate();
@@ -35,6 +33,7 @@ const CreateHotelService = () => {
   const occupancy = ShowMasterData("36");
   const bed = ShowMasterData("38");
   const meal = ShowMasterData("37");
+  const amenitiesType = ShowMasterData("49");
 
   const [formData, setFormData] = useState({
     hotel_id: itemId,
@@ -47,11 +46,12 @@ const CreateHotelService = () => {
     meal_id: 0,
     meal_name: null,
     max_occupancy: null,
-    amenities: null,
+    amenities: "",
     availability_status: 1,
     description: null,
     price: null,
     upload_documents: [],
+    currency: "",
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
@@ -78,8 +78,16 @@ const CreateHotelService = () => {
       ...(name === "meal_id" && {
         meal_name: mealName?.label,
       }),
+
       [name]: value,
     }));
+  };
+
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      amenities: selectedItems, // Update selected items array
+    });
   };
 
   useEffect(() => {
@@ -94,9 +102,11 @@ const CreateHotelService = () => {
       dispatch(hotelRoomDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
-
+console.log("hotelRoomData", hotelRoomData)
   useEffect(() => {
     if (itemId && isEdit && hotelRoomData) {
+      const depArray = JSON.parse(hotelRoomData?.amenities || "[]");
+      console.log("depArray", depArray)
       setFormData({
         ...formData,
         id: hotelRoomData?.id,
@@ -109,10 +119,11 @@ const CreateHotelService = () => {
         meal_id: hotelRoomData?.meal_id,
         meal_name: hotelRoomData?.meal_name,
         max_occupancy: hotelRoomData?.max_occupancy,
-        amenities: hotelRoomData?.amenities,
+        amenities: !depArray ? [] : depArray,
         price: hotelRoomData?.price,
         availability_status: hotelRoomData?.availability_status,
         description: hotelRoomData?.description,
+        currency:hotelRoomData?.currency,
         upload_documents: hotelRoomData?.upload_documents
           ? JSON.parse(hotelRoomData.upload_documents)
           : [],
@@ -126,6 +137,7 @@ const CreateHotelService = () => {
     try {
       const sendData = {
         ...formData,
+          amenities: formData.amenities.join(","),
         upload_documents: JSON.stringify(formData?.upload_documents),
       };
       dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));
@@ -246,18 +258,10 @@ const CreateHotelService = () => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Amenities</label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.name_svg}
-                            <input
-                              value={formData.amenities}
-                              onChange={handleChange}
-                              name="amenities"
-                              placeholder="Enter Amenities"
-                            />
-                          </span>
-                        </div>
+                        <CurrencySelect
+                          value={formData?.currency}
+                          onChange={handleChange}
+                        />
                       </div>
                       <div className="form_commonblock">
                         <label>Price</label>
@@ -269,6 +273,23 @@ const CreateHotelService = () => {
                               placeholder="Enter Price"
                               value={formData.price}
                               onChange={(e) => handleChange(e)}
+                            />
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="form_commonblock">
+                        <label>Amenities</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <CustomDropdown006
+                              options={amenitiesType}
+                              value={formData?.amenities}
+                              onChange={handleChange1}
+                              name="amenities"
+                              defaultOption="Select Ammenties"
+                              id1="position_depart_3221"
                             />
                           </span>
                         </div>

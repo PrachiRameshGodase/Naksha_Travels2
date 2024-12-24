@@ -1,42 +1,43 @@
 import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import toast, { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../../Helper/DateFormat";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../../Common/SearchBox/SearchBox";
-import SortBy from "../../../Common/SortBy/SortBy";
-import DatePicker from "../../../Common/DatePicker/DatePicker";
-import FilterBy from "../../../Common/FilterBy/FilterBy";
-import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
+import { formatDate } from "../../Helper/DateFormat";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import SearchBox from "../../Common/SearchBox/SearchBox";
+import SortBy from "../../Common/SortBy/SortBy";
+import DatePicker from "../../Common/DatePicker/DatePicker";
+import FilterBy from "../../Common/FilterBy/FilterBy";
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
   parseJSONofString,
   useDebounceSearch,
-} from "../../../Helper/HelperFunctions";
+} from "../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import CreateFlight from "./CreateFight";
-import {
-  flightdeleteActions,
-  flightListAction,
-  flightstatusActions,
-} from "../../../../Redux/Actions/flightActions";
+import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
+
 import Swal from "sweetalert2";
+import {
+  InsurancedeleteActions,
+  InsuranceListAction,
+  InsurancestatusActions,
+} from "../../../Redux/Actions/InsuranceActions";
 import { MdArrowOutward } from "react-icons/md";
 
-const Flights = () => {
+const Insurances = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
 
-  const flightListData = useSelector((state) => state?.flightList);
-  const flightLists = flightListData?.data?.data || [];
-  const totalItems = flightListData?.data?.count || 0;
-  const flightStatusUpdate = useSelector((state) => state?.flightStatus);
+  const insuranceListData = useSelector((state) => state?.insuranceList);
+  const insuranceLists = insuranceListData?.data?.data || [];
+  const totalItems = insuranceListData?.data?.count || 0;
+  const insuranceStatusUpdate = useSelector((state) => state?.insuranceStatus);
+  const insuranceDeleteUpdate = useSelector((state) => state?.insuranceDelete);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -91,7 +92,7 @@ const Flights = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchFlights = useCallback(async () => {
+  const fetchInsurances = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -120,9 +121,9 @@ const Flights = () => {
         }),
       };
 
-      dispatch(flightListAction(sendData));
+      dispatch(InsuranceListAction(sendData));
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      console.error("Error fetching insurance:", error);
     }
   }, [searchTrigger]);
 
@@ -138,12 +139,12 @@ const Flights = () => {
     //   parshPayload?.from_date ||
     //   parshPayload?.currentpage > 1
     // ) {
-    fetchFlights();
+    fetchInsurances();
     // }
   }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/flight-details?id=${quotation.id}`);
+    navigate(`/dashboard/hotel-details?id=${quotation.id}`);
   };
 
   //logic for checkBox...
@@ -158,17 +159,15 @@ const Flights = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = flightLists?.data?.data?.every((row) =>
+    const areAllRowsSelected = insuranceLists?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, flightLists?.data?.data]);
+  }, [selectedRows, insuranceLists]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : flightLists?.data?.data?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : insuranceLists?.map((row) => row.id));
   };
   //logic for checkBox...
 
@@ -181,33 +180,34 @@ const Flights = () => {
     setShowPopup(true);
     setIsEdit(false);
   };
-  const handleDeleteFlight = async (item) => {
+
+  const handleEditInsurance = (item) => {
+    setSelectedItem(item);
+    setShowPopup(true);
+    setIsEdit(true);
+  };
+
+  const handleDeleteInsurance = async (item) => {
     const result = await Swal.fire({
-      text: "Are you sure you want to delete this airline?",
+      text: "Are you sure you want to delete this insurance?",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
       const sendData = {
-        flight_id: item?.id,
+        insurance_id: item?.id,
       };
-      dispatch(flightdeleteActions(sendData, navigate));
+      dispatch(InsurancedeleteActions(sendData, navigate));
     }
   };
-  const handleEditFlight = (item) => {
-    setSelectedItem(item);
-    setShowPopup(true);
-    setIsEdit(true);
-  };
-
   const handleStatusChange = async (item) => {
     const newValue = item?.status == "1" ? "0" : "1"; // Toggle status
     const actionText = newValue == "0" ? "Inactive" : "Active";
 
     // Confirmation modal
     const result = await Swal.fire({
-      text: `Do you want to make this airline ${actionText}?`,
+      text: `Do you want to make this insurance ${actionText}?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -215,77 +215,26 @@ const Flights = () => {
 
     if (result.isConfirmed && item?.id) {
       const sendData = {
-        flight_id: item?.id,
+        insurance_id: item?.id,
         status: newValue,
       };
-      dispatch(flightstatusActions(sendData, navigate))
+      dispatch(InsurancestatusActions(sendData, navigate))
         .then(() => {
           // navigate(`/dashboard/hotel-details?id=${roomId}`);
         })
         .catch((error) => {
-          toast.error("Failed to update flight status");
-          console.error("Error updating flight status:", error);
+          toast.error("Failed to update insurance status");
+          console.error("Error updating insurance status:", error);
         });
     }
   };
   return (
     <>
       <TopLoadbar />
-      {(flightStatusUpdate?.loading || flightListData?.loading) && (
-        <MainScreenFreezeLoader />
-      )}
+      {(insuranceListData?.loading ||
+        insuranceStatusUpdate?.loading ||
+        insuranceDeleteUpdate?.loading) && <MainScreenFreezeLoader />}
       <div id="middlesection">
-        <div id="Anotherbox">
-          <div id="leftareax12">
-            <h1 id="firstheading">
-              {otherIcons?.warehouse_icon}
-              All Airlines
-            </h1>
-            <p id="firsttagp">{totalItems} Records</p>
-            <SearchBox
-              placeholder="Search In Flights"
-              onSearch={onSearch}
-              section={searchTrigger}
-            />
-          </div>
-
-          <div id="buttonsdata">
-            {/* <SortBy
-              setSearchTrigger={setSearchTrigger}
-              selectedSortBy={selectedSortBy}
-              setSelectedSortBy={setSelectedSortBy}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-              sortOptions=""
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            {/* <DatePicker
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              setSpecificDate={setSpecificDate}
-              setClearFilter={setClearFilter}
-              setSearchTrigger={setSearchTrigger}
-              searchTrigger={searchTrigger}
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            {/* <FilterBy
-              setStatus={setStatus}
-              selectedSortBy={selectedSortBy2}
-              setSearchTrigger={setSearchTrigger}
-              setSelectedSortBy={setSelectedSortBy2}
-              filterOptions=""
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            <Link className="linkx1" onClick={handleClickOnAdd}>
-              New Flight <GoPlus />
-            </Link>
-            <ResizeFL />
-          </div>
-        </div>
-
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
@@ -305,26 +254,26 @@ const Flights = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
-                  Airline Name
+                    Company Name
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6">
-                    {otherIcons?.status_svg}
-                    Actions
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Action
                   </div>
                 </div>
 
-                {flightListData?.loading ? (
+                {insuranceListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {flightLists?.length >= 1 ? (
+                    {insuranceLists?.length >= 1 ? (
                       <>
-                        {flightLists?.map((item, index) => (
+                        {insuranceLists?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
                               selectedRows.includes(item?.id)
@@ -345,55 +294,58 @@ const Flights = () => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              // onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 x125cd01"
                             >
-                              {item?.flight_name || ""}
+                              {item?.company_name || ""}
                             </div>
 
                             <div
-                              // onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
-                              <p
-                                className={
-                                  item?.status == "1"
-                                    ? "approved"
-                                    : item?.status == "0"
-                                    ? "draft"
-                                    : ""
-                                }
-                              >
-                                {item?.status == "0"
-                                  ? "Inactive"
-                                  : item?.status == "1"
-                                  ? "Active"
-                                  : ""}
-                                <span
-                                  onClick={() => {
-                                    handleStatusChange(item);
-                                  }}
+                              <div>
+                                {" "}
+                                <p
+                                  className={
+                                    item?.status == "1"
+                                      ? "approved"
+                                      : item?.status == "0"
+                                      ? "draft"
+                                      : ""
+                                  }
                                 >
-                                  <MdArrowOutward />
-                                </span>
-                              </p>
+                                  {item?.status == "0"
+                                    ? "Inactive"
+                                    : item?.status == "1"
+                                    ? "Active"
+                                    : ""}
+                                  <span
+                                    onClick={() => {
+                                      handleStatusChange(item);
+                                    }}
+                                  >
+                                    <MdArrowOutward />
+                                  </span>
+                                </p>
+                              </div>
                             </div>
-
                             <div
-                              // onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 x125cd01"
                             >
                               <span
                                 onClick={() => {
-                                  handleEditFlight(item);
+                                  handleEditInsurance(item);
                                 }}
                               >
+                                {" "}
                                 {otherIcons.edit_svg}
                               </span>
                               <span
                                 style={{ marginLeft: "20px" }}
                                 onClick={() => {
-                                  handleDeleteFlight(item);
+                                  handleDeleteInsurance(item);
                                 }}
                               >
                                 {otherIcons.delete_svg}
@@ -420,22 +372,11 @@ const Flights = () => {
             </div>
           </div>
         </div>
-        {showPopup && (
-          <CreateFlight
-            popupContent={{
-              setshowAddPopup: setShowPopup,
-              showAddPopup: showPopup,
-              isEditIndividual: isEdit,
-              selectedItem,
 
-              setSearchTrigger,
-            }}
-          />
-        )}
         <Toaster />
       </div>
     </>
   );
 };
 
-export default Flights;
+export default Insurances;

@@ -161,8 +161,8 @@ const AddMaster = ({ popupContent }) => {
                         id="modalactionbar"
                         className="actionbar"
                         style={{
-                          left: "239px",
-                          width: "751px",
+                          left: "197px",
+                          width: "834px",
                           position: "absolute",
                         }}
                       >

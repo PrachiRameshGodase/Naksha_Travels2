@@ -42,8 +42,37 @@ const VaccinationDetails = ({
     }));
   }, [vaccinationDetails, setUserData]);
 
+  useEffect(() => {
+        if (user?.id && isEdit) {
+          const userVaccinationDetails = user?.vaccination_details || [];
+          const vaccinationDetailsFromUser = userVaccinationDetails?.map((item) => ({
+            id:item?.id,
+            vaccination_name: item.vaccination_name || "",
+            upload_documents: item.upload_documents
+              ? JSON.parse(item.upload_documents)
+              : [],
+          }));
+      
+          setVaccinationDetails(vaccinationDetailsFromUser); // Update state with the transformed array
+      
+          setTick((prevTick) => ({
+            ...prevTick,
+            vaccinationDetailTick: true,
+          }));
+        }
+      }, [user?.id, isEdit, setTick]);
+      
+        
+      
+        useEffect(() => {
+         if (isEdit) {
+            updateUserData(vaccinationDetails); // Only call updateUserData when editing
+          }
+        }, [VaccinationDetails]);
   return (
     <>
+      {freezLoadingImg && <MainScreenFreezeLoader />}
+    
       {switchCusData === "Vaccination Details" && (
         <div id="secondx2_customer">
           {vaccinationDetails.map((item, index) => (

@@ -1,17 +1,24 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Loader02 from "../../../Components/Loaders/Loader02";
-import { activeInActive, itemDetails } from "../../../Redux/Actions/itemsActions";
-import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
-import { GoPlus } from 'react-icons/go';
-import { RxCross2 } from 'react-icons/rx';
-import { customerStatus, customersView, deleteCustomer } from '../../../Redux/Actions/customerActions';
-import InsideCusDetails from './InsideCusDetails';
-import toast, { Toaster } from 'react-hot-toast';
-import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import Swal from 'sweetalert2';
-import { showToast } from '../../Helper/ComponentHelper/toastConfigure';
+import {
+  activeInActive,
+  itemDetails,
+} from "../../../Redux/Actions/itemsActions";
+import InsideItemDetailsBox from "../../Items/InsideItemDetailsBox";
+import { GoPlus } from "react-icons/go";
+import { RxCross2 } from "react-icons/rx";
+import {
+  customerStatus,
+  customersView,
+  deleteCustomer,
+} from "../../../Redux/Actions/customerActions";
+import InsideCusDetails from "./InsideCusDetails";
+import toast, { Toaster } from "react-hot-toast";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import Swal from "sweetalert2";
+import { showToast } from "../../Helper/ComponentHelper/toastConfigure";
 const CustomerDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -21,36 +28,40 @@ const CustomerDetails = () => {
   const [loading, setLoading] = useState(true);
   const [switchValue1, setSwitchValue1] = useState(""); // State for the switch button value
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
-  const { user } = useSelector(state => state?.viewCustomer?.data || {});
-  const cusDelete = useSelector(state => state?.customerDelete);
-  const cusStatus = useSelector(state => state?.customerStatus || {});
+  const customerDetail = useSelector(
+    (state) => state?.viewCustomer?.data || {}
+  );
+  console.log("customerDetail2", customerDetail?.family_members);
+  const cusDelete = useSelector((state) => state?.customerDelete);
+  const cusStatus = useSelector((state) => state?.customerStatus || {});
 
   useEffect(() => {
     if (itemId) {
       const queryParams = {
         user_id: itemId,
-        fy: localStorage.getItem('FinancialYear'),
+        fy: localStorage.getItem("FinancialYear"),
       };
       dispatch(customersView(queryParams));
     }
   }, [dispatch, itemId]);
 
   useEffect(() => {
-    setLoading(!user);//loading to true if user is falsy (e.g., null, undefined, false)
-  }, [user]);
+    setLoading(!customerDetail); //loading to true if user is falsy (e.g., null, undefined, false)
+  }, [customerDetail]);
 
-
-  //active and inactive 
+  //active and inactive
   const handleSwitchChange = async (e) => {
     let confirmed = null;
     if (confirmed === null) {
       const result = await Swal.fire({
         // title: 'Are you sure?',
-        text: `Do you want to ${switchValue == "1" ? "Inactive" : "Active"} this customer ?`,
+        text: `Do you want to ${
+          switchValue == "1" ? "Inactive" : "Active"
+        } this customer ?`,
         // icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
       });
       confirmed = result.isConfirmed;
     }
@@ -60,27 +71,30 @@ const CustomerDetails = () => {
       setSwitchValue(newValue);
       const sendData = {
         user_id: itemId,
-        active: newValue
-      }
+        active: newValue,
+      };
       dispatch(customerStatus(sendData))
         .then(() => {
-          const toastMessage = newValue == '1' ? 'Customer Is Now Active' : 'Customer Is Now Inactive';
+          const toastMessage =
+            newValue == "1"
+              ? "Customer Is Now Active"
+              : "Customer Is Now Inactive";
           toast.success(toastMessage);
-          Navigate("/dashboard/customers")
+          Navigate("/dashboard/customers");
         })
         .catch((error) => {
-          toast.error('Failed to update item status');
-          console.error('Error updating item status:', error);
+          toast.error("Failed to update item status");
+          console.error("Error updating item status:", error);
           // Revert switch value if there's an error
-          setSwitchValue((prevValue) => prevValue == '1' ? '0' : '1');
+          setSwitchValue((prevValue) => (prevValue == "1" ? "0" : "1"));
         });
     }
   };
-  //panding and Approval 
+  //panding and Approval
 
   const handleSwitchChange1 = async (e) => {
     const newValue = e.target.value;
-    console.log("newValue", newValue)
+    console.log("newValue", newValue);
 
     if (newValue == 0) {
       showToast("Approved Customer cannot be converted to pending", "error");
@@ -90,11 +104,13 @@ const CustomerDetails = () => {
     if (confirmed === null) {
       const result = await Swal.fire({
         // title: 'Are you sure?',
-        text: `Do you want to ${switchValue1 == "1" ? "Pending" : "Approve"} this customer ?`,
+        text: `Do you want to ${
+          switchValue1 == "1" ? "Pending" : "Approve"
+        } this customer ?`,
         // icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
       });
       confirmed = result.isConfirmed;
     }
@@ -103,31 +119,32 @@ const CustomerDetails = () => {
       setSwitchValue1(newValue);
       const sendData = {
         user_id: itemId,
-        status: newValue
-      }
+        status: newValue,
+      };
       dispatch(customerStatus(sendData))
         .then(() => {
-          const toastMessage = newValue == '1' ? 'Customer Is Now Approve' : 'Customer Is Now Pending';
+          const toastMessage =
+            newValue == "1"
+              ? "Customer Is Now Approve"
+              : "Customer Is Now Pending";
           toast.success(toastMessage);
-          Navigate("/dashboard/customers")
+          Navigate("/dashboard/customers");
         })
         .catch((error) => {
-          toast.error('Failed to update item status');
-          console.error('Error updating item status:', error);
+          toast.error("Failed to update item status");
+          console.error("Error updating item status:", error);
           // Revert switch value if there's an error
-          setSwitchValue1((prevValue) => prevValue == '1' ? '0' : '1');
+          setSwitchValue1((prevValue) => (prevValue == "1" ? "0" : "1"));
         });
     }
   };
 
   useEffect(() => {
-    setLoading(!user);
-    setSwitchValue(user?.active);
-    setSwitchValue1(user?.status);
-  }, [user]);
-  //active and inactive 
-
-
+    setLoading(!customerDetail?.user);
+    setSwitchValue(customerDetail?.user?.active);
+    setSwitchValue1(customerDetail.user?.status);
+  }, [customerDetail?.user]);
+  //active and inactive
 
   // edit and duplicate
   const handleEditCustomers = () => {
@@ -148,28 +165,24 @@ const CustomerDetails = () => {
     if (itemId) {
       dispatch(deleteCustomer({ user_id: itemId }, Navigate));
     }
-  }
+  };
   // handleDeleteQuotation
 
-
   // edit and duplicate
-
-
-
 
   return (
     <>
       {cusStatus?.loading && <MainScreenFreezeLoader />}
       {cusDelete?.loading && <MainScreenFreezeLoader />}
-      {loading ? <Loader02 />
-        :
+      {loading ? (
+        <Loader02 />
+      ) : (
         <>
           <div id="Anotherbox">
-
             <div id="leftareax12">
-              <h1 className='' id="firstheading">
+              <h1 className="" id="firstheading">
                 {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-                {(user?.display_name || "")}
+                {customerDetail?.user?.display_name || ""}
               </h1>
               {/* <p id="firsttagp">Item</p>
               <p id="firsttagp">1 SKU</p> */}
@@ -177,18 +190,32 @@ const CustomerDetails = () => {
             <div id="buttonsdata">
               <div className="switchbuttontext">
                 <div className="switches-container">
-                  <input type="radio" id="switchMonthly1" name="switchPlan1" value="0" checked={switchValue1 == "0"} onChange={handleSwitchChange1} />
-                  <input type="radio" id="switchYearly1" name="switchPlan1" className='newinput' value="1" checked={switchValue1 == "1"} onChange={handleSwitchChange1} />
+                  <input
+                    type="radio"
+                    id="switchMonthly1"
+                    name="switchPlan1"
+                    value="0"
+                    checked={switchValue1 == "0"}
+                    onChange={handleSwitchChange1}
+                  />
+                  <input
+                    type="radio"
+                    id="switchYearly1"
+                    name="switchPlan1"
+                    className="newinput"
+                    value="1"
+                    checked={switchValue1 == "1"}
+                    onChange={handleSwitchChange1}
+                  />
                   <label htmlFor="switchMonthly1">Pending</label>
                   <label htmlFor="switchYearly1">Approve</label>
 
                   <div className="switch-wrapper">
                     <div className="switch">
-                      <div id='inactiveid'>Pending</div>
+                      <div id="inactiveid">Pending</div>
                       <div>Approve</div>
                     </div>
                   </div>
-
                 </div>
               </div>
 
@@ -196,19 +223,33 @@ const CustomerDetails = () => {
 
               <div className="switchbuttontext">
                 <div className="switches-container">
-                  <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue == "0"} onChange={handleSwitchChange} />
-                  <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue == "1"} onChange={handleSwitchChange} />
+                  <input
+                    type="radio"
+                    id="switchMonthly"
+                    name="switchPlan"
+                    value="0"
+                    checked={switchValue == "0"}
+                    onChange={handleSwitchChange}
+                  />
+                  <input
+                    type="radio"
+                    id="switchYearly"
+                    name="switchPlan"
+                    className="newinput"
+                    value="1"
+                    checked={switchValue == "1"}
+                    onChange={handleSwitchChange}
+                  />
                   <label htmlFor="switchMonthly">Inactive</label>
                   <label htmlFor="switchYearly">Active</label>
                   <div className="switch-wrapper">
                     <div className="switch">
-                      <div id='inactiveid'>Inactive</div>
+                      <div id="inactiveid">Inactive</div>
                       <div>Active</div>
                     </div>
                   </div>
                 </div>
               </div>
-
 
               <div className="separatorx21"></div>
               <div className="mainx1" onClick={handleEditCustomers}>
@@ -237,27 +278,33 @@ const CustomerDetails = () => {
                   </div>
                 )}
               </div> */}
-              <Link className="linkx4" to={"/dashboard/customers"} data-tooltip-content="Close" data-tooltip-place='bottom' data-tooltip-id='my-tooltip'>
+              <Link
+                className="linkx4"
+                to={"/dashboard/customers"}
+                data-tooltip-content="Close"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+              >
                 <RxCross2 />
               </Link>
             </div>
           </div>
 
-          <div id="item-details" className='listsectionsgrheigh'>
+          <div id="item-details" className="listsectionsgrheigh">
             <InsideCusDetails
-              customerDetails={user}
+              customerDetails={customerDetail?.user}
+              employees={customerDetail?.employees}
+              family_members={customerDetail?.family_members}
               type="customer"
-            // stockDetails={stock_details}
+              // stockDetails={stock_details}
             />
             <div className="height50"></div>
             <div className="height50"></div>
             <div className="height50"></div>
             <div className="height50"></div>
           </div>
-
-
         </>
-      }
+      )}
       <Toaster />
     </>
   );

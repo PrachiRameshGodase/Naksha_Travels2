@@ -79,6 +79,19 @@ const MainLinks = ({
     "insurances-services",
     "create-insurances",
   ];
+
+  const salesDataMenuItems=[
+    "create-dsr",
+    "dsr",
+    "dsr-details",
+    "serviceslist"
+  ]
+  const dsrMenuItems=[
+    "create-dsr",
+    "dsr",
+    "dsr-details",
+    "serviceslist"
+  ]
   const categoryMenuItems = [
     "items-categories",
     "category-details",
@@ -340,8 +353,8 @@ const MainLinks = ({
               "data-tooltip-content": "Items",
             })}
             className={`menu-title ${
-              itemListMenuItems.includes(selectedMenuItem) ||
-              categoryMenuItems.includes(selectedMenuItem)
+              salesDataMenuItems.includes(selectedMenuItem) ||
+              dsrMenuItems.includes(selectedMenuItem)
                 ? "active"
                 : ""
             }`}
@@ -369,14 +382,9 @@ const MainLinks = ({
             }`}
           >
             <li
-              onClick={() => handleMenuItemClick("manage-items")}
+              onClick={() => handleMenuItemClick("dsr")}
               className={`menu-item ${
-                [
-                  "manage-items",
-                  "create-items",
-                  "item-details",
-                  "import-items",
-                ].includes(selectedMenuItem)
+               dsrMenuItems.includes(selectedMenuItem)
                   ? "active"
                   : ""
               }`}

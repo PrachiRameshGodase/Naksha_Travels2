@@ -31,7 +31,7 @@ const CustomDropdown27 = forwardRef((props, ref) => {
 
 
   return (
-    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown} style={{minWidth:"160px", border:"1px solid #ddd"}}>
+    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown} style={{minWidth:"160px", border:"1px solid #f3f1f5", backgroundColor:"#f3f1f5"}}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width:"100px" } : {paddingLeft:"13px"}}>
 
         {type === "masters_salutation" ?
@@ -43,7 +43,8 @@ const CustomDropdown27 = forwardRef((props, ref) => {
             {value ? options?.find(account => account?.labelid == value)?.label : defaultOption}
 
           </>}
-        <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          
+        <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginRight:"6px"}}>
           <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>

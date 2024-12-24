@@ -16,6 +16,8 @@ const Documents = ({
   setTick,
   updateUserData,
 }) => {
+  const { isDuplicate, isEdit, user } = customerData;
+
   const documentNames = ShowMasterData("42");
 
   const [documents, setDocuments] = useState([]);
@@ -58,15 +60,46 @@ const Documents = ({
       prevDocuments.map((doc, i) => (i === index ? updatedDocument : doc))
     );
   };
-  
-   useEffect(() => {
-      setUserData((prevData) => ({
-        ...prevData,
-        documents:documents,
+
+  useEffect(() => {
+    setUserData((prevData) => ({
+      ...prevData,
+      documents: documents,
+    }));
+  }, [documents, setUserData]);
+
+  useEffect(() => {
+    if (user?.id && isEdit) {
+      const userDocumentDetails = user?.documents || [];
+      const documentsFromUser = userDocumentDetails?.map((item) => ({
+        document_name: item.document_name || "",
+        document_no: item.document_no || "",
+        issue_date: item.issue_date || null,
+        expiry_date: item.expiry_date || null,
+        upload_documents: item.upload_documents
+          ? JSON.parse(item.upload_documents)
+          : [],
       }));
-    }, [documents, setUserData]);
+
+      setDocuments(documentsFromUser); // Update state with the transformed array
+
+      setTick((prevTick) => ({
+        ...prevTick,
+        documentsTick: true,
+      }));
+    }
+  }, [user?.id, isEdit, setTick]);
+
+  useEffect(() => {
+    if (isEdit) {
+      updateUserData(documents); // Only call updateUserData when editing
+    }
+  }, [documents]);
+
   return (
     <>
+      {freezLoadingImg && <MainScreenFreezeLoader />}
+
       {switchCusData === "Documents" && (
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus">
@@ -104,6 +137,7 @@ const Documents = ({
                           name="issue_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
                         />
                       </span>
                     </div>
@@ -119,6 +153,7 @@ const Documents = ({
                           name="expiry_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
                         />
                       </span>
                     </div>

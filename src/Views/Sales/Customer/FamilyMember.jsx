@@ -9,6 +9,7 @@ import ShowMastersValue from "../../Helper/ShowMastersValue";
 import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown27";
 import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 
 const FamilyMember = ({
   switchCusData,
@@ -19,6 +20,8 @@ const FamilyMember = ({
   setTick,
   tick,
 }) => {
+  const { isDuplicate, isEdit, user, customerDetails } = customerData;
+
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
   const cusList = useSelector((state) => state?.customerList);
@@ -109,7 +112,32 @@ const FamilyMember = ({
       prevDocuments.map((doc, i) => (i === index ? updatedDocument : doc))
     );
   };
-  console.log("employeeDetails", employeeDetails);
+
+  useEffect(() => {
+    if (customerDetails?.family_members && isEdit) {
+      const familyDetails = customerDetails?.family_members || [];
+      const familyDetail = familyDetails?.map((item) => ({
+        member_id: item.id || "",
+        food_type: item.food_type || "",
+        relationship: item.relationship || null,
+
+        photo: item.photo ? JSON.parse(item.photo) : "",
+      }));
+
+      setEmployeeDetails(familyDetail); // Update state with the transformed array
+
+      setTick((prevTick) => ({
+        ...prevTick,
+        familyMemberTick: true,
+      }));
+    }
+  }, [customerDetails?.family_members, isEdit, setTick]);
+
+  useEffect(() => {
+    if (isEdit) {
+      updateUserData(employeeDetails); // Only call updateUserData when editing
+    }
+  }, [employeeDetails]);
   // Render the member table
   const renderMemberTable = () => {
     return (
@@ -128,79 +156,83 @@ const FamilyMember = ({
           </tr>
         </thead>
         <tbody>
-          {employeeDetails?.length>0 ?(employeeDetails?.map((member, index) => {
-            const selectedMember = cusList?.data?.user.find(
-              (user) => user.id === member.member_id
-            );
-
-            return (
-              selectedMember && (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{selectedMember.display_name}</td>
-                  <td>{selectedMember.email}</td>
-                  <td>{selectedMember.mobile_no}</td>
-                  <td>
-                    <ShowMastersValue type="45" id={selectedMember.gender} />
-                  </td>
-                  <td style={{ width: "40px" }}>
-                    <CustomDropdown27
-                      label="Relationship"
-                      options={relationshipOptions}
-                      value={member.relationship}
-                      onChange={(e) =>
-                        handleChange("relationship", index, e.target.value)
-                      }
-                      name="relationship"
-                      defaultOption="Select Relationship"
-                      type="masters"
-                    />
-                  </td>
-                  <td style={{ width: "40px" }}>
-                    <CustomDropdown27
-                      label="Food Type"
-                      options={foodTypeOptions}
-                      value={member.food_type}
-                      onChange={(e) =>
-                        handleChange("food_type", index, e.target.value)
-                      }
-                      name="food_type"
-                      defaultOption="Select Food Type"
-                      type="masters"
-                    />
-                  </td>
-                  <td style={{width:"20px"}}>
-                    {" "}
-                    <SingleImageUploadDocument
-                      formData={member}
-                      setFormData={(index, updatedDocument) =>
-                        handleUpdateDocument(index, updatedDocument)
-                      }
-                      setFreezLoadingImg={setFreezLoadingImg}
-                      imgLoader={imgLoader}
-                      setImgeLoader={setImgeLoader}
-                      index={index}
-                    />
-                  </td>
-                  <td>
-                    <span
-                      onClick={() => {
-                        handleDeleteSelectedMember(index);
-                      }}
-                    >
-                      {otherIcons.delete_svg}
-                    </span>
-                  </td>
-                  
-                </tr>
-              )
-            );
-          })):(<tr>
-            <td colSpan="9" >
-            <NoDataFound />
-          </td>
-        </tr>)
-          }
+          {employeeDetails?.length > 0 ? (
+            employeeDetails?.map((member, index) => {
+              const selectedMember = cusList?.data?.user.find(
+                (user) => user.id === member.member_id
+              );
+              const disabledRow=member.member_id===user?.relation_id
+            
+              return (
+                selectedMember && (
+                  <tr key={index} style={{backgroundColor:disabledRow?"#f2f2f2":"#fff",  pointerEvents: disabledRow ? "none" : "auto",}}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{selectedMember.display_name}</td>
+                    <td>{selectedMember.email}</td>
+                    <td>{selectedMember.mobile_no}</td>
+                    <td>
+                      <ShowMastersValue type="45" id={selectedMember.gender} />
+                    </td>
+                    <td style={{ width: "40px" }}>
+                      <CustomDropdown27
+                        label="Relationship"
+                        options={relationshipOptions}
+                        value={member.relationship}
+                        onChange={(e) =>
+                          handleChange("relationship", index, e.target.value)
+                        }
+                        name="relationship"
+                        defaultOption="Select Relationship"
+                        type="masters"
+                      />
+                    </td>
+                    <td style={{ width: "40px" }}>
+                      <CustomDropdown27
+                        label="Food Type"
+                        options={foodTypeOptions}
+                        value={member.food_type}
+                        onChange={(e) =>
+                          handleChange("food_type", index, e.target.value)
+                        }
+                        name="food_type"
+                        defaultOption="Select Food Type"
+                        type="masters"
+                      />
+                    </td>
+                    <td style={{ width: "20px" }}>
+                      {" "}
+                      <SingleImageUploadDocument
+                        formData={member}
+                        setFormData={(index, updatedDocument) =>
+                          handleUpdateDocument(index, updatedDocument)
+                        }
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        index={index}
+                      />
+                    </td>
+                    <td>
+                      <span
+                        onClick={() => {
+                          handleDeleteSelectedMember(index);
+                        }}
+                      >
+                        {otherIcons.delete_svg}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan="9">
+                <NoDataFound />
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     );
@@ -208,6 +240,7 @@ const FamilyMember = ({
 
   return (
     <div>
+      {freezLoadingImg && <MainScreenFreezeLoader />}
       {switchCusData === "Contact" && (
         <>
           <div id="secondx2_customer">
@@ -241,7 +274,6 @@ const FamilyMember = ({
             </div>
             {renderMemberTable()}
           </div>
-         
         </>
       )}
     </div>

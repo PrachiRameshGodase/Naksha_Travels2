@@ -1,30 +1,27 @@
 import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import toast, { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../../Helper/DateFormat";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../../Common/SearchBox/SearchBox";
-import SortBy from "../../../Common/SortBy/SortBy";
-import DatePicker from "../../../Common/DatePicker/DatePicker";
-import FilterBy from "../../../Common/FilterBy/FilterBy";
-import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import {
-  parseJSONofString,
-  useDebounceSearch,
-} from "../../../Helper/HelperFunctions";
+import { formatDate } from "../../Helper/DateFormat";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import SearchBox from "../../Common/SearchBox/SearchBox";
+import SortBy from "../../Common/SortBy/SortBy";
+import DatePicker from "../../Common/DatePicker/DatePicker";
+import FilterBy from "../../Common/FilterBy/FilterBy";
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import CreateFlight from "./CreateFight";
+import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
+
 import {
   flightdeleteActions,
   flightListAction,
   flightstatusActions,
-} from "../../../../Redux/Actions/flightActions";
+} from "../../../Redux/Actions/flightActions";
 import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
 
@@ -183,7 +180,7 @@ const Flights = () => {
   };
   const handleDeleteFlight = async (item) => {
     const result = await Swal.fire({
-      text: "Are you sure you want to delete this airline?",
+      text: "Are you sure you want to delete this flight?",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -207,7 +204,7 @@ const Flights = () => {
 
     // Confirmation modal
     const result = await Swal.fire({
-      text: `Do you want to make this airline ${actionText}?`,
+      text: `Do you want to make this flight ${actionText}?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -235,56 +232,7 @@ const Flights = () => {
         <MainScreenFreezeLoader />
       )}
       <div id="middlesection">
-        <div id="Anotherbox">
-          <div id="leftareax12">
-            <h1 id="firstheading">
-              {otherIcons?.warehouse_icon}
-              All Airlines
-            </h1>
-            <p id="firsttagp">{totalItems} Records</p>
-            <SearchBox
-              placeholder="Search In Flights"
-              onSearch={onSearch}
-              section={searchTrigger}
-            />
-          </div>
-
-          <div id="buttonsdata">
-            {/* <SortBy
-              setSearchTrigger={setSearchTrigger}
-              selectedSortBy={selectedSortBy}
-              setSelectedSortBy={setSelectedSortBy}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-              sortOptions=""
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            {/* <DatePicker
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              setSpecificDate={setSpecificDate}
-              setClearFilter={setClearFilter}
-              setSearchTrigger={setSearchTrigger}
-              searchTrigger={searchTrigger}
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            {/* <FilterBy
-              setStatus={setStatus}
-              selectedSortBy={selectedSortBy2}
-              setSearchTrigger={setSearchTrigger}
-              setSelectedSortBy={setSelectedSortBy2}
-              filterOptions=""
-              resetPageIfNeeded={resetPageIfNeeded}
-            /> */}
-
-            <Link className="linkx1" onClick={handleClickOnAdd}>
-              New Flight <GoPlus />
-            </Link>
-            <ResizeFL />
-          </div>
-        </div>
+       
 
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
@@ -305,7 +253,7 @@ const Flights = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
-                  Airline Name
+                    Flight Name
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -420,18 +368,7 @@ const Flights = () => {
             </div>
           </div>
         </div>
-        {showPopup && (
-          <CreateFlight
-            popupContent={{
-              setshowAddPopup: setShowPopup,
-              showAddPopup: showPopup,
-              isEditIndividual: isEdit,
-              selectedItem,
-
-              setSearchTrigger,
-            }}
-          />
-        )}
+        
         <Toaster />
       </div>
     </>

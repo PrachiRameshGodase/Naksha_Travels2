@@ -455,8 +455,8 @@ export const MultiImageUploadHelp = ({
                 <div key={index}>
                   <div id="Show_delete_img_new_vendor">
                     <p style={{ width: "50%" }} title={image?.name || ""}>
-                      {image?.name?.length > 20
-                        ? `${image?.name.substring(0, 20)}...`
+                      {image?.name?.length > 10
+                        ? `${image?.name.substring(0, 12)}...`
                         : image?.name}
                     </p>
 
@@ -1267,8 +1267,8 @@ export const MultiImageUploadDocument = ({
           uploadDocuments.map((image, idx) => (
             <div key={idx} id="Show_delete_img_new_vendor">
               <p style={{ width: "50%" }} title={image?.name || ""}>
-                {image?.name?.length > 20
-                  ? `${image?.name.substring(0, 20)}...`
+                {image?.name?.length > 15
+                  ? `${image?.name.substring(0, 10)}...`
                   : image?.name}
               </p>
 

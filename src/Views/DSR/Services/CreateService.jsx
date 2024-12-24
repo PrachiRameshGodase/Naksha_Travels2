@@ -3,14 +3,16 @@ import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CreateFlightAction } from "../../../../Redux/Actions/flightActions";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { CreateFlightAction } from "../../../Redux/Actions/flightActions";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import { ShowMasterData } from "../../Helper/HelperFunctions";
+import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 
-const CreateFlight = ({ popupContent }) => {
+const CreateService = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const flightCreates = useSelector((state) => state?.createFlight);
-
+  const servicesList = ShowMasterData("48");
   const {
     setshowAddPopup,
     showAddPopup,
@@ -21,8 +23,7 @@ const CreateFlight = ({ popupContent }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [formData, setFormData] = useState({
     flight_name: null,
-    airline_code:null,
-    destination_code:null,
+    service:""
   });
 
   const handleSubmitForm = async (e) => {
@@ -61,7 +62,6 @@ const CreateFlight = ({ popupContent }) => {
     }
   }, [selectedItem, isEditIndividual]);
 
-
   return (
     <div id="formofcreateitems">
       <form action="">
@@ -75,13 +75,13 @@ const CreateFlight = ({ popupContent }) => {
                       id="Anotherbox"
                       className="formsectionx"
                       style={{
-                        height: "70px",
+                        height: "10px",
                         background: "white",
                       }}
                     >
                       <div id="leftareax12">
                         <h1 id="firstheading" className="headingofcreateforems">
-                          {isEditIndividual ? `Update Airline` : "Add Airline"}
+                          {/* {isEditIndividual ? `Update Flight` : "Add Flight"} */}
                         </h1>
                       </div>
 
@@ -106,88 +106,26 @@ const CreateFlight = ({ popupContent }) => {
                             <div className="secondx2">
                               <div className="form_commonblock">
                                 <label>
-                                  Airline Name<b className="color_red">*</b>
+                                  Select Services<b className="color_red">*</b>
                                 </label>
                                 <span>
                                   {otherIcons.name_svg}
-                                  <input
-                                    value={formData.flight_name}
+                                  <CustomDropdown04
+                                    label="Servises"
+                                    options={servicesList}
+                                    value={formData?.service}
                                     onChange={handleChange}
-                                    name="flight_name"
-                                    placeholder="Enter Airline Name"
+                                    name="service"
+                                    defaultOption="Select Service"
+                                    type="masters"
                                   />
                                 </span>
                               </div>
-                              <div className="form_commonblock">
-                                <label>
-                                  Airline Code<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.airline_code}
-                                    onChange={handleChange}
-                                    name="airline_code"
-                                    placeholder="Enter Airline Code"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <div className="secondx2">
-                              <div className="form_commonblock">
-                                <label>
-                                  Desitination Code<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.destination_code}
-                                    onChange={handleChange}
-                                    name="destination_code"
-                                    placeholder="Enter Destination Code"
-                                  />
-                                </span>
-                              </div>
-                             
                             </div>
                           </div>
-                          
                         </div>
                       </div>
                     </div>
-
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "238px",
-                          width: "752px",
-                          position: "absolute",
-                          marginBottom: "62px",
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${flightCreates?.loading ||freezLoadingImg ? "disabledbtn" : ""} `}
-                          type="submit"
-                          disabled={flightCreates?.loading || freezLoadingImg}
-                        >
-                          {isEditIndividual ? "Update" : "Create"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setshowAddPopup(null)}
-                          className={`${(flightCreates?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          disabled={(flightCreates?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
                   </div>
                 </div>
               </div>
@@ -199,4 +137,4 @@ const CreateFlight = ({ popupContent }) => {
   );
 };
 
-export default CreateFlight;
+export default CreateService;

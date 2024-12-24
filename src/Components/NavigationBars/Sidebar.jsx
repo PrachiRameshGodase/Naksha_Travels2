@@ -142,6 +142,10 @@ import AssitDetails from "../../Views/Items/Products/Assits/AssitDetails";
 import CreateInsurance from "../../Views/Items/Products/Insurance/CreateInsurance";
 import Insurances from "../../Views/Items/Products/Insurance/Insurances";
 import VisaDetails from "../../Views/Items/Products/Visa/VisaDetails";
+import CreateDSR from "../../Views/DSR/CreateDSR";
+import DSRS from "../../Views/DSR/DSRS";
+import DSRDetails from "../../Views/DSR/DSRDetails";
+import ServicesList from "../../Views/DSR/Services/ServicesList";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -364,6 +368,17 @@ const Sidebar = ({ loggedInUserData }) => {
         return <Insurances/>;
       case "create-insurances":
         return <CreateInsurance/>;
+
+      //dsr
+      case "create-dsr":
+        return <CreateDSR/>;
+      case "dsr":
+        return <DSRS/>;
+      case "dsr-details":
+        return <DSRDetails/>;
+      //dsr-services
+      case "serviceslist":
+        return <ServicesList/>
 
       //customers
       case "customers":

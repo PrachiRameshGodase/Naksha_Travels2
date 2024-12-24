@@ -78,14 +78,6 @@ const BasicDetails = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("name , value", name, value);
-    const selectedCountry =
-      name === "country_id"
-        ? countryList?.country?.find(
-            (country) => country.id === parseInt(value)
-          )
-        : null;
-
     const bloodGroupName = customerBloodGroup?.find(
       (val) => val?.labelid == value
     );

@@ -18,7 +18,7 @@ const PaymentDetails = ({
   const [paymentDetails, setPaymentDetails] = useState({
     payment_method: "",
     payment_terms: "",
-    credit_limit: 0,
+    credit_limit: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,13 +32,51 @@ const PaymentDetails = ({
       [name]: value,
     }));
   };
-
+  const setTickPaymentDetails = () => {
+    const isPaymentDetailsFilled =
+      paymentDetails?.payment_method &&
+      paymentDetails?.payment_terms &&
+      paymentDetails?.credit_limit;
+    setTick({
+      ...tick,
+      paymentTick: isPaymentDetailsFilled,
+    });
+  };
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
       payment_details: paymentDetails,
     }));
   }, [paymentDetails, setUserData]);
+  
+
+  useEffect(() => {
+    if (user?.id && isEdit) {
+      const userPaymentDetails = user?.payment_details || [];
+  
+      // Extract the first item's details or set default values
+      const paymentDetailsFromUser = userPaymentDetails.length > 0 ? userPaymentDetails[0] : {};
+  
+      setPaymentDetails({
+        payment_method: paymentDetailsFromUser.payment_method || "",
+        payment_terms: paymentDetailsFromUser.payment_terms || "",
+        credit_limit: paymentDetailsFromUser.credit_limit || "",
+      });
+  
+      setTick((prevTick) => ({
+        ...prevTick,
+        paymentDetailsTick: true,
+      }));
+    }
+  }, [user?.id, isEdit, setTick]);
+  
+
+  useEffect(() => {
+   
+    if (isEdit) {
+      updateUserData(paymentDetails); // Only call updateUserData when editing
+    }
+  }, [paymentDetails]);
   return (
     <div>
       <div>

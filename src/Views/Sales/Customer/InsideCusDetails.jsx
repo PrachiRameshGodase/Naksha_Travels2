@@ -6,13 +6,25 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
-import { showDeparmentLabels, ShowMasterData } from "../../Helper/HelperFunctions";
+import {
+  showDeparmentLabels,
+  ShowMasterData,
+} from "../../Helper/HelperFunctions";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-const InsideCusDetails = ({ customerDetails, type }) => {
+import { formatDate, formatDate3 } from "../../Helper/DateFormat";
+import { Navigate, useNavigate } from "react-router-dom";
+import AttachmentPreview from "../../Helper/AttachmentPreview";
+const InsideCusDetails = ({
+  customerDetails,
+  employees,
+  family_members,
+  type,
+}) => {
+  const navigate=useNavigate()
   const displayValue = (value) => (value ? value : "NA");
   const [activeSection, setActiveSection] = useState("basicdetails");
   const mainDeparmentVal = ShowMasterData("10");
-
+  console.log("customerDetails", customerDetails);
   const [isOpen, setIsOpen] = useState([true, true, false, false]);
 
   // Function to toggle the open/close status of an accordion item
@@ -95,15 +107,17 @@ const InsideCusDetails = ({ customerDetails, type }) => {
     <div id="itemsdetailsrowskl">
       <div className="buttonscontainxs2">
         <div
-          className={`divac12cs32 ${activeSection === "basicdetails" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "basicdetails" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("basicdetails")}
         >
           Basic Details
         </div>
         <div
-          className={`divac12cs32 ${activeSection === "transaction" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "transaction" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("transaction")}
         >
           Transaction
@@ -121,8 +135,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
           Mails
         </div> */}
         <div
-          className={`divac12cs32 ${activeSection === "statement" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "statement" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("statement")}
         >
           Statement
@@ -133,15 +148,15 @@ const InsideCusDetails = ({ customerDetails, type }) => {
         {activeSection === "basicdetails" && (
           <>
             <div className="inidbcusx2">
-
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[0] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[0] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(0)}
                 >
                   <p>
-                   {otherIcons.basic_details_svg}
+                    {otherIcons.basic_details_svg}
                     {type === "vendor"
                       ? "Vendor Basic Details"
                       : "Basic Details"}
@@ -151,8 +166,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[0] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[0] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -168,7 +184,6 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                               (customerDetails?.last_name || "")}
                           </p>
                         </li>
-                        {/* <li><span>Currency</span><h1>:</h1><p>{customerDetails?.currency || ""}</p></li> */}
                         <li>
                           <span>Mobile Number</span>
                           <h1>:</h1>
@@ -176,7 +191,7 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                         </li>
 
                         <li>
-                          <span >Email</span>
+                          <span>Email</span>
                           <h1>:</h1>
                           <p>{customerDetails?.email || ""}</p>
                         </li>
@@ -185,36 +200,34 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                     <div className="cusdes1secchild1">
                       <ul>
                         <li>
-                          <span style={{ width: "180px" }}>User Creation Date</span>
+                          <span style={{ width: "180px" }}>
+                            User Creation Date
+                          </span>
                           <h1>:</h1>
                           <p>{formattedDate || ""}</p>
                         </li>
 
+                        {type === "customer" && (
+                          <li>
+                            <span style={{ width: "180px" }}>
+                              Customer Type
+                            </span>
+                            <h1>:</h1>
+                            <p>{customerDetails?.customer_type || ""}</p>
+                          </li>
+                        )}
 
-                        {type === "customer" && (<li>
-                          <span style={{ width: "180px" }}>Customer Type</span>
+                        <li>
+                          <span>Department</span>
                           <h1>:</h1>
-                          <p>{customerDetails?.customer_type || ""}</p>
-                        </li>)}
-                        {/* <li>
-                          <span>Work Phone</span>
-                          <h1>:</h1>
-                          <p>{customerDetails?.work_phone || ""}</p>
-                        </li> */}
-                        {/* <li>
-                          <span>Designation</span>
-                          <h1>:</h1>
-                          <p>{customerDetails?.designation || ""}</p>
-                        </li> */}
-                        {/* <li>
-                          <span>Remark</span>
-                          <h1>:</h1>
-                          <p>{customerDetails?.remarks || ""}</p>
-                        </li> */}
-                        <li><span>Department</span><h1>:</h1><p> {showDeparmentLabels(
-                          customerDetails?.department,
-                          mainDeparmentVal
-                        )}</p></li>
+                          <p>
+                            {" "}
+                            {showDeparmentLabels(
+                              customerDetails?.department,
+                              mainDeparmentVal
+                            )}
+                          </p>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -223,12 +236,13 @@ const InsideCusDetails = ({ customerDetails, type }) => {
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[1] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[1] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(1)}
                 >
                   <p>
-                   {otherIcons.company_details_svg}
+                    {otherIcons.company_details_svg}
                     Company Details
                   </p>
                   <span className="svgico4x5s6">
@@ -236,8 +250,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[1] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[1] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -284,17 +299,7 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                           <h1>:</h1>
                           <p>{customerDetails?.work_phone || ""}</p>
                         </li>
-                        <li>
-                          <span style={{ width: "116px" }}>Payment Terms</span>
-                          <h1>:</h1>
-                          <p>
-                            {" "}
-                            <ShowMastersValue
-                              type="8"
-                              id={customerDetails?.payment_terms}
-                            />
-                          </p>
-                        </li>
+
                         <li>
                           <span style={{ width: "116px" }}>Website</span>
                           <h1>:</h1>
@@ -312,98 +317,177 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </div>
                 </div>
               </div>
-              <div className="accordion-item">
-                <div
-                  className={`accordion-header ${isOpen[2] ? "openedaccordina" : ""
+              {customerDetails?.customer_type == "Individual" ? (
+                <div className="accordion-item">
+                  <div
+                    className={`accordion-header ${
+                      isOpen[2] ? "openedaccordina" : ""
                     }`}
-                  onClick={() => toggleAccordion(2)}
-                >
-                  <p>
-                    {otherIcons.contact_person_svg}
-                    Contact Persons
-                  </p>
-                  <span className="svgico4x5s6">
-                    {isOpen[2] ? <FiChevronUp /> : <FiChevronDown />}
-                  </span>
-                </div>
-                <div
-                  className={`accordion-content ${isOpen[2] ? "openedaccordina" : ""
+                    onClick={() => toggleAccordion(2)}
+                  >
+                    <p>
+                      {otherIcons.contact_person_svg}
+                      Family Members
+                    </p>
+                    <span className="svgico4x5s6">
+                      {isOpen[2] ? <FiChevronUp /> : <FiChevronDown />}
+                    </span>
+                  </div>
+                  <div
+                    className={`accordion-content ${
+                      isOpen[2] ? "openedaccordina" : ""
                     }`}
-                >
-                  <div>
-                    {customerDetails?.contact_person?.map((val, index) => (
-                      <div key={index}>
-                        <h3>
-                          {index + 1}
-                          {getOrdinalIndicator(index + 1)} Contact
-                        </h3>
-                        <div className="cusdes1sec">
-                          <div className="cusdes1secchild1">
-                            <ul>
-                              <li>
-                                <span>Full Name</span>
-                                <h1>:</h1>
-                                <p>
-                                  {(val?.salutation || "") +
-                                    " " +
-                                    (val?.first_name || "") +
-                                    " " +
-                                    (val?.last_name || "") || ""}
-                                </p>
-                              </li>
-                              <li>
-                                <span>Mobile</span>
-                                <h1>:</h1>
-                                <p>{val?.mobile_no || ""}</p>
-                              </li>
-                              {/* <li>
-                                <span>Work Phone</span>
-                                <h1>:</h1>
-                                <p>{val?.work_phone || ""}</p>
-                              </li> */}
-                              <li>
-                                <span>Email</span>
-                                <h1>:</h1>
-                                <p>{val?.email || ""}</p>
-                              </li>
-                              <li>
-                                <span>Designation</span>
-                                <h1>:</h1>
-                                <p>{val?.designation || ""}</p>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <br />
-                        <br />
+                  >
+                    <div className="contents">
+                      <div className="ProjectList">
+                        <table style={{ width: "828px" }}>
+                          <thead>
+                            <tr>
+                              <th>Sr No.</th>
+                              <th>Member Name</th>
+
+                              <th>Mobile Number</th>
+                              <th>Email</th>
+                              <th>Gender</th>
+                              <th>Relationship</th>
+                              <th>Food Type</th>
+                              <th>Attachment</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {family_members?.map((item, index) => (
+                              <tr key={index}>
+                               
+                                <td>{index + 1 || "-"}</td>
+                                <td style={{color:"#2626d3", cursor:"pointer"}} onClick={()=>{navigate(`/dashboard/customer-details?id=${item?.id}`)}}>{`${item?.first_name || "-"} ${
+                                  item?.last_name || "-"
+                                }`}</td>
+
+                                <td>{item?.mobile_no || "-"}</td>
+
+                                <td>{item?.email || "-"}</td>
+                                <td>
+                                  <ShowMastersValue
+                                    type="45"
+                                    id={item?.gender || "-"}
+                                  />
+                                </td>
+                                <td>
+                                  <ShowMastersValue
+                                    type="46"
+                                    id={item?.relationship || "-"}
+                                  />
+                                </td>
+                                <td>
+                                  <ShowMastersValue
+                                    type="47"
+                                    id={item?.food_type || "-"}
+                                  />
+                                </td>
+                                <td>
+                                <AttachmentPreview attachments={item?.photo ? JSON.parse(item?.photo) : {}}/>
+
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                    ))}
-                    <div className=""></div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="accordion-item">
+                  <div
+                    className={`accordion-header ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
+                    onClick={() => toggleAccordion(2)}
+                  >
+                    <p>
+                      {otherIcons.contact_person_svg}
+                      Employee details
+                    </p>
+                    <span className="svgico4x5s6">
+                      {isOpen[2] ? <FiChevronUp /> : <FiChevronDown />}
+                    </span>
+                  </div>
+                  <div
+                    className={`accordion-content ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
+                  >
+                    <div className="contents">
+                      <div className="ProjectList">
+                        <table style={{ width: "828px" }}>
+                          <thead>
+                            <tr>
+                              <th>Sr No.</th>
+                              <th>Member Name</th>
+                              <th>Company Name</th>
+                              <th>Mobile Number</th>
+                              <th>Email</th>
+                              <th>Gender</th>
 
+                              <th>Food Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {employees?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1 || "-"}</td>
+                                <td>{`${item?.first_name || "-"} ${
+                                  item?.last_name || "-"
+                                }`}</td>
+<td style={{color:"#2626d3"}}>{item?.company_name
+|| "-"}</td>
+                                <td>{item?.mobile_no || "-"}</td>
+
+                                <td>{item?.email || "-"}</td>
+                                <td>
+                                  <ShowMastersValue
+                                    type="45"
+                                    id={item?.gender || "-"}
+                                  />
+                                </td>
+
+                                <td>
+                                  <ShowMastersValue
+                                    type="47"
+                                    id={item?.food_type || "-"}
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[3] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[3] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(3)}
                 >
                   <p>
-                   {otherIcons.company_details_svg}
+                    {otherIcons.company_details_svg}
                     Bank Details
                   </p>
                   <span className="svgico4x5s6">
                     {isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
-                { }
+                {}
                 <div
-                  className={`accordion-content ${isOpen[3] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[3] ? "openedaccordina" : ""
+                  }`}
                 >
-
                   <div>
                     {customerDetails?.bank_details?.map((val, index) => (
                       <div key={index}>
@@ -451,15 +535,77 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </div>
                 </div>
               </div>
-
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[4] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[10] ? "openedaccordina" : ""
+                  }`}
+                  onClick={() => toggleAccordion(10)}
+                >
+                  <p>
+                    {otherIcons.company_details_svg}
+                    Payment Details
+                  </p>
+                  <span className="svgico4x5s6">
+                    {isOpen[10] ? <FiChevronUp /> : <FiChevronDown />}
+                  </span>
+                </div>
+                {}
+                <div
+                  className={`accordion-content ${
+                    isOpen[10] ? "openedaccordina" : ""
+                  }`}
+                >
+                  <div>
+                    {customerDetails?.payment_details?.map((val, index) => (
+                      <div key={index}>
+                        <h3></h3>
+                        <div className="cusdes1sec">
+                          <div className="cusdes1secchild1">
+                            <ul>
+                              <li>
+                                <span style={{ width: "374px" }}>
+                                  Preferred Payment Method
+                                </span>
+                                <h1>:</h1>
+                                <p>{val?.payment_method || ""}</p>
+                              </li>
+                              <li>
+                                <span style={{ width: "374px" }}>
+                                  Credit Limit
+                                </span>
+                                <h1>:</h1>
+                                <p>{val?.credit_limit || ""}</p>
+                              </li>
+
+                              <li>
+                                <span style={{ width: "374px" }}>
+                                  Payment Terms
+                                </span>
+                                <h1>:</h1>
+                                <ShowMastersValue
+                                  type="8"
+                                  id={val?.payment_terms || ""}
+                                />
+                                <p></p>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="accordion-item">
+                <div
+                  className={`accordion-header ${
+                    isOpen[4] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(4)}
                 >
                   <p>
-                   {otherIcons.company_details_svg}
+                    {otherIcons.company_details_svg}
                     Remark
                   </p>
                   <span className="svgico4x5s6">
@@ -467,8 +613,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[4] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[4] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="">
@@ -481,12 +628,13 @@ const InsideCusDetails = ({ customerDetails, type }) => {
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(5)}
                 >
                   <p>
-                   {otherIcons.company_details_svg}
+                    {otherIcons.company_details_svg}
                     Upload Images/Documents
                   </p>
                   <span className="svgico4x5s6">
@@ -494,11 +642,15 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
-                    <div className="uploaded-images-grid" style={{ width: "calc(57% - -360px)" }}>
+                    <div
+                      className="uploaded-images-grid"
+                      style={{ width: "calc(57% - -360px)" }}
+                    >
                       {uploadDocuments?.map((doc, index) => {
                         const imageUrl = Object.values(doc)[0]; // Extract the URL
                         const imageName = doc.name || `Image ${index + 1}`; // Handle the name, if available
@@ -511,12 +663,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                           .pop()
                           .toLowerCase();
 
-                        const isIamge = [
-                          "jpg",
-                          "jpeg",
-                          "png",
-                          "gif",
-                        ].includes(fileExtension);
+                        const isIamge = ["jpg", "jpeg", "png", "gif"].includes(
+                          fileExtension
+                        );
 
                         // Function to return the appropriate icon or image
                         const renderFilePreview = () => {
@@ -575,9 +724,7 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                                 />
                               </svg>
                             );
-                          } else if (
-                            ["doc", "docx"].includes(fileExtension)
-                          ) {
+                          } else if (["doc", "docx"].includes(fileExtension)) {
                             return (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -642,9 +789,7 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                                 />
                               </svg>
                             );
-                          } else if (
-                            ["xls", "xlsx"].includes(fileExtension)
-                          ) {
+                          } else if (["xls", "xlsx"].includes(fileExtension)) {
                             return (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -707,30 +852,40 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                                   {renderFilePreview()}
                                 </div>
                                 <div className="image-details">
-                                  <div
-                                    className="image-name"
-                                    title={imageName}
-                                  >
+                                  <div className="image-name" title={imageName}>
                                     {truncatedName}
                                   </div>
-
                                 </div>
                               </div>
-                            ) : (<div className="" key={index} style={{ display: "flex", flexDirection: "row", width: "calc(25% - 16px)", alignItems: "center" }}>
-                              <div className="" style={{ marginTop: "2px" }}
-                              >
-                                {renderFilePreview()}
-                              </div>
-                              {/* <div className="image-details"> */}
+                            ) : (
                               <div
-                                className="image-name" style={{ marginLeft: "10px", marginBottom: "4px" }}
-                                title={imageName}
+                                className=""
+                                key={index}
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  width: "calc(25% - 16px)",
+                                  alignItems: "center",
+                                }}
                               >
-                                {truncatedName}
-                              </div>
+                                <div className="" style={{ marginTop: "2px" }}>
+                                  {renderFilePreview()}
+                                </div>
+                                {/* <div className="image-details"> */}
+                                <div
+                                  className="image-name"
+                                  style={{
+                                    marginLeft: "10px",
+                                    marginBottom: "4px",
+                                  }}
+                                  title={imageName}
+                                >
+                                  {truncatedName}
+                                </div>
 
-                              {/* </div> */}
-                            </div>)}
+                                {/* </div> */}
+                              </div>
+                            )}
                           </>
                         );
                       })}
@@ -759,12 +914,13 @@ const InsideCusDetails = ({ customerDetails, type }) => {
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[6] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[6] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(6)}
                 >
                   <p>
-                   {otherIcons.address_details_svg}
+                    {otherIcons.address_details_svg}
                     Address
                   </p>
                   <span className="svgico4x5s6">
@@ -772,8 +928,9 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div>
                     {customerDetails?.address?.map((val, index) => (
@@ -899,12 +1056,13 @@ const InsideCusDetails = ({ customerDetails, type }) => {
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[7] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[7] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(7)}
                 >
                   <p>
-                  {otherIcons.company_details_svg}
+                    {otherIcons.company_details_svg}
                     Document
                   </p>
                   <span className="svgico4x5s6">
@@ -912,60 +1070,174 @@ const InsideCusDetails = ({ customerDetails, type }) => {
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[7] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[7] ? "openedaccordina" : ""
+                  }`}
                 >
+                  <div className="contents">
+                    <div className="ProjectList">
+                      <table style={{ width: "828px" }}>
+                        <thead>
+                          <tr>
+                            <th>Sr No.</th>
+                            <th>Document Name</th>
+                            <th>Document No</th>
+                            <th>Issue Date</th>
+                            <th>Expiry Date</th>
+                            <th>Attachment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {customerDetails?.documents?.map((item, index) => (
+                            <tr key={index}>
+                              <td>{index + 1 || "-"}</td>
+
+                              <td>{item?.document_name || "-"}</td>
+                              <td>{item?.document_no || "-"}</td>
+                              <td>{formatDate3(item?.issue_date) || "-"}</td>
+                              <td>{formatDate3(item?.expiry_date) || "-"}</td>
+                              <td>
+                                <AttachmentPreview attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
+                               </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div>
-                   
                     <div className=""></div>
                   </div>
                 </div>
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[8] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[8] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(8)}
                 >
                   <p>
-                  {otherIcons.company_details_svg}
-                  Vaccination Details
+                    {otherIcons.company_details_svg}
+                    Vaccination Details
                   </p>
                   <span className="svgico4x5s6">
                     {isOpen[8] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[8] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[8] ? "openedaccordina" : ""
+                  }`}
                 >
+                  <div className="contents">
+                    <div className="ProjectList">
+                      <table style={{ width: "828px" }}>
+                        <thead>
+                          <tr>
+                            <th>Sr No.</th>
+                            <th>Vaccination Name</th>
+                            <th>Attachment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {customerDetails?.vaccination_details?.map(
+                            (item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1 || "-"}</td>
+
+                                <td>{item?.vaccination_name || "-"}</td>
+                                <td>
+                                <AttachmentPreview attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
+                               </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div>
-                   
                     <div className=""></div>
                   </div>
                 </div>
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[9] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[9] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(9)}
                 >
                   <p>
-                  {otherIcons.company_details_svg}
-                 Insurance Details
+                    {otherIcons.company_details_svg}
+                    Insurance Details
                   </p>
                   <span className="svgico4x5s6">
                     {isOpen[9] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
+
                 <div
-                  className={`accordion-content ${isOpen[9] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[9] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div>
-                   
-                    <div className=""></div>
+                    {customerDetails?.insurrance_details?.map((val, index) => (
+                      <div key={index}>
+                        <div className="cusdes1sec">
+                          <div className="cusdes1secchild1">
+                            <ul>
+                              <li>
+                                <span style={{ width: "180px" }}>
+                                  Company Name
+                                </span>
+                                <h1>:</h1>
+                                <p>{val?.company_name || ""}</p>
+                              </li>
+                              <li>
+                                <span style={{ width: "180px" }}>
+                                  Policy Number
+                                </span>
+                                <h1>:</h1>
+                                <p>{val?.policy_no || ""}</p>
+                              </li>
+
+                              <li>
+                                <span style={{ width: "180px" }}>
+                                  Issue Date
+                                </span>
+                                <h1>:</h1>
+
+                                <p>{formatDate3(val?.issue_date)}</p>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="cusdes1secchild1">
+                            <ul>
+                              {" "}
+                              <li>
+                                <span style={{ width: "180px" }}>
+                                  Expiry Date
+                                </span>
+                                <h1>:</h1>
+
+                                <p>{formatDate3(val?.expiry_date)}</p>
+                              </li>
+                              <li>
+                                <span style={{ width: "180px" }}>
+                                  Attachment
+                                </span>
+                                <h1>:</h1>
+                                <p><AttachmentPreview attachments={val?.upload_documents ? JSON.parse(val?.upload_documents) : []}/></p>
+
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

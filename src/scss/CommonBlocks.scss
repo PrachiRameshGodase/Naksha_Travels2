@@ -221,7 +221,76 @@
     }
   }
 }
+.actionbarcommon2 {
+  // position: absolute;
+  position: sticky;
+  background: $primary06;
+  background: $white;
+  // box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 0 30px rgba(14, 42, 71, 0.15);
+  // border-top: 1px solid $stroke;
+  // background: $primary09;
+  bottom: 0;
+  // left: 198px;
+  left: 0;
+  // width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 17px 0px;
+  z-index: 998;
 
+  .firstbtnc1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 24px;
+    font-size: 13px;
+    background: $primary;
+    border: none;
+    height: 34px;
+    color: $white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: 0.3s all;
+
+    svg {
+      color: $white;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .firstbtnc2 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    background: $primary06;
+    height: 34px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s all;
+
+    &:hover {
+      background: $primary10;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
 // .inactive-row {
 //   // background: $primary09 !important;
 //   background: $lightprimary03 !important;

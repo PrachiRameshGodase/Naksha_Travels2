@@ -4,6 +4,7 @@ import { MultiImageUploadHelp } from "../../Helper/ComponentHelper/ImageUpload";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NumericInput from "../../Helper/NumericInput";
 import { formatDate } from "../../Helper/DateFormat";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 
 const InsuranceDetails = ({
   switchCusData,
@@ -44,9 +45,40 @@ const InsuranceDetails = ({
     }));
   }, [insuranceDetails, setUserData]);
 
-  
+  useEffect(() => {
+    if (user?.id && isEdit) {
+      const userInsuranceDetails = user?.insurrance_details || [];
+
+      // Extract the first item's details or set default values
+      const insuranceDetailsFromUser =
+        userInsuranceDetails.length > 0 ? userInsuranceDetails[0] : {};
+
+      setInsuranceDetails({
+        company_name: insuranceDetailsFromUser.company_name || "",
+        policy_no: insuranceDetailsFromUser.policy_no || "",
+        issue_date: insuranceDetailsFromUser.issue_date || "",
+        expiry_date:insuranceDetailsFromUser?.expiry_date || "",
+        upload_documents: insuranceDetailsFromUser?.upload_documents
+          ? JSON.parse(insuranceDetailsFromUser.upload_documents)
+          : [],
+      });
+
+      setTick((prevTick) => ({
+        ...prevTick,
+        insuranceDetailTick: true,
+      }));
+    }
+  }, [user?.id, isEdit, setTick]);
+
+  useEffect(() => {
+    if (isEdit) {
+      updateUserData(insuranceDetails); // Only call updateUserData when editing
+    }
+  }, [insuranceDetails]);
   return (
     <div>
+      {freezLoadingImg && <MainScreenFreezeLoader />}
+
       {switchCusData === "Insurance Details" ? (
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus"></div>
@@ -85,35 +117,37 @@ const InsuranceDetails = ({
                 <span>
                   {otherIcons.date_svg}
                   <DatePicker
-                      selected={insuranceDetails?.issue_date}
-                      onChange={(date) =>
-                        setInsuranceDetails({
-                          ...insuranceDetails,
-                          issue_date: formatDate(date),
-                        })
-                      }
-                      name="issue_date"
-                      placeholderText="Enter Date"
-                      dateFormat="dd-MM-yyyy" 
-                    />
+                    selected={insuranceDetails?.issue_date}
+                    onChange={(date) =>
+                      setInsuranceDetails({
+                        ...insuranceDetails,
+                        issue_date: formatDate(date),
+                      })
+                    }
+                    name="issue_date"
+                    placeholderText="Enter Date"
+                    dateFormat="dd-MM-yyyy"
+                    autoComplete="off"
+                  />
                 </span>
               </div>
               <div className="form_commonblock ">
-                <label >Expiry Date</label>
+                <label>Expiry Date</label>
                 <span>
                   {otherIcons.date_svg}
                   <DatePicker
-                      selected={insuranceDetails?.expiry_date}
-                      onChange={(date) =>
-                        setInsuranceDetails({
-                          ...insuranceDetails,
-                          expiry_date: formatDate(date),
-                        })
-                      }
-                      name="expiry_date"
-                      placeholderText="Enter Date"
-                      dateFormat="dd-MM-yyyy" // Ensure the date format is consistent
-                    />
+                    selected={insuranceDetails?.expiry_date}
+                    onChange={(date) =>
+                      setInsuranceDetails({
+                        ...insuranceDetails,
+                        expiry_date: formatDate(date),
+                      })
+                    }
+                    name="expiry_date"
+                    placeholderText="Enter Date"
+                    dateFormat="dd-MM-yyyy"
+                    autoComplete="off"
+                  />
                 </span>
               </div>
               <div id="imgurlanddesc" className="calctotalsectionx2">

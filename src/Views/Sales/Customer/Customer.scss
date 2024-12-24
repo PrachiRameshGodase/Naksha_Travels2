@@ -9,7 +9,7 @@
     transition: 0.3s all;
     width: fit-content;
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     align-items: center;
     gap: 5px;
     padding: 4px;
@@ -43,7 +43,14 @@
       cursor: pointer;
       background-color: #f9f9f9;
     }
-
+    .type-button3 {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #f9f9f9;
+    }
     .selectedbtnx2 {
       background: $primary;
       color: $white;
@@ -53,6 +60,12 @@
       }
     }
   }
+}
+.type-button2 {
+  display: flex;
+
+  text-align: center;
+  padding: 10px;
 }
 
 #secondx2_customer {
@@ -125,7 +138,6 @@
   gap: 20px;
 
   .firstindc2sx3 {
-
     display: flex;
     align-items: flex-start;
     gap: 20px;
@@ -251,7 +263,6 @@
   }
 
   .firstindc2a3 {
-
     border: 1px solid $stroke;
     border-bottom: none;
     border-radius: 5px;
@@ -294,11 +305,9 @@
       width: 100%;
       font-size: 14px;
     }
-
   }
 
   .accordion-item {
-
     border: 1px solid $primary06;
     display: flex;
     flex-direction: column;
@@ -310,7 +319,6 @@
     background: $primary09;
 
     .accordion-header {
-
       cursor: pointer;
       transition: background-color 0.3s ease;
       display: flex;
@@ -348,7 +356,6 @@
           padding: 6px;
         }
       }
-
     }
 
     .accordion-content {
@@ -365,8 +372,8 @@
         margin-top: 20px;
         padding: 15px;
         max-height: 100%;
-        height: auto
-          /* Adjust according to your content height */
+        height: auto;
+        /* Adjust according to your content height */
       }
 
       .cusdes1sec {
@@ -941,11 +948,10 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        opacity: .9;
+        opacity: 0.9;
 
         &:hover {
           opacity: 1;
-
         }
       }
 
@@ -958,11 +964,6 @@
         border-radius: 5px;
         width: 230px;
       }
-
-
-
-
-
 
       .dex1s2schilds2 {
         line-height: 22px;
@@ -1520,7 +1521,6 @@
 }
 
 .newdateformationofsortbuy {
-
   // background-color: $primary09;
   input {
     height: 30px;
@@ -1575,7 +1575,7 @@
     margin-right: 10px;
     cursor: pointer;
 
-    &:checked+label {
+    &:checked + label {
       color: purple;
     }
   }
@@ -1593,14 +1593,12 @@
   justify-content: flex-start;
 }
 
-
 .image-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: calc(25% - 16px);
 }
-
 
 .image-item {
   width: 100%;
@@ -1612,19 +1610,16 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
 .image-item:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 .uploaded-image {
   width: 100%;
   height: 190px;
   object-fit: cover;
 }
-
 
 .image-details {
   width: 100%;
@@ -1635,7 +1630,6 @@
   justify-content: space-between;
 }
 
-
 .image-name {
   font-size: 14px;
   color: #333;
@@ -1643,7 +1637,6 @@
 
   margin-bottom: 7px;
 }
-
 
 .delete-icon {
   font-size: 23px;
@@ -1665,12 +1658,9 @@
   background-color: white;
 }
 
-
 #primaryContainer ::-webkit-scrollbar-thumb {
   background-color: rgb(208, 215, 222);
   border-radius: 8px;
-
-
 }
 /* General Table Styling */
 table.employee-table {
@@ -1709,7 +1699,8 @@ table.employee-table {
   .employee-table {
     font-size: 12px;
   }
-  .employee-table th, .employee-table td {
+  .employee-table th,
+  .employee-table td {
     padding: 8px;
   }
 }
@@ -1718,4 +1709,169 @@ table.employee-table {
 .employee-table td.empty {
   color: #ccc;
   font-style: italic;
+}
+.ProjectList {
+  overflow-y: auto;
+  width: 100% !important;
+  margin: 0 auto;
+  // border: 1px solid red !important;
+  // border: 1px solid rgba(153, 146, 146, 0.569);
+  // margin-top: 20px;
+  border-radius: 10px;
+  padding: 15px 20px;
+  // margin-left: -10px;
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(153, 146, 146, 0.569);
+    padding-bottom: 10px;
+    min-width: 1000px;
+    .icon {
+      margin-right: 0.5rem;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  table {
+    width: 1000px;
+    border-collapse: separate; // Ensure borders are separate for proper display
+    border-spacing: 0; // Remove spacing between cells
+    margin-top: 1rem;
+    border-radius: 10px; // Apply border-radius to the entire table
+    overflow: hidden; // Ensure that border-radius applies correctly
+    border-left: 1px dashed #ddd; // Apply dashed border to left
+    border-right: 1px dashed #ddd; // Apply dashed border to left
+    border-top: 1px solid rgba(219, 209, 209, 0.755); // Optional border
+    thead {
+      background-color:  rgb(244 240 245 / 45%); // Fixed header background color
+
+      tr {
+        th {
+          border-bottom: 1px solid rgba(219, 209, 209, 0.755); // Optional border
+          padding: 0.75rem;
+          text-align: left;
+          font-weight: bold;
+          font-size: 13px;
+          opacity: 0.6;
+        }
+        th {
+          text-align: start;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-right: 1px dashed #efedef91; // Apply dashed border to right
+
+        &:hover {
+          background-color: #f4f2f2; // Hover background color
+        }
+
+        td {
+          border-bottom: 1px dashed #ddd; // Apply dashed border to left
+
+          padding: 0.75rem;
+          // border-bottom: 1px solid #ddd; // Solid border for bottom of cells
+        }
+        td {
+          text-align: start;
+        }
+        td{
+            .newEmp_img {
+              display: flex;
+               align-items: center;
+              justify-content: center;
+              .img_add_p {
+                background: #ffffff;
+                z-index: 9;
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                margin-left: -20px;
+                // border: 1px solid #A448EE;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                cursor: pointer;
+                color: #27014a;
+              }
+              .div_newEmp_img_team {
+                img {
+                  width: 35px;
+                  height: 35px;
+                  margin-left: -13px;
+                }
+              }
+            }
+        }
+        .completed {
+          color: #276f36;
+          .td {
+            border-radius: 8px;
+            padding: 5px 10px;
+            background-color: #589e673e;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            width: fit-content;
+            &::before {
+              content: ".";
+              width: 5px;
+              height: 5px;
+              padding: 2px;
+              border-radius: 50%;
+              background-color: #276f36;
+              margin-right: 5px;
+            }
+          }
+        }
+        .pending {
+          color: red;
+          .td {
+            border-radius: 8px;
+            padding: 5px 10px;
+            background-color: #9e585840;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            width: fit-content;
+            &::before {
+              content: "";
+              width: 5px;
+              height: 5px;
+              padding: 2px;
+              margin-right: 5px;
+              border-radius: 50%;
+              background-color: #d50e0e !important;
+            }
+          }
+        }
+      }
+    }
+
+    // Apply rounded corners
+    thead tr:first-child th:first-child {
+      border-top-left-radius: 10px;
+    }
+
+    thead tr:first-child th:last-child {
+      border-top-right-radius: 10px;
+    }
+
+    tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 10px;
+    }
+
+    tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 10px;
+    }
+  }
 }

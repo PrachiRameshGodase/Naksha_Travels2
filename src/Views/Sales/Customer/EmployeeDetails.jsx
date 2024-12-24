@@ -9,6 +9,7 @@ import ShowMastersValue from "../../Helper/ShowMastersValue";
 import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown27";
 import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 
 const EmployeeDetails = ({
   switchCusData,
@@ -19,6 +20,8 @@ const EmployeeDetails = ({
   setTick,
   tick,
 }) => {
+  const { isDuplicate, isEdit, user, customerDetails } = customerData;
+
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
   const cusList = useSelector((state) => state?.customerList);
@@ -69,9 +72,8 @@ const EmployeeDetails = ({
         ...prev,
         {
           employee_id: selectedCustomer.id,
-         
+
           food_type: "",
-          
         },
       ]);
     }
@@ -103,12 +105,29 @@ const EmployeeDetails = ({
     );
   };
 
-  const handleUpdateDocument = (index, updatedDocument) => {
-    setEmployeeDetails((prevDocuments) =>
-      prevDocuments.map((doc, i) => (i === index ? updatedDocument : doc))
-    );
-  };
-  console.log("employeeDetails", employeeDetails);
+  
+  useEffect(() => {
+    if (customerDetails?.employees && isEdit) {
+      const employeeDetails = customerDetails?.employees || [];
+      const employeeDetail = employeeDetails?.map((item) => ({
+        employee_id: item.id || "",
+        food_type: item.food_type || "",
+      }));
+
+      setEmployeeDetails(employeeDetail); // Update state with the transformed array
+
+      setTick((prevTick) => ({
+        ...prevTick,
+        employeeTick: true,
+      }));
+    }
+  }, [customerDetails?.employees, isEdit, setTick]);
+
+  useEffect(() => {
+    if (isEdit) {
+      updateUserData(employeeDetails); // Only call updateUserData when editing
+    }
+  }, [employeeDetails]);
   // Render the member table
   const renderMemberTable = () => {
     return (
@@ -120,62 +139,64 @@ const EmployeeDetails = ({
             <th>Email</th>
             <th>Mobile Number</th>
             <th>Gender</th>
-         
+
             <th style={{ minWidth: "100px" }}>Food Type</th>
-          
+
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {employeeDetails?.length >=1 ?(employeeDetails?.map((member, index) => {
-            const selectedMember = cusList?.data?.user.find(
-              (user) => user.id === member.employee_id
-            );
+          {employeeDetails?.length >= 1 ? (
+            employeeDetails?.map((member, index) => {
+              const selectedMember = cusList?.data?.user.find(
+                (user) => user.id === member.employee_id
+              );
 
-            return (
-              selectedMember && (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{selectedMember.display_name}</td>
-                  <td>{selectedMember.email}</td>
-                  <td>{selectedMember.mobile_no}</td>
-                  <td>
-                    <ShowMastersValue type="45" id={selectedMember.gender} />
-                  </td>
-                  
-                  <td style={{ width: "40px" }}>
-                    <CustomDropdown27
-                      label="Food Type"
-                      options={foodTypeOptions}
-                      value={member.food_type}
-                      onChange={(e) =>
-                        handleChange("food_type", index, e.target.value)
-                      }
-                      name="food_type"
-                      defaultOption="Select Food Type"
-                      type="masters"
-                    />
-                  </td>
-                
-                  <td>
-                    <span
-                      onClick={() => {
-                        handleDeleteSelectedMember(index);
-                      }}
-                    >
-                      {otherIcons.delete_svg}
-                    </span>
-                  </td>
-                  
-                </tr>
-              )
-            );
-          })):(<tr>
-            <td colSpan="9" >
-            <NoDataFound />
-          </td>
-        </tr>)
-          }
+              return (
+                selectedMember && (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{selectedMember.display_name}</td>
+                    <td>{selectedMember.email}</td>
+                    <td>{selectedMember.mobile_no}</td>
+                    <td>
+                      <ShowMastersValue type="45" id={selectedMember.gender} />
+                    </td>
+
+                    <td style={{ width: "40px" }}>
+                      <CustomDropdown27
+                        label="Food Type"
+                        options={foodTypeOptions}
+                        value={member.food_type}
+                        onChange={(e) =>
+                          handleChange("food_type", index, e.target.value)
+                        }
+                        name="food_type"
+                        defaultOption="Select Food Type"
+                        type="masters"
+                      />
+                    </td>
+
+                    <td>
+                      <span
+                        onClick={() => {
+                          handleDeleteSelectedMember(index);
+                        }}
+                      >
+                        {otherIcons.delete_svg}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan="9">
+                <NoDataFound />
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     );
@@ -183,6 +204,7 @@ const EmployeeDetails = ({
 
   return (
     <div>
+       
       {switchCusData === "Employee Details" && (
         <>
           <div id="secondx2_customer">
@@ -216,7 +238,6 @@ const EmployeeDetails = ({
             </div>
             {renderMemberTable()}
           </div>
-         
         </>
       )}
     </div>

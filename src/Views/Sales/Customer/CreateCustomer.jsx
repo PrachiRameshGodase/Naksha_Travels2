@@ -29,6 +29,8 @@ const CreateCustomer = () => {
   const Navigate = useNavigate();
   const customer = useSelector((state) => state?.createCustomer);
   const user = useSelector((state) => state?.viewCustomer?.data?.user || {});
+  const customerDetails = useSelector((state) => state?.viewCustomer?.data || {});
+
   const [switchCusData, setSwitchCusData] = useState("Basic");
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -51,12 +53,15 @@ const CreateCustomer = () => {
   const [tick, setTick] = useState({
     basicTick: false,
     addressTick: false,
+    familyMemberTick:false,
+    employeeTick:false,
     bankTick: false,
+    paymentDetailsTick: false,
     remarkTick: false,
     documentsTick: false,
-    paymentDetailsTick: false,
     vaccinationDetailTick: false,
     insuranceDetailTick: false,
+    
   });
 
   // all submit data of create customer
@@ -436,21 +441,21 @@ const CreateCustomer = () => {
                 />
                  <EmployeeDetails
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate }}
+                  customerData={{ user, isEdit, isDuplicate ,customerDetails  }}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
-                  setContactTick={setContactTick}
-                  text1={text1}
+                  setTick={setTick}
+                  tick={setTick}
                 />
                 <FamilyMember
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate }}
+                  customerData={{ user, isEdit, isDuplicate , customerDetails}}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
-                  setContactTick={setContactTick}
-                  text1={text1}
+                  setTick={setTick}
+                  tick={tick}
                 />
 
                 {/* <CustomerContactDetail
@@ -464,7 +469,7 @@ const CreateCustomer = () => {
                 /> */}
                 <BankDetails
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate }}
+                  customerData={{ user, isEdit, isDuplicate , customerDetails}}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
