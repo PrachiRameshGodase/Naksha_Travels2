@@ -19,7 +19,7 @@ import NumericInput from "../../Helper/NumericInput";
 import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
 
-const CreateHotelPopup = ({ showModal, setShowModal }) => {
+const CreateFlightPopup = ({ showModal, setShowModal }) => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
   const params = new URLSearchParams(location.search);
@@ -39,10 +39,11 @@ const CreateHotelPopup = ({ showModal, setShowModal }) => {
   const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
-  const [formData, setFormData] = useState({hotel_id:"",
-    bed_id:"",
-    meal_id:"",
-    occupancy_id:""
+  const [formData, setFormData] = useState({
+    hotel_id: "",
+    bed_id: "",
+    meal_id: "",
+    occupancy_id: "",
   });
   const [isCustomerSelect, setIsCustomerSelect] = useState(false);
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
@@ -91,12 +92,12 @@ const CreateHotelPopup = ({ showModal, setShowModal }) => {
   };
 
   if (!showModal) return null;
-console.log("formData", formData)
+  console.log("formData", formData);
   return (
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5>{isEdit ? "Update Hotel Service" : "Add Hotel Service"}</h5>
+          <h5>{isEdit ? "Update Flight Service" : "Add Flight Service"}</h5>
           <button className="close-button" onClick={() => setShowModal(false)}>
             <RxCross2 />
           </button>
@@ -111,7 +112,7 @@ console.log("formData", formData)
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                       <label>
-                        Hotel Type<b className="color_red">*</b>
+                        Entry Type<b className="color_red">*</b>
                       </label>
 
                       <span id="">
@@ -131,67 +132,37 @@ console.log("formData", formData)
 
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
-                      <label>
-                        Hotel Name<b className="color_red">*</b>
-                      </label>
-                      <div id="sepcifixspanflex">
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown29
-                            autoComplete="off"
-                            ref={dropdownRef1}
-                            label="Hotel Name"
-                            options={hotelList}
-                            value={formData.hotel_id}
-                            onChange={handleChange}
-                            name="hotel_id"
-                            defaultOption="Select Hotel"
-                            setcusData={setcusData3}
-                            cusData={cusData3}
-                            type="vendor"
-                            
-                            required
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>
-                        Room Number/Name<b className="color_red">*</b>
-                      </label>
+                      <label>Travel Date</label>
                       <span>
-                        {otherIcons.placeofsupply_svg}
-                        <CustomDropdown02
+                        {otherIcons.date_svg}
+                        <DatePicker
+                          selected={formData?.travel_date}
+                          onChange={(date) =>
+                            setFormData({
+                              ...formData,
+                              travel_date: formatDate(date),
+                            })
+                          }
+                          name="travel_date"
+                          placeholderText="Enter Date"
+                          dateFormat="dd-MM-yyyy"
                           autoComplete="off"
-                          ref={dropdownRef1}
-                          label="Room Name"
-                          options={hotelRoomListData}
-                          value={formData.room_name}
-                          onChange={handleChange}
-                          name="room_name"
-                          defaultOption="Select Room Number/Name"
-                          setcusData={setcusData4}
-                          cusData={cusData4}
-                          type="vendor"
-                          hotelID={formData.hotel_id}
-                          required
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Occupancy<b className="color_red">*</b>
+                        Travel Type<b className="color_red">*</b>
                       </label>
-
                       <span id="">
                         {otherIcons.name_svg}
                         <CustomDropdown04
-                          label="Occupancy"
-                          options={occupancy}
-                          value={formData?.occupancy_id}
+                          label="travel_type"
+                          options={bed}
+                          value={formData?.travel_type}
                           onChange={handleChange}
-                          name="occupancy_id"
-                          defaultOption="Select Occupancy"
+                          name="travel_type"
+                          defaultOption="Select Travel Type"
                           type="masters"
                         />
                       </span>
@@ -200,41 +171,21 @@ console.log("formData", formData)
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                       <label>
-                        Meal Plan<b className="color_red">*</b>
+                        AirLine Name<b className="color_red">*</b>
                       </label>
-                      <span id="">
-                        {otherIcons.name_svg}
-                        <CustomDropdown04
-                          label="Meal"
-                          options={meal}
-                          value={formData?.meal_id}
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.airLine_name}
                           onChange={handleChange}
-                          name="meal_id"
-                          defaultOption="Select Meal"
-                          type="masters"
+                          name="airLine_name"
+                          placeholder="Enter Airline Name"
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Bed<b className="color_red">*</b>
-                      </label>
-                      <span id="">
-                        {otherIcons.name_svg}
-                        <CustomDropdown04
-                          label="Bed"
-                          options={bed}
-                          value={formData?.bed_id}
-                          onChange={handleChange}
-                          name="bed_id"
-                          defaultOption="Select Bed"
-                          type="masters"
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>
-                        Guest Name<b className="color_red">*</b>
+                        Passenger<b className="color_red">*</b>
                       </label>
 
                       <div id="sepcifixspanflex">
@@ -248,7 +199,7 @@ console.log("formData", formData)
                             value={formData.customer_id}
                             onChange={handleChange}
                             name="customer_id"
-                            defaultOption="Select Guest"
+                            defaultOption="Select Passenger"
                             setcusData={setcusData}
                             cusData={cusData}
                             type="vendor"
@@ -257,67 +208,66 @@ console.log("formData", formData)
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock ">
-                      <label>Booking Date</label>
+                    <div className="form_commonblock">
+                      <label>
+                        GDS Portal<b className="color_red">*</b>
+                      </label>
                       <span>
-                        {otherIcons.date_svg}
-                        <DatePicker
-                          selected={formData?.issue_date}
-                          onChange={(date) =>
-                            setFormData({
-                              ...formData,
-                              booking_date: formatDate(date),
-                            })
-                          }
-                          name="booking_date"
-                          placeholderText="Enter Date"
-                          dateFormat="dd-MM-yyyy"
-                          autoComplete="off"
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock ">
-                      <label>Checkin Date</label>
-                      <span>
-                        {otherIcons.date_svg}
-                        <DatePicker
-                          selected={formData?.checkin_date}
-                          onChange={(date) =>
-                            setFormData({
-                              ...formData,
-                              checkin_date: formatDate(date),
-                            })
-                          }
-                          name="checkin_date"
-                          placeholderText="Enter Date"
-                          dateFormat="dd-MM-yyyy"
-                          autoComplete="off"
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock ">
-                      <label>Checkout Date</label>
-                      <span>
-                        {otherIcons.date_svg}
-                        <DatePicker
-                          selected={formData?.checkout_date}
-                          onChange={(date) =>
-                            setFormData({
-                              ...formData,
-                              checkout_date: formatDate(date),
-                            })
-                          }
-                          name="checkout_date"
-                          placeholderText="Enter Date"
-                          dateFormat="dd-MM-yyyy"
-                          autoComplete="off"
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.GDS_portal}
+                          onChange={handleChange}
+                          name="GDS_portal"
+                          placeholder="Enter GDS Portal"
                         />
                       </span>
                     </div>
                   </div>
+
                   <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label> Ticket No</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.name_svg}
+                          <NumericInput
+                            type="number"
+                            name="ticket_number"
+                            placeholder="Enter Ticket Number"
+                            value={formData.ticket_number}
+                            onChange={(e) => handleChange(e)}
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        PRN No<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.PRN_no}
+                          onChange={handleChange}
+                          name="PRN_no"
+                          placeholder="Enter PRN No"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Route<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.route}
+                          onChange={handleChange}
+                          name="GDS_portal"
+                          placeholder="Enter GDS Portal"
+                        />
+                      </span>
+                    </div>
                     <div className="form_commonblock">
                       <label>
                         Supplier<b className="color_red">*</b>
@@ -344,35 +294,7 @@ console.log("formData", formData)
 
                       {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                     </div>
-                    <div className="form_commonblock">
-                      <label>Total Days</label>
-                      <div id="inputx1">
-                        <span>
-                          {otherIcons.name_svg}
-                          <NumericInput
-                            type="number"
-                            name="total_days"
-                            placeholder="Enter Total Days"
-                            value={formData.total_days}
-                            onChange={(e) => handleChange(e)}
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>
-                        Confirmation No<b className="color_red">*</b>
-                      </label>
-                      <span>
-                        {otherIcons.placeofsupply_svg}
-                        <input
-                          value={formData.confirmation_no}
-                          onChange={handleChange}
-                          name="confirmation_no"
-                          placeholder="Enter Confirmation No"
-                        />
-                      </span>
-                    </div>
+
                     <div className="secondtotalsections485s">
                       <div className="textareaofcreatqsiform">
                         <label>Note</label>
@@ -473,4 +395,4 @@ console.log("formData", formData)
   );
 };
 
-export default CreateHotelPopup;
+export default CreateFlightPopup;

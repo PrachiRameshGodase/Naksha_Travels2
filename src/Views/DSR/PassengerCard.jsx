@@ -7,7 +7,8 @@ import { ShowMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown27 from "../../Components/CustomDropdown/CustomDropdown27";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
-import CreateHotelPopup from "./Services/CreateHotelPopup"
+import CreateHotelPopup from "./Services/CreateHotelPopup";
+import CreateFlightPopup from "./Services/CreateFlightPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -32,7 +33,9 @@ const PassengerCard = ({ passengers, onDelete }) => {
       service: value,
     }));
     if (value == "1") {
-      setShowPopup(true); // Show popup when service is "1"
+      setShowPopup(true);
+    } else if (value == "2") {
+      setShowPopup(false);
     } else {
       setShowPopup(false); // Hide popup if service is something else
     }
@@ -81,7 +84,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
             className="form_commonblock"
             style={{ width: "160px", marginLeft: "45px", marginBottom: "10px" }}
           >
-            <span style={{border:"none"}}>
+            <span style={{ border: "none" }}>
               {/* {otherIcons.name_svg} */}
               <CustomDropdown28
                 label="Servises"
@@ -95,13 +98,22 @@ const PassengerCard = ({ passengers, onDelete }) => {
               />
             </span>
           </div>
-    {showPopup && <CreateHotelPopup showModal={showPopup} setShowModal={setShowPopup} />}
-
+          {showPopup && (
+            <CreateHotelPopup
+              showModal={showPopup}
+              setShowModal={setShowPopup}
+            />
+          )}
+          {showPopup && (
+            <CreateFlightPopup
+              showModal={showPopup}
+              setShowModal={setShowPopup}
+            />
+          )}
         </div>
-        
       ))}
       {/* {formData?.service=="1" && (<CreateHotelPopup />)} */}
-    {/* {showPopup && <CreateHotelPopup showModal={showPopup} setShowModal={setShowPopup} />} */}
+      {/* {showPopup && <CreateHotelPopup showModal={showPopup} setShowModal={setShowPopup} />} */}
     </div>
   );
 };

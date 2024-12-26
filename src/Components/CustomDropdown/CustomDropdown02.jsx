@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
 import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
-import { hotelListAction } from '../../Redux/Actions/hotelActions';
+import { hotelRoomListAction } from '../../Redux/Actions/hotelActions';
 
-const CustomDropdown29 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, } = props;
+const CustomDropdown02 = forwardRef((props, ref) => {
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, hotelID} = props;
   const {
     isOpen,
     setIsOpen,
@@ -23,9 +23,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
-  const hotelList = useSelector(
-    (state) => state?.hotelList
-  );
+  const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
+  
   const itemPayloads = localStorage.getItem(("customerPayload"));
 
   const dispatch = useDispatch();
@@ -41,19 +40,20 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
+    // const parshPayload = parseJSONofString(itemPayloads);
     // if (parshPayload?.search) {
-      dispatch(hotelListAction({
-        ...sendData,
-      }));
+    const sendData={
+        hotel_id:hotelID
+    }
+      dispatch(hotelRoomListAction(sendData));
     // }
-    setSearchTerm("");
+    // setSearchTerm("");
   }, [isOpen]);
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
 
-        {cusData ? cusData?.hotel_name : value ? fullName?.hotel_name : defaultOption}
+        {cusData ? cusData?.room_number : value ? fullName?.room_number : defaultOption}
 
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -74,7 +74,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           />
 
           <div className="dropdownoptoscroll">
-            {hotelList?.loading ? <>
+            {hotelRoomListData?.loading ? <>
               <TableViewSkeletonDropdown />
             </> : <>
               {options?.map((option, index) => (
@@ -88,7 +88,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                     (index === focusedOptionIndex ? " focusedoption" : "")
                   }
                 >
-                  {` ${option?.hotel_name || ""} `}
+                  {` ${option?.room_number || ""} `}
                 </div>
               ))}
               {options?.length === 0 &&
@@ -107,6 +107,6 @@ const CustomDropdown29 = forwardRef((props, ref) => {
   );
 });
 
-export default CustomDropdown29;
+export default CustomDropdown02;
 
 

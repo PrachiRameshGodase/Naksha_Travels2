@@ -50,7 +50,7 @@ const CustomDropdown28 = forwardRef((props, ref) => {
       </div>
 
       {isOpen && (
-        <div className="dropdown-options">
+        <div className="dropdown-options" >
           <RiSearch2Line id="newsvgsearchicox2" />
           <input
             autoComplete='off'
