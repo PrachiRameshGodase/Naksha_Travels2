@@ -1,124 +1,316 @@
 import React from "react";
-import { RxCross2 } from "react-icons/rx";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
 const DSRSummary = ({ passengers, customerData }) => {
-  console.log("customerData", customerData);
+
+  console.log("customerData", customerData)
+  console.log("passengerspassengers", passengers)
+
   return (
-    <div className="dsr-summary-card card1">
-      {/* Top Section */}
-      <div>
-        <div
-          className="card-top"
-          style={{ position: "relative", justifyContent: "center" }}
-        >
-          <h2 className="card-title">DSR Summary</h2>
-        </div>
-        <div
-          className="card-header"
-          style={{
-            position: "absolute",
-            top: "73px",
-            display:"flex",
-            justifyContent:"space-between"
-          }}
-        >
-          <div className="card-avatar"> {customerData.company_name ? customerData.company_name[0].toUpperCase() : ""}</div>
+    <div className="f1wrapofcreq" id="dsr_summary_x023">
+      {/* dsr summary svg's */}
+      <div className="dsr_x012">
+        <p className="dsr_x012_p">DSR Summary</p>
+        <div className="dsr_svg">
+          <div className="dsr_x012_svg dsr_x012_svg_1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
 
-          <div className="status-text">
-            <p style={{fontSize:"12px", color:"red"}}>Not Invoiced</p>
+
+          </div>
+          <div className="dsr_x012_svg dsr_x012_svg_2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+
+          </div>
+
+          <div className="dsr_x012_svg dsr_x012_svg_3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+
+
+          </div>
+          <div className="dsr_x012_svg dsr_x012_svg_4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+
+
+
+          </div>
+
+          <div className="dsr_x012_svg dsr_x012_svg_5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="52" viewBox="0 0 16 52" fill="none">
+              <g clip-path="url(#clip0_17_947)">
+                <path d="M0.191986 41.5615C8.78149 36.3106 11.4879 25.0907 6.237 16.5012C0.986073 7.91173 -10.2338 5.20529 -18.8233 10.4562C-27.4128 15.7071 -30.1193 26.927 -24.8683 35.5165C-19.6174 44.106 -8.39751 46.8125 0.191986 41.5615Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_947">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-34.376 19.9639) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="52" viewBox="0 0 47 52" fill="none">
+              <g clip-path="url(#clip0_17_950)">
+                <path d="M31.2994 41.5449C27.1746 44.0665 22.217 44.8463 17.5173 43.7126C12.8176 42.5789 8.76068 39.6248 6.23909 35.4999L-3.26855 19.9473L27.8368 0.931968L37.3444 16.4846C39.866 20.6095 40.6457 25.567 39.5121 30.2668C38.3784 34.9665 35.4242 39.0234 31.2994 41.5449Z" fill="#F7B801" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_950">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(-3.26855 19.9473) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="33" viewBox="0 0 51 33" fill="none">
+              <g clip-path="url(#clip0_17_959)">
+                <path d="M35.4078 22.5283C43.9973 17.2774 46.7038 6.05753 41.4528 -2.53197C36.2019 -11.1215 24.982 -13.8279 16.3925 -8.57698C7.80301 -3.32606 5.09656 7.89383 10.3475 16.4833C15.5984 25.0728 26.8183 27.7793 35.4078 22.5283Z" fill="#3D348B" />
+              </g>
+              <defs>
+                <clipPath id="clip0_17_959">
+                  <rect width="36.4571" height="36.4571" fill="white" transform="translate(0.839844 0.930664) rotate(-31.4383)" />
+                </clipPath>
+              </defs>
+            </svg>
+
+
+          </div>
+
+        </div>
+      </div>
+
+      {/* dsr summary user pic and details */}
+      <div className="user_detail_003">
+        <div className="user_pic_dsr_x093">
+          <div className="user_pic_border_dsr_x093">
+            <img src="/Icons/Base.png" alt="" />
+
+            <div className="user_detail_x001">
+              <h3>Anurag Mourya</h3>
+              <p>anurag@gmail.com</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="user_detail_id_x002">
+          <p>ID-2123432</p>
+        </div>
+      </div>
+
+      <div className="other_user_detils_z01">
+        {/* dsr summary user other details */}
+
+        <div className="other_user_detils_z03">
+          <div className="x001">
+            <p className="x002">{otherIcons?.phone} Mobile</p>
+            <p className="x1002">+91 9343224343</p>
+          </div>
+          <div className="x001">
+            <p className="x002">{otherIcons?.email_svg} Email</p>
+            <p className="x1002">anurag@gmail.com</p>
+          </div>
+          <div className="x001">
+            <p className="x002">{otherIcons?.setting_icon1} Customer Type</p>
+            <p className="x1002">Individual</p>
+          </div>
+          <div className="x001">
+            <p className="x002">{otherIcons?.currency_icon} Currency</p>
+            <p className="x1002">Inr</p>
+          </div>
+
+        </div>
+
+        {/* dsr summary user passangers details */}
+        <div className="other_passangers_detils_z01">
+          <div className="other_passangers_detils_z03">
+            <div className="add_passangers_001">
+              <h2>Add Passangers(1)</h2>
+              <p>Service Details</p>
+            </div>
+            <div className="pasanggers_details_table_z02">
+              <div className="table_head_z02 table_head_z02_">
+                <p>Name</p>
+                <p>Services</p>
+              </div>
+              <div className="table_head_z02 ">
+                <p>Anurag Mourya</p>
+                <p>Hotal</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "10px",
-        }}
-        className="information"
-      >
-        <div>
-          <p>{customerData?.company_name ||"-"}</p>
-          <p>{customerData?.email ||"-"}</p>
-        </div>
-
-        <div>
-          <p>NDSR-1234</p>
-        </div>
-      </div>
-
-      <hr className="divider" />
-
-      {/* Details Section */}
-      <div className="details-section">
-        <p className="detail">
-          <span className="label">Mobile No:</span>
-          <span className="value">{customerData?.mobile_no ||"-"}</span>
-        </p>
-        <p className="detail">
-          <span className="label">Currency:</span>
-          <span className="value">{customerData?.currency ||"-"}</span>
-        </p>
-        <p className="detail">
-          <span className="label">Customer Type:</span>
-          <span className="value">{customerData?.customer_type ||"-"}</span>
-        </p>
-      </div>
-
-      {/* Divider */}
-      <hr className="divider" />
-
-      {/* Added Passengers Section */}
-      <div className="passengers-section">
-        <h3 className="section-title">Address</h3>
-     <p>{customerData?.address?.map((item, index)=>(
-      <span key={index}> {item?.country?.name} {item?.state?.name} {item?.city?.name}</span>
-     ))}</p>
-      </div>
-      <hr className="divider" />
-
-      {/* Added Passengers Section */}
-      <div className="passengers-section">
-        <h3 className="section-title">Added Passengers</h3>
-
-        <div className="contents">
-          <div className="ProjectList">
-            <table style={{ width: "280px" }}>
-              <thead>
-                <tr>
-                  <th>Sr No.</th>
-                  <th>Name</th>
-                  <th>Services</th>
-                </tr>
-              </thead>
-              <tbody>
-                {passengers?.map((item, index) => (
-                  <tr key={index} style={{fontSize: "12px"}}>
-                    <td>{index + 1 || "-"}</td>
-
-                    <td>{item?.name || "-"}</td>
-                    <td to={`/dashboard/services/${item?.id}`} className="link" style={{color:"blue"}}>
-                      ServiceList
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      {/* Payable Amount Section */}
-      <div className="payable-section">
-        <span style={{ display: "flex" }}>
-          {otherIcons.default_svg}
-          <h3 style={{marginLeft:"4px"}}>Payable Amount</h3>
-        </span>
-
-        <p className="amount">₹ 1000</p>
-      </div>
     </div>
   );
 };

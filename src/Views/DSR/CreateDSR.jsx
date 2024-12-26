@@ -16,6 +16,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 // import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import PassengerCard from "./PassengerCard";
 import DSRSummary from "./DSRSummary";
+import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 
 const CreateDSR = () => {
   const Navigate = useNavigate();
@@ -38,9 +39,9 @@ const CreateDSR = () => {
     email: "",
     company_name: "",
     passenger_id: "",
-    address:"",
-    customer_type:"",
-    address:null
+    address: "",
+    customer_type: "",
+    address: null
   });
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
@@ -59,11 +60,11 @@ const CreateDSR = () => {
         ...prev,
         customer_id: value,
         company_name: selectedCustomer?.company_name ?? "",
-        customer_type:selectedCustomer?.customer_type ?? "",
+        customer_type: selectedCustomer?.customer_type ?? "",
         email: selectedCustomer?.email || "",
         mobile_no: selectedCustomer?.mobile_no ?? "",
-        address:selectedCustomer?.address
-        ?? "",
+        address: selectedCustomer?.address
+          ?? "",
         [name]: value,
       }));
     } else if (name === "passenger_id") {
@@ -79,7 +80,7 @@ const CreateDSR = () => {
         passenger_mobile_no: selectedCustomer?.mobile_no ?? "",
         [name]: value,
       }));
-    }else{
+    } else {
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -167,7 +168,7 @@ const CreateDSR = () => {
           <div id="Anotherbox" className="formsectionx2">
             <div id="leftareax12">
               <h1 id="firstheading">
-                {otherIcons?.hotel_svg}
+                {otherIcons?.dsrCalender}
                 {isEdit ? "Update DSR" : "New DSR"}
               </h1>
             </div>
@@ -180,67 +181,34 @@ const CreateDSR = () => {
 
           <div id="formofcreateitems">
             <form onSubmit={handleFormSubmit}>
-              <div className="relateivdiv" style={{ display: "flex" }}>
+              <div className="relateivdiv">
                 <div className="itemsformwrap">
                   <div
                     className="f1wrapofcreq"
-                    style={{ height: "640px", overflowY: "auto" }}
+                    style={{ height: "800px", overflowY: "auto", flexDirection: "row", justifyContent: "space-between" }}
                   >
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          DSR Number<b className="color_red">*</b>
-                        </label>
-                        {/* <GenerateAutoId
-                          formHandlers={{
-                            setFormData,
-                            handleChange,
-                            setShowAllSequenceId,
-                          }}
-                          nameVal="dsr_id"
-                          value={formData?.dsr_id}
-                          module="dsr"
-                          showField={isEdit}
-                        /> */}
-                      </div>
-
-                      <div className="form_commonblock">
-                        <label>
-                          Customer Name<b className="color_red">*</b>
-                        </label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-                            <CustomDropdown10
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Customer Name"
-                              options={cusList?.data?.user}
-                              value={formData.customer_id}
-                              onChange={handleChange}
-                              name="customer_id"
-                              defaultOption="Select Customer"
-                              setcusData={setcusData}
-                              cusData={cusData}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="form_commonblock">
-                        <CurrencySelect
-                          value={formData?.currency}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                      <div className="actionbarcommon2">
-                        <div className="form_commonblock ">
+                    <div>
+                      <div className="f1wrapofcreqx1" >
+                        <div className="form_commonblock">
                           <label>
-                            Passengers<b className="color_red">*</b>
+                            DSR Number<b className="color_red">*</b>
+                          </label>
+                          <GenerateAutoId
+                            formHandlers={{
+                              setFormData,
+                              handleChange,
+                              setShowAllSequenceId,
+                            }}
+                            nameVal="dsr_id"
+                            value={formData?.dsr_id}
+                            module="dsr"
+                            showField={isEdit}
+                          />
+                        </div>
+
+                        <div className="form_commonblock">
+                          <label>
+                            Customer Name<b className="color_red">*</b>
                           </label>
                           <div id="sepcifixspanflex">
                             <span id="">
@@ -250,46 +218,82 @@ const CreateDSR = () => {
                                 ref={dropdownRef1}
                                 label="Customer Name"
                                 options={cusList?.data?.user}
-                                value={formData.passenger_id}
+                                value={formData.customer_id}
                                 onChange={handleChange}
-                                name="passenger_id"
-                                defaultOption="Select Passenger"
-                                setcusData={setcusData1}
-                                cusData={cusData1}
+                                name="customer_id"
+                                defaultOption="Select Customer"
+                                setcusData={setcusData}
+                                cusData={cusData}
                                 type="vendor"
                                 required
                               />
                             </span>
                           </div>
                         </div>
-                        <button
-                          className={`firstbtnc1 `}
-                          onClick={handleAddPassenger}
-                        >
-                          Add Passenger
-                        </button>
+
+                      </div>
+                      <div className="f1wrapofcreqx1" style={{ marginTop: "20px" }}>
+                        <div className="form_commonblock">
+                          <CurrencySelect
+                            value={formData?.currency}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="f1wrapofcreqx1" style={{ marginTop: "5px" }}>
+                        <div className="actionbarcommon2">
+                          <div className="form_commonblock ">
+                            <label>
+                              Passengers<b className="color_red">*</b>
+                            </label>
+                            <div id="sepcifixspanflex">
+                              <span id="">
+                                {otherIcons.name_svg}
+                                <CustomDropdown10
+                                  autoComplete="off"
+                                  ref={dropdownRef1}
+                                  label="Customer Name"
+                                  options={cusList?.data?.user}
+                                  value={formData.passenger_id}
+                                  onChange={handleChange}
+                                  name="passenger_id"
+                                  defaultOption="Select Passenger"
+                                  setcusData={setcusData1}
+                                  cusData={cusData1}
+                                  type="vendor"
+                                  required
+                                />
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            className={`firstbtnc1 `}
+                            onClick={handleAddPassenger}
+                          >
+                            Add Passenger
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <PassengerCard
+                          passengers={passengers}
+                          onDelete={handleDeletePassenger}
+                        />
                       </div>
                     </div>
-                    <div>
-                      <PassengerCard
-                        passengers={passengers}
-                        onDelete={handleDeletePassenger}
-                      />
-                    </div>
+
+
+                    {/* DSR summery */}
+                    <DSRSummary passengers={passengers} customerData={formData} />
+
                   </div>
 
-                  {/* Passenger Cards Section */}
                 </div>
-                <div className="itemsformwrap" style={{ width: "50%" }}>
-                  <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
-                      <DSRSummary
-                        passengers={passengers}
-                        customerData={formData}
-                      />
-                    </div>
-                  </div>
-                </div>
+
+
+
               </div>
               <SubmitButton4 isEdit={isEdit} itemId={itemId} cancel="dsr" />
             </form>
@@ -297,7 +301,7 @@ const CreateDSR = () => {
         </div>
         <Toaster reverseOrder={false} />
       </>
-    </div>
+    </div >
   );
 };
 

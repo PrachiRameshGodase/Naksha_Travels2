@@ -82,9 +82,9 @@ const PassengerCard = ({ passengers, onDelete }) => {
 
           <div
             className="form_commonblock"
-            style={{ width: "160px", marginLeft: "45px", marginBottom: "10px" }}
+          // style={{ flex: "0.6" }}
           >
-            <span style={{ border: "none" }}>
+            <span style={{ border: "none", justifyContent: "center" }}>
               {/* {otherIcons.name_svg} */}
               <CustomDropdown28
                 label="Servises"

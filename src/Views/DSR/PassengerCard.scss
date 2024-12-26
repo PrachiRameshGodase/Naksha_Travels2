@@ -7,19 +7,21 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  // overflow: hidden;
 }
+
 .card1 {
   width: 380px;
-//   height: 800px;
+  //   height: 800px;
   border: 1px solid #ccc;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-//   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  //   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
+
 .card-top {
   display: flex;
   align-items: center;
@@ -62,11 +64,13 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
 .card-details {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
 }
+
 .label {
   font-size: 12px;
   color: #666;
@@ -83,213 +87,3 @@
   margin: 8px 0;
   border-top: 1px solid #ccc;
 }
-
-.card-bottom {
-  text-align: center;
-  padding: 8px;
-}
-
-.card-button {
-  background-color: rgb(241, 236, 236);
-  color:#b291eb;
-  border: 1px solid #ad98d0;
-  
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.card-button:hover {
-  background-color: rgb(200, 197, 197)
-}
-.dsr-summary-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  .card-top {
-    .card-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-
-      .avatar {
-        width: 50px;
-        height: 50px;
-        background-color: gray;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 20px;
-        color: white;
-        font-weight: bold;
-      }
-
-      .status-text {
-        .status-label {
-          font-weight: bold;
-          margin-bottom: 4px;
-        }
-
-        .status-email {
-          font-size: 14px;
-          color: #666;
-        }
-      }
-    }
-  }
-
-  .divider {
-    border: 0;
-    border-top: 1px solid #e0e0e0;
-  }
-
-  .details-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .detail {
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-
-      .label {
-        font-weight: bold;
-      }
-    }
-  }
-
-  .passengers-section {
-    .section-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .passenger-list {
-      background-color: #f9f9f9;
-      padding: 10px;
-      border-radius: 4px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-  }
-
-  .payable-section {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-
-    h3 {
-      font-size: 16px;
-      margin-top: 2px;
-      margin-bottom: 10px;
-    }
-
-    .amount {
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center; // Align items vertically
-  gap: 10px;
-
-  .avatar {
-    width: 50px;
-    height: 50px;
-    background-color: gray;
-    border-radius: 50%;
-    flex-shrink: 0; // Prevent the avatar from shrinking
-  }
-
-  .status-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; // Center-align text vertically
-
-    .status-label {
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .status-email {
-      font-size: 14px;
-      color: #666;
-    }
-  }
-}
-.card-top {
-  display: flex;
-  justify-content: space-between; // Ensures spacing between title and content
-  align-items: center; // Aligns everything vertically to the center
-  padding: 10px;
-
-  .card-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    .avatar {
-      width: 50px;
-      height: 50px;
-      background-color: gray;
-      border-radius: 50%;
-    }
-
-    .status-text {
-      .status-label {
-        font-weight: bold;
-      }
-    }
-  }
-}
-.information {
-    display: flex;
-    justify-content: space-between;
-  
-    p {
-      font-size: 12px;
-      margin: 0; // Optional: to remove default margins for p tags
-    }
-  }
-  .ProjectList {
-    // overflow-y: auto;
-    // width: 100% !important;
-    // margin: 0 auto;
-    // border: 1px solid red !important;
-    // border: 1px solid rgba(153, 146, 146, 0.569);
-    // margin-top: 20px;
-    border-radius: 10px;
-    padding: 15px 20px;
-  }
- 
-  

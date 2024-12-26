@@ -95,7 +95,7 @@ const Topbar = ({ loggedInUserData }) => {
 
 
   const switchOrganization = (organisationId) => {
-    setLoading(true);
+    // setLoading(true);
     axios
       .post(`${apiUrl}/organisation/switch?organisation_id=${organisationId}`)
       .then((response) => {
@@ -125,7 +125,7 @@ const Topbar = ({ loggedInUserData }) => {
   useEffect(() => {
     const fetchOrganisations = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         // Retrieve auth token from local storage
         const authToken = localStorage.getItem('AccessToken');
         const response = await axios.post(
@@ -176,7 +176,7 @@ const Topbar = ({ loggedInUserData }) => {
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const authToken = localStorage.getItem('AccessToken');
         const response = await axios.post(
           `${apiUrl}/warehouse/list`,

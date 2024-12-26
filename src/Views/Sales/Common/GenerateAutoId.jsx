@@ -11,8 +11,6 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
     const [generateId, setGenerateId] = useState(false);
     const [autoData, setAutoData] = useState({ prefix: null, delimiter: null, sequence_number: null, sequence_type: 1, module: null, id: null });
 
-    const [searchTrigger, setSearchTrigger] = useState(0);
-
     useEffect(() => {
         const { prefix, delimiter, sequence_number, module, id, sequence_type } = autoId || {};
         if (prefix !== autoData.prefix || delimiter !== autoData.delimiter || sequence_number !== autoData.sequence_number || module !== autoData.module || id !== autoData.id) {
@@ -32,18 +30,20 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
             <span>
                 {loading && <WaveLoader />}
                 {otherIcons.tag_svg}
+
                 <input
                     type="text"
-                    value={loading ? "" : value}
+                    value={loading ? "" : value === "undefinedundefinedundefined" ? "ID Not Generated" : value}
                     onChange={handleChange}
                     name={nameVal}
                     autoComplete='off'
                     disabled={autoData.sequence_type == 1}
                     style={{ cursor: "not-allowed" }}
                 />
+
                 {!showField && <span onClick={() => setGenerateId(true)}>{otherIcons.setting_icon}</span>}
             </span>
-            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId, setSearchTrigger }} />}
+            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId }} />}
         </>
     );
 };

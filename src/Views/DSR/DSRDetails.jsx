@@ -282,7 +282,7 @@ const DSRDetails = () => {
                   </h3>
                 </div>
                 <div className="contentInformation ">
-                  <div style={{marginLeft:"1px"}} className="contentInformation1"> 
+                  <div style={{ marginLeft: "1px" }} className="contentInformation1">
                     <h4>DSR Number</h4>
                     <h5>:</h5>
                     <p>NDSR12345</p>
@@ -308,7 +308,7 @@ const DSRDetails = () => {
                     <h5>:</h5>
                     <p></p>
                   </div>
-                  
+
                 </div>
               </div>
               <div className="card">
@@ -355,7 +355,7 @@ const DSRDetails = () => {
                   <p className="paragra"></p>
                 </div>
               </div>
-              
+
             </div>
             <TermsAndConditions />
           </div>
