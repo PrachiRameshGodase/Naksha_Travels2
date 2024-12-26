@@ -257,8 +257,8 @@ const DSRSummary = ({ passengers, customerData }) => {
             <img src="/Icons/Base.png" alt="" />
 
             <div className="user_detail_x001">
-              <h3>Anurag Mourya</h3>
-              <p>anurag@gmail.com</p>
+              <h3>{customerData?.company_name}</h3>
+              <p>{customerData?.email}</p>
             </div>
           </div>
         </div>
@@ -274,19 +274,19 @@ const DSRSummary = ({ passengers, customerData }) => {
         <div className="other_user_detils_z03">
           <div className="x001">
             <p className="x002">{otherIcons?.phone} Mobile</p>
-            <p className="x1002">+91 9343224343</p>
+            <p className="x1002">{customerData?.mobile_no}</p>
           </div>
           <div className="x001">
             <p className="x002">{otherIcons?.email_svg} Email</p>
-            <p className="x1002">anurag@gmail.com</p>
+            <p className="x1002">{customerData?.email}</p>
           </div>
           <div className="x001">
             <p className="x002">{otherIcons?.setting_icon1} Customer Type</p>
-            <p className="x1002">Individual</p>
+            <p className="x1002">{customerData?.customer_type}</p>
           </div>
           <div className="x001">
             <p className="x002">{otherIcons?.currency_icon} Currency</p>
-            <p className="x1002">Inr</p>
+            <p className="x1002">{customerData?.currency}</p>
           </div>
 
         </div>

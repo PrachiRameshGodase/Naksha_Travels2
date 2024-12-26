@@ -245,6 +245,10 @@ const CreateDSR = () => {
                         </div>
                       </div>
 
+                      <div className="dsr_button_00z">
+                        <SubmitButton5 />
+                      </div>
+
                       <div className="f1wrapofcreqx1" style={{ marginTop: "5px" }}>
                         <div className="actionbarcommon2">
                           <div className="form_commonblock ">

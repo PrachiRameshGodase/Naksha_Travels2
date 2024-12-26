@@ -222,6 +222,72 @@
   }
 }
 
+
+.dsr_button_00z {
+  border-bottom: 1px solid $stroke;
+
+  .actionbarcommon11 {
+    position: sticky;
+    background: rgba(9, 30, 66, 0.0588235294);
+    background: #ffffff;
+    margin: 17px 0px;
+
+
+    .firstbtnc1 {
+
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      background: $primary;
+      border: none;
+      height: 34px;
+      color: $white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0.9;
+      transition: 0.3s all;
+
+      svg {
+        color: $white;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .firstbtnc2 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    background: $primary06;
+    height: 34px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s all;
+
+    &:hover {
+      background: $primary10;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+
+
 .actionbarcommon2 {
   // position: absolute;
   position: sticky;
