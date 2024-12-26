@@ -1,25 +1,19 @@
-import { RxCross2 } from "react-icons/rx";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import DatePicker from "react-datepicker";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import { RxCross2 } from "react-icons/rx";
+import { useSelector } from "react-redux";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
-import { currencySymbol, ShowMasterData } from "../../Helper/HelperFunctions";
-import "./CreateHotelPopup.scss";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../Helper/DateFormat";
+import { ShowMasterData } from "../../Helper/HelperFunctions";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import "./CreateHotelPopup.scss";
 import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
 
-const CreateFlightPopup = ({ showModal, setShowModal }) => {
+const CreateCarHirePopup = ({ showModal, setShowModal }) => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
   const params = new URLSearchParams(location.search);
@@ -27,12 +21,7 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const hotelList = useSelector(
-    (state) => state?.hotelList?.data?.hotels || []
-  );
-  const hotelRoomListData = useSelector(
-    (state) => state?.hotelRoomList?.data?.hotels || []
-  );
+  const countryList = useSelector((state) => state?.countries?.countries);
 
   const [cusData, setcusData] = useState(null);
   console.log("cusData", cusData);
@@ -51,22 +40,32 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
   const entryType = ShowMasterData("50");
-  const occupancy = ShowMasterData("36");
-  const travelType = ShowMasterData("51");
+  const vehicleType = ShowMasterData("41");
+
+  const visaentryType = ShowMasterData("39");
+
+  const visatype = ShowMasterData("40");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const travelTypeName = travelType?.find((val) => val?.labelid == value);
+    const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
+    const VechileType = vehicleType?.find((val) => val?.labelid == value);
+    const visaType = visatype?.find((val) => val?.labelid == value);
     setFormData((prev) => ({
       ...prev,
+      ...(name === "vechile_type" && {
+        vechile_type: VechileType?.label,
+      }),
       ...(name === "entry_type" && {
         entry_type: entryTypeName?.label,
       }),
-      ...(name === "travel_type" && {
-        travel_type: travelTypeName?.label,
+      ...(name === "visa_entry_type" && {
+        visa_entry_name: visaEntryType?.label,
       }),
-
+      ...(name === "visa_type_id" && {
+        visa_type_name: visaType?.label,
+      }),
       [name]: value,
     }));
   };
@@ -94,7 +93,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5>{isEdit ? "Update Flight Service" : "Add Flight Service"}</h5>
+          <h5>
+            {isEdit ? "Update Car Hire Service" : "Add Car Hire Service"}
+          </h5>
           <button className="close-button" onClick={() => setShowModal(false)}>
             <RxCross2 />
           </button>
@@ -125,110 +126,33 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                         />
                       </span>
                     </div>
-                  </div>
-
-                  <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
-                      <label>Travel Date</label>
-                      <span>
-                        {otherIcons.date_svg}
-                        <DatePicker
-                          selected={formData?.travel_date}
-                          onChange={(date) =>
-                            setFormData({
-                              ...formData,
-                              travel_date: formatDate(date),
-                            })
-                          }
-                          name="travel_date"
-                          placeholderText="Enter Date"
-                          dateFormat="dd-MM-yyyy"
-                          autoComplete="off"
-                        />
-                      </span>
-                    </div>
                     <div className="form_commonblock">
                       <label>
-                        Travel Type<b className="color_red">*</b>
+                        Vechile Type<b className="color_red">*</b>
                       </label>
+
                       <span id="">
                         {otherIcons.name_svg}
                         <CustomDropdown04
-                          label="travel_type"
-                          options={travelType}
-                          value={formData?.travel_type}
+                          label="Vechile Type"
+                          options={vehicleType}
+                          value={formData?.type_of_vehicle}
                           onChange={handleChange}
-                          name="travel_type"
-                          defaultOption="Select Travel Type"
+                          name="type_of_vehicle"
+                          defaultOption="Select Vechile Type"
                           type="masters"
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
-                      <label>
-                        AirLine Name<b className="color_red">*</b>
-                      </label>
-                      <span>
-                        {otherIcons.placeofsupply_svg}
-                        <input
-                          value={formData.airLine_name}
-                          onChange={handleChange}
-                          name="airLine_name"
-                          placeholder="Enter Airline Name"
-                        />
-                      </span>
-                    </div>
-                  </div>
-                  <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
-                      <label>
-                        Passenger<b className="color_red">*</b>
-                      </label>
-
-                      <div id="sepcifixspanflex">
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown10
-                            autoComplete="off"
-                            ref={dropdownRef1}
-                            label="Customer Name"
-                            options={cusList?.data?.user}
-                            value={formData.customer_id}
-                            onChange={handleChange}
-                            name="customer_id"
-                            defaultOption="Select Passenger"
-                            setcusData={setcusData}
-                            cusData={cusData}
-                            type="vendor"
-                            required
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>
-                        GDS Portal<b className="color_red">*</b>
-                      </label>
-                      <span>
-                        {otherIcons.placeofsupply_svg}
-                        <input
-                          value={formData.GDS_portal}
-                          onChange={handleChange}
-                          name="GDS_portal"
-                          placeholder="Enter GDS Portal"
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock">
-                      <label> Ticket No</label>
+                      <label>Days</label>
                       <div id="inputx1">
                         <span>
                           {otherIcons.name_svg}
                           <NumericInput
-                            type="number"
-                            name="ticket_number"
-                            placeholder="Enter Ticket Number"
-                            value={formData.ticket_number}
+                            name="select_days"
+                            placeholder="Enter Days"
+                            value={formData.select_days}
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
@@ -239,29 +163,29 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                       <label>
-                        PRN No<b className="color_red">*</b>
+                        Pickup Location<b className="color_red">*</b>
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.PRN_no}
+                          value={formData.passport_no}
                           onChange={handleChange}
-                          name="PRN_no"
-                          placeholder="Enter PRN No"
+                          name="passport_no"
+                          placeholder="Enter Pickup Location"
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Route<b className="color_red">*</b>
+                        Drop Location<b className="color_red">*</b>
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.route}
+                          value={formData.passport_no}
                           onChange={handleChange}
-                          name="GDS_portal"
-                          placeholder="Enter GDS Portal"
+                          name="drop_location"
+                          placeholder="Enter Drop Location"
                         />
                       </span>
                     </div>
@@ -291,7 +215,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
 
                       {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                     </div>
+                  </div>
 
+                  <div className="f1wrapofcreqx1">
                     <div className="secondtotalsections485s">
                       <div className="textareaofcreatqsiform">
                         <label>Note</label>
@@ -312,7 +238,7 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
-                              <label>Fare Charge:</label>
+                              <label>Car Hire Price:</label>
                               <input
                                 type="text"
                                 value={formData?.subtotal}
@@ -324,59 +250,20 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
-                              <label>IPP:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
                               <label>Supplier Service Charge:</label>
                               <input
                                 type="text"
-                                value={formData.tax_amount}
+                                value={formData?.subtotal}
                                 placeholder="0.00"
-                                // className="inputsfocalci465s"
                               />
                             </div>
                           </div>
                         </div>
+
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
                               <label>Tax:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Supplier Total:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Invoice Amount:</label>
                               <input
                                 type="text"
                                 value={formData.tax_amount}
@@ -398,6 +285,14 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                               />
                             </div>
                           </div>
+                        </div>
+                        <div className="clcsecx12s2">
+                          <label>Invoice Total :</label>
+                          <input
+                            type="text"
+                            value={formData?.total}
+                            placeholder="0.00"
+                          />
                         </div>
                       </div>
                     </div>
@@ -423,4 +318,4 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
   );
 };
 
-export default CreateFlightPopup;
+export default CreateCarHirePopup;

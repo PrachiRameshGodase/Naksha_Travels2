@@ -226,9 +226,9 @@ const ServicesList = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link className="linkx1" onClick={handleClickOnAdd}>
+            {/* <Link className="linkx1" onClick={handleClickOnAdd}>
               New Service <GoPlus />
-            </Link>
+            </Link> */}
             <ResizeFL />
           </div>
         </div>

@@ -2,9 +2,10 @@ import React from "react";
 import { RxCross2 } from "react-icons/rx";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import { useNavigate } from "react-router-dom";
 
 const DSRSummary = ({ passengers, customerData }) => {
-  console.log("customerData", customerData);
+  const navigate=useNavigate()
   return (
     <div className="dsr-summary-card card1">
       {/* Top Section */}
@@ -100,7 +101,7 @@ const DSRSummary = ({ passengers, customerData }) => {
                     <td>{index + 1 || "-"}</td>
 
                     <td>{item?.name || "-"}</td>
-                    <td to={`/dashboard/services/${item?.id}`} className="link" style={{color:"blue"}}>
+                    <td onClick={()=>{navigate(`/dashboard/serviceslist?id=${item?.id}`)}} className="link" style={{color:"blue"}}>
                       ServiceList
                     </td>
                   </tr>

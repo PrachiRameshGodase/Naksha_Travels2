@@ -1,47 +1,80 @@
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
-import "./PassengerCard.scss";
-import CreateService from "./Services/CreateService";
-import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../Helper/HelperFunctions";
-import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import CustomDropdown27 from "../../Components/CustomDropdown/CustomDropdown27";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
-import CreateHotelPopup from "./Services/CreateHotelPopup";
+import { ShowMasterData } from "../Helper/HelperFunctions";
+import "./PassengerCard.scss";
+import CreateAssistPopup from "./Services/CreateAssistPopup";
+import CreateCarHirePopup from "./Services/CreateCarHirePopup";
 import CreateFlightPopup from "./Services/CreateFlightPopup";
+import CreateHotelPopup from "./Services/CreateHotelPopup";
+import CreateInsurancePopup from "./Services/CreateInsurancePopup";
+import CreateVisaPopup from "./Services/CreateVisaPopup";
+import CreateOtherPopup from "./Services/CreateOtherPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
-  const [showPopup, setShowPopup] = useState(false);
+  const [activePopup, setActivePopup] = useState(null);
   const [formData, setFormData] = useState({
-    flight_name: null,
     service: "",
   });
 
   const servicesList = ShowMasterData("48");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
   const handleServiceChange = (e) => {
     const { value } = e.target;
+    console.log("value", value);
     setFormData((prev) => ({
       ...prev,
       service: value,
     }));
-    if (value == "1") {
-      setShowPopup(true);
-    } else if (value == "2") {
-      setShowPopup(false);
-    } else {
-      setShowPopup(false); // Hide popup if service is something else
+
+    // Update the active popup based on the selected service
+    switch (value) {
+      case "Hotels":
+        setActivePopup("Hotels");
+        break;
+      case "Flights":
+        setActivePopup("Flights");
+        break;
+      case "Visa":
+        setActivePopup("Visa");
+        break;
+      case "Insurance":
+        setActivePopup("Insurance");
+        break;
+      case "Car Hire":
+        setActivePopup("Car Hire");
+        break;
+      case "Assist":
+        setActivePopup("Assist");
+        break;
+        case "Others":
+          setActivePopup("Others");
+          break;
+      default:
+        setActivePopup(null); // Hide all popups for invalid services
     }
   };
 
-  console.log("formData", formData);
+  const renderPopup = () => {
+    switch (activePopup) {
+      case "Hotels":
+        return <CreateHotelPopup showModal={true} setShowModal={setActivePopup} />;
+      case "Flights":
+        return <CreateFlightPopup showModal={true} setShowModal={setActivePopup} />;
+      case "Visa":
+        return <CreateVisaPopup showModal={true} setShowModal={setActivePopup} />;
+      case "Insurance":
+        return <CreateInsurancePopup showModal={true} setShowModal={setActivePopup} />;
+      case "Car Hire":
+        return <CreateCarHirePopup showModal={true} setShowModal={setActivePopup} />;
+      case "Assist":
+        return <CreateAssistPopup showModal={true} setShowModal={setActivePopup} />;
+        case "Others":
+          return <CreateOtherPopup showModal={true} setShowModal={setActivePopup} />;
+      default:
+        return null;
+    }
+  };
   return (
     <div
       className="passenger-list"
@@ -85,35 +118,21 @@ const PassengerCard = ({ passengers, onDelete }) => {
             style={{ width: "160px", marginLeft: "45px", marginBottom: "10px" }}
           >
             <span style={{ border: "none" }}>
-              {/* {otherIcons.name_svg} */}
               <CustomDropdown28
-                label="Servises"
+                label="Services"
                 options={servicesList}
                 value={formData?.service}
                 onChange={handleServiceChange}
                 name="service"
                 defaultOption="Select Service"
-                type="masters"
+                type="service"
                 className2="service"
               />
             </span>
           </div>
-          {showPopup && (
-            <CreateHotelPopup
-              showModal={showPopup}
-              setShowModal={setShowPopup}
-            />
-          )}
-          {showPopup && (
-            <CreateFlightPopup
-              showModal={showPopup}
-              setShowModal={setShowPopup}
-            />
-          )}
         </div>
       ))}
-      {/* {formData?.service=="1" && (<CreateHotelPopup />)} */}
-      {/* {showPopup && <CreateHotelPopup showModal={showPopup} setShowModal={setShowPopup} />} */}
+      {renderPopup()}
     </div>
   );
 };
