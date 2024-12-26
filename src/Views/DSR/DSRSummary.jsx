@@ -1,6 +1,7 @@
 import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import { useNavigate } from "react-router-dom";
 
 const DSRSummary = ({ passengers, customerData }) => {
 

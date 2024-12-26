@@ -29,6 +29,7 @@ import { createVisaReducer, listVisaReducer, visadeleteReducer, visaDetailReduce
 import { carHiredeleteReducer, carHireDetailReducer, carHirestatusReducer, createcarHireReducer, listCarHireReducer } from './carHireReducers';
 import { assistdeleteReducer, assistDetailReducer, assiststatusReducer, createAssistReducer, listAssistReducer } from './assistReducers';
 import { createInsuranceReducer, InsurancedeleteReducer, InsuranceDetailReducer, InsurancestatusReducer, listInsuranceReducer } from './insuranceReducers';
+import { createDSRreducer, listDSRreducer } from './DSRReducers';
 const reducer = combineReducers({
     addItemsReducer,
 
@@ -91,6 +92,9 @@ const reducer = combineReducers({
     insuranceDetails:InsuranceDetailReducer,
     insuranceStatus:InsurancestatusReducer,
     insuranceDelete:InsurancedeleteReducer,
+
+    createDSR:createDSRreducer,
+    DSRList:listDSRreducer,
     
     masterData: masterDataReducer,
     autoId: autoGenerateIdReducer,

@@ -9,14 +9,16 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import SubmitButton, {
   SubmitButton2,
   SubmitButton4,
+  SubmitButton5,
 } from "../Common/Pagination/SubmitButton";
 import CurrencySelect from "../Helper/ComponentHelper/CurrencySelect";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-// import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import PassengerCard from "./PassengerCard";
 import DSRSummary from "./DSRSummary";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
+import { DSRCreateAction } from "../../Redux/Actions/DSRActions";
+import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
 
 const CreateDSR = () => {
   const Navigate = useNavigate();
@@ -25,23 +27,25 @@ const CreateDSR = () => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
   const cusList = useSelector((state) => state?.customerList);
+  const createDSR = useSelector((state) => state?.createDSR)
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [formData, setFormData] = useState({
-    dsr_id: "",
+    dsr_no: "",
     customer_id: "",
     currency: "",
-    passenger_email: "",
-    passenger_mobile_no: "",
-    mobile_no: "",
-    email: "",
-    company_name: "",
-    passenger_id: "",
-    address: "",
-    customer_type: "",
-    address: null
+    // passenger_email: "",
+    // passenger_mobile_no: "",
+    // mobile_no: "",
+    // email: "",
+    // company_name: "",
+    // passenger_id: "",
+    // address: "",
+    // customer_type: "",
+    // address: null,
   });
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
@@ -63,8 +67,7 @@ const CreateDSR = () => {
         customer_type: selectedCustomer?.customer_type ?? "",
         email: selectedCustomer?.email || "",
         mobile_no: selectedCustomer?.mobile_no ?? "",
-        address: selectedCustomer?.address
-          ?? "",
+        address: selectedCustomer?.address ?? "",
         [name]: value,
       }));
     } else if (name === "passenger_id") {
@@ -123,9 +126,11 @@ const CreateDSR = () => {
       const sendData = {
         ...formData,
       };
-      // dispatch(CreateHotelAction(sendData, Navigate));
+      setIsDisabled(true);
+      dispatch(DSRCreateAction(sendData, showAllSequenceId));
+      setIsDisabled(false)
     } catch (error) {
-      toast.error("Error updating hotel:", error);
+      toast.error("Error update dsr:", error);
     }
   };
   const handleAddPassenger = () => {
@@ -156,14 +161,13 @@ const CreateDSR = () => {
   const handleDeletePassenger = (id) => {
     setPassengers((prev) => prev.filter((passenger) => passenger.id !== id));
   };
-  console.log("cuslist", cusList);
   return (
     <div>
       <>
         <TopLoadbar />
-        {/* {(freezLoadingImg || hotelCreates?.loading) && (
+        {(freezLoadingImg || createDSR?.loading) && (
           <MainScreenFreezeLoader />
-        )} */}
+        )}
         <div className="formsectionsgrheigh">
           <div id="Anotherbox" className="formsectionx2">
             <div id="leftareax12">

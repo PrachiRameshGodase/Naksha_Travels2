@@ -40,7 +40,7 @@ const CustomDropdown28 = forwardRef((props, ref) => {
           </>
           :
           <>
-            {value ? options?.find(account => account?.labelid == value)?.label : defaultOption}
+            {value ? options?.find(account => account?.label== value)?.label : defaultOption}
 
           </>}
           

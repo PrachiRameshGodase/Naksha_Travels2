@@ -17,14 +17,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
+import { DSRListActions } from "../../Redux/Actions/DSRActions";
 
 const DSRS = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const itemPayloads = localStorage.getItem("salePayload");
-  const hotelListData = useSelector((state) => state?.hotelList);
-  const hotelLists = hotelListData?.data?.hotels || [];
-  const totalItems = hotelListData?.data?.total_hotels || 0;
+  const DSRListData = useSelector((state) => state?.DSRList);
+  const DSRLists = DSRListData?.data?.data || [];
+  const totalItems = DSRListData?.data?.count || 0;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -79,7 +80,7 @@ const DSRS = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchHotels = useCallback(async () => {
+  const fetchDSR = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -108,9 +109,9 @@ const DSRS = () => {
         }),
       };
 
-    //   dispatch(hotelListAction(sendData));
+      dispatch(DSRListActions(sendData));
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      console.error("Error fetching DSR:", error);
     }
   }, [searchTrigger]);
 
@@ -126,7 +127,7 @@ const DSRS = () => {
     //   parshPayload?.from_date ||
     //   parshPayload?.currentpage > 1
     // ) {
-    fetchHotels();
+    fetchDSR();
     // }
   }, [searchTrigger]);
 
@@ -146,16 +147,16 @@ const DSRS = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = hotelListData?.data?.quotations?.every((row) =>
+    const areAllRowsSelected = DSRLists?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, hotelListData?.data?.quotations]);
+  }, [selectedRows,DSRLists]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(
-      selectAll ? [] : hotelListData?.data?.quotations?.map((row) => row.id)
+      selectAll ? [] : DSRLists?.map((row) => row.id)
     );
   };
   //logic for checkBox...
@@ -163,7 +164,7 @@ const DSRS = () => {
   return (
     <>
       <TopLoadbar />
-      {hotelListData?.loading && <MainScreenFreezeLoader />}
+      {DSRListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -232,29 +233,25 @@ const DSRS = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.quotation_icon}
+                  DSR No
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.quotation_icon}
+                  Customer Type
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                   Customer Name
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.quotation_icon}
-                  Company Name
-                  </div>
+                 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
                    Currency
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
-                    {otherIcons?.refrence_svg}
-                    Email
-                  </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Mobile No
-                  </div>
+                 
                  
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -262,111 +259,95 @@ const DSRS = () => {
                   </div>
                 </div>
 
-                {hotelListData?.loading ? (
+                {DSRListData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
-                //   <>
-                //     {hotelLists?.length >= 1 ? (
-                //       <>
-                //         {hotelLists.map((item, index) => (
-                //           <div
-                //             className={`table-rowx12 ${
-                //               selectedRows.includes(item?.id)
-                //                 ? "selectedresult"
-                //                 : ""
-                //             }`}
-                //             key={index}
-                //           >
-                //             <div
-                //               className="table-cellx12 checkboxfx1"
-                //               id="styl_for_check_box"
-                //             >
-                //               <input
-                //                 checked={selectedRows.includes(item?.id)}
-                //                 type="checkbox"
-                //                 onChange={() => handleCheckboxChange(item?.id)}
-                //               />
-                //               <div className="checkmark"></div>
-                //             </div>
-                //             <div
-                //               onClick={() => handleRowClicked(item)}
-                //               className="table-cellx12 quotiosalinvlisxs1"
-                //             >
-                //                 ABC Enterprises
-                //               {/* {item?.hotel_name || ""} */}
-                //             </div>
-                //             <div
-                //               onClick={() => handleRowClicked(item)}
-                //               className="table-cellx12 quotiosalinvlisxs1"
-                //             >
-                //               <ShowMastersValue
-                //                 type="35"
-                //                 id={item?.hotel_type}
-                //               />
-                //             </div>
-                //             <div
-                //               onClick={() => handleRowClicked(item)}
-                //               className="table-cellx12 quotiosalinvlisxs3"
-                //               data-tooltip-id="my-tooltip"
-                //               data-tooltip-content={item?.address_line_1 || ""}
-                //             >
-                //               {item?.address_line_1?.split(" ").length > 20
-                //                 ? item.address_line_1
-                //                     .split(" ")
-                //                     .slice(0, 20)
-                //                     .join(" ") + "..."
-                //                 : item?.address_line_1 || ""}
-                //             </div>
-                //             <div
-                //               onClick={() => handleRowClicked(item)}
-                //               className="table-cellx12 quotiosalinvlisxs4"
-                //             >
-                //               {item?.country?.name || ""}
-                //             </div>
+                  <>
+                    {DSRLists?.length >= 1 ? (
+                      <>
+                        {DSRLists?.map((item, index) => (
+                          <div
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
+                                ? "selectedresult"
+                                : ""
+                            }`}
+                            key={index}
+                          >
+                            <div
+                              className="table-cellx12 checkboxfx1"
+                              id="styl_for_check_box"
+                            >
+                              <input
+                                checked={selectedRows.includes(item?.id)}
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item?.id)}
+                              />
+                              <div className="checkmark"></div>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                               
+                              {item?.dsr_no || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              {item?.customer?.customer_type ||""}
+                            </div>
                             
-                //             <div
-                //               onClick={() => handleRowClicked(item)}
-                //               className="table-cellx12 quotiosalinvlisxs4"
-                //             >
-                //               {item?.country?.name || ""}
-                //             </div>
-                //             <div
-                //               onClick={() => handleRowClicked(quotation)}
-                //               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                //             >
-                //               <p
-                //                 className={
-                //                   item?.status == "1"
-                //                     ? "open"
-                //                     : item?.status == "0"
-                //                     ? "declined"
-                //                     : ""
-                //                 }
-                //               >
-                //                 {item?.status == "1"
-                //                   ? "Active"
-                //                   : item?.status == "0"
-                //                   ? "Inactive"
-                //                   : ""}
-                //               </p>
-                //             </div>
-                //           </div>
-                //         ))}
-                //       </>
-                //     ) : (
-                //       <NoDataFound />
-                //     )}
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.customer?.display_name || ""}
+                            </div>
+                            
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.currency || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                            >
+                              <p
+                                className={
+                                  item?.is_invoiced == "0"
+                                    ? "open"
+                                    : item?.is_invoiced == "1"
+                                    ? "declined"
+                                    : ""
+                                }
+                              >
+                                {item?.is_invoiced == "1"
+                                  ? "Not Invoiced"
+                                  : item?.is_invoiced == "0"
+                                  ? "Invoiced"
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <NoDataFound />
+                    )}
 
-                //     <PaginationComponent
-                //       itemList={totalItems}
-                //       currentPage={currentPage}
-                //       setCurrentPage={setCurrentPage}
-                //       itemsPerPage={itemsPerPage}
-                //       setItemsPerPage={setItemsPerPage}
-                //       setSearchCall={setSearchTrigger}
-                //     />
-                //   </>
-                <><span onClick={()=>{handleRowClicked("1")}}>ABC Enterprises</span></>
+                    <PaginationComponent
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
+                    />
+                  </>
                 )}
               </div>
             </div>
