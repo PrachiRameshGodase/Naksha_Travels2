@@ -54,7 +54,6 @@ export const expenseHeadLists = () => {
         dispatch({ type: FETCH_EXPENSE_HEAD_LIST_REQUEST });
         try {
             const response = await axiosInstance.post(`${apiUrl}/expensehead/list`);
-            console.log(response)
             dispatch({ type: FETCH_EXPENSE_HEAD_LIST_SUCCESS, payload: response.data });
         } catch (error) {
             dispatch({ type: FETCH_EXPENSE_HEAD_LIST_FAILURE, payload: error.message });
