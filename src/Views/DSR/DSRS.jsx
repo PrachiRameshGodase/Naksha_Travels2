@@ -164,7 +164,7 @@ const DSRS = () => {
   return (
     <>
       <TopLoadbar />
-      {DSRListData?.loading && <MainScreenFreezeLoader />}
+      {/* {DSRListData?.loading && <MainScreenFreezeLoader />} */}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">

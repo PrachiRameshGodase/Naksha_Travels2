@@ -34,6 +34,7 @@ const CreateDSR = () => {
   const createDSR = useSelector((state) => state?.createDSR);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
+  console.log("DSRData", DSRData)
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -139,6 +140,12 @@ const CreateDSR = () => {
       };
 
       dispatch(PassengerAddAction(sendData, Navigate));
+      if (isData?.id) {
+        const refreshData = {
+          dsr_id: isData?.id,
+        };
+        dispatch(DSRDetailsAction(refreshData));
+      }
     } catch (error) {
       toast.error("Error update passenger:", error);
     }
@@ -317,14 +324,14 @@ const CreateDSR = () => {
 
                       <div>
                         <PassengerCard
-                          passengers={passengers}
+                          passengers={DSRData?.passengers}
                           onDelete={handleDeletePassenger}
                         />
                       </div>
                     </div>
 
                     <DSRSummary
-                      passengers={passengers}
+                      passengers={DSRData?.passengers}
                       customerData={DSRData}
                     />
                   </div>

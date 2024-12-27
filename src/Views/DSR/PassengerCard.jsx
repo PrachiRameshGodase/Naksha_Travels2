@@ -12,6 +12,7 @@ import CreateVisaPopup from "./Services/CreateVisaPopup";
 import CreateOtherPopup from "./Services/CreateOtherPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
+ 
   const [activePopup, setActivePopup] = useState(null);
   const [formData, setFormData] = useState({
     service: "",
@@ -58,19 +59,36 @@ const PassengerCard = ({ passengers, onDelete }) => {
   const renderPopup = () => {
     switch (activePopup) {
       case "Hotels":
-        return <CreateHotelPopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateHotelPopup showModal={true} setShowModal={setActivePopup} />
+        );
       case "Flights":
-        return <CreateFlightPopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateFlightPopup showModal={true} setShowModal={setActivePopup} />
+        );
       case "Visa":
-        return <CreateVisaPopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateVisaPopup showModal={true} setShowModal={setActivePopup} />
+        );
       case "Insurance":
-        return <CreateInsurancePopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateInsurancePopup
+            showModal={true}
+            setShowModal={setActivePopup}
+          />
+        );
       case "Car Hire":
-        return <CreateCarHirePopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateCarHirePopup showModal={true} setShowModal={setActivePopup} />
+        );
       case "Assist":
-        return <CreateAssistPopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateAssistPopup showModal={true} setShowModal={setActivePopup} />
+        );
       case "Others":
-        return <CreateOtherPopup showModal={true} setShowModal={setActivePopup} />;
+        return (
+          <CreateOtherPopup showModal={true} setShowModal={setActivePopup} />
+        );
       default:
         return null;
     }
@@ -84,17 +102,17 @@ const PassengerCard = ({ passengers, onDelete }) => {
         gap: "1rem",
       }}
     >
-      {passengers.map((passenger, index) => (
+      {passengers?.map((passenger, index) => (
         <div className="card" key={index}>
           {/* Top Section */}
           <div className="card-top">
             <div className="card-avatar">
-              {passenger.name ? passenger.name[0].toUpperCase() : "P"}
+              {passenger?.passenger?.first_name ? passenger?.passenger?.first_name [0].toUpperCase() : "P"}
             </div>
-            <div className="card-name">{passenger.name}</div>
+            <div className="card-name">{passenger?.passenger?.company_name ||""}</div>
             <RxCross2
               className="card-delete"
-              onClick={() => onDelete(passenger.id)}
+              onClick={() => onDelete(passenger?.id)}
             />
           </div>
 
@@ -102,11 +120,11 @@ const PassengerCard = ({ passengers, onDelete }) => {
           <div className="card-middle">
             <div className="card-details">
               <div className="value">Mobile:</div>
-              <div className="value">{passenger.mobile || "N/A"}</div>
+              <div className="value">{passenger?.passenger?.mobile_no || ""}</div>
             </div>
             <div className="card-details">
               <span className="value">Email:</span>
-              <div className="value">{passenger.email || "N/A"}</div>
+              <div className="value">{passenger?.passenger?.email || ""}</div>
             </div>
           </div>
 
@@ -115,7 +133,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
 
           <div
             className="form_commonblock"
-          // style={{ flex: "0.6" }}
+            // style={{ flex: "0.6" }}
           >
             <span style={{ border: "none", justifyContent: "center" }}>
               {/* {otherIcons.name_svg} */}

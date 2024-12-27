@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const DSRSummary = ({ passengers, customerData }) => {
   // console.log("customerData", customerData);
   // console.log("passengerspassengers", passengers)
-
+const navigate=useNavigate()
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}
@@ -584,10 +584,10 @@ const DSRSummary = ({ passengers, customerData }) => {
                   <p>Name</p>
                   <p>Services</p>
                 </div>
-                {customerData?.passenger?.map((item, index) => (
+                {customerData?.passengers?.map((item, index) => (
                 <div className="table_head_z02 " key={index}>
-                  <p>{item?.display_name ||""}</p>
-                  <p onClick={`/dashborad/serviceList?.id`}>ServiceList</p>
+                  <p>{item?.passenger?.display_name ||""}</p>
+                  <p onClick={()=>{navigate(`/dashboard/serviceslist?id=${item?.id}`)}}>ServiceList</p>
                 </div>
                     ))}
               </div>
