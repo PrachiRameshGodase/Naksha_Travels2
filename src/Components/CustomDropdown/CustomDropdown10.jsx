@@ -8,7 +8,7 @@ import { customersList } from '../../Redux/Actions/customerActions';
 import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
 
 const CustomDropdown10 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, } = props;
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877,disable } = props;
   const {
     isOpen,
     setIsOpen,
@@ -49,7 +49,8 @@ const CustomDropdown10 = forwardRef((props, ref) => {
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+      <div     onClick={() => !disable && setIsOpen(!isOpen)}
+        style={{ cursor: disable ? "not-allowed" : "pointer", background:disable? "#f0f0f0":"" }} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
 
         {cusData ? cusData?.display_name : value ? fullName?.display_name : defaultOption}
 

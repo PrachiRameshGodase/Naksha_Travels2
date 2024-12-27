@@ -1,4 +1,4 @@
-import { CREATE_DSR_ERROR, CREATE_DSR_REQUEST, CREATE_DSR_SUCCESS, GET_DSR_ERROR, GET_DSR_REQUEST, GET_DSR_SUCCESS } from "../Constants/DSRConstants";
+import { ADD_PASSENGER_ERROR, ADD_PASSENGER_REQUEST, ADD_PASSENGER_SUCCESS, CREATE_DSR_ERROR, CREATE_DSR_REQUEST, CREATE_DSR_SUCCESS, DSR_DETAIL_ERROR, DSR_DETAIL_REQUEST, DSR_DETAIL_SUCCESS, GET_DSR_ERROR, GET_DSR_REQUEST, GET_DSR_SUCCESS, PASSENGER_DELETE_ERROR, PASSENGER_DELETE_REQUEST, PASSENGER_DELETE_SUCCESS } from "../Constants/DSRConstants";
 
 const initialState = {
     loading: false,
@@ -56,3 +56,78 @@ export const listDSRreducer = (state = initialState, action) => {
     }
 }
 
+export const DSRDetailReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case DSR_DETAIL_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case DSR_DETAIL_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case DSR_DETAIL_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const AddPassengerReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ADD_PASSENGER_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ADD_PASSENGER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ADD_PASSENGER_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const DeletePassengerReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case PASSENGER_DELETE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case PASSENGER_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case PASSENGER_DELETE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};

@@ -192,34 +192,26 @@ export const SubmitButton4 = ({ isEdit, itemId, cancel }) => {
     )
 }
 
-export const SubmitButton5 = ({ isEdit, itemId, cancel }) => {
+export const SubmitButton5 = ({ isEdit, itemId, onClick }) => {
     return (
         <div className="actionbarcommon11">
             {isEdit && itemId ?
                 <>
-                    <button className={`firstbtnc1`} type="submit" name="saveAsDraft">
+                    <button className={`firstbtnc1`} type="submit" onClick={onClick}>
                         Update
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                            <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg> */}
+                       
                     </button>
                 </>
                 :
                 <>
-                    <button className={`firstbtnc1`} type="submit" name="saveAsDraft">
+                    <button className={`firstbtnc1`} type="submit" onClick={onClick}>
                         Save
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                            <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg> */}
+                       
                     </button>
                 </>
             }
 
-            {/* <Link to={`/dashboard/${cancel}`} className="firstbtnc2">
-                Cancel
-            </Link> */}
+          
 
         </div>
     )
