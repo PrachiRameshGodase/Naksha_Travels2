@@ -1,139 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../Helper/DateFormat";
-import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../Common/SearchBox/SearchBox";
-import SortBy from "../../Common/SortBy/SortBy";
-import DatePicker from "../../Common/DatePicker/DatePicker";
-import FilterBy from "../../Common/FilterBy/FilterBy";
+import Loader02 from "../../../Components/Loaders/Loader02";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
-import { useDebounceSearch } from "../../Helper/HelperFunctions";
-import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { hotelListAction } from "../../../Redux/Actions/hotelActions";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import {
+  PassengerHotelDeleteActions,
+  PassengerHotelDetailsAction,
+} from "../../../Redux/Actions/passengerHotelActions";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import { formatDate3 } from "../../Helper/DateFormat";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
-const Hotels = () => {
-  const navigate = useNavigate();
+const Hotels = ({ data }) => {
   const dispatch = useDispatch();
-  const itemPayloads = localStorage.getItem("salePayload");
-  const hotelListData = useSelector((state) => state?.hotelList);
-  const hotelLists = hotelListData?.data?.hotels || [];
-  const totalItems = hotelListData?.data?.total_hotels || 0;
+  const itemId = new URLSearchParams(location.search).get("id");
 
+  const passengerHotelData = useSelector((state) => state?.passengerDetail);
+  const totalItems = passengerHotelData?.data?.total_hotels || 0;
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
-
-  // reset current page to 1 when any filters are applied
-  const resetPageIfNeeded = () => {
-    if (currentPage > 1) {
-      setCurrentPage(1);
-    }
-  };
-
-  // serch,filterS and sortby////////////////////////////////////
-
-  // sortBy
-  const [selectedSortBy, setSelectedSortBy] = useState("Normal");
-  const [sortOrder, setSortOrder] = useState(1);
-  //sortby
-
-  //date range picker
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-  const [specificDate, setSpecificDate] = useState(null);
-  const [clearFilter, setClearFilter] = useState(true);
-  //date range picker
-
-  // filter
-  const [selectedSortBy2, setSelectedSortBy2] = useState("Normal");
-  const [status, setStatus] = useState("");
-  // filter
-
-  //Search/////////////////////////////////////////////////////////////
-  const [searchTermFromChild, setSearchTermFromChild] = useState("");
-  // Debounced function to trigger search
-  const debouncedSearch = useDebounceSearch(() => {
-    setSearchTrigger((prev) => prev + 1);
-  }, 800);
-
-  // Handle search term change from child component
-  const onSearch = (term) => {
-    setSearchTermFromChild(term);
-    if (term.length > 0 || term === "") {
-      debouncedSearch();
-    }
-  };
-  //Search/////////////////////////////////////////////////////////////
-
-  // serch,filterS and sortby////////////////////////////////////
-
-  const fetchHotels = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && {
-          sort_by: selectedSortBy,
-          sort_order: sortOrder,
-        }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
-        }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
-        }),
-      };
-
-      dispatch(hotelListAction(sendData));
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-    }
-  }, [searchTrigger]);
-
-  useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchHotels();
-    // }
-  }, [searchTrigger]);
-
-  const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/hotel-details?id=${quotation.id}`);
-  };
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -147,27 +37,45 @@ const Hotels = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = hotelListData?.data?.quotations?.every((row) =>
+    const areAllRowsSelected = data?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, hotelListData?.data?.quotations]);
+  }, [selectedRows, data]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : hotelListData?.data?.quotations?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : data?.map((row) => row.id));
   };
   //logic for checkBox...
+
+  const handleDeleteHotel = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this hotel?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        dsr_hotel_id: item?.id,
+      };
+      dispatch(PassengerHotelDeleteActions(sendData)).then((response) => {
+        if (itemId) {
+          const refreshData = {
+            passenger_id: itemId,
+          };
+          dispatch(PassengerHotelDetailsAction(refreshData));
+        }
+      });
+    }
+  };
 
   return (
     <>
       <TopLoadbar />
-      {hotelListData?.loading && <MainScreenFreezeLoader />}
+      {passengerHotelData?.loading && <Loader02 />}
       <div id="middlesection">
-       
-
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
@@ -187,44 +95,48 @@ const Hotels = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                    Hotel Name
+                    Booking Date
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
-                    Hotel Type
+                    Hotel Name
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.refrence_svg}
-                    Address
-                  </div>
+                    Room No/Name
+                  </div> */}
 
                   <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
-                    Country
+                    Occupancy
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
-                    State
+                    Meal Plan
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
-                    City
+                    Checkin Date
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Checkout Date
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
-                    Status
+                    Action
                   </div>
                 </div>
 
-                {hotelListData?.loading ? (
+                {passengerHotelData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {hotelLists?.length >= 1 ? (
+                    {data?.length >= 1 ? (
                       <>
-                        {hotelLists.map((item, index) => (
+                        {data?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
                               selectedRows.includes(item?.id)
@@ -248,69 +160,58 @@ const Hotels = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {item?.hotel_name || ""}
+                              {formatDate3(item?.booking_date) || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
+                              {item?.hotel_name || ""}
+                            </div>
+                            {/* <div onClick={() => handleRowClicked(item)}  className="table-cellx12 quotiosalinvlisxs2">
+                              {item?.room_name || ""}
+                            </div> */}
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
                               <ShowMastersValue
-                                type="35"
-                                id={item?.hotel_type}
+                                type="36"
+                                id={item?.occupancy_id}
                               />
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs3"
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-content={item?.address_line_1 || ""}
-                            >
-                              {item?.address_line_1?.split(" ").length > 20
-                                ? item.address_line_1
-                                    .split(" ")
-                                    .slice(0, 20)
-                                    .join(" ") + "..."
-                                : item?.address_line_1 || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.country?.name || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {item?.state?.name || ""}
+                              <ShowMastersValue
+                                type="37"
+                                id={item?.meal_id || ""}
+                              />
                             </div>
 
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.city?.name || ""}
+                              {formatDate3(item?.check_in_date) || ""}
                             </div>
-
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {formatDate3(item?.check_out_date) || ""}
+                            </div>
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                             >
-                              <p
-                                className={
-                                  item?.status == "1"
-                                    ? "open"
-                                    : item?.status == "0"
-                                    ? "declined"
-                                    : ""
-                                }
+                              <span
+                                style={{ cursor: "pointer", color: "red" }}
+                                onClick={() => handleDeleteHotel(item)}
                               >
-                                {item?.status == "1"
-                                  ? "Active"
-                                  : item?.status == "0"
-                                  ? "Inactive"
-                                  : ""}
-                              </p>
+                                {otherIcons.delete_svg}
+                              </span>
                             </div>
                           </div>
                         ))}

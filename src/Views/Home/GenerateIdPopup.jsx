@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { autoGenerateId } from '../../Redux/Actions/globalActions';
 
 
-const GenerateIdPopup = ({ formdatas }) => {
+const GenerateIdPopup = ({ formdatas}) => {
     const dispatch = useDispatch();
     const { autoData, setAutoData, setGenerateId, setSearchTrigger } = formdatas;
     const [inputValue, setInputValue] = useState("auto");

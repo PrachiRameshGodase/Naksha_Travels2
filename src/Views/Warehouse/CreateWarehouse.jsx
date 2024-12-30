@@ -57,7 +57,7 @@ const CreateWarehouse = () => {
     const showdeparment = ShowMasterData("10");
     const showWarehouseType = ShowMasterData("22");
 
-    console.log("showWarehouseType", showWarehouseType)
+    
 
 
     const [formData, setFormData] = useState({

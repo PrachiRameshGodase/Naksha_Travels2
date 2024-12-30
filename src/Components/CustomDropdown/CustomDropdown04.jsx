@@ -34,7 +34,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width:"100px" } : {}}>
 
-        {type === "masters_salutation" ?
+        {(type === "masters_salutation" || type==="masters2") ?
           <>
             {value ? options?.find(account => account?.label == value)?.label : defaultOption}
           </>

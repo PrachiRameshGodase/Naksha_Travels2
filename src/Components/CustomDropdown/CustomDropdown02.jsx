@@ -9,7 +9,7 @@ import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions'
 import { hotelRoomListAction } from '../../Redux/Actions/hotelActions';
 
 const CustomDropdown02 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, hotelID} = props;
+  const {hotelID, options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877} = props;
   const {
     isOpen,
     setIsOpen,

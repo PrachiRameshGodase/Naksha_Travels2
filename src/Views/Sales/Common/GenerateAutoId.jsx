@@ -43,9 +43,13 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
                     style={{ cursor: disable ? "not-allowed" : "text", ...style }} // Apply the custom style and disabled cu
                 />
 
-                {!showField && <span onClick={() => setGenerateId(true)}>{otherIcons.setting_icon}</span>}
+                {!showField && <span  onClick={!disable ? () => setGenerateId(true) : null} // Only trigger click if not disabled
+                        style={{
+                            cursor: disable ? "not-allowed" : "pointer", // Change cursor style
+                            pointerEvents: disable ? "none" : "auto" // Prevent clicking when disabled
+                        }}>{otherIcons.setting_icon}</span>}
             </span>
-            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId }} />}
+            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId}} />}
         </>
     );
 };

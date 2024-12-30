@@ -61,6 +61,7 @@ export const DSRDetailsAction = (queryParams, setDetail_api_data) => async (disp
                 data
             },
         });
+        
 
     } catch (error) {
         dispatch({ type: DSR_DETAIL_ERROR, payload: error.message });
@@ -93,8 +94,8 @@ export const PassengerDeleteActions = (queryParams, Navigate) => async (dispatch
     try {
         const response = await axiosInstance.post(`/dsr/service/passenger/delete`, queryParams);
 
-        if (response?.data?.message === "Room Deleted Successfully") {
-            dispatch(hotelListAction(queryParams));//update list then data is change
+        if (response?.data?.message === "Passenger Deleted Successfully") {
+           
             toast.success(response?.data?.message);
             // Navigate("/dashboard/hotels-services");
         } else {

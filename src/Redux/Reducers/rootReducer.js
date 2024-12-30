@@ -1,274 +1,495 @@
-import { combineReducers } from 'redux';
-import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, debitNoteListReducer, invoiceListReducer, itemListReducer, journalListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
-import { activeInactiveItemReducer, addItemsReducer, itemActivityReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, itemStockeducer, stockItemsReducer } from './itemsReducers';
-import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer, expenseHeadListReducer, autoGenerateIdReducer, autoGenerateIdListReducer } from './globalReducers';
-import { categoryStatusReducer, createCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
-import { createCustomerReducer, customerDeleteReducer, customerListReducer, customerStatusReducer, viewCustomerReducer } from './customerReducers';
-import { quotationDeleteReducer, quotationDetailReducer, quotationSendReducer, quotationStatusReducer, quotationUpdateReducer } from './quotationReducers';
-import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderSendReducer, saleOrderStatusReducer } from './saleOrderReducers';
-import { invoiceDeleteReducer, invoiceDetailReducer, invoiceMailSendReducer, invoicePendingReducer, invoiceSendReducer, invoiceStatusReducer } from './invoiceReducers';
-import { creditNoteCreateReducers, creditNoteDeleteReducer, creditNoteDetailReducer, creditNoteStatusReducer, debitNoteDeleteReducer, debitNoteDetailReducer, debitNoteStatusReducer } from './noteReducers';
-import { vendorCreateReducer, vendorDeleteReducer, vendorStatusReducer, vendorViewReducer } from './vendorReducers';
-import { JournalDetailReducer, accountDeleteReducer, accountDetailsReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
-import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentListReducer, paymentStatusReducer } from './paymentReducers';
-import { billDeleteReducer, billDetailReducer, billListReducer, billSendReducer, billStatusReducer, pendingBillReducer } from './billReducers';
-import { createPurchasesReducer, purchasesDeleteReducer, purchasesDetailsReducer, purchasesSendReducer, purchasesStatusReducer } from './purchasesReducers';
-import { expenseCreateReducer, expenseDeleteReducer, expenseDetailReducer, expenseListReducer } from './expenseReducers';
-import { createGRNreducer, GRNdeleteReducer, GRNdetailsReducer, GRNrecepitDetailReducer, GRNrecepitListReducer, GRNrecepitMoveItemReducer, GRNstatusReducer, listGRNreducer } from './grnReducers';
-import { binCreateReducer, binDetailsReducer, binStatusReducer, binViewReducer, rackCreateReducer, rackDetailsReducer, rackStatusReducer, rackViewReducer, warehouseCreateReducer, warehouseDetailReducer, warehouseStatusReducer, warehouseViewReducer, zoneCreateReducer, zoneDetailsReducer, zoneStatusReducer, zoneViewReducer } from './warehouseReducers';
-import { manufacturingCreateStockApprovalReducers, requisitionApprovalListReducer, requisitionDetailReducer, requisitionListReducer } from './manufacturingReducers';
-import { createHelpreducer, listHelpreducer, statusHelpreducer } from './helpReducers';
-import { isIdEqualReducer, productTypeReducer } from './ManageStateReducer/manageStateReducers';
-import { createMasterReducer, listMasterReducer } from './masterReducers';
-import { saleByCustomerReducer } from './ReportReducers/SaleReportReducers';
-import { accountTransactionReducer } from './ReportReducers/AccountReportReducers';
-import { createHotelReducer, createHotelRoomReducer, hotelDetailReducer, hotelrOOMDetailReducer, hotelRoomStatusReducer, hotelStatusReducer, hoteltDeleteReducer, hoteltRoomDeleteReducer, listHotelReducer, listHotelrOOMReducer } from './hotelReducers';
-import { createItineraryReducer, createTourPackageReducer, itinerarydeleteReducer, itinerarystatusReducer, listItineraryReducer, listTourPackageReducer, tourPackagedeleteReducer, tourPackageDetailReducer, tourPackagestatusReducer } from './tourPackageReducers';
-import { createFlightReducer, flightdeleteReducer, flightDetailReducer, flightstatusReducer, listFlightReducer } from './flightReducers';
-import { createVisaReducer, listVisaReducer, visadeleteReducer, visaDetailReducer, visastatusReducer } from './visaReducers';
-import { carHiredeleteReducer, carHireDetailReducer, carHirestatusReducer, createcarHireReducer, listCarHireReducer } from './carHireReducers';
-import { assistdeleteReducer, assistDetailReducer, assiststatusReducer, createAssistReducer, listAssistReducer } from './assistReducers';
-import { createInsuranceReducer, InsurancedeleteReducer, InsuranceDetailReducer, InsurancestatusReducer, listInsuranceReducer } from './insuranceReducers';
-import { AddPassengerReducer, createDSRreducer, DeletePassengerReducer, DSRDetailReducer, listDSRreducer } from './DSRReducers';
+import { combineReducers } from "redux";
+import {
+  accountListReducer,
+  categoryListReducer,
+  creditNoteListReducer,
+  customListReducer,
+  debitNoteListReducer,
+  invoiceListReducer,
+  itemListReducer,
+  journalListReducer,
+  purchseListReducer,
+  quoatationListReducer,
+  saleOrderListReducer,
+  vendorListReducer,
+} from "./listApisReducers";
+import {
+  activeInactiveItemReducer,
+  addItemsReducer,
+  itemActivityReducer,
+  itemDeleteReducer,
+  itemExportReducer,
+  itemImportReducer,
+  itemsDetailReducer,
+  itemStockeducer,
+  stockItemsReducer,
+} from "./itemsReducers";
+import {
+  masterDataReducer,
+  countriesDataReducer,
+  citiesDataReducer,
+  stateDataReducer,
+  createCustomReducer,
+  getCurrencyReducer,
+  getTaxRateReducer,
+  updateAddressReducer,
+  expenseHeadListReducer,
+  autoGenerateIdReducer,
+  autoGenerateIdListReducer,
+} from "./globalReducers";
+import {
+  categoryStatusReducer,
+  createCategoryReducer,
+  deleteCategoryReducer,
+  subCategoryListReducer,
+} from "./categoryReducers";
+import {
+  createCustomerReducer,
+  customerDeleteReducer,
+  customerListReducer,
+  customerStatusReducer,
+  viewCustomerReducer,
+} from "./customerReducers";
+import {
+  quotationDeleteReducer,
+  quotationDetailReducer,
+  quotationSendReducer,
+  quotationStatusReducer,
+  quotationUpdateReducer,
+} from "./quotationReducers";
+import {
+  saleOrderDeleteReducer,
+  saleOrderDetailReducer,
+  saleOrderSendReducer,
+  saleOrderStatusReducer,
+} from "./saleOrderReducers";
+import {
+  invoiceDeleteReducer,
+  invoiceDetailReducer,
+  invoiceMailSendReducer,
+  invoicePendingReducer,
+  invoiceSendReducer,
+  invoiceStatusReducer,
+} from "./invoiceReducers";
+import {
+  creditNoteCreateReducers,
+  creditNoteDeleteReducer,
+  creditNoteDetailReducer,
+  creditNoteStatusReducer,
+  debitNoteDeleteReducer,
+  debitNoteDetailReducer,
+  debitNoteStatusReducer,
+} from "./noteReducers";
+import {
+  vendorCreateReducer,
+  vendorDeleteReducer,
+  vendorStatusReducer,
+  vendorViewReducer,
+} from "./vendorReducers";
+import {
+  JournalDetailReducer,
+  accountDeleteReducer,
+  accountDetailsReducer,
+  accountStatusReducer,
+  accountTypeReducer,
+  createAccountReducer,
+  journalsReducer,
+} from "./accountReducers";
+import {
+  createPaymentReducer,
+  paymentDeleteReducer,
+  paymentDetailReducer,
+  paymentListReducer,
+  paymentStatusReducer,
+} from "./paymentReducers";
+import {
+  billDeleteReducer,
+  billDetailReducer,
+  billListReducer,
+  billSendReducer,
+  billStatusReducer,
+  pendingBillReducer,
+} from "./billReducers";
+import {
+  createPurchasesReducer,
+  purchasesDeleteReducer,
+  purchasesDetailsReducer,
+  purchasesSendReducer,
+  purchasesStatusReducer,
+} from "./purchasesReducers";
+import {
+  expenseCreateReducer,
+  expenseDeleteReducer,
+  expenseDetailReducer,
+  expenseListReducer,
+} from "./expenseReducers";
+import {
+  createGRNreducer,
+  GRNdeleteReducer,
+  GRNdetailsReducer,
+  GRNrecepitDetailReducer,
+  GRNrecepitListReducer,
+  GRNrecepitMoveItemReducer,
+  GRNstatusReducer,
+  listGRNreducer,
+} from "./grnReducers";
+import {
+  binCreateReducer,
+  binDetailsReducer,
+  binStatusReducer,
+  binViewReducer,
+  rackCreateReducer,
+  rackDetailsReducer,
+  rackStatusReducer,
+  rackViewReducer,
+  warehouseCreateReducer,
+  warehouseDetailReducer,
+  warehouseStatusReducer,
+  warehouseViewReducer,
+  zoneCreateReducer,
+  zoneDetailsReducer,
+  zoneStatusReducer,
+  zoneViewReducer,
+} from "./warehouseReducers";
+import {
+  manufacturingCreateStockApprovalReducers,
+  requisitionApprovalListReducer,
+  requisitionDetailReducer,
+  requisitionListReducer,
+} from "./manufacturingReducers";
+import {
+  createHelpreducer,
+  listHelpreducer,
+  statusHelpreducer,
+} from "./helpReducers";
+import {
+  isIdEqualReducer,
+  productTypeReducer,
+} from "./ManageStateReducer/manageStateReducers";
+import { createMasterReducer, listMasterReducer } from "./masterReducers";
+import { saleByCustomerReducer } from "./ReportReducers/SaleReportReducers";
+import { accountTransactionReducer } from "./ReportReducers/AccountReportReducers";
+import {
+  createHotelReducer,
+  createHotelRoomReducer,
+  hotelDetailReducer,
+  hotelrOOMDetailReducer,
+  hotelRoomStatusReducer,
+  hotelStatusReducer,
+  hoteltDeleteReducer,
+  hoteltRoomDeleteReducer,
+  listHotelReducer,
+  listHotelrOOMReducer,
+} from "./hotelReducers";
+import {
+  createItineraryReducer,
+  createTourPackageReducer,
+  itinerarydeleteReducer,
+  itinerarystatusReducer,
+  listItineraryReducer,
+  listTourPackageReducer,
+  tourPackagedeleteReducer,
+  tourPackageDetailReducer,
+  tourPackagestatusReducer,
+} from "./tourPackageReducers";
+import {
+  createFlightReducer,
+  flightdeleteReducer,
+  flightDetailReducer,
+  flightstatusReducer,
+  listFlightReducer,
+} from "./flightReducers";
+import {
+  createVisaReducer,
+  listVisaReducer,
+  visadeleteReducer,
+  visaDetailReducer,
+  visastatusReducer,
+} from "./visaReducers";
+import {
+  carHiredeleteReducer,
+  carHireDetailReducer,
+  carHirestatusReducer,
+  createcarHireReducer,
+  listCarHireReducer,
+} from "./carHireReducers";
+import {
+  assistdeleteReducer,
+  assistDetailReducer,
+  assiststatusReducer,
+  createAssistReducer,
+  listAssistReducer,
+} from "./assistReducers";
+import {
+  createInsuranceReducer,
+  InsurancedeleteReducer,
+  InsuranceDetailReducer,
+  InsurancestatusReducer,
+  listInsuranceReducer,
+} from "./insuranceReducers";
+import {
+  AddPassengerReducer,
+  createDSRreducer,
+  DeletePassengerReducer,
+  DSRDetailReducer,
+  listDSRreducer,
+} from "./DSRReducers";
+import {
+  createPassengerHotelReducer,
+  passengerHotelDetailReducer,
+  passengerHoteltDeleteReducer,
+} from "./passengerHotelReducers";
+import {
+  createPassengerFlightReducer,
+  passengerFlighttDeleteReducer,
+} from "./passengerFlightReducers";
+import {
+  createPassengerVisaReducer,
+  passengerVisaDeleteReducer,
+} from "./passengerVisaReducers";
 const reducer = combineReducers({
-    addItemsReducer,
+  addItemsReducer,
 
-    stockAdjustment: stockItemsReducer,
-    itemStock: itemStockeducer,
-    itemDetail: itemsDetailReducer,
-    itemList: itemListReducer,
-    importItems: itemImportReducer,
-    exportItems: itemExportReducer,
-    activity: itemActivityReducer,
-    //services
-    createHotel:createHotelReducer,
-    hotelList:listHotelReducer,
-    hotelDetail:hotelDetailReducer,
-    hotelStatus:hotelStatusReducer,
-    hotelDelete:hoteltDeleteReducer,
+  stockAdjustment: stockItemsReducer,
+  itemStock: itemStockeducer,
+  itemDetail: itemsDetailReducer,
+  itemList: itemListReducer,
+  importItems: itemImportReducer,
+  exportItems: itemExportReducer,
+  activity: itemActivityReducer,
+  //services
+  createHotel: createHotelReducer,
+  hotelList: listHotelReducer,
+  hotelDetail: hotelDetailReducer,
+  hotelStatus: hotelStatusReducer,
+  hotelDelete: hoteltDeleteReducer,
 
-    createHotelRoom:createHotelRoomReducer,
-    hotelRoomList:listHotelrOOMReducer,
-    hotelRoomDetail:hotelrOOMDetailReducer,
-    hotelRoomStatus:hotelRoomStatusReducer,
-    hotelRoomDelete:hoteltRoomDeleteReducer,
+  createHotelRoom: createHotelRoomReducer,
+  hotelRoomList: listHotelrOOMReducer,
+  hotelRoomDetail: hotelrOOMDetailReducer,
+  hotelRoomStatus: hotelRoomStatusReducer,
+  hotelRoomDelete: hoteltRoomDeleteReducer,
 
-    createTourPackage:createTourPackageReducer,
-    tourPackageList:listTourPackageReducer,
-    tourPackageDetail:tourPackageDetailReducer,
-    tourPackageStatus:tourPackagestatusReducer,
-    tourPackageDelete:tourPackagedeleteReducer,
-    createItinerary:createItineraryReducer,
-    itineraryList:listItineraryReducer,
-    itineraryStatus:itinerarystatusReducer,
-    itineraryDelete:itinerarydeleteReducer,
+  createTourPackage: createTourPackageReducer,
+  tourPackageList: listTourPackageReducer,
+  tourPackageDetail: tourPackageDetailReducer,
+  tourPackageStatus: tourPackagestatusReducer,
+  tourPackageDelete: tourPackagedeleteReducer,
+  createItinerary: createItineraryReducer,
+  itineraryList: listItineraryReducer,
+  itineraryStatus: itinerarystatusReducer,
+  itineraryDelete: itinerarydeleteReducer,
 
-    createFlight:createFlightReducer,
-    flightList:listFlightReducer,
-    flightDetails:flightDetailReducer,
-    flightStatus:flightstatusReducer,
-    flightDelete:flightdeleteReducer,
-    
-    createVisa:createVisaReducer,
-    visaList:listVisaReducer,
-    visaDetails:visaDetailReducer,
-    visaStatus:visastatusReducer,
-    visaDelete:visadeleteReducer,
+  createFlight: createFlightReducer,
+  flightList: listFlightReducer,
+  flightDetails: flightDetailReducer,
+  flightStatus: flightstatusReducer,
+  flightDelete: flightdeleteReducer,
 
-    createCarHire:createcarHireReducer,
-    carHireList:listCarHireReducer,
-    carHireDetails:carHireDetailReducer,
-    carHireStatus:carHirestatusReducer,
-    carHireDelete:carHiredeleteReducer,
+  createVisa: createVisaReducer,
+  visaList: listVisaReducer,
+  visaDetails: visaDetailReducer,
+  visaStatus: visastatusReducer,
+  visaDelete: visadeleteReducer,
 
-    createAssist:createAssistReducer,
-    assistList:listAssistReducer,
-    assistDetails:assistDetailReducer,
-    assistStatus:assiststatusReducer,
-    assistDelete:assistdeleteReducer,
-    
-    createInsurance:createInsuranceReducer,
-    insuranceList:listInsuranceReducer,
-    insuranceDetails:InsuranceDetailReducer,
-    insuranceStatus:InsurancestatusReducer,
-    insuranceDelete:InsurancedeleteReducer,
+  createCarHire: createcarHireReducer,
+  carHireList: listCarHireReducer,
+  carHireDetails: carHireDetailReducer,
+  carHireStatus: carHirestatusReducer,
+  carHireDelete: carHiredeleteReducer,
 
-    createDSR:createDSRreducer,
-    DSRList:listDSRreducer,
-    DSRDetails:DSRDetailReducer,
-    addPassenger:AddPassengerReducer,
-    deletePassenger:DeletePassengerReducer,
-    
-    masterData: masterDataReducer,
-    autoId: autoGenerateIdReducer,
-    autoIdList: autoGenerateIdListReducer,
+  createAssist: createAssistReducer,
+  assistList: listAssistReducer,
+  assistDetails: assistDetailReducer,
+  assistStatus: assiststatusReducer,
+  assistDelete: assistdeleteReducer,
 
-    createCategory: createCategoryReducer,
-    categoryStatus: categoryStatusReducer,
+  createInsurance: createInsuranceReducer,
+  insuranceList: listInsuranceReducer,
+  insuranceDetails: InsuranceDetailReducer,
+  insuranceStatus: InsurancestatusReducer,
+  insuranceDelete: InsurancedeleteReducer,
 
-    // customer
-    createCustomer: createCustomerReducer,
-    customerStatus: customerStatusReducer,
-    customerDelete: customerDeleteReducer,
-    viewCustomer: viewCustomerReducer,
-    customerList: customerListReducer,
+  createPassengerHotel: createPassengerHotelReducer,
+  passengerDetail: passengerHotelDetailReducer,
+  passengerHotelDelete: passengerHoteltDeleteReducer,
 
-    categoryList: categoryListReducer,
-    deleteCategory: deleteCategoryReducer,
-    subCategoryList: subCategoryListReducer,
+  createPassengerFlight: createPassengerFlightReducer,
+  passengerHotelDelete: passengerFlighttDeleteReducer,
 
-    getAccType: accountTypeReducer,
-    createAccount: createAccountReducer,
-    deleteAccount: accountDeleteReducer,
-    accountList: accountListReducer,
-    accountStatus: accountStatusReducer,
-    accountDetails: accountDetailsReducer,
+  createPassengerVisa: createPassengerVisaReducer,
+  passengerVisaDelete: passengerVisaDeleteReducer,
 
-    journalList: journalListReducer,
+  createDSR: createDSRreducer,
+  DSRList: listDSRreducer,
+  DSRDetails: DSRDetailReducer,
+  addPassenger: AddPassengerReducer,
+  deletePassenger: DeletePassengerReducer,
 
-    quoteList: quoatationListReducer,
-    quoteDetail: quotationDetailReducer,
-    quoteStatus: quotationStatusReducer,
-    quoteDelete: quotationDeleteReducer,
-    quoteSend: quotationSendReducer,
-    quoteUpdate: quotationUpdateReducer,
+  masterData: masterDataReducer,
+  autoId: autoGenerateIdReducer,
+  autoIdList: autoGenerateIdListReducer,
 
+  createCategory: createCategoryReducer,
+  categoryStatus: categoryStatusReducer,
 
-    saleList: saleOrderListReducer,
-    saleDetail: saleOrderDetailReducer,
-    saleStatus: saleOrderStatusReducer,
-    saleDelete: saleOrderDeleteReducer,
-    saleSend: saleOrderSendReducer,
+  // customer
+  createCustomer: createCustomerReducer,
+  customerStatus: customerStatusReducer,
+  customerDelete: customerDeleteReducer,
+  viewCustomer: viewCustomerReducer,
+  customerList: customerListReducer,
 
-    vendorList: vendorListReducer,
-    vendorView: vendorViewReducer,
-    vendorDelete: vendorDeleteReducer,
-    vendorStatus: vendorStatusReducer,
-    purchseList: purchseListReducer,
-    purchseSend: purchasesSendReducer,
-    purchseStatus: purchasesStatusReducer,
-    createVendor: vendorCreateReducer,
+  categoryList: categoryListReducer,
+  deleteCategory: deleteCategoryReducer,
+  subCategoryList: subCategoryListReducer,
 
-    invoiceDetail: invoiceDetailReducer,
-    invoiceList: invoiceListReducer,
-    invoicesStatus: invoiceStatusReducer,
-    invoicesDelete: invoiceDeleteReducer,
-    invoicePending: invoicePendingReducer,
-    invoiceSend: invoiceMailSendReducer,
-    invoiceSent: invoiceSendReducer,
+  getAccType: accountTypeReducer,
+  createAccount: createAccountReducer,
+  deleteAccount: accountDeleteReducer,
+  accountList: accountListReducer,
+  accountStatus: accountStatusReducer,
+  accountDetails: accountDetailsReducer,
 
-    creditNoteStatus: creditNoteStatusReducer,
-    createCreditNote: creditNoteCreateReducers,
-    creditNoteList: creditNoteListReducer,
-    creditNoteDetail: creditNoteDetailReducer,
-    creditNoteDelete: creditNoteDeleteReducer,
+  journalList: journalListReducer,
 
-    debitNoteList: debitNoteListReducer,
-    debitNoteDetail: debitNoteDetailReducer,
-    debitNoteDelete: debitNoteDeleteReducer,
-    debitNoteStatus: debitNoteStatusReducer,
+  quoteList: quoatationListReducer,
+  quoteDetail: quotationDetailReducer,
+  quoteStatus: quotationStatusReducer,
+  quoteDelete: quotationDeleteReducer,
+  quoteSend: quotationSendReducer,
+  quoteUpdate: quotationUpdateReducer,
 
-    countries: countriesDataReducer,
-    states: stateDataReducer,
-    cities: citiesDataReducer,
+  saleList: saleOrderListReducer,
+  saleDetail: saleOrderDetailReducer,
+  saleStatus: saleOrderStatusReducer,
+  saleDelete: saleOrderDeleteReducer,
+  saleSend: saleOrderSendReducer,
 
-    status: activeInactiveItemReducer,
-    deleteItem: itemDeleteReducer,
-    createCustom: createCustomReducer,
+  vendorList: vendorListReducer,
+  vendorView: vendorViewReducer,
+  vendorDelete: vendorDeleteReducer,
+  vendorStatus: vendorStatusReducer,
+  purchseList: purchseListReducer,
+  purchseSend: purchasesSendReducer,
+  purchseStatus: purchasesStatusReducer,
+  createVendor: vendorCreateReducer,
 
-    customList: customListReducer,
+  invoiceDetail: invoiceDetailReducer,
+  invoiceList: invoiceListReducer,
+  invoicesStatus: invoiceStatusReducer,
+  invoicesDelete: invoiceDeleteReducer,
+  invoicePending: invoicePendingReducer,
+  invoiceSend: invoiceMailSendReducer,
+  invoiceSent: invoiceSendReducer,
 
-    getCurrency: getCurrencyReducer,
-    getTaxRate: getTaxRateReducer,
-    updateAddress: updateAddressReducer,
+  creditNoteStatus: creditNoteStatusReducer,
+  createCreditNote: creditNoteCreateReducers,
+  creditNoteList: creditNoteListReducer,
+  creditNoteDetail: creditNoteDetailReducer,
+  creditNoteDelete: creditNoteDeleteReducer,
 
-    // payment receive
-    paymentRecList: paymentListReducer,
-    paymentRecDelete: paymentDeleteReducer,
-    paymentRecDetail: paymentDetailReducer,
-    paymentRecStatus: paymentStatusReducer,
-    createPayment: createPaymentReducer,
+  debitNoteList: debitNoteListReducer,
+  debitNoteDetail: debitNoteDetailReducer,
+  debitNoteDelete: debitNoteDeleteReducer,
+  debitNoteStatus: debitNoteStatusReducer,
 
-    // Journal
-    journalDetail: JournalDetailReducer,
-    createJournal: journalsReducer,
+  countries: countriesDataReducer,
+  states: stateDataReducer,
+  cities: citiesDataReducer,
 
-    // Bill
-    billList: billListReducer,
-    billDetail: billDetailReducer,
-    billDelete: billDeleteReducer,
-    billStatuses: billStatusReducer,
-    billSend: billSendReducer,
+  status: activeInactiveItemReducer,
+  deleteItem: itemDeleteReducer,
+  createCustom: createCustomReducer,
 
+  customList: customListReducer,
 
-    pendingBill: pendingBillReducer,
-    createPurchase: createPurchasesReducer,
-    detailsPurchase: purchasesDetailsReducer,
-    deletePurchase: purchasesDeleteReducer,
-    expenseCreate: expenseCreateReducer,
-    expenseList: expenseListReducer,
-    expenseHeadList: expenseHeadListReducer,
-    expenseDelete: expenseDeleteReducer,
-    expenseDetail: expenseDetailReducer,
+  getCurrency: getCurrencyReducer,
+  getTaxRate: getTaxRateReducer,
+  updateAddress: updateAddressReducer,
 
-    GRNcreate: createGRNreducer,
-    GRNlist: listGRNreducer,
-    GRNdetails: GRNdetailsReducer,
-    GRNreceptList: GRNrecepitListReducer,
-    GRNreceptDetail: GRNrecepitDetailReducer,
-    GRNstatus: GRNstatusReducer,
-    GRNdelete: GRNdeleteReducer,
-    GRNitem: GRNrecepitMoveItemReducer,
+  // payment receive
+  paymentRecList: paymentListReducer,
+  paymentRecDelete: paymentDeleteReducer,
+  paymentRecDetail: paymentDetailReducer,
+  paymentRecStatus: paymentStatusReducer,
+  createPayment: createPaymentReducer,
 
-    warehouseView: warehouseViewReducer,
-    warehouseCreate: warehouseCreateReducer,
-    warehouseDetail: warehouseDetailReducer,
-    warehouseStatus: warehouseStatusReducer,
+  // Journal
+  journalDetail: JournalDetailReducer,
+  createJournal: journalsReducer,
 
-    zoneCrate: zoneCreateReducer,
-    zoneView: zoneViewReducer,
-    zoneDetail: zoneDetailsReducer,
-    zoneStatus: zoneStatusReducer,
+  // Bill
+  billList: billListReducer,
+  billDetail: billDetailReducer,
+  billDelete: billDeleteReducer,
+  billStatuses: billStatusReducer,
+  billSend: billSendReducer,
 
+  pendingBill: pendingBillReducer,
+  createPurchase: createPurchasesReducer,
+  detailsPurchase: purchasesDetailsReducer,
+  deletePurchase: purchasesDeleteReducer,
+  expenseCreate: expenseCreateReducer,
+  expenseList: expenseListReducer,
+  expenseHeadList: expenseHeadListReducer,
+  expenseDelete: expenseDeleteReducer,
+  expenseDetail: expenseDetailReducer,
 
-    rackCreate: rackCreateReducer,
-    rackView: rackViewReducer,
-    rackDetail: rackDetailsReducer,
-    rackStatus: rackStatusReducer,
+  GRNcreate: createGRNreducer,
+  GRNlist: listGRNreducer,
+  GRNdetails: GRNdetailsReducer,
+  GRNreceptList: GRNrecepitListReducer,
+  GRNreceptDetail: GRNrecepitDetailReducer,
+  GRNstatus: GRNstatusReducer,
+  GRNdelete: GRNdeleteReducer,
+  GRNitem: GRNrecepitMoveItemReducer,
 
-    //bin
-    binCreate: binCreateReducer,
-    binView: binViewReducer,
-    binDetail: binDetailsReducer,
-    binStatus: binStatusReducer,
+  warehouseView: warehouseViewReducer,
+  warehouseCreate: warehouseCreateReducer,
+  warehouseDetail: warehouseDetailReducer,
+  warehouseStatus: warehouseStatusReducer,
 
-    //manufaturing requisitions
-    requisitionList: requisitionListReducer,
-    requisitionDetail: requisitionDetailReducer,
-    requisitionApprovalList: requisitionApprovalListReducer,
-    createStockApproval: manufacturingCreateStockApprovalReducers,
+  zoneCrate: zoneCreateReducer,
+  zoneView: zoneViewReducer,
+  zoneDetail: zoneDetailsReducer,
+  zoneStatus: zoneStatusReducer,
 
-    //help
-    helpCreate: createHelpreducer,
-    helpList: listHelpreducer,
-    helpStatus: statusHelpreducer,
+  rackCreate: rackCreateReducer,
+  rackView: rackViewReducer,
+  rackDetail: rackDetailsReducer,
+  rackStatus: rackStatusReducer,
 
-    //master
-    masterCreate: createMasterReducer,
-    masterList: listMasterReducer,
+  //bin
+  binCreate: binCreateReducer,
+  binView: binViewReducer,
+  binDetail: binDetailsReducer,
+  binStatus: binStatusReducer,
 
-    //manage all State data
-    type: productTypeReducer,
-    isIdReducer: isIdEqualReducer,
+  //manufaturing requisitions
+  requisitionList: requisitionListReducer,
+  requisitionDetail: requisitionDetailReducer,
+  requisitionApprovalList: requisitionApprovalListReducer,
+  createStockApproval: manufacturingCreateStockApprovalReducers,
 
-    //Sale By Customer Report
-    sale_by_customer: saleByCustomerReducer,
+  //help
+  helpCreate: createHelpreducer,
+  helpList: listHelpreducer,
+  helpStatus: statusHelpreducer,
 
-    //account transaction report
-    accTran: accountTransactionReducer,
+  //master
+  masterCreate: createMasterReducer,
+  masterList: listMasterReducer,
 
+  //manage all State data
+  type: productTypeReducer,
+  isIdReducer: isIdEqualReducer,
 
+  //Sale By Customer Report
+  sale_by_customer: saleByCustomerReducer,
 
+  //account transaction report
+  accTran: accountTransactionReducer,
 });
 
 export default reducer;

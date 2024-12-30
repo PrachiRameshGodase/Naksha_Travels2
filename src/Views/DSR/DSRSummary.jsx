@@ -3,10 +3,8 @@ import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
 
-const DSRSummary = ({ passengers, customerData }) => {
-  // console.log("customerData", customerData);
-  // console.log("passengerspassengers", passengers)
-const navigate=useNavigate()
+const DSRSummary = ({customerData }) => {
+
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}
@@ -573,7 +571,7 @@ const navigate=useNavigate()
         </div>
 
         {/* dsr summary user passangers details */}
-        <div className="other_passangers_detils_z01">
+        {/* <div className="other_passangers_detils_z01">
           <div className="other_passangers_detils_z03">
             <div className="add_passangers_001">
               <h2>Added Passangers</h2>
@@ -593,7 +591,7 @@ const navigate=useNavigate()
               </div>
         
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

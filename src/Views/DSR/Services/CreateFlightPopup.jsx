@@ -1,57 +1,61 @@
-import { RxCross2 } from "react-icons/rx";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import DatePicker from "react-datepicker";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown31 from "../../../Components/CustomDropdown/CustomDropdown31";
+import { CreatePassengerFlightAction } from "../../../Redux/Actions/passengerFlightActions";
+import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
-import { currencySymbol, ShowMasterData } from "../../Helper/HelperFunctions";
-import "./CreateHotelPopup.scss";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../Helper/DateFormat";
-import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
+import { ShowMasterData } from "../../Helper/HelperFunctions";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import "./CreateHotelPopup.scss";
 
-const CreateFlightPopup = ({ showModal, setShowModal }) => {
+const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
+  const dispatch=useDispatch()
   const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
+
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const hotelList = useSelector(
-    (state) => state?.hotelList?.data?.hotels || []
-  );
-  const hotelRoomListData = useSelector(
-    (state) => state?.hotelRoomList?.data?.hotels || []
-  );
 
   const [cusData, setcusData] = useState(null);
-  console.log("cusData", cusData);
   const [cusData1, setcusData1] = useState(null);
-  const [cusData3, setcusData3] = useState(null);
-  const [cusData4, setcusData4] = useState(null);
   const [formData, setFormData] = useState({
-    hotel_id: "",
-    bed_id: "",
-    meal_id: "",
-    occupancy_id: "",
+    dsr_id: data?.id,
+    passenger_id: passengerId,
+    entry_type: "",
+    travel_date:"",
+    travel_type_id:"",
+    airline_name:"",
+    guest_ids:"",
+    gds_portal:"",
+    ticket_no:"",
+    prn_no:"",
+    route:"",
+    supplier_id:"",
+    supplier_name:"",
+    //amount
+    charges: null,
+    hotel_price: null,
+    discount: null,
+    tax_percent: null,
+    tax_amount: null,
+    retain: null,
+    total_amount: null,
+    note: null,
+    upload_image: null,
   });
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
+
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
   const entryType = ShowMasterData("50");
-  const occupancy = ShowMasterData("36");
   const travelType = ShowMasterData("51");
 
   const handleChange = (e) => {
@@ -64,32 +68,46 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
         entry_type: entryTypeName?.label,
       }),
       ...(name === "travel_type" && {
-        travel_type: travelTypeName?.label,
+        travel_type_id: travelTypeName?.label,
       }),
 
       [name]: value,
     }));
   };
 
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
-    }));
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems, // Update selected items array
+    });
   };
-
+  
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+      try {
+          const sendData = {
+            ...formData,
+            guest_ids:
+              formData?.guest_ids?.length === 0
+                ? null
+                : formData?.guest_ids?.join(", "),
+          };
+          dispatch(CreatePassengerFlightAction(sendData))
+            .then((response) => {
+              // if (response?.success === true) {
+              setShowModal(false);
+              // }
+            })
+            .catch((error) => {
+              console.error("Error during dispatch:", error);
+            });
+        } catch (error) {
+          console.error("Error updating flight:", error);
+        }
   };
 
-  if (!showModal) return null;
-  console.log("formData", formData);
+
+  
   return (
     <div className="custom-modal">
       <div className="modal-content">
@@ -121,7 +139,7 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                           onChange={handleChange}
                           name="entry_type"
                           defaultOption="Select Entry Type"
-                          type="masters"
+                          type="masters2"
                         />
                       </span>
                     </div>
@@ -156,9 +174,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                         <CustomDropdown04
                           label="travel_type"
                           options={travelType}
-                          value={formData?.travel_type}
+                          value={formData?.travel_type_id}
                           onChange={handleChange}
-                          name="travel_type"
+                          name="travel_type_id"
                           defaultOption="Select Travel Type"
                           type="masters"
                         />
@@ -166,14 +184,14 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        AirLine Name<b className="color_red">*</b>
+                        Airline Name<b className="color_red">*</b>
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.airLine_name}
+                          value={formData.airline_name}
                           onChange={handleChange}
-                          name="airLine_name"
+                          name="airline_name"
                           placeholder="Enter Airline Name"
                         />
                       </span>
@@ -188,15 +206,15 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                       <div id="sepcifixspanflex">
                         <span id="">
                           {otherIcons.name_svg}
-                          <CustomDropdown10
-                            autoComplete="off"
+
+                          <CustomDropdown31
                             ref={dropdownRef1}
-                            label="Customer Name"
+                            label="Select Guest"
                             options={cusList?.data?.user}
-                            value={formData.customer_id}
-                            onChange={handleChange}
-                            name="customer_id"
-                            defaultOption="Select Passenger"
+                            value={formData.guest_ids}
+                            onChange={handleChange1}
+                            name="guest_ids"
+                            defaultOption="Select Guest"
                             setcusData={setcusData}
                             cusData={cusData}
                             type="vendor"
@@ -212,9 +230,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.GDS_portal}
+                          value={formData.gds_portal}
                           onChange={handleChange}
-                          name="GDS_portal"
+                          name="gds_portal"
                           placeholder="Enter GDS Portal"
                         />
                       </span>
@@ -224,13 +242,12 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                       <div id="inputx1">
                         <span>
                           {otherIcons.name_svg}
-                          <NumericInput
-                            type="number"
-                            name="ticket_number"
-                            placeholder="Enter Ticket Number"
-                            value={formData.ticket_number}
-                            onChange={(e) => handleChange(e)}
-                          />
+                          <input
+                          value={formData.ticket_no}
+                          onChange={handleChange}
+                          name="ticket_no"
+                          placeholder="Enter Ticket Number"
+                        />
                         </span>
                       </div>
                     </div>
@@ -244,9 +261,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.PRN_no}
+                          value={formData.prn_no}
                           onChange={handleChange}
-                          name="PRN_no"
+                          name="prn_no"
                           placeholder="Enter PRN No"
                         />
                       </span>
@@ -260,8 +277,8 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                         <input
                           value={formData.route}
                           onChange={handleChange}
-                          name="GDS_portal"
-                          placeholder="Enter GDS Portal"
+                          name="route"
+                          placeholder="Enter Route"
                         />
                       </span>
                     </div>
@@ -277,9 +294,9 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                             ref={dropdownRef1}
                             label="Select Supplier"
                             options={vendorList?.data?.user}
-                            value={formData.vendor_id}
+                            value={formData.supplier_id}
                             onChange={handleChange}
-                            name="vendor_id"
+                            name="supplier_id"
                             defaultOption="Select Supplier"
                             setcusData={setcusData1}
                             cusData={cusData1}
@@ -299,11 +316,11 @@ const CreateFlightPopup = ({ showModal, setShowModal }) => {
                           <TextAreaComponentWithTextLimit
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
-                            name="vendor_note"
+                            name="note"
                             value={
-                              formData.vendor_note == 0
+                              formData.note == 0
                                 ? ""
-                                : formData.vendor_note
+                                : formData.note
                             }
                           />
                         </div>

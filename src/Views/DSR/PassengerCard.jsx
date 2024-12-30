@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { RxCross2 } from "react-icons/rx";
+import { BsEye } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { ShowMasterData } from "../Helper/HelperFunctions";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "./PassengerCard.scss";
 import CreateAssistPopup from "./Services/CreateAssistPopup";
 import CreateCarHirePopup from "./Services/CreateCarHirePopup";
 import CreateFlightPopup from "./Services/CreateFlightPopup";
 import CreateHotelPopup from "./Services/CreateHotelPopup";
 import CreateInsurancePopup from "./Services/CreateInsurancePopup";
-import CreateVisaPopup from "./Services/CreateVisaPopup";
 import CreateOtherPopup from "./Services/CreateOtherPopup";
+import CreateVisaPopup from "./Services/CreateVisaPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
- 
+  const navigate = useNavigate();
+
   const [activePopup, setActivePopup] = useState(null);
   const [formData, setFormData] = useState({
     service: "",
@@ -20,139 +24,153 @@ const PassengerCard = ({ passengers, onDelete }) => {
 
   const servicesList = ShowMasterData("48");
 
-  const handleServiceChange = (e) => {
+  const handleServiceChange = (e, passengerId) => {
     const { value } = e.target;
-    console.log("value", value);
     setFormData((prev) => ({
       ...prev,
       service: value,
     }));
 
-    // Update the active popup based on the selected service
-    switch (value) {
-      case "Hotels":
-        setActivePopup("Hotels");
-        break;
-      case "Flights":
-        setActivePopup("Flights");
-        break;
-      case "Visa":
-        setActivePopup("Visa");
-        break;
-      case "Insurance":
-        setActivePopup("Insurance");
-        break;
-      case "Car Hire":
-        setActivePopup("Car Hire");
-        break;
-      case "Assist":
-        setActivePopup("Assist");
-        break;
-      case "Others":
-        setActivePopup("Others");
-        break;
-      default:
-        setActivePopup(null); // Hide all popups for invalid services
-    }
+    setActivePopup({ popupType: value, passengerId });
   };
 
   const renderPopup = () => {
-    switch (activePopup) {
+    if (!activePopup) return null;
+
+    const { popupType, passengerId } = activePopup;
+
+    switch (popupType) {
       case "Hotels":
         return (
-          <CreateHotelPopup showModal={true} setShowModal={setActivePopup} />
+          <CreateHotelPopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
+          />
         );
       case "Flights":
         return (
-          <CreateFlightPopup showModal={true} setShowModal={setActivePopup} />
+          <CreateFlightPopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
+          />
         );
       case "Visa":
         return (
-          <CreateVisaPopup showModal={true} setShowModal={setActivePopup} />
+          <CreateVisaPopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
+          />
         );
       case "Insurance":
         return (
           <CreateInsurancePopup
             showModal={true}
             setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
           />
         );
       case "Car Hire":
         return (
-          <CreateCarHirePopup showModal={true} setShowModal={setActivePopup} />
+          <CreateCarHirePopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
+          />
         );
       case "Assist":
         return (
-          <CreateAssistPopup showModal={true} setShowModal={setActivePopup} />
+          <CreateAssistPopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            data={passengers}
+            passengerId={passengerId}
+          />
         );
       case "Others":
         return (
-          <CreateOtherPopup showModal={true} setShowModal={setActivePopup} />
+          <CreateOtherPopup
+            showModal={true}
+            setShowModal={setActivePopup}
+            passengerId={passengerId}
+          />
         );
       default:
         return null;
     }
   };
+
   return (
-    <div
-      className="passenger-list"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "1rem",
-      }}
-    >
-      {passengers?.map((passenger, index) => (
-        <div className="card" key={index}>
-          {/* Top Section */}
-          <div className="card-top">
-            <div className="card-avatar">
-              {passenger?.passenger?.first_name ? passenger?.passenger?.first_name [0].toUpperCase() : "P"}
-            </div>
-            <div className="card-name">{passenger?.passenger?.company_name ||""}</div>
-            <RxCross2
-              className="card-delete"
-              onClick={() => onDelete(passenger?.id)}
-            />
-          </div>
-
-          {/* Middle Section */}
-          <div className="card-middle">
-            <div className="card-details">
-              <div className="value">Mobile:</div>
-              <div className="value">{passenger?.passenger?.mobile_no || ""}</div>
-            </div>
-            <div className="card-details">
-              <span className="value">Email:</span>
-              <div className="value">{passenger?.passenger?.email || ""}</div>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="card-divider"></div>
-
-          <div
-            className="form_commonblock"
-            // style={{ flex: "0.6" }}
-          >
-            <span style={{ border: "none", justifyContent: "center" }}>
-              {/* {otherIcons.name_svg} */}
-              <CustomDropdown28
-                label="Services"
-                options={servicesList}
-                value={formData?.service}
-                onChange={handleServiceChange}
-                name="service"
-                defaultOption="Select Service"
-                type="service"
-                className2="service"
-              />
-            </span>
-          </div>
-        </div>
-      ))}
+    <table className="employee-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Services</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {passengers?.passengers?.length > 0 ? (
+          passengers.passengers.map((passenger, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{passenger?.passenger?.display_name || ""}</td>
+              <td>{passenger?.passenger?.email || ""}</td>
+              <td>{passenger?.passenger?.mobile_no || ""}</td>
+              <td style={{ width: "120px" }}>
+                <CustomDropdown28
+                  label="Services"
+                  options={servicesList}
+                  value={formData?.service}
+                  onChange={(e) => handleServiceChange(e, passenger?.id)}
+                  name="service"
+                  defaultOption="Select Service"
+                  type="service"
+                />
+              </td>
+              <td>
+                <span
+                  style={{ cursor: "pointer", color: "red" }}
+                  onClick={() => onDelete(passenger?.id)}
+                >
+                  {otherIcons.delete_svg}
+                </span>
+                <span
+                  style={{
+                    cursor: "pointer",
+                    color: "gray",
+                    fontSize: "20px",
+                    marginLeft: "10px",
+                  }}
+                  onClick={() => {
+                    navigate(`/dashboard/serviceslist?id=${passenger?.id}`);
+                  }}
+                >
+                  <BsEye />
+                </span>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="6">
+              <NoDataFound />
+            </td>
+          </tr>
+        )}
+      </tbody>
       {renderPopup()}
-    </div>
+    </table>
   );
 };
 

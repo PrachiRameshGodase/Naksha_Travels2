@@ -1,143 +1,32 @@
-import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../Common/Pagination/PaginationComponent";
-import toast, { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import React, { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../Helper/DateFormat";
-import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../Common/SearchBox/SearchBox";
-import SortBy from "../../Common/SortBy/SortBy";
-import DatePicker from "../../Common/DatePicker/DatePicker";
-import FilterBy from "../../Common/FilterBy/FilterBy";
-import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
-import { useDebounceSearch } from "../../Helper/HelperFunctions";
-import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-
-import {
-  flightdeleteActions,
-  flightListAction,
-  flightstatusActions,
-} from "../../../Redux/Actions/flightActions";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { MdArrowOutward } from "react-icons/md";
+import Loader02 from "../../../Components/Loaders/Loader02";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import { PassengerFlightDeleteActions } from "../../../Redux/Actions/passengerFlightActions";
+import { PassengerHotelDetailsAction } from "../../../Redux/Actions/passengerHotelActions";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import { formatDate3 } from "../../Helper/DateFormat";
+import ShowMastersValue from "../../Helper/ShowMastersValue";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
-const Flights = () => {
+const Flights = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const itemPayloads = localStorage.getItem("salePayload");
 
-  const flightListData = useSelector((state) => state?.flightList);
-  const flightLists = flightListData?.data?.data || [];
-  const totalItems = flightListData?.data?.count || 0;
-  const flightStatusUpdate = useSelector((state) => state?.flightStatus);
+  const itemId = new URLSearchParams(location.search).get("id");
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+
+  const totalItems = "";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
-
-  // reset current page to 1 when any filters are applied
-  const resetPageIfNeeded = () => {
-    if (currentPage > 1) {
-      setCurrentPage(1);
-    }
-  };
-
-  // serch,filterS and sortby////////////////////////////////////
-
-  // sortBy
-  const [selectedSortBy, setSelectedSortBy] = useState("Normal");
-  const [sortOrder, setSortOrder] = useState(1);
-  //sortby
-
-  //date range picker
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-  const [specificDate, setSpecificDate] = useState(null);
-  const [clearFilter, setClearFilter] = useState(true);
-  //date range picker
-
-  // filter
-  const [selectedSortBy2, setSelectedSortBy2] = useState("Normal");
-  const [status, setStatus] = useState("");
-  // filter
-
-  //Search/////////////////////////////////////////////////////////////
-  const [searchTermFromChild, setSearchTermFromChild] = useState("");
-  // Debounced function to trigger search
-  const debouncedSearch = useDebounceSearch(() => {
-    setSearchTrigger((prev) => prev + 1);
-  }, 800);
-
-  // Handle search term change from child component
-  const onSearch = (term) => {
-    setSearchTermFromChild(term);
-    if (term.length > 0 || term === "") {
-      debouncedSearch();
-    }
-  };
-  //Search/////////////////////////////////////////////////////////////
-
-  // serch,filterS and sortby////////////////////////////////////
-
-  const fetchFlights = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && {
-          sort_by: selectedSortBy,
-          sort_order: sortOrder,
-        }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
-        }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
-        }),
-      };
-
-      dispatch(flightListAction(sendData));
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-    }
-  }, [searchTrigger]);
-
-  useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchFlights();
-    // }
-  }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
     navigate(`/dashboard/flight-details?id=${quotation.id}`);
@@ -155,29 +44,18 @@ const Flights = () => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = flightLists?.data?.data?.every((row) =>
+    const areAllRowsSelected = data?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, flightLists?.data?.data]);
+  }, [selectedRows, data]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : flightLists?.data?.data?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : data?.map((row) => row.id));
   };
   //logic for checkBox...
 
-  const [selectedItem, setSelectedItem] = useState({});
-  const [showPopup, setShowPopup] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-
-  const handleClickOnAdd = () => {
-    setSelectedItem({});
-    setShowPopup(true);
-    setIsEdit(false);
-  };
   const handleDeleteFlight = async (item) => {
     const result = await Swal.fire({
       text: "Are you sure you want to delete this flight?",
@@ -187,53 +65,24 @@ const Flights = () => {
     });
     if (result.isConfirmed) {
       const sendData = {
-        flight_id: item?.id,
+        dsr_flight_id: item?.id,
       };
-      dispatch(flightdeleteActions(sendData, navigate));
+      dispatch(PassengerFlightDeleteActions(sendData)).then((response) => {
+        if (itemId) {
+          const refreshData = {
+            passenger_id: itemId,
+          };
+          dispatch(PassengerHotelDetailsAction(refreshData));
+        }
+      });
     }
   };
-  const handleEditFlight = (item) => {
-    setSelectedItem(item);
-    setShowPopup(true);
-    setIsEdit(true);
-  };
 
-  const handleStatusChange = async (item) => {
-    const newValue = item?.status == "1" ? "0" : "1"; // Toggle status
-    const actionText = newValue == "0" ? "Inactive" : "Active";
-
-    // Confirmation modal
-    const result = await Swal.fire({
-      text: `Do you want to make this flight ${actionText}?`,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
-
-    if (result.isConfirmed && item?.id) {
-      const sendData = {
-        flight_id: item?.id,
-        status: newValue,
-      };
-      dispatch(flightstatusActions(sendData, navigate))
-        .then(() => {
-          // navigate(`/dashboard/hotel-details?id=${roomId}`);
-        })
-        .catch((error) => {
-          toast.error("Failed to update flight status");
-          console.error("Error updating flight status:", error);
-        });
-    }
-  };
   return (
     <>
       <TopLoadbar />
-      {(flightStatusUpdate?.loading || flightListData?.loading) && (
-        <MainScreenFreezeLoader />
-      )}
+      {passengerData?.loading && <Loader02 />}
       <div id="middlesection">
-       
-
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
@@ -251,14 +100,36 @@ const Flights = () => {
                     <div className="checkmark"></div>
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                    Flight Name
+                    Travel Date
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs6">
+                  <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.status_svg}
-                    Status
+                    Travel Type
+                  </div>
+
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.status_svg}
+                    Airline Name
+                  </div>
+
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    GDS Portal
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    Ticket No
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.status_svg}
+                    PRN No
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs5">
+                    {otherIcons?.status_svg}
+                    Route
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -266,13 +137,13 @@ const Flights = () => {
                   </div>
                 </div>
 
-                {flightListData?.loading ? (
+                {passengerData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {flightLists?.length >= 1 ? (
+                    {data?.length >= 1 ? (
                       <>
-                        {flightLists?.map((item, index) => (
+                        {data?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
                               selectedRows.includes(item?.id)
@@ -294,58 +165,61 @@ const Flights = () => {
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd01"
+                              className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {item?.flight_name || ""}
+                              {formatDate3(item?.travel_date) || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              <ShowMastersValue
+                                type="51"
+                                id={item?.travel_type_id}
+                              />
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {item?.airline_name || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {item?.gds_portal || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {item?.ticket_no || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {item?.prn_no || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.route || ""}
                             </div>
 
                             <div
                               // onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
+                              className="table-cellx12 quotiosalinvlisxs6"
                             >
                               <p
-                                className={
-                                  item?.status == "1"
-                                    ? "approved"
-                                    : item?.status == "0"
-                                    ? "draft"
-                                    : ""
-                                }
-                              >
-                                {item?.status == "0"
-                                  ? "Inactive"
-                                  : item?.status == "1"
-                                  ? "Active"
-                                  : ""}
-                                <span
-                                  onClick={() => {
-                                    handleStatusChange(item);
-                                  }}
-                                >
-                                  <MdArrowOutward />
-                                </span>
-                              </p>
-                            </div>
-
-                            <div
-                              // onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 x125cd01"
-                            >
-                              <span
-                                onClick={() => {
-                                  handleEditFlight(item);
-                                }}
-                              >
-                                {otherIcons.edit_svg}
-                              </span>
-                              <span
-                                style={{ marginLeft: "20px" }}
                                 onClick={() => {
                                   handleDeleteFlight(item);
                                 }}
                               >
                                 {otherIcons.delete_svg}
-                              </span>
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -368,7 +242,7 @@ const Flights = () => {
             </div>
           </div>
         </div>
-        
+
         <Toaster />
       </div>
     </>

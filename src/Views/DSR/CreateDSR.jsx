@@ -11,6 +11,7 @@ import {
   DSRCreateAction,
   DSRDetailsAction,
   PassengerAddAction,
+  PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
 import {
   SubmitButton4,
@@ -34,7 +35,7 @@ const CreateDSR = () => {
   const createDSR = useSelector((state) => state?.createDSR);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
-  console.log("DSRData", DSRData)
+  
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -122,15 +123,6 @@ const CreateDSR = () => {
     }
   };
 
-  useEffect(() => {
-    if (isData?.id) {
-      const sendData = {
-        dsr_id: isData?.id,
-      };
-      dispatch(DSRDetailsAction(sendData));
-    }
-  }, [isData?.id, dispatch]);
-
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
 
@@ -139,21 +131,51 @@ const CreateDSR = () => {
         ...passengerData,
       };
 
-      dispatch(PassengerAddAction(sendData, Navigate));
-      if (isData?.id) {
-        const refreshData = {
-          dsr_id: isData?.id,
-        };
-        dispatch(DSRDetailsAction(refreshData));
-      }
+      dispatch(PassengerAddAction(sendData, Navigate))
+        .then((response) => {
+          if (isData?.id) {
+            const refreshData = {
+              dsr_id: isData?.id,
+            };
+            dispatch(DSRDetailsAction(refreshData));
+          }
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
       toast.error("Error update passenger:", error);
     }
   };
-  const handleDeletePassenger = (id) => {
-    setPassengers((prev) => prev.filter((passenger) => passenger.id !== id));
-  };
+  useEffect(() => {
+    if (isData?.id) {
+      const sendData = {
+        dsr_id: isData?.id,
+      };
+      dispatch(DSRDetailsAction(sendData));
+    }
+  }, [isData?.id]);
 
+  const handleDeletePassenger = (id) => {
+    const sendData = {
+      passenger_id: id,
+    };
+    dispatch(PassengerDeleteActions(sendData))
+      .then((response) => {
+        if (isData?.id) {
+          const refreshData = {
+            dsr_id: isData?.id,
+          };
+          dispatch(DSRDetailsAction(refreshData));
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleIconClick = () => {
+    if (isData?.id) {
+        const sendData = { dsr_id: isData?.id };
+        dispatch(DSRDetailsAction(sendData));
+    }
+    Navigate("/dashboard/dsr");
+ }
   return (
     <div>
       <>
@@ -168,7 +190,7 @@ const CreateDSR = () => {
               </h1>
             </div>
             <div id="buttonsdata">
-              <Link to={"/dashboard/dsr"} className="linkx3">
+              <Link onClick={handleIconClick} className="linkx3">
                 <RxCross2 />
               </Link>
             </div>
@@ -188,7 +210,7 @@ const CreateDSR = () => {
                     }}
                   >
                     <div>
-                      <div className="f1wrapofcreqx1">
+                      <div className="f1wrapofcreqx1" style={{width:"868px"}}>
                         <div className="form_commonblock">
                           <label>
                             DSR Number<b className="color_red">*</b>
@@ -322,18 +344,18 @@ const CreateDSR = () => {
                         </div>
                       )}
 
-                      <div>
+                      {dsrDisabled && <div>
                         <PassengerCard
-                          passengers={DSRData?.passengers}
+                          passengers={DSRData}
                           onDelete={handleDeletePassenger}
                         />
-                      </div>
+                      </div>}
                     </div>
 
-                    <DSRSummary
+                    {dsrDisabled && <DSRSummary
                       passengers={DSRData?.passengers}
                       customerData={DSRData}
-                    />
+                    />}
                   </div>
                 </div>
               </div>

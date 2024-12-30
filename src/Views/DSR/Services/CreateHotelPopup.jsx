@@ -1,27 +1,26 @@
-import { RxCross2 } from "react-icons/rx";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import DatePicker from "react-datepicker";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
-import { currencySymbol, ShowMasterData } from "../../Helper/HelperFunctions";
-import "./CreateHotelPopup.scss";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { formatDate } from "../../Helper/DateFormat";
-import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
+import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
+import CustomDropdown31 from "../../../Components/CustomDropdown/CustomDropdown31";
+import { CreatePassengerHotelAction } from "../../../Redux/Actions/passengerHotelActions";
+import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { formatDate } from "../../Helper/DateFormat";
+import { ShowMasterData } from "../../Helper/HelperFunctions";
+import NumericInput from "../../Helper/NumericInput";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import "./CreateHotelPopup.scss";
 
-const CreateHotelPopup = ({ showModal, setShowModal }) => {
+const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
+  const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
+
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
@@ -35,14 +34,38 @@ const CreateHotelPopup = ({ showModal, setShowModal }) => {
   );
 
   const [cusData, setcusData] = useState(null);
-  console.log("cusData", cusData);
   const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
-  const [formData, setFormData] = useState({hotel_id:"",
-    bed_id:"",
-    meal_id:"",
-    occupancy_id:""
+
+  const [formData, setFormData] = useState({
+    dsr_id: data?.id,
+    passenger_id: passengerId,
+    entry_type: "",
+    hotel_id: "",
+    hotel_name: "",
+    room_id: "",
+    occupancy_id: "",
+    meal_id: "",
+    bed: "",
+    guest_ids: "",
+    booking_date: "",
+    check_in_date: "",
+    chec_out_date: "",
+    supplier_id: "",
+    supplier_name: "",
+    total_nights: "",
+    confirmation_no: "",
+    //amount
+    charges: null,
+    hotel_price: null,
+    discount: null,
+    tax_percent: null,
+    tax_amount: null,
+    retain: null,
+    total_amount: null,
+    note: null,
+    upload_image: null,
   });
   const [isCustomerSelect, setIsCustomerSelect] = useState(false);
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
@@ -56,42 +79,53 @@ const CreateHotelPopup = ({ showModal, setShowModal }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const occupancyName = occupancy?.find((val) => val?.labelid == value);
-    const selectedHotelRoom = hotelRoomListData.find(
-      (room) => room.hotel_id === formData.hotel_id
+    const selectedHotel = hotelList?.find(
+      (item) => item?.id == formData?.hotel_id
     );
+
     setFormData((prev) => ({
       ...prev,
       ...(name === "entry_type" && {
         entry_type: entryTypeName?.label,
       }),
-      bed_id: selectedHotelRoom?.bed_id || "",
-      meal_id: selectedHotelRoom?.meal_id || "",
-      occupancy_id: selectedHotelRoom?.occupancy_id || "",
+      hotel_name: selectedHotel?.hotel_name,
       [name]: value,
     }));
   };
-
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
-    }));
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems, // Update selected items array
+    });
   };
-
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+
+    try {
+      const sendData = {
+        ...formData,
+        guest_ids:
+          formData?.guest_ids?.length === 0
+            ? null
+            : formData?.guest_ids?.join(", "),
+      };
+      dispatch(CreatePassengerHotelAction(sendData))
+        .then((response) => {
+          // if (response?.success === true) {
+          setShowModal(false);
+          // }
+        })
+        .catch((error) => {
+          console.error("Error during dispatch:", error);
+        });
+    } catch (error) {
+      console.error("Error updating hotel:", error);
+    }
   };
 
-  if (!showModal) return null;
-console.log("formData", formData)
+ 
   return (
     <div className="custom-modal">
       <div className="modal-content">
@@ -103,7 +137,7 @@ console.log("formData", formData)
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
+          <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
               <div className="itemsformwrap">
@@ -111,7 +145,7 @@ console.log("formData", formData)
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                       <label>
-                        Hotel Type<b className="color_red">*</b>
+                        Entry Type<b className="color_red">*</b>
                       </label>
 
                       <span id="">
@@ -123,7 +157,7 @@ console.log("formData", formData)
                           onChange={handleChange}
                           name="entry_type"
                           defaultOption="Select Entry Type"
-                          type="masters"
+                          type="masters2"
                         />
                       </span>
                     </div>
@@ -149,7 +183,6 @@ console.log("formData", formData)
                             setcusData={setcusData3}
                             cusData={cusData3}
                             type="vendor"
-                            
                             required
                           />
                         </span>
@@ -166,9 +199,9 @@ console.log("formData", formData)
                           ref={dropdownRef1}
                           label="Room Name"
                           options={hotelRoomListData}
-                          value={formData.room_name}
+                          value={formData.room_id}
                           onChange={handleChange}
-                          name="room_name"
+                          name="room_id"
                           defaultOption="Select Room Number/Name"
                           setcusData={setcusData4}
                           cusData={cusData4}
@@ -224,9 +257,9 @@ console.log("formData", formData)
                         <CustomDropdown04
                           label="Bed"
                           options={bed}
-                          value={formData?.bed_id}
+                          value={formData?.bed}
                           onChange={handleChange}
-                          name="bed_id"
+                          name="bed"
                           defaultOption="Select Bed"
                           type="masters"
                         />
@@ -240,14 +273,14 @@ console.log("formData", formData)
                       <div id="sepcifixspanflex">
                         <span id="">
                           {otherIcons.name_svg}
-                          <CustomDropdown10
-                            autoComplete="off"
+
+                          <CustomDropdown31
                             ref={dropdownRef1}
-                            label="Customer Name"
+                            label="Select Guest"
                             options={cusList?.data?.user}
-                            value={formData.customer_id}
-                            onChange={handleChange}
-                            name="customer_id"
+                            value={formData.guest_ids}
+                            onChange={handleChange1}
+                            name="guest_ids"
                             defaultOption="Select Guest"
                             setcusData={setcusData}
                             cusData={cusData}
@@ -264,7 +297,7 @@ console.log("formData", formData)
                       <span>
                         {otherIcons.date_svg}
                         <DatePicker
-                          selected={formData?.issue_date}
+                          selected={formData?.booking_date}
                           onChange={(date) =>
                             setFormData({
                               ...formData,
@@ -283,14 +316,14 @@ console.log("formData", formData)
                       <span>
                         {otherIcons.date_svg}
                         <DatePicker
-                          selected={formData?.checkin_date}
+                          selected={formData?.check_in_date}
                           onChange={(date) =>
                             setFormData({
                               ...formData,
-                              checkin_date: formatDate(date),
+                              check_in_date: formatDate(date),
                             })
                           }
-                          name="checkin_date"
+                          name="check_in_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
                           autoComplete="off"
@@ -302,14 +335,14 @@ console.log("formData", formData)
                       <span>
                         {otherIcons.date_svg}
                         <DatePicker
-                          selected={formData?.checkout_date}
+                          selected={formData?.chec_out_date}
                           onChange={(date) =>
                             setFormData({
                               ...formData,
-                              checkout_date: formatDate(date),
+                              chec_out_date: formatDate(date),
                             })
                           }
-                          name="checkout_date"
+                          name="chec_out_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
                           autoComplete="off"
@@ -330,9 +363,9 @@ console.log("formData", formData)
                             ref={dropdownRef1}
                             label="Select Supplier"
                             options={vendorList?.data?.user}
-                            value={formData.vendor_id}
+                            value={formData.supplier_id}
                             onChange={handleChange}
-                            name="vendor_id"
+                            name="supplier_id"
                             defaultOption="Select Supplier"
                             setcusData={setcusData1}
                             cusData={cusData1}
@@ -380,12 +413,8 @@ console.log("formData", formData)
                           <TextAreaComponentWithTextLimit
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
-                            name="vendor_note"
-                            value={
-                              formData.vendor_note == 0
-                                ? ""
-                                : formData.vendor_note
-                            }
+                            name="note"
+                            value={formData.note == 0 ? "" : formData.note}
                           />
                         </div>
                       </div>
@@ -465,7 +494,26 @@ console.log("formData", formData)
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+            {/* <SubmitButton2 isEdit="" itemId="" cancel="quotation" /> */}
+            <div className="actionbarcommon">
+              {isEdit && itemId ? (
+                <>
+                  <button className={`firstbtnc1`} type="submit">
+                    Update
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className={`firstbtnc1`} onClick={handleFormSubmit}>
+                    Save
+                  </button>
+                </>
+              )}
+
+              <Link onClick={() => setShowModal(false)} className="firstbtnc2">
+                Cancel
+              </Link>
+            </div>
           </form>
         </div>
       </div>

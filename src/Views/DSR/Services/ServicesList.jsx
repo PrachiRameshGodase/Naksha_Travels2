@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import { formatDate } from "../../Helper/DateFormat";
+import { PassengerHotelDetailsAction } from "../../../Redux/Actions/passengerHotelActions";
 import {
   ShowMasterData,
   useDebounceSearch,
@@ -24,13 +23,14 @@ import Visa from "./Visa";
 const ServicesList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const itemPayloads = localStorage.getItem("salePayload");
+
+  const itemId = new URLSearchParams(location.search).get("id");
+
   const hotelListData = useSelector((state) => state?.hotelList);
-  const hotelLists = hotelListData?.data?.hotels || [];
-  const totalItems = hotelListData?.data?.total_hotels || 0;
+  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data ||{});
 
   const servicesList = ShowMasterData("48");
-  
+
   const [switchCusData, setSwitchCusData] = useState("Hotels");
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,58 +84,14 @@ const ServicesList = () => {
   };
   //Search/////////////////////////////////////////////////////////////
 
-  // serch,filterS and sortby////////////////////////////////////
-
-  const fetchHotels = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && {
-          sort_by: selectedSortBy,
-          sort_order: sortOrder,
-        }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
-        }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
-        }),
-      };
-
-      //   dispatch(hotelListAction(sendData));
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-    }
-  }, [searchTrigger]);
-
   useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchHotels();
-    // }
-  }, [searchTrigger]);
+    if (itemId) {
+      const sendData = {
+        passenger_id: itemId,
+      };
+      dispatch(PassengerHotelDetailsAction(sendData));
+    }
+  }, [itemId]);
 
   const handleRowClicked = (quotation) => {
     navigate(`/dashboard/dsr-details?id=${quotation.id}`);
@@ -167,16 +123,7 @@ const ServicesList = () => {
   };
   //logic for checkBox...
 
-  const [selectedItem, setSelectedItem] = useState({});
-  const [showPopup, setShowPopup] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-
-  const handleClickOnAdd = () => {
-    setSelectedItem({});
-    setShowPopup(true);
-    setIsEdit(false);
-  };
-
+ 
   return (
     <>
       <TopLoadbar />
@@ -248,9 +195,8 @@ const ServicesList = () => {
           ))}
         </div>
         <div>
-          
-          {switchCusData == "Hotels" && <Hotels />}
-          {switchCusData == "Flights" && <Flights />}
+          {switchCusData == "Hotels" && <Hotels data={passengerData?.dsr_hotel}/>}
+          {switchCusData == "Flights" && <Flights data={passengerData?.dsr_flight}/>}
           {switchCusData == "Tour Package" && <TourPackage />}
           {switchCusData == "Visa" && <Visa />}
           {switchCusData == "Car Hire" && <CarHire />}
@@ -259,18 +205,7 @@ const ServicesList = () => {
         </div>
 
         <Toaster />
-        {showPopup && (
-          <CreateService
-            popupContent={{
-              setshowAddPopup: setShowPopup,
-              showAddPopup: showPopup,
-              isEditIndividual: isEdit,
-              selectedItem,
-
-              setSearchTrigger,
-            }}
-          />
-        )}
+       
       </div>
     </>
   );

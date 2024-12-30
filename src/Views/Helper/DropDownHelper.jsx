@@ -20,7 +20,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid :type==="service"? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === "account" ?  option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid :type==="service"? option?.label :type==="masters2"? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === "account" ?  option?.account_type : option.id,
 
                 }
             });
@@ -73,6 +73,12 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     }
 
     if (type === "masters") {
+        options = searchTerm?.length === 0 ? options : options?.filter(option =>
+            option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
+    }
+
+    if (type === "masters2") {
         options = searchTerm?.length === 0 ? options : options?.filter(option =>
             option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
