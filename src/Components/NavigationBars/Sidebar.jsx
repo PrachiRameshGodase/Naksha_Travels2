@@ -146,6 +146,7 @@ import CreateDSR from "../../Views/DSR/CreateDSR";
 import DSRS from "../../Views/DSR/DSRS";
 import DSRDetails from "../../Views/DSR/DSRDetails";
 import ServicesList from "../../Views/DSR/Services/ServicesList";
+import SequenceFormat from "../../Views/Masters/SequenceFormat";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -315,70 +316,70 @@ const Sidebar = ({ loggedInUserData }) => {
         return <ImportItems />;
       case "stock-adjustment":
         return <StockAdjustment />;
-        //
+      //
 
-        //services
+      //services
       case "services":
         return <Services />;
       case "hotels-services":
-        return <Hotels/>;
+        return <Hotels />;
       case "create-hotels":
-        return <CreateHotel/>;
+        return <CreateHotel />;
       case "hotel-details":
-        return < HotelDetailsMain/>;
+        return < HotelDetailsMain />;
       case "create-hotelservices":
-        return <CreateHotelService/>;
+        return <CreateHotelService />;
       case "hotel-service-details":
-        return < HotelServicesDetails/>;
+        return < HotelServicesDetails />;
 
       case "flights-services":
-        return <Flights/>;
+        return <Flights />;
       case "create-flights":
-        return <CreateFlight/>;
+        return <CreateFlight />;
 
       case "tour-package-services":
-        return <TourPackages/>;
+        return <TourPackages />;
       case "create-tour-package":
-        return < CreateTourPackage/>;
+        return < CreateTourPackage />;
       case "tour-package-details":
-        return <TourPackageDetails/>;
+        return <TourPackageDetails />;
 
       case "visas-services":
-        return <Visas/>;
+        return <Visas />;
       case "create-visas":
-        return < CreateVisa/>;
+        return < CreateVisa />;
       case "visas-details":
-        return <VisaDetails/>;
+        return <VisaDetails />;
 
       case "car-hire-services":
-        return <CarHires/>;
+        return <CarHires />;
       case "create-car-hire":
-        return < CreateCarHires/>;
+        return < CreateCarHires />;
       case "car-hire-details":
-        return <CarHireDetails/>;
-      
+        return <CarHireDetails />;
+
       case "assists-services":
-        return <Assit/>;
+        return <Assit />;
       case "create-assists":
-        return <CreateAssit/>;
+        return <CreateAssit />;
       case "assists-details":
-        return <AssitDetails/>;
+        return <AssitDetails />;
 
       case "insurances-services":
-        return <Insurances/>;
+        return <Insurances />;
       case "create-insurances":
-        return <CreateInsurance/>;
+        return <CreateInsurance />;
 
       //dsr
       case "create-dsr":
-        return <CreateDSR/>;
+        return <CreateDSR />;
       case "dsr":
-        return <DSRS/>;
+        return <DSRS />;
       case "dsr-details":
-        return <DSRDetails/>;
+        return <DSRDetails />;
       //dsr-services
       case "serviceslist":
-        return <ServicesList/>
+        return <ServicesList />
 
       //customers
       case "customers":
@@ -614,6 +615,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "manage-currency":
         return <ManageCurrency />;
+      case "sequence-format":
+        return <SequenceFormat />;
 
       //Help
       case "create-help":

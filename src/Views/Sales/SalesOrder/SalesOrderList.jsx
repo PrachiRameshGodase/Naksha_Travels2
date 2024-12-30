@@ -120,6 +120,7 @@ const SalesOrderList = () => {
     searchTrigger
   ]);
 
+
   useEffect(() => {
     const parshPayload = parseJSONofString(itemPayloads);
     if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
