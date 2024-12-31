@@ -1,41 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RxCross2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
-import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  quotationDelete,
-  quotationDetails,
-  quotationStatus,
-} from "../../Redux/Actions/quotationActions";
-import Loader02 from "../../Components/Loaders/Loader02";
 import toast, { Toaster } from "react-hot-toast";
-import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
-import { formatDate3 } from "../Helper/DateFormat";
-import useOutsideClick from "../Helper/PopupData";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import ItemDetailTable, {
-  DSRDetailTable,
-} from "../Common/InsideSubModulesCommon/ItemDetailTable";
-// import MoreInformation from '../../Common/MoreInformation';
-
-import {
-  FromToDetails,
-  MoreInformation,
-  ShowAllStatus,
-  ShowDropdownContent,
-  TermsAndConditions,
-} from "../Common/InsideSubModulesCommon/DetailInfo";
-import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
-import { generatePDF } from "../Helper/createPDF";
-import "./DSRDetails.scss";
+import Loader02 from "../../Components/Loaders/Loader02";
+import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
+import useOutsideClick from "../Helper/PopupData";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import {
   DSRDetailsAction,
   PassengerAddAction,
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
+import {
+  ShowDropdownContent,
+  TermsAndConditions
+} from "../Common/InsideSubModulesCommon/DetailInfo";
+import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
+import { generatePDF } from "../Helper/createPDF";
+import "./DSRDetails.scss";
 import PassengerCard from "./PassengerCard";
-import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 
 const DSRDetails = () => {
   const dispatch = useDispatch();
@@ -51,7 +37,7 @@ const DSRDetails = () => {
   const cusList = useSelector((state) => state?.customerList);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
-  console.log("DSRDetails", DSRDetails);
+
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -218,7 +204,7 @@ const DSRDetails = () => {
         <div ref={componentRef}>
           <div id="Anotherbox" className="formsectionx1">
             <div id="leftareax12">
-              <h1 id="firstheading">{quotation?.quotation_id}</h1>
+              <h1 id="firstheading">{DSRData?.dsr_no}</h1>
             </div>
             <div id="buttonsdata">
               {quotation?.status !== "1" && quotation?.status !== "4" && (

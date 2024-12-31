@@ -8,11 +8,11 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "./PassengerCard.scss";
 import CreateAssistPopup from "./Services/CreateAssistPopup";
 import CreateCarHirePopup from "./Services/CreateCarHirePopup";
-import CreateFlightPopup from "./Services/CreateFlightPopup";
-import CreateHotelPopup from "./Services/CreateHotelPopup";
+import CreateFlightPopup from "./Services/PassengerFlight/CreateFlightPopup";
+import CreateHotelPopup from "./Services/PassengerHotel/CreateHotelPopup";
 import CreateInsurancePopup from "./Services/CreateInsurancePopup";
 import CreateOtherPopup from "./Services/CreateOtherPopup";
-import CreateVisaPopup from "./Services/CreateVisaPopup";
+import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
   const navigate = useNavigate();

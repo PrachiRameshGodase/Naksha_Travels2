@@ -14,11 +14,11 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import Assist from "./Assist";
 import CarHire from "./CarHire";
 import CreateService from "./CreateService";
-import Flights from "./Flights";
-import Hotels from "./Hotels";
+import Flights from "./PassengerFlight/Flights";
+import Hotels from "./PassengerHotel/Hotels";
 import Insurance from "./Insurance";
 import TourPackage from "./TourPackage";
-import Visa from "./Visa";
+import Visa from "./PassengerVisa/Visa";
 
 const ServicesList = () => {
   const navigate = useNavigate();
@@ -27,9 +27,15 @@ const ServicesList = () => {
   const itemId = new URLSearchParams(location.search).get("id");
 
   const hotelListData = useSelector((state) => state?.hotelList);
-  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data ||{});
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+  const totalHotels = passengerData?.dsr_hotel.length || "";
+  const totalVisas = passengerData?.dsr_visa.length || "";
+  const totalFlights = passengerData?.dsr_flight.length || "";
+  console.log("totalHotels", totalHotels);
 
-  const servicesList = ShowMasterData("48");
+  // const servicesList = ShowMasterData("48");
 
   const [switchCusData, setSwitchCusData] = useState("Hotels");
 
@@ -122,8 +128,16 @@ const ServicesList = () => {
     );
   };
   //logic for checkBox...
+  const servicesList = [
+    { label: "Hotels", total: totalHotels },
+    { label: "Flights", total: totalFlights },
+    { label: "Visa", total: totalVisas },
+    { label: "Car Hire", total: "" }, 
+    { label: "Assist", total: "" }, 
+    { label: "Insurance", total: "" }, 
+    { label: "Others", total: "" }, 
+  ];
 
- 
   return (
     <>
       <TopLoadbar />
@@ -189,23 +203,26 @@ const ServicesList = () => {
                 }`}
                 onClick={() => setSwitchCusData(`${item?.label || ""}`)}
               >
-                {item?.label || ""}
+                {item?.label || ""}  {item?.total||""}
               </button>
             </div>
           ))}
         </div>
         <div>
-          {switchCusData == "Hotels" && <Hotels data={passengerData?.dsr_hotel}/>}
-          {switchCusData == "Flights" && <Flights data={passengerData?.dsr_flight}/>}
+          {switchCusData == "Hotels" && (
+            <Hotels data={passengerData?.dsr_hotel} />
+          )}
+          {switchCusData == "Flights" && (
+            <Flights data={passengerData?.dsr_flight} />
+          )}
           {switchCusData == "Tour Package" && <TourPackage />}
-          {switchCusData == "Visa" && <Visa />}
+          {switchCusData == "Visa" && <Visa data={passengerData?.dsr_visa} />}
           {switchCusData == "Car Hire" && <CarHire />}
           {switchCusData == "Assist" && <Assist />}
           {switchCusData == "Insurance" && <Insurance />}
         </div>
 
         <Toaster />
-       
       </div>
     </>
   );

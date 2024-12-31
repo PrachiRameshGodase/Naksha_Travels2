@@ -147,6 +147,9 @@ import DSRS from "../../Views/DSR/DSRS";
 import DSRDetails from "../../Views/DSR/DSRDetails";
 import ServicesList from "../../Views/DSR/Services/ServicesList";
 import SequenceFormat from "../../Views/Masters/SequenceFormat";
+import PassengerHotelDetails from "../../Views/DSR/Services/PassengerHotel/PassengerHotelDetails";
+import PassengerFlightDetails from "../../Views/DSR/Services/PassengerFlight/PassengerFlightDetails.";
+import PassengerVisaDetails from "../../Views/DSR/Services/PassengerVisa/PassengerVisaDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -380,6 +383,12 @@ const Sidebar = ({ loggedInUserData }) => {
       //dsr-services
       case "serviceslist":
         return <ServicesList />
+      // case "dsr-hotel-details":
+      //   return <PassengerHotelDetails />
+      case "dsr-flight-details":
+        return <PassengerFlightDetails />
+      case "dsr-visa-details":
+          return <PassengerVisaDetails />
 
       //customers
       case "customers":

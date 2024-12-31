@@ -1,28 +1,25 @@
-import { RxCross2 } from "react-icons/rx";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import DatePicker from "react-datepicker";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import SubmitButton, {
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import { CreatePassengerVisaAction } from "../../../../Redux/Actions/passengerVisaActions";
+import {
   SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
-import { currencySymbol, ShowMasterData } from "../../Helper/HelperFunctions";
-import "./CreateHotelPopup.scss";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { formatDate } from "../../Helper/DateFormat";
-import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
-import CustomDropdown31 from "../../../Components/CustomDropdown/CustomDropdown31";
+} from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { formatDate } from "../../../Helper/DateFormat";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
 
-const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
+const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
+  const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
-  
+
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
@@ -36,31 +33,31 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
     dsr_id: data?.id,
     passenger_id: passengerId,
     entry_type: "",
-    passenger_visa_id:"",
-    passport_no:"",     
-    dob:"",
-    guest_ids:"",
-    email:"",
-    visa_no:"",
-    visa_type_id:"",
-    visa_entry_type:"",
-    country_id:"",
-    issue_date:"",
-    expiry_date:"",
-    days:"",
-    supplier_id:"",
-    supplier_name:null,    
+    passenger_visa_id: "",
+    passport_no: "",
+    dob: "",
+    guest_ids: "",
+    email: "",
+    visa_no: "",
+    visa_type_id: "",
+    visa_entry_type: "",
+    country_id: "",
+    issue_date: "",
+    expiry_date: "",
+    days: "",
+    supplier_id: "",
+    supplier_name: null,
 
-     //amount
-     charges: null,
-     hotel_price: null,
-     discount: null,
-     tax_percent: null,
-     tax_amount: null,
-     retain: null,
-     total_amount: null,
-     note: null,
-     upload_image: null,
+    //amount
+    charges: null,
+    hotel_price: null,
+    discount: null,
+    tax_percent: null,
+    tax_amount: null,
+    retain: null,
+    total_amount: null,
+    note: null,
+    upload_image: null,
   });
 
   const [imgLoader, setImgeLoader] = useState("");
@@ -73,6 +70,9 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const selectedSupplierName = vendorList?.data?.user?.find(
+      (item) => item?.id == formData?.supplier_id
+    );
     const entryTypeName = entryType?.find((val) => val?.labelid == value);
     const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
 
@@ -88,6 +88,7 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
       ...(name === "visa_type_id" && {
         visa_type_name: visaType?.label,
       }),
+      supplier_name:selectedSupplierName?.display_name,
       [name]: value,
     }));
   };
@@ -112,7 +113,26 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+    try {
+      const sendData = {
+        ...formData,
+        guest_ids:
+          formData?.guest_ids?.length === 0
+            ? null
+            : formData?.guest_ids?.join(", "),
+      };
+      dispatch(CreatePassengerVisaAction(sendData))
+        .then((response) => {
+          // if (response?.success === true) {
+          setShowModal(false);
+          // }
+        })
+        .catch((error) => {
+          console.error("Error during dispatch:", error);
+        });
+    } catch (error) {
+      console.error("Error updating visa:", error);
+    }
   };
 
   if (!showModal) return null;
@@ -263,8 +283,102 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
                       </span>
                     </div>
                   </div>
-             
                   <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>
+                        Visa Entry Type<b className="color_red">*</b>
+                      </label>
+
+                      <span id="">
+                        {otherIcons.name_svg}
+                        <CustomDropdown04
+                          label="Visa Entry Type"
+                          options={visaentryType}
+                          value={formData?.visa_entry_type}
+                          onChange={handleChange}
+                          name="visa_entry_type"
+                          defaultOption="Select Visa Entry Type"
+                          type="masters"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>Days</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.name_svg}
+                          <NumericInput
+                            type="number"
+                            name="days"
+                            placeholder="Enter Days"
+                            value={formData.total_days}
+                            onChange={(e) => handleChange(e)}
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>Country / Region</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.country_svg}
+
+                          <select
+                            name="country_id"
+                            value={formData.country_id}
+                            onChange={(e) => handleChange(e, "country_id")}
+                          >
+                            <option value="">Select Country</option>
+                            {countryList?.country?.map((country) => (
+                              <option key={country.id} value={country.id}>
+                                {country.name}
+                              </option>
+                            ))}
+                          </select>
+                        </span>
+                      </div>
+                      {/* {countryErr && <p className="error-message">
+                                                            {otherIcons.error_svg}
+                                                            Please select the country name</p>} */}
+                    </div>
+                    <div className="form_commonblock ">
+                      <label>Issue Date</label>
+                      <span>
+                        {otherIcons.date_svg}
+                        <DatePicker
+                          selected={formData?.issue_date}
+                          onChange={(date) =>
+                            setFormData({
+                              ...formData,
+                              issue_date: formatDate(date),
+                            })
+                          }
+                          name="issue_date"
+                          placeholderText="Enter Date"
+                          dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock ">
+                      <label>Expiry Date</label>
+                      <span>
+                        {otherIcons.date_svg}
+                        <DatePicker
+                          selected={formData?.expiry_date}
+                          onChange={(date) =>
+                            setFormData({
+                              ...formData,
+                              expiry_date: formatDate(date),
+                            })
+                          }
+                          name="expiry_date"
+                          placeholderText="Enter Date"
+                          dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
+                        />
+                      </span>
+                    </div>
                     <div className="form_commonblock">
                       <label>
                         Supplier<b className="color_red">*</b>
@@ -291,7 +405,8 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
 
                       {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                     </div>
-
+                  </div>
+                  <div className="f1wrapofcreqx1">
                     <div className="secondtotalsections485s">
                       <div className="textareaofcreatqsiform">
                         <label>Note</label>
@@ -300,16 +415,12 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
                             name="note"
-                            value={
-                              formData.note == 0
-                                ? ""
-                                : formData.note
-                            }
+                            value={formData.note == 0 ? "" : formData.note}
                           />
                         </div>
                       </div>
                       <div className="calctotalsection">
-                      <div className="calcuparentc">
+                        <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
                               <label>Visa Price:</label>
@@ -333,7 +444,7 @@ const CreateVisaPopup = ({ showModal, setShowModal,  data, passengerId}) => {
                             </div>
                           </div>
                         </div>
-                       
+
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">

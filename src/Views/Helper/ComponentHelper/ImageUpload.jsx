@@ -9,6 +9,7 @@ import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 
+
 const ImageUpload = ({
   formData,
   setFormData,

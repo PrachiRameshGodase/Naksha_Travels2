@@ -2,17 +2,17 @@ import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown31 from "../../../Components/CustomDropdown/CustomDropdown31";
-import { CreatePassengerFlightAction } from "../../../Redux/Actions/passengerFlightActions";
-import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../Helper/DateFormat";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import "./CreateHotelPopup.scss";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import { CreatePassengerFlightAction } from "../../../../Redux/Actions/passengerFlightActions";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { formatDate } from "../../../Helper/DateFormat";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch=useDispatch()

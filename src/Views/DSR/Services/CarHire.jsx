@@ -1,26 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../Helper/DateFormat";
-import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import { useNavigate } from "react-router-dom";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../Common/SearchBox/SearchBox";
-import SortBy from "../../Common/SortBy/SortBy";
-import DatePicker from "../../Common/DatePicker/DatePicker";
-import FilterBy from "../../Common/FilterBy/FilterBy";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
-import {
-  parseJSONofString,
-  useDebounceSearch,
-} from "../../Helper/HelperFunctions";
-import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { carHireListAction } from "../../../Redux/Actions/carHireActions";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import { formatDate } from "../../Helper/DateFormat";
+import {
+  useDebounceSearch
+} from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CarHires = () => {
   const dispatch = useDispatch();

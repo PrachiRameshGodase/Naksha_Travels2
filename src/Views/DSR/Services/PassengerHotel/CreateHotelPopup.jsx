@@ -3,19 +3,19 @@ import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown31 from "../../../Components/CustomDropdown/CustomDropdown31";
-import { CreatePassengerHotelAction } from "../../../Redux/Actions/passengerHotelActions";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../Helper/DateFormat";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
-import NumericInput from "../../Helper/NumericInput";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import "./CreateHotelPopup.scss";
+import CustomDropdown02 from "../../../../Components/CustomDropdown/CustomDropdown02";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerHotelActions";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { formatDate } from "../../../Helper/DateFormat";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
+  console.log("vendorList", vendorList)
   const hotelList = useSelector(
     (state) => state?.hotelList?.data?.hotels || []
   );
@@ -67,8 +68,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
+
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -84,6 +84,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     const selectedHotel = hotelList?.find(
       (item) => item?.id == formData?.hotel_id
     );
+    const selectedSupplierName = vendorList?.data?.user?.find(
+      (item) => item?.id == formData?.supplier_id
+    );
 
     setFormData((prev) => ({
       ...prev,
@@ -91,6 +94,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         entry_type: entryTypeName?.label,
       }),
       hotel_name: selectedHotel?.hotel_name,
+      supplier_name:selectedSupplierName?.display_name,
       [name]: value,
     }));
   };

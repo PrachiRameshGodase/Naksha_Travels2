@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import Loader02 from "../../../Components/Loaders/Loader02";
-import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
-import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import {
-  PassengerHotelDeleteActions,
-  PassengerHotelDetailsAction,
-} from "../../../Redux/Actions/passengerHotelActions";
-import PaginationComponent from "../../Common/Pagination/PaginationComponent";
-import { formatDate3 } from "../../Helper/DateFormat";
-import ShowMastersValue from "../../Helper/ShowMastersValue";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import { PassengerFlightDeleteActions } from "../../../../Redux/Actions/passengerFlightActions";
+import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
+import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
+import { formatDate3 } from "../../../Helper/DateFormat";
+import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import PassengerFlightDetails from "./PassengerFlightDetails.";
+import { BsEye } from "react-icons/bs";
 
-const Hotels = ({ data }) => {
+const Flights = ({ data }) => {
   const dispatch = useDispatch();
-  const itemId = new URLSearchParams(location.search).get("id");
+  const navigate = useNavigate();
 
-  const passengerHotelData = useSelector((state) => state?.passengerDetail);
-  const totalItems = passengerHotelData?.data?.total_hotels || 0;
-  
+  const itemId = new URLSearchParams(location.search).get("id");
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+
+  const totalItems = "";
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
+
+  const handleRowClicked = (quotation) => {
+    navigate(`/dashboard/flight-details?id=${quotation.id}`);
+  };
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -49,18 +57,18 @@ const Hotels = ({ data }) => {
   };
   //logic for checkBox...
 
-  const handleDeleteHotel = async (item) => {
+  const handleDeleteFlight = async (item) => {
     const result = await Swal.fire({
-      text: "Are you sure you want to delete this hotel?",
+      text: "Are you sure you want to delete this flight?",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
       const sendData = {
-        dsr_hotel_id: item?.id,
+        dsr_flight_id: item?.id,
       };
-      dispatch(PassengerHotelDeleteActions(sendData)).then((response) => {
+      dispatch(PassengerFlightDeleteActions(sendData)).then((response) => {
         if (itemId) {
           const refreshData = {
             passenger_id: itemId,
@@ -70,11 +78,16 @@ const Hotels = ({ data }) => {
       });
     }
   };
-
+  const [showPopup, setShowPopup] = useState(false);
+  const [passHotelData, setPassengerHotelData] = useState("");
+  const handleShowDetails = (item) => {
+    setPassengerHotelData(item);
+    setShowPopup((prev) => !prev);
+  };
   return (
     <>
       <TopLoadbar />
-      {passengerHotelData?.loading && <Loader02 />}
+      {/* {passengerData?.loading && <Loader02 />} */}
       <div id="middlesection">
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
@@ -95,42 +108,42 @@ const Hotels = ({ data }) => {
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                    Booking Date
+                    Travel Date
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.customer_svg}
-                    Hotel Name
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.status_svg}
+                    Travel Type
                   </div>
 
-                  {/* <div className="table-cellx12 quotiosalinvlisxs2">
-                    {otherIcons?.refrence_svg}
-                    Room No/Name
-                  </div> */}
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.status_svg}
+                    Airline Name
+                  </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Occupancy
+                    {otherIcons?.status_svg}
+                    GDS Portal
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    Ticket No
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Meal Plan
+                    {otherIcons?.status_svg}
+                    PRN No
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Checkin Date
-                  </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Checkout Date
+                  <div className="table-cellx12 quotiosalinvlisxs5">
+                    {otherIcons?.status_svg}
+                    Route
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
-                    Action
+                    Actions
                   </div>
                 </div>
 
-                {passengerHotelData?.loading ? (
+                {passengerData?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
@@ -157,60 +170,74 @@ const Hotels = ({ data }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {formatDate3(item?.booking_date) || ""}
+                              {formatDate3(item?.travel_date) || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {item?.hotel_name || ""}
+                              <ShowMastersValue
+                                type="51"
+                                id={item?.travel_type_id}
+                              />
                             </div>
-                            {/* <div onClick={() => handleRowClicked(item)}  className="table-cellx12 quotiosalinvlisxs2">
-                              {item?.room_name || ""}
-                            </div> */}
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {item?.airline_name || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {item?.gds_portal || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
-                              <ShowMastersValue
-                                type="36"
-                                id={item?.occupancy_id}
-                              />
+                              {item?.ticket_no || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {item?.prn_no || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              <ShowMastersValue
-                                type="37"
-                                id={item?.meal_id || ""}
-                              />
+                              {item?.route || ""}
                             </div>
 
                             <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {formatDate3(item?.check_in_date) || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {formatDate3(item?.check_out_date) || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(quotation)}
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs6"
                             >
                               <span
-                                style={{ cursor: "pointer", color: "red" }}
-                                onClick={() => handleDeleteHotel(item)}
+                                onClick={() => {
+                                  handleDeleteFlight(item);
+                                }}
                               >
                                 {otherIcons.delete_svg}
+                              </span>
+                              <span
+                                style={{
+                                  cursor: "pointer",
+                                  color: "gray",
+                                  fontSize: "20px",
+                                  marginLeft: "10px",
+                                }}
+                                onClick={() => {
+                                  handleShowDetails(item);
+                                }}
+                              >
+                                <BsEye />
                               </span>
                             </div>
                           </div>
@@ -234,10 +261,17 @@ const Hotels = ({ data }) => {
             </div>
           </div>
         </div>
+        {showPopup && (
+          <PassengerFlightDetails
+            data={passHotelData}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+          />
+        )}
         <Toaster />
       </div>
     </>
   );
 };
 
-export default Hotels;
+export default Flights;
