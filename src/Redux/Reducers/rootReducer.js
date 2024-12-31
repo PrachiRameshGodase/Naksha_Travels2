@@ -247,6 +247,10 @@ import {
   createPassengerVisaReducer,
   passengerVisaDeleteReducer,
 } from "./passengerVisaReducers";
+import { createPassengerCarHireReducer, passengerCarHireDeleteReducer } from "./passengerCarHireReducers";
+import { createPassengerAssistReducer, passengerAssistDeleteReducer } from "./passengerAssistReducers";
+import { createPassengerInsuranceReducer, passengerInsuranceDeleteReducer } from "./passengerInsuranceReducers";
+import { createPassengerOthersReducer, passengerOthersDeleteReducer } from "./passengerOthersReducers";
 const reducer = combineReducers({
   addItemsReducer,
 
@@ -315,10 +319,25 @@ const reducer = combineReducers({
   passengerHotelDelete: passengerHoteltDeleteReducer,
 
   createPassengerFlight: createPassengerFlightReducer,
-  passengerHotelDelete: passengerFlighttDeleteReducer,
+  passengerFlightDelete: passengerFlighttDeleteReducer,
 
   createPassengerVisa: createPassengerVisaReducer,
   passengerVisaDelete: passengerVisaDeleteReducer,
+
+  createPassengerCarHire: createPassengerCarHireReducer,
+  passengerCarHireDelete: passengerCarHireDeleteReducer,
+
+  createPassengerAssist: createPassengerAssistReducer,
+  passengerAssistDelete: passengerAssistDeleteReducer,
+
+  createPassengerVisa: createPassengerVisaReducer,
+  passengerVisaDelete: passengerVisaDeleteReducer,
+
+  createPassengerInsurance: createPassengerInsuranceReducer,
+  passengerInsuranceDelete: passengerInsuranceDeleteReducer,
+
+  createPassengerOthers: createPassengerOthersReducer,
+  passengerOthersDelete: passengerOthersDeleteReducer,
 
   createDSR: createDSRreducer,
   DSRList: listDSRreducer,

@@ -6,12 +6,12 @@ import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { ShowMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "./PassengerCard.scss";
-import CreateAssistPopup from "./Services/CreateAssistPopup";
-import CreateCarHirePopup from "./Services/CreateCarHirePopup";
+import CreateAssistPopup from "./Services/PassengerAssist/CreateAssistPopup";
+import CreateCarHirePopup from "./Services/PassengerCarHire/CreateCarHirePopup";
 import CreateFlightPopup from "./Services/PassengerFlight/CreateFlightPopup";
 import CreateHotelPopup from "./Services/PassengerHotel/CreateHotelPopup";
-import CreateInsurancePopup from "./Services/CreateInsurancePopup";
-import CreateOtherPopup from "./Services/CreateOtherPopup";
+import CreateInsurancePopup from "./Services/PassengerInsurance/CreateInsurancePopup";
+import CreateOtherPopup from "./Services/PassengerOthers/CreateOtherPopup";
 import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
@@ -99,6 +99,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
           <CreateOtherPopup
             showModal={true}
             setShowModal={setActivePopup}
+            data={passengers}
             passengerId={passengerId}
           />
         );

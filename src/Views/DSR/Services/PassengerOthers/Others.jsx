@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { BsEye } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import { PassengerFlightDeleteActions } from "../../../../Redux/Actions/passengerFlightActions";
-import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
-import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import PassengerFlightDetails from "./PassengerFlightDetails.";
-import { BsEye } from "react-icons/bs";
+import PassengerOtherDetails from "./PassengerOtherDetails";
+import Swal from "sweetalert2";
+import { PassengerOthersDeleteActions } from "../../../../Redux/Actions/passengerOthersActions";
 
-const Flights = ({ data, totalItems }) => {
+const Others = ({ data, totalItems }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const itemId = new URLSearchParams(location.search).get("id");
-  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data || {});
- 
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -48,19 +49,18 @@ const Flights = ({ data, totalItems }) => {
     setSelectedRows(selectAll ? [] : data?.map((row) => row.id));
   };
   //logic for checkBox...
-
-  const handleDeleteFlight = async (item) => {
+  const handleDeleteOthers = async (item) => {
     const result = await Swal.fire({
-      text: "Are you sure you want to delete this flight?",
+      text: "Are you sure you want to delete this other service?",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
       const sendData = {
-        dsr_flight_id: item?.id,
+        dsr_others_id: item?.id,
       };
-      dispatch(PassengerFlightDeleteActions(sendData)).then((response) => {
+      dispatch(PassengerOthersDeleteActions(sendData)).then((response) => {
         if (itemId) {
           const refreshData = {
             passenger_id: itemId,
@@ -70,6 +70,7 @@ const Flights = ({ data, totalItems }) => {
       });
     }
   };
+
   const [showPopup, setShowPopup] = useState(false);
   const [passHotelData, setPassengerHotelData] = useState("");
   const handleShowDetails = (item) => {
@@ -79,7 +80,7 @@ const Flights = ({ data, totalItems }) => {
   return (
     <>
       <TopLoadbar />
-      {/* {passengerData?.loading && <Loader02 />} */}
+      {data?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
           <div id="leftsidecontentxls">
@@ -100,35 +101,22 @@ const Flights = ({ data, totalItems }) => {
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                    Travel Date
+                    Entry Name
                   </div>
 
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.customer_svg}
+                    Item Name
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
-                    {otherIcons?.status_svg}
-                    Travel Type
-                  </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs2">
-                    {otherIcons?.status_svg}
-                    Airline Name
-                  </div>
-
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.status_svg}
-                    GDS Portal
+                    {otherIcons?.quotation_icon}
+                    Quantity
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.status_svg}
-                    Ticket No
+                    {otherIcons?.refrence_svg}
+                    Price
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.status_svg}
-                    PRN No
-                  </div>
-                  <div className="table-cellx12 quotiosalinvlisxs5">
-                    {otherIcons?.status_svg}
-                    Route
-                  </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Actions
@@ -162,50 +150,37 @@ const Flights = ({ data, totalItems }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {formatDate3(item?.travel_date) || ""}
+                              {item?.entry_type || ""}
                             </div>
                             <div
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              <ShowMastersValue
-                                type="51"
-                                id={item?.travel_type_id}
-                              />
+                              {item?.item_name || ""}
                             </div>
                             <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
-                              {item?.airline_name || ""}
-                            </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
-                              {item?.gds_portal || ""}
-                            </div>
-                            <div
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
-                              {item?.ticket_no || ""}
+                              {item?.quantity || ""}
                             </div>
                             <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
-                              {item?.prn_no || ""}
-                            </div>
-                            <div
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.route || ""}
+                              {item?.price || ""}
                             </div>
 
                             <div
-                              className="table-cellx12 quotiosalinvlisxs6"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
                               <span
                                 onClick={() => {
-                                  handleDeleteFlight(item);
+                                  handleDeleteOthers(item);
                                 }}
                               >
                                 {otherIcons.delete_svg}
@@ -246,7 +221,7 @@ const Flights = ({ data, totalItems }) => {
           </div>
         </div>
         {showPopup && (
-          <PassengerFlightDetails
+          <PassengerOtherDetails
             data={passHotelData}
             showPopup={showPopup}
             setShowPopup={setShowPopup}
@@ -258,4 +233,4 @@ const Flights = ({ data, totalItems }) => {
   );
 };
 
-export default Flights;
+export default Others;

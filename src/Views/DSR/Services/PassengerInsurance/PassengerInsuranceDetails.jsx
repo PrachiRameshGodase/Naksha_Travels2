@@ -3,14 +3,14 @@ import { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
 import { Attachment2 } from "../../../Helper/Attachment";
-import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { formatDate3 } from "../../../Helper/DateFormat";
 
-const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
+const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
-  
+
   return (
     <>
       {data?.loading ? (
@@ -20,7 +20,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.airline_name || ""}</h5>
+                <h5>{data?.passenger?.name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -45,13 +45,13 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                               }}
                             >
                               {otherIcons?.information_svg}
-                              Flight Details
+                              Insurance Details
                             </div>
                             <ul>
                               <li className="pendingfromfrontendx5">
-                                <span>Airline Name</span>
+                                <span>Passenger Name</span>
                                 <h1>:</h1>
-                                <p>{data?.airline_name || ""}</p>
+                                <p>{data?.passenger?.name || ""}</p>
                               </li>
                               <li className="pendingfromfrontendx5">
                                 <span>Entry type</span>
@@ -60,54 +60,30 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                               </li>
 
                               <li>
-                                <span>Travel Date</span>
+                                <span>Company Name</span>
                                 <h1>:</h1>
-                                <p>{formatDate3(data?.travel_date) || ""}</p>
+                                <p>{data?.company_name || ""}</p>
                               </li>
                               <li>
-                                <span>Travel Type</span>
+                                <span>Policy No</span>
                                 <h1>:</h1>
-                                <p>
-                                  {" "}
-                                  <ShowMastersValue
-                                    type="40"
-                                    id={data?.travel_type_id || ""}
-                                  />
-                                </p>
-                              </li>
-
-                              <li className="pendingfrombackendx5">
-                                <span>Passengers</span>
-                                <h1>:</h1>
-                                <p>
-                                  {data?.guests
-                                    ?.map((item) => item?.display_name)
-                                    .filter(Boolean)
-                                    .join(", ")}
-                                </p>
-                              </li>
-
-                              <li>
-                                <span>GDS Portal</span>
-                                <h1>:</h1>
-                                <p>{data?.gds_portal || ""}</p>
+                                <p>{data?.policy_no || ""}</p>
                               </li>
                               <li>
-                                <span>Ticket Number</span>
+                                <span>Insurance Plan</span>
                                 <h1>:</h1>
-                                <p>{data?.ticket_no || ""}</p>
+                                <p>{data?.insurance_plan || ""}</p>
                               </li>
                               <li>
-                                <span>PRN Number</span>
+                                <span>Issue Date</span>
                                 <h1>:</h1>
-                                <p>{data?.prn_no || ""}</p>
+                                <p>{formatDate3(data?.issue_date) || ""}</p>
                               </li>
                               <li>
-                                <span>Route</span>
+                                <span>Expiry Date</span>
                                 <h1>:</h1>
-                                <p>{data?.route || ""}</p>
+                                <p>{formatDate3(data?.expiry_date) || ""}</p>
                               </li>
-
                               <li>
                                 <span>Supplier Name</span>
                                 <h1>:</h1>
@@ -142,4 +118,4 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
     </>
   );
 };
-export default PassengerFlightDetails;
+export default PassengerInsuranceDetails;

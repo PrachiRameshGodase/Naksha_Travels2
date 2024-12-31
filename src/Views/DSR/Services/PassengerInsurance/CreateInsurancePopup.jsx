@@ -1,100 +1,105 @@
-import { RxCross2 } from "react-icons/rx";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import DatePicker from "react-datepicker";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
-import { currencySymbol, ShowMasterData } from "../../Helper/HelperFunctions";
-import "./CreateHotelPopup.scss";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { formatDate } from "../../Helper/DateFormat";
-import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown29 from "../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown02 from "../../../Components/CustomDropdown/CustomDropdown02";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { formatDate } from "../../../Helper/DateFormat";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
+import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
 
-const CreateInsurancePopup = ({ showModal, setShowModal }) => {
+const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
+  const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const countryList = useSelector((state) => state?.countries?.countries);
 
   const [cusData, setcusData] = useState(null);
-  console.log("cusData", cusData);
   const [cusData1, setcusData1] = useState(null);
-  const [cusData3, setcusData3] = useState(null);
-  const [cusData4, setcusData4] = useState(null);
   const [formData, setFormData] = useState({
-    hotel_id: "",
-    bed_id: "",
-    meal_id: "",
-    occupancy_id: "",
+    dsr_id: data?.id,
+    passenger_id: passengerId,
+    entry_type: "",
+    passenger_insurance_id: "",
+    company_name: "",
+    policy_no: null,
+    insurance_plan: null,
+    expiry_date: "",
+    guest_ids: "",
+    issue_date: "",
+    supplier_id: "",
+    supplier_name: "",
+    //amount
+    charges: null,
+    hotel_price: null,
+    discount: null,
+    tax_percent: null,
+    tax_amount: null,
+    retain: null,
+    total_amount: null,
+    note: null,
+    upload_image: null,
   });
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
   const entryType = ShowMasterData("50");
-  const visaentryType = ShowMasterData("39");
-
-  const visatype = ShowMasterData("40");
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
-
-    const visaType = visatype?.find((val) => val?.labelid == value);
+    const selectedSupplierName = vendorList?.data?.user?.find(
+      (item) => item?.id == formData?.supplier_id
+    );
     setFormData((prev) => ({
       ...prev,
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      ...(name === "visa_entry_type" && {
-        visa_entry_name: visaEntryType?.label,
-      }),
-      ...(name === "visa_type_id" && {
-        visa_type_name: visaType?.label,
-      }),
+      supplier_name:selectedSupplierName?.display_name,
+      
       [name]: value,
     }));
   };
 
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
-    }));
-  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+
+    try {
+      const sendData = {
+        ...formData,
+        guest_ids:
+          formData?.guest_ids?.length === 0
+            ? null
+            : formData?.guest_ids?.join(", "),
+      };
+      dispatch(CreatePassengerInsuranceAction(sendData))
+        .then((response) => {
+          // if (response?.success === true) {
+          setShowModal(false);
+          // }
+        })
+        .catch((error) => {
+          console.error("Error during dispatch:", error);
+        });
+    } catch (error) {
+      console.error("Error updating insurance:", error);
+    }
   };
 
-  if (!showModal) return null;
   console.log("formData", formData);
   return (
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5>{isEdit ? "Update Insurance Service" : "Add Insurance Service"}</h5>
+          <h5>
+            {isEdit ? "Update Insurance Service" : "Add Insurance Service"}
+          </h5>
           <button className="close-button" onClick={() => setShowModal(false)}>
             <RxCross2 />
           </button>
@@ -121,7 +126,7 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                           onChange={handleChange}
                           name="entry_type"
                           defaultOption="Select Entry Type"
-                          type="masters"
+                          type="masters2"
                         />
                       </span>
                     </div>
@@ -141,9 +146,9 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                             ref={dropdownRef1}
                             label="Customer Name"
                             options={cusList?.data?.user}
-                            value={formData.customer_id}
+                            value={formData.passenger_insurance_id}
                             onChange={handleChange}
-                            name="customer_id"
+                            name="passenger_insurance_id"
                             defaultOption="Select Passenger"
                             setcusData={setcusData}
                             cusData={cusData}
@@ -160,9 +165,9 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.company_name}
                           onChange={handleChange}
-                          name="passport_no"
+                          name="company_name"
                           placeholder="Enter Company Name"
                         />
                       </span>
@@ -174,20 +179,16 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.policy_no}
                           onChange={handleChange}
-                          name="passport_no"
+                          name="policy_no"
                           placeholder="Enter Policy No"
                         />
                       </span>
                     </div>
-                    
                   </div>
 
-                
                   <div className="f1wrapofcreqx1">
-                   
-                  
                     <div className="form_commonblock ">
                       <label>Issue Date</label>
                       <span>
@@ -197,10 +198,10 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                           onChange={(date) =>
                             setFormData({
                               ...formData,
-                              booking_date: formatDate(date),
+                              issue_date: formatDate(date),
                             })
                           }
-                          name="booking_date"
+                          name="issue_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
                           autoComplete="off"
@@ -212,14 +213,14 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.date_svg}
                         <DatePicker
-                          selected={formData?.checkin_date}
+                          selected={formData?.expiry_date}
                           onChange={(date) =>
                             setFormData({
                               ...formData,
-                              checkin_date: formatDate(date),
+                              expiry_date: formatDate(date),
                             })
                           }
-                          name="checkin_date"
+                          name="expiry_date"
                           placeholderText="Enter Date"
                           dateFormat="dd-MM-yyyy"
                           autoComplete="off"
@@ -233,9 +234,9 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.insurance_plan}
                           onChange={handleChange}
-                          name="passport_no"
+                          name="insurance_plan"
                           placeholder="Enter Insurance Plan"
                         />
                       </span>
@@ -254,9 +255,9 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                             ref={dropdownRef1}
                             label="Select Supplier"
                             options={vendorList?.data?.user}
-                            value={formData.vendor_id}
+                            value={formData.supplier_id}
                             onChange={handleChange}
-                            name="vendor_id"
+                            name="supplier_id"
                             defaultOption="Select Supplier"
                             setcusData={setcusData1}
                             cusData={cusData1}
@@ -276,17 +277,17 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                           <TextAreaComponentWithTextLimit
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
-                            name="vendor_note"
+                            name="note"
                             value={
-                              formData.vendor_note == 0
+                              formData.note == 0
                                 ? ""
-                                : formData.vendor_note
+                                : formData.note
                             }
                           />
                         </div>
                       </div>
                       <div className="calctotalsection">
-                      <div className="calcuparentc">
+                        <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
                               <label>Insurance Price:</label>
@@ -310,7 +311,7 @@ const CreateInsurancePopup = ({ showModal, setShowModal }) => {
                             </div>
                           </div>
                         </div>
-                       
+
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">

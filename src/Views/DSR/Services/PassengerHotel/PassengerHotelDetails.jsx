@@ -1,50 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import Attachment, { Attachment2 } from "../../../Helper/Attachment";
+import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
-import {
-  PassengerHotelDeleteActions,
-  PassengerHotelDetailsAction,
-} from "../../../../Redux/Actions/passengerHotelActions";
-import { RxCross2 } from "react-icons/rx";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
-  console.log("setShowPopup", setShowPopup)
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const itemId = new URLSearchParams(location.search).get("id");
-
   const [activeSection, setActiveSection] = useState("roomDetails");
-
-  const handleDeleteHotel = async (item) => {
-    const result = await Swal.fire({
-      text: "Are you sure you want to delete this hotel?",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
-    if (result.isConfirmed) {
-      const sendData = {
-        dsr_hotel_id: item?.id,
-      };
-      dispatch(PassengerHotelDeleteActions(sendData)).then((response) => {
-        if (itemId) {
-          const refreshData = {
-            passenger_id: itemId,
-          };
-          dispatch(PassengerHotelDetailsAction(refreshData));
-        }
-      });
-    }
-  };
-
   const attachments = data?.upload_image || "";
 
   return (

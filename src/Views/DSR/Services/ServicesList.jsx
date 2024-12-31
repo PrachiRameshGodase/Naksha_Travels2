@@ -7,18 +7,16 @@ import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreeze
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { PassengerHotelDetailsAction } from "../../../Redux/Actions/passengerHotelActions";
 import {
-  ShowMasterData,
-  useDebounceSearch,
+  useDebounceSearch
 } from "../../Helper/HelperFunctions";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import Assist from "./Assist";
-import CarHire from "./CarHire";
-import CreateService from "./CreateService";
+import Insurance from "./PassengerInsurance/Insurance";
+import Assist from "./PassengerAssist/Assist";
+import CarHire from "./PassengerCarHire/CarHire";
 import Flights from "./PassengerFlight/Flights";
 import Hotels from "./PassengerHotel/Hotels";
-import Insurance from "./Insurance";
-import TourPackage from "./TourPackage";
 import Visa from "./PassengerVisa/Visa";
+import Others from "./PassengerOthers/Others";
 
 const ServicesList = () => {
   const navigate = useNavigate();
@@ -30,10 +28,15 @@ const ServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
   );
-  const totalHotels = passengerData?.dsr_hotel.length || "";
-  const totalVisas = passengerData?.dsr_visa.length || "";
-  const totalFlights = passengerData?.dsr_flight.length || "";
-  console.log("totalHotels", totalHotels);
+  const totalHotels = passengerData?.dsr_hotel?.length || "";
+  const totalVisas = passengerData?.dsr_visa?.length || "";
+  const totalFlights = passengerData?.dsr_flight?.length || "";
+  const totalCarHires = passengerData?.dsr_car_hire?.length || "";
+  const totalAssist = passengerData?.dsr_assist?.length || "";
+  const totalInsurance = passengerData?.dsr_insurance?.length || "";
+  const totalOthers = passengerData?.dsr_others?.length || "";
+
+
 
   // const servicesList = ShowMasterData("48");
 
@@ -132,10 +135,10 @@ const ServicesList = () => {
     { label: "Hotels", total: totalHotels },
     { label: "Flights", total: totalFlights },
     { label: "Visa", total: totalVisas },
-    { label: "Car Hire", total: "" }, 
-    { label: "Assist", total: "" }, 
-    { label: "Insurance", total: "" }, 
-    { label: "Others", total: "" }, 
+    { label: "Car Hire", total: totalCarHires }, 
+    { label: "Assist", total: totalAssist }, 
+    { label: "Insurance", total: totalInsurance }, 
+    { label: "Others", total: totalOthers }, 
   ];
 
   return (
@@ -210,16 +213,16 @@ const ServicesList = () => {
         </div>
         <div>
           {switchCusData == "Hotels" && (
-            <Hotels data={passengerData?.dsr_hotel} />
+            <Hotels data={passengerData?.dsr_hotel} totalItems={totalHotels}/>
           )}
           {switchCusData == "Flights" && (
-            <Flights data={passengerData?.dsr_flight} />
+            <Flights data={passengerData?.dsr_flight} totalItems={totalFlights}/>
           )}
-          {switchCusData == "Tour Package" && <TourPackage />}
-          {switchCusData == "Visa" && <Visa data={passengerData?.dsr_visa} />}
-          {switchCusData == "Car Hire" && <CarHire />}
-          {switchCusData == "Assist" && <Assist />}
-          {switchCusData == "Insurance" && <Insurance />}
+          {switchCusData == "Others" && <Others data={passengerData?.dsr_others} totalItems={totalOthers}/>}
+          {switchCusData == "Visa" && <Visa data={passengerData?.dsr_visa} totalItems={totalVisas}/>}
+          {switchCusData == "Car Hire" && <CarHire data={passengerData?.dsr_car_hire} totalItems={totalCarHires}/>}
+          {switchCusData == "Assist" && <Assist data={passengerData?.dsr_assist} totalItems={totalAssist}/>}
+          {switchCusData == "Insurance" && <Insurance data={passengerData?.dsr_insurance} totalItems={totalInsurance}/>}
         </div>
 
         <Toaster />

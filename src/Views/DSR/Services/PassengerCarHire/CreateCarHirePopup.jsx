@@ -1,94 +1,94 @@
 import { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../Helper/DateFormat";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import "./CreateHotelPopup.scss";
-import NumericInput from "../../Helper/NumericInput";
+import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
+import { CreatePassengerCarHireAction } from "../../../../Redux/Actions/passengerCarHireActions";
 
-const CreateCarHirePopup = ({ showModal, setShowModal }) => {
+const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
+  const dispatch=useDispatch()
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
-  const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const countryList = useSelector((state) => state?.countries?.countries);
 
-  const [cusData, setcusData] = useState(null);
-  console.log("cusData", cusData);
   const [cusData1, setcusData1] = useState(null);
-  const [cusData3, setcusData3] = useState(null);
-  const [cusData4, setcusData4] = useState(null);
   const [formData, setFormData] = useState({
-    hotel_id: "",
-    bed_id: "",
-    meal_id: "",
-    occupancy_id: "",
+    dsr_id: data?.id,
+    passenger_id:passengerId,
+    entry_type:"",      
+    vehicle_type_id:"",         
+    days:"",
+    pickup_location:null,          
+    drop_location:null,
+    guest_ids:"",
+    supplier_id:1,
+    supplier_name:null,
+    // Amount
+    gross_amount:null,      
+    charges:null,           
+    discount:null,
+    supplier_total:null,
+    tax_percent:null,
+    tax_amount:null,
+    retain:null,
+    total_amount:null,     
+    note:null,
+    upload_image: null
   });
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
   const entryType = ShowMasterData("50");
   const vehicleType = ShowMasterData("41");
-
-  const visaentryType = ShowMasterData("39");
-
-  const visatype = ShowMasterData("40");
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
-    const VechileType = vehicleType?.find((val) => val?.labelid == value);
-    const visaType = visatype?.find((val) => val?.labelid == value);
-    setFormData((prev) => ({
+    const selectedSupplierName = vendorList?.data?.user?.find(
+      (item) => item?.id == formData?.supplier_id
+    );
+      setFormData((prev) => ({
       ...prev,
-      ...(name === "vechile_type" && {
-        vechile_type: VechileType?.label,
-      }),
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      ...(name === "visa_entry_type" && {
-        visa_entry_name: visaEntryType?.label,
-      }),
-      ...(name === "visa_type_id" && {
-        visa_type_name: visaType?.label,
-      }),
-      [name]: value,
-    }));
-  };
+      supplier_name:selectedSupplierName?.display_name,
 
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
+      [name]: value,
     }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+   try {
+         const sendData = {
+           ...formData,
+           guest_ids:
+             formData?.guest_ids?.length === 0
+               ? null
+               : formData?.guest_ids?.join(", "),
+         };
+         dispatch(CreatePassengerCarHireAction(sendData))
+           .then((response) => {
+             // if (response?.success === true) {
+             setShowModal(false);
+             // }
+           })
+           .catch((error) => {
+             console.error("Error during dispatch:", error);
+           });
+       } catch (error) {
+         console.error("Error updating car hire:", error);
+       }
   };
 
-  if (!showModal) return null;
-  console.log("formData", formData);
+
+  
   return (
     <div className="custom-modal">
       <div className="modal-content">
@@ -122,7 +122,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                           onChange={handleChange}
                           name="entry_type"
                           defaultOption="Select Entry Type"
-                          type="masters"
+                          type="masters2"
                         />
                       </span>
                     </div>
@@ -136,9 +136,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                         <CustomDropdown04
                           label="Vechile Type"
                           options={vehicleType}
-                          value={formData?.type_of_vehicle}
+                          value={formData?.vehicle_type_id}
                           onChange={handleChange}
-                          name="type_of_vehicle"
+                          name="vehicle_type_id"
                           defaultOption="Select Vechile Type"
                           type="masters"
                         />
@@ -150,9 +150,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                         <span>
                           {otherIcons.name_svg}
                           <NumericInput
-                            name="select_days"
+                            name="days"
                             placeholder="Enter Days"
-                            value={formData.select_days}
+                            value={formData.days}
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
@@ -168,9 +168,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.pickup_location}
                           onChange={handleChange}
-                          name="passport_no"
+                          name="pickup_location"
                           placeholder="Enter Pickup Location"
                         />
                       </span>
@@ -182,7 +182,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.drop_location}
                           onChange={handleChange}
                           name="drop_location"
                           placeholder="Enter Drop Location"
@@ -201,9 +201,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                             ref={dropdownRef1}
                             label="Select Supplier"
                             options={vendorList?.data?.user}
-                            value={formData.vendor_id}
+                            value={formData.supplier_id}
                             onChange={handleChange}
-                            name="vendor_id"
+                            name="supplier_id"
                             defaultOption="Select Supplier"
                             setcusData={setcusData1}
                             cusData={cusData1}
@@ -225,11 +225,11 @@ const CreateCarHirePopup = ({ showModal, setShowModal }) => {
                           <TextAreaComponentWithTextLimit
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
-                            name="vendor_note"
+                            name="note"
                             value={
-                              formData.vendor_note == 0
+                              formData.note == 0
                                 ? ""
-                                : formData.vendor_note
+                                : formData.note
                             }
                           />
                         </div>

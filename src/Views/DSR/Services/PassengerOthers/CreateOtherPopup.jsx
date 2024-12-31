@@ -1,99 +1,89 @@
 import { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
-import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../Helper/DateFormat";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import "./CreateHotelPopup.scss";
-import NumericInput from "../../Helper/NumericInput";
-import CustomDropdown30 from "../../../Components/CustomDropdown/CustomDropdown30";
+import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import { CreatePassengerOtherAction } from "../../../../Redux/Actions/passengerOthersActions";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss";
 
-const CreateAssistPopup = ({ showModal, setShowModal }) => {
+const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
+  const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const vendorList = useSelector((state) => state?.vendorList);
-  const assistData = useSelector((state) => state?.assistList?.data?.data);
 
-  const [cusData, setcusData] = useState(null);
-  console.log("cusData", cusData);
   const [cusData1, setcusData1] = useState(null);
-  const [cusData3, setcusData3] = useState(null);
-  const [cusData4, setcusData4] = useState(null);
   const [formData, setFormData] = useState({
-    hotel_id: "",
-    bed_id: "",
-    meal_id: "",
-    occupancy_id: "",
+    dsr_id: data?.id,
+    passenger_id: passengerId,
+    item_id: 0,
+    item_name: "",
+    quantity: null,
+    price: null,
+    supplier_id: "",
+    supplier_name: "",
+    //amount
+    charges: null,
+    hotel_price: null,
+    discount: null,
+    tax_percent: null,
+    tax_amount: null,
+    retain: null,
+    total_amount: null,
+    note: null,
+    upload_image: null,
   });
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
   const entryType = ShowMasterData("50");
-  const vehicleType = ShowMasterData("41");
-
-  const visaentryType = ShowMasterData("39");
-
-  const visatype = ShowMasterData("40");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
-    const VechileType = vehicleType?.find((val) => val?.labelid == value);
-    const visaType = visatype?.find((val) => val?.labelid == value);
+    const selectedSupplierName = vendorList?.data?.user?.find(
+      (item) => item?.id == formData?.supplier_id
+    );
     setFormData((prev) => ({
       ...prev,
-      ...(name === "vechile_type" && {
-        vechile_type: VechileType?.label,
-      }),
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      ...(name === "visa_entry_type" && {
-        visa_entry_name: visaEntryType?.label,
-      }),
-      ...(name === "visa_type_id" && {
-        visa_type_name: visaType?.label,
-      }),
+      supplier_name: selectedSupplierName?.display_name,
       [name]: value,
-    }));
-  };
-
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
     }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+    try {
+      const sendData = {
+        ...formData,
+      };
+      dispatch(CreatePassengerOtherAction(sendData))
+        .then((response) => {
+          // if (response?.success === true) {
+          setShowModal(false);
+          // }
+        })
+        .catch((error) => {
+          console.error("Error during dispatch:", error);
+        });
+    } catch (error) {
+      console.error("Error updating other service:", error);
+    }
   };
 
-  if (!showModal) return null;
   console.log("formData", formData);
   return (
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5>{isEdit ? "Update Assists Service" : "Add Assists Service"}</h5>
+          <h5>{isEdit ? "Update Other Service" : "Add Other Service"}</h5>
           <button className="close-button" onClick={() => setShowModal(false)}>
             <RxCross2 />
           </button>
@@ -120,61 +110,53 @@ const CreateAssistPopup = ({ showModal, setShowModal }) => {
                           onChange={handleChange}
                           name="entry_type"
                           defaultOption="Select Entry Type"
-                          type="masters"
+                          type="masters2"
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Airport<b className="color_red">*</b>
+                        Item Details<b className="color_red">*</b>
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
                         <input
-                          value={formData.passport_no}
+                          value={formData.item_name}
                           onChange={handleChange}
-                          name="passport_no"
-                          placeholder="Enter Airport Location"
+                          name="item_name"
+                          placeholder="Enter Item Details"
                         />
                       </span>
                     </div>
                     <div className="form_commonblock">
-                        <label>
-                          Meeting Type<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.placeofsupply_svg}
-                          <CustomDropdown30
-                            autoComplete="off"
-                            ref={dropdownRef1}
-                            label="Meeting Type"
-                            options={assistData}
-                            value={formData.meeting_type}
-                            onChange={handleChange}
-                            name="meeting_type"
-                            defaultOption="Select Meeting Type"
-                            setcusData={setcusData4}
-                            cusData={cusData4}
-                            type="vendor"
-                            hotelID={formData.hotel_id}
-                            required
-                          />
-                        </span>
-                      </div>
-                  </div>
-
-                  <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
-                      <label>No Of Persons</label>
+                      <label>Quantity</label>
                       <div id="inputx1">
                         <span>
                           {otherIcons.name_svg}
                           <NumericInput
-                            name="select_days"
-                            placeholder="Enter No Of Persons"
-                            value={formData.select_days}
+                            name="quantity"
+                            placeholder="Enter Quantity"
+                            value={formData.quantity}
                             onChange={(e) => handleChange(e)}
+                            type="number"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>Price</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.name_svg}
+                          <NumericInput
+                            name="price"
+                            placeholder="Enter Price"
+                            value={formData.price}
+                            onChange={(e) => handleChange(e)}
+                            type="number"
                           />
                         </span>
                       </div>
@@ -191,9 +173,9 @@ const CreateAssistPopup = ({ showModal, setShowModal }) => {
                             ref={dropdownRef1}
                             label="Select Supplier"
                             options={vendorList?.data?.user}
-                            value={formData.vendor_id}
+                            value={formData.supplier_id}
                             onChange={handleChange}
-                            name="vendor_id"
+                            name="supplier_id"
                             defaultOption="Select Supplier"
                             setcusData={setcusData1}
                             cusData={cusData1}
@@ -215,12 +197,8 @@ const CreateAssistPopup = ({ showModal, setShowModal }) => {
                           <TextAreaComponentWithTextLimit
                             formsValues={{ handleChange, formData }}
                             placeholder="Note..."
-                            name="vendor_note"
-                            value={
-                              formData.vendor_note == 0
-                                ? ""
-                                : formData.vendor_note
-                            }
+                            name="note"
+                            value={formData.note == 0 ? "" : formData.note}
                           />
                         </div>
                       </div>
@@ -228,7 +206,7 @@ const CreateAssistPopup = ({ showModal, setShowModal }) => {
                         <div className="calcuparentc">
                           <div id="tax-details">
                             <div className="clcsecx12s1">
-                              <label>Assist Price:</label>
+                              <label>Price:</label>
                               <input
                                 type="text"
                                 value={formData?.subtotal}
@@ -308,4 +286,4 @@ const CreateAssistPopup = ({ showModal, setShowModal }) => {
   );
 };
 
-export default CreateAssistPopup;
+export default CreateOtherPopup;
