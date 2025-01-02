@@ -16,6 +16,7 @@ import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
+import CalculationSection from "../../CalculationSection";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -392,104 +393,17 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Confirmation No<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.confirmation_no}
-                            onChange={handleChange}
-                            name="confirmation_no"
-                            placeholder="Enter Confirmation No"
-                          />
-                        </span>
-                      </div>
-                      <div className="secondtotalsections485s">
-                        <div className="textareaofcreatqsiform">
-                          <label>Note</label>
-                          <div className="show_no_of_text_limit_0121">
-                            <TextAreaComponentWithTextLimit
-                              formsValues={{ handleChange, formData }}
-                              placeholder="Note..."
-                              name="note"
-                              value={formData.note == 0 ? "" : formData.note}
-                            />
-                          </div>
-                        </div>
-                        <div className="calctotalsection">
-                          <div className="calcuparentc">
-                            <div id="tax-details">
-                              <div className="clcsecx12s1">
-                                <label>Supplier Service Charge:</label>
-                                <input
-                                  type="text"
-                                  value={formData?.subtotal}
-                                  placeholder="0.00"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="calcuparentc">
-                            <div id="tax-details">
-                              <div className="clcsecx12s1">
-                                <label>Hotel Price:</label>
-                                <input
-                                  type="text"
-                                  value={formData.tax_amount}
-                                  placeholder="0.00"
-                                // className="inputsfocalci465s"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="calcuparentc">
-                            <div id="tax-details">
-                              <div className="clcsecx12s1">
-                                <label>Tax:</label>
-                                <input
-                                  type="text"
-                                  value={formData.tax_amount}
-                                  placeholder="0.00"
-                                // className="inputsfocalci465s"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="calcuparentc">
-                            <div id="tax-details">
-                              <div className="clcsecx12s1">
-                                <label>Retain:</label>
-                                <input
-                                  type="text"
-                                  value={formData.tax_amount}
-                                  placeholder="0.00"
-                                  className="inputsfocalci465s"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="clcsecx12s2">
-                            <label>Invoice Total :</label>
-                            <input
-                              type="text"
-                              value={formData?.total}
-                              placeholder="0.00"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <ImageUpload
-                          formData={formData}
-                          setFormData={setFormData}
-                          setFreezLoadingImg={setFreezLoadingImg}
-                          imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
-                          component="purchase"
-                        />
-                      </div>
+                      <CalculationSection formData={formData} section='Hotel' />
+                    </div>
+                    <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <ImageUpload
+                        formData={formData}
+                        setFormData={setFormData}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        component="purchase"
+                      />
                     </div>
                   </div>
                 </div>

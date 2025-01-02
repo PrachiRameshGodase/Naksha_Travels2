@@ -239,7 +239,7 @@ const DSRDetails = () => {
               )}
 
               <Link
-                to={"/dashboard/quotation"}
+                to={"/dashboard/dsr"}
                 className="linkx3"
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content="Close"

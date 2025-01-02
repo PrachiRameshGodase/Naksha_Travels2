@@ -12,6 +12,7 @@ import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
+import CalculationSection from "../../CalculationSection";
 
 const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -286,67 +287,8 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
                           />
                         </div>
                       </div>
-                      <div className="calctotalsection">
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Insurance Price:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Supplier Service Charge:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Tax:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Retain:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="clcsecx12s2">
-                          <label>Invoice Total :</label>
-                          <input
-                            type="text"
-                            value={formData?.total}
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
+                      <CalculationSection formData={formData} section='Insurance'/>
+                     
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
