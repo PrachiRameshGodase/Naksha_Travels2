@@ -141,7 +141,7 @@ export const fetchTexRates = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/taxrate/list`, data);
         dispatch({ type: GET_TAX_RATE_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: GET_TAX_RATE_ERROR, payload: error.message });
     }

@@ -1,9 +1,18 @@
 import React from "react";
 import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useWillChange } from "framer-motion";
+import { useEffect } from "react";
+import { fetchTexRates } from "../../Redux/Actions/globalActions";
 
 const CalculationSection = ({ formData, section }) => {
+  const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
+ 
+  useEffect(() => {
+    // const sendData={}
+    dispatch(fetchTexRates());
+  }, []);
 
   return (
     <div className="calctotalsection">
