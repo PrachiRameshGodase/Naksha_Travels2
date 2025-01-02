@@ -251,8 +251,13 @@ import { createPassengerCarHireReducer, passengerCarHireDeleteReducer } from "./
 import { createPassengerAssistReducer, passengerAssistDeleteReducer } from "./passengerAssistReducers";
 import { createPassengerInsuranceReducer, passengerInsuranceDeleteReducer } from "./passengerInsuranceReducers";
 import { createPassengerOthersReducer, passengerOthersDeleteReducer } from "./passengerOthersReducers";
+import { createUpdateOrgnizationReducer, orgnizationListReducer } from "./orgnizationReducers";
 const reducer = combineReducers({
   addItemsReducer,
+
+  //orgnization 
+  createUpdateOrg: createUpdateOrgnizationReducer,
+  orgnizationList: orgnizationListReducer,
 
   stockAdjustment: stockItemsReducer,
   itemStock: itemStockeducer,

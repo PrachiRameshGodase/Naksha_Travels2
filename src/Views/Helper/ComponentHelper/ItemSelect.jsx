@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import CustomDropdown03 from "../../../Components/CustomDropdown/CustomDropdown03";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   accountLists,
   itemLists,
@@ -20,6 +19,7 @@ import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown1
 import CustomDropdown13 from "../../../Components/CustomDropdown/CustomDropdown13";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown26 from "../../../Components/CustomDropdown/CustomDropdown26";
+import useFetchApiData from './useFetchApiData';
 
 import {
   activeOrg_details,
@@ -35,22 +35,13 @@ const ItemSelect = ({
   formData,
   setFormData,
   handleChange,
-  // setIsItemSelect,
-  // isItemSelect,
-  // setIsSalePrice,
-  // isSalePrice,
-  // setIsUnitSelect,
-  // isUnitSelect,
-  // setIsTaxSelect,
-  // isTaxSelect,
+  itemErrors,
+  setItemErrors,
   extracssclassforscjkls,
   dropdownRef2,
   note,
-  shwoCharges,
   invoice_section,
-  section,
-  itemErrors,
-  setItemErrors,
+
 }) => {
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
@@ -351,7 +342,7 @@ const ItemSelect = ({
       total: total?.toFixed(2),
       tax_amount: taxAmount?.toFixed(2),
     });
-    
+
     setItemErrors(newErrors);
   };
 
@@ -407,7 +398,7 @@ const ItemSelect = ({
 
   useEffect(() => {
     const parshPayload = parseJSONofString(itemPayloads);
-    
+
     if (parshPayload?.search) {
       dispatch(
         itemLists({
@@ -418,6 +409,14 @@ const ItemSelect = ({
       );
     }
   }, [searchTrigger, productType]);
+
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    ...sendData,
+    ...productType,
+  }), [productType]);
+
+  useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
 
   return (
     <>
@@ -475,7 +474,7 @@ const ItemSelect = ({
                   </div>
 
                   <div></div>
-                  <div className="tablsxs1a2x3" style={{marginRight:"2px"}}>
+                  <div className="tablsxs1a2x3" style={{ marginRight: "2px" }}>
                     <NumericInput
                       value={item?.rate}
                       placeholder="0.00"
@@ -499,7 +498,7 @@ const ItemSelect = ({
                     />
                   </div>
 
-                  <div className="tablsxs1a3x3" style={{marginRight:"2px"}}>
+                  <div className="tablsxs1a3x3" style={{ marginRight: "2px" }}>
                     <NumericInput
                       value={item?.quantity}
                       onChange={(e) => {
@@ -578,8 +577,8 @@ const ItemSelect = ({
                             newValue = Math.min(
                               newValue,
                               item?.rate * item?.quantity +
-                                (item?.rate * item?.tax_rate * item?.quantity) /
-                                  100
+                              (item?.rate * item?.tax_rate * item?.quantity) /
+                              100
                             );
                             if (newValue > item?.rate * item?.quantity) {
                               toast(
@@ -608,8 +607,8 @@ const ItemSelect = ({
                         {item?.discount_type == 1
                           ? "$"
                           : item?.discount_type == 2
-                          ? "%"
-                          : ""}
+                            ? "%"
+                            : ""}
                         {openDropdownIndex === index && (
                           <div
                             className="dropdownmenucustomx1"
@@ -845,55 +844,66 @@ const ItemSelect = ({
               />
             </div>
             <div className="calcuparentc">
-              <div id="tax-details">
-                {gstType === 1 ? (
-                  <>
-                    <div className="clcsecx12s1">
-                      <label>Total Tax:</label>
-                      <input
-                        type="text"
-                        value={formData.tax_amount}
-                        readOnly
-                        placeholder="0.00"
-                        className="inputsfocalci465s"
-                      />
+              <div id='tax-details'>
+
+                <div className='clcsecx12s1'>
+                  <label>Total Tax ({currencySymbol}):</label>
+                  <input
+                    type="text"
+                    value={formData?.tax_amount}
+                    readOnly
+                    placeholder='0.00'
+                    className='inputsfocalci465s'
+                  />
+                </div>
+
+                {/* for showing cgst/sgst and taxes at change the gst type for 1 show tax rates and for 2 show cgst/sgst */}
+                {/* {gstType == 2 ? <>
+    <div className='clcsecx12s1'>
+        <label>Total Tax ({currencySymbol}):</label>
+        <input
+            type="text"
+            value={formData?.tax_amount}
+            readOnly
+            placeholder='0.00'
+            className='inputsfocalci465s'
+        />
+    </div>
+</>
+    :
+    <>
+
+        {isIdEqualState?.isId
+            ? taxDetails?.map((tax, idx) => (
+                <div key={idx} id="">
+                    <div className='clcsecx12s1'>
+                        <label>CGST [{tax?.CGST}%]:</label>
+                        <span className='inputsfocalci465s'>{tax?.CGSTAmount?.toFixed(2)}</span>
+
                     </div>
-                  </>
-                ) : (
-                  <>
-                    {isIdEqualState?.isId ? (
-                      taxDetails?.map((tax, idx) => (
-                        <div key={idx} id="">
-                          <div className="clcsecx12s1">
-                            <label>CGST [{tax?.CGST}%]:</label>
-                            <span className="inputsfocalci465s">
-                              {tax?.CGSTAmount?.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="clcsecx12s1">
-                            <label>SGST [{tax?.SGST}%]:</label>
-                            <span className="inputsfocalci465s">
-                              {tax?.SGSTAmount?.toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div className="clcsecx12s1">
-                          <label>Total Tax:</label>
-                          <input
-                            type="text"
-                            value={formData.tax_amount}
-                            readOnly
-                            placeholder="0.00"
-                            className="inputsfocalci465s"
-                          />
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
+                    <div className='clcsecx12s1'>
+                        <label>SGST [{tax?.SGST}%]:</label>
+                        <span className='inputsfocalci465s'>{tax?.SGSTAmount?.toFixed(2)}</span>
+                    </div>
+                </div>
+            ))
+            :
+            <>
+                <div className='clcsecx12s1'>
+                    <label>Total Tax ({currencySymbol}):</label>
+                    <input
+                        type="text"
+                        value={formData?.tax_amount}
+                        readOnly
+                        placeholder='0.00'
+                        className='inputsfocalci465s'
+                    />
+                </div>
+            </>
+        }
+    </>
+} */}
+
               </div>
 
               {/* Add expense changes */}
@@ -1116,10 +1126,10 @@ export const ItemSelectGRM = ({
         };
       }
       setIsItemSelect(value !== "");
-    } 
+    }
     else if (field === "unit_id") {
       newItems[index].unit_id = value;
-    } 
+    }
     else if (["account_id", "remarks", "vendor_id"].includes(field)) {
       newCharges[index][field] = value;
     } else {
@@ -1277,9 +1287,8 @@ export const ItemSelectGRM = ({
           <div className="itemsectionrows1" style={{ minWidth: "1225px" }}>
             <div className="tableheadertopsxs1" id="tableheadertopsxs1">
               <p
-                className={`tablsxs1a1x34 ${
-                  formData?.grn_type === "Import" ? "import_P" : "local_p"
-                }`}
+                className={`tablsxs1a1x34 ${formData?.grn_type === "Import" ? "import_P" : "local_p"
+                  }`}
               >
                 ITEM<b className="color_red">*</b>
               </p>
@@ -1295,7 +1304,7 @@ export const ItemSelectGRM = ({
               </p>
 
               {formData?.purchase_order_id &&
-              formData?.purchase_order_id !== 0 ? (
+                formData?.purchase_order_id !== 0 ? (
                 <p className="tablsxs1a3x3 tablsxs1a2x2">PO QTY</p>
               ) : (
                 ""
@@ -1342,7 +1351,7 @@ export const ItemSelectGRM = ({
             {/* {console.log("formdata", formData?.items)} */}
             {formData?.items?.map((item, index) => (
               <>
-                <div key={index} className="tablerowtopsxs1" style={{padding:"16px 5px"}}>
+                <div key={index} className="tablerowtopsxs1" style={{ padding: "16px 5px" }}>
                   <div className="tablsxs1a1x3">
                     <span id="ITEM_Selection">
                       <CustomDropdown26
@@ -1369,9 +1378,8 @@ export const ItemSelectGRM = ({
                   {/* ITEM PRICE */}
                   <div
                     id="ITEM_Selection2"
-                    className={`tablsxs1a2x3 ${
-                      formData?.grn_type === "Import" ? "incom_12312" : ""
-                    }`}
+                    className={`tablsxs1a2x3 ${formData?.grn_type === "Import" ? "incom_12312" : ""
+                      }`}
                     style={{ boder: "1px solid #e7d8d", marginRight: "20px" }}
                   >
                     <NumericInput
@@ -1400,7 +1408,7 @@ export const ItemSelectGRM = ({
 
                   {/* PO QUANTITY */}
                   {formData?.purchase_order_id &&
-                  formData?.purchase_order_id !== 0 ? (
+                    formData?.purchase_order_id !== 0 ? (
                     <div className="tablsxs1a3x3" id="ITEM_Selection3">
                       <NumericInput value={item?.po_qty} readOnly />
                     </div>
@@ -1577,9 +1585,8 @@ export const ItemSelectGRM = ({
                 <div className="tablerowtopsxs1">
                   <div
                     style={{ maxWidth: "318px" }}
-                    className={`form_commonblock ${
-                      formData?.grn_type === "Import" ? "Note_import" : ""
-                    }`}
+                    className={`form_commonblock ${formData?.grn_type === "Import" ? "Note_import" : ""
+                      }`}
                   >
                     <span>
                       <input

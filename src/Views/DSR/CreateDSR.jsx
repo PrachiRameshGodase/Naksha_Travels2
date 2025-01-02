@@ -14,7 +14,6 @@ import {
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
 import {
-  SubmitButton4,
   SubmitButton5,
 } from "../Common/Pagination/SubmitButton";
 import CurrencySelect from "../Helper/ComponentHelper/CurrencySelect";
@@ -35,7 +34,7 @@ const CreateDSR = () => {
   const createDSR = useSelector((state) => state?.createDSR);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
-  
+
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -171,11 +170,11 @@ const CreateDSR = () => {
   };
   const handleIconClick = () => {
     if (isData?.id) {
-        const sendData = { dsr_id: isData?.id };
-        dispatch(DSRDetailsAction(sendData));
+      const sendData = { dsr_id: isData?.id };
+      dispatch(DSRDetailsAction(sendData));
     }
     Navigate("/dashboard/dsr");
- }
+  }
   return (
     <div>
       <>
@@ -210,7 +209,7 @@ const CreateDSR = () => {
                     }}
                   >
                     <div>
-                      <div className="f1wrapofcreqx1" style={{width:"868px"}}>
+                      <div className="f1wrapofcreqx1" style={{ width: "868px" }}>
                         <div className="form_commonblock">
                           <label>
                             DSR Number<b className="color_red">*</b>
@@ -230,10 +229,10 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                  backgroundColor: "#f0f0f0",
+                                  pointerEvents: "none",
+                                  cursor: "not-allowed",
+                                }
                                 : {}
                             }
                           />
@@ -263,10 +262,10 @@ const CreateDSR = () => {
                                 style={
                                   dsrDisabled
                                     ? {
-                                        backgroundColor: "#f0f0f0",
-                                        pointerEvents: "none",
-                                        cursor: "not-allowed",
-                                      }
+                                      backgroundColor: "#f0f0f0",
+                                      pointerEvents: "none",
+                                      cursor: "not-allowed",
+                                    }
                                     : {}
                                 }
                               />
@@ -286,10 +285,10 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                  backgroundColor: "#f0f0f0",
+                                  pointerEvents: "none",
+                                  cursor: "not-allowed",
+                                }
                                 : {}
                             }
                           />

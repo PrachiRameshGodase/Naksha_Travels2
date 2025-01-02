@@ -37,6 +37,7 @@ const InsideItemDetailsBox = ({
   itemDetails,
   preferred_vendor,
   warehouseData,
+  setSearchTrigger
 }) => {
   const itemPayloads = localStorage.getItem(("accountPayload"));
 
@@ -530,6 +531,7 @@ const InsideItemDetailsBox = ({
             <WarehouseInformation
               warehouseData={warehouseData}
               itemDetails={itemDetails}
+              setSearchTrigger={setSearchTrigger}
             />
           </>
         )}

@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Toaster } from 'react-hot-toast';
 import { RxCross2 } from 'react-icons/rx';
 import NumericInput from '../Helper/NumericInput';
 import { useDispatch } from 'react-redux';
 import { autoGenerateId } from '../../Redux/Actions/globalActions';
 
-
-const GenerateIdPopup = ({ formdatas}) => {
+const GenerateIdPopup = ({ formdatas }) => {
     const dispatch = useDispatch();
     const { autoData, setAutoData, setGenerateId, setSearchTrigger } = formdatas;
     const [inputValue, setInputValue] = useState("auto");
@@ -14,6 +13,7 @@ const GenerateIdPopup = ({ formdatas}) => {
 
     const [formData, setFormData] = useState({
         prefix: autoData?.prefix,
+        padded_digits: autoData?.padded_digits,
         sequence_number: autoData?.sequence_number,
         delimiter: autoData?.delimiter,
         module: autoData?.module,
@@ -30,6 +30,7 @@ const GenerateIdPopup = ({ formdatas}) => {
             setAutoData((prev) => ({
                 ...prev,
                 prefix: formData?.prefix,
+                padded_digits: formData?.padded_digits,
                 sequence_number: formData?.sequence_number,
                 delimiter: formData?.delimiter
             }));
@@ -51,7 +52,7 @@ const GenerateIdPopup = ({ formdatas}) => {
         <>
             <Toaster />
             <div className="mainxpopups1" ref={popupRef} tabIndex="0">
-                <div className="popup-content">
+                <div className="popup-content" style={{ maxWidth: "490px" }}>
                     <div id='autoIdpopup_34'>
                         <span className="close-button" onClick={() => setGenerateId(false)}><RxCross2 /></span>
                         <h2 >Configure Estimate Number Preferences
@@ -70,29 +71,43 @@ const GenerateIdPopup = ({ formdatas}) => {
                             </div>
                             {
                                 inputValue === "auto" && (
-                                    <div className="form_commonblock" style={{ padding: "10px" }}>
-                                        <div className='midpopusec12_div'>
-                                            <div >
-                                                <label style={{ padding: "10px" }}>Prefix</label>
-                                                <span>
-                                                    <input name="prefix" autoFocus="on" value={formData.prefix} onChange={handleChange} autocomplete="off" />
-                                                </span>
-                                            </div>
-                                            <div >
-                                                <label style={{ margin: "2px" }}>Delimiter</label>
-                                                <span>
-                                                    <input name="delimiter" value={formData.delimiter} onChange={handleChange} autocomplete="off" />
-                                                </span>
-                                            </div>
-                                            <div >
-                                                <label style={{ margin: "2px" }}>Next Number</label>
-                                                <span>
-                                                    <NumericInput name="sequence_number" value={formData.sequence_number} onChange={handleChange} autocomplete="off" />
-                                                </span>
-                                            </div>
+                                    <>
+                                        <div className="form_commonblock" style={{ padding: "10px" }}>
+                                            <div className='midpopusec12_div'>
+                                                <div >
+                                                    <label style={{ padding: "10px" }}>Prefix</label>
+                                                    <span>
+                                                        <input name="prefix" autoFocus="on" value={formData.prefix} onChange={handleChange} autocomplete="off" />
+                                                    </span>
+                                                </div>
+                                                <div >
+                                                    <label style={{ margin: "2px" }}>Delimiter</label>
+                                                    <span>
+                                                        <input name="delimiter" value={formData.delimiter} onChange={handleChange} autocomplete="off" />
+                                                    </span>
+                                                </div>
+                                                <div >
+                                                    <label style={{ margin: "2px" }}>Padded Digit</label>
+                                                    <span>
+                                                        <NumericInput name="padded_digits" value={formData.padded_digits} onChange={handleChange} autocomplete="off" />
+                                                    </span>
+                                                </div>
+                                                <div >
+                                                    <label style={{ margin: "2px" }}>Next Number</label>
+                                                    <span>
+                                                        <NumericInput name="sequence_number" value={formData.sequence_number} onChange={handleChange} autocomplete="off" />
+                                                    </span>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div className='midpopusec12_div' style={{ justifyContent: "end" }}>
+                                            <label className='toggle_input_label'>
+
+                                                <p>Module Example - {formData?.prefix + formData?.delimiter + formData?.padded_digits + formData?.sequence_number}</p>
+                                            </label>
+                                        </div>
+                                    </>
                                 )
                             }
 

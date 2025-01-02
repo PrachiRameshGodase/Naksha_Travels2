@@ -32,7 +32,7 @@ export const showAmountWithCurrencySymbolWithPoints = (val) => {
 
 export const ShowMasterData = (type) => {
     const masterData = useSelector(state => state?.masterData?.masterData);
-    
+
 
     const filteredData = masterData?.filter(item => item.type == type);
     return filteredData || [];
@@ -91,9 +91,6 @@ export const useDebounceSearch = (callback, delay) => {
     return debouncedFunction;
 };
 
-
-
-
 export const handleDropdownError = (isSelected, dropdownRef) => {
     if (!isSelected) {
         if (!isPartiallyInViewport(dropdownRef.current)) {
@@ -116,6 +113,7 @@ export const stringifyJSON = (data) => {
     }
 };
 
+
 export const parseJSONofString = (jsonString) => {
     try {
         return JSON.parse(jsonString);
@@ -126,6 +124,10 @@ export const parseJSONofString = (jsonString) => {
 };
 
 
+//it does not seen the 0 value..
+export const preventZeroVal = (val) => {
+    return val == "0" ? "" : val
+}
 // show department
 // utils.js
 export const showDeparmentLabels = (department, mainDeparmentVal) => {
@@ -146,7 +148,6 @@ export const showDeparmentLabels = (department, mainDeparmentVal) => {
         return "";
     }
 };
-
 
 export function getDateStatus(createdDate, expiryDate) {
     const now = new Date();
@@ -173,6 +174,7 @@ export function getDateStatus(createdDate, expiryDate) {
         return "Expired";
     }
 }
+
 export function getDateStatus1(createdDate, expiryDate) {
     const now = new Date();
     const created = new Date(createdDate);
@@ -198,25 +200,26 @@ export function getDateStatus1(createdDate, expiryDate) {
     }
 }
 
+
 export const validateItems = (items) => {
     const errors = [];
-  
+
     items.forEach((item, index) => {
-      const itemErrors = {};
-  
-      if (!item.item_name) itemErrors.item_name  = "Please Select An Item";
-      if (!item.rate || item.rate <= 0) itemErrors.rate = "Please Add Sale Price";
-      if (!item.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
-      if (!item.unit_id) itemErrors.unit_id = "Please Select An Unit";
-  
-      if (Object.keys(itemErrors).length > 0) {
-        errors[index] = itemErrors;
-      }
+        const itemErrors = {};
+
+        if (!item?.item_name) itemErrors.item_name = "Please Select An Item";
+        if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Add Sale Price";
+        if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
+        if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
+
+        if (Object.keys(itemErrors).length > 0) {
+            errors[index] = itemErrors;
+        }
     });
-  
+
     return errors;
-  };
-  
+};
+
 
 
 
