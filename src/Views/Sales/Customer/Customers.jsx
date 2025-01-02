@@ -18,14 +18,13 @@ import FilterIco from "../../../assets/outlineIcons/othericons/FilterIco.svg";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import newmenuicoslz from "../../../assets/outlineIcons/othericons/newmenuicoslz.svg";
 import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
-import { formatDate } from "../../Helper/DateFormat";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const SalesOrderList = () => {
-  const itemPayloads = localStorage.getItem(("customerPayload"));
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -157,12 +156,8 @@ const SalesOrderList = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.sort_by || parshPayload?.customer_type || parshPayload?.status || parshPayload?.currentpage > 1) {
-      fetchCustomers();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchCustomers); // Use the custom hook for call API
+
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -319,7 +314,16 @@ const SalesOrderList = () => {
             All Customer
           </h1>
 
-          <p id="firsttagp">{cusList?.data?.count} Records</p>
+          <p id="firsttagp">{cusList?.data?.count} Records
+            <span
+              className={`${cusList?.loading && "rotate_01"}`}
+              data-tooltip-content="Reload"
+              data-tooltip-place="bottom"
+              data-tooltip-id="my-tooltip"
+              onClick={() => setSearchTrigger(prev => prev + 1)}>
+              {otherIcons?.refresh_svg}
+            </span>
+          </p>
 
           <SearchBox placeholder="Search In Customer" onSearch={onSearch} />
         </div>
@@ -815,7 +819,9 @@ const SalesOrderList = () => {
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd01"
                               >
-                              
+                                {/* {quotation.salutation + " " + quotation.first_name + " " + quotation.last_name || ""} */}
+                                {/* {`${quotation?.salutation || ""} ${quotation?.first_name || ""
+                                  } ${quotation?.last_name || ""}`} */}
                                 {quotation.display_name || ""}
                               </div>
                               <div

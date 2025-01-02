@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { IoPricetagsOutline, IoSearchOutline } from "react-icons/io5";
@@ -19,13 +19,12 @@ import FilterIco from "../../assets/outlineIcons/othericons/FilterIco.svg";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { Tooltip } from "react-tooltip";
 import { OutsideClick } from "../Helper/ComponentHelper/OutsideClick";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
 const Quotations = () => {
   const dispatch = useDispatch();
-
-  const itemPayloads = localStorage.getItem(("itemPayload"));
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
@@ -42,7 +41,7 @@ const Quotations = () => {
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [searchCall, setSearchCall] = useState(false);
+
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   // reset current page to 1 when any filters are applied
@@ -67,10 +66,6 @@ const Quotations = () => {
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/item-details?id=${quotation.id}`);
-  };
-
-  const handleDataChange = (newValue) => {
-    setDataChanging(newValue);
   };
 
   //for import and export .xlsx file
@@ -250,7 +245,6 @@ const Quotations = () => {
   };
   //sortBy
 
-
   //serch
   const searchItems = () => {
     setSearchTrigger((prev) => prev + 1);
@@ -279,69 +273,22 @@ const Quotations = () => {
       debouncedSearch();
     }
   };
-  //Search/////////////////////////////////////////////////////////////
-  // const handleSearch = (e) => {
-  //   resetPageIfNeeded()
-  //   setSearchTerm(e.target.value);
-  //   setTimeout(() => {
-  //     setSearchTrigger((prev) => prev + 1);
-  //   }, 2000);
-  //   // Add a class to the search input field when the search term is not empty
-  //   const searchInput = document.getElementById("commonmcsearchbar");
-  //   if (searchInput) {
-  //     if (e.target.value) {
-  //       searchInput.classList.add("search-applied");
-  //     } else {
-  //       searchInput.classList.remove("search-applied");
-  //     }
-  //   }
-  // };
-  //serch
-
   // serch and filter
 
+  //fetch all data
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    fy: localStorage.getItem('FinancialYear'),
+    noofrec: itemsPerPage,
+    currentpage: currentPage,
+    active: 1,
+    ...(searchTerm && { search: searchTerm }),
+    ...(Object.keys(allFilters)?.length > 0 && allFilters),
+    ...(Object.keys(allSort)?.length > 0 && allSort),
+  }), [searchTrigger]);
+
+  useFetchApiData(itemLists, payloadGenerator, [searchTrigger]);
 
   //fetch all data
-
-  const fetchQuotations = useCallback(async () => {
-    try {
-      let sendData = {
-        fy: localStorage.getItem('FinancialYear'),
-        noofrec: itemsPerPage,
-        currentpage: currentPage,
-        active: 1,
-      };
-      if (searchTerm) {
-        sendData.search = searchTerm;
-      }
-
-      if (Object.keys(allFilters).length > 0 || Object.keys(allSort).length > 0) {
-        dispatch(
-          itemLists({
-            ...sendData,
-            ...allFilters,
-            ...allSort,
-          })
-        );
-      } else {
-        dispatch(itemLists(sendData));
-      }
-
-      setDataChanging(false);
-    } catch (error) {
-      console.error("Error fetching quotations:", error);
-    }
-  }, [searchTrigger]);
-
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.price || parshPayload?.name || parshPayload?.type || parshPayload?.active == 0 || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
-  //fetch all data
-
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
 
@@ -459,7 +406,17 @@ const Quotations = () => {
               </svg>
               All Items
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">{totalItems} Records
+
+              <span
+                className={`${itemListState?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <div id="searchbox">
               <input
                 id="commonmcsearchbar" // Add an ID to the search input field
@@ -587,7 +544,6 @@ const Quotations = () => {
                   </div>
                 )}
               </div>
-
               <div className={`maincontainmiainx1`}>
                 <div
                   className="labelfistc51s filtersorticos5w"
@@ -1083,95 +1039,101 @@ const Quotations = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {itemList?.map((quotation, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                          ? "selectedresult"
-                          : ""
-                          }`}
-                      >
+                    {itemList?.length >= 1 ? <>
+                      {itemList?.map((quotation, index) => (
                         <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
-                        >
-                          <input
-                            checked={selectedRows.includes(quotation.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(quotation.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          data-tooltip-id="my-tooltip"
-                          data-tooltip-content={quotation?.name}
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {quotation.name}
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs2_item"
-                          data-tooltip-id="my-tooltip"
-                          data-tooltip-content={`${quotation?.category?.name || ""
-                            }${quotation?.sub_category?.name
-                              ? ` / ${quotation?.sub_category?.name}`
-                              : ""
-                            }`}
-                        >
-                          {`${quotation?.category?.name || ""}${quotation?.sub_category?.name
-                            ? ` / ${quotation?.sub_category?.name}`
+                          className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                            ? "selectedresult"
                             : ""
                             }`}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs3"
-                          data-tooltip-id="my-tooltip"
-                          data-tooltip-content={quotation?.sku}
+                          key={index}
                         >
-                          {quotation?.sku || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs4"
-                        >
-                          {quotation?.type === "Raw"
-                            ? "Raw Material"
-                            : quotation?.type || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5"
-                        >
-                          <span
-                            style={{
-                              color: quotation?.stock < 0 ? "red" : "inherit",
-                            }}
+                          <div
+                            className="table-cellx12 checkboxfx1"
+                            id="styl_for_check_box"
                           >
-                            {quotation?.stock || 0.0}
-                          </span>
+                            <input
+                              checked={selectedRows.includes(quotation.id)}
+                              type="checkbox"
+                              onChange={() => handleCheckboxChange(quotation.id)}
+                            />
+                            <div className="checkmark"></div>
+                          </div>
+                          <div
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content={quotation?.name}
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            {quotation.name}
+                          </div>
+
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs2_item"
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content={`${quotation?.category?.name || ""
+                              }${quotation?.sub_category?.name
+                                ? ` / ${quotation?.sub_category?.name}`
+                                : ""
+                              }`}
+                          >
+                            {`${quotation?.category?.name || ""}${quotation?.sub_category?.name
+                              ? ` / ${quotation?.sub_category?.name}`
+                              : ""
+                              }`}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs3"
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content={quotation?.sku}
+                          >
+                            {quotation?.sku || ""}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs4"
+                          >
+                            {quotation?.type === "Raw"
+                              ? "Raw Material"
+                              : quotation?.type || ""}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs5"
+                          >
+                            <span
+                              style={{
+                                color: quotation?.stock < 0 ? "red" : "inherit",
+                              }}
+                            >
+                              {quotation?.stock || 0.0}
+                            </span>
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs5"
+                          >
+                            {quotation?.tax_rate
+                              ? `${parseInt(quotation.tax_rate, 10)} %`
+                              : ""}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs5_item"
+                          >
+                            <p>
+                              {" "}
+                              {showAmountWithCurrencySymbol(quotation?.price)}
+                            </p>
+                          </div>
                         </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5"
-                        >
-                          {quotation?.tax_rate
-                            ? `${parseInt(quotation.tax_rate, 10)} %`
-                            : ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5_item"
-                        >
-                          <p>
-                            {" "}
-                            {showAmountWithCurrencySymbol(quotation?.price)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </>
+                      : (
+                        <NoDataFound />
+                      )}
 
                     <PaginationComponent
                       itemList={totalItems}
@@ -1187,7 +1149,7 @@ const Quotations = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
 
       {showImportPopup && (
         <div
@@ -1236,7 +1198,8 @@ const Quotations = () => {
             </form>
           </div>
         </div>
-      )}
+      )
+      }
       <Toaster />
     </>
   );

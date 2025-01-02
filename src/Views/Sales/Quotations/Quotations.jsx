@@ -11,7 +11,7 @@ import "./quoations.scss";
 import ListComponent from "./ListComponent";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { formatDate, todayDate } from "../../Helper/DateFormat";
+import { formatDate } from "../../Helper/DateFormat";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import DatePicker from "../../Common/DatePicker/DatePicker";
 import SortBy from "../../Common/SortBy/SortBy";
@@ -20,16 +20,15 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { quotationFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { quotationSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 
 const Quotations = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-  const debounceTimeout = useRef(null);
   const qutList = useSelector((state) => state?.quoteList);
   const qutSend = useSelector((state) => state?.quoteSend);
-  const itemPayloads = localStorage.getItem(("quotPayload"));
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -84,7 +83,7 @@ const Quotations = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchQuotations = () => {
+  const fetchQuotations = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -113,14 +112,9 @@ const Quotations = () => {
     } catch (error) {
       console.error("Error fetching quotations:", error);
     }
-  }
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
   }, [searchTrigger]);
+
+  useFetchOnMount(fetchQuotations); // Use the custom hook for call API
 
 
   const handleRowClicked = (quotation) => {
@@ -145,6 +139,7 @@ const Quotations = () => {
     setSelectAll(areAllRowsSelected);
   }, [selectedRows, qutList?.data?.quotations]);
 
+
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(
@@ -153,18 +148,32 @@ const Quotations = () => {
   };
   //logic for checkBox...
 
+  // for refresh the api onclick
+  // const refreshApiHelper = useRefreshApiHelper();
   return (
     <>
       <TopLoadbar />
       {qutSend?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
+
+
         <div id="Anotherbox">
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.quotation_svg}
               All Quotations
             </h1>
-            <p id="firsttagp">{qutList?.data?.total} Records</p>
+            <p id="firsttagp">{qutList?.data?.total} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In Quotation" onSearch={onSearch} section={searchTrigger} />
           </div>
 

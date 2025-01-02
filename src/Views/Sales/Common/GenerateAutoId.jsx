@@ -5,26 +5,26 @@ import GenerateIdPopup from '../../Home/GenerateIdPopup';
 import { ShowAutoGenerateId } from '../../Helper/HelperFunctions';
 import WaveLoader from '../../../Components/Loaders/WaveLoader';
 
-const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField, disable, style }) => {
+const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField }) => {
     const { loading } = useSelector(state => state?.autoIdList);
     const autoId = ShowAutoGenerateId(module, showField);
     const [generateId, setGenerateId] = useState(false);
-    const [autoData, setAutoData] = useState({ prefix: null, delimiter: null, sequence_number: null, sequence_type: 1, module: null, id: null });
+    const [autoData, setAutoData] = useState({ prefix: null, delimiter: null, padded_digits: null, sequence_number: null, sequence_type: 1, module: null, id: null });
 
     useEffect(() => {
-        const { prefix, delimiter, sequence_number, module, id, sequence_type } = autoId || {};
-        if (prefix !== autoData.prefix || delimiter !== autoData.delimiter || sequence_number !== autoData.sequence_number || module !== autoData.module || id !== autoData.id) {
-            setAutoData({ prefix, delimiter, sequence_number, module, id, sequence_type });
+        const { prefix, delimiter, padded_digits, sequence_number, module, id, sequence_type } = autoId || {};
+
+        if (prefix !== autoData.prefix || delimiter !== autoData.delimiter || padded_digits !== autoData?.padded_digits || sequence_number !== autoData.sequence_number || module !== autoData.module || id !== autoData.id) {
+            setAutoData({ prefix, delimiter, padded_digits, sequence_number, module, id, sequence_type });
         }
     }, [autoId]);
 
     useEffect(() => {
         if (!showField) {//use when we update the module sequence id is not fetched form sequence list..
-            setFormData(prev => ({ ...prev, [nameVal]: `${autoData.prefix}${autoData.delimiter}${autoData.sequence_number}` }));
+            setFormData(prev => ({ ...prev, [nameVal]: `${autoData.prefix}${autoData.delimiter}${autoData?.padded_digits}${autoData.sequence_number}` }));
             setShowAllSequenceId({ ...autoData });
         }
     }, [autoData, nameVal, setFormData, setShowAllSequenceId, autoId, showField]);
-
     return (
         <>
             <span>
@@ -37,19 +37,13 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
                     onChange={handleChange}
                     name={nameVal}
                     autoComplete='off'
-                    
-                    
-                    disabled={disable || autoData.sequence_type === 1} // Disabled logic based on `disable` prop or sequence type
-                    style={{ cursor: disable ? "not-allowed" : "text", ...style }} // Apply the custom style and disabled cu
+                    disabled={autoData.sequence_type == 1}
+                    style={{ cursor: "not-allowed" }}
                 />
 
-                {!showField && <span  onClick={!disable ? () => setGenerateId(true) : null} // Only trigger click if not disabled
-                        style={{
-                            cursor: disable ? "not-allowed" : "pointer", // Change cursor style
-                            pointerEvents: disable ? "none" : "auto" // Prevent clicking when disabled
-                        }}>{otherIcons.setting_icon}</span>}
+                {!showField && <span onClick={() => setGenerateId(true)}>{otherIcons.setting_icon}</span>}
             </span>
-            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId}} />}
+            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId }} />}
         </>
     );
 };
