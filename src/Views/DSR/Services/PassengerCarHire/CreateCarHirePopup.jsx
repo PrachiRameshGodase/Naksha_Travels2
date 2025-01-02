@@ -11,6 +11,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerCarHireAction } from "../../../../Redux/Actions/passengerCarHireActions";
+import CalculationSection from "../../CalculationSection";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -234,67 +235,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </div>
                       </div>
-                      <div className="calctotalsection">
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Car Hire Price:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Supplier Service Charge:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Tax:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Retain:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="clcsecx12s2">
-                          <label>Invoice Total :</label>
-                          <input
-                            type="text"
-                            value={formData?.total}
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
+                      <CalculationSection formData={formData} section='Carhire'/>
+                      
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
