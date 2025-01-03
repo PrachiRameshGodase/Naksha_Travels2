@@ -141,14 +141,14 @@ const CustomDropdown31 = forwardRef((props, ref) => {
             {customList?.loading ? (
               <TableViewSkeletonDropdown />
             ) : (
-              options.map((option, index) => (
+              options?.map((option, index) => (
                 <div
                   key={option.id}
                   ref={(el) => (optionRefs.current[index] = el)}
                   onClick={() => handleSelect(option)}
                   className={
                     "dropdown-option" +
-                    (isSelected(option.id) ? " selectedoption" : "") +
+                    (isSelected(option?.id) ? " selectedoption" : "") +
                     (index === focusedOptionIndex ? " focusedoption" : "")
                   }
                 >
@@ -156,7 +156,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
                 </div>
               ))
             )}
-            {options.length === 0 && (
+            {options?.length === 0 && (
               <>
                 <div className="notdatafound02">
                   <iframe

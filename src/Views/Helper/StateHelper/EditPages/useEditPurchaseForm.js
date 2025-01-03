@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { parsePurchaseDetails } from "./parsePurchaseDetails";
 import { getBaseFormData } from "../getBaseFormData";
-import { parseJSONofString, stringifyJSON } from "../../HelperFunctions";
+import { parseJSONofString, stringifyJSON, validateItems } from "../../HelperFunctions";
 
 //Common component for state management
 export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], detailData, itemId, isEdit, convert) => {

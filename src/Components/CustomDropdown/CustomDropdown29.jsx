@@ -26,7 +26,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
   const hotelList = useSelector(
     (state) => state?.hotelList
   );
-  const itemPayloads = localStorage.getItem(("customerPayload"));
+  const hotelPayloads = localStorage.getItem(("hotelPayload"));
 
   const dispatch = useDispatch();
 
@@ -41,12 +41,13 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    // if (parshPayload?.search) {
+    const parshPayload = parseJSONofString(hotelPayloads);
+    console.log("parshPayload", parshPayload?.search);
+    if (parshPayload?.search) {
       dispatch(hotelListAction({
         ...sendData,
       }));
-    // }
+    }
     setSearchTerm("");
   }, [isOpen]);
   return (

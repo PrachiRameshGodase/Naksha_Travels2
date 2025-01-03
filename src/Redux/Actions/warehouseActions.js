@@ -80,7 +80,7 @@ export const warehouseViewAction = (queryParams) => async (dispatch) => {
             queryParams
         );
 
-        console.log("warehouser view callll", response)
+        // console.log("warehouser view callll", response)
         dispatch({ type: WAREHOUSE_VIEW_SUCCESS, payload: response.data });
         return response;
     } catch (error) {

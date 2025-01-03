@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,11 +12,13 @@ import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerH
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -54,13 +56,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: null,
-    hotel_price: null,
-    discount: null,
+    charges: 0.00,
+    hotel_price: 0,
+    discount: 0.00,
     tax_percent: null,
-    tax_amount: null,
-    retain: null,
-    total_amount: null,
+    tax_amount: 0.00,
+    retain: 0.00,
+    total_amount: 0.00,
     note: null,
     upload_image: null,
   });
@@ -75,7 +77,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     const entryTypeName = entryType?.find((val) => val?.labelid == value);
     const selectedHotel = hotelList?.find(
       (item) => item?.id == formData?.hotel_id
@@ -125,6 +126,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
+ // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    ...sendData,
+    // ...productType,
+  }), []);
+
+  useFetchApiData(customersList, payloadGenerator, []);//call api common function
 
   return (
     <div id="formofcreateitems">
@@ -393,7 +401,21 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
-                      <CalculationSection formData={formData} section='Hotel' />
+                      <div className="secondtotalsections485s">
+                      <div className="textareaofcreatqsiform">
+                        <label>Note</label>
+                        <div className="show_no_of_text_limit_0121">
+                          <TextAreaComponentWithTextLimit
+                            formsValues={{ handleChange, formData }}
+                            placeholder="Note..."
+                            name="note"
+                            value={formData.note == 0 ? "" : formData.note}
+                          />
+                        </div>
+                      </div>
+                      <CalculationSection formData={formData} handleChange={handleChange} section='Hotel'/>
+                      
+                    </div>
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
