@@ -193,12 +193,12 @@ const DSRDetails = () => {
   };
   return (
     <>
-      {(quoteStatus?.loading || quoteDelete?.loading || loading) && (
+      {/* {(DSRDetails?.loading ) && (
         <MainScreenFreezeLoader />
-      )}
+      )} */}
       {/* <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" /> */}
 
-      {quoteDetail?.loading ? (
+      {DSRDetails?.loading ? (
         <Loader02 />
       ) : (
         <div ref={componentRef}>

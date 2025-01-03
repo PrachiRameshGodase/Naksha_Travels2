@@ -34,7 +34,7 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
 
 
   return (
-    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "items" ? { minWidth: "10%", backgroundColor:"#f6f8fa", borderRadius:"5px" } : {}}>
+    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "items" ? { minWidth: "10%", backgroundColor:"#f6f8fa", borderRadius:"5px" } :className2 === "item3" ? { minWidth: "185px", backgroundColor:"white", borderRadius:"5px" }: {}}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}  style={className2 === "items" ? {  borderRadius:"5px", paddingLeft:"12px" } : {}}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
         <svg

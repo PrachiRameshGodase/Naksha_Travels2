@@ -33,6 +33,7 @@ import { CREATE_HOTEL_ERROR, CREATE_HOTEL_REQUEST, CREATE_HOTEL_ROOM_ERROR, CREA
 
 
 export const hotelListAction = (queryParams, setAllListValue) => async (dispatch) => {
+    localStorage.setItem("hotelPayload", JSON.stringify(queryParams));
     dispatch({ type: GET_HOTEL_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/hotel/list`, queryParams);

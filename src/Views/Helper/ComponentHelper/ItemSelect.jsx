@@ -198,7 +198,7 @@ const ItemSelect = ({
   ]);
 
   const handleItemChange = (index, field, value) => {
-    console.log("index, field, value,", index, field, value);
+  
     const newItems = [...formData.items];
     const newErrors = [...itemErrors];
 
