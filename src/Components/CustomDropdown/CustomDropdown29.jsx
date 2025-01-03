@@ -1,4 +1,4 @@
-import React, { useState, useRef, forwardRef, useEffect } from 'react';
+import React, { useState, useRef, forwardRef, useEffect, useMemo } from 'react';
 import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
@@ -7,6 +7,7 @@ import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
 import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
 import { hotelListAction } from '../../Redux/Actions/hotelActions';
+import useFetchApiData from '../../Views/Helper/ComponentHelper/useFetchApiData';
 
 const CustomDropdown29 = forwardRef((props, ref) => {
   const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, } = props;
@@ -38,11 +39,9 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   const fullName = options?.find(account => account?.id == value);
 
-
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
     const parshPayload = parseJSONofString(hotelPayloads);
-    console.log("parshPayload", parshPayload?.search);
     if (parshPayload?.search) {
       dispatch(hotelListAction({
         ...sendData,
@@ -50,6 +49,13 @@ const CustomDropdown29 = forwardRef((props, ref) => {
     }
     setSearchTerm("");
   }, [isOpen]);
+
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    ...sendData,
+  }), []);
+  useFetchApiData(hotelListAction, payloadGenerator, []);//call api common function
+
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

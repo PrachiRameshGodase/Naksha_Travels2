@@ -4,12 +4,10 @@ import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
-import { customersList } from '../../Redux/Actions/customerActions';
-import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
-import { hotelRoomListAction } from '../../Redux/Actions/hotelActions';
+
 
 const CustomDropdown02 = forwardRef((props, ref) => {
-  const {hotelID, options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877} = props;
+  const { hotelID, options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877 } = props;
   const {
     isOpen,
     setIsOpen,
@@ -24,7 +22,7 @@ const CustomDropdown02 = forwardRef((props, ref) => {
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
-  
+
   const itemPayloads = localStorage.getItem(("customerPayload"));
 
   const dispatch = useDispatch();
@@ -39,16 +37,16 @@ const CustomDropdown02 = forwardRef((props, ref) => {
 
 
   //prevent for again and again loding api when we are open dropdown
-  useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (parshPayload?.search) {
-    const sendData={
-        hotel_id:hotelID
-    }
-      dispatch(hotelRoomListAction(sendData));
-    // }
-    // setSearchTerm("");
-  }, [isOpen]);
+  // useEffect(() => {
+  //   // const parshPayload = parseJSONofString(itemPayloads);
+  //   // if (parshPayload?.search) {
+  //   const sendData={
+  //       hotel_id:hotelID
+  //   }
+  //     dispatch(hotelRoomListAction(sendData));
+  //   // }
+  //   // setSearchTerm("");
+  // }, [isOpen]);
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

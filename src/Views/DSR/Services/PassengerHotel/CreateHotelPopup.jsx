@@ -19,6 +19,8 @@ import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
 import { customersList } from "../../../../Redux/Actions/customerActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -67,6 +69,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     upload_image: null,
   });
 
+  console.log("foermdata", formData)
+
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -78,23 +82,35 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const selectedHotel = hotelList?.find(
-      (item) => item?.id == formData?.hotel_id
-    );
-    const selectedSupplierName = vendorList?.data?.user?.find(
-      (item) => item?.id == formData?.supplier_id
-    );
+
+    let updatedFields = { [name]: value };
+
+    if (name === "hotel_id") {
+      const selectedHotel = hotelList?.find((item) => item?.id == value);
+      dispatch(hotelRoomListAction({ hotel_id: selectedHotel?.id }));
+      updatedFields = {
+        ...updatedFields,
+        hotel_name: selectedHotel?.hotel_name || "",
+      };
+    }
+
+    if (name === "supplier_id") {
+      console.log("vendorList?.data?.user", vendorList?.data?.user)
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      console.log("selectedHotel", selectedHotel)
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
 
     setFormData((prev) => ({
       ...prev,
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      hotel_name: selectedHotel?.hotel_name,
-      supplier_name: selectedSupplierName?.display_name,
-      [name]: value,
+      ...(name === "entry_type" && { entry_type: entryTypeName?.label, }),
+      ...updatedFields,
     }));
   };
+
   const handleChange1 = (selectedItems) => {
     setFormData({
       ...formData,
@@ -126,13 +142,15 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
- // call item api on page load...
+  // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
     ...sendData,
-    // ...productType,
   }), []);
 
   useFetchApiData(customersList, payloadGenerator, []);//call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []);//call api common function
+  // call item api on page load...
+
 
   return (
     <div id="formofcreateitems">
@@ -191,7 +209,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               defaultOption="Select Hotel"
                               setcusData={setcusData3}
                               cusData={cusData3}
-                              type="vendor"
+                              type="hotalList"
                               required
                             />
                           </span>
@@ -367,7 +385,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
-
                             <CustomDropdown10
                               ref={dropdownRef1}
                               label="Select Supplier"
@@ -402,20 +419,20 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="secondtotalsections485s">
-                      <div className="textareaofcreatqsiform">
-                        <label>Note</label>
-                        <div className="show_no_of_text_limit_0121">
-                          <TextAreaComponentWithTextLimit
-                            formsValues={{ handleChange, formData }}
-                            placeholder="Note..."
-                            name="note"
-                            value={formData.note == 0 ? "" : formData.note}
-                          />
+                        <div className="textareaofcreatqsiform">
+                          <label>Note</label>
+                          <div className="show_no_of_text_limit_0121">
+                            <TextAreaComponentWithTextLimit
+                              formsValues={{ handleChange, formData }}
+                              placeholder="Note..."
+                              name="note"
+                              value={formData.note == 0 ? "" : formData.note}
+                            />
+                          </div>
                         </div>
+                        <CalculationSection formData={formData} handleChange={handleChange} section='Hotel' />
+
                       </div>
-                      <CalculationSection formData={formData} handleChange={handleChange} section='Hotel'/>
-                      
-                    </div>
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
