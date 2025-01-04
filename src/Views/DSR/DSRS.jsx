@@ -102,10 +102,10 @@ const DSRS = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
         }),
       };
 
@@ -151,7 +151,7 @@ const DSRS = () => {
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows,DSRLists]);
+  }, [selectedRows, DSRLists]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
@@ -160,6 +160,11 @@ const DSRS = () => {
     );
   };
   //logic for checkBox...
+
+  const handleNewDsr = () => {
+    navigate("/dashboard/create-dsr");
+    dispatch(clearDsrState);
+  };
 
   return (
     <>
@@ -210,7 +215,7 @@ const DSRS = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link className="linkx1" to={"/dashboard/create-dsr"}>
+            <Link onClick={handleNewDsr} className="linkx1">
               New DSR <GoPlus />
             </Link>
             <ResizeFL />
@@ -235,24 +240,24 @@ const DSRS = () => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                  DSR No
+                    DSR No
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                  Customer Type
+                    Customer Type
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                  Customer Name
-                  </div>
-                 
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.customer_svg}
-                   Currency
+                    Customer Name
                   </div>
 
-                 
-                 
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.customer_svg}
+                    Currency
+                  </div>
+
+
+
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -267,11 +272,10 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
-                            }`}
+                              }`}
                             key={index}
                           >
                             <div
@@ -289,23 +293,23 @@ const DSRS = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                               
+
                               {item?.dsr_no || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              {item?.customer?.customer_type ||""}
+                              {item?.customer?.customer_type || ""}
                             </div>
-                            
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.customer?.display_name || ""}
                             </div>
-                            
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
@@ -321,15 +325,15 @@ const DSRS = () => {
                                   item?.is_invoiced == "0"
                                     ? "open"
                                     : item?.is_invoiced == "1"
-                                    ? "declined"
-                                    : ""
+                                      ? "declined"
+                                      : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                  ? "Not Invoiced"
-                                  : ""}
+                                    ? "Not Invoiced"
+                                    : ""}
                               </p>
                             </div>
                           </div>
