@@ -36,9 +36,9 @@ const Login = () => {
       if (response.data.success === true) {
         toast.success("Login successful");
         // Navigate("/organisations")
-        // Navigate("/")
+        Navigate("/")
         // window.location.href = '/home_present_megamarket';
-        window.location.href = '/home_megamarket';
+        // window.location.href = '/home_megamarket';
       }
 
       if (response.data.success === false) {
