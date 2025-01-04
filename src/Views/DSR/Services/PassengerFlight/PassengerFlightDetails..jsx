@@ -10,7 +10,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
-  
+
   return (
     <>
       {data?.loading ? (
@@ -29,104 +29,117 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"350px"}}>
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
                         <div className="inidbx1">
                           <div
                             className="inidbx1s1"
-                            style={{ width: "1000px", background: "#f6f8fa" }}
+                            style={{
+                              width: "1000px",
+                              background: "rgb(232 241 253 / 25%)",
+                            }}
                           >
                             <div
                               className="inidbs1x1a1"
                               style={{
-                                background: "hsl(205deg 14.51% 91.94%)",
+                                background: "#f6f8fa",
                               }}
                             >
                               {otherIcons?.information_svg}
                               Flight Details
                             </div>
-                            <ul>
-                              <li className="pendingfromfrontendx5">
-                                <span>Airline Name</span>
-                                <h1>:</h1>
-                                <p>{data?.airline_name || ""}</p>
-                              </li>
-                              <li className="pendingfromfrontendx5">
-                                <span>Entry type</span>
-                                <h1>:</h1>
-                                <p>{data?.entry_type || ""}</p>
-                              </li>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li className="pendingfromfrontendx5 ">
+                                  <span>Airline Name</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.airline_name || ""}
+                                  </p>
+                                </li>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Entry type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.entry_type || ""}
+                                  </p>
+                                </li>
 
-                              <li>
-                                <span>Travel Date</span>
-                                <h1>:</h1>
-                                <p>{formatDate3(data?.travel_date) || ""}</p>
-                              </li>
-                              <li>
-                                <span>Travel Type</span>
-                                <h1>:</h1>
-                                <p>
-                                  {" "}
-                                  <ShowMastersValue
-                                    type="40"
-                                    id={data?.travel_type_id || ""}
-                                  />
-                                </p>
-                              </li>
+                                <li>
+                                  <span>Travel Date</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.travel_date) || ""}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span>Travel Type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {" "}
+                                    <ShowMastersValue
+                                      type="40"
+                                      id={data?.travel_type_id || ""}
+                                    />
+                                  </p>
+                                </li>
 
-                              <li className="pendingfrombackendx5">
-                                <span>Passengers</span>
-                                <h1>:</h1>
-                                <p>
-                                  {data?.guests
-                                    ?.map((item) => item?.display_name)
-                                    .filter(Boolean)
-                                    .join(", ")}
-                                </p>
-                              </li>
-
-                              <li>
-                                <span>GDS Portal</span>
-                                <h1>:</h1>
-                                <p>{data?.gds_portal || ""}</p>
-                              </li>
-                              <li>
-                                <span>Ticket Number</span>
-                                <h1>:</h1>
-                                <p>{data?.ticket_no || ""}</p>
-                              </li>
-                              <li>
-                                <span>PRN Number</span>
-                                <h1>:</h1>
-                                <p>{data?.prn_no || ""}</p>
-                              </li>
-                              <li>
-                                <span>Route</span>
-                                <h1>:</h1>
-                                <p>{data?.route || ""}</p>
-                              </li>
-
-                              <li>
-                                <span>Supplier Name</span>
-                                <h1>:</h1>
-                                <p>{data?.supplier_name || ""}</p>
-                              </li>
-                              <li>
-                                <span>Notes</span>
-                                <h1>:</h1>
-                                <p>{data?.note || ""}</p>
-                              </li>
-
-                              <li className="pendingfromfrontendx5">
-                                <span>Attachment</span>
-                                <h1>:</h1>
-                                <p>
-                                  <Attachment2 attachments={attachments} />
-                                </p>
-                              </li>
-                            </ul>
+                                <li className="pendingfrombackendx5">
+                                  <span>Passengers</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.guests
+                                      ?.map((item) => item?.display_name)
+                                      .filter(Boolean)
+                                      .join(", ")}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span>GDS Portal</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.gds_portal || ""}
+                                  </p>
+                                </li>
+                              </ul>
+                              <ul>
+                                {" "}
+                                <li>
+                                  <span>Ticket Number</span>
+                                  <h1>:</h1>
+                                  <p>{data?.ticket_no || ""}</p>
+                                </li>
+                                <li>
+                                  <span>PRN Number</span>
+                                  <h1>:</h1>
+                                  <p>{data?.prn_no || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Route</span>
+                                  <h1>:</h1>
+                                  <p>{data?.route || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Name</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_name || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Notes</span>
+                                  <h1>:</h1>
+                                  <p>{data?.note || ""}</p>
+                                </li>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Attachment</span>
+                                  <h1>:</h1>
+                                  <p>
+                                    <Attachment2 attachments={attachments} />
+                                  </p>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </>

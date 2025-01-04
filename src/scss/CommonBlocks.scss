@@ -441,7 +441,7 @@
           align-items: center;
           gap: 7px;
           font-size: 14px;
-          width: 373px;
+          width: 473px;
 
           input {
             padding-left: 10px !important;
@@ -2624,7 +2624,7 @@
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 135px) !important;
+  height: calc(100vh - 135px) ;
 
   &::-webkit-scrollbar-track {
     background-color: transparent;

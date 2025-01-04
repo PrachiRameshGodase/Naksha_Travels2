@@ -230,6 +230,7 @@ import {
 import {
   AddPassengerReducer,
   createDSRreducer,
+  DeleteDSRReducer,
   DeletePassengerReducer,
   DSRDetailReducer,
   listDSRreducer,
@@ -251,8 +252,13 @@ import { createPassengerCarHireReducer, passengerCarHireDeleteReducer } from "./
 import { createPassengerAssistReducer, passengerAssistDeleteReducer } from "./passengerAssistReducers";
 import { createPassengerInsuranceReducer, passengerInsuranceDeleteReducer } from "./passengerInsuranceReducers";
 import { createPassengerOthersReducer, passengerOthersDeleteReducer } from "./passengerOthersReducers";
+import { createUpdateOrgnizationReducer, orgnizationListReducer } from "./orgnizationReducers";
 const reducer = combineReducers({
   addItemsReducer,
+
+  //orgnization 
+  createUpdateOrg: createUpdateOrgnizationReducer,
+  orgnizationList: orgnizationListReducer,
 
   stockAdjustment: stockItemsReducer,
   itemStock: itemStockeducer,
@@ -342,6 +348,7 @@ const reducer = combineReducers({
   createDSR: createDSRreducer,
   DSRList: listDSRreducer,
   DSRDetails: DSRDetailReducer,
+  DSRDelete:DeleteDSRReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
 

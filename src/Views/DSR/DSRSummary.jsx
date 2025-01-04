@@ -561,7 +561,7 @@ const DSRSummary = ({customerData }) => {
             <p className="x1002">{customerData?.customer?.email}</p>
           </div>
           <div className="x001">
-            <p className="x002">{otherIcons?.setting_icon1} Customer Type</p>
+            <p className="x002">{otherIcons?.quotation_icon} Customer Type</p>
             <p className="x1002">{customerData?.customer?.customer_type}</p>
           </div>
           <div className="x001">

@@ -1,17 +1,24 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown30 from "../../../../Components/CustomDropdown/CustomDropdown30";
 import { CreatePassengerAssistAction } from "../../../../Redux/Actions/passengerAssistActions";
-import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import {
+  SubmitButton2,
+  SubmitButton6,
+} from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import CalculationSection from "../../CalculationSection";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -20,10 +27,9 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const vendorList = useSelector((state) => state?.vendorList);
-  const assistData = useSelector((state) => state?.assistList?.data?.data);
+  const createAssist = useSelector((state) => state?.createPassengerAssist);
 
   const [cusData1, setcusData1] = useState(null);
-  const [cusData4, setcusData4] = useState(null);
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -61,8 +67,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      supplier_name:selectedSupplierName?.display_name,
-
+      supplier_name: selectedSupplierName?.display_name,
     }));
   };
 
@@ -90,9 +95,14 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+  useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+  // call item api on page load...
 
-  console.log("formData", formData);
   return (
+    <div id="formofcreateitems">
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
@@ -103,7 +113,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
+          <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
               <div className="itemsformwrap">
@@ -154,7 +164,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           placeholder="Enter Meeting Type"
                         />
                       </span>
-                    
                     </div>
                   </div>
 
@@ -199,87 +208,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                       {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                     </div>
-                  </div>
-
-                  <div className="f1wrapofcreqx1">
-                    <div className="secondtotalsections485s">
-                      <div className="textareaofcreatqsiform">
-                        <label>Note</label>
-                        <div className="show_no_of_text_limit_0121">
-                          <TextAreaComponentWithTextLimit
-                            formsValues={{ handleChange, formData }}
-                            placeholder="Note..."
-                            name="note"
-                            value={
-                              formData.note == 0
-                                ? ""
-                                : formData.note
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div className="calctotalsection">
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Assist Price:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Supplier Service Charge:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Tax:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Retain:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="clcsecx12s2">
-                          <label>Invoice Total :</label>
-                          <input
-                            type="text"
-                            value={formData?.total}
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
-                    </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
                         formData={formData}
@@ -291,13 +219,41 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       />
                     </div>
                   </div>
+
+                  <div className="f1wrapofcreqx1">
+                    <div className="secondtotalsections485s">
+                      <div className="textareaofcreatqsiform">
+                        <label>Note</label>
+                        <div className="show_no_of_text_limit_0121">
+                          <TextAreaComponentWithTextLimit
+                            formsValues={{ handleChange, formData }}
+                            placeholder="Note..."
+                            name="note"
+                            value={formData.note == 0 ? "" : formData.note}
+                          />
+                        </div>
+                      </div>
+                      <CalculationSection
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleChange={handleChange}
+                          section="Assist"
+                        />
+                    </div>
+                   =
+                  </div>
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+            <SubmitButton6
+              onClick={handleFormSubmit}
+              cancel="dsr"
+              createUpdate={createAssist}
+            />
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

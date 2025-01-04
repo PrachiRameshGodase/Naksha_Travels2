@@ -1,4 +1,4 @@
-import React, { useState, useRef, forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
 import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
+import { vendorsLists } from '../../Redux/Actions/listApisActions';
 
 const CustomDropdown10 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877,disable } = props;
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, } = props;
+
   const {
     isOpen,
     setIsOpen,
@@ -23,7 +25,10 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
   const customList = useSelector(state => state?.customerList);
+  const vendorList = useSelector(state => state?.vendorList);
+  // payload's of list of vendor and customer fetch from localStorage.
   const itemPayloads = localStorage.getItem(("customerPayload"));
+  const itemPayloads1 = localStorage.getItem(("vendorPayload"));
 
   const dispatch = useDispatch();
 
@@ -35,22 +40,40 @@ const CustomDropdown10 = forwardRef((props, ref) => {
 
   const fullName = options?.find(account => account?.id == value);
 
-
-  //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (parshPayload?.search) {
-      dispatch(customersList({
-        ...sendData,
-      }));
+    const parsedPayload = parseJSONofString(itemPayloads);
+    const parsedPayload1 = parseJSONofString(itemPayloads1);
+
+    // Check if API call is necessary
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "customer_id" &&
+      (parsedPayload?.search || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData }));
+    }
+
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "vendor_id" &&
+      (parsedPayload1?.search || !vendorList?.data)
+    ) {
+      dispatch(vendorsLists({ ...sendData }));
+    }
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "passenger_insurance_id" &&
+      (parsedPayload?.search || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData }));
     }
     setSearchTerm("");
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
+
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
-      <div     onClick={() => !disable && setIsOpen(!isOpen)}
-        style={{ cursor: disable ? "not-allowed" : "pointer", background:disable? "#f0f0f0":"" }} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
 
         {cusData ? cusData?.display_name : value ? fullName?.display_name : defaultOption}
 
@@ -73,7 +96,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
           />
 
           <div className="dropdownoptoscroll">
-            {customList?.loading ? <>
+            {(customList?.loading || vendorList?.loading) ? <>
               <TableViewSkeletonDropdown />
             </> : <>
               {options?.map((option, index) => (

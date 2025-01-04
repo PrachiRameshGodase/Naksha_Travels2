@@ -39,6 +39,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
   const itemList = useSelector((state) => state?.itemList);
   const categoryLists = useSelector((state) => state?.categoryList);
 
+  console.log("itemListitemList", itemList)
+
   const [isValueSelected, setIsValueSelected] = useState(false);
 
   const combinedRef = (node) => {
@@ -138,11 +140,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                     }
                     {...(option.active == 0
                       ? {
-                          "data-tooltip-content":
-                            "To select this option, activate it; it's currently inactive.",
-                          "data-tooltip-id": "my-tooltip",
-                          "data-tooltip-place": "right",
-                        }
+                        "data-tooltip-content":
+                          "To select this option, activate it; it's currently inactive.",
+                        "data-tooltip-id": "my-tooltip",
+                        "data-tooltip-place": "right",
+                      }
                       : {})}
                   >
                     {option?.name}

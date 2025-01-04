@@ -94,6 +94,10 @@ const SequenceFormat = () => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons.quantity_svg}
+                    Previous Number
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons.quantity_svg}
                     Next Sequence No.
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs5 ">
@@ -140,6 +144,12 @@ const SequenceFormat = () => {
                           className="table-cellx12 quotiosalinvlisxs1"
                         >
                           {master?.prefix}
+                        </div>
+                        <div
+                          onClick={() => handleRowClicked(master)}
+                          className="table-cellx12 quotiosalinvlisxs1"
+                        >
+                          <p>{master?.padded_digits}</p>
                         </div>
                         <div
                           onClick={() => handleRowClicked(master)}

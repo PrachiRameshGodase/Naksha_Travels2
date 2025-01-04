@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { IoSearchOutline } from "react-icons/io5";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { categoryList } from '../../Redux/Actions/listApisActions';
@@ -12,14 +11,14 @@ import './categories.scss';
 import { CreateSubCategoryPopup } from './CreateCategoryPopup';
 import { OutsideClick } from "../Helper/ComponentHelper/OutsideClick";
 import FilterIco from "../../assets/outlineIcons/othericons/FilterIco.svg";
-import { parseJSONofString, useDebounceSearch } from '../Helper/HelperFunctions';
+import { useDebounceSearch } from '../Helper/HelperFunctions';
 import SearchBox from '../Common/SearchBox/SearchBox';
+import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
+import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
 const Categories = () => {
   const catList = useSelector(state => state?.categoryList);
   const [showPopup, setShowPopup] = useState(false);
-  const itemPayloads = localStorage.getItem(("catpayload"));
 
-  const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [selectedSortBy, setSelectedSortBy] = useState("Normal");
 
@@ -49,42 +48,18 @@ const Categories = () => {
     setShowPopup(true);
   };
 
-  const fetchQuotations = () => {
-    const sendData = {
-      fy: localStorage.getItem('FinancialYear'),
-      noofrec: itemsPerPage,
-      currentpage: currentPage,
-      active: 1
-    }
 
-    switch (selectedSortBy) {
-      case "Active":
-        sendData.active = 1;
-        break;
-      case "Inactive":
-        sendData.active = 0;
-        break;
-      default:
-    }
+  //fetch all data
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    fy: localStorage.getItem('FinancialYear'),
+    noofrec: itemsPerPage,
+    currentpage: currentPage,
+    ...(searchTermFromChild && { search: searchTermFromChild }),
+    ...(selectedSortBy === "Inactive" ? { active: 0 } : { active: 1 }),
+    ...(status && { active: status }),
+  }), [searchTrigger]);
 
-    if (status) {
-      sendData.active = status;
-    }
-
-    if (searchTermFromChild) {
-      sendData.search = searchTermFromChild;
-    }
-
-    dispatch(categoryList(sendData));
-  }
-
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchApiData(categoryList, payloadGenerator, [searchTrigger]);
 
   const handleRowClicked = (category) => {
     const categoryId = category.id;
@@ -147,7 +122,16 @@ const Categories = () => {
               <svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" id="fi_5736652"><g id="_30.Category" data-name="30.Category"><path d="m13.5 504.472a5 5 0 0 1 -3.532-8.539l84.375-84.209a5 5 0 1 1 7.064 7.078l-84.375 84.209a4.985 4.985 0 0 1 -3.532 1.461z" fill="#3aa1d9"></path><ellipse cx="165.245" cy="347.307" fill="#a1daf9" rx="95.625" ry="95.023"></ellipse><path d="m258.882 7.528h1.988a0 0 0 0 1 0 0v200.124a0 0 0 0 1 0 0h-201.241a0 0 0 0 1 0 0v-.871a199.253 199.253 0 0 1 199.253-199.253z" fill="#f8b117"></path><path d="m502.071 6.97h.871a0 0 0 0 1 0 0v201.24a0 0 0 0 1 0 0h-200.124a0 0 0 0 1 0 0v-1.988a199.253 199.253 0 0 1 199.253-199.252z" fill="#fb530a" transform="matrix(0 1 -1 0 510.47 -295.29)"></path><path d="m302.26 252.284h201.24a0 0 0 0 1 0 0v.871a199.253 199.253 0 0 1 -199.253 199.253h-1.987a0 0 0 0 1 0 0v-200.124a0 0 0 0 1 0 0z" fill="#f8830e"></path></g></svg>
               All Category
             </h1>
-            <p id="firsttagp">{catList?.data?.total} Records</p>
+            <p id="firsttagp">{catList?.data?.total} Records
+              <span
+                className={`${catList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox placeholder="Search In Categories" onSearch={onSearch} section={searchTrigger} />
           </div>
           <div id="buttonsdata">
@@ -290,7 +274,7 @@ const Categories = () => {
                       )}
 
                       {showPopup &&
-                        <CreateSubCategoryPopup setClickTrigger={setClickTrigger} setShowPopup={setShowPopup} categoryData={subCatId} subCatId={null} />}
+                        <CreateSubCategoryPopup setClickTrigger={setSearchTrigger} setShowPopup={setShowPopup} categoryData={subCatId} subCatId={null} />}
                       <PaginationComponent
                         itemList={catList?.data?.total}
                         currentPage={currentPage}

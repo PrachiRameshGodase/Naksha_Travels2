@@ -270,7 +270,29 @@
       font-weight: 400;
       color: $primary05;
       margin-bottom: -6px;
+      display: flex;
+      align-items: center;
+
+      span {
+        cursor: pointer;
+      }
     }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .rotate_01 {
+      animation: rotate 1s linear infinite;
+      /* Rotate 360 degrees in 1 second infinitely */
+    }
+
 
     #searchbox {
       display: flex;

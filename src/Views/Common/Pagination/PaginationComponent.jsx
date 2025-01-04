@@ -23,7 +23,6 @@ const PaginationComponent = ({
 
   const handlePageChange = (page) => {
     if (page !== currentPage && page >= 1 && page <= totalPages) {
-      console.log("padgeeeeeeeee", page)
       setCurrentPage(page);
       setSearchCall(prev => prev + 1);
       // Add logic to fetch data for the new page here

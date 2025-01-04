@@ -30,7 +30,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"400px"}}>
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -48,48 +48,89 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                               {otherIcons?.information_svg}
                               Assist Details
                             </div>
-                            <ul>
-                              <li className="pendingfromfrontendx5">
-                                <span>Meeting Type</span>
-                                <h1>:</h1>
-                                <p>{data?.meeting_type || ""}</p>
-                              </li>
-                              <li className="pendingfromfrontendx5">
-                                <span>Entry type</span>
-                                <h1>:</h1>
-                                <p>{data?.entry_type || ""}</p>
-                              </li>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Meeting Type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.meeting_type || ""}
+                                  </p>
+                                </li>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Entry type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.entry_type || ""}
+                                  </p>
+                                </li>
 
-                              <li>
-                                <span>Airport</span>
-                                <h1>:</h1>
-                                <p>{data?.airport_name || ""}</p>
-                              </li>
-                              <li>
-                                <span> No Of Persons</span>
-                                <h1>:</h1>
-                                <p>{data?.no_of_persons || ""}</p>
-                              </li>
+                                <li>
+                                  <span>Airport</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.airport_name || ""}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span> No Of Persons</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.no_of_persons || ""}
+                                  </p>
+                                </li>
 
-                              <li>
-                                <span>Supplier Name</span>
-                                <h1>:</h1>
-                                <p>{data?.supplier_name || ""}</p>
-                              </li>
-                              <li>
-                                <span>Notes</span>
-                                <h1>:</h1>
-                                <p>{data?.note || ""}</p>
-                              </li>
+                                <li>
+                                  <span>Supplier Name</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.supplier_name || ""}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span>Assist Price</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.gross_amount || ""}
+                                  </p>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li>
+                                  <span>Supplier Service Charge</span>
+                                  <h1>:</h1>
+                                  <p>{data?.charges || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Tax Amount</span>
+                                  <h1>:</h1>
+                                  <p>{data?.tax_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Total Amount</span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Notes</span>
+                                  <h1>:</h1>
+                                  <p>{data?.note || ""}</p>
+                                </li>
 
-                              <li className="pendingfromfrontendx5">
-                                <span>Attachment</span>
-                                <h1>:</h1>
-                                <p>
-                                  <Attachment2 attachments={attachments} />
-                                </p>
-                              </li>
-                            </ul>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Attachment</span>
+                                  <h1>:</h1>
+                                  <p>
+                                    <Attachment2 attachments={attachments} />
+                                  </p>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from "../../Components/Loaders/Loader02";
@@ -10,6 +10,7 @@ import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoa
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import newmenuicoslz from '../../assets/outlineIcons/othericons/newmenuicoslz.svg';
 import Swal from 'sweetalert2';
+import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
@@ -19,37 +20,35 @@ const ItemDetails = () => {
 
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const item_detail = useSelector(state => state?.itemDetail);
-  const { item_details, preferred_vendor, purchase_account, sale_account } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
+  const { item_details, preferred_vendor } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const warehouseData = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const deletedItem = useSelector(state => state?.deleteItem);
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
   const status = useSelector(state => state?.status);
 
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
-  useEffect(() => {
-    if (itemId) {
-      const queryParams = {
-        item_id: itemId,
-        fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: localStorage.getItem('selectedWarehouseId'),
-      };
-      dispatch(itemDetails(queryParams));
-    }
-  }, [dispatch]);
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    item_id: itemId,
+    fy: localStorage.getItem('FinancialYear'),
+    warehouse_id: localStorage.getItem('selectedWarehouseId'),
+  }), [searchTrigger]);
+
+  useFetchApiData(itemDetails, payloadGenerator, [searchTrigger]);
 
   useEffect(() => {
     setSwitchValue(item_details?.active);
   }, [item_details]);
 
+
   const handleSwitchChange = async (e) => {
 
     let confirmed = null;
+
     if (confirmed === null) {
       const result = await Swal.fire({
-        // title: 'Are you sure?',
         text: `Do you want to ${switchValue == "1" ? "Inactive" : "Active"} this item ?`,
-        // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
@@ -165,7 +164,7 @@ const ItemDetails = () => {
             </div>
 
             <div id="item-details">
-              <InsideItemDetailsBox itemDetails={item_details} preferred_vendor={preferred_vendor} warehouseData={warehouseData} />
+              <InsideItemDetailsBox itemDetails={item_details} preferred_vendor={preferred_vendor} warehouseData={warehouseData} setSearchTrigger={setSearchTrigger} />
             </div>
 
           </>

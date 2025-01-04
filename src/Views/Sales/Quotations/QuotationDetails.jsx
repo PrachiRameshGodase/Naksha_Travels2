@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -9,12 +9,12 @@ import { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatDate3 } from '../../Helper/DateFormat';
 import useOutsideClick from '../../Helper/PopupData';
-import { useReactToPrint } from 'react-to-print';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import MoreInformation from '../../Common/MoreInformation';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const QuotationDetails = () => {
   const dispatch = useDispatch();
@@ -28,9 +28,6 @@ const QuotationDetails = () => {
   const masterData = useSelector(state => state?.masterData?.masterData);
 
   const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   const quoteDetail = useSelector(state => state?.quoteDetail);
   const quoteStatus = useSelector(state => state?.quoteStatus);
@@ -93,17 +90,13 @@ const QuotationDetails = () => {
     }
   }
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-        fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: localStorage.getItem('selectedWarehouseId'),
-      };
-      dispatch(quotationDetails(queryParams));
-    }
-  }, [dispatch, UrlId, callApi]);
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+    fy: localStorage.getItem('FinancialYear'),
+    warehouse_id: localStorage.getItem('selectedWarehouseId'),
+  }), [callApi]);
 
+  useFetchApiData(quotationDetails, payloadGenerator, [callApi]);
 
   const [loading, setLoading] = useState(false);
 
@@ -122,8 +115,6 @@ const QuotationDetails = () => {
   return (
     <>
       {(quoteStatus?.loading || quoteDelete?.loading || loading) && <MainScreenFreezeLoader />}
-      {/* <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" /> */}
-
       {quoteDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >
           <div id="Anotherbox" className='formsectionx1'>
@@ -215,9 +206,8 @@ const QuotationDetails = () => {
             </div>
 
             <MoreInformation sale={quotation?.sale_person} note={quotation?.customer_note} tc={quotation?.terms_and_condition} section="Customer" />
-            <TermsAndConditions/>
+
           </div>
-          
         </div>}
       <Toaster />
     </>

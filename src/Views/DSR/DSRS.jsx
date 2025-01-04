@@ -326,9 +326,9 @@ const DSRS = () => {
                                 }
                               >
                                 {item?.is_invoiced == "1"
-                                  ? "Not Invoiced"
-                                  : item?.is_invoiced == "0"
                                   ? "Invoiced"
+                                  : item?.is_invoiced == "0"
+                                  ? "Not Invoiced"
                                   : ""}
                               </p>
                             </div>

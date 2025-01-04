@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { PassengerHotelDetailsAction } from "../../../Redux/Actions/passengerHotelActions";
-import {
-  useDebounceSearch
-} from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import Insurance from "./PassengerInsurance/Insurance";
 import Assist from "./PassengerAssist/Assist";
@@ -17,6 +15,7 @@ import Flights from "./PassengerFlight/Flights";
 import Hotels from "./PassengerHotel/Hotels";
 import Visa from "./PassengerVisa/Visa";
 import Others from "./PassengerOthers/Others";
+import { RxCross2 } from "react-icons/rx";
 
 const ServicesList = () => {
   const navigate = useNavigate();
@@ -35,8 +34,6 @@ const ServicesList = () => {
   const totalAssist = passengerData?.dsr_assist?.length || "";
   const totalInsurance = passengerData?.dsr_insurance?.length || "";
   const totalOthers = passengerData?.dsr_others?.length || "";
-
-
 
   // const servicesList = ShowMasterData("48");
 
@@ -135,10 +132,10 @@ const ServicesList = () => {
     { label: "Hotels", total: totalHotels },
     { label: "Flights", total: totalFlights },
     { label: "Visa", total: totalVisas },
-    { label: "Car Hire", total: totalCarHires }, 
-    { label: "Assist", total: totalAssist }, 
-    { label: "Insurance", total: totalInsurance }, 
-    { label: "Others", total: totalOthers }, 
+    { label: "Car Hire", total: totalCarHires },
+    { label: "Assist", total: totalAssist },
+    { label: "Insurance", total: totalInsurance },
+    { label: "Others", total: totalOthers },
   ];
 
   return (
@@ -189,11 +186,16 @@ const ServicesList = () => {
               filterOptions=""
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
-
-            {/* <Link className="linkx1" onClick={handleClickOnAdd}>
-              New Service <GoPlus />
-            </Link> */}
-            <ResizeFL />
+            {/* <ResizeFL /> */}
+            {/* <Link
+              to={`/dashboard/dsr-details?id=${itemId}`}
+              className="linkx3"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
+            >
+              <RxCross2 /> */}
+            {/* </Link> */}
           </div>
         </div>
 
@@ -206,23 +208,42 @@ const ServicesList = () => {
                 }`}
                 onClick={() => setSwitchCusData(`${item?.label || ""}`)}
               >
-                {item?.label || ""}  {item?.total||""}
+                {item?.label || ""} {item?.total || ""}
               </button>
             </div>
           ))}
         </div>
         <div>
           {switchCusData == "Hotels" && (
-            <Hotels data={passengerData?.dsr_hotel} totalItems={totalHotels}/>
+            <Hotels data={passengerData?.dsr_hotel} totalItems={totalHotels} />
           )}
           {switchCusData == "Flights" && (
-            <Flights data={passengerData?.dsr_flight} totalItems={totalFlights}/>
+            <Flights
+              data={passengerData?.dsr_flight}
+              totalItems={totalFlights}
+            />
           )}
-          {switchCusData == "Others" && <Others data={passengerData?.dsr_others} totalItems={totalOthers}/>}
-          {switchCusData == "Visa" && <Visa data={passengerData?.dsr_visa} totalItems={totalVisas}/>}
-          {switchCusData == "Car Hire" && <CarHire data={passengerData?.dsr_car_hire} totalItems={totalCarHires}/>}
-          {switchCusData == "Assist" && <Assist data={passengerData?.dsr_assist} totalItems={totalAssist}/>}
-          {switchCusData == "Insurance" && <Insurance data={passengerData?.dsr_insurance} totalItems={totalInsurance}/>}
+          {switchCusData == "Others" && (
+            <Others data={passengerData?.dsr_others} totalItems={totalOthers} />
+          )}
+          {switchCusData == "Visa" && (
+            <Visa data={passengerData?.dsr_visa} totalItems={totalVisas} />
+          )}
+          {switchCusData == "Car Hire" && (
+            <CarHire
+              data={passengerData?.dsr_car_hire}
+              totalItems={totalCarHires}
+            />
+          )}
+          {switchCusData == "Assist" && (
+            <Assist data={passengerData?.dsr_assist} totalItems={totalAssist} />
+          )}
+          {switchCusData == "Insurance" && (
+            <Insurance
+              data={passengerData?.dsr_insurance}
+              totalItems={totalInsurance}
+            />
+          )}
         </div>
 
         <Toaster />
