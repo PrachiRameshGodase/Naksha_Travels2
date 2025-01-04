@@ -46,6 +46,7 @@ const CreateDSR = () => {
     customer_name: "",
     currency: "",
   });
+
   const [isData, setIsData] = useState();
   const [passengerData, setPassengerData] = useState({
     dsr_id: itemId,
@@ -78,18 +79,18 @@ const CreateDSR = () => {
       ...prev,
       customer_id: value,
       passenger_name: selectedCustomer?.display_name ?? "",
-      dsr_id: isData?.id,
+      dsr_id: DSRData?.id,
       [name]: value,
     }));
   };
+
   useEffect(() => {
     const sendData = { customer_type: "Individual" };
-
     dispatch(customersList(sendData));
   }, [dispatch]);
 
   useEffect(() => {
-    if (itemId && DSRData) {
+    if (DSRData) {
       setFormData({
         ...formData,
         id: DSRData?.id,
@@ -98,7 +99,7 @@ const CreateDSR = () => {
         customer_name: DSRData?.customer?.display_name,
       });
     }
-  }, [itemId, DSRData]);
+  }, [DSRData?.id]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -110,8 +111,8 @@ const CreateDSR = () => {
 
       dispatch(DSRCreateAction(sendData))
         .then((response) => {
-         setIsData(response?.data?.data);
-         setDSRDisabled(true);
+          setIsData(response?.data?.data);
+          setDSRDisabled(true);
         })
         .catch((err) => {
           console.error("Error creating DSR:", err);
@@ -131,9 +132,9 @@ const CreateDSR = () => {
 
       dispatch(PassengerAddAction(sendData, Navigate))
         .then((response) => {
-          if (isData?.id) {
+          if (DSRData?.id) {
             const refreshData = {
-              dsr_id: isData?.id,
+              dsr_id: DSRData?.id,
             };
             dispatch(DSRDetailsAction(refreshData));
           }
@@ -144,13 +145,14 @@ const CreateDSR = () => {
     }
   };
   useEffect(() => {
-    if (isData?.id) {
+    if (DSRData?.id || isData?.id) {
       const sendData = {
-        dsr_id: isData?.id,
+        dsr_id: DSRData?.id || isData?.id,
       };
       dispatch(DSRDetailsAction(sendData));
+      setDSRDisabled(true);
     }
-  }, [isData?.id]);
+  }, [DSRData?.id, isData?.id]);
 
   const handleDeletePassenger = async (id) => {
     const result = await Swal.fire({
@@ -165,9 +167,9 @@ const CreateDSR = () => {
       };
       dispatch(PassengerDeleteActions(sendData))
         .then((response) => {
-          if (isData?.id) {
+          if (DSRData?.id) {
             const refreshData = {
-              dsr_id: isData?.id,
+              dsr_id: DSRData?.id,
             };
             dispatch(DSRDetailsAction(refreshData));
           }
@@ -176,9 +178,9 @@ const CreateDSR = () => {
     }
   };
 
- const handleIconClick = () => {
-    if (isData?.id) {
-      const sendData = { dsr_id: isData?.id };
+  const handleIconClick = () => {
+    if (DSRData?.id) {
+      const sendData = { dsr_id: DSRData?.id };
       dispatch(DSRDetailsAction(sendData));
     }
     Navigate("/dashboard/dsr");
@@ -189,206 +191,206 @@ const CreateDSR = () => {
     <div>
       <>
         <TopLoadbar />
-        {(freezLoadingImg || createDSR?.loading || addPassenger?.loading || deletePassenger?.loading ) && (
+        {(freezLoadingImg || createDSR?.loading || addPassenger?.loading || deletePassenger?.loading) && (
           <MainScreenFreezeLoader />
         )}
-         {DSRDetails?.loading ? (
-        <Loader02 />
-      ) : (
-        <div className="formsectionsgrheigh">
-          <div id="Anotherbox" className="formsectionx2">
-            <div id="leftareax12">
-              <h1 id="firstheading">
-                {otherIcons?.dsrCalender}
-                {isEdit ? "Update DSR" : "New DSR"}
-              </h1>
-            </div>
-            <div id="buttonsdata">
-              
-              <Link onClick={handleIconClick} className="linkx3">
-                <RxCross2 />
-              </Link>
-            </div>
-          </div>
+        {DSRDetails?.loading ? (
+          <Loader02 />
+        ) : (
+          <div className="formsectionsgrheigh">
+            <div id="Anotherbox" className="formsectionx2">
+              <div id="leftareax12">
+                <h1 id="firstheading">
+                  {otherIcons?.dsrCalender}
+                  {isEdit ? "Update DSR" : "New DSR"}
+                </h1>
+              </div>
+              <div id="buttonsdata">
 
-          <div id="formofcreateitems">
-            <form>
-              <div className="relateivdiv">
-                <div className="itemsformwrap">
-                  <div
-                    className="f1wrapofcreq"
-                    style={{
-                      height: "800px",
-                      overflowY: "auto",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div>
-                      <div
-                        className="f1wrapofcreqx1"
-                        style={{ width: "868px" }}
-                      >
-                        <div className="form_commonblock">
-                          <label>
-                            DSR Number<b className="color_red">*</b>
-                          </label>
+                <Link onClick={handleIconClick} className="linkx3">
+                  <RxCross2 />
+                </Link>
+              </div>
+            </div>
 
-                          <GenerateAutoId
-                            formHandlers={{
-                              setFormData,
-                              handleChange,
-                              setShowAllSequenceId,
-                            }}
-                            nameVal="dsr_no"
-                            value={formData?.dsr_no}
-                            module="dsr"
-                            showField={isEdit}
-                            disable={dsrDisabled}
-                            style={
-                              dsrDisabled
-                                ? {
+            <div id="formofcreateitems">
+              <form>
+                <div className="relateivdiv">
+                  <div className="itemsformwrap">
+                    <div
+                      className="f1wrapofcreq"
+                      style={{
+                        height: "800px",
+                        overflowY: "auto",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <div
+                          className="f1wrapofcreqx1"
+                          style={{ width: "868px" }}
+                        >
+                          <div className="form_commonblock">
+                            <label>
+                              DSR Number<b className="color_red">*</b>
+                            </label>
+
+                            <GenerateAutoId
+                              formHandlers={{
+                                setFormData,
+                                handleChange,
+                                setShowAllSequenceId,
+                              }}
+                              nameVal="dsr_no"
+                              value={formData?.dsr_no}
+                              module="dsr"
+                              showField={isEdit}
+                              disable={dsrDisabled}
+                              style={
+                                dsrDisabled
+                                  ? {
                                     backgroundColor: "#f0f0f0",
                                     pointerEvents: "none",
                                     cursor: "not-allowed",
                                   }
-                                : {}
-                            }
-                          />
-                        </div>
+                                  : {}
+                              }
+                            />
+                          </div>
 
-                        <div className="form_commonblock">
-                          <label>
-                            Customer Name<b className="color_red">*</b>
-                          </label>
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
-                              <CustomDropdown10
-                                autoComplete="off"
-                                ref={dropdownRef1}
-                                label="Customer Name"
-                                options={cusList?.data?.user}
-                                value={formData.customer_id}
-                                onChange={handleChange}
-                                name="customer_id"
-                                defaultOption="Select Customer"
-                                setcusData={setcusData}
-                                cusData={cusData}
-                                type="vendor"
-                                required
-                                disable={dsrDisabled}
-                                style={
-                                  dsrDisabled
-                                    ? {
+                          <div className="form_commonblock">
+                            <label>
+                              Customer Name<b className="color_red">*</b>
+                            </label>
+                            <div id="sepcifixspanflex">
+                              <span id="">
+                                {otherIcons.name_svg}
+                                <CustomDropdown10
+                                  autoComplete="off"
+                                  ref={dropdownRef1}
+                                  label="Customer Name"
+                                  options={cusList?.data?.user}
+                                  value={formData?.customer_id}
+                                  onChange={handleChange}
+                                  name="customer_id"
+                                  defaultOption="Select Customer"
+                                  setcusData={setcusData}
+                                  cusData={cusData}
+                                  type="vendor"
+                                  required
+                                  disable={dsrDisabled}
+                                  style={
+                                    dsrDisabled
+                                      ? {
                                         backgroundColor: "#f0f0f0",
                                         pointerEvents: "none",
                                         cursor: "not-allowed",
                                       }
-                                    : {}
-                                }
-                              />
-                            </span>
+                                      : {}
+                                  }
+                                />
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        className="f1wrapofcreqx1"
-                        style={{ marginTop: "20px" }}
-                      >
-                        <div className="form_commonblock">
-                          <CurrencySelect
-                            value={formData?.currency}
-                            onChange={handleChange}
-                            disable={dsrDisabled}
-                            style={
-                              dsrDisabled
-                                ? {
+                        <div
+                          className="f1wrapofcreqx1"
+                          style={{ marginTop: "20px" }}
+                        >
+                          <div className="form_commonblock">
+                            <CurrencySelect
+                              value={formData?.currency}
+                              onChange={handleChange}
+                              disable={dsrDisabled}
+                              style={
+                                dsrDisabled
+                                  ? {
                                     backgroundColor: "#f0f0f0",
                                     pointerEvents: "none",
                                     cursor: "not-allowed",
                                   }
-                                : {}
-                            }
-                          />
+                                  : {}
+                              }
+                            />
+                          </div>
                         </div>
+
+                        {dsrDisabled && (
+                          <div
+                            className="f1wrapofcreqx1"
+                            style={{ marginTop: "5px" }}
+                          >
+                            <div className="actionbarcommon2">
+                              <div className="form_commonblock ">
+                                <label>
+                                  Passengers<b className="color_red">*</b>
+                                </label>
+                                <div id="sepcifixspanflex">
+                                  <span id="">
+                                    {otherIcons.name_svg}
+                                    <CustomDropdown10
+                                      autoComplete="off"
+                                      ref={dropdownRef1}
+                                      label="Customer Name"
+                                      options={cusList?.data?.user}
+                                      value={passengerData.customer_id}
+                                      onChange={handleChange2}
+                                      name="customer_id"
+                                      defaultOption="Select Passenger"
+                                      setcusData={setcusData1}
+                                      cusData={cusData1}
+                                      type="vendor"
+                                      required
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                className={`firstbtnc1 `}
+                                onClick={handleFormSubmit2}
+                              >
+                                Add Passenger
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {dsrDisabled && (
+                          <div>
+                            <PassengerCard
+                              passengers={DSRData}
+                              onDelete={handleDeletePassenger}
+                            />
+                          </div>
+                        )}
                       </div>
 
                       {dsrDisabled && (
-                        <div
-                          className="f1wrapofcreqx1"
-                          style={{ marginTop: "5px" }}
-                        >
-                          <div className="actionbarcommon2">
-                            <div className="form_commonblock ">
-                              <label>
-                                Passengers<b className="color_red">*</b>
-                              </label>
-                              <div id="sepcifixspanflex">
-                                <span id="">
-                                  {otherIcons.name_svg}
-                                  <CustomDropdown10
-                                    autoComplete="off"
-                                    ref={dropdownRef1}
-                                    label="Customer Name"
-                                    options={cusList?.data?.user}
-                                    value={passengerData.customer_id}
-                                    onChange={handleChange2}
-                                    name="customer_id"
-                                    defaultOption="Select Passenger"
-                                    setcusData={setcusData1}
-                                    cusData={cusData1}
-                                    type="vendor"
-                                    required
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              className={`firstbtnc1 `}
-                              onClick={handleFormSubmit2}
-                            >
-                              Add Passenger
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      {dsrDisabled && (
-                        <div>
-                          <PassengerCard
-                            passengers={DSRData}
-                            onDelete={handleDeletePassenger}
-                          />
-                        </div>
+                        <DSRSummary
+                          passengers={DSRData?.passengers}
+                          customerData={DSRData}
+                        />
                       )}
                     </div>
-
-                    {dsrDisabled && (
-                      <DSRSummary
-                        passengers={DSRData?.passengers}
-                        customerData={DSRData}
-                      />
-                    )}
                   </div>
                 </div>
-              </div>
-              {
-                !dsrDisabled && (
-                  //  <div className="dsr_button_00z">
-                  <SubmitButton5
-                    isEdit=""
-                    itemId=""
-                    onClick={handleFormSubmit}
-                    cancel="dsr"
-                  />
-                )
-                // </div>
-              }
-              {/* <SubmitButton4 isEdit={isEdit} itemId={itemId} cancel="dsr" /> */}
-            </form>
-          </div>
-        </div>)}
+                {
+                  !dsrDisabled && (
+                    //  <div className="dsr_button_00z">
+                    <SubmitButton5
+                      isEdit=""
+                      itemId=""
+                      onClick={handleFormSubmit}
+                      cancel="dsr"
+                    />
+                  )
+                  // </div>
+                }
+                {/* <SubmitButton4 isEdit={isEdit} itemId={itemId} cancel="dsr" /> */}
+              </form>
+            </div>
+          </div>)}
         <Toaster reverseOrder={false} />
       </>
     </div>
