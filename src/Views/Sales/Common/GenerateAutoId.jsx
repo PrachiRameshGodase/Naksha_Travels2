@@ -5,7 +5,7 @@ import GenerateIdPopup from '../../Home/GenerateIdPopup';
 import { ShowAutoGenerateId } from '../../Helper/HelperFunctions';
 import WaveLoader from '../../../Components/Loaders/WaveLoader';
 
-const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField }) => {
+const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField, disable, style }) => {
     const { loading } = useSelector(state => state?.autoIdList);
     const autoId = ShowAutoGenerateId(module, showField);
     const [generateId, setGenerateId] = useState(false);
@@ -38,12 +38,16 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
                     name={nameVal}
                     autoComplete='off'
                     disabled={autoData.sequence_type == 1}
-                    style={{ cursor: "not-allowed" }}
+                    style={disable ? { cursor: "not-allowed", ...style } : style}
                 />
 
                 {!showField && <span onClick={() => setGenerateId(true)}>{otherIcons.setting_icon}</span>}
             </span>
-            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId }} />}
+            {generateId && !disable && (
+            <GenerateIdPopup
+                formdatas={{ autoData, setAutoData, setGenerateId, disable, style }}
+            />
+        )}
         </>
     );
 };

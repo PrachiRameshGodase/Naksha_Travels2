@@ -13,14 +13,14 @@ import {
   PassengerAddAction,
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
-import {
-  SubmitButton5,
-} from "../Common/Pagination/SubmitButton";
+import { SubmitButton5 } from "../Common/Pagination/SubmitButton";
 import CurrencySelect from "../Helper/ComponentHelper/CurrencySelect";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
+import Swal from "sweetalert2";
+import Loader02 from "../../Components/Loaders/Loader02";
 
 const CreateDSR = () => {
   const Navigate = useNavigate();
@@ -32,9 +32,10 @@ const CreateDSR = () => {
 
   const cusList = useSelector((state) => state?.customerList);
   const createDSR = useSelector((state) => state?.createDSR);
+  const addPassenger = useSelector((state) => state?.addPassenger);
+  const deletePassenger = useSelector((state) => state?.deletePassenger);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
-
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -55,8 +56,6 @@ const CreateDSR = () => {
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-  const [imgLoader, setImgeLoader] = useState("");
-  const [passengers, setPassengers] = useState([]);
   const [dsrDisabled, setDSRDisabled] = useState(false);
 
   const handleChange = (e) => {
@@ -111,8 +110,8 @@ const CreateDSR = () => {
 
       dispatch(DSRCreateAction(sendData))
         .then((response) => {
-          setIsData(response?.data?.data);
-          setDSRDisabled(true);
+         setIsData(response?.data?.data);
+         setDSRDisabled(true);
         })
         .catch((err) => {
           console.error("Error creating DSR:", err);
@@ -153,33 +152,47 @@ const CreateDSR = () => {
     }
   }, [isData?.id]);
 
-  const handleDeletePassenger = (id) => {
-    const sendData = {
-      passenger_id: id,
-    };
-    dispatch(PassengerDeleteActions(sendData))
-      .then((response) => {
-        if (isData?.id) {
-          const refreshData = {
-            dsr_id: isData?.id,
-          };
-          dispatch(DSRDetailsAction(refreshData));
-        }
-      })
-      .catch((err) => console.log(err));
+  const handleDeletePassenger = async (id) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this passenger?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        passenger_id: id,
+      };
+      dispatch(PassengerDeleteActions(sendData))
+        .then((response) => {
+          if (isData?.id) {
+            const refreshData = {
+              dsr_id: isData?.id,
+            };
+            dispatch(DSRDetailsAction(refreshData));
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
-  const handleIconClick = () => {
+
+ const handleIconClick = () => {
     if (isData?.id) {
       const sendData = { dsr_id: isData?.id };
       dispatch(DSRDetailsAction(sendData));
     }
     Navigate("/dashboard/dsr");
-  }
+  };
   return (
     <div>
       <>
         <TopLoadbar />
-        {(freezLoadingImg || createDSR?.loading) && <MainScreenFreezeLoader />}
+        {(freezLoadingImg || createDSR?.loading || addPassenger?.loading || deletePassenger?.loading ) && (
+          <MainScreenFreezeLoader />
+        )}
+         {DSRDetails?.loading ? (
+        <Loader02 />
+      ) : (
         <div className="formsectionsgrheigh">
           <div id="Anotherbox" className="formsectionx2">
             <div id="leftareax12">
@@ -189,6 +202,7 @@ const CreateDSR = () => {
               </h1>
             </div>
             <div id="buttonsdata">
+              
               <Link onClick={handleIconClick} className="linkx3">
                 <RxCross2 />
               </Link>
@@ -209,7 +223,10 @@ const CreateDSR = () => {
                     }}
                   >
                     <div>
-                      <div className="f1wrapofcreqx1" style={{ width: "868px" }}>
+                      <div
+                        className="f1wrapofcreqx1"
+                        style={{ width: "868px" }}
+                      >
                         <div className="form_commonblock">
                           <label>
                             DSR Number<b className="color_red">*</b>
@@ -229,10 +246,10 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                  backgroundColor: "#f0f0f0",
-                                  pointerEvents: "none",
-                                  cursor: "not-allowed",
-                                }
+                                    backgroundColor: "#f0f0f0",
+                                    pointerEvents: "none",
+                                    cursor: "not-allowed",
+                                  }
                                 : {}
                             }
                           />
@@ -262,10 +279,10 @@ const CreateDSR = () => {
                                 style={
                                   dsrDisabled
                                     ? {
-                                      backgroundColor: "#f0f0f0",
-                                      pointerEvents: "none",
-                                      cursor: "not-allowed",
-                                    }
+                                        backgroundColor: "#f0f0f0",
+                                        pointerEvents: "none",
+                                        cursor: "not-allowed",
+                                      }
                                     : {}
                                 }
                               />
@@ -285,22 +302,14 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                  backgroundColor: "#f0f0f0",
-                                  pointerEvents: "none",
-                                  cursor: "not-allowed",
-                                }
+                                    backgroundColor: "#f0f0f0",
+                                    pointerEvents: "none",
+                                    cursor: "not-allowed",
+                                  }
                                 : {}
                             }
                           />
                         </div>
-                      </div>
-
-                      <div className="dsr_button_00z">
-                        <SubmitButton5
-                          isEdit=""
-                          itemId=""
-                          onClick={handleFormSubmit}
-                        />
                       </div>
 
                       {dsrDisabled && (
@@ -343,25 +352,41 @@ const CreateDSR = () => {
                         </div>
                       )}
 
-                      {dsrDisabled && <div>
-                        <PassengerCard
-                          passengers={DSRData}
-                          onDelete={handleDeletePassenger}
-                        />
-                      </div>}
+                      {dsrDisabled && (
+                        <div>
+                          <PassengerCard
+                            passengers={DSRData}
+                            onDelete={handleDeletePassenger}
+                          />
+                        </div>
+                      )}
                     </div>
 
-                    {dsrDisabled && <DSRSummary
-                      passengers={DSRData?.passengers}
-                      customerData={DSRData}
-                    />}
+                    {dsrDisabled && (
+                      <DSRSummary
+                        passengers={DSRData?.passengers}
+                        customerData={DSRData}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
+              {
+                !dsrDisabled && (
+                  //  <div className="dsr_button_00z">
+                  <SubmitButton5
+                    isEdit=""
+                    itemId=""
+                    onClick={handleFormSubmit}
+                    cancel="dsr"
+                  />
+                )
+                // </div>
+              }
               {/* <SubmitButton4 isEdit={isEdit} itemId={itemId} cancel="dsr" /> */}
             </form>
           </div>
-        </div>
+        </div>)}
         <Toaster reverseOrder={false} />
       </>
     </div>

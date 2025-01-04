@@ -2624,7 +2624,7 @@
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 135px) !important;
+  height: calc(100vh - 135px) ;
 
   &::-webkit-scrollbar-track {
     background-color: transparent;

@@ -230,6 +230,7 @@ import {
 import {
   AddPassengerReducer,
   createDSRreducer,
+  DeleteDSRReducer,
   DeletePassengerReducer,
   DSRDetailReducer,
   listDSRreducer,
@@ -347,6 +348,7 @@ const reducer = combineReducers({
   createDSR: createDSRreducer,
   DSRList: listDSRreducer,
   DSRDetails: DSRDetailReducer,
+  DSRDelete:DeleteDSRReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
 

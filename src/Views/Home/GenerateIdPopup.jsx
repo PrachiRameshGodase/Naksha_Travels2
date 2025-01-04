@@ -51,7 +51,7 @@ const GenerateIdPopup = ({ formdatas }) => {
     return (
         <>
             <Toaster />
-            <div className="mainxpopups1" ref={popupRef} tabIndex="0">
+            <div className="mainxpopups1" ref={popupRef} tabIndex="0" >
                 <div className="popup-content" style={{ maxWidth: "490px" }}>
                     <div id='autoIdpopup_34'>
                         <span className="close-button" onClick={() => setGenerateId(false)}><RxCross2 /></span>

@@ -6,6 +6,7 @@ import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import "../CreateHotelPopup.scss"
 
 const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
@@ -29,7 +30,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"500px"}}>
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
