@@ -35,6 +35,7 @@ import {
   isStateIdEqualAction,
   productTypeItemAction,
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
+import AddServices from "./AddServices";
 const CreateQuotation = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -106,7 +107,8 @@ const CreateQuotation = () => {
     charges: [],
     items: [
       {
-        item_id: "",
+        //item_id: "",
+        item_name:"",
         unit_id: null,
         hsn_code: "",
         quantity: 1,
@@ -124,7 +126,7 @@ const CreateQuotation = () => {
   });
   const [itemErrors, setItemErrors] = useState([]);
 
- 
+
   const calculateExpiryDate = (transactionDate, terms) => {
     const daysMap = { 1: 15, 2: 30, 3: 45, 4: 60 };
     return new Date(
@@ -174,11 +176,11 @@ const CreateQuotation = () => {
       address: addSelect ? JSON.stringify(addSelect) : null,
       ...(name === "payment_terms" &&
         value != 5 && {
-          expiry_date: calculateExpiryDate(
-            new Date(prev.transaction_date),
-            value
-          ),
-        }),
+        expiry_date: calculateExpiryDate(
+          new Date(prev.transaction_date),
+          value
+        ),
+      }),
     }));
   };
 
@@ -189,8 +191,8 @@ const CreateQuotation = () => {
       ...(name === "expiry_date" && { payment_terms: 5 }),
       ...(name === "transaction_date" &&
         prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
+        expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
+      }),
     }));
   };
 
@@ -236,7 +238,7 @@ const CreateQuotation = () => {
   }, [addUpdate]);
   //trigger show updated address then it updated
 
-  
+
   const customerRef = useRef(null);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -248,34 +250,34 @@ const CreateQuotation = () => {
       return;
     }
     if (handleDropdownError(isCustomerSelect, customerRef)) return;
-   
-   
- 
-      try {
-        const updatedItems = formData?.items?.map((item) => {
-          const { tax_name, ...itemWithoutTaxName } = item;
-          return itemWithoutTaxName;
-        });
 
-        dispatch(
-          updateQuotation(
-            {
-              ...formData,
-              items: updatedItems,
-              address: JSON.stringify(formData?.address),
-            },
-            Navigate,
-            "quotation",
-            isEdit,
-            buttonName,
-            showAllSequenceId
-          )
-        );
-      } catch (error) {
-        toast.error("Error updating quotation:", error);
-      }
-    
-   
+
+
+    try {
+      const updatedItems = formData?.items?.map((item) => {
+        const { tax_name, ...itemWithoutTaxName } = item;
+        return itemWithoutTaxName;
+      });
+
+      dispatch(
+        updateQuotation(
+          {
+            ...formData,
+            items: updatedItems,
+            address: JSON.stringify(formData?.address),
+          },
+          Navigate,
+          "quotation",
+          isEdit,
+          buttonName,
+          showAllSequenceId
+        )
+      );
+    } catch (error) {
+      toast.error("Error updating quotation:", error);
+    }
+
+
   };
 
   useEffect(() => {
@@ -366,7 +368,7 @@ const CreateQuotation = () => {
       }
     }
   }, [quoteDetails, itemId, isEdit]);
-  
+
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -613,6 +615,8 @@ const CreateQuotation = () => {
                     </div>
                     {/* </div> */}
 
+                    <AddServices />
+                    
                     <div className="">
                       <ItemSelect
                         formData={formData}
@@ -621,13 +625,11 @@ const CreateQuotation = () => {
                         itemErrors={itemErrors}
                         setItemErrors={setItemErrors}
                         // setIsItemSelect={setIsItemSelect}
-                        // isItemSelect={isItemSelect}
-                       
+                        // isItemSelect={isItemSelect}                    
                         extracssclassforscjkls={"extracssclassforscjkls"}
                         dropdownRef2={dropdownRef2}
                         note="customer"
                         section="sales"
-                       
                       />
 
                       <div className="secondtotalsections485s sxfc546sdfr85234e">

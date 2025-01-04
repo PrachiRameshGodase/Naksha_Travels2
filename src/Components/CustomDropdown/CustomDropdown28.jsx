@@ -31,7 +31,7 @@ const CustomDropdown28 = forwardRef((props, ref) => {
 
 
   return (
-    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown} style={{minWidth:"160px", border:"1px solid #f3f1f5", backgroundColor:"#f3f1f5"}}>
+    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown} style={{minWidth:"160px", maxWidth: "140px", border:"1px solid #f3f1f5", backgroundColor:"#f3f1f5"}}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width:"100px" } : {paddingLeft:"29px"}}>
 
         {type === "masters_salutation" ?
