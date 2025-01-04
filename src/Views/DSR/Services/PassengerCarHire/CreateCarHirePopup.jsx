@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2, SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
@@ -12,6 +12,9 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerCarHireAction } from "../../../../Redux/Actions/passengerCarHireActions";
 import CalculationSection from "../../CalculationSection";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -20,6 +23,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const vendorList = useSelector((state) => state?.vendorList);
+  const createCarHire = useSelector((state) => state?.createPassengerCarHire);
+
 
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
@@ -88,9 +93,14 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
        }
   };
 
-
+ // call item api on page load...
+ const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+ useFetchApiData(customersList, payloadGenerator, []); //call api common function
+ useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+ // call item api on page load...
   
   return (
+    <div id="formofcreateitems">
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
@@ -103,7 +113,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
+          <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
               <div className="itemsformwrap">
@@ -199,17 +209,17 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           {otherIcons.name_svg}
 
                           <CustomDropdown10
-                            ref={dropdownRef1}
-                            label="Select Supplier"
-                            options={vendorList?.data?.user}
-                            value={formData.supplier_id}
-                            onChange={handleChange}
-                            name="supplier_id"
-                            defaultOption="Select Supplier"
-                            setcusData={setcusData1}
-                            cusData={cusData1}
-                            type="vendor"
-                            required
+                             ref={dropdownRef1}
+                             label="Select Supplier"
+                             options={vendorList?.data?.user}
+                             value={formData.supplier_id}
+                             onChange={handleChange}
+                             name="supplier_id"
+                             defaultOption="Select Supplier"
+                             setcusData={setcusData1}
+                             cusData={cusData1}
+                             type="vendor"
+                             required
                           />
                         </span>
                       </div>
@@ -235,7 +245,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </div>
                       </div>
-                      <CalculationSection formData={formData} section='Carhire'/>
+                      <CalculationSection formData={formData} setFormData={setFormData} handleChange={handleChange} section='Carhire'/>
                       
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
@@ -252,11 +262,16 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+    <SubmitButton6
+                 onClick={handleFormSubmit}
+                 cancel="dsr"
+                 createUpdate={createCarHire}
+               />
           </form>
         </div>
       </div>
     </div>
+     </div>
   );
 };
 

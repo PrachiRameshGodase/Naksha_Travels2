@@ -1,19 +1,21 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerVisaAction } from "../../../../Redux/Actions/passengerVisaActions";
-import {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
@@ -26,6 +28,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const countryList = useSelector((state) => state?.countries?.countries);
+  const createVisa = useSelector((state) => state?.createPassengerVisa);
+
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -50,7 +54,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
     //amount
     charges: null,
-    hotel_price: null,
+    gross_amount: null,
     discount: null,
     tax_percent: null,
     tax_amount: null,
@@ -65,7 +69,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const entryType = ShowMasterData("50");
   const visaentryType = ShowMasterData("39");
-
   const visatype = ShowMasterData("40");
 
   const handleChange = (e) => {
@@ -73,41 +76,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     const selectedSupplierName = vendorList?.data?.user?.find(
       (item) => item?.id == formData?.supplier_id
     );
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
-
-    const visaType = visatype?.find((val) => val?.labelid == value);
-    setFormData((prev) => ({
+     setFormData((prev) => ({
       ...prev,
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      ...(name === "visa_entry_type" && {
-        visa_entry_name: visaEntryType?.label,
-      }),
-      ...(name === "visa_type_id" && {
-        visa_type_name: visaType?.label,
-      }),
-      supplier_name:selectedSupplierName?.display_name,
+      supplier_name: selectedSupplierName?.display_name,
       [name]: value,
-    }));
-  };
-
-  const handleChange1 = (selectedItems) => {
-    setFormData({
-      ...formData,
-      guest_ids: selectedItems, // Update selected items array
-    });
-  };
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: date,
-      ...(name === "expiry_date" && { payment_terms: 5 }),
-      ...(name === "transaction_date" &&
-        prev.payment_terms !== 5 && {
-          expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-        }),
     }));
   };
 
@@ -135,9 +107,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
-  if (!showModal) return null;
-  console.log("formData", formData);
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({  ...sendData, }),[]);
+  useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+
+  
   return (
+    <div id="formofcreateitems">
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
@@ -148,8 +125,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
-            {/* Keep your form as it is */}
+          <form >
+            
             <div className="relateivdiv">
               <div className="itemsformwrap">
                 <div className="f1wrapofcreq">
@@ -419,67 +396,12 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </div>
                       </div>
-                      <div className="calctotalsection">
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Visa Price:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Supplier Service Charge:</label>
-                              <input
-                                type="text"
-                                value={formData?.subtotal}
-                                placeholder="0.00"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Tax:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                // className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="calcuparentc">
-                          <div id="tax-details">
-                            <div className="clcsecx12s1">
-                              <label>Retain:</label>
-                              <input
-                                type="text"
-                                value={formData.tax_amount}
-                                placeholder="0.00"
-                                className="inputsfocalci465s"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="clcsecx12s2">
-                          <label>Invoice Total :</label>
-                          <input
-                            type="text"
-                            value={formData?.total}
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
+                      <CalculationSection
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleChange={handleChange}
+                          section="Visa"
+                        />
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
@@ -495,10 +417,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+             <SubmitButton6
+                            onClick={handleFormSubmit}
+                            cancel="dsr"
+                            createUpdate={createVisa}
+                          />
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

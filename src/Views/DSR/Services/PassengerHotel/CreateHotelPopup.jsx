@@ -12,7 +12,7 @@ import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerH
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
+import { preventZeroVal, sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
@@ -21,6 +21,7 @@ import { customersList } from "../../../../Redux/Actions/customerActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -31,8 +32,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const hotelList = useSelector((state) => state?.hotelList?.data?.hotels || []);
-  const hotelRoomListData = useSelector((state) => state?.hotelRoomList?.data?.hotels || []);
+  
+  const hotelList = useSelector(
+    (state) => state?.hotelList?.data?.hotels || []
+  );
+  const hotelRoomListData = useSelector(
+    (state) => state?.hotelRoomList?.data?.hotels || []
+  );
+  const createHotel = useSelector((state) => state?.createPassengerHotel);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -58,18 +65,17 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: 0.00,
-    hotel_price: 0,
-    discount: 0.00,
+    charges: 0.0,
+    gross_amount: 0,
+    discount: 0.0,
     tax_percent: null,
-    tax_amount: 0.00,
-    retain: 0.00,
-    total_amount: 0.00,
+    tax_amount: 0.0,
+    retain: 0.0,
+    total_amount: 0.0,
     note: null,
     upload_image: null,
   });
 
-  console.log("foermdata", formData)
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -81,8 +87,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-
     let updatedFields = { [name]: value };
 
     if (name === "hotel_id") {
@@ -95,9 +99,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
 
     if (name === "supplier_id") {
-      console.log("vendorList?.data?.user", vendorList?.data?.user)
-      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
-      console.log("selectedHotel", selectedHotel)
+      const selectedHotel = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
       updatedFields = {
         ...updatedFields,
         supplier_name: selectedHotel?.display_name || "",
@@ -106,7 +110,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
     setFormData((prev) => ({
       ...prev,
-      ...(name === "entry_type" && { entry_type: entryTypeName?.label, }),
       ...updatedFields,
     }));
   };
@@ -143,14 +146,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
 
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-    ...sendData,
-  }), []);
-
-  useFetchApiData(customersList, payloadGenerator, []);//call api common function
-  useFetchApiData(vendorsLists, payloadGenerator, []);//call api common function
+  const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+  useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
 
   return (
     <div id="formofcreateitems">
@@ -158,7 +157,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5>{isEdit ? "Update Hotel Service" : "Add Hotel Service"}</h5>
-            <button className="close-button" onClick={() => setShowModal(false)}>
+            <button
+              className="close-button"
+              onClick={() => setShowModal(false)}
+            >
               <RxCross2 />
             </button>
           </div>
@@ -418,23 +420,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
-                      <div className="secondtotalsections485s">
-                        <div className="textareaofcreatqsiform">
-                          <label>Note</label>
-                          <div className="show_no_of_text_limit_0121">
-                            <TextAreaComponentWithTextLimit
-                              formsValues={{ handleChange, formData }}
-                              placeholder="Note..."
-                              name="note"
-                              value={formData.note == 0 ? "" : formData.note}
-                            />
-                          </div>
-                        </div>
-                        <CalculationSection formData={formData} handleChange={handleChange} section='Hotel' />
-
-                      </div>
-                    </div>
-                    <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <div id="imgurlanddesc" className="calctotalsectionx2">
                       <ImageUpload
                         formData={formData}
                         setFormData={setFormData}
@@ -444,29 +430,36 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         component="purchase"
                       />
                     </div>
+                      <div className="secondtotalsections485s ">
+                        <div className="textareaofcreatqsiform">
+                          <label>Note</label>
+                          <div className="show_no_of_text_limit_0121">
+                            <TextAreaComponentWithTextLimit
+                              formsValues={{ handleChange, formData }}
+                              placeholder="Note..."
+                              name="note"
+                              value={preventZeroVal(formData?.note)}
+                            />
+                          </div>
+                        </div>
+                       
+                        
+                      </div>
+                    </div>
+                  <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}><CalculationSection
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleChange={handleChange}
+                          section="Hotel"
+                        /></div>
                   </div>
                 </div>
               </div>
-              {/* <SubmitButton2 isEdit="" itemId="" cancel="quotation" /> */}
-              <div className="actionbarcommon">
-                {isEdit && itemId ? (
-                  <>
-                    <button className={`firstbtnc1`} type="submit">
-                      Update
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button className={`firstbtnc1`} onClick={handleFormSubmit}>
-                      Save
-                    </button>
-                  </>
-                )}
-
-                <Link onClick={() => setShowModal(false)} className="firstbtnc2">
-                  Cancel
-                </Link>
-              </div>
+              <SubmitButton6
+                onClick={handleFormSubmit}
+                cancel="dsr"
+                createUpdate={createHotel}
+              />
             </form>
           </div>
         </div>

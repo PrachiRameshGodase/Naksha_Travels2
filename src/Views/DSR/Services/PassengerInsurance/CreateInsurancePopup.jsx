@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2, SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
@@ -13,6 +13,9 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
 import CalculationSection from "../../CalculationSection";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 
 const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -22,6 +25,8 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
+  const createInsurance = useSelector((state) => state?.createPassengerInsurance);
+
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -40,7 +45,7 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
     supplier_name: "",
     //amount
     charges: null,
-    hotel_price: null,
+    gross_amount: null,
     discount: null,
     tax_percent: null,
     tax_amount: null,
@@ -92,9 +97,15 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
       console.error("Error updating insurance:", error);
     }
   };
+ // call item api on page load...
+ const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+ useFetchApiData(customersList, payloadGenerator, []); //call api common function
+ useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+ // call item api on page load...
 
-  console.log("formData", formData);
+ 
   return (
+    <div id="formofcreateitems">
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
@@ -107,7 +118,7 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
+          <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
               <div className="itemsformwrap">
@@ -270,7 +281,16 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
 
                       {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                     </div>
-
+                    <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <ImageUpload
+                        formData={formData}
+                        setFormData={setFormData}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        component="purchase"
+                      />
+                    </div>
                     <div className="secondtotalsections485s">
                       <div className="textareaofcreatqsiform">
                         <label>Note</label>
@@ -287,27 +307,23 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
                           />
                         </div>
                       </div>
-                      <CalculationSection formData={formData} section='Insurance'/>
+                      <CalculationSection formData={formData} setFormData={setFormData} handleChange={handleChange} section='Insurance'/>
                      
                     </div>
-                    <div id="imgurlanddesc" className="calctotalsectionx2">
-                      <ImageUpload
-                        formData={formData}
-                        setFormData={setFormData}
-                        setFreezLoadingImg={setFreezLoadingImg}
-                        imgLoader={imgLoader}
-                        setImgeLoader={setImgeLoader}
-                        component="purchase"
-                      />
-                    </div>
+                   
                   </div>
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+            <SubmitButton6
+                            onClick={handleFormSubmit}
+                            cancel="dsr"
+                            createUpdate={createInsurance}
+                          />
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

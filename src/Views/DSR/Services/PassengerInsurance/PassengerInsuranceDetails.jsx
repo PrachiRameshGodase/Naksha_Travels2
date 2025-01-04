@@ -47,48 +47,77 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                               {otherIcons?.information_svg}
                               Insurance Details
                             </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
                             <ul>
                               <li className="pendingfromfrontendx5">
                                 <span>Passenger Name</span>
                                 <h1>:</h1>
-                                <p>{data?.passenger?.name || ""}</p>
+                                <p style={{width:"212px"}}>{data?.passenger?.name || ""}</p>
                               </li>
                               <li className="pendingfromfrontendx5">
                                 <span>Entry type</span>
                                 <h1>:</h1>
-                                <p>{data?.entry_type || ""}</p>
+                                <p style={{width:"212px"}}>{data?.entry_type || ""}</p>
                               </li>
 
                               <li>
                                 <span>Company Name</span>
                                 <h1>:</h1>
-                                <p>{data?.company_name || ""}</p>
+                                <p style={{width:"212px"}}>{data?.company_name || ""}</p>
                               </li>
                               <li>
                                 <span>Policy No</span>
                                 <h1>:</h1>
-                                <p>{data?.policy_no || ""}</p>
+                                <p style={{width:"212px"}}>{data?.policy_no || ""}</p>
                               </li>
                               <li>
                                 <span>Insurance Plan</span>
                                 <h1>:</h1>
-                                <p>{data?.insurance_plan || ""}</p>
+                                <p style={{width:"212px"}}>{data?.insurance_plan || ""}</p>
                               </li>
                               <li>
                                 <span>Issue Date</span>
                                 <h1>:</h1>
-                                <p>{formatDate3(data?.issue_date) || ""}</p>
+                                <p style={{width:"212px"}}>{formatDate3(data?.issue_date) || ""}</p>
                               </li>
                               <li>
                                 <span>Expiry Date</span>
                                 <h1>:</h1>
-                                <p>{formatDate3(data?.expiry_date) || ""}</p>
+                                <p style={{width:"212px"}}>{formatDate3(data?.expiry_date) || ""}</p>
                               </li>
                               <li>
                                 <span>Supplier Name</span>
                                 <h1>:</h1>
-                                <p>{data?.supplier_name || ""}</p>
+                                <p style={{width:"212px"}}>{data?.supplier_name || ""}</p>
                               </li>
+                            </ul>
+                            <ul>
+                              <li className="pendingfromfrontendx5">
+                                <span>Insurance Price</span>
+                                <h1>:</h1>
+                                <p>{data?.gross_amount || ""}</p>
+                              </li>
+                              <li className="pendingfromfrontendx5">
+                                <span>Supplier Service Charge</span>
+                                <h1>:</h1>
+                                <p>{data?.charges || ""}</p>
+                              </li>
+                              <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
+                                </li>
+                              <li>
+                                <span>Tax Amount</span>
+                                <h1>:</h1>
+                                <p>{data?.tax_amount || ""}</p>
+                              </li>
+                              <li>
+                                <span>Total Amount</span>
+                                <h1>:</h1>
+                                <p>{data?.total_amount || ""}</p>
+                              </li>
+
                               <li>
                                 <span>Notes</span>
                                 <h1>:</h1>
@@ -103,6 +132,7 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                                 </p>
                               </li>
                             </ul>
+                            </div>
                           </div>
                         </div>
                       </>

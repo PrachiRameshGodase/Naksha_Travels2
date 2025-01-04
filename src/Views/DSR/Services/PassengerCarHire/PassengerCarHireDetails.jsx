@@ -51,11 +51,12 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                               {otherIcons?.information_svg}
                               Car Hire Details
                             </div>
+                            <div style={{display:"flex", gap:"20px"}}>
                             <ul>
                               <li className="pendingfromfrontendx5">
                                 <span>Vechile Type</span>
                                 <h1>:</h1>
-                                <p>
+                                <p style={{width:"212px"}}>
                                   <ShowMastersValue
                                     type="41"
                                     id={data?.vehicle_type_id || ""}
@@ -65,31 +66,63 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                               <li className="pendingfromfrontendx5">
                                 <span>Entry type</span>
                                 <h1>:</h1>
-                                <p>{data?.entry_type || ""}</p>
+                                <p style={{width:"212px"}}>{data?.entry_type || ""}</p>
                               </li>
 
                               <li>
                                 <span>Days</span>
                                 <h1>:</h1>
-                                <p>{data?.days || ""}</p>
+                                <p style={{width:"212px"}}>{data?.days || ""}</p>
                               </li>
                               <li>
                                 <span> Pickup Location</span>
                                 <h1>:</h1>
-                                <p>{data?.pickup_location || ""}</p>
+                                <p style={{width:"212px"}}>{data?.pickup_location || ""}</p>
                               </li>
 
                               <li className="pendingfrombackendx5">
                                 <span>Dropdown Location</span>
                                 <h1>:</h1>
-                                <p>{data?.drop_location || ""}</p>
+                                <p style={{width:"212px"}}>{data?.drop_location || ""}</p>
                               </li>
 
                               <li>
                                 <span>Supplier Name</span>
                                 <h1>:</h1>
-                                <p>{data?.supplier_name || ""}</p>
+                                <p style={{width:"212px"}}>{data?.supplier_name || ""}</p>
                               </li>
+                            
+                            </ul>
+                            <ul>
+                              <li className="pendingfromfrontendx5">
+                                <span>Carhire Price</span>
+                                <h1>:</h1>
+                                <p>
+                                 {data?.gross_amount || ""}
+                                </p>
+                              </li>
+                              <li className="pendingfromfrontendx5">
+                                <span>Supplier Service Charge</span>
+                                <h1>:</h1>
+                                <p>{data?.charges || ""}</p>
+                              </li>
+                              <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
+                                </li>
+                              <li>
+                                <span>Tax Amount</span>
+                                <h1>:</h1>
+                                <p>{data?.tax_amount || ""}</p>
+                              </li>
+                              <li>
+                                <span> Total Amount</span>
+                                <h1>:</h1>
+                                <p>{data?.total_amount || ""}</p>
+                              </li>
+
+                              
                               <li>
                                 <span>Notes</span>
                                 <h1>:</h1>
@@ -104,6 +137,7 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                                 </p>
                               </li>
                             </ul>
+                            </div>
                           </div>
                         </div>
                       </>

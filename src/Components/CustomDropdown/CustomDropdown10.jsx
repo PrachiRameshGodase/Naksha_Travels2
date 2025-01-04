@@ -60,7 +60,13 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     ) {
       dispatch(vendorsLists({ ...sendData }));
     }
-
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "passenger_insurance_id" &&
+      (parsedPayload?.search || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData }));
+    }
     setSearchTerm("");
   }, [isOpen, dispatch]);
 

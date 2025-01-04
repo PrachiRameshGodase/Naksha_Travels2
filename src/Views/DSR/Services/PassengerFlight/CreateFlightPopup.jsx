@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,14 +6,17 @@ import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdo
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 import { CreatePassengerFlightAction } from "../../../../Redux/Actions/passengerFlightActions";
-import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2, SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
-import CalculationSection from "../../CalculationSection";
+import CalculationSection, { CalculationSection2 } from "../../CalculationSection";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch=useDispatch()
@@ -24,6 +27,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
+  const createFlight = useSelector((state) => state?.createPassengerFlight);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -42,13 +46,13 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_id:"",
     supplier_name:"",
     //amount
-    charges: null,
-    hotel_price: null,
-    discount: null,
-    tax_percent: null,
-    tax_amount: null,
-    retain: null,
-    total_amount: null,
+    charges: 0,
+    supplier_total:0,
+    discount: 0,
+    tax_percent: 0,
+    tax_amount: 0,
+    retain: 0,
+    total_amount: 0,
     note: null,
     upload_image: null,
   });
@@ -107,9 +111,14 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
         }
   };
 
+// call item api on page load...
+const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+useFetchApiData(customersList, payloadGenerator, []); //call api common function
+useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+// call item api on page load...
 
-  
-  return (
+return (
+    <div id="formofcreateitems">
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
@@ -120,7 +129,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
         </div>
 
         <div className="modal-body">
-          <form onSubmit={handleFormSubmit}>
+          <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
               <div className="itemsformwrap">
@@ -326,7 +335,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </div>
                       </div>
-                      <CalculationSection formData={formData} section='Flight'/>
+                      <CalculationSection2 formData={formData} setFormData={setFormData}  handleChange={handleChange} section='Flight'/>
                      
                     </div>
                     <div id="imgurlanddesc" className="calctotalsectionx2">
@@ -343,10 +352,15 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                 </div>
               </div>
             </div>
-            <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="quotation" />
+            <SubmitButton6
+                          onClick={handleFormSubmit}
+                          cancel="dsr"
+                          createUpdate={createFlight}
+                        />
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };
