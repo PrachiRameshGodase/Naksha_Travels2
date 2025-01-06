@@ -124,7 +124,14 @@ const CreateDSR = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
-
+    const isPassengerExists = DSRData?.passengers?.some(
+      (passenger) => passenger.customer_id === passengerData.customer_id
+    );
+  
+    if (isPassengerExists) {
+      toast.error("Passenger already added to the list.");
+      return; // Prevent further execution
+    }
     try {
       const sendData = {
         ...passengerData,
