@@ -68,6 +68,22 @@ const CalculationSection = ({ formData, setFormData, handleChange, section }) =>
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
+            <label>Invoice Amount:</label>
+            <input
+              type="text"
+              value={formData?.invoice_amount}
+              placeholder="0.00"
+              onChange={(e) => handleChange(e)}
+              name="invoice_amount"
+            />
+          </div>
+        </div>
+      </div>
+
+
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
             <label>Tax %:</label>
             <CustomDropdown13
               options={tax_rate}
@@ -184,6 +200,21 @@ export const CalculationSection2 = ({ formData, setFormData, handleChange, secti
               placeholder="0.00"
               onChange={(e) => handleChange(e)}
               name="charges"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>Invoice Amount:</label>
+            <input
+              type="text"
+              value={formData?.invoice_amount}
+              placeholder="0.00"
+              onChange={(e) => handleChange(e)}
+              name="invoice_amount"
             />
           </div>
         </div>

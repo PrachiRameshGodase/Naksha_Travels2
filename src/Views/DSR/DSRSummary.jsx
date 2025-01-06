@@ -3,8 +3,7 @@ import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
 
-const DSRSummary = ({customerData }) => {
-
+const DSRSummary = ({ customerData }) => {
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}
@@ -544,7 +543,24 @@ const DSRSummary = ({customerData }) => {
         </div>
 
         <div className="user_detail_id_x002">
+        <p
+            className={
+              customerData?.is_invoiced == "0"
+                ? "draft"
+                : customerData?.is_invoiced == "1"
+                ? "invoiced"
+                : ""
+            }
+            style={{ cursor: "pointer", padding: "5px 12px", width: "160px", marginTop:"-32px", marginBottom:"10px" }}
+          >
+            {customerData?.is_invoiced == "1"
+              ? "Invoiced"
+              : customerData?.is_invoiced == "0"
+              ? "Not Invoiced"
+              : ""}
+          </p>
           <p>{customerData?.dsr_no || ""}</p>
+         
         </div>
       </div>
 

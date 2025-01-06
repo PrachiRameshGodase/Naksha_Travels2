@@ -128,7 +128,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           <form >
             
             <div className="relateivdiv">
-              <div className="itemsformwrap">
+              <div className="itemsformwrap"  style={{paddingBottom:"0px"}}>
                 <div className="f1wrapofcreq">
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
@@ -384,6 +384,16 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
                   </div>
                   <div className="f1wrapofcreqx1">
+                  <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <ImageUpload
+                        formData={formData}
+                        setFormData={setFormData}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        component="purchase"
+                      />
+                    </div>
                     <div className="secondtotalsections485s">
                       <div className="textareaofcreatqsiform">
                         <label>Note</label>
@@ -403,16 +413,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           section="Visa"
                         />
                     </div>
-                    <div id="imgurlanddesc" className="calctotalsectionx2">
-                      <ImageUpload
-                        formData={formData}
-                        setFormData={setFormData}
-                        setFreezLoadingImg={setFreezLoadingImg}
-                        imgLoader={imgLoader}
-                        setImgeLoader={setImgeLoader}
-                        component="purchase"
-                      />
-                    </div>
+                   
                   </div>
                 </div>
               </div>

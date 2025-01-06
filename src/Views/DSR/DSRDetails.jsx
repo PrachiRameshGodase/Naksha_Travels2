@@ -12,6 +12,7 @@ import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import {
   DSRDeleteActions,
   DSRDetailsAction,
+  DSRStatusActions,
   PassengerAddAction,
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
@@ -122,6 +123,21 @@ const DSRDetails = () => {
     }
   };
 
+  const handleChangeDSRStatus = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to convert to invoice?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        dsr_id: item?.id,
+      };
+      dispatch(DSRStatusActions(sendData, Navigate));
+    }
+  };
+
   useEffect(() => {
     if (UrlId) {
       const queryParams = {
@@ -146,6 +162,23 @@ const DSRDetails = () => {
             </div>
             <div id="buttonsdata">
               <div
+              onClick={() => {handleChangeDSRStatus(DSRData)}}
+              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+              >
+                <p
+                  className={
+                    DSRData?.is_invoiced == "0"
+                      ? "draft"
+                      : DSRData?.is_invoiced == "1"
+                      ? "invoiced"
+                      : ""
+                  }
+                  style={{ cursor: "pointer" , padding:"5px 12px", width:"160px"}}
+                >
+                 Convert To Invoice
+                </p>
+              </div>
+              <div
                 data-tooltip-content="Delete"
                 data-tooltip-id="my-tooltip"
                 data-tooltip-place="bottom"
@@ -168,8 +201,6 @@ const DSRDetails = () => {
             </div>
           </div>
           <div className="formsectionsgrheigh">
-            
-
             <div id="formofcreateitems">
               <form>
                 <div className="relateivdiv">
@@ -183,7 +214,7 @@ const DSRDetails = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <div style={{width:"852px"}}>
+                      <div style={{ width: "852px" }}>
                         <div
                           className="f1wrapofcreqx1"
                           style={{ marginTop: "5px" }}

@@ -104,7 +104,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
             <form >
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap">
+                <div className="itemsformwrap"  style={{paddingBottom:"0px"}}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">

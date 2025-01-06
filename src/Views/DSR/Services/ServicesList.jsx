@@ -27,6 +27,7 @@ const ServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
   );
+  console.log("passengerData", passengerData)
   const totalHotels = passengerData?.dsr_hotel?.length || "";
   const totalVisas = passengerData?.dsr_visa?.length || "";
   const totalFlights = passengerData?.dsr_flight?.length || "";
@@ -147,9 +148,9 @@ const ServicesList = () => {
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              All Services
+              All Services 
             </h1>
-            {/* <p id="firsttagp">{totalItems} Records</p> */}
+            {/* <p id="firsttagp">DSR No.{DSR}</p> */}
             {/* <SearchBox
               placeholder="Search In DSRS"
               onSearch={onSearch}

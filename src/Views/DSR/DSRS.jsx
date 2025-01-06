@@ -323,9 +323,9 @@ const DSRS = () => {
                               <p
                                 className={
                                   item?.is_invoiced == "0"
-                                    ? "open"
+                                    ? "draft"
                                     : item?.is_invoiced == "1"
-                                      ? "declined"
+                                      ? "invoiced"
                                       : ""
                                 }
                               >

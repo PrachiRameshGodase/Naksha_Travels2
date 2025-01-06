@@ -233,6 +233,7 @@ import {
   DeleteDSRReducer,
   DeletePassengerReducer,
   DSRDetailReducer,
+  DSRStatusReducer,
   listDSRreducer,
 } from "./DSRReducers";
 import {
@@ -349,6 +350,7 @@ const reducer = combineReducers({
   DSRList: listDSRreducer,
   DSRDetails: DSRDetailReducer,
   DSRDelete:DeleteDSRReducer,
+  DSRStatus:DSRStatusReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
 
