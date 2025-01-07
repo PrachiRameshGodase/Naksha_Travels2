@@ -160,7 +160,7 @@ const MICES = () => {
   };
   //logic for checkBox...
 
-  const handleNewDsr = () => {
+  const handleNewMICE = () => {
     navigate("/dashboard/create-mice");
     dispatch(clearMiceState());
   };
@@ -214,7 +214,7 @@ const MICES = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link onClick={handleNewDsr} className="linkx1">
+            <Link onClick={handleNewMICE} className="linkx1">
               New MICE <GoPlus />
             </Link>
 

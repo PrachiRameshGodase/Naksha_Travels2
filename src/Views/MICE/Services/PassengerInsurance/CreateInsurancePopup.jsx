@@ -47,6 +47,7 @@ const CreateInsurancePopup = ({ showModal, setShowModal, data, passengerId }) =>
     charges: [{amount:null, account_id:null}],
     gross_amount: null,
     discount: null,
+    supplier_total: null,
     tax_percent: null,
     tax_amount: null,
     retain: null,

@@ -40,6 +40,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     hotel_price: null,
     discount: null,
     tax_percent: null,
+    supplier_total: null,
     tax_amount: null,
     retain: null,
     total_amount: null,

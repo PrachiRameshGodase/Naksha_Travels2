@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
-import { DSRListActions } from "../../Redux/Actions/DSRActions";
+import { clearDsrState, DSRListActions } from "../../Redux/Actions/DSRActions";
 
 const DSRS = () => {
   const navigate = useNavigate();
@@ -159,7 +159,8 @@ const DSRS = () => {
   };
   //logic for checkBox...
 
-  const handleNewDsr = () => {
+  const handleNewDsr = (event) => {
+    event.preventDefault(); // Prevent the default link behavior
     navigate("/dashboard/create-dsr");
     dispatch(clearDsrState());
   };
@@ -213,7 +214,7 @@ const DSRS = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link to="/dashboard/create-dsr" className="linkx1">
+            <Link onClick={handleNewDsr} className="linkx1">
               New DSR <GoPlus />
             </Link>
             {/* <div

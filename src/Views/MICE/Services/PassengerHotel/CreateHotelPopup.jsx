@@ -64,6 +64,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     charges: [{amount:null, account_id:null}],
     gross_amount: 0,
     discount: 0.0,
+    supplier_total: null,
     tax_percent: null,
     tax_amount: 0.0,
     retain: 0.0,

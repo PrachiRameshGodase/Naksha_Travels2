@@ -15,7 +15,7 @@ import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
 import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import { CalculationSection2,} from "../../CalculationSection";
+import CalculationSection, { CalculationSection2,} from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
@@ -335,11 +335,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
-                        <CalculationSection2
+                        <CalculationSection
                           formData={formData}
                           setFormData={setFormData}
                           handleChange={handleChange}
-                          section="Flight"
+                          section="Fare"
                         />
                       </div>
                     </div>

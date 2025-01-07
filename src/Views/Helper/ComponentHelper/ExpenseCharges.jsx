@@ -84,7 +84,7 @@ const ExpenseCharges = ({ formValues }) => {
             <div className='itemsectionrows' id='expense_charges_3223'>
                 <div className="tableheadertopsxs1">
                     <p className='tablsxs1a1x3'>Charges</p>
-                    <p className='tablsxs1a2x3'>Price</p>
+                    <p className='tablsxs1a2x3' style={{width:"175px"}}>Price</p>
                 </div>
 
                 {formData?.charges?.length >= 1 ? <>
@@ -101,7 +101,7 @@ const ExpenseCharges = ({ formValues }) => {
                                 />
                             </div>
 
-                            <div className="tablsxs1a2x3">
+                            <div className="tablsxs1a2x3" style={{width:"175px"}}>
                                 <NumericInput
                                     value={item?.amount}
                                     onChange={(e) => handleChargesChange(index, 'amount', e.target.value)}

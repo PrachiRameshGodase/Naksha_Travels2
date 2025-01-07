@@ -151,7 +151,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+console.log("formData", formData)
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -447,12 +447,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         
                       </div>
                     </div>
-                  <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}><CalculationSection
+                  <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                    <CalculationSection
                           formData={formData}
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Hotel"
-                        /></div>
+                        />
+                        </div>
                   </div>
                 </div>
               </div>
