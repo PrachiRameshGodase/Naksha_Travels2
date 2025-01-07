@@ -102,10 +102,10 @@ const DSRS = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-            dateRange[0]?.endDate && {
-              from_date: formatDate(new Date(dateRange[0].startDate)),
-              to_date: formatDate(new Date(dateRange[0].endDate)),
-            }),
+              dateRange[0]?.endDate && {
+                from_date: formatDate(new Date(dateRange[0].startDate)),
+                to_date: formatDate(new Date(dateRange[0].endDate)),
+              }),
         }),
       };
 
@@ -155,9 +155,7 @@ const DSRS = () => {
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : DSRLists?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : DSRLists?.map((row) => row.id));
   };
   //logic for checkBox...
 
@@ -215,19 +213,19 @@ const DSRS = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link onClick={handleNewDsr} className="linkx1">
+            <Link to="/dashboard/create-dsr" className="linkx1">
               New DSR <GoPlus />
             </Link>
-             {/* <div
-                          onClick={() => {
-                            navigate("/dashboard/create-dsr");
-                            dispatch(clearDsrState());
-                          }}
-                          className="linkx1"
-                          style={{ cursor: "pointer" }}
-                        >
-                          New DSR <GoPlus />
-                        </div> */}
+            {/* <div
+              onClick={() => {
+                navigate("/dashboard/create-dsr");
+                dispatch(clearDsrState());
+              }}
+              className="linkx1"
+              style={{ cursor: "pointer" }}
+            >
+              New DSR <GoPlus />
+            </div> */}
             <ResizeFL />
           </div>
         </div>
@@ -266,8 +264,6 @@ const DSRS = () => {
                     Currency
                   </div>
 
-
-
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -282,10 +278,11 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
-                              }`}
+                            }`}
                             key={index}
                           >
                             <div
@@ -303,7 +300,6 @@ const DSRS = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-
                               {item?.dsr_no || ""}
                             </div>
                             <div
@@ -335,15 +331,15 @@ const DSRS = () => {
                                   item?.is_invoiced == "0"
                                     ? "draft"
                                     : item?.is_invoiced == "1"
-                                      ? "invoiced"
-                                      : ""
+                                    ? "invoiced"
+                                    : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                    ? "Not Invoiced"
-                                    : ""}
+                                  ? "Not Invoiced"
+                                  : ""}
                               </p>
                             </div>
                           </div>
