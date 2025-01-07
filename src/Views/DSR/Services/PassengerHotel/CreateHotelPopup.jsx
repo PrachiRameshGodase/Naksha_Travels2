@@ -151,7 +151,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-console.log("formData", formData)
+
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">

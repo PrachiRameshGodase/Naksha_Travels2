@@ -27,7 +27,7 @@ const ServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
   );
-  console.log("passengerData", passengerData)
+
   const totalHotels = passengerData?.dsr_hotel?.length || "";
   const totalVisas = passengerData?.dsr_visa?.length || "";
   const totalFlights = passengerData?.dsr_flight?.length || "";

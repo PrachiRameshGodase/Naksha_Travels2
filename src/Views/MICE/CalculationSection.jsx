@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
 import { fetchTexRates } from "../../Redux/Actions/globalActions";
 import ExpenseCharges from "../Helper/ComponentHelper/ExpenseCharges";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CalculationSection = ({
   formData,
@@ -43,7 +44,7 @@ const CalculationSection = ({
     formData.gross_amount,
     formData.tax_percent,
     setFormData,
-    
+
     formData.total_amount,
     formData.charges,
   ]);
@@ -120,8 +121,10 @@ const CalculationSection = ({
           <div className="clcsecx12s1">
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
-                {" "}
-                Edit and add charges
+                Edit and add charges 
+                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{marginTop:"10px"}}>
+                  {otherIcons.question_svg}
+                </span>
               </p>
             </label>
           </div>
@@ -179,5 +182,3 @@ const CalculationSection = ({
 };
 
 export default CalculationSection;
-
-

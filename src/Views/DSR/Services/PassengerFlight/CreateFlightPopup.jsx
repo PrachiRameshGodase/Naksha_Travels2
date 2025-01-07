@@ -8,7 +8,7 @@ import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdo
 import { customersList } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerFlightAction } from "../../../../Redux/Actions/passengerFlightActions";
-import {SubmitButton6} from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
@@ -38,6 +38,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     travel_date: "",
     travel_type_id: "",
     airline_name: "",
+    destination_code:"",
     guest_ids: "",
     gds_portal: "",
     ticket_no: "",
@@ -62,21 +63,14 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const entryType = ShowMasterData("50");
   const travelType = ShowMasterData("51");
+  const destinationCode = ShowMasterData("52");
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const entryTypeName = entryType?.find((val) => val?.labelid == value);
-    const travelTypeName = travelType?.find((val) => val?.labelid == value);
     setFormData((prev) => ({
       ...prev,
-      ...(name === "entry_type" && {
-        entry_type: entryTypeName?.label,
-      }),
-      ...(name === "travel_type" && {
-        travel_type_id: travelTypeName?.label,
-      }),
-
-      [name]: value,
+     [name]: value,
     }));
   };
 
@@ -293,6 +287,24 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="route"
                             placeholder="Enter Route"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Destination Code<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Destination Code"
+                            options={destinationCode}
+                            value={formData?.destination_code}
+                            onChange={handleChange}
+                            name="destination_code"
+                            defaultOption="Select Destination Code"
+                            type="masters2"
                           />
                         </span>
                       </div>

@@ -34,6 +34,7 @@ const MICEDetails = () => {
   const addPassenger = useSelector((state) => state?.addPassenger);
   const deletePassenger = useSelector((state) => state?.deletePassenger);
   const deleteMICE = useSelector((state) => state?.MICEDelete);
+  const statusChangeMICE = useSelector((state) => state?.MICEStatus);
 
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
@@ -145,7 +146,7 @@ const MICEDetails = () => {
   return (
     <>
       {(addPassenger?.loading ||
-        deletePassenger?.loading ||
+        deletePassenger?.loading || statusChangeMICE?.loading ||
         deleteMICE?.loading) && <MainScreenFreezeLoader />}
       {MICEDetails?.loading ? (
         <Loader02 />

@@ -93,7 +93,7 @@ export const DSRStatusActions = (queryParams, Navigate) => async (dispatch) => {
     try {
         const response = await axiosInstance.post(`/service/dsr/invoiced`, queryParams);
 
-        if (response?.data?.message === "Dsr Deleted Successfully") {
+        if (response?.data?.message === "Dsr Invoiced Successfully") {
            
             toast.success(response?.data?.message);
             Navigate("/dashboard/dsr");

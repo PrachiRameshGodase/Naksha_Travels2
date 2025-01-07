@@ -39,6 +39,8 @@ const DSRDetails = () => {
   const addPassenger = useSelector((state) => state?.addPassenger);
   const deletePassenger = useSelector((state) => state?.deletePassenger);
   const deleteDSR = useSelector((state) => state?.DSRDelete);
+  const statusChangeDSR = useSelector((state) => state?.DSRStatus);
+
 
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
@@ -150,7 +152,7 @@ const DSRDetails = () => {
   return (
     <>
       {(addPassenger?.loading ||
-        deletePassenger?.loading ||
+        deletePassenger?.loading || statusChangeDSR?.loading ||
         deleteDSR?.loading) && <MainScreenFreezeLoader />}
       {DSRDetails?.loading ? (
         <Loader02 />

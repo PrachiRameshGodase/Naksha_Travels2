@@ -12,8 +12,9 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
-import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import { itemLists, vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
 
 const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -23,8 +24,12 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const vendorList = useSelector((state) => state?.vendorList);
   const createOther = useSelector((state) => state?.createPassengerOthers);
+  const itemList = useSelector((state) => state?.itemList);
+  const options2 = itemList?.data?.item;
 
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
+  
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -53,14 +58,22 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const selectedSupplierName = vendorList?.data?.user?.find(
-      (item) => item?.id == formData?.supplier_id
-    );
+    let updatedFields = { [name]: value };
+  
+    if (name === "supplier_id") {
+      const selectedSupplierName = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
+      updatedFields.supplier_name = selectedSupplierName?.display_name || "";
+    }
+  
+    if (name === "item_id") {
+      const selectedItemName = options2?.find((item) => item?.id == value);
+      updatedFields.item_name = selectedItemName?.name || "";
+    }
     setFormData((prev) => ({
       ...prev,
-      supplier_name: selectedSupplierName?.display_name,
-      [name]: value,
-
+      ...updatedFields,
     }));
   };
 
@@ -86,7 +99,9 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
  // call item api on page load...
  const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
- useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+ useFetchApiData(vendorsLists, payloadGenerator, []); 
+ useFetchApiData(itemLists, payloadGenerator, []); 
+ 
  // call item api on page load...
 
   return (
@@ -134,11 +149,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.item_name}
+                          <CustomDropdown03
+                            options={options2 || []}
+                            value={formData?.item_id}
+                            name="item_id"
                             onChange={handleChange}
-                            name="item_name"
-                            placeholder="Enter Item Details"
+                            type="select_item"
+                            setItemData={setcusData2}
+                            defaultOption="Select Item"
+                            index="0"
+                            extracssclassforscjkls=""
+                            itemData={cusData2}
+                            ref={dropdownRef1}
                           />
                         </span>
                       </div>
