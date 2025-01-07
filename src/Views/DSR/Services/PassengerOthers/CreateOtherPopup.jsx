@@ -35,7 +35,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_id: "",
     supplier_name: "",
     //amount
-    charges: null,
+    charges: [{amount:null, account_id:null}],
     hotel_price: null,
     discount: null,
     tax_percent: null,
@@ -59,6 +59,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       supplier_name: selectedSupplierName?.display_name,
       [name]: value,
+
     }));
   };
 
@@ -67,6 +68,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     try {
       const sendData = {
         ...formData,
+        charges:JSON.stringify(formData?.charges)
       };
       dispatch(CreatePassengerOtherAction(sendData))
         .then((response) => {

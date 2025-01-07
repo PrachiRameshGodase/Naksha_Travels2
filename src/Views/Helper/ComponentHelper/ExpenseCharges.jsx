@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15'
 import { useSelector } from 'react-redux';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
 import NumericInput from '../NumericInput';
+import { sendData } from '../HelperFunctions';
+import { accountLists } from '../../../Redux/Actions/listApisActions';
+import useFetchApiData from './useFetchApiData';
 
 const ExpenseCharges = ({ formValues }) => {
     const { formData, setFormData } = formValues;
@@ -70,7 +73,10 @@ const ExpenseCharges = ({ formValues }) => {
     };
 
 
-
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        ...sendData
+    }), []);
+    useFetchApiData(accountLists, payloadGenerator, []);
 
 
     return (

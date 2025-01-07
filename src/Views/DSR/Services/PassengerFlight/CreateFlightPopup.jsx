@@ -46,7 +46,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_id:"",
     supplier_name:"",
     //amount
-    charges: 0,
+    charges: [{amount:null, account_id:null}],
     supplier_total:0,
     discount: 0,
     tax_percent: 0,
@@ -96,6 +96,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
               formData?.guest_ids?.length === 0
                 ? null
                 : formData?.guest_ids?.join(", "),
+                charges: JSON.stringify(formData?.charges)
           };
           dispatch(CreatePassengerFlightAction(sendData))
             .then((response) => {

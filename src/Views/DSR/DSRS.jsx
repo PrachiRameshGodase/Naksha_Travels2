@@ -163,7 +163,7 @@ const DSRS = () => {
 
   const handleNewDsr = () => {
     navigate("/dashboard/create-dsr");
-    dispatch(clearDsrState);
+    dispatch(clearDsrState());
   };
 
   return (
@@ -218,6 +218,16 @@ const DSRS = () => {
             <Link onClick={handleNewDsr} className="linkx1">
               New DSR <GoPlus />
             </Link>
+             {/* <div
+                          onClick={() => {
+                            navigate("/dashboard/create-dsr");
+                            dispatch(clearDsrState());
+                          }}
+                          className="linkx1"
+                          style={{ cursor: "pointer" }}
+                        >
+                          New DSR <GoPlus />
+                        </div> */}
             <ResizeFL />
           </div>
         </div>

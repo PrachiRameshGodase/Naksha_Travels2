@@ -20,7 +20,7 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.passenger?.name || ""}</h5>
+                <h5>{data?.passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -52,7 +52,7 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                               <li className="pendingfromfrontendx5">
                                 <span>Passenger Name</span>
                                 <h1>:</h1>
-                                <p style={{width:"212px"}}>{data?.passenger?.name || ""}</p>
+                                <p style={{width:"212px"}}>{data?.passenger?.display_name || ""}</p>
                               </li>
                               <li className="pendingfromfrontendx5">
                                 <span>Entry type</span>

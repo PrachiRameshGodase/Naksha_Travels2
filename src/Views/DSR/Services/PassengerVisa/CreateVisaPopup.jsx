@@ -53,7 +53,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_name: null,
 
     //amount
-    charges: null,
+    charges: [{amount:null, account_id:null}],
     gross_amount: null,
     discount: null,
     tax_percent: null,
@@ -92,6 +92,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           formData?.guest_ids?.length === 0
             ? null
             : formData?.guest_ids?.join(", "),
+            charges: JSON.stringify(formData?.charges)
       };
       dispatch(CreatePassengerVisaAction(sendData))
         .then((response) => {

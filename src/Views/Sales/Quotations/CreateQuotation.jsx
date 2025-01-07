@@ -85,21 +85,17 @@ const CreateQuotation = () => {
     const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
     return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
-
     if (name === 'shipping_charge' || name === 'adjustment_charge') {
       newValue = parseFloat(value) || 0; // Convert to float or default to 0
     }
-
     if (name === "customer_id" && value !== "") {
       setIsCustomerSelect(true);
     } else if (name === "customer_id" && value === "") {
       setIsCustomerSelect(false);
     }
-
     if (name === "customer_id") {
       const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
       const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === 1);
@@ -109,8 +105,6 @@ const CreateQuotation = () => {
         shipping: findfirstshipping,
       });
     }
-
-
     if (name === "terms_and_condition") {
       // Remove spaces for counting purposes
       const countableText = value.replace(/\s/g, '');
@@ -118,7 +112,6 @@ const CreateQuotation = () => {
         return; // Exit without updating state if limit is exceeded
       }
     }
-
     setFormData(prev => ({
       ...prev,
       [name]: newValue,

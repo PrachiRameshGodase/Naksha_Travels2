@@ -65,7 +65,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: 0.0,
+    charges: [{amount:null, account_id:null}],
     gross_amount: 0,
     discount: 0.0,
     tax_percent: null,
@@ -130,6 +130,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
           formData?.guest_ids?.length === 0
             ? null
             : formData?.guest_ids?.join(", "),
+            charges: JSON.stringify(formData?.charges)
       };
       dispatch(CreatePassengerHotelAction(sendData))
         .then((response) => {

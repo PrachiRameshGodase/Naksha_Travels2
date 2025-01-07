@@ -85,13 +85,24 @@ const MainLinks = ({
     "create-dsr",
     "dsr",
     "dsr-details",
-    "serviceslist"
+    "serviceslist",
+    "create-mice",
+    "mice",
+    "mice-details",
+    "mice-serviceslist"
   ]
   const dsrMenuItems = [
     "create-dsr",
     "dsr",
     "dsr-details",
     "serviceslist"
+  ]
+
+  const miceMenuItems = [
+    "create-mice",
+    "mice",
+    "mice-details",
+    "mice-serviceslist"
   ]
   const categoryMenuItems = [
     "items-categories",
@@ -383,6 +394,15 @@ const MainLinks = ({
                 }`}
             >
               DSR
+            </li>
+            <li
+              onClick={() => handleMenuItemClick("mice")}
+              className={`menu-item ${miceMenuItems.includes(selectedMenuItem)
+                ? "active"
+                : ""
+                }`}
+            >
+              MICE
             </li>
           </ul>
         </div>

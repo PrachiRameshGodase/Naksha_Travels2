@@ -156,7 +156,7 @@ const Insurances = ({ data, totalItems }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div className="table-cellx12 x125cd01">
-                              {item?.passenger?.name || ""}
+                              {item?.passenger?.display_name || ""}
                             </div>
                             <div className="table-cellx12 x125cd01">
                               {item?.company_name || ""}
