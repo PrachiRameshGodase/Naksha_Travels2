@@ -4,19 +4,19 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  CreateMasterAction,
-  masterListAction,
-} from "../../Redux/Actions/mastersAction";
+  CreateUserMasterAction,
+  UserMasterListAction,
+} from "../../Redux/Actions/userMasterActions";
+import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 
-const CreateMaster = ({ popupContent }) => {
+const CreateUserMaster = ({ popupContent }) => {
   const { setShowPopup, showPopup, isEdit, setSearchTrigger } = popupContent;
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const createMaster = useSelector((state) => state?.masterCreate);
+  const createUserMaster = useSelector((state) => state?.userMasterCreate);
 
   const [formData, setFormData] = useState({
     id: 0,
@@ -33,9 +33,9 @@ const CreateMaster = ({ popupContent }) => {
       const sendData = {
         ...formData,
       };
-      dispatch(CreateMasterAction(sendData, Navigate))
+      dispatch(CreateUserMasterAction(sendData, Navigate))
         .then(() => {
-          dispatch(masterListAction());
+          dispatch(UserMasterListAction());
           setShowPopup(null);
           setSearchTrigger((prev) => prev + 1);
         })
@@ -43,7 +43,7 @@ const CreateMaster = ({ popupContent }) => {
           console.log(error);
         });
     } catch (error) {
-      toast.error("Error creating masters:", error);
+      toast.error("Error creating user masters:", error);
     }
   };
 
@@ -68,6 +68,7 @@ const CreateMaster = ({ popupContent }) => {
       });
     }
   }, [isEdit, showPopup]);
+
   return (
     <div id="formofcreateitems">
       <form action="">
@@ -103,8 +104,7 @@ const CreateMaster = ({ popupContent }) => {
                       </div>
                     </div>
 
-                    {/* <div className="bordersinglestroke"></div> */}
-                    <div id="middlesection" style={{}}>
+                    <div id="middlesection">
                       <div id="formofcreateitems">
                         <div
                           className={`itemsformwrap1`}
@@ -161,7 +161,7 @@ const CreateMaster = ({ popupContent }) => {
 
                     <SubmitButton7
                       onClick={handleSubmitForm}
-                      createUpdate={createMaster}
+                      createUpdate={createUserMaster}
                       setShowPopup={setShowPopup}
                     />
                   </div>
@@ -175,4 +175,4 @@ const CreateMaster = ({ popupContent }) => {
   );
 };
 
-export default CreateMaster;
+export default CreateUserMaster;

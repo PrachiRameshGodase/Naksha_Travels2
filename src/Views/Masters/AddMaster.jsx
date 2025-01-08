@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  CreateMasterAction,
+  masterListAction,
+} from "../../Redux/Actions/mastersAction";
+import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { RxCross2 } from "react-icons/rx";
-import { BsArrowRight } from "react-icons/bs";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { CreateMasterAction } from "../../Redux/Actions/mastersAction";
-import { useNavigate } from "react-router-dom";
 
 const AddMaster = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const createMaster = useSelector((state) => state?.masterCreate);
 
-  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } = popupContent;
-  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =
+    popupContent;
   const [formData, setFormData] = useState({
     id: 0,
     // labelid:0,
@@ -22,8 +26,6 @@ const AddMaster = ({ popupContent }) => {
     value_string: null,
     value: null,
   });
-  const masterList = useSelector((state) => state.masterList);
-  const masterDetails = masterList?.data;
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
@@ -33,8 +35,9 @@ const AddMaster = ({ popupContent }) => {
       };
       dispatch(CreateMasterAction(sendData, Navigate))
         .then(() => {
+          dispatch(masterListAction());
           setshowAddPopup(null);
-          setSearchTrigger((prev) => prev + 1)
+          setSearchTrigger((prev) => prev + 1);
         })
         .catch((error) => {
           console.log(error);
@@ -79,7 +82,7 @@ const AddMaster = ({ popupContent }) => {
                       id="Anotherbox"
                       className="formsectionx"
                       style={{
-                        height: "120px",
+                        height: "75px",
                         background: "white",
                       }}
                     >
@@ -155,38 +158,11 @@ const AddMaster = ({ popupContent }) => {
                         </div>
                       </div>
                     </div>
-
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "197px",
-                          width: "834px",
-                          position: "absolute",
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${freezLoadingImg ? "disabledbtn" : ""} `}
-                          type="submit"
-                          disabled={freezLoadingImg}
-                        >
-                          {isEditIndividual ? "Update" : "Create"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setshowAddPopup(null)}
-                        // className={`${(createUpdate?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                        // disabled={(createUpdate?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
+                    <SubmitButton7
+                      onClick={handleSubmitForm}
+                      createUpdate={createMaster}
+                      setShowPopup={setshowAddPopup}
+                    />
                   </div>
                 </div>
               </div>

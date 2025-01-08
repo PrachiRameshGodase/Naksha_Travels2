@@ -4,14 +4,15 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { Link } from "react-router-dom";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { GoPlus } from "react-icons/go";
-import CreateMaster from "./CreateMaster";
+import CreateUserMaster from "./CreateUserMaster";
 import { useDispatch, useSelector } from "react-redux";
 import { masterListAction } from "../../Redux/Actions/mastersAction";
-import MasterDetails from "./MasterDetails";
+import UserMasterDetails from "./UserMasterDetails";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
-import AddMaster from "./AddMaster";
+import AddUserMaster from "./AddUserMaster";
+import { UserMasterListAction } from "../../Redux/Actions/userMasterActions";
 
-const Masters = () => {
+const UserMasters = () => {
   const dispatch = useDispatch();
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -22,17 +23,15 @@ const Masters = () => {
   const [dataChanging, setDataChanging] = useState(false);
   const [showViewPopup, setShowViewPopup] = useState(false);
   const [viewList, setViewList] = useState([]);
-
   const [showAddPopup, setshowAddPopup] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
-
-  const masterList = useSelector((state) => state.masterList);
-  const masterLists = masterList?.data?.filter((val) => val.type == 0);
-
+  const userMasterData = useSelector((state) => state?.userMasterList);
+  const userMasterList=userMasterData?.data?.filter((val) => val.type == 0);
+  
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(selectAll ? [] : masterLists?.map((row) => row.id));
+    setSelectedRows(selectAll ? [] : userMasterData?.map((row) => row.id));
   };
 
   const handleClickOnAdd = () => {
@@ -42,14 +41,14 @@ const Masters = () => {
   };
 
   const handleClickOnAddIndividual = (id) => {
-    const selectedList = masterLists?.find(
+    const selectedList = userMasterList?.find(
       (master) => master?.id === Number(id)
     );
     setSelectedItem(selectedList);
     setshowAddPopup(selectedList);
   };
   const handleClickOnEdit = (id) => {
-    const selectedList = masterLists?.find(
+    const selectedList = userMasterList?.find(
       (master) => master?.id === Number(id)
     );
     setSelectedItem(selectedList);
@@ -58,7 +57,7 @@ const Masters = () => {
   };
 
   const handleClickOnView = (id) => {
-    const selectedList = masterLists?.find(
+    const selectedList = userMasterList?.find(
       (master) => master?.id === Number(id)
     );
     setViewList(selectedList);
@@ -68,15 +67,14 @@ const Masters = () => {
   const fetchMasters = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
-
       const sendData = {
         fy,
       };
 
-      dispatch(masterListAction(sendData));
+      dispatch(UserMasterListAction(sendData));
       setDataChanging(false);
     } catch (error) {
-      console.error("Error fetching quotations:", error);
+      console.error("Error fetching user masters:", error);
     }
   }, [searchTrigger]);
 
@@ -94,7 +92,7 @@ const Masters = () => {
           </div>
 
           <div id="buttonsdata">
-            {/* <Link
+            <Link
               className="linkx1"
               onClick={handleClickOnAdd}
               data-tooltip-place="bottom"
@@ -102,7 +100,7 @@ const Masters = () => {
               data-tooltip-id="my-tooltip"
             >
               New Master <GoPlus />
-            </Link> */}
+            </Link>
             <ResizeFL />
           </div>
         </div>
@@ -148,11 +146,11 @@ const Masters = () => {
                   </div>
                 </div>
 
-                {masterList?.loading || dataChanging === true ? (
+                {userMasterData?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {masterLists?.map((master, index) => (
+                    {userMasterList?.map((master, index) => (
                       <div
                         className={`table-rowx12 ${selectedRows.includes(master.id)
                           ? "selectedresult"
@@ -238,17 +236,17 @@ const Masters = () => {
         </div>
 
         {showAddPopup && (
-          <AddMaster popupContent={{ setshowAddPopup, showAddPopup, setSearchTrigger }} />
+          <AddUserMaster popupContent={{ setshowAddPopup, showAddPopup, setSearchTrigger }} />
         )}
         {showPopup && (
-          <CreateMaster popupContent={{ setShowPopup, showPopup, isEdit, setSearchTrigger }} />
+          <CreateUserMaster popupContent={{ setShowPopup, showPopup, isEdit, setSearchTrigger }} />
         )}
         {showViewPopup && (
-          <MasterDetails closePopup={setShowViewPopup} list={viewList} />
+          <UserMasterDetails closePopup={setShowViewPopup} list={viewList} />
         )}
       </div>
     </>
   );
 };
 
-export default Masters;
+export default UserMasters;

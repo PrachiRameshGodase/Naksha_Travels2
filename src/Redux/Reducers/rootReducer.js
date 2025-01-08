@@ -262,6 +262,7 @@ import { createPassengerMVisaReducer, passengerMVisaDeleteReducer } from "./pass
 import { createPassengerMFlightReducer, passengerMFlightDeleteReducer } from "./passengerMFlightReducers";
 import { createPassengerMInsuranceReducer, passengerMInsuranceDeleteReducer } from "./passengerMInsuranceReducers";
 import { createPassengerMOtherReducer, passengerMOtherDeleteReducer } from "./pasengerMOtherReducers";
+import { createUserMasterReducer, listUserMasterReducer, userMasterDeleteReducer } from "./userMasterReducers";
 const reducer = combineReducers({
   addItemsReducer,
 
@@ -549,6 +550,10 @@ const reducer = combineReducers({
   //master
   masterCreate: createMasterReducer,
   masterList: listMasterReducer,
+
+  userMasterCreate: createUserMasterReducer,
+  userMasterList: listUserMasterReducer,
+  userMasterDelete:userMasterDeleteReducer,
 
   //manage all State data
   type: productTypeReducer,

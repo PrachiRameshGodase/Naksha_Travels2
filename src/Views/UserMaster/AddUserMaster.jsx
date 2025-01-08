@@ -4,46 +4,49 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  CreateMasterAction,
-  masterListAction,
-} from "../../Redux/Actions/mastersAction";
+  CreateUserMasterAction,
+  UserMasterListAction,
+} from "../../Redux/Actions/userMasterActions";
+import {
+  SubmitButton7
+} from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 
-const CreateMaster = ({ popupContent }) => {
-  const { setShowPopup, showPopup, isEdit, setSearchTrigger } = popupContent;
+const AddUserMaster = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const createUserMaster = useSelector((state) => state?.userMasterCreate);
 
-  const createMaster = useSelector((state) => state?.masterCreate);
 
+  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =popupContent;
   const [formData, setFormData] = useState({
     id: 0,
     // labelid:0,
-    type: 0,
+    type: showAddPopup?.labelid,
     label: null,
     value_string: null,
     value: null,
   });
 
+  
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     try {
       const sendData = {
         ...formData,
       };
-      dispatch(CreateMasterAction(sendData, Navigate))
+      dispatch(CreateUserMasterAction(sendData, Navigate))
         .then(() => {
-          dispatch(masterListAction());
-          setShowPopup(null);
+          dispatch(UserMasterListAction());
+          setshowAddPopup(null);
           setSearchTrigger((prev) => prev + 1);
         })
         .catch((error) => {
           console.log(error);
         });
     } catch (error) {
-      toast.error("Error creating masters:", error);
+      toast.error("Error creating user masters:", error);
     }
   };
 
@@ -56,18 +59,19 @@ const CreateMaster = ({ popupContent }) => {
   };
 
   useEffect(() => {
-    if (isEdit && showPopup) {
+    if (isEditIndividual && showAddPopup) {
       setFormData({
         ...formData,
-        id: showPopup?.id,
-        labelid: showPopup?.labelid,
-        type: showPopup?.type,
-        label: showPopup?.label,
-        value: showPopup?.value,
-        value_string: showPopup?.value_string,
+        id: showAddPopup?.id,
+        labelid: showAddPopup?.labelid,
+        type: showAddPopup?.type,
+        label: showAddPopup?.label,
+        value: showAddPopup?.value,
+        value_string: showAddPopup?.value_string,
       });
     }
-  }, [isEdit, showPopup]);
+  }, [showAddPopup, isEditIndividual]);
+
   return (
     <div id="formofcreateitems">
       <form action="">
@@ -87,8 +91,8 @@ const CreateMaster = ({ popupContent }) => {
                     >
                       <div id="leftareax12">
                         <h1 id="firstheading" className="headingofcreateforems">
-                          {isEdit
-                            ? `Update Master ${showPopup.label}`
+                          {isEditIndividual
+                            ? `Update Master ${showAddPopup.label}`
                             : "Add Master"}
                         </h1>
                       </div>
@@ -96,7 +100,7 @@ const CreateMaster = ({ popupContent }) => {
                       <div id="buttonsdata">
                         <div
                           className="linkx3"
-                          onClick={() => setShowPopup(null)}
+                          onClick={() => setshowAddPopup(null)}
                         >
                           <RxCross2 />
                         </div>
@@ -131,7 +135,6 @@ const CreateMaster = ({ popupContent }) => {
                                 <span>
                                   {otherIcons.quantity_svg}
                                   <input
-                                    type="number"
                                     value={formData.value}
                                     onChange={handleChange}
                                     name="value"
@@ -161,8 +164,8 @@ const CreateMaster = ({ popupContent }) => {
 
                     <SubmitButton7
                       onClick={handleSubmitForm}
-                      createUpdate={createMaster}
-                      setShowPopup={setShowPopup}
+                      createUpdate={createUserMaster}
+                      setShowPopup={setshowAddPopup}
                     />
                   </div>
                 </div>
@@ -175,4 +178,4 @@ const CreateMaster = ({ popupContent }) => {
   );
 };
 
-export default CreateMaster;
+export default AddUserMaster;

@@ -33,7 +33,7 @@ import {
   itineraryListAction,
   itinerarystatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import Attachment from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
 
 const Itinerary = ({ data }) => {
   const dispatch = useDispatch();
@@ -346,7 +346,7 @@ const Itinerary = ({ data }) => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                              <Attachment
+                              <AttachmentPreview2
                                 attachments={JSON.parse(
                                   item?.upload_documents || "[]"
                                 )}

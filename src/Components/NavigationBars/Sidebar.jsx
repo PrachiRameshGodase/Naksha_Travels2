@@ -154,6 +154,7 @@ import CreateMICE from "../../Views/MICE/CreateMICE";
 import MICEDetails from "../../Views/MICE/MICEDetails";
 import MICES from "../../Views/MICE/MICES";
 import FamilyServicesList from "../../Views/MICE/Services/FamilyServicesList";
+import UserMasters from "../../Views/UserMaster/UserMasters";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -639,6 +640,9 @@ const Sidebar = ({ loggedInUserData }) => {
       case "create-masters":
         return <Masters />;
 
+      case "create-user-masters":
+        return <UserMasters />;
+  
       case "manage-currency":
         return <ManageCurrency />;
       case "sequence-format":

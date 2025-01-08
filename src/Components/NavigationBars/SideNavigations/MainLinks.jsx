@@ -211,7 +211,7 @@ const MainLinks = ({
   const HelpMenuItem = ["create-help", "help"];
 
   //Masters
-  const MastersMenuItem = ["create-masters"];
+  const MastersMenuItem = ["create-masters", "create-user-masters"];
   return (
     <>
       <div id="sidebarx1">
@@ -1024,7 +1024,17 @@ const MainLinks = ({
               className={`menu-item ${selectedMenuItem === "create-masters" ? "active" : ""
                 }`}
             >
-              Masters
+             System Masters
+            </li>
+
+            <li
+              onClick={() => {
+                handleMenuItemClick("create-user-masters");
+              }}
+              className={`menu-item ${selectedMenuItem === "create-user-masters" ? "active" : ""
+                }`}
+            >
+             User Masters
             </li>
             <li
               onClick={() => {

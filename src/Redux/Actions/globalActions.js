@@ -170,15 +170,21 @@ export const autoGenerateId = (data, setSearchTrigger) => async dispatch => {
         const response = await axiosInstance.post(`/sequence/create/update`, data);
         dispatch({ type: AUTO_GENERATE_ID_SUCCESS, payload: response?.data });
 
-        if (response?.data?.message === "Sequence Format saved successfully") {
+        // if (response?.data?.message === "Sequence Format saved successfully") {
+        //     setSearchTrigger((prev) => prev + 1);
+        // } else {
+        //     toast.error(response?.data?.message)
+        // }
+        if(response?.data?.success===true){
+            toast.success(response?.data?.message)
             setSearchTrigger((prev) => prev + 1);
-        } else {
+        }else{
             toast.error(response?.data?.message)
         }
 
     } catch (error) {
         dispatch({ type: AUTO_GENERATE_ID_ERROR, payload: error.message });
-        toast.error("error");
+        // toast.error("error");
     }
 };
 

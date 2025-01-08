@@ -4,18 +4,17 @@ import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton"
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import AddMaster from "./AddMaster";
+import AddUserMaster from "./AddUserMaster";
 
-const MasterDetails = ({ closePopup, list }) => {
+const UserMasterDetails = ({ closePopup, list }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [dataChanging, setDataChanging] = useState(false);
   const [showAddPopup, setshowAddPopup] = useState(null);
   const [isEditIndividual, setIsEditIndividual] = useState(false)
-  const masterList = useSelector((state) => state.masterList);
-  const masterLists = masterList?.data?.filter(
-    (val) => val.type == list.labelid
-  );
+  const masterList = useSelector((state) => state.userMasterList);
+  const masterLists = masterList?.data?.filter((val) => val.type == list?.labelid);
+
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(selectAll ? [] : masterLists?.map((row) => row.id));
@@ -93,7 +92,7 @@ const MasterDetails = ({ closePopup, list }) => {
                               </div>
                             </div>
 
-                            {masterList?.loading || dataChanging === true ? (
+                            {masterList?.loading ? (
                               <TableViewSkeleton />
                             ) : (
                               <>
@@ -169,10 +168,10 @@ const MasterDetails = ({ closePopup, list }) => {
       </form>
 
       {showAddPopup && (
-        <AddMaster popupContent={{ setshowAddPopup, showAddPopup, isEditIndividual }} />
+        <AddUserMaster popupContent={{ setshowAddPopup, showAddPopup, isEditIndividual }} />
       )}
     </div>
   );
 };
 
-export default MasterDetails;
+export default UserMasterDetails;

@@ -9,7 +9,13 @@ import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoa
 import useOutsideClick from "../Helper/PopupData";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
-
+import {
+  DSRDeleteActions,
+  DSRDetailsAction,
+  DSRStatusActions,
+  PassengerAddAction,
+  PassengerDeleteActions,
+} from "../../Redux/Actions/DSRActions";
 import {
   ShowDropdownContent,
   TermsAndConditions,
@@ -20,25 +26,25 @@ import "./DSRDetails.scss";
 import PassengerCard from "./PassengerCard";
 import Swal from "sweetalert2";
 import DSRSummary from "./DSRSummary";
-import { MICEDeleteActions, MICEDetailsAction, MICEStatusActions, PassengerAddAction, PassengerDeleteActions } from "../../Redux/Actions/MICEActions";
 
-const MICEDetails = () => {
+const DSRDetails = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
 
   const cusList = useSelector((state) => state?.customerList);
-  const MICEDetails = useSelector((state) => state?.MICEDetails);
-  const MICEData = MICEDetails?.data?.data?.data || {};
+  const DSRDetails = useSelector((state) => state?.DSRDetails);
+  const DSRData = DSRDetails?.data?.data?.data || {};
   const addPassenger = useSelector((state) => state?.addPassenger);
   const deletePassenger = useSelector((state) => state?.deletePassenger);
-  const deleteMICE = useSelector((state) => state?.MICEDelete);
-  const statusChangeMICE = useSelector((state) => state?.MICEStatus);
+  const deleteDSR = useSelector((state) => state?.DSRDelete);
+  const statusChangeDSR = useSelector((state) => state?.DSRStatus);
+
 
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
-    mice_id: UrlId,
+    dsr_id: UrlId,
     customer_id: "",
     passenger_name: "",
   });
@@ -52,7 +58,7 @@ const MICEDetails = () => {
       ...prev,
       customer_id: value,
       passenger_name: selectedCustomer?.display_name ?? "",
-      mice_id: UrlId,
+      dsr_id: UrlId,
       [name]: value,
     }));
   };
@@ -72,9 +78,9 @@ const MICEDetails = () => {
         .then((response) => {
           if (isData?.id) {
             const refreshData = {
-              mice_id: isData?.id,
+              dsr_id: isData?.id,
             };
-            dispatch(MICEDetailsAction(refreshData));
+            dispatch(DSRDetailsAction(refreshData));
           }
         })
         .catch((err) => console.log(err));
@@ -83,14 +89,7 @@ const MICEDetails = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
-    const isPassengerExists = MICEData?.passengers?.some(
-      (passenger) => passenger.customer_id === passengerData.customer_id
-    );
 
-    if (isPassengerExists) {
-      toast.error("Passenger already added to the list.");
-      return; // Prevent further execution
-    }
     try {
       const sendData = {
         ...passengerData,
@@ -100,9 +99,9 @@ const MICEDetails = () => {
         .then((response) => {
           if (UrlId) {
             const refreshData = {
-              mice_id: UrlId,
+              dsr_id: UrlId,
             };
-            dispatch(MICEDetailsAction(refreshData));
+            dispatch(DSRDetailsAction(refreshData));
           }
         })
         .catch((err) => console.log(err));
@@ -113,16 +112,16 @@ const MICEDetails = () => {
 
   const handleDeleteDSR = async (item) => {
     const result = await Swal.fire({
-      text: "Are you sure you want to delete this mice?",
+      text: "Are you sure you want to delete this dsr?",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
       const sendData = {
-        mice_id: item?.id,
+        dsr_id: item?.id,
       };
-      dispatch(MICEDeleteActions(sendData, Navigate));
+      dispatch(DSRDeleteActions(sendData, Navigate));
     }
   };
 
@@ -135,44 +134,44 @@ const MICEDetails = () => {
     });
     if (result.isConfirmed) {
       const sendData = {
-        mice_id: item?.id,
+        dsr_id: item?.id,
       };
-      dispatch(MICEStatusActions(sendData, Navigate));
+      dispatch(DSRStatusActions(sendData, Navigate));
     }
   };
 
   useEffect(() => {
     if (UrlId) {
       const queryParams = {
-        mice_id: UrlId,
+        dsr_id: UrlId,
       };
-      dispatch(MICEDetailsAction(queryParams));
+      dispatch(DSRDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
 
   return (
     <>
       {(addPassenger?.loading ||
-        deletePassenger?.loading || statusChangeMICE?.loading ||
-        deleteMICE?.loading || MICEDetails?.loading) && <MainScreenFreezeLoader />}
-      {/* {MICEDetails?.loading ? (
+        deletePassenger?.loading || statusChangeDSR?.loading ||
+        deleteDSR?.loading ||DSRDetails?.loading) && <MainScreenFreezeLoader />}
+      {/* {DSRDetails?.loading ? (
         <Loader02 />
       ) : ( */}
         <div>
           <div id="Anotherbox" className="formsectionx1">
             <div id="leftareax12">
-              <h1 id="firstheading">{MICEData?.mice_no}</h1>
+              <h1 id="firstheading">{DSRData?.dsr_no}</h1>
             </div>
             <div id="buttonsdata">
               <div
-              onClick={() => {handleChangeDSRStatus(MICEData)}}
+              onClick={() => {handleChangeDSRStatus(DSRData)}}
               // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
               >
                 <p
                   className={
-                    MICEData?.is_invoiced == "0"
+                    DSRData?.is_invoiced == "0"
                       ? "draft"
-                      : MICEData?.is_invoiced == "1"
+                      : DSRData?.is_invoiced == "1"
                       ? "invoiced"
                       : ""
                   }
@@ -187,13 +186,13 @@ const MICEDetails = () => {
                 data-tooltip-place="bottom"
                 className="filtersorticos5wx2"
                 onClick={() => {
-                  handleDeleteDSR(MICEData);
+                  handleDeleteDSR(DSRData);
                 }}
               >
                 {otherIcons.delete_svg}
               </div>
               <Link
-                to={"/dashboard/mice"}
+                to={"/dashboard/dsr"}
                 className="linkx3"
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content="Close"
@@ -258,15 +257,15 @@ const MICEDetails = () => {
 
                         <div>
                           <PassengerCard
-                            passengers={MICEData}
+                            passengers={DSRData}
                             onDelete={handleDeletePassenger}
                           />
                         </div>
                       </div>
 
                       <DSRSummary
-                        passengers={MICEData?.passengers}
-                        customerData={MICEData}
+                        passengers={DSRData?.passengers}
+                        customerData={DSRData}
                       />
                     </div>
                   </div>
@@ -281,4 +280,4 @@ const MICEDetails = () => {
   );
 };
 
-export default MICEDetails;
+export default DSRDetails;

@@ -64,7 +64,7 @@ const ImageUpload = ({
   return (
     <>
       <div className="form-group">
-        {type === "grm" ? "" : <label>Attach Files To Estimate</label>}
+        {type === "grm" ? "":type === "service" ? <label>Upload Image</label> : <label>Attach Files To Estimate</label>}
         <div
           className="file-upload"
           onKeyDown={(event) => {
@@ -341,32 +341,49 @@ export const MultiImageUpload = ({
   );
 };
 
+
 export const MultiImageUploadHelp = ({
   formData,
   setFormData,
   setFreezLoadingImg,
   imgLoader,
   setImgeLoader,
-  // isUploading,
-  // setIsUploading,
-  // setImage,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
   const popupRef = useRef(null);
 
   const handleImageChange = (e) => {
     setFreezLoadingImg(true);
     setImgeLoader(true);
-    // setIsUploading(true);
+    setErrorMessage(""); // Clear any previous error message
 
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "pdf"];
     const updatedUploadDocuments = Array.isArray(formData?.upload_documents)
       ? [...formData.upload_documents]
       : [];
 
+    const files = Array.from(e.target.files);
+    const invalidFiles = files.filter((file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      return !allowedExtensions.includes(fileExtension);
+    });
+
+    if (invalidFiles.length > 0) {
+      setErrorMessage(
+        `Please upload files with the following extensions: ${allowedExtensions.join(
+          ", "
+        )}`
+      );
+      setFreezLoadingImg(false);
+      setImgeLoader(false);
+      return;
+    }
+
     Promise.all(
-      Array.from(e.target.files).map((file) => {
+      files.map((file) => {
         const imageRef = ref(imageDB, `Documents/${v4()}`);
         return uploadBytes(imageRef, file)
           .then(() => {
@@ -380,7 +397,6 @@ export const MultiImageUploadHelp = ({
           .catch((error) => {
             setFreezLoadingImg(false);
             setImgeLoader("fail");
-            // setIsUploading(false);
             throw error;
           });
       })
@@ -392,28 +408,31 @@ export const MultiImageUploadHelp = ({
           ...formData,
           upload_documents: updatedUploadDocuments,
         });
-        // setIsUploading(false);
       })
       .catch((error) => {
         console.error("Error uploading images:", error);
-        // setIsUploading(false);
       });
   };
 
-  const showimagepopup = (imageUrl) => {
+  const showImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
-    OverflowHideBOdy(true); // Set overflow hidden
-    setShowPopup(true); // Show the popup
+    setShowPopup(true);
   };
 
   const handleDeleteImage = (imageUrl) => {
     const updatedUploadDocuments = formData?.upload_documents?.filter(
-      (image) => image !== imageUrl
+      (image) => image.url !== imageUrl
     );
     setFormData({
       ...formData,
       upload_documents: updatedUploadDocuments,
     });
+  };
+
+  const isImage = (fileUrl) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const fileExtension = fileUrl.split(".").pop().toLowerCase();
+    return imageExtensions.includes(fileExtension);
   };
 
   return (
@@ -442,35 +461,47 @@ export const MultiImageUploadHelp = ({
             <div id="spc5s6">
               {otherIcons.export_svg}
               {formData?.upload_documents?.length
-                ? `${formData.upload_documents?.length} Images Uploaded`
+                ? `${formData.upload_documents?.length} Files Uploaded`
                 : "Browse Files"}
             </div>
           </label>
         </div>
 
+        {/* Show error message below input box */}
+        {errorMessage && (
+          <p style={{ color: "red", marginTop: "5px", fontSize:"12px" }}>{errorMessage}</p>
+        )}
+
         {imgLoader === "success" &&
           formData?.upload_documents &&
           formData?.upload_documents?.length > 0 && (
             <div>
-              {formData?.upload_documents?.map((image, index) => (
+              {formData?.upload_documents?.map((file, index) => (
                 <div key={index}>
                   <div id="Show_delete_img_new_vendor">
-                    <p style={{ width: "50%" }} title={image?.name || ""}>
-                      {image?.name?.length > 10
-                        ? `${image?.name.substring(0, 12)}...`
-                        : image?.name}
+                    <p style={{ width: "50%" }} title={file?.name || ""}>
+                      {file?.name?.length > 10
+                        ? `${file?.name.substring(0, 12)}...`
+                        : file?.name}
                     </p>
 
-                    <div onClick={() => handleDeleteImage(image)}>
+                    <div onClick={() => handleDeleteImage(file.url)}>
                       <MdOutlineDeleteForever />
-                      {/* Delete */}
                     </div>
-                    <div
-                      onClick={() => showimagepopup(Object.values(image)[0])}
-                    >
-                      <FaEye />
-                      {/* Show */}
-                    </div>
+                    {isImage(file.url) ? (
+                      <div onClick={() => showImagePopup(file.url)}>
+                        <FaEye />
+                      </div>
+                    ) : (
+                      <a
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Preview File"
+                      >
+                        <FaEye />
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -503,6 +534,7 @@ export const MultiImageUploadHelp = ({
     </>
   );
 };
+
 
 export const ImageUploadGRN = ({
   formData,

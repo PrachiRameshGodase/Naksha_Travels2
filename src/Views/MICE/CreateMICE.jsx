@@ -200,10 +200,9 @@ const CreateMICE = () => {
         {(freezLoadingImg ||
           createMICE?.loading ||
           addPassenger?.loading ||
-          deletePassenger?.loading) && <MainScreenFreezeLoader />}
-        {MICEDetails?.loading ? (
-          <Loader02 />
-        ) : (
+          deletePassenger?.loading ||MICEDetails?.loading) && <MainScreenFreezeLoader />}
+        
+        
           <div className="formsectionsgrheigh">
             <div id="Anotherbox" className="formsectionx2">
               <div id="leftareax12">
@@ -244,25 +243,13 @@ const CreateMICE = () => {
                             </label>
 
                             <GenerateAutoId
-                              formHandlers={{
-                                setFormData,
-                                handleChange,
-                                setShowAllSequenceId,
-                              }}
+                              formHandlers={{ setFormData,handleChange,setShowAllSequenceId,}}
                               nameVal="mice_no"
                               value={formData?.mice_no}
                               module="mice"
-                              showField={isEdit}
+                              showField={MICEData?.id}
                               disable={dsrDisabled}
-                              style={
-                                dsrDisabled
-                                  ? {
-                                      backgroundColor: "#f0f0f0",
-                                      pointerEvents: "none",
-                                      cursor: "not-allowed",
-                                    }
-                                  : {}
-                              }
+                              style={dsrDisabled? {backgroundColor: "#f0f0f0",pointerEvents: "none", cursor: "not-allowed",}: {}}
                             />
                           </div>
                           <div className="form_commonblock">
@@ -464,7 +451,7 @@ const CreateMICE = () => {
               </form>
             </div>
           </div>
-        )}
+        
         <Toaster reverseOrder={false} />
       </>
     </div>

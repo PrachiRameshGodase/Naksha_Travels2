@@ -89,6 +89,14 @@ const DSRDetails = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
+    const isPassengerExists = DSRData?.passengers?.some(
+      (passenger) => passenger.customer_id === passengerData.customer_id
+    );
+
+    if (isPassengerExists) {
+      toast.error("Passenger already added to the list.");
+      return; // Prevent further execution
+    }
 
     try {
       const sendData = {
@@ -153,10 +161,10 @@ const DSRDetails = () => {
     <>
       {(addPassenger?.loading ||
         deletePassenger?.loading || statusChangeDSR?.loading ||
-        deleteDSR?.loading) && <MainScreenFreezeLoader />}
-      {DSRDetails?.loading ? (
+        deleteDSR?.loading ||DSRDetails?.loading) && <MainScreenFreezeLoader />}
+      {/* {DSRDetails?.loading ? (
         <Loader02 />
-      ) : (
+      ) : ( */}
         <div>
           <div id="Anotherbox" className="formsectionx1">
             <div id="leftareax12">
@@ -274,7 +282,7 @@ const DSRDetails = () => {
             </div>
           </div>
         </div>
-      )}
+      {/* )} */}
       <Toaster />
     </>
   );

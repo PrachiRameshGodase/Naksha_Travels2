@@ -2,78 +2,49 @@ import React, { useCallback, useEffect, useState } from "react";
 import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { Link } from "react-router-dom";
-import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
-import { GoPlus } from "react-icons/go";
-import CreateMaster from "./CreateMaster";
 import { useDispatch, useSelector } from "react-redux";
-import { masterListAction } from "../../Redux/Actions/mastersAction";
-import MasterDetails from "./MasterDetails";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
-import AddMaster from "./AddMaster";
+import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
+import { returnUniformModuleName } from "../Helper/ReturnUniformModuleName";
+import GenerateIdPopup from "../Home/GenerateIdPopup";
 
-const Masters = () => {
+const SequenceFormat = () => {
   const dispatch = useDispatch();
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
-  const [showPopup, setShowPopup] = useState(false);
-  const [searchTrigger, setSearchTrigger] = useState(0);
 
   const [dataChanging, setDataChanging] = useState(false);
-  const [showViewPopup, setShowViewPopup] = useState(false);
-  const [viewList, setViewList] = useState([]);
-
-  const [showAddPopup, setshowAddPopup] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
+  const [generateId, setGenerateId] = useState(false);
+  const [searchTrigger, setSearchTrigger] = useState(0)
 
 
   const masterList = useSelector((state) => state.masterList);
   const masterLists = masterList?.data?.filter((val) => val.type == 0);
+
+  const [autoData, setAutoData] = useState({ prefix: null, delimiter: null, sequence_number: null, sequence_type: 1, module: null, id: null });
+
+  const sequenceList = useSelector(state => state?.autoIdList);
+  const mainSqList = sequenceList?.data?.sequence;
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(selectAll ? [] : masterLists?.map((row) => row.id));
   };
 
-  const handleClickOnAdd = () => {
-    setSelectedItem({});
-    setShowPopup(true);
-    setIsEdit(false)
+
+  const handleClickOnEdit = (data) => {
+    const { prefix, delimiter, sequence_number, module, id, sequence_type } = data || {};
+
+    if (prefix !== autoData.prefix || delimiter !== autoData.delimiter || sequence_number !== autoData.sequence_number || module !== autoData.module || id !== autoData.id) {
+      setAutoData({ prefix, delimiter, sequence_number, module, id, sequence_type });
+    }
+    setGenerateId(true);
   };
 
-  const handleClickOnAddIndividual = (id) => {
-    const selectedList = masterLists?.find(
-      (master) => master?.id === Number(id)
-    );
-    setSelectedItem(selectedList);
-    setshowAddPopup(selectedList);
-  };
-  const handleClickOnEdit = (id) => {
-    const selectedList = masterLists?.find(
-      (master) => master?.id === Number(id)
-    );
-    setSelectedItem(selectedList);
-    setShowPopup(selectedList);
-    setIsEdit(true);
-  };
-
-  const handleClickOnView = (id) => {
-    const selectedList = masterLists?.find(
-      (master) => master?.id === Number(id)
-    );
-    setViewList(selectedList);
-    setShowViewPopup(true);
-  };
 
   const fetchMasters = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
-
-      const sendData = {
-        fy,
-      };
-
-      dispatch(masterListAction(sendData));
+      dispatch(autoGenerateIdList());
       setDataChanging(false);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -90,20 +61,7 @@ const Masters = () => {
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
-            <h1 id="firstheading">All Masters</h1>
-          </div>
-
-          <div id="buttonsdata">
-            {/* <Link
-              className="linkx1"
-              onClick={handleClickOnAdd}
-              data-tooltip-place="bottom"
-              data-tooltip-content="New Master"
-              data-tooltip-id="my-tooltip"
-            >
-              New Master <GoPlus />
-            </Link> */}
-            <ResizeFL />
+            <h1 id="firstheading">All Sequence Formats</h1>
           </div>
         </div>
 
@@ -128,19 +86,23 @@ const Masters = () => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons.warehouse_name_svg}
-                    Label
+                    Module Name
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons.warehouse_name_svg}
-                    Label Id
+                    Prefix
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons.quantity_svg}
-                    Value
+                    Previous Number
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons.quantity_svg}
+                    Next Sequence No.
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs5 ">
                     {otherIcons.notes_svg}
-                    <p>Comment</p>
+                    <p>Full Sequence Format</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons.status_svg}
@@ -148,11 +110,11 @@ const Masters = () => {
                   </div>
                 </div>
 
-                {masterList?.loading || dataChanging === true ? (
+                {sequenceList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {masterLists?.map((master, index) => (
+                    {mainSqList?.map((master, index) => (
                       <div
                         className={`table-rowx12 ${selectedRows.includes(master.id)
                           ? "selectedresult"
@@ -175,19 +137,25 @@ const Masters = () => {
                           onClick={() => handleRowClicked(master)}
                           className="table-cellx12 quotiosalinvlisxs1"
                         >
-                          {master?.label}
+                          {returnUniformModuleName(master?.module)}
                         </div>
                         <div
                           onClick={() => handleRowClicked(master)}
                           className="table-cellx12 quotiosalinvlisxs1"
                         >
-                          {master?.labelid}
+                          {master?.prefix}
                         </div>
                         <div
                           onClick={() => handleRowClicked(master)}
                           className="table-cellx12 quotiosalinvlisxs1"
                         >
-                          <p>{master?.value}</p>
+                          <p>{master?.padded_digits}</p>
+                        </div>
+                        <div
+                          onClick={() => handleRowClicked(master)}
+                          className="table-cellx12 quotiosalinvlisxs1"
+                        >
+                          <p>{master?.sequence_number}</p>
                         </div>
 
                         <div
@@ -197,32 +165,14 @@ const Masters = () => {
                           data-tooltip-place="bottom"
                           data-tooltip-id="my-tooltip"
                         >
-                          {master?.value_string
-                            ? master.value_string.length > 10
-                              ? master.value_string.substring(0, 30) + "..."
-                              : master.value_string
-                            : ""}
+                          {master?.prefix + master?.delimiter + master?.sequence_number}
                         </div>
 
                         <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                           <div style={{ display: "flex" }}>
                             <div
                               className="action-button"
-                              onClick={() => handleClickOnView(master?.id)}
-                            >
-                              <Link>View</Link>
-                            </div>
-                            <div
-                              className="action-button"
-                              onClick={() =>
-                                handleClickOnAddIndividual(master?.id)
-                              }
-                            >
-                              <Link>Add</Link>
-                            </div>
-                            <div
-                              className="action-button"
-                              onClick={() => handleClickOnEdit(master?.id)}
+                              onClick={() => handleClickOnEdit(master)}
                             >
                               <Link>Edit</Link>
                             </div>
@@ -237,18 +187,15 @@ const Masters = () => {
           </div>
         </div>
 
-        {showAddPopup && (
-          <AddMaster popupContent={{ setshowAddPopup, showAddPopup, setSearchTrigger }} />
+        {generateId && (
+          <GenerateIdPopup
+            formdatas={{ autoData, setAutoData, setGenerateId, setSearchTrigger }}
+          />
         )}
-        {showPopup && (
-          <CreateMaster popupContent={{ setShowPopup, showPopup, isEdit, setSearchTrigger }} />
-        )}
-        {showViewPopup && (
-          <MasterDetails closePopup={setShowViewPopup} list={viewList} />
-        )}
+
       </div>
     </>
   );
 };
 
-export default Masters;
+export default SequenceFormat;

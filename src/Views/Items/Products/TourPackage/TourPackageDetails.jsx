@@ -11,7 +11,7 @@ import {
   tourPackageDetailsAction,
   tourPackagestatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import Attachment from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import Itinerary from "./Itinerary";
@@ -275,7 +275,7 @@ const TourPackageDetails = () => {
                           <span>Attachment</span>
                           <h1>:</h1>
                           <p>
-                            <Attachment attachments={attachments} />
+                            <AttachmentPreview2 attachments={attachments} />
                           </p>
                         </li>
                       </ul>
