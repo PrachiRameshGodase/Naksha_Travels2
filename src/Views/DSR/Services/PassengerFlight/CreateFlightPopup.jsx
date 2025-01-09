@@ -13,7 +13,7 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
@@ -36,9 +36,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     passenger_id: passengerId,
     entry_type: "",
     travel_date: "",
+    booking_date: "",
     travel_type_id: "",
     airline_name: "",
-    destination_code:"",
+    destination_code: "",
     guest_ids: "",
     gds_portal: "",
     ticket_no: "",
@@ -46,6 +47,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     route: "",
     supplier_id: "",
     supplier_name: "",
+    air_line_code: "",
     //amount
     charges: [{ amount: null, account_id: null }],
     supplier_total: 0,
@@ -64,13 +66,14 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const entryType = ShowMasterData("50");
   const travelType = ShowMasterData("51");
   const destinationCode = ShowMasterData("52");
-
+  const GDSPortal = ShowMasterData("53");
+  const flightRoute = ShowMasterData("54");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-     [name]: value,
+      [name]: value,
     }));
   };
 
@@ -155,6 +158,25 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
+                        <label>Booking Date</label>
+                        <span>
+                          {otherIcons.date_svg}
+                          <DatePicker
+                            selected={formData?.booking_date}
+                            onChange={(date) =>
+                              setFormData({
+                                ...formData,
+                                booking_date: formatDate(date),
+                              })
+                            }
+                            name="booking_date"
+                            placeholderText="Enter Date"
+                            dateFormat="dd-MM-yyyy"
+                            autoComplete="off"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock">
                         <label>Travel Date</label>
                         <span>
                           {otherIcons.date_svg}
@@ -190,6 +212,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
+                    </div>
+                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Airline Name<b className="color_red">*</b>
@@ -204,8 +228,20 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
+                      <div className="form_commonblock">
+                        <label>Airline Code</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <input
+                              value={formData.air_line_code}
+                              onChange={handleChange}
+                              name="air_line_code"
+                              placeholder="Enter Airline Code"
+                            />
+                          </span>
+                        </div>
+                      </div>
                       <div className="form_commonblock">
                         <label>
                           Passenger<b className="color_red">*</b>
@@ -231,17 +267,23 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           GDS Portal<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.gds_portal}
+                          <CustomDropdown04
+                            label="GDS Portal"
+                            options={GDSPortal}
+                            value={formData?.gds_portal}
                             onChange={handleChange}
                             name="gds_portal"
-                            placeholder="Enter GDS Portal"
+                            defaultOption="Select GDS Portal"
+                            type="masters2"
                           />
                         </span>
                       </div>
@@ -259,9 +301,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           PRN No<b className="color_red">*</b>
@@ -282,11 +321,14 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.route}
+                          <CustomDropdown04
+                            label="Route"
+                            options={flightRoute}
+                            value={formData?.route}
                             onChange={handleChange}
                             name="route"
-                            placeholder="Enter Route"
+                            defaultOption="Select Route"
+                            type="masters2"
                           />
                         </span>
                       </div>
@@ -369,8 +411,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
                 createUpdate={createFlight}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

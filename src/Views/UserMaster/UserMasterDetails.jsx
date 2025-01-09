@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AddUserMaster from "./AddUserMaster";
+import Swal from "sweetalert2";
+import { userMasterDeleteActions, UserMasterListAction } from "../../Redux/Actions/userMasterActions";
 
 const UserMasterDetails = ({ closePopup, list }) => {
+  const dispatch=useDispatch()
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [dataChanging, setDataChanging] = useState(false);
@@ -28,6 +31,28 @@ const UserMasterDetails = ({ closePopup, list }) => {
     setshowAddPopup(selectedList);
     setIsEditIndividual(true)
   };
+   const handleDeleteUserMaster = async (item) => {
+      console.log("item", item)
+      const result = await Swal.fire({
+        text: "Are you sure you want to delete this user master?",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        customClass: {
+          container: 'my-swal-container', // Add a custom class for styling
+        },
+      });
+      if (result?.isConfirmed) {
+        const sendData = {
+          id:item?.id
+        };
+        dispatch(userMasterDeleteActions(sendData))
+          .then((response) => {
+            dispatch(UserMasterListAction())
+          })
+          .catch((err) => console.log(err));
+      }
+    };
   return (
     <div id="formofcreateitems">
       <form action="">
@@ -148,6 +173,15 @@ const UserMasterDetails = ({ closePopup, list }) => {
                                           }
                                         >
                                           <Link>Edit</Link>
+                                        </div>
+                                        <div
+                                          className="action-button"
+                                          onClick={() =>
+                                            handleDeleteUserMaster(master)
+                                          }
+                                          style={{width:"56px"}}
+                                        >
+                                          <Link>Delete</Link>
                                         </div>
                                       </div>
                                     </div>

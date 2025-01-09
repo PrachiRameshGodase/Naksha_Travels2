@@ -7,9 +7,7 @@ import {
   CreateUserMasterAction,
   UserMasterListAction,
 } from "../../Redux/Actions/userMasterActions";
-import {
-  SubmitButton7
-} from "../Common/Pagination/SubmitButton";
+import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
@@ -18,8 +16,8 @@ const AddUserMaster = ({ popupContent }) => {
   const Navigate = useNavigate();
   const createUserMaster = useSelector((state) => state?.userMasterCreate);
 
-
-  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =popupContent;
+  const { setshowAddPopup, showAddPopup, setSearchTrigger, isEditIndividual } =
+    popupContent;
   const [formData, setFormData] = useState({
     id: 0,
     // labelid:0,
@@ -27,9 +25,9 @@ const AddUserMaster = ({ popupContent }) => {
     label: null,
     value_string: null,
     value: null,
+    note: null,
   });
 
-  
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -68,6 +66,7 @@ const AddUserMaster = ({ popupContent }) => {
         label: showAddPopup?.label,
         value: showAddPopup?.value,
         value_string: showAddPopup?.value_string,
+        note: showAddPopup?.note,
       });
     }
   }, [showAddPopup, isEditIndividual]);
@@ -118,7 +117,7 @@ const AddUserMaster = ({ popupContent }) => {
                             <div className="secondx2">
                               <div className="form_commonblock">
                                 <label>
-                                  Master Label<b className="color_red">*</b>
+                                  Name<b className="color_red">*</b>
                                 </label>
                                 <span>
                                   {otherIcons.name_svg}
@@ -126,19 +125,32 @@ const AddUserMaster = ({ popupContent }) => {
                                     value={formData.label}
                                     onChange={handleChange}
                                     name="label"
-                                    placeholder="Enter Master Label"
+                                    placeholder="Enter Name"
                                   />
                                 </span>
                               </div>
                               <div className="form_commonblock">
-                                <label>Master Value</label>
+                                <label>Number Value</label>
                                 <span>
                                   {otherIcons.quantity_svg}
                                   <input
                                     value={formData.value}
                                     onChange={handleChange}
                                     name="value"
-                                    placeholder="Enter Master Value"
+                                    type="number"
+                                    placeholder="Enter Number Value"
+                                  />
+                                </span>
+                              </div>
+                              <div className="form_commonblock">
+                                <label>Text Value</label>
+                                <span>
+                                  {otherIcons.quantity_svg}
+                                  <input
+                                    value={formData.value_string}
+                                    onChange={handleChange}
+                                    name="value_string"
+                                    placeholder="Enter Text Value"
                                   />
                                 </span>
                               </div>
@@ -151,8 +163,8 @@ const AddUserMaster = ({ popupContent }) => {
                                   <TextAreaComponentWithTextLimit
                                     formsValues={{ handleChange, formData }}
                                     placeholder="Enter comment...."
-                                    name="value_string"
-                                    value={formData?.value_string}
+                                    name="note"
+                                    value={formData?.note}
                                   />
                                 </div>
                               </div>

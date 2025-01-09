@@ -12,7 +12,11 @@ import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerH
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { preventZeroVal, sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
+import {
+  preventZeroVal,
+  sendData,
+  ShowMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
@@ -32,7 +36,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  
+
   const hotelList = useSelector(
     (state) => state?.hotelList?.data?.hotels || []
   );
@@ -65,7 +69,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: [{amount:null, account_id:null}],
+    charges: [{ amount: null, account_id: null }],
     gross_amount: 0,
     discount: 0.0,
     tax_percent: null,
@@ -75,7 +79,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
-
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -130,7 +133,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
           formData?.guest_ids?.length === 0
             ? null
             : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
+        charges: JSON.stringify(formData?.charges),
       };
       dispatch(CreatePassengerHotelAction(sendData))
         .then((response) => {
@@ -147,7 +150,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
 
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
+  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
@@ -170,7 +173,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{paddingBottom:"0px"}}>
+                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -422,15 +425,15 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
-                      <ImageUpload
-                        formData={formData}
-                        setFormData={setFormData}
-                        setFreezLoadingImg={setFreezLoadingImg}
-                        imgLoader={imgLoader}
-                        setImgeLoader={setImgeLoader}
-                        component="purchase"
-                      />
-                    </div>
+                        <ImageUpload
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgeLoader}
+                          component="purchase"
+                        />
+                      </div>
                       <div className="secondtotalsections485s ">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
@@ -443,25 +446,26 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
-                       
-                        
                       </div>
                     </div>
-                  <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
-                    <CalculationSection
-                          formData={formData}
-                          setFormData={setFormData}
-                          handleChange={handleChange}
-                          section="Hotel"
-                        />
-                        </div>
+                    <div
+                      className="secondtotalsections485s"
+                      style={{ justifyContent: "flex-end" }}
+                    >
+                      <CalculationSection
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleChange={handleChange}
+                        section="Hotel"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
                 createUpdate={createHotel}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

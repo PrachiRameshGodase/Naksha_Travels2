@@ -10,7 +10,16 @@ import { masterListAction } from "../../Redux/Actions/mastersAction";
 import UserMasterDetails from "./UserMasterDetails";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import AddUserMaster from "./AddUserMaster";
-import { UserMasterListAction } from "../../Redux/Actions/userMasterActions";
+import {
+  userMasterDeleteActions,
+  UserMasterListAction,
+} from "../../Redux/Actions/userMasterActions";
+import SearchBox from "../Common/SearchBox/SearchBox";
+import { useDebounceSearch } from "../Helper/HelperFunctions";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import Swal from "sweetalert2";
+import { BsEye } from "react-icons/bs";
+import "./CreateMasters.scss"
 
 const UserMasters = () => {
   const dispatch = useDispatch();
@@ -27,8 +36,8 @@ const UserMasters = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   const userMasterData = useSelector((state) => state?.userMasterList);
-  const userMasterList=userMasterData?.data?.filter((val) => val.type == 0);
-  
+  const userMasterList = userMasterData?.data?.filter((val) => val.type == 0);
+
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
     setSelectedRows(selectAll ? [] : userMasterData?.map((row) => row.id));
@@ -37,7 +46,7 @@ const UserMasters = () => {
   const handleClickOnAdd = () => {
     setSelectedItem({});
     setShowPopup(true);
-    setIsEdit(false)
+    setIsEdit(false);
   };
 
   const handleClickOnAddIndividual = (id) => {
@@ -64,11 +73,47 @@ const UserMasters = () => {
     setShowViewPopup(true);
   };
 
+  const handleDeleteUserMaster = async (item) => {
+    console.log("item", item);
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this user master?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result?.isConfirmed) {
+      const sendData = {
+        id: item?.id,
+      };
+      dispatch(userMasterDeleteActions(sendData))
+        .then((response) => {
+          dispatch(UserMasterListAction());
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+  //Search/////////////////////////////////////////////////////////////
+  const [searchTermFromChild, setSearchTermFromChild] = useState("");
+  // Debounced function to trigger search
+  const debouncedSearch = useDebounceSearch(() => {
+    setSearchTrigger((prev) => prev + 1);
+  }, 800);
+
+  // Handle search term change from child component
+  const onSearch = (term) => {
+    setSearchTermFromChild(term);
+    if (term.length > 0 || term === "") {
+      debouncedSearch();
+    }
+  };
+  //Search/////////////////////////////////////////////////////////////
+
   const fetchMasters = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const sendData = {
         fy,
+        ...(searchTermFromChild && { search: searchTermFromChild }),
       };
 
       dispatch(UserMasterListAction(sendData));
@@ -88,7 +133,12 @@ const UserMasters = () => {
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
-            <h1 id="firstheading">All Masters</h1>
+            <h1 id="firstheading">All User Masters</h1>
+            <SearchBox
+              placeholder="Search In User Masters"
+              onSearch={onSearch}
+              section={searchTrigger}
+            />
           </div>
 
           <div id="buttonsdata">
@@ -150,84 +200,91 @@ const UserMasters = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {userMasterList?.map((master, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(master.id)
-                          ? "selectedresult"
-                          : ""
+                    {userMasterList?.length > 0 ? (
+                      userMasterList?.map((master, index) => (
+                        <div
+                          className={`table-rowx12 ${
+                            selectedRows.includes(master.id)
+                              ? "selectedresult"
+                              : ""
                           }`}
-                        key={index}
-                      >
-                        <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
+                          key={index}
                         >
-                          <input
-                            checked={selectedRows.includes(master.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(master.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(master)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {master?.label}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(master)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {master?.labelid}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(master)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          <p>{master?.value}</p>
-                        </div>
+                          <div
+                            className="table-cellx12 checkboxfx1"
+                            id="styl_for_check_box"
+                          >
+                            <input
+                              checked={selectedRows.includes(master.id)}
+                              type="checkbox"
+                              onChange={() => handleCheckboxChange(master.id)}
+                            />
+                            <div className="checkmark"></div>
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(master)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            {master?.label}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(master)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            {master?.labelid}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(master)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            <p>{master?.value}</p>
+                          </div>
 
-                        <div
-                          onClick={() => handleRowClicked(master)}
-                          className="table-cellx12 quotiosalinvlisxs5 "
-                          data-tooltip-content={master?.value_string}
-                          data-tooltip-place="bottom"
-                          data-tooltip-id="my-tooltip"
-                        >
-                          {master?.value_string
-                            ? master.value_string.length > 10
-                              ? master.value_string.substring(0, 30) + "..."
-                              : master.value_string
-                            : ""}
-                        </div>
+                          <div
+                            onClick={() => handleRowClicked(master)}
+                            className="table-cellx12 quotiosalinvlisxs5 "
+                            data-tooltip-content={master?.note}
+                            data-tooltip-place="bottom"
+                            data-tooltip-id="my-tooltip"
+                          >
+                            {master?.note
+                              ? master.note.length > 10
+                                ? master.note.substring(0, 30) + "..."
+                                : master.note
+                              : ""}
+                          </div>
 
-                        <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
-                          <div style={{ display: "flex" }}>
-                            <div
-                              className="action-button"
-                              onClick={() => handleClickOnView(master?.id)}
-                            >
-                              <Link>View</Link>
-                            </div>
-                            <div
-                              className="action-button"
-                              onClick={() =>
-                                handleClickOnAddIndividual(master?.id)
-                              }
-                            >
-                              <Link>Add</Link>
-                            </div>
-                            <div
-                              className="action-button"
-                              onClick={() => handleClickOnEdit(master?.id)}
-                            >
-                              <Link>Edit</Link>
+                          <div className="table-cellx12 quotiosalinvlisxs6 " style={{marginRight:"10px"}}>
+                            <div className="actionxxs">
+                              <span
+                                onClick={() => handleClickOnView(master?.id)}
+                              >
+                                <BsEye />
+                              </span>
+                              <span
+                                onClick={() =>
+                                  handleClickOnAddIndividual(master?.id)
+                                }
+                              >
+                                <GoPlus />
+                              </span>
+                              <span
+                                onClick={() => handleClickOnEdit(master?.id)}
+                              >
+                                {otherIcons.edit_svg}
+                              </span>
+                              <span
+                                onClick={() => handleDeleteUserMaster(master)}
+                              >
+                                {otherIcons.delete_svg}
+                              </span>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <NoDataFound />
+                    )}
                   </>
                 )}
               </div>
@@ -236,10 +293,14 @@ const UserMasters = () => {
         </div>
 
         {showAddPopup && (
-          <AddUserMaster popupContent={{ setshowAddPopup, showAddPopup, setSearchTrigger }} />
+          <AddUserMaster
+            popupContent={{ setshowAddPopup, showAddPopup, setSearchTrigger }}
+          />
         )}
         {showPopup && (
-          <CreateUserMaster popupContent={{ setShowPopup, showPopup, isEdit, setSearchTrigger }} />
+          <CreateUserMaster
+            popupContent={{ setShowPopup, showPopup, isEdit, setSearchTrigger }}
+          />
         )}
         {showViewPopup && (
           <UserMasterDetails closePopup={setShowViewPopup} list={viewList} />

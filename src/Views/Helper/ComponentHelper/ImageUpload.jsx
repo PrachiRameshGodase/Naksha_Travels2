@@ -1348,179 +1348,52 @@ export const SingleImageUploadDocument = ({
   setFreezLoadingImg,
   imgLoader,
   setImgeLoader,
-  index,
+  index
 }) => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(""); // For the popup
-  const popupRef = useRef(null);
-
-  // Parse photo if it's a JSON string
-  const photo = formData?.photo ? JSON.parse(formData?.photo || "{}") : null;
-
+  console.log("formData", formData)
   const handleImageChange = (e) => {
-    if (e.target.files.length === 0) return;
-
-    const file = e.target.files[0];
+    if (e.target.files?.length === 0) return;
     setFreezLoadingImg(true);
     setImgeLoader(true);
-
-    const imageRef = ref(imageDB, `Documents/${v4()}`);
-    uploadBytes(imageRef, file)
-      .then(() => getDownloadURL(imageRef))
-      .then((url) => {
-        const updatedPhoto = {
-          url: url,
-          name: file.name,
-        };
-
-        setFormData(index, {
-          ...formData,
-          photo: JSON.stringify(updatedPhoto),
-        });
+    const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+    uploadBytes(imageRef, e.target.files[0])
+      .then(() => {
         setImgeLoader("success");
         setFreezLoadingImg(false);
+        getDownloadURL(imageRef).then((url) => {
+          // Update the photo for the specific index
+          setFormData((prevState) => {
+            const updatedEmployeeDetails = [...prevState];
+            updatedEmployeeDetails[index] = {
+              ...updatedEmployeeDetails[index],
+              photo: url,
+            };
+            return updatedEmployeeDetails;
+          });
+        });
       })
       .catch((error) => {
         setFreezLoadingImg(false);
         setImgeLoader("fail");
-        console.error("Upload error:", error);
       });
   };
 
-  const handleDeleteImage = () => {
-    setFormData(index, {
-      ...formData,
-      photo: JSON.stringify(null),
-    });
-  };
-
-  const showImagePopup = () => {
-    if (photo?.url) {
-      setSelectedImage(photo.url);
-      OverflowHideBOdy(true); // Hide body scroll
-      setShowPopup(true);
-    }
-  };
-
   return (
-    <>
-      <div className="form-group" style={{ width: "202px" }}>
-        <div
-          className="file-upload"
-          tabIndex="0"
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              const input = document.getElementById("file");
-              input.click();
-            }
-          }}
-        >
-          <input
-            type="file"
-            name="image_url"
-            id="file"
-            className="inputfile"
-            onChange={handleImageChange}
-            multiple
-            style={{ display: "none" }}
-          />
-          <label
-            htmlFor="file"
-            className="filelabelemail"
-            id="uploadAttachment"
-          >
-            <div
-              id="spc5s6"
-              style={{
-                display: "flex",
-                gap: "5px",
-                padding: "6px",
-                border: "1px solid lightgray", // Light gray border
-                borderRadius: "8px", // Rounded corners
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft box shadow
-              }}
-            >
-              {/* Conditionally render the export icon only if photo is not present */}
-              {!photo?.url && (
-                <span
-                  style={{ marginTop: "5px", fill: "blue", cursor: "pointer" }}
-                >
-                  {otherIcons.export_svg}
-                </span>
-              )}
-
-              <div
-                style={{ marginTop: "3px", cursor: "pointer", display: "flex" }}
-              >
-                <h3
-                  id="AttachmentHeading"
-                  style={{
-                    fontWeight: "300",
-                    color: "blue",
-                    fontSize: "16px",
-                  }}
-                >
-                  <p
-                    title={photo?.name || "No file selected"} // Full name shown on hover
-                    style={{
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      marginLeft: !photo?.url ? "24px" : "0",
-
-                      textOverflow: "ellipsis",
-                      maxWidth: "140px", // Limit the width for truncation
-                    }}
-                  >
-                    {photo?.name?.length > 20
-                      ? `${photo.name.substring(0, 20)}...`
-                      : photo?.name || "No file selected"}
-                  </p>
-                </h3>
-              </div>
-              {imgLoader === "success" && photo && (
-                <div
-                  id="Show_delete_img_new_vendor"
-                  style={{ display: "flex", gap: "2px" }}
-                >
-                  <div
-                    onClick={handleDeleteImage}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <MdOutlineDeleteForever />
-                  </div>
-                  <div onClick={showImagePopup} style={{ cursor: "pointer" }}>
-                    <FaEye />
-                  </div>
-                </div>
-              )}
-            </div>
-          </label>
-        </div>
+    <div className="form-group">
+      <label>Upload photo</label>
+      <div className="file-upload">
+        <input
+          type="file"
+          name="photo"
+          id={`file-${index}`} // Use index in id for uniqueness
+          className="inputfile"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        <label htmlFor={`file-${index}`} className="file-label">
+          {formData?.photo ? "Change Photo" : "Browse Files"}
+        </label>
       </div>
-
-      {/* Popup for viewing photo */}
-      {showPopup && (
-        <div
-          className="mainxpopups2"
-          ref={popupRef}
-          style={{ marginTop: "10px" }}
-        >
-          <div className="popup-content02">
-            <span
-              className="close-button02"
-              onClick={() => setShowPopup(false)}
-            >
-              <RxCross2 />
-            </span>
-            <img
-              src={selectedImage}
-              alt="Selected Photo"
-              height={500}
-              width={500}
-            />
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 };

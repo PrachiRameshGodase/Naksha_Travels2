@@ -248,8 +248,9 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
             </div>
             <SubmitButton6
               onClick={handleFormSubmit}
-              cancel="dsr"
+             
               createUpdate={createAssist}
+              setShowModal={setShowModal}
             />
           </form>
         </div>

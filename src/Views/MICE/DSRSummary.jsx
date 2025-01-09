@@ -548,7 +548,7 @@ const DSRSummary = ({ customerData }) => {
               customerData?.is_invoiced == "0"
                 ? "draft"
                 : customerData?.is_invoiced == "1"
-                ? "invoiced"
+                ? "invoiced2"
                 : ""
             }
             style={{ cursor: "pointer", padding: "5px 12px", width: "160px", marginTop:"-32px", marginBottom:"10px" }}

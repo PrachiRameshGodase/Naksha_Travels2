@@ -42,7 +42,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_name: null,
     // Amount
     gross_amount: null,
-    charges: [{amount:null, account_id:null}],
+    charges: [{ amount: null, account_id: null }],
     discount: null,
     supplier_total: null,
     tax_percent: null,
@@ -80,7 +80,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
           formData?.guest_ids?.length === 0
             ? null
             : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
+        charges: JSON.stringify(formData?.charges),
       };
       dispatch(CreatePassengerCarHireAction(sendData))
         .then((response) => {
@@ -270,8 +270,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
                 createUpdate={createCarHire}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

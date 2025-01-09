@@ -80,7 +80,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <p style={{ width: "212px" }}>
                                     {" "}
                                     <ShowMastersValue
-                                      type="40"
+                                      type="51"
                                       id={data?.travel_type_id || ""}
                                     />
                                   </p>

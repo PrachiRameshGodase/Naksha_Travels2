@@ -280,3 +280,89 @@ export const AttachmentPreview2 = ({ attachments }) => {
     </div>
   );
 };
+
+export const AttachmentPreview3 = ({ attachments }) => {
+  const [showImagesModal, setShowImagesModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+console.log("attachments", attachments?.url)
+  // Function to handle image popup
+  const showImagePopup = (url) => {
+    setSelectedImage(url);
+    setShowImagesModal(true);
+  };
+
+  return (
+    <div>
+      <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
+        {attachments && attachments?.url ? (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => showImagePopup(attachments.url)}
+            title="Open attachment preview"
+          >
+            <MdArrowOutward />
+          </span>
+        ) : (
+          "-"
+        )}
+      </p>
+
+      {showImagesModal && (
+        <div
+          className="mainxpopups2"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            className="popup-content02"
+            style={{
+              position: "relative",
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+              maxWidth: "90%",
+              maxHeight: "90%",
+            }}
+          >
+            <span
+              className="close-button02"
+              onClick={() => setShowImagesModal(false)}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                cursor: "pointer",
+                fontSize: "20px",
+                fontWeight: "bold",
+                color: "#333",
+              }}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={selectedImage}
+              alt="Preview of uploaded image"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                borderRadius: "8px",
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

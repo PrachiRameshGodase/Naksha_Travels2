@@ -456,8 +456,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
+                
                 createUpdate={createHotel}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

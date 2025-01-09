@@ -266,8 +266,8 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
                 createUpdate={createOther}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

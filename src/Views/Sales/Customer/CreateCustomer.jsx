@@ -237,7 +237,6 @@ const CreateCustomer = () => {
     OverflowHideBOdy(true); // Set overflow hidden
     setShowPopup(true); // Show the popup
   };
-  console.log("userData", userData)
   return (
     <>
       {customer?.loading && <MainScreenFreezeLoader />}

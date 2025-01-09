@@ -267,8 +267,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
               </div>
               <SubmitButton6
                 onClick={handleFormSubmit}
-                cancel="dsr"
                 createUpdate={createCarHire}
+                setShowModal={setShowModal}
               />
             </form>
           </div>

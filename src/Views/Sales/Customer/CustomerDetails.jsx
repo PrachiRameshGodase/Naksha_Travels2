@@ -31,7 +31,6 @@ const CustomerDetails = () => {
   const customerDetail = useSelector(
     (state) => state?.viewCustomer?.data || {}
   );
-  console.log("customerDetail2", customerDetail?.family_members);
   const cusDelete = useSelector((state) => state?.customerDelete);
   const cusStatus = useSelector((state) => state?.customerStatus || {});
 
@@ -166,9 +165,7 @@ const CustomerDetails = () => {
       dispatch(deleteCustomer({ user_id: itemId }, Navigate));
     }
   };
-  // handleDeleteQuotation
 
-  // edit and duplicate
 
   return (
     <>

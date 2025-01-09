@@ -26,9 +26,7 @@ const Visas = ({ data }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const handleRowClicked = (quotation) => {
-    navigate(`/dashboard/visas-details?id=${quotation.id}`);
-  };
+
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -160,26 +158,26 @@ const Visas = ({ data }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.visa_passenger?.display_name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                             
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.passport_no || ""}
                             </div>
 
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.email || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                            
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               <ShowMastersValue
@@ -188,13 +186,13 @@ const Visas = ({ data }) => {
                               />
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                            
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.visa_no || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.country?.name || ""}

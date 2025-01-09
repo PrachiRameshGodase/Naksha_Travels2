@@ -292,7 +292,7 @@ const BasicDetails = ({
       value: "0",
     },
   ];
-  console.log("basicDetails", basicDetails);
+  // console.log("basicDetails", basicDetails);
   return (
     <>
       {freezLoadingImg && <MainScreenFreezeLoader />}

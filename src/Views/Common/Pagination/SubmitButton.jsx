@@ -547,7 +547,7 @@ export const SubmitButton5 = ({ isEdit, itemId, onClick, cancel }) => {
   );
 };
 
-export const SubmitButton6 = ({ onClick, cancel, createUpdate }) => {
+export const SubmitButton6 = ({ onClick, createUpdate, setShowModal }) => {
   return (
     <div className="actionbarcommon">
       {/* {isEdit && itemId ? (
@@ -569,13 +569,13 @@ export const SubmitButton6 = ({ onClick, cancel, createUpdate }) => {
       {/* </>
       )} */}
 
-      <Link
+      <button
         className={`firstbtnc2 ${createUpdate?.loading ? "disabledbtn" : ""} `}
-        to={`/dashboard/${cancel}`}
+        onClick={() => setShowModal(false)} // Close the popup
         disabled={createUpdate?.loading}
       >
         Cancel
-      </Link>
+      </button>
     </div>
   );
 };

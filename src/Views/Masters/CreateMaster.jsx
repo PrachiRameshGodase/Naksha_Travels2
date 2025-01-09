@@ -25,6 +25,7 @@ const CreateMaster = ({ popupContent }) => {
     label: null,
     value_string: null,
     value: null,
+    note:null
   });
 
   const handleSubmitForm = async (e) => {
@@ -88,7 +89,7 @@ const CreateMaster = ({ popupContent }) => {
                       <div id="leftareax12">
                         <h1 id="firstheading" className="headingofcreateforems">
                           {isEdit
-                            ? `Update Master ${showPopup.label}`
+                            ? `Update Master ${showPopup?.label? (showPopup?.label):""}`
                             : "Add Master"}
                         </h1>
                       </div>
@@ -114,7 +115,7 @@ const CreateMaster = ({ popupContent }) => {
                             <div className="secondx2">
                               <div className="form_commonblock">
                                 <label>
-                                  Master Label<b className="color_red">*</b>
+                                  Name<b className="color_red">*</b>
                                 </label>
                                 <span>
                                   {otherIcons.name_svg}
@@ -122,12 +123,12 @@ const CreateMaster = ({ popupContent }) => {
                                     value={formData.label}
                                     onChange={handleChange}
                                     name="label"
-                                    placeholder="Enter Master Label"
+                                    placeholder="Enter Name"
                                   />
                                 </span>
                               </div>
                               <div className="form_commonblock">
-                                <label>Master Value</label>
+                                <label>Number Value</label>
                                 <span>
                                   {otherIcons.quantity_svg}
                                   <input
@@ -135,7 +136,19 @@ const CreateMaster = ({ popupContent }) => {
                                     value={formData.value}
                                     onChange={handleChange}
                                     name="value"
-                                    placeholder="Enter Master Value"
+                                    placeholder="Enter Number Value"
+                                  />
+                                </span>
+                              </div>
+                              <div className="form_commonblock">
+                                <label>Text Value</label>
+                                <span>
+                                  {otherIcons.quantity_svg}
+                                  <input
+                                    value={formData.value_string}
+                                    onChange={handleChange}
+                                    name="value_string"
+                                    placeholder="Enter Text Value"
                                   />
                                 </span>
                               </div>
@@ -148,8 +161,8 @@ const CreateMaster = ({ popupContent }) => {
                                   <TextAreaComponentWithTextLimit
                                     formsValues={{ handleChange, formData }}
                                     placeholder="Enter comment...."
-                                    name="value_string"
-                                    value={formData?.value_string}
+                                    name="note"
+                                    value={formData?.note}
                                   />
                                 </div>
                               </div>

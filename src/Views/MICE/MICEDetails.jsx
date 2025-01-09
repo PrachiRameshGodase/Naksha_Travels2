@@ -164,9 +164,8 @@ const MICEDetails = () => {
               <h1 id="firstheading">{MICEData?.mice_no}</h1>
             </div>
             <div id="buttonsdata">
-              <div
+              {MICEData?.is_invoiced == "0" && (<> <div
               onClick={() => {handleChangeDSRStatus(MICEData)}}
-              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
               >
                 <p
                   className={
@@ -191,7 +190,8 @@ const MICEDetails = () => {
                 }}
               >
                 {otherIcons.delete_svg}
-              </div>
+              </div></>)}
+             
               <Link
                 to={"/dashboard/mice"}
                 className="linkx3"

@@ -14,6 +14,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import { Navigate, useNavigate } from "react-router-dom";
 import AttachmentPreview from "../../Helper/AttachmentPreview";
+import { AttachmentPreview2, AttachmentPreview3 } from "../../Helper/Attachment";
 const InsideCusDetails = ({
   customerDetails,
   employees,
@@ -24,7 +25,6 @@ const InsideCusDetails = ({
   const displayValue = (value) => (value ? value : "NA");
   const [activeSection, setActiveSection] = useState("basicdetails");
   const mainDeparmentVal = ShowMasterData("10");
-  console.log("customerDetails", customerDetails);
   const [isOpen, setIsOpen] = useState([true, true, false, false]);
 
   // Function to toggle the open/close status of an accordion item
@@ -385,7 +385,7 @@ const InsideCusDetails = ({
                                   />
                                 </td>
                                 <td>
-                                <AttachmentPreview attachments={item?.photo ? JSON.parse(item?.photo) : {}}/>
+                                <AttachmentPreview3 attachments={item?.photo ? JSON.parse(item?.photo) : {}}/>
 
                                 </td>
                               </tr>

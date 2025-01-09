@@ -39,6 +39,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     travel_type_id: "",
     airline_name: "",
     guest_ids: "",
+    booking_date:"",
     gds_portal: "",
     ticket_no: "",
     destination_code:"",
@@ -46,6 +47,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     route: "",
     supplier_id: "",
     supplier_name: "",
+    air_line_code:"",
     //amount
     charges: [{ amount: null, account_id: null }],
     supplier_total: 0,
@@ -64,6 +66,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const entryType = ShowMasterData("50");
   const travelType = ShowMasterData("51");
   const destinationCode = ShowMasterData("52");
+  const GDSPortal = ShowMasterData("53");
+  const flightRoute = ShowMasterData("54");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -113,269 +117,308 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   return (
     <div id="formofcreateitems">
-      <div className="custom-modal">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5>{isEdit ? "Update Flight Service" : "Add Flight Service"}</h5>
-            <button
-              className="close-button"
-              onClick={() => setShowModal(false)}
-            >
-              <RxCross2 />
-            </button>
-          </div>
+    <div className="custom-modal">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5>{isEdit ? "Update Flight Service" : "Add Flight Service"}</h5>
+          <button
+            className="close-button"
+            onClick={() => setShowModal(false)}
+          >
+            <RxCross2 />
+          </button>
+        </div>
 
-          <div className="modal-body">
-            <form>
-              {/* Keep your form as it is */}
-              <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
-                  <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Entry Type<b className="color_red">*</b>
-                        </label>
+        <div className="modal-body">
+          <form>
+            {/* Keep your form as it is */}
+            <div className="relateivdiv">
+              <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
+                <div className="f1wrapofcreq">
+                  <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>
+                        Entry Type<b className="color_red">*</b>
+                      </label>
 
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Entry Type"
-                            options={entryType}
-                            value={formData?.entry_type}
-                            onChange={handleChange}
-                            name="entry_type"
-                            defaultOption="Select Entry Type"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>Travel Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.travel_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                travel_date: formatDate(date),
-                              })
-                            }
-                            name="travel_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Travel Type<b className="color_red">*</b>
-                        </label>
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="travel_type"
-                            options={travelType}
-                            value={formData?.travel_type_id}
-                            onChange={handleChange}
-                            name="travel_type_id"
-                            defaultOption="Select Travel Type"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Airline Name<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.airline_name}
-                            onChange={handleChange}
-                            name="airline_name"
-                            placeholder="Enter Airline Name"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Passenger<b className="color_red">*</b>
-                        </label>
-
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown31
-                              ref={dropdownRef1}
-                              label="Select Guest"
-                              options={cusList?.data?.user}
-                              value={formData.guest_ids}
-                              onChange={handleChange1}
-                              name="guest_ids"
-                              defaultOption="Select Guest"
-                              setcusData={setcusData}
-                              cusData={cusData}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          GDS Portal<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.gds_portal}
-                            onChange={handleChange}
-                            name="gds_portal"
-                            placeholder="Enter GDS Portal"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label> Ticket No</label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.name_svg}
-                            <input
-                              value={formData.ticket_no}
-                              onChange={handleChange}
-                              name="ticket_no"
-                              placeholder="Enter Ticket Number"
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          PRN No<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.prn_no}
-                            onChange={handleChange}
-                            name="prn_no"
-                            placeholder="Enter PRN No"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Route<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.route}
-                            onChange={handleChange}
-                            name="route"
-                            placeholder="Enter Route"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Destination Code<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Destination Code"
-                            options={destinationCode}
-                            value={formData?.destination_code}
-                            onChange={handleChange}
-                            name="destination_code"
-                            defaultOption="Select Destination Code"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Supplier<b className="color_red">*</b>
-                        </label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown10
-                              ref={dropdownRef1}
-                              label="Select Supplier"
-                              options={vendorList?.data?.user}
-                              value={formData.supplier_id}
-                              onChange={handleChange}
-                              name="supplier_id"
-                              defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <ImageUpload
-                          formData={formData}
-                          setFormData={setFormData}
-                          setFreezLoadingImg={setFreezLoadingImg}
-                          imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
-                          component="purchase"
+                      <span id="">
+                        {otherIcons.name_svg}
+                        <CustomDropdown04
+                          label="Entry Type"
+                          options={entryType}
+                          value={formData?.entry_type}
+                          onChange={handleChange}
+                          name="entry_type"
+                          defaultOption="Select Entry Type"
+                          type="masters2"
                         />
-                      </div>
-                      <div className="secondtotalsections485s">
-                        <div className="textareaofcreatqsiform">
-                          <label>Note</label>
-                          <div className="show_no_of_text_limit_0121">
-                            <TextAreaComponentWithTextLimit
-                              formsValues={{ handleChange, formData }}
-                              placeholder="Note..."
-                              name="note"
-                              value={formData.note == 0 ? "" : formData.note}
-                            />
-                          </div>
-                        </div>
-                        <CalculationSection
-                          formData={formData}
-                          setFormData={setFormData}
-                          handleChange={handleChange}
-                          section="Fare"
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>Booking Date</label>
+                      <span>
+                        {otherIcons.date_svg}
+                        <DatePicker
+                          selected={formData?.booking_date}
+                          onChange={(date) =>
+                            setFormData({
+                              ...formData,
+                              booking_date: formatDate(date),
+                            })
+                          }
+                          name="booking_date"
+                          placeholderText="Enter Date"
+                          dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
                         />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>Travel Date</label>
+                      <span>
+                        {otherIcons.date_svg}
+                        <DatePicker
+                          selected={formData?.travel_date}
+                          onChange={(date) =>
+                            setFormData({
+                              ...formData,
+                              travel_date: formatDate(date),
+                            })
+                          }
+                          name="travel_date"
+                          placeholderText="Enter Date"
+                          dateFormat="dd-MM-yyyy"
+                          autoComplete="off"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Travel Type<b className="color_red">*</b>
+                      </label>
+                      <span id="">
+                        {otherIcons.name_svg}
+                        <CustomDropdown04
+                          label="travel_type"
+                          options={travelType}
+                          value={formData?.travel_type_id}
+                          onChange={handleChange}
+                          name="travel_type_id"
+                          defaultOption="Select Travel Type"
+                          type="masters"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>
+                        Airline Name<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.airline_name}
+                          onChange={handleChange}
+                          name="airline_name"
+                          placeholder="Enter Airline Name"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>Airline Code</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.name_svg}
+                          <input
+                            value={formData.air_line_code}
+                            onChange={handleChange}
+                            name="air_line_code"
+                            placeholder="Enter Airline Code"
+                          />
+                        </span>
                       </div>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Passenger<b className="color_red">*</b>
+                      </label>
+
+                      <div id="sepcifixspanflex">
+                        <span id="">
+                          {otherIcons.name_svg}
+
+                          <CustomDropdown31
+                            ref={dropdownRef1}
+                            label="Select Guest"
+                            options={cusList?.data?.user}
+                            value={formData.guest_ids}
+                            onChange={handleChange1}
+                            name="guest_ids"
+                            defaultOption="Select Guest"
+                            setcusData={setcusData}
+                            cusData={cusData}
+                            type="vendor"
+                            required
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                      <label>
+                        GDS Portal<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <CustomDropdown04
+                          label="GDS Portal"
+                          options={GDSPortal}
+                          value={formData?.gds_portal}
+                          onChange={handleChange}
+                          name="gds_portal"
+                          defaultOption="Select GDS Portal"
+                          type="masters2"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label> Ticket No</label>
+                      <div id="inputx1">
+                        <span>
+                          {otherIcons.name_svg}
+                          <input
+                            value={formData.ticket_no}
+                            onChange={handleChange}
+                            name="ticket_no"
+                            placeholder="Enter Ticket Number"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        PRN No<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <input
+                          value={formData.prn_no}
+                          onChange={handleChange}
+                          name="prn_no"
+                          placeholder="Enter PRN No"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Route<b className="color_red">*</b>
+                      </label>
+                      <span>
+                        {otherIcons.placeofsupply_svg}
+                        <CustomDropdown04
+                          label="Route"
+                          options={flightRoute}
+                          value={formData?.route}
+                          onChange={handleChange}
+                          name="route"
+                          defaultOption="Select Route"
+                          type="masters2"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Destination Code<b className="color_red">*</b>
+                      </label>
+
+                      <span id="">
+                        {otherIcons.name_svg}
+                        <CustomDropdown04
+                          label="Destination Code"
+                          options={destinationCode}
+                          value={formData?.destination_code}
+                          onChange={handleChange}
+                          name="destination_code"
+                          defaultOption="Select Destination Code"
+                          type="masters2"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>
+                        Supplier<b className="color_red">*</b>
+                      </label>
+                      <div id="sepcifixspanflex">
+                        <span id="">
+                          {otherIcons.name_svg}
+
+                          <CustomDropdown10
+                            ref={dropdownRef1}
+                            label="Select Supplier"
+                            options={vendorList?.data?.user}
+                            value={formData.supplier_id}
+                            onChange={handleChange}
+                            name="supplier_id"
+                            defaultOption="Select Supplier"
+                            setcusData={setcusData1}
+                            cusData={cusData1}
+                            type="vendor"
+                            required
+                          />
+                        </span>
+                      </div>
+
+                      {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
+                    </div>
+                    <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <ImageUpload
+                        formData={formData}
+                        setFormData={setFormData}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        component="purchase"
+                      />
+                    </div>
+                    <div className="secondtotalsections485s">
+                      <div className="textareaofcreatqsiform">
+                        <label>Note</label>
+                        <div className="show_no_of_text_limit_0121">
+                          <TextAreaComponentWithTextLimit
+                            formsValues={{ handleChange, formData }}
+                            placeholder="Note..."
+                            name="note"
+                            value={formData.note == 0 ? "" : formData.note}
+                          />
+                        </div>
+                      </div>
+                      <CalculationSection
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleChange={handleChange}
+                        section="Fare"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-              <SubmitButton6
-                onClick={handleFormSubmit}
-                cancel="dsr"
-                createUpdate={createFlight}
-              />
-            </form>
-          </div>
+            </div>
+            <SubmitButton6
+              onClick={handleFormSubmit}
+              createUpdate={createFlight}
+              setShowModal={setShowModal}
+            />
+          </form>
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

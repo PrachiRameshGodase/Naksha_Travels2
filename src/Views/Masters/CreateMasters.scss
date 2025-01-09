@@ -76,3 +76,22 @@
     background-color: #3a9e5e; /* Optional: Darken background on hover */
   }
   
+  .actionxxs {
+    display: flex;
+  
+    span {
+      width: 26px;
+      color: #2b2828;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px;
+      cursor: pointer;
+  
+      &:hover {
+        color: #000; // Change color on hover for better UX
+      }
+    }
+  }
+  
