@@ -230,6 +230,7 @@ const FamilyMember = ({
                         setImgeLoader={setImgeLoader}
                         index={index}
                       />
+
                     </td>
                     <td>
                       <span
