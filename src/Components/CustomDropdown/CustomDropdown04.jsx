@@ -12,7 +12,6 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     dropdownRef,
     inputRef,
     optionRefs,
-    filteredOptions,
     handleKeyDown,
     handleSelect,
     focusedOptionIndex

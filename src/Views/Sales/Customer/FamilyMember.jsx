@@ -5,7 +5,7 @@ import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown2
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { customersList } from "../../../Redux/Actions/customerActions";
-import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
+import ImageUpload, { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -82,7 +82,7 @@ const FamilyMember = ({
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
-      family_members: employeeDetails.map((detail) => ({
+      family_members: employeeDetails?.map((detail) => ({
         ...detail,
         photo: detail.photo ? JSON.stringify(detail.photo) : "", // Serialize only the photo field
       })),
@@ -169,11 +169,11 @@ const FamilyMember = ({
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow=member?.member_id===customerDetails?.user?.relation_id
-         
+              const disabledRow = member?.member_id === customerDetails?.user?.relation_id
+
               return (
                 selectedMember && (
-                  <tr key={index} style={{backgroundColor:disabledRow?"#f2f2f2":"#fff",  pointerEvents: disabledRow ? "none" : "auto",}}
+                  <tr key={index} style={{ backgroundColor: disabledRow ? "#f2f2f2" : "#fff", pointerEvents: disabledRow ? "none" : "auto", }}
                   >
                     <td>{index + 1}</td>
                     <td>{selectedMember.display_name}</td>
@@ -210,14 +210,27 @@ const FamilyMember = ({
                     </td>
                     <td style={{ width: "20px" }}>
                       {" "}
+
+
+                      {/* <ImageUpload
+                        formData={member}
+                        setFormData={setEmployeeDetails}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        component="family"
+                      /> */}
+
+
                       <SingleImageUploadDocument
                         formData={member}
-                        setFormData={selectedMember}
+                        setFormData={setEmployeeDetails}
                         setFreezLoadingImg={setFreezLoadingImg}
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}
                         index={index}
                       />
+
                     </td>
                     <td>
                       <span

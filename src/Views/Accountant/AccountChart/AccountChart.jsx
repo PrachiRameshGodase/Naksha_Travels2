@@ -26,6 +26,7 @@ import SortBy from "../../Common/SortBy/SortBy";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { accountsSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const AccountChart = () => {
     const itemPayloads = localStorage.getItem(("accountPayload"));
@@ -198,7 +199,7 @@ const AccountChart = () => {
 
 
     // fetch all accounts lists
-    const fetchQuotations = useCallback(async () => {
+    const fetchAccount = useCallback(async () => {
         try {
             const fy = localStorage.getItem("FinancialYear");
 
@@ -217,13 +218,8 @@ const AccountChart = () => {
         }
     }, [searchTrigger]);
 
-    useEffect(() => {
+    useFetchOnMount(fetchAccount); // Use the custom hook for call API
 
-        const parshPayload = parseJSONofString(itemPayloads);
-        if (searchTrigger || parshPayload?.search || parshPayload?.sort_by || parshPayload?.currentpage > 1) {
-            fetchQuotations();
-        }
-    }, [searchTrigger]);
     // fetch all accounts lists end
 
 
@@ -278,7 +274,16 @@ const AccountChart = () => {
 
                         <h1 id="firstheading">
                             <svg id="fi_16973083" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="10" fill="#ced3ed" r="6"></circle><path d="m21 18h-10c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5z" fill="#4257ff"></path></svg>                            All Accounts</h1>
-                        <p id="firsttagp">{totalItems} Records</p>
+                        <p id="firsttagp">{totalItems} Records
+                            <span
+                                className={`${itemListState?.loading && "rotate_01"}`}
+                                data-tooltip-content="Reload"
+                                data-tooltip-place="bottom"
+                                data-tooltip-id="my-tooltip"
+                                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                                {otherIcons?.refresh_svg}
+                            </span>
+                        </p>
                         <SearchBox placeholder="Search In Accounts" onSearch={onSearch} />
 
                     </div>
@@ -296,28 +301,7 @@ const AccountChart = () => {
                             New Account <GoPlus />
                         </Link>
                         <ResizeFL />
-                        {/* <div className="maincontainmiainx1">
-                            <div className="mainx2" onClick={handleMoreDropdownToggle}>
-                                <img src={newmenuicoslz} alt="" />
-                            </div>
-                            {isMoreDropdownOpen && (
-                                <div className="dropdowncontentofx35" ref={moreDropdownRef}>
-                                    <div
-                                        //   onClick={handleImportButtonClick}
-                                        className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s" >
-                                        {otherIcons?.import_svg}
-                                        <div>Import Accounts</div>
-                                    </div>
 
-                                    <div className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s"
-                                    //   onClick={handleFileExport}
-                                    >
-                                        {otherIcons?.export_svg}
-                                        Export Accounts
-                                    </div>
-                                </div>
-                            )}
-                        </div> */}
                     </div>
                 </div>
                 {/* <div className="bordersinglestroke"></div> */}
