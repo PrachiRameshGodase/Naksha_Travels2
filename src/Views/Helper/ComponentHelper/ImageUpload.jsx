@@ -22,6 +22,8 @@ const ImageUpload = ({
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
 
+  console.log("formdata", formData)
+
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;
     setFreezLoadingImg(true);
@@ -41,6 +43,12 @@ const ImageUpload = ({
             setFormData({
               ...formData,
               document: url,
+            });
+          } else if (component === "family") {
+            console.log("firstfirstfirstfirstfirstfirst")
+            setFormData({
+              ...formData,
+              photo: url,
             });
           } else {
             setFormData({
@@ -64,7 +72,7 @@ const ImageUpload = ({
   return (
     <>
       <div className="form-group">
-        {type === "grm" ? "":type === "service" ? <label>Upload Image</label> : <label>Attach Files To Estimate</label>}
+        {type === "grm" ? "" : type === "service" ? <label>Upload Image</label> : <label>Attach Files To Estimate</label>}
         <div
           className="file-upload"
           onKeyDown={(event) => {
@@ -95,8 +103,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-              formData?.image_url !== null &&
-              formData?.image_url !== "0" ? (
+                formData?.image_url !== null &&
+                formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -113,8 +121,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-              formData?.upload_image !== null &&
-              formData?.upload_image !== "0" ? (
+                formData?.upload_image !== null &&
+                formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -159,6 +167,18 @@ const ImageUpload = ({
                   <img
                     src={formData?.document}
                     name="document"
+                    alt=""
+                    height={500}
+                    width={500}
+                  />
+                }
+              </>
+            ) : component === "family" ? (
+              <>
+                {
+                  <img
+                    src={formData?.photo}
+                    name="photo"
                     alt=""
                     height={500}
                     width={500}
@@ -469,7 +489,7 @@ export const MultiImageUploadHelp = ({
 
         {/* Show error message below input box */}
         {errorMessage && (
-          <p style={{ color: "red", marginTop: "5px", fontSize:"12px" }}>{errorMessage}</p>
+          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>{errorMessage}</p>
         )}
 
         {imgLoader === "success" &&
@@ -755,9 +775,8 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${
-                currentPOP ? "close_opop" : ""
-              }`}
+              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1101,9 +1120,8 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${
-                          currentPOP ? "close_opop" : ""
-                        }`}
+                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                          }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
