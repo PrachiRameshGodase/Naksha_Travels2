@@ -359,7 +359,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Items",
             })}
-            className={`menu-title ${salesDataMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||salesDataMenuItems.includes(selectedMenuItem) ||
               dsrMenuItems.includes(selectedMenuItem)
               ? "active"
               : ""
@@ -386,6 +386,15 @@ const MainLinks = ({
             className={`submenu ${activeMenu === "sales_data" ? "opensidebardropdownx5" : ""
               }`}
           >
+            <li
+              onClick={() => {
+                handleMenuItemClick("customers");
+              }}
+              className={`menu-item ${customersMenuItems.includes(selectedMenuItem) ? "active" : ""
+                }`}
+            >
+              Customers
+            </li>
             <li
               onClick={() => handleMenuItemClick("dsr")}
               className={`menu-item ${dsrMenuItems.includes(selectedMenuItem)
@@ -414,7 +423,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Sales",
             })}
-            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${
               quotationsMenuItems.includes(selectedMenuItem) ||
               salesOrdersMenuItems.includes(selectedMenuItem) ||
               deliveryChallanMenuItems.includes(selectedMenuItem) ||
@@ -449,15 +458,7 @@ const MainLinks = ({
             className={`submenu ${activeMenu === "sales" ? "opensidebardropdownx5" : ""
               }`}
           >
-            <li
-              onClick={() => {
-                handleMenuItemClick("customers");
-              }}
-              className={`menu-item ${customersMenuItems.includes(selectedMenuItem) ? "active" : ""
-                }`}
-            >
-              Customers
-            </li>
+            
 
             <li
               onClick={() => {
