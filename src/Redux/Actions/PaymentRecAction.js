@@ -35,8 +35,6 @@ import { sendData } from '../../Views/Helper/HelperFunctions';
 
 export const updatePaymentRec = (quotationData, navigate, section, editDub, buttonName, itemId, convert, showAllSequenceId) => async (dispatch) => {
 
-    console.log("quotationDataquotationData", quotationData);
-
     try {
         dispatch({ type: PAYMENT_CREATE_REQUEST });
 

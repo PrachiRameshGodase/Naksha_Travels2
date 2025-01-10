@@ -69,7 +69,6 @@ export const ShowAllStatus = ({ quotation }) => {
   );
 };
 
-
 export const ShowAllStatusPurchase = ({ quotation }) => {
   return (
     <div
