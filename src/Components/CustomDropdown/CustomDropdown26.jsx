@@ -38,9 +38,6 @@ const CustomDropdown26 = forwardRef((props, ref) => {
 
   const itemList = useSelector((state) => state?.itemList);
   const categoryLists = useSelector((state) => state?.categoryList);
-
-  console.log("itemListitemList", itemList)
-
   const [isValueSelected, setIsValueSelected] = useState(false);
 
   const combinedRef = (node) => {

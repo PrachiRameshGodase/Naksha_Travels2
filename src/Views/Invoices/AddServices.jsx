@@ -1,48 +1,184 @@
-import React, { useState, useRef } from "react";
-import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
+import React, { useState, useRef, useEffect } from "react";
+import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
+import { currencySymbol, ShowMasterData } from "../Helper/HelperFunctions";
 // import "./PassengerCard.scss";
-import CreateAssistPopup from "../../DSR/Services/PassengerAssist/CreateAssistPopup";
-import CreateCarHirePopup from "../../DSR/Services/PassengerCarHire/CreateCarHirePopup";
-import CreateFlightPopup from "../../DSR/Services/PassengerFlight/CreateFlightPopup";
-import CreateHotelPopup from "../../DSR/Services/PassengerHotel/CreateHotelPopup";
-import CreateInsurancePopup from "../../DSR/Services/PassengerInsurance/CreateInsurancePopup";
-import CreateOtherPopup from "../../DSR/Services/PassengerOthers/CreateOtherPopup";
-import CreateVisaPopup from "../../DSR/Services/PassengerVisa/CreateVisaPopup";
-import { GoPlus } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import CustomDropdown13 from "../../../Components/CustomDropdown/CustomDropdown13";
+import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
+import AddHotelPopup from "./AddHotelPopup";
+import NumericInput from "../Helper/NumericInput";
+import { useDispatch, useSelector } from "react-redux";
+import useOutsideClick from "../Helper/PopupData";
+import AddFlightPopup from "./AddFlightPopup";
+import AddVisaPopup from "./AddVisaPopup";
+import AddInsurancePopup from "./AddInsurancePopup";
+import AddCarHirePopup from "./AddCarHirePopup";
+import AddAssistPopup from "./AddAssistPopup";
+import AddOtherPopup from "./AddOtherPopup";
 
-const AddServices = ({ }) => {
+const AddServices = ({ formData, setFormData }) => {
 
+    const dispatch = useDispatch();
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
     const popupRef = useRef(null);
+    const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
+    const servicesList = ShowMasterData("48");
+
+    const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+
+    const handleDropdownToggle = (index) => {
+        setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+    useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
 
     const [activePopup, setActivePopup] = useState(null);
-    const [formData, setFormData] = useState({
-        service: "",
-    });
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [services, setServices] = useState([]);
 
-    const servicesList = ShowMasterData("48");
-    const passengers = {};
-
     const handleSelectService = (e) => {
         const { value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            service: value,
-        }));
-        setShowAddModal(false);
         setActivePopup({ popupType: value });
     };
 
-    const handleAddService = (data) => {
-        setServices(...services, data);
+    const handleAddService = (name, data) => {
+        const itemName = (name === "Hotel") ? data?.hotel_name : (name === "Flight") ? data?.airline_name : (name === "Assist") ? data?.airport_name : (name === "Insurance") ? data?.company_name : (name === "Visa") ? data?.passport_no : (name === "CarHire") ? data?.vehicle_type_id : (name === "Other") ? data?.item_name : "";
+        const item_data = {
+            item_name: itemName,
+            tax_name: "",
+            // hsn_code: "",
+            type: "",
+            quantity: 1,
+            tax_rate: null,
+            tax_amount: null,
+            discount: 0,
+            gross_amount: null,
+            final_amount: null,
+            discount_type: 1,
+            // item_remark: null,
+            data: data
+        }
+        if (services?.length === 0) {
+            setServices([data]);
+            setFormData({
+                ...formData,
+                items: [item_data]
+            });
+        }
+        else {
+            setServices([...services, data]);
+            const newItems = [
+                ...formData.items,
+                item_data
+            ];
+        }
+    };
+
+    useEffect(() => {
+        setActivePopup(null);
+    }, [services])
+
+
+    const handleItemChange = (index, field, value) => {
+
+        const newItems = [...formData?.items];
+        const newErrors = [...itemErrors];
+
+        newItems[index][field] = value;
+        const item = newItems[index];
+
+        let discountAmount = 0;
+        let discountPercentage = 0;
+        if (field === "item_name") {
+            newItems[index].item_name = value;
+            newItems[index].item_id = "";
+            newItems[index].hsn_code = "";
+            newErrors[index].item_id = "";
+            newErrors[index].item_name = "";
+        }
+
+        if (field === "discount_type") {
+            newItems[index].discount = 0;
+        }
+
+        if (field === "unit_id") {
+            newItems[index].unit_id = value;
+            newErrors[index].unit_id = "";
+        }
+        if (field === "taxRate") {
+            newItems[index].tax_rate = value;
+            newErrors[index].tax_rate = "";
+        }
+
+        if (field === "item_id") {
+            const selectedItem = itemList?.data?.item?.find(
+                (item) => item?.id == value
+            );
+            if (selectedItem) {
+                const showPrice = formData?.sale_type
+                    ? selectedItem?.price
+                    : selectedItem?.purchase_price;
+
+                newItems[index].unit_id = selectedItem?.unit;
+                newItems[index].item_name = selectedItem?.name;
+                newItems[index].type = selectedItem?.type;
+                newItems[index].rate = showPrice;
+                newItems[index].gross_amount = +showPrice * +item?.quantity;
+                newItems[index].hsn_code = selectedItem?.hsn_code;
+
+                if (selectedItem.tax_preference == "1") {
+                    newItems[index].tax_rate = !selectedItem?.tax_rate
+                        ? 0
+                        : selectedItem?.tax_rate;
+                    newItems[index].tax_name = "Taxable";
+                } else {
+                    newItems[index].tax_rate = "0";
+                    newItems[index].tax_name = "Non-Taxable";
+                }
+
+                newErrors[index] = {
+                    ...newErrors[index],
+                    item_id: "",
+                    item_name: "",
+                    tax_rate: "",
+                    unit_id: "",
+                    rate: "",
+                };
+            }
+        }
+
+        if (field === "quantity" || field === "rate") {
+            newItems[index].gross_amount = +item?.rate * +item?.quantity;
+            newErrors[index].rate = "";
+        }
+
+        const grossAmount = item?.rate * item?.quantity;
+        const taxAmount = (grossAmount * item?.tax_rate) / 100;
+        if (item?.discount_type == 1) {
+            discountAmount = Math.min(item?.discount, grossAmount);
+        } else if (item?.discount_type == 2) {
+            discountPercentage = Math.min(item?.discount, 100);
+        }
+
+        const discount =
+            item?.discount_type == 1
+                ? discountAmount
+                : (grossAmount * discountPercentage) / 100;
+        const finalAmount = grossAmount - discount;
+
+        newItems[index].final_amount = finalAmount?.toFixed(2); // Round to 2 decimal places
+        newItems[index].tax_amount = taxAmount?.toFixed(2); // For calculate tax amount
+
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            items: newItems,
+        }));
+        setItemErrors(newErrors);
+    };
+
+    const handleItemRemove = (index) => {
+        const newItems = formData.items.filter((item, i) => i !== index);
+        setFormData({ ...formData, items: newItems });
     };
 
     const renderPopup = () => {
@@ -53,71 +189,50 @@ const AddServices = ({ }) => {
         switch (popupType) {
             case "Hotels":
                 return (
-                    <CreateHotelPopup
-                        showModal={true}
+                    <AddHotelPopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Flights":
                 return (
-                    <CreateFlightPopup
-                        showModal={true}
+                    <AddFlightPopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Visa":
                 return (
-                    <CreateVisaPopup
-                        showModal={true}
+                    <AddVisaPopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Insurance":
                 return (
-                    <CreateInsurancePopup
-                        showModal={true}
+                    <AddInsurancePopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Car Hire":
                 return (
-                    <CreateCarHirePopup
-                        showModal={true}
+                    <AddCarHirePopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Assist":
                 return (
-                    <CreateAssistPopup
-                        showModal={true}
+                    <AddAssistPopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
             case "Others":
                 return (
-                    <CreateOtherPopup
-                        showModal={true}
+                    <AddOtherPopup
                         setShowModal={setActivePopup}
-                        data={passengers}
-                        passengerId={""}
                         handleAddService={handleAddService}
                     />
                 );
@@ -252,7 +367,6 @@ const AddServices = ({ }) => {
                                                     handleItemChange(index, "discount", newValue);
                                                 }}
                                             />
-
                                             <div
                                                 className="dropdownsdfofcus56s"
                                                 onClick={() => handleDropdownToggle(index)}
@@ -409,7 +523,16 @@ const AddServices = ({ }) => {
 
                 {/* <div className="breakerci"></div> */}
                 <div className="height5"></div>
-                <button
+                <CustomDropdown28
+                    label="Services"
+                    options={servicesList}
+                    value={activePopup?.popupType}
+                    onChange={(e) => handleSelectService(e)}
+                    name="service"
+                    defaultOption="Select Service"
+                    type="service"
+                />
+                {/* <button
                     id="additembtn45srow"
                     type="button"
                     onClick={() => setShowAddModal(true)}
@@ -417,13 +540,13 @@ const AddServices = ({ }) => {
                 >
                     Add Services
                     <GoPlus />
-                </button>
+                </button> */}
                 {showAddModal &&
                     <div className="mainxpopups1" ref={popupRef} tabIndex="0">
                         <div className="popup-content">
                             <span className="close-button" onClick={() => setShowAddModal(false)}><RxCross2 /></span>
                             <h2>Add Services</h2>
-                            <div className="midpopusec12x" style={{minHeight: "300px"}}>
+                            <div className="midpopusec12x" style={{ minHeight: "300px" }}>
                                 {/* <label>Select Service</label> */}
                                 <CustomDropdown28
                                     label="Services"

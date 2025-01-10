@@ -33,7 +33,7 @@ import {
   isStateIdEqualAction,
   productTypeItemAction,
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
-import AddServices from "./AddServices";
+import AddServices from "../../Invoices/AddServices";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 const CreateQuotation = () => {
 
@@ -289,16 +289,12 @@ const CreateQuotation = () => {
                                 Please Select Customer
                               </p>
                             }
-
                             <SelectAddress addSelect={addSelect} setAddSelect={setAddSelect} formData={formData} setFormData={setFormData} cusData={cusData} isEdit={isEdit} itemId={itemId} viewAllCusDetails={viewAllCusDetails} setViewAllCusDetails={setViewAllCusDetails} type='customer' />
-
                           </div>
-
                         </div>
 
 
                         <div className="f1wrapofcreqx1">
-
                           <div className="form_commonblock">
                             <label >Quotation ID<b className='color_red'>*</b></label>
                             <GenerateAutoId
@@ -325,7 +321,6 @@ const CreateQuotation = () => {
 
                           <div className="form_commonblock">
                             <label>Quotation Terms</label>
-
                             <span>
                               {otherIcons.vendor_svg}
                               <CustomDropdown04
@@ -390,16 +385,16 @@ const CreateQuotation = () => {
                               />
                             </span>
                           </div>
-
-
                           <div>
-
                           </div>
                         </div>
                       </div>
                       {/* </div> */}
 
-
+                      <AddServices
+                        formData={formData}
+                        setFormData={setFormData}
+                      />
 
                       <div className="">
                         <ItemSelect
@@ -440,9 +435,7 @@ const CreateQuotation = () => {
                         </div>
                       </div>
                     </div>
-
                     <SubmitButton isEdit={isEdit} itemId={itemId} cancel="quotation" />
-
                   </div>
                 </form>
               </div>
@@ -450,7 +443,6 @@ const CreateQuotation = () => {
             <Toaster
               reverseOrder={false} />
           </>}
-
     </>
   );
 };
