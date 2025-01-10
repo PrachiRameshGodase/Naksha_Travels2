@@ -8,7 +8,7 @@ import { imageDB } from "../../../Configs/Firebase/firebaseConfig";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 
 const ImageUpload = ({
   formData,
@@ -22,7 +22,7 @@ const ImageUpload = ({
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
 
-  console.log("formdata", formData)
+  console.log("formdata", formData);
 
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;
@@ -45,7 +45,7 @@ const ImageUpload = ({
               document: url,
             });
           } else if (component === "family") {
-            console.log("firstfirstfirstfirstfirstfirst")
+            console.log("firstfirstfirstfirstfirstfirst");
             setFormData({
               ...formData,
               photo: url,
@@ -72,7 +72,13 @@ const ImageUpload = ({
   return (
     <>
       <div className="form-group">
-        {type === "grm" ? "" : type === "service" ? <label>Upload Image</label> : <label>Attach Files To Estimate</label>}
+        {type === "grm" ? (
+          ""
+        ) : type === "service" ? (
+          <label>Upload Image</label>
+        ) : (
+          <label>Attach Files To Estimate</label>
+        )}
         <div
           className="file-upload"
           onKeyDown={(event) => {
@@ -103,8 +109,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-                formData?.image_url !== null &&
-                formData?.image_url !== "0" ? (
+              formData?.image_url !== null &&
+              formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -121,8 +127,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-                formData?.upload_image !== null &&
-                formData?.upload_image !== "0" ? (
+              formData?.upload_image !== null &&
+              formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -361,7 +367,6 @@ export const MultiImageUpload = ({
   );
 };
 
-
 export const MultiImageUploadHelp = ({
   formData,
   setFormData,
@@ -380,7 +385,15 @@ export const MultiImageUploadHelp = ({
     setImgeLoader(true);
     setErrorMessage(""); // Clear any previous error message
 
-    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "pdf"];
+    const allowedExtensions = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "webp",
+      "pdf",
+    ];
     const updatedUploadDocuments = Array.isArray(formData?.upload_documents)
       ? [...formData.upload_documents]
       : [];
@@ -489,7 +502,9 @@ export const MultiImageUploadHelp = ({
 
         {/* Show error message below input box */}
         {errorMessage && (
-          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>{errorMessage}</p>
+          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
+            {errorMessage}
+          </p>
         )}
 
         {imgLoader === "success" &&
@@ -554,7 +569,6 @@ export const MultiImageUploadHelp = ({
     </>
   );
 };
-
 
 export const ImageUploadGRN = ({
   formData,
@@ -775,8 +789,9 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                }`}
+              className={`close-button02  close_opop  ${
+                currentPOP ? "close_opop" : ""
+              }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1020,17 +1035,6 @@ export const MultiImageUploadEmail = ({
               className="filelabelemail"
               id="uploadAttachment"
             >
-              {/* <div id="spc5s6" style={{display:"flex",gap:"5px"}}>
-                              <div>
-                              {otherIcons.export_svg}
-                              </div>
-                              <div style={{marginTop:"3px"}}>
-                              {formData?.upload_documents?.length
-                                  ? `${formData.upload_documents?.length} Images Uploaded`
-                                  : "Browse Files"}
-                                  </div>
-              </div>  */}
-
               <div
                 id="spc5s6"
                 style={{
@@ -1120,8 +1124,9 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                          }`}
+                        className={`close-button02  close_opop  ${
+                          currentPOP ? "close_opop" : ""
+                        }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
@@ -1366,9 +1371,20 @@ export const SingleImageUploadDocument = ({
   setFreezLoadingImg,
   imgLoader,
   setImgeLoader,
-  index
+  index,
 }) => {
-  console.log("formData", formData)
+  const [photo, setPhoto] = useState(formData?.photo || null);
+  const [expiryDate, setExpiryDate] = useState(null);
+
+  useEffect(() => {
+    if (photo) {
+      // Check photo expiry (6 months)
+      const photoDate = new Date(formData?.photoUploadDate || 0); // Assuming the date when photo was uploaded
+      const expiry = new Date(photoDate.setMonth(photoDate.getMonth() + 6));
+      setExpiryDate(expiry);
+    }
+  }, [photo, formData]);
+
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;
     setFreezLoadingImg(true);
@@ -1379,15 +1395,20 @@ export const SingleImageUploadDocument = ({
         setImgeLoader("success");
         setFreezLoadingImg(false);
         getDownloadURL(imageRef).then((url) => {
-          // Update the photo for the specific index
+          // Save the upload date to check expiry
+          const currentDate = new Date().toISOString();
+
           setFormData((prevState) => {
             const updatedEmployeeDetails = [...prevState];
             updatedEmployeeDetails[index] = {
               ...updatedEmployeeDetails[index],
               photo: url,
+              photoUploadDate: currentDate, 
             };
             return updatedEmployeeDetails;
           });
+
+          setPhoto(url); // Update the local state with the new photo
         });
       })
       .catch((error) => {
@@ -1396,22 +1417,84 @@ export const SingleImageUploadDocument = ({
       });
   };
 
+  const handleDeletePhoto = () => {
+    // Logic to delete the photo if needed
+    setPhoto(null);
+    setFormData((prevState) => {
+      const updatedEmployeeDetails = [...prevState];
+      updatedEmployeeDetails[index] = {
+        ...updatedEmployeeDetails[index],
+        photo: null,
+        photoUploadDate: null,
+      };
+      return updatedEmployeeDetails;
+    });
+  };
+
+  const isPhotoExpired = expiryDate && new Date() > expiryDate;
+
   return (
-    <div className="form-group">
-      <label>Upload photo</label>
-      <div className="file-upload">
-        <input
-          type="file"
-          name="photo"
-          id={`file-${index}`} // Use index in id for uniqueness
-          className="inputfile"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        <label htmlFor={`file-${index}`} className="file-label">
-          {formData?.photo ? "Change Photo" : "Browse Files"}
-        </label>
+    <>
+  {!photo || isPhotoExpired  ? (
+    <div id="formofcreateitems" style={{ width: "140px" }}>
+      <div className="form_commonblock">
+        <div id="inputx1">
+          <div id="imgurlanddesc">
+            <div className="form-group" style={{ width: "145px" }}>
+              <div className="file-upload">
+                <input
+                  type="file"
+                  name="photo"
+                  id={`file-${index}`} // Use index in id for uniqueness
+                  className="inputfile"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                <span style={{ cursor: "pointer" }}>
+                  {otherIcons.export_svg}
+                </span>
+                <label htmlFor={`file-${index}`} className="file-label">
+                  {formData?.photo ? "Change Photo" : "Browse Files"}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  ) : (
+    <div style={{  position: "relative" }}>
+      {/* Show image preview */}
+      <img
+        src={photo}
+        alt="Uploaded"
+        style={{
+          width: "50px",
+          height: "50px",
+          objectFit: "cover",
+        }}
+      />
+      <div
+        id="buttonsdata"
+        style={{
+          position: "absolute",
+          top: "-6px",
+          right: "-6px",
+          zIndex: 1, // Ensures the icon is above the image
+        }}
+      >
+        <Link onClick={handleDeletePhoto} className="linkx3">
+          <RxCross2 />
+        </Link>
+      </div>
+      {isPhotoExpired && (
+        <p style={{ color: "red", fontSize: "12px" }}>
+          This photo has expired.
+        </p>
+      )}
+    </div>
+  )}
+</>
+
   );
 };

@@ -131,7 +131,7 @@ const EmployeeDetails = ({
   // Render the member table
   const renderMemberTable = () => {
     return (
-      <table className="employee-table">
+      <table className="employee-table" style={{width:"71%"}}>
         <thead>
           <tr>
             <th>No.</th>

@@ -25,12 +25,17 @@ import PaymentDetails from "./PaymentDetails";
 import EmployeeDetails from "./EmployeeDetails";
 import FamilyMember from "./FamilyMember";
 import { getCurrencyFormData } from "../../Helper/HelperFunctions";
+import SubmitButton, {
+  SubmitButton2,
+} from "../../Common/Pagination/SubmitButton";
 const CreateCustomer = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const customer = useSelector((state) => state?.createCustomer);
   const user = useSelector((state) => state?.viewCustomer?.data?.user || {});
-  const customerDetails = useSelector((state) => state?.viewCustomer?.data || {});
+  const customerDetails = useSelector(
+    (state) => state?.viewCustomer?.data || {}
+  );
   const { masterData } = useSelector((state) => state?.masterData);
 
   const [switchCusData, setSwitchCusData] = useState("Basic");
@@ -55,15 +60,14 @@ const CreateCustomer = () => {
   const [tick, setTick] = useState({
     basicTick: false,
     addressTick: false,
-    familyMemberTick:false,
-    employeeTick:false,
+    familyMemberTick: false,
+    employeeTick: false,
     bankTick: false,
     paymentDetailsTick: false,
     remarkTick: false,
     documentsTick: false,
     vaccinationDetailTick: false,
     insuranceDetailTick: false,
-    
   });
 
   // all submit data of create customer
@@ -71,34 +75,34 @@ const CreateCustomer = () => {
     remarks: "",
     upload_documents: [],
   });
-   const [basicDetails, setBasicDetails] = useState({
-      salutation: "",
-      first_name: "",
-      last_name: "",
-      email: "",
-      mobile_no: "",
-      work_phone: "",
-      customer_type: "Individual",
-      is_customer: 1,
-      gst_no: "",
-      pan_no: "",
-  
-      business_leagal_name: "",
-      display_name: "",
-      company_name: "",
-      place_of_supply: "",
-      tax_preference: null,
-      currency: getCurrencyFormData,
-      registration_type: "",
-      // upload_documents: [],
-      opening_balance: "",
-      department: "",
-      // designation: "",
-      d_o_b: "",
-      gender: "",
-      blood_group: "",
-      citizenship: "",
-    });
+  const [basicDetails, setBasicDetails] = useState({
+    salutation: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    mobile_no: "",
+    work_phone: "",
+    customer_type: "Individual",
+    is_customer: 1,
+    gst_no: "",
+    pan_no: "",
+
+    business_leagal_name: "",
+    display_name: "",
+    company_name: "",
+    place_of_supply: "",
+    tax_preference: null,
+    currency: getCurrencyFormData,
+    registration_type: "",
+    // upload_documents: [],
+    opening_balance: "",
+    department: "",
+    // designation: "",
+    d_o_b: "",
+    gender: "",
+    blood_group: "",
+    citizenship: "",
+  });
 
   useEffect(() => {
     if ((cusId && isEdit) || (cusId && isEdit && isDuplicate)) {
@@ -269,8 +273,6 @@ const CreateCustomer = () => {
   };
   return (
     <>
-
-
       {customer?.loading && <MainScreenFreezeLoader />}
       {customer?.loading && <MainScreenFreezeLoader />}
 
@@ -296,87 +298,97 @@ const CreateCustomer = () => {
         </div>
 
         <div className="ccfz1 formsectionx1">
-        <div className="form_commonblockx2">
-              <label> Customer Type</label>
+          <div className="form_commonblockx2">
+            <label> Customer Type</label>
 
-              <span>
-                {!masterData ? (
-                  <div className="skelloadtypesce">
-                    <p></p>
-                    <p></p>
-                  </div>
-                ) : (
-                  masterData?.map((type) => {
-                    if (type?.type == "3") {
-                      return (
-                        <button
-                          type="button"
-                          key={type?.labelid}
-                          className={`type-button ${basicDetails.customer_type === type?.label
-                              ? "selectedbtn"
-                              : ""
-                            }`}
-                          onClick={() =>
-                            setBasicDetails({
-                              ...basicDetails,
-                              customer_type: type?.label,
-                            })
-                          }
-                        >
-                          {type?.label}
-                          {basicDetails.customer_type === type?.label && (
-                            <MdCheck />
-                          )}
-                        </button>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })
-                )}
-              </span>
-            </div>
+            <span>
+              {!masterData ? (
+                <div className="skelloadtypesce">
+                  <p></p>
+                  <p></p>
+                </div>
+              ) : (
+                masterData?.map((type) => {
+                  if (type?.type == "3") {
+                    return (
+                      <button
+                        type="button"
+                        key={type?.labelid}
+                        className={`type-button ${
+                          basicDetails.customer_type === type?.label
+                            ? "selectedbtn"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          setBasicDetails({
+                            ...basicDetails,
+                            customer_type: type?.label,
+                          })
+                        }
+                      >
+                        {type?.label}
+                        {basicDetails.customer_type === type?.label && (
+                          <MdCheck />
+                        )}
+                      </button>
+                    );
+                  } else {
+                    return null;
+                  }
+                })
+              )}
+            </span>
+          </div>
           <div className="insideccfz1">
             <button
-              className={`type-button ${switchCusData === "Basic" && "selectedbtnx2"
-                }`}
+              className={`type-button ${
+                switchCusData === "Basic" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Basic")}
             >
               Basic Details {tick?.basicTick && <>{otherIcons.backtick_svg}</>}
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick ? "" : ""}  ${switchCusData === "Address" && "selectedbtnx2"
-                }`}
+              className={`type-button ${tick?.basicTick ? "" : ""}  ${
+                switchCusData === "Address" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Address")}
             >
               Address {tick?.addressTick && <>{otherIcons.backtick_svg}</>}
             </button>
-            {userData?.customer_type == "Individual" && <button
-              className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
+            {userData?.customer_type == "Individual" && (
+              <button
+                className={`type-button ${
+                  tick?.basicTick && tick?.addressTick ? "" : ""
                 } ${switchCusData === "Contact" && "selectedbtnx2"}`}
-              onClick={() => setSwitchCusData("Contact")}
-            >
-              Family Member
-              {contactTick && <>{otherIcons.backtick_svg}</>}
-            </button>}
-            {userData?.customer_type == "Business" && <button
-              className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
+                onClick={() => setSwitchCusData("Contact")}
+              >
+                Family Member
+                {contactTick && <>{otherIcons.backtick_svg}</>}
+              </button>
+            )}
+            {userData?.customer_type == "Business" && (
+              <button
+                className={`type-button ${
+                  tick?.basicTick && tick?.addressTick ? "" : ""
                 } ${switchCusData === "Employee Details" && "selectedbtnx2"}`}
-              onClick={() => setSwitchCusData("Employee Details")}
-            >
-              Employee Details
-              {contactTick && <>{otherIcons.backtick_svg}</>}
-            </button>}
+                onClick={() => setSwitchCusData("Employee Details")}
+              >
+                Employee Details
+                {contactTick && <>{otherIcons.backtick_svg}</>}
+              </button>
+            )}
 
             <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.addressTick
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick
                   ? ""
                   : ""
-                } ${switchCusData === "Bank" && "selectedbtnx2"}`}
+              } ${switchCusData === "Bank" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Bank")}
             >
               Bank Details
@@ -384,14 +396,15 @@ const CreateCustomer = () => {
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.addressTick &&
-                  tick?.bankTick
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.addressTick &&
+                tick?.bankTick
                   ? ""
                   : ""
-                } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
+              } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Payment Details")}
             >
               Payment Details
@@ -400,30 +413,33 @@ const CreateCustomer = () => {
 
             {/* remark button */}
             <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.bankTick &&
-                  tick?.paymentDetailsTick
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.bankTick &&
+                tick?.paymentDetailsTick
                   ? ""
                   : ""
-                } ${switchCusData === "Remark" && "selectedbtnx2"}`}
+              } ${switchCusData === "Remark" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Remark")}
             >
               Remarks {tick?.remarkTick && <> {otherIcons.backtick_svg}</>}
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.bankTick &&
-                  tick?.paymentDetailsTick &&
-                  tick.remarkTick
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.bankTick &&
+                tick?.paymentDetailsTick &&
+                tick.remarkTick
                   ? ""
                   : ""
-                } ${switchCusData === "Upload Image/Document" && "selectedbtnx2"
-                }`}
+              } ${
+                switchCusData === "Upload Image/Document" && "selectedbtnx2"
+              }`}
               onClick={() => setSwitchCusData("Upload Image/Document")}
             >
               Upload Image/Document{" "}
@@ -431,58 +447,70 @@ const CreateCustomer = () => {
             </button>
 
             <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.bankTick &&
-                  tick?.paymentDetailsTick &&
-                  tick.remarkTick &&
-                  uploadTick
+              className={`type-button ${
+                tick?.basicTick &&
+                tick?.addressTick &&
+                contactTick &&
+                tick?.bankTick &&
+                tick?.paymentDetailsTick &&
+                tick.remarkTick &&
+                uploadTick
                   ? ""
                   : ""
-                } ${switchCusData === "Documents" && "selectedbtnx2"}`}
+              } ${switchCusData === "Documents" && "selectedbtnx2"}`}
               onClick={() => setSwitchCusData("Documents")}
             >
               Documents
               {tick?.documentsTick && <>{otherIcons.backtick_svg}</>}
             </button>
-           { userData?.customer_type == "Individual" && (<><button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.bankTick &&
-                  tick?.paymentDetailsTick &&
-                  tick.remarkTick &&
-                  uploadTick &&
-                  tick?.documentsTick
-                  ? ""
-                  : ""
-                } ${switchCusData === "Vaccination Details" && "selectedbtnx2"}`}
-              onClick={() => setSwitchCusData("Vaccination Details")}
-            >
-              Vaccination Details
-              {tick?.vaccinationDetailTick && <>{otherIcons.backtick_svg}</>}
-            </button>
+            {userData?.customer_type == "Individual" && (
+              <>
+                <button
+                  className={`type-button ${
+                    tick?.basicTick &&
+                    tick?.addressTick &&
+                    contactTick &&
+                    tick?.bankTick &&
+                    tick?.paymentDetailsTick &&
+                    tick.remarkTick &&
+                    uploadTick &&
+                    tick?.documentsTick
+                      ? ""
+                      : ""
+                  } ${
+                    switchCusData === "Vaccination Details" && "selectedbtnx2"
+                  }`}
+                  onClick={() => setSwitchCusData("Vaccination Details")}
+                >
+                  Vaccination Details
+                  {tick?.vaccinationDetailTick && (
+                    <>{otherIcons.backtick_svg}</>
+                  )}
+                </button>
 
-            <button
-              className={`type-button ${tick?.basicTick &&
-                  tick?.addressTick &&
-                  contactTick &&
-                  tick?.bankTick &&
-                  tick?.paymentDetailsTick &&
-                  tick.remarkTick &&
-                  uploadTick &&
-                  tick?.documentsTick &&
-                  tick?.vaccinationDetailTick
-                  ? ""
-                  : ""
-                } ${switchCusData === "Insurance Details" && "selectedbtnx2"}`}
-              onClick={() => setSwitchCusData("Insurance Details")}
-            >
-              Insurance Details
-              {tick?.insuranceDetailTick && <>{otherIcons.backtick_svg}</>}
-            </button></>
-           )}
+                <button
+                  className={`type-button ${
+                    tick?.basicTick &&
+                    tick?.addressTick &&
+                    contactTick &&
+                    tick?.bankTick &&
+                    tick?.paymentDetailsTick &&
+                    tick.remarkTick &&
+                    uploadTick &&
+                    tick?.documentsTick &&
+                    tick?.vaccinationDetailTick
+                      ? ""
+                      : ""
+                  } ${
+                    switchCusData === "Insurance Details" && "selectedbtnx2"
+                  }`}
+                  onClick={() => setSwitchCusData("Insurance Details")}
+                >
+                  Insurance Details
+                  {tick?.insuranceDetailTick && <>{otherIcons.backtick_svg}</>}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -512,9 +540,9 @@ const CreateCustomer = () => {
                   customerData={{ user, isEdit, isDuplicate }}
                   updateUserData={updateUserData}
                 />
-                 <EmployeeDetails
+                <EmployeeDetails
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate ,customerDetails  }}
+                  customerData={{ user, isEdit, isDuplicate, customerDetails }}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
@@ -523,7 +551,7 @@ const CreateCustomer = () => {
                 />
                 <FamilyMember
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate , customerDetails}}
+                  customerData={{ user, isEdit, isDuplicate, customerDetails }}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
@@ -542,7 +570,7 @@ const CreateCustomer = () => {
                 /> */}
                 <BankDetails
                   switchCusData={switchCusData}
-                  customerData={{ user, isEdit, isDuplicate , customerDetails}}
+                  customerData={{ user, isEdit, isDuplicate, customerDetails }}
                   userData={userData}
                   setUserData={setUserData}
                   updateUserData={updateUserData}
@@ -954,49 +982,7 @@ const CreateCustomer = () => {
                 />
               </div>
             </div>
-            <div className={`actionbar`}>
-              <button type="button" onClick={handleNextClick}>
-                Next
-              </button>
-              <button
-                id="herobtnskls"
-                type="submit"
-                tabIndex="0"
-                onKeyDown={(e) => {
-                  if (
-                    e.key === "Enter" &&
-                    document.activeElement !== e.currentTarget
-                  ) {
-                    e.preventDefault(); // Prevent form submission if Enter is pressed outside of the button
-                  }
-                }}
-              //  className={` ${tick?.basicTick ? "" : "disabledfield"} `}
-              >
-                {cusId && isDuplicate ? (
-                  <p>
-                    {" "}
-                    {customer?.loading === true ? "Dublicating" : "Duplicate"}
-                  </p>
-                ) : (
-                  <>
-                    {cusId && isEdit ? (
-                      <p>
-                        {" "}
-                        {customer?.loading === true ? "Updating" : "Update"}
-                      </p>
-                    ) : (
-                      <p>
-                        {" "}
-                        {customer?.loading === true ? "Submiting" : "Submit"}
-                      </p>
-                    )}
-                  </>
-                )}
-              </button>
-              <Link to={"/dashboard/customers"} className="linkx3">
-                <button type="button">Cancel</button>
-              </Link>
-            </div>
+            <SubmitButton2 isEdit={isEdit} itemId={cusId} cancel="customer" />
           </form>
         </div>
         {showPopup && (

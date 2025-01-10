@@ -57,7 +57,7 @@ const InsuranceDetails = ({
         company_name: insuranceDetailsFromUser.company_name || "",
         policy_no: insuranceDetailsFromUser.policy_no || "",
         issue_date: insuranceDetailsFromUser.issue_date || "",
-        expiry_date:insuranceDetailsFromUser?.expiry_date || "",
+        expiry_date: insuranceDetailsFromUser?.expiry_date || "",
         upload_documents: insuranceDetailsFromUser?.upload_documents
           ? JSON.parse(insuranceDetailsFromUser.upload_documents)
           : [],
@@ -131,7 +131,10 @@ const InsuranceDetails = ({
                   />
                 </span>
               </div>
-              <div className="form_commonblock ">
+             
+            </div>
+            <div id="fcx3s1parent">
+            <div className="form_commonblock " style={{marginTop:"20px"}}>
                 <label>Expiry Date</label>
                 <span>
                   {otherIcons.date_svg}
@@ -150,7 +153,7 @@ const InsuranceDetails = ({
                   />
                 </span>
               </div>
-              <div id="imgurlanddesc" className="calctotalsectionx2">
+              <div id="imgurlanddesc" className="calctotalsectionx2" style={{marginTop:"20px"}}>
                 <MultiImageUploadHelp
                   formData={insuranceDetails}
                   setFormData={setInsuranceDetails}
