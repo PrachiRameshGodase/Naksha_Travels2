@@ -275,35 +275,15 @@ const BasicDetails = ({
       {switchCusData === "Basic" ? (
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus">
-            {/* <div className="iconheading">
-              {otherIcons.backdetails_svg}
-              <p>Basic Details</p>
-            </div> */}
-
-           
-
-            <div className="sections">
+           <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblockx3">
                   <label>Primary Contact</label>
                   <div id="fcx3s1">
-                    {/* <span>
-
-                                            <select name="salutation" value={basicDetails?.salutation} onChange={handleChange} style={{ width: "150px" }}>
-                                                <option value="">Salutation</option>
-                                                {masterData?.map(type => {
-                                                    if (type?.type == "4") {
-                                                        return (
-                                                            <option key={type.labelid} value={type.label}>{type.label}</option>
-                                                        )
-                                                    }
-
-                                                })}
-                                            </select>
-                                        </span> */}
+                   
 
                     <span>
-                      {/* {otherIcons.vendor_svg} */}
+                      
                       <CustomDropdown04
                         options={salutation_options}
                         value={basicDetails?.salutation}
@@ -338,7 +318,19 @@ const BasicDetails = ({
                     </span>
                   </div>
                 </div>
-                <div className="form_commonblock">
+               
+              </div>
+              <div className="height5"></div>
+              <div className="height5"></div>
+              {/* error handling */}
+              {/* {!customerName && emailValidation === false && <p className="error-message">
+                                {otherIcons.error_svg}
+                                Please fill customer Details</p>} */}
+            </div>
+
+            <div className="sections">
+              <div id="fcx3s1parent">
+              <div className="form_commonblock">
                   <label>Email</label>
                   <span>
                     {otherIcons.email_svg}
@@ -352,17 +344,6 @@ const BasicDetails = ({
                     />
                   </span>
                 </div>
-              </div>
-              <div className="height5"></div>
-              <div className="height5"></div>
-              {/* error handling */}
-              {/* {!customerName && emailValidation === false && <p className="error-message">
-                                {otherIcons.error_svg}
-                                Please fill customer Details</p>} */}
-            </div>
-
-            <div className="sections">
-              <div id="fcx3s1parent">
                 <div className="form_commonblock">
                   <label className="">Company Name</label>
                   <div id="inputx1">
@@ -452,7 +433,15 @@ const BasicDetails = ({
                     </p>
                   )}
                 </div>
-                <div className="form_commonblock">
+                
+              </div>
+              <div className="height5"></div>
+              <div className="height5"></div>
+            </div>
+
+            <div className="sections">
+              <div id="fcx3s1parent">
+              <div className="form_commonblock">
                   <label>Departmants</label>
                   <span>
                     {otherIcons.vendor_svg}
@@ -466,13 +455,6 @@ const BasicDetails = ({
                     />
                   </span>
                 </div>
-              </div>
-              <div className="height5"></div>
-              <div className="height5"></div>
-            </div>
-
-            <div className="sections">
-              <div id="fcx3s1parent">
                 <div className="form_commonblock">
                   <label>Mobile Number</label>
                   <span>
@@ -505,21 +487,7 @@ const BasicDetails = ({
                     </span>
                   </div>
                 </div>
-                <div className="form_commonblock">
-                  <label>Gender</label>
-                  <span>
-                    {otherIcons.vendor_svg}
-                    <CustomDropdown04
-                      label="Gender Name"
-                      options={customerGender}
-                      value={basicDetails?.gender}
-                      onChange={handleChange}
-                      name="gender"
-                      defaultOption="Select Gender"
-                      type="masters"
-                    />
-                  </span>
-                </div>
+               
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
@@ -588,59 +556,14 @@ const BasicDetails = ({
               <div className="height5"></div>
               <div className="height5"></div>
             </div>
-            <div className="breakerci"></div>
+           
 
             <div id="fcx3s1parent">
               <div className="form_commonblock">
                 <label>Registration Type</label>
                 <div id="inputx1">
                   <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                      color={"#525252"}
-                      fill={"none"}
-                    >
-                      <path
-                        d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M4 10V18.5M8 10V18.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M21.5 14.5L14.5 21.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle
-                        cx="15.25"
-                        cy="15.25"
-                        r="0.75"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                      <circle
-                        cx="20.75"
-                        cy="20.75"
-                        r="0.75"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
+                    {otherIcons.registration_type_svg}
                     <CustomDropdown04
                       label="Registation name"
                       options={registerationtypes}
@@ -660,59 +583,8 @@ const BasicDetails = ({
                     <label>VAT Number</label>
                     <div id="inputx1">
                       <span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          height={24}
-                          color={"#525252"}
-                          fill={"none"}
-                        >
-                          <path
-                            d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          />
-                          <path
-                            d="M4 10V18.5M8 10V18.5"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          />
-                          <path
-                            d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                          <path
-                            d="M21.5 14.5L14.5 21.5"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <circle
-                            cx="15.25"
-                            cy="15.25"
-                            r="0.75"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          />
-                          <circle
-                            cx="20.75"
-                            cy="20.75"
-                            r="0.75"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          />
-                        </svg>
-                        {/* <NumericInput
-                          style={{ width: "100%" }}
-                          name="gst_no"
-                          value={basicDetails.gst_no}
-                          onChange={handleChange}
-                          placeholder="Enter VAT Number"
-                        /> */}
+                       
+                      {otherIcons.vatno_svg}
 
                         <input
                           autoComplete="off"
@@ -734,47 +606,7 @@ const BasicDetails = ({
                     <label>Taxpayer Identification Number</label>
                     <div id="inputx1">
                       <span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          height={24}
-                          color={"#525252"}
-                          fill={"none"}
-                        >
-                          <path
-                            d="M14.9805 7.01562C14.9805 7.01562 15.4805 7.51562 15.9805 8.51562C15.9805 8.51562 17.5687 6.01562 18.9805 5.51562"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M9.99485 2.02141C7.49638 1.91562 5.56612 2.20344 5.56612 2.20344C4.34727 2.29059 2.01146 2.97391 2.01148 6.9646C2.0115 10.9214 1.98564 15.7993 2.01148 17.744C2.01148 18.932 2.7471 21.7034 5.29326 21.8519C8.3881 22.0324 13.9627 22.0708 16.5205 21.8519C17.2051 21.8133 19.4846 21.2758 19.7731 18.7957C20.072 16.2264 20.0125 14.4407 20.0125 14.0157"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M21.9999 7.01562C21.9999 9.77705 19.7591 12.0156 16.995 12.0156C14.231 12.0156 11.9902 9.77705 11.9902 7.01562C11.9902 4.2542 14.231 2.01562 16.995 2.01562C19.7591 2.01562 21.9999 4.2542 21.9999 7.01562Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                          <path
-                            d="M6.98047 13.0156H10.9805"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                          <path
-                            d="M6.98047 17.0156H14.9805"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                        </svg>
+                       {otherIcons.taxno_svg}
                         <input
                           autoComplete="off"
                           required
@@ -855,58 +687,13 @@ const BasicDetails = ({
             </div>
 
             <div id="fcx3s1parent">
-              {/* <div className="form_commonblock">
-                                <div id="inputx1">
-
-
-                                    <CurrencySelect
-                                        value={basicDetails.currency}
-                                        onChange={handleChange}
-                                    />
-
-                                  
-                                </div>
-                            </div> */}
+              
 
               <div className="form_commonblock">
                 <label>Website</label>
                 <div id="inputx1">
                   <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                      color={"#525252"}
-                      fill={"none"}
-                    >
-                      <path
-                        d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M4.5 6L5.22115 4.46154C5.78045 3.26838 6.06009 2.6718 6.62692 2.3359C7.19375 2 7.92084 2 9.375 2H14.625C16.0792 2 16.8062 2 17.3731 2.3359C17.9399 2.6718 18.2196 3.26838 18.7788 4.46154L19.5 6"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M10.5 9H13.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M4 22H12M20 22H12M12 22V19.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  {otherIcons.website_icon_svg}
                     <input
                       autoComplete="off"
                       style={{ width: "100%" }}
