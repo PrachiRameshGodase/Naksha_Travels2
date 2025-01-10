@@ -18,6 +18,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { creditNotesOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const CreditNotes = () => {
 
@@ -119,12 +120,7 @@ const CreditNotes = () => {
     searchTrigger
   ]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger, dispatch]);
+  useFetchOnMount(fetchQuotations); // Use the custom hook for call API
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/creditnote-details?id=${quotation.id}`);
@@ -166,7 +162,17 @@ const CreditNotes = () => {
               {otherIcons.all_creditnote_svg}
               All Credit Notes
             </h1>
-            <p id="firsttagp">{qutList?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox
               placeholder="Search In Credit Notes"
               onSearch={onSearch}

@@ -9,7 +9,6 @@ import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import ListComponent from "../Quotations/ListComponent";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import { showRealatedText } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
 import DatePicker from "../../Common/DatePicker/DatePicker";
@@ -19,6 +18,7 @@ import SortBy from "../../Common/SortBy/SortBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { deliveryChallanFilterOptions, invoiceFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const Invoices = ({ section }) => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Invoices = ({ section }) => {
   const qutList = useSelector((state) => state?.invoiceList);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchTrigger, setSearchTrigger] = useState(1);
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
   // reset current page to 1 when any filters are applied
   const resetPageIfNeeded = () => {
@@ -109,11 +109,10 @@ const Invoices = ({ section }) => {
     }
   }, [
     searchTrigger,
+    section
   ]);
 
-  useEffect(() => {
-    fetchQuotations();
-  }, [searchTrigger]);
+  useFetchOnMount(fetchQuotations, section); // Use the custom hook for call API
 
   const handleRowClicked = (quotation) => {
     Navigate(
@@ -148,8 +147,6 @@ const Invoices = ({ section }) => {
   };
   //logic for checkBox...
 
-
-
   useEffect(() => {
     setCurrentPage(1);
     setItemsPerPage(10);
@@ -173,7 +170,17 @@ const Invoices = ({ section }) => {
                 "Invoices"
               )}
             </h1>
-            <p id="firsttagp">{qutList?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder={`Search In ${showRealatedText(
               section,
               "invoice_approval",

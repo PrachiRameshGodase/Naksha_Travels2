@@ -39,16 +39,12 @@ const CreateWarehouse = () => {
     const countriess = countries?.countries?.country
 
     const states = useSelector(state => state?.states);
-    const statess = states?.state?.country
-    // console.log("statess", statess)
+    const statess = states?.state?.country;
 
     const cities = useSelector(state => state?.cities);
-    const citiess = cities?.city?.country
-
+    const citiess = cities?.city?.country;
 
     const warehouseCreate = useSelector(state => state?.warehouseCreate);
-    const warehouseCreates = warehouseCreate?.data
-
     const warehouseDetails = useSelector(state => state?.warehouseDetail);
     const warehouseDetail = warehouseDetails?.data?.data;
 
@@ -56,9 +52,6 @@ const CreateWarehouse = () => {
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
     const showdeparment = ShowMasterData("10");
     const showWarehouseType = ShowMasterData("22");
-
-    
-
 
     const [formData, setFormData] = useState({
         name: "",
@@ -91,6 +84,7 @@ const CreateWarehouse = () => {
                 country: (warehouseDetail?.country?.id),
                 state: (warehouseDetail?.state?.id),
                 city: warehouseDetail?.city?.id,
+                description: warehouseDetail?.description,
             });
 
             if (warehouseDetail?.country?.id) {
@@ -100,8 +94,6 @@ const CreateWarehouse = () => {
 
         }
     }, [itemId, isEdit, convert, warehouseDetail, isDublicate]);
-
-    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -128,16 +120,6 @@ const CreateWarehouse = () => {
             department: selectedItems, // Update selected items array
         });
     };
-    // console.log("formdata", formData)
-    // const handleChange2 = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-    //     setFormData({
-    //         ...formData,
-    //         department: selectedItems, // Update selected items array
-    //     });
-    // };
-
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -158,7 +140,6 @@ const CreateWarehouse = () => {
         }
     }, [dispatch]);
 
-
     return (
         <>
             <Toaster />
@@ -172,7 +153,8 @@ const CreateWarehouse = () => {
                     <div id="leftareax12">
                         <h1 id="firstheading">
                             {otherIcons?.warehouse_icon}
-                            New Warehouse
+                            {isEdit ? "Upadate Warehouse" : "New Warehouse "}
+
                         </h1><br /><br /><br /><br />
                     </div>
 
@@ -189,11 +171,7 @@ const CreateWarehouse = () => {
                             {/* <div className=""> */}
                             <div className="itemsformwrap">
                                 <div className="f1wrapofcreq" style={{ paddingBottom: "31vh" }}>
-
-
-
                                     <div className="f1wrapofcreqx1">
-
                                         <div className="form_commonblock ">
                                             <label className='color_red'>Warehouse Type</label>
                                             <span >
@@ -240,8 +218,6 @@ const CreateWarehouse = () => {
                                             </span>
                                         </div>
 
-
-
                                         <div className="form_commonblock">
                                             <label>Warehouse For</label>
                                             <span >
@@ -256,6 +232,7 @@ const CreateWarehouse = () => {
                                                 />
                                             </span>
                                         </div>
+
                                         <div className="form_commonblock">
                                             <label >Address</label>
                                             <span>
@@ -268,10 +245,11 @@ const CreateWarehouse = () => {
                                                 />
                                             </span>
                                         </div>
+
                                         <div className="form_commonblock">
                                             <label >Country</label>
                                             <span >
-                                                {otherIcons.placeofsupply_svg}
+                                                {otherIcons?.country_flag_svg}
                                                 <CustomDropdown24
                                                     label="Select vendor"
                                                     options={countriess}
@@ -282,12 +260,12 @@ const CreateWarehouse = () => {
                                                     type="countries"
                                                 />
                                             </span>
-
                                         </div>
+
                                         <div className="form_commonblock">
                                             <label >Provence</label>
                                             <span >
-                                                {otherIcons.placeofsupply_svg}
+                                                {otherIcons?.country_flag_svg}
                                                 <CustomDropdown24
                                                     label="Select vendor"
                                                     options={statess}
@@ -302,7 +280,7 @@ const CreateWarehouse = () => {
                                         <div className="form_commonblock">
                                             <label >City</label>
                                             <span >
-                                                {otherIcons.placeofsupply_svg}
+                                                {otherIcons?.country_flag_svg}
                                                 <CustomDropdown24
                                                     label="Select vendor"
                                                     options={citiess}

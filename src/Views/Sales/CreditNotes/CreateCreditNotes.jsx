@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
 import { invoiceLists } from "../../../Redux/Actions/listApisActions";
 import DatePicker from "react-datepicker";
-
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import { Toaster, toast } from "react-hot-toast";
@@ -18,12 +17,13 @@ import CustomDropdown17 from "../../../Components/CustomDropdown/CustomDropdown1
 import Loader02 from "../../../Components/Loaders/Loader02";
 
 import {
-  getCurrencyFormData,
+  activeOrg_details,
   handleDropdownError,
+  preventZeroVal,
   ShowMasterData,
+  stringifyJSON,
   validateItems,
 } from "../../Helper/HelperFunctions";
-import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import { SelectAddress } from "../../Common/SelectAddress";
@@ -33,6 +33,10 @@ import GenerateAutoId from "../Common/GenerateAutoId";
 import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { invoiceDetailes } from "../../../Redux/Actions/invoiceActions";
 import { formatDate } from "../../Helper/DateFormat";
+import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
+import { parsePurchaseDetails } from "../../Helper/StateHelper/EditPages/parsePurchaseDetails";
+import { isStateIdEqualAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
+import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 
 const CreateCreditNotes = () => {
   const dispatch = useDispatch();
@@ -53,18 +57,17 @@ const CreateCreditNotes = () => {
 
   const reasonTypeData = ShowMasterData("12");
 
-  const [imgLoader, setImgeLoader] = useState("");
+  // const [imgLoader, setImgLoader] = useState("");
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [isItemSelect, setIsItemSelect] = useState(false);
-  const [isInvoiceSelect, setIsInvoiceSelect] = useState(false);
+  // const [isCustomerSelect, setIsCustomerSelect] = useState(false);
+  // const [isItemSelect, setIsItemSelect] = useState(false);
 
-  const [cusData, setcusData] = useState(null);
+  // const [cusData, setCusData] = useState(null);
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
 
-  const [fetchDetails, setFetchDetails] = useState(null);
+  const [fetchDetails, setFetchDetails] = useState([]);
 
   const params = new URLSearchParams(location.search);
   const {
@@ -75,62 +78,45 @@ const CreateCreditNotes = () => {
   } = Object.fromEntries(params.entries());
 
   useEffect(() => {
-    if ((itemId && isEdit) || (itemId && isDuplicate)) {
+    if (!itemId) return; // Exit early if no itemId
+    if (itemId && creditNoteDetail) {
       setFetchDetails(creditNoteDetail);
-    } else if (itemId && convert === "invoiceToCredit") {
+    } else if (itemId && convert === "invoiceToCredit" && invoiceDetail) {
       setFetchDetails(invoiceDetails);
     }
-  }, [itemId, isEdit, convert, creditNoteDetail, invoiceDetail, isDuplicate]);
+  }, [itemId, isEdit, convert, creditNoteDetail, invoiceDetail]);
 
-  const [formData, setFormData] = useState({
-    tran_type: "credit_note",
-    transaction_date: formatDate(new Date()),
-    warehouse_id: localStorage.getItem("selectedWarehouseId") || "",
-    credit_note_id: null,
-    customer_id: "",
-    upload_image: null,
-    customer_type: null,
-    customer_name: null,
-    display_name: null,
-    phone: null,
-    email: null,
-    address: "",
-    reference_no: "",
-    invoice_id: null,
-    reason_type: "",
-    reference: "",
-    currency: getCurrencyFormData,
-    place_of_supply: "",
-    sale_person: "",
-    customer_note: null,
-    terms_and_condition: null,
-    fy: localStorage.getItem("FinancialYear") || 2024,
-    subtotal: null,
-    shipping_charge: null,
-    adjustment_charge: null,
-    total: null,
-    discount: "",
-    total_gross_amount: null,
-    tax_amount: null,
-    charges: "",
-    items: [
-      {
-        item_id: "",
-        quantity: 1,
-        gross_amount: null,
-        rate: null,
-        final_amount: null,
-        tax_rate: null,
-        tax_amount: null,
-        discount: 0,
-        unit_id: null,
-        discount_type: 1,
-        item_remark: null,
-        tax_name: "",
-      },
-    ],
-  });
-  const [itemErrors, setItemErrors] = useState([]);
+  const {
+    formData,
+    setFormData,
+    addSelect,
+    setAddSelect,
+    isCustomerSelect,
+    setIsCustomerSelect,
+    isInvoiceSelect,
+    setIsInvoiceSelect,
+    itemErrors,
+    setItemErrors,
+    imgLoader,
+    setImgLoader,
+    setCusData,
+    cusData,
+  } = useEditPurchaseForm(
+    {
+      tran_type: "credit_note",
+      credit_note_id: null,
+      // invoice_id: null,
+      reason_type: "",
+    }, //for set new key's and values
+    [""], // Keys to remove
+    fetchDetails,
+    itemId,
+    isEdit,
+    convert
+  );
+
+  console.log("fetchdetails credit", fetchDetails);
+  console.log("fordaaaaaaa credit", formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -147,7 +133,6 @@ const CreateCreditNotes = () => {
     }
 
     if (name === "invoice_id" && value !== "") {
-      const invoiceItem = invoiceList?.find((val) => val?.id === value);
       setIsInvoiceSelect(true);
     } else if (name === "invoice_id" && value == "") {
       setIsInvoiceSelect(false);
@@ -176,31 +161,52 @@ const CreateCreditNotes = () => {
       setIsInvoiceSelect(false);
     }
 
-    setFormData({
-      ...formData,
-      [name]: newValue,
-      ...(name === "customer_id" ? { invoice_id: "" } : ""),
-      total: calculateTotal(
-        formData.subtotal,
-        formData.shipping_charge,
-        formData.adjustment_charge
-      ),
-      address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
+    setFormData((prev) => {
+      const updatedFormData = {
+        ...prev,
+        [name]: newValue,
+        ...(name === "customer_id" ? { invoice_id: "" } : {}),
+      };
+
+      //get the items of selected invoice which is created by customer use on onchange because we prevent when we update.
+      if (name === "invoice_id") {
+        const selectedInvoice = invoiceList?.find(
+          (val) => val?.id === newValue
+        );
+        if (selectedInvoice?.id) {
+          dispatch(invoiceDetailes({ id: selectedInvoice.id })).then((data) => {
+            if (data) {
+              // Use the data to parse details
+              const {
+                calculateTotalTaxAmount,
+                itemsFromApi,
+                all_changes,
+                total_charges,
+              } = parsePurchaseDetails(data?.Invoice);
+
+              // Update form data with parsed details
+              setFormData((prevInner) => ({
+                ...prevInner,
+                tax_amount: calculateTotalTaxAmount(),
+                items: itemsFromApi,
+                charges: all_changes,
+                total_charges,
+              }));
+
+              // Update item selection status
+              setIsItemSelect(!!data?.Invoice.items);
+            }
+          });
+        }
+      }
+
+      return updatedFormData;
     });
   };
 
-  // for address select
-  const [addSelect, setAddSelect] = useState({
-    billing: "",
-    shipping: "",
-  });
+  // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      address: addSelect,
-    });
-  }, [addSelect]);
+  // for address select
 
   //trigger show updated address then it updated
   useEffect(() => {
@@ -219,17 +225,7 @@ const CreateCreditNotes = () => {
     }
   }, [addUpdate]);
   //trigger show updated address then it updated
-
-  const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-    const subTotalValue = parseFloat(subtotal) || 0;
-    const shippingChargeValue = parseFloat(shippingCharge) || 0;
-    const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-    return (
-      subTotalValue +
-      shippingChargeValue +
-      adjustmentChargeValue
-    ).toFixed(2);
-  };
+  // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
   const customerRef = useRef(null);
   const itemRef = useRef(null);
@@ -240,15 +236,21 @@ const CreateCreditNotes = () => {
     const buttonName = e.nativeEvent.submitter.name;
     const errors = validateItems(formData?.items);
 
+    if (handleDropdownError(isCustomerSelect, customerRef)) return;
+    if (handleDropdownError(isInvoiceSelect, invoiceRef)) return;
+    // if (handleDropdownError(isItemSelect, itemRef)) return;
     if (errors.length > 0) {
       setItemErrors(errors);
-      return;
+      if (!isPartiallyInViewport(dropdownRef2.current)) {
+        dropdownRef2.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+      setTimeout(() => {
+        dropdownRef2.current.focus();
+      }, 500);
     }
-
-    if (handleDropdownError(isCustomerSelect, customerRef)) return;
-    // if (handleDropdownError(isInvoiceSelect, invoiceRef)) return;
-    // if (handleDropdownError(isItemSelect, itemRef)) return;
-
     try {
       const updatedItems = formData?.items.map((item) => {
         const { tax_name, ...itemWithoutTaxName } = item;
@@ -260,6 +262,7 @@ const CreateCreditNotes = () => {
             ...formData,
             items: updatedItems,
             address: JSON.stringify(formData?.address),
+            charges: stringifyJSON(formData?.charges),
           },
           Navigate,
           "credit",
@@ -275,125 +278,23 @@ const CreateCreditNotes = () => {
   };
 
   useEffect(() => {
-    if (
-      (itemId && isEdit && fetchDetails) ||
-      (itemId && convert && fetchDetails) ||
-      (itemId && isDuplicate && fetchDetails)
-    ) {
-      const calculateTotalTaxAmount = () => {
-        return fetchDetails?.items?.reduce((total, entry) => {
-          return (
-            total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0)
-          );
-        }, 0);
-      };
-
-      const filterInvoiceId = invoiceList?.find(
-        (val) => val?.id === +fetchDetails?.invoice_id
-      );
-
-      const itemsFromApi = fetchDetails?.items?.map((item) => ({
-        item_id: +item?.item_id,
-        quantity: +item?.quantity,
-        gross_amount: +item?.gross_amount,
-        rate: +item?.rate,
-        final_amount: +item?.final_amount,
-        unit_id: item?.unit_id,
-        tax_rate: +item?.tax_rate,
-        tax_amount: +item?.tax_amount,
-        discount: +item?.discount,
-        discount_type: +item?.discount_type,
-        item_name: item?.item_name,
-        item_remark: item?.item_remark,
-        tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
-      }));
-
-      setFormData({
-        ...formData,
-        id: isEdit ? itemId : 0,
-        tran_type: "credit_note",
-        transaction_date: fetchDetails?.transaction_date,
-        warehouse_id: fetchDetails?.warehouse_id,
-        credit_note_id: fetchDetails?.credit_note_id,
-        customer_id: +fetchDetails?.customer_id,
-        upload_image: fetchDetails?.upload_image,
-        customer_type: fetchDetails?.customer_type,
-        customer_name: fetchDetails?.customer_name,
-        display_name: fetchDetails?.display_name,
-        phone: fetchDetails?.phone,
-        email: fetchDetails?.email,
-        reference_no:
-          fetchDetails?.reference_no == "0" ? "" : fetchDetails?.reference_no,
-        reference: fetchDetails?.reference,
-        currency: fetchDetails?.currency,
-        reason_type: fetchDetails?.reason_type,
-        place_of_supply:
-          fetchDetails?.place_of_supply == "0"
-            ? ""
-            : fetchDetails?.place_of_supply,
-        sale_person:
-          fetchDetails?.sale_person == "0" ? "" : fetchDetails?.sale_person,
-        customer_note: fetchDetails?.customer_note,
-        terms_and_condition: fetchDetails?.terms_and_condition,
-        fy: fetchDetails?.fy,
-        invoice_id: filterInvoiceId?.id,
-        subtotal: fetchDetails?.subtotal,
-        shipping_charge: fetchDetails?.shipping_charge,
-        adjustment_charge: fetchDetails?.adjustment_charge,
-        total: fetchDetails?.total,
-        address: fetchDetails?.address,
-        tax_amount: calculateTotalTaxAmount(),
-        items: itemsFromApi || [],
-      });
-
-      if (fetchDetails?.upload_image) {
-        setImgeLoader("success");
-      }
-
-      if (fetchDetails?.address) {
-        const parsedAddress = JSON.parse(fetchDetails?.address);
-        const dataWithParsedAddress = {
-          ...fetchDetails,
-          address: parsedAddress,
-        };
-        setAddSelect({
-          billing: dataWithParsedAddress?.address?.billing,
-          shipping: dataWithParsedAddress?.address?.shipping,
-        });
-        setcusData(dataWithParsedAddress?.customer);
-      }
-
-      if (fetchDetails?.customer_id) {
-        setIsCustomerSelect(true);
-      }
-      const errors = validateItems(fetchDetails?.items || []);
-      if (errors.length > 0) {
-        setItemErrors(errors);
-      }
-      
-      if (!filterInvoiceId?.items) {
-        setIsInvoiceSelect(false);
-      } else {
-        setIsInvoiceSelect(true);
-      }
-    }
-  }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
-
-  useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      customer_type: cusData?.customer_type,
       display_name: cusData?.display_name,
-      customer_name: cusData
-        ? `${cusData.first_name} ${cusData.last_name}`
-        : "",
       email: cusData?.email,
       phone: cusData?.mobile_no,
+      address: cusData?.address?.length,
       address: addSelect,
+      payment_terms:
+        cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
     }));
+
+    if (activeOrg_details?.state?.id === addSelect?.billing?.state?.id) {
+      dispatch(isStateIdEqualAction(true));
+    } else {
+      dispatch(isStateIdEqualAction(false));
+    }
   }, [cusData]);
-
-
 
   useEffect(() => {
     if (itemId && !invoiceDetails) {
@@ -411,49 +312,11 @@ const CreateCreditNotes = () => {
     }
   }, [dispatch, cusData]);
 
-  const handleDateChange = (date) => {
-    setFormData({
-      ...formData,
-      transaction_date: date,
-    });
-  };
-
-  useEffect(() => {
-    if (formData?.invoice_id) {
-      const getSelectedBillData = invoiceList?.find(
-        (val) => val?.id === formData?.invoice_id
-      );
-
-      const itemsFromApi = getSelectedBillData.items?.map((item) => ({
-        item_id: +item?.item_id,
-        quantity: +item?.quantity,
-        gross_amount: +item?.gross_amount,
-        unit_id: item?.unit_id,
-        rate: +item?.rate,
-        final_amount: +item?.final_amount,
-        tax_rate: +item?.tax_rate,
-        tax_amount: +item?.tax_amount,
-        discount: +item?.discount,
-        discount_type: +item?.discount_type,
-        item_remark: item?.item_remark,
-        tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
-      }));
-
-      setFormData((prev) => ({
-        ...prev,
-        items: itemsFromApi || [],
-      }));
-      const errors = validateItems(getSelectedBillData?.items || []);
-      if (errors.length > 0) {
-        setItemErrors(errors);
-      }
-     
-    }
-  }, [formData?.invoice_id]);
-
   return (
     <>
-      {quoteDetail?.loading ? (
+      {quoteDetail?.loading ||
+      invoiceDetail?.loading ||
+      creditNoteDetail?.loading ? (
         <Loader02 />
       ) : (
         <>
@@ -497,7 +360,7 @@ const CreateCreditNotes = () => {
                               onChange={handleChange}
                               name="customer_id"
                               defaultOption="Select Customer"
-                              setcusData={setcusData}
+                              setcusData={setCusData}
                               cusData={cusData}
                               type="vendor"
                               required
@@ -584,6 +447,7 @@ const CreateCreditNotes = () => {
                               onChange={handleChange}
                               name="invoice_id"
                               defaultOption="Select Inoivce"
+                              type="invoice_no"
                             />
                           </span>
                           {!isInvoiceSelect && (
@@ -637,7 +501,7 @@ const CreateCreditNotes = () => {
                             {otherIcons.placeofsupply_svg}
                             <input
                               type="text"
-                              value={formData.place_of_supply}
+                              value={preventZeroVal(formData.place_of_supply)}
                               onChange={handleChange}
                               name="place_of_supply"
                               autoComplete="off"
@@ -669,7 +533,7 @@ const CreateCreditNotes = () => {
                             {otherIcons.placeofsupply_svg}
                             <input
                               type="text"
-                              value={formData.reference_no}
+                              value={preventZeroVal(formData.reference_no)}
                               onChange={handleChange}
                               // disabled
                               autoComplete="off"
@@ -697,7 +561,7 @@ const CreateCreditNotes = () => {
                             <input
                               autoComplete="off"
                               type="text"
-                              value={formData.sale_person}
+                              value={preventZeroVal(formData.sale_person)}
                               name="sale_person"
                               onChange={handleChange}
                               placeholder="Enter Sales Person"
@@ -715,8 +579,6 @@ const CreateCreditNotes = () => {
                         handleChange={handleChange}
                         itemErrors={itemErrors}
                         setItemErrors={setItemErrors}
-                        // setIsItemSelect={setIsItemSelect}
-                        // isItemSelect={isItemSelect}
                         extracssclassforscjkls={"extracssclassforscjkls"}
                         dropdownRef2={itemRef}
                         note="customer"
@@ -731,7 +593,9 @@ const CreateCreditNotes = () => {
                             formsValues={{ handleChange, formData }}
                             placeholder="Enter the terms and conditions of your business to be displayed in your transaction "
                             name="terms_and_condition"
-                            value={formData?.terms_and_condition}
+                            value={preventZeroVal(
+                              formData?.terms_and_condition
+                            )}
                           />
                         </div>
                       </div>
@@ -742,7 +606,7 @@ const CreateCreditNotes = () => {
                           setFormData={setFormData}
                           setFreezLoadingImg={setFreezLoadingImg}
                           imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
+                          setImgeLoader={setImgLoader}
                           component="purchase"
                         />
                       </div>

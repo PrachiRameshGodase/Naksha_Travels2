@@ -391,7 +391,31 @@ export const FromToDetailsPurchases = ({ quotation, section }) => {
     </div>
   );
 };
-
+export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
+  return (
+    <div className="dropdownmenucustom">
+      {quotation?.status == "0" && (
+        <div
+          className="dmncstomx1"
+          onClick={() => changeStatus("accepted")}
+        >
+          {otherIcons?.check_accepted_svg}
+          Mark As Accepted
+        </div>
+      )
+      }
+      {!(quotation?.status == "1" || quotation?.status == "4") && (
+        <div
+          className="dmncstomx1"
+          style={{ cursor: "pointer" }}
+          onClick={() => changeStatus("delete")}
+        >
+          {otherIcons?.delete_svg} Delete
+        </div>
+      )}
+    </div>
+  );
+};
 export const TermsAndConditions = () => {
   const handleOpenTerms = () => {
     window.open("/Naksha_Terms.pdf")

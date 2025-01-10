@@ -1,22 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
-import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { saleOrderDelete, saleOrderDetails, saleOrderStatus } from '../../../Redux/Actions/saleOrderActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
-import { formatDate, formatDate3 } from '../../Helper/DateFormat';
+import { formatDate3 } from '../../Helper/DateFormat';
 
-import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import useOutsideClick from '../../Helper/PopupData';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const SalesOrderDetail = () => {
   const Navigate = useNavigate();
@@ -90,16 +87,12 @@ const SalesOrderDetail = () => {
   }
 
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-      };
-      dispatch(saleOrderDetails(queryParams));
-    }
-  }, [dispatch, UrlId, callApi]);
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+  }), [callApi]);
 
-  const totalFinalAmount = sale?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
+  useFetchApiData(saleOrderDetails, payloadGenerator, [callApi]);
+
 
   // pdf & print
   const componentRef = useRef(null);
@@ -197,7 +190,7 @@ const SalesOrderDetail = () => {
             </div>
 
             <MoreInformation sale={sale?.sale_person} note={sale?.customer_note} tc={sale?.terms_and_condition} section="Customer" />
-            <TermsAndConditions/>
+
           </div>
         </div>}
       <Toaster />

@@ -386,11 +386,11 @@ const CreateAccountChart = () => {
 
 
                                         <div className="form_commonblock">
-                                            <label>Opening blance</label>
+                                            <label>Opening balance</label>
                                             <span>
                                                 {otherIcons.amount_svg}
                                                 <NumericInput value={formData.opening_balance}
-                                                    placeholder='Enter Blance Amount'
+                                                    placeholder='Enter Balance Amount'
                                                     onChange={handleChange}
                                                     name='opening_balance'
                                                 />

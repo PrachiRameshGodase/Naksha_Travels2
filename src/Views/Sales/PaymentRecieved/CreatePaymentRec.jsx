@@ -23,7 +23,7 @@ import { invoiceDetailes, pendingInvoices } from '../../../Redux/Actions/invoice
 import NumericInput from '../../Helper/NumericInput';
 import SubmitButton, { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { currencySymbol, handleDropdownError, ShowMasterData } from '../../Helper/HelperFunctions';
+import { currencySymbol, handleDropdownError, preventZeroVal, ShowMasterData } from '../../Helper/HelperFunctions';
 import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
@@ -56,7 +56,6 @@ const CreatePaymentRec = () => {
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert } = Object.fromEntries(params.entries());
-
 
 
     useEffect(() => {
@@ -633,7 +632,7 @@ const CreatePaymentRec = () => {
                                                     formsValues={{ handleChange, formData }}
                                                     placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
                                                     name="terms_and_condition"
-                                                    value={formData?.terms_and_condition}
+                                                    value={preventZeroVal(formData?.terms_and_condition)}
                                                 />
                                             </div>
 
