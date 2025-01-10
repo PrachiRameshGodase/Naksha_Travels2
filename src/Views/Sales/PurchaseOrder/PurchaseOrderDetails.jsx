@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -6,39 +6,30 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import {
-  formatDate,
-  formatDate2,
   formatDate3,
-  formatDate4,
-  generatePDF,
+
 } from "../../Helper/DateFormat";
 
 import { useReactToPrint } from "react-to-print";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import useOutsideClick from "../../Helper/PopupData";
 import {
   purchasesDelete,
   purchasesDetails,
   purchasesStatus
 } from "../../../Redux/Actions/purchasesActions";
-import ShowMastersValue from "../../Helper/ShowMastersValue";
-import {
-  showAmountWithCurrencySymbol,
-  showRateWithPercent,
-} from "../../Helper/HelperFunctions";
+
 import ItemDetailTable from "../../Common/InsideSubModulesCommon/ItemDetailTable";
 import {
   MoreInformation,
-  FromToDetails,
   FromToDetailsPurchases,
-  ShowAllStatus,
   ShowDropdownContent,
-  ShowAllStatusPurchase,
-  TermsAndConditions
+  ShowAllStatusPurchase
 } from "../../Common/InsideSubModulesCommon/DetailInfo";
+import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
+import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
+import { generatePDF } from "../../Helper/createPDF";
 const PurchaseOrderDetails = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,6 +39,8 @@ const PurchaseOrderDetails = () => {
   const purchaseDelete = useSelector((state) => state?.deletePurchase);
   const purchaseDetail = useSelector((state) => state?.detailsPurchase);
   const purchase = purchaseDetail?.data?.purchaseOrder;
+
+  const masterData = useSelector(state => state?.masterData?.masterData);
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
@@ -88,26 +81,18 @@ const PurchaseOrderDetails = () => {
     }
   };
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-      };
-      dispatch(purchasesDetails(queryParams));
-    }
-  }, [dispatch, UrlId, callApi]);
 
-  const totalFinalAmount = purchase?.items?.reduce(
-    (acc, item) => acc + parseFloat(item?.final_amount),
-    0
-  );
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+  }), [callApi]);
+
+  useFetchApiData(purchasesDetails, payloadGenerator, [callApi]);
 
   // pdf & print
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
 
   const changeStatus = (statusVal) => {
     try {
@@ -140,9 +125,25 @@ const PurchaseOrderDetails = () => {
       console.log("error", error);
     }
   }
+
+  const [loading, setLoading] = useState(false);
+
+  const handleDownloadPDF = () => {
+    if (!purchase || !masterData) {
+      alert("Data is still loading, please try again.");
+      return;
+    }
+
+    const contentComponent = (
+      <PrintContent data={purchase} cusVenData={purchase?.vendor} masterData={masterData} moduleId={purchase?.purchase_order_id} section="Purchase Order" />
+    );
+    generatePDF(contentComponent, "Purchser_Order_Document.pdf", setLoading, 500);
+  };
+
   return (
     <>
-      {(purchaseDelete?.loading || purchaseStatus?.loading) && <MainScreenFreezeLoader />}
+      {(purchaseDelete?.loading || purchaseStatus?.loading || loading) && <MainScreenFreezeLoader />}
+
       {purchaseDetail?.loading ? (
         <Loader02 />
       ) : (
@@ -172,26 +173,9 @@ const PurchaseOrderDetails = () => {
                 className="mainx1"
                 ref={dropdownRef1}
               >
-                <p>PDF/Print</p>
-                {otherIcons?.arrow_svg}
-                {showDropdownx1 && (
-                  <div className="dropdownmenucustom">
-                    <div
-                      className="dmncstomx1 primarycolortext"
-                      onClick={() => generatePDF(purchase?.items)}
-                    >
-                      {otherIcons?.pdf_svg}
-                      PDF
-                    </div>
-                    <div
-                      className="dmncstomx1 primarycolortext"
-                      onClick={handlePrint}
-                    >
-                      {otherIcons?.print_svg}
-                      Print
-                    </div>
-                  </div>
-                )}
+                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                  PDF/Print
+                </p>
               </div>
 
               <div className="sepc15s63x63"></div>
@@ -302,7 +286,6 @@ const PurchaseOrderDetails = () => {
               tc={purchase?.terms_and_condition}
               section="Vendor"
             />
-            <TermsAndConditions/>
           </div>
         </div>
       )}

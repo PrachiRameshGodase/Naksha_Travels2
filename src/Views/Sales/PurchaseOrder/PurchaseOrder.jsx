@@ -17,6 +17,8 @@ import FilterBy from "../../Common/FilterBy/FilterBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { purchaseOrderFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { purchaseOrderSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 
 
 const PurchaseOrder = () => {
@@ -79,7 +81,7 @@ const PurchaseOrder = () => {
 
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -114,12 +116,8 @@ const PurchaseOrder = () => {
   }, [searchTrigger]);
 
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/purchase-details?id=${quotation.id}`);
@@ -161,7 +159,17 @@ const PurchaseOrder = () => {
               All Purchase Order
             </h1>
             <p id="firsttagp">
-              {qutList?.data?.total} records
+              {qutList?.data?.total} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+
             </p>
             <SearchBox
               placeholder="Search In Purchase Order"
@@ -264,89 +272,95 @@ const PurchaseOrder = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {qutList?.data?.purchase_order?.map((quotation, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                          ? "selectedresult"
-                          : ""
-                          }`}
-                        key={index}
-                      >
-                        <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
-                        >
-                          <input
-                            checked={selectedRows.includes(quotation.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(quotation.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
+                    {qutList?.data?.purchase_order?.length >= 1 ? (
+                      <>
+                        {qutList?.data?.purchase_order?.map((quotation, index) => (
+                          <div
+                            className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
+                            key={index}
+                          >
+                            <div
+                              className="table-cellx12 checkboxfx1"
+                              id="styl_for_check_box"
+                            >
+                              <input
+                                checked={selectedRows.includes(quotation.id)}
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(quotation.id)}
+                              />
+                              <div className="checkmark"></div>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
 
 
-                          {quotation.created_at
-                            ? formatDate3(quotation.created_at)
-                            : ""}
-                        </div>
+                              {quotation.created_at
+                                ? formatDate3(quotation.created_at)
+                                : ""}
+                            </div>
 
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs2"
-                        >
-                          <p style={{ width: "40%", marginLeft: "7px" }}>
-                            {quotation.purchase_order_id || ""}
-                          </p>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs3"
-                        >
-                          <p style={{ marginLeft: "12px" }}>
-                            {quotation.display_name == "0"
-                              ? ""
-                              : quotation.display_name || ""}
-                          </p>
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs4"
-                        >
-                          <p style={{ marginLeft: "25px" }}>
-                            {quotation.reference == 0
-                              ? ""
-                              : quotation.reference || ""}
-                          </p>
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5_item"
-                          style={{ marginRight: "25px" }}
-                        >
-                          <p>
-                            {showAmountWithCurrencySymbol(quotation.total)}
-                          </p>
-                        </div>
-
-                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd" style={{ marginRight: "10px" }}>
-                          <div>
-                            <p className={quotation?.status == "1" ? "approved" : quotation?.status == "6" ? "open" : quotation?.status == "0" ? "draft" : quotation?.status == "2" ? "declined" : quotation?.status == "3" ? "pending" : quotation?.status == "4" ? "overdue" : ""}>
-                              <p>
-
-                                {quotation?.status == "0" ? "Draft" : quotation?.status == "1" ? "Approved" : quotation?.status == "6" ? "Open" : quotation?.status == "2" ? "Declined" : quotation?.status == "3" ? "Transfer To GRN" : quotation?.status == "4" ? "Billed" : ""}
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              <p style={{ width: "40%", marginLeft: "7px" }}>
+                                {quotation.purchase_order_id || ""}
                               </p>
-                            </p>
-                          </div>
-                        </div>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              <p style={{ marginLeft: "12px" }}>
+                                {quotation.display_name == "0"
+                                  ? ""
+                                  : quotation.display_name || ""}
+                              </p>
+                            </div>
 
-                      </div>
-                    ))}
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              <p style={{ marginLeft: "25px" }}>
+                                {quotation.reference == 0
+                                  ? ""
+                                  : quotation.reference || ""}
+                              </p>
+                            </div>
+
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5_item"
+                              style={{ marginRight: "25px" }}
+                            >
+                              <p>
+                                {showAmountWithCurrencySymbol(quotation.total)}
+                              </p>
+                            </div>
+
+                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd" style={{ marginRight: "10px" }}>
+                              <div>
+                                <p className={quotation?.status == "1" ? "approved" : quotation?.status == "6" ? "open" : quotation?.status == "0" ? "draft" : quotation?.status == "2" ? "declined" : quotation?.status == "3" ? "pending" : quotation?.status == "4" ? "overdue" : ""}>
+                                  <p>
+
+                                    {quotation?.status == "0" ? "Draft" : quotation?.status == "1" ? "Approved" : quotation?.status == "6" ? "Open" : quotation?.status == "2" ? "Declined" : quotation?.status == "3" ? "Transfer To GRN" : quotation?.status == "4" ? "Billed" : ""}
+                                  </p>
+                                </p>
+                              </div>
+                            </div>
+
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <NoDataFound />
+                    )}
                   </>
                 )}
               </div>

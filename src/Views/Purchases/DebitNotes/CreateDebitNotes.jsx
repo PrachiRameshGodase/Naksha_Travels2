@@ -211,7 +211,7 @@ const CreateDebitNotes = () => {
                 setIsVendorSelect(true);
             }
 
-           
+
 
             if (filterBillId?.bill_id) {
                 setIsBillSelect(false);
@@ -280,7 +280,7 @@ const CreateDebitNotes = () => {
         });
     };
 
-    
+
 
     useEffect(() => {
         if (formData?.bill_id) {
@@ -310,9 +310,9 @@ const CreateDebitNotes = () => {
             }));
             const errors = validateItems(getSelectedBillData?.items || []);
             if (errors.length > 0) {
-              setItemErrors(errors);
+                setItemErrors(errors);
             }
-            
+
         }
 
     }, [formData?.bill_id]);
@@ -362,11 +362,11 @@ const CreateDebitNotes = () => {
         const errors = validateItems(formData?.items);
 
         if (errors.length > 0) {
-          setItemErrors(errors);
-          return;
+            setItemErrors(errors);
+            return;
         }
         if (handleDropdownError(isVendorSelect, vendorRef)) return;
-        
+
         try {
             const updatedItems = formData.items.map((item) => {
                 const { tax_name, ...itemWithoutTaxName } = item;

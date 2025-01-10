@@ -1,12 +1,11 @@
-import { handleDropdownError, validateItems } from "../../Helper/HelperFunctions";
+import { handleDropdownError } from "../../Helper/HelperFunctions";
 
 export const handleFormSubmitCommon = async ({
     e,
     formData,
     isVendorSelect,
     dropdownRef1,
-    // isItemSelect,
-    setItemErrors,
+    isItemSelect,
     dropdownRef2,
     dispatch,
     createPurchases,
@@ -20,14 +19,9 @@ export const handleFormSubmitCommon = async ({
 }) => {
     e.preventDefault();
     const button = e.nativeEvent.submitter.name;
-    const errors = validateItems(formData?.items);
 
-    if (errors.length > 0) {
-      setItemErrors(errors);
-      return;
-    }
     if (handleDropdownError(isVendorSelect, dropdownRef1)) return;
-    // if (handleDropdownError(isItemSelect, dropdownRef2)) return;
+    if (handleDropdownError(isItemSelect, dropdownRef2)) return;
 
     try {
         const updatedItems = formData?.items?.map(({ tax_name, ...rest }) => rest);

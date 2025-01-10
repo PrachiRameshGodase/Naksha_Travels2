@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from "../../Components/Loaders/Loader02";
@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import MoveItemPopup from './MoveItemPopup';
 import { GRNreceipDetailsActions } from '../../Redux/Actions/grnActions';
+import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
 
 const GRNreceiptDetail = () => {
     const dispatch = useDispatch();
@@ -27,16 +28,11 @@ const GRNreceiptDetail = () => {
 
     const [moveItem, setMoveItem] = useState(false);
 
-    useEffect(() => {
-        if (itemId) {
-            const queryParams = {
-                id: itemId,
-                fy: localStorage.getItem('FinancialYear'),
-            };
-            dispatch(GRNreceipDetailsActions(queryParams));
-        }
-    }, [dispatch, itemId]);
-
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: itemId,
+        fy: localStorage.getItem('FinancialYear'),
+    }), [itemId]);
+    useFetchApiData(GRNreceipDetailsActions, payloadGenerator, [itemId]);
 
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {

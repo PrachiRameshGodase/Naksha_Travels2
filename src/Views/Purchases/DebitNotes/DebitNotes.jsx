@@ -18,6 +18,8 @@ import { formatDate } from "../../Helper/DateFormat";
 import { creditNotesOptions, debitNotesFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { debitNotesSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { ListComponent2 } from "../../Sales/Quotations/ListComponent";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 
 
 const DebitNotes = () => {
@@ -82,7 +84,7 @@ const DebitNotes = () => {
 
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -113,12 +115,8 @@ const DebitNotes = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/debit-note-detail?id=${quotation.id}`)
@@ -155,7 +153,17 @@ const DebitNotes = () => {
               {otherIcons.all_debit_notes_svg}
               All Debit Notes
             </h1>
-            <p id="firsttagp">{qutList?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In Debit Notes" onSearch={onSearch} />
           </div>
 
@@ -244,17 +252,22 @@ const DebitNotes = () => {
                 {qutList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
-                  {qutList?.data?.debit_notes?.map((quotation, index) => (
-                    <ListComponent2
-                      key={index}
-                      handleRowClicked={handleRowClicked}
-                      quotation={quotation}
-                      selectedRows={selectedRows}
-                      handleCheckboxChange={handleCheckboxChange}
-                      section="debit"
-                    />
-                  ))}
+                  {qutList?.data?.debit_notes?.length >= 1 ?
+                    <>
+                      {qutList?.data?.debit_notes?.map((quotation, index) => (
+                        <ListComponent2
+                          key={index}
+                          handleRowClicked={handleRowClicked}
+                          quotation={quotation}
+                          selectedRows={selectedRows}
+                          handleCheckboxChange={handleCheckboxChange}
+                          section="debit"
+                        />
+                      ))}
 
+                    </> : (
+                      <NoDataFound />
+                    )}
                 </>}
               </div>
               <PaginationComponent

@@ -17,6 +17,8 @@ import FilterBy from "../Common/FilterBy/FilterBy";
 import { GRNFilterOptions } from "../Helper/SortByFilterContent/filterContent";
 import { GRNSortOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
+import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 
 
 const GRN = () => {
@@ -80,7 +82,7 @@ const GRN = () => {
 
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = searchTermFromChild ? 1 : currentPage;
@@ -111,13 +113,8 @@ const GRN = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
 
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/grn-detail?id=${quotation.id}`);
@@ -156,7 +153,17 @@ const GRN = () => {
               {otherIcons.all_grn_svg}
               All GRN
             </h1>
-            <p id="firsttagp">{grnLists?.count} Records</p>
+            <p id="firsttagp">{grnLists?.count} Records
+              <span
+                className={`${grnList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In GRN" onSearch={onSearch} />
           </div>
 
@@ -251,68 +258,74 @@ const GRN = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {grnLists?.grn?.map((quotation, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                          ? "selectedresult"
-                          : ""
-                          }`}
-                        key={index}
-                      >
-                        <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
-                        >
-                          <input
-                            checked={selectedRows.includes(quotation.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(quotation.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {quotation.created_at
-                            ? formatDate3(quotation.created_at)
-                            : ""}
-                        </div>
+                    {grnLists?.grn?.length >= 1 ? (
+                      <>
+                        {grnLists?.grn?.map((quotation, index) => (
+                          <div
+                            className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
+                            key={index}
+                          >
+                            <div
+                              className="table-cellx12 checkboxfx1"
+                              id="styl_for_check_box"
+                            >
+                              <input
+                                checked={selectedRows.includes(quotation.id)}
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(quotation.id)}
+                              />
+                              <div className="checkmark"></div>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              {quotation.created_at
+                                ? formatDate3(quotation.created_at)
+                                : ""}
+                            </div>
 
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs2"
-                        >
-                          {quotation.grn_no || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs3"
-                        >
-                          {quotation.display_name == "0" ? "" : quotation.display_name || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs4"
-                        >
-                          {quotation.purchase_order?.purchase_order_id == 0
-                            ? ""
-                            : quotation.purchase_order?.purchase_order_id || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5_item"
-                        >
-                          <p>  {showAmountWithCurrencySymbol(quotation?.total)}</p>
-                        </div>
-                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
-                          <p className={quotation?.status == "1" ? "open" : quotation?.status == "0" ? "draft" : quotation?.status == "2" ? "close" : quotation?.status == "3" ? "pending" : quotation?.status == "4" ? "overdue" : ""}>
-                            {quotation?.status == "0" ? "Draft" : quotation?.status == "1" ? "Billed" : quotation?.status == "2" ? "Close" : quotation?.status == "3" ? "Send For Approval" : quotation?.status == "4" ? "Overdue" : ""}
-                          </p>
-                        </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {quotation.grn_no || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {quotation.display_name == "0" ? "" : quotation.display_name || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {quotation.purchase_order?.purchase_order_id == 0
+                                ? ""
+                                : quotation.purchase_order?.purchase_order_id || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5_item"
+                            >
+                              <p>  {showAmountWithCurrencySymbol(quotation?.total)}</p>
+                            </div>
+                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
+                              <p className={quotation?.status == "1" ? "open" : quotation?.status == "0" ? "draft" : quotation?.status == "2" ? "close" : quotation?.status == "3" ? "pending" : quotation?.status == "4" ? "overdue" : ""}>
+                                {quotation?.status == "0" ? "Draft" : quotation?.status == "1" ? "Billed" : quotation?.status == "2" ? "Close" : quotation?.status == "3" ? "Send For Approval" : quotation?.status == "4" ? "Overdue" : ""}
+                              </p>
+                            </div>
 
-                      </div>
-                    ))}
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <NoDataFound />
+                    )}
                   </>
                 )}
               </div>

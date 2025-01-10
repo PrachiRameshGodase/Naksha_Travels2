@@ -19,6 +19,7 @@ import { billFilterOptions } from "../../Helper/SortByFilterContent/filterConten
 import { billSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDebounceSearch, parseJSONofString } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const Quotations = () => {
   const itemPayloads = localStorage.getItem(("billPayload"));
@@ -80,7 +81,7 @@ const Quotations = () => {
   //Search/////////////////////////////////////////////////////////////
 
   // serch,filter and sortby////////////////////////////////////
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -111,12 +112,8 @@ const Quotations = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
 
   const handleRowClicked = (quotation) => {
@@ -161,7 +158,17 @@ const Quotations = () => {
               {otherIcons.all_bills_svg}
               All Bills
             </h1>
-            <p id="firsttagp">{billList?.data?.count} Records</p>
+            <p id="firsttagp">{billList?.data?.count} Records
+              <span
+                className={`${billList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In Bills" onSearch={onSearch} />
           </div>
 

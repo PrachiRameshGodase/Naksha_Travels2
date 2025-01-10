@@ -8,24 +8,24 @@ import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown1
 import DatePicker from "react-datepicker";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import { createPurchases, purchasesDetails, } from "../../../Redux/Actions/purchasesActions";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { billDetails } from "../../../Redux/Actions/billActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
-import { formatDate, todayDate } from "../../Helper/DateFormat";
-import { getCurrencyFormData, handleDropdownError, ShowMasterData, validateItems } from "../../Helper/HelperFunctions";
+import { formatDate } from "../../Helper/DateFormat";
+import { activeOrg_details, preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
 import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
-import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
 import { GRNdetailsActions } from "../../../Redux/Actions/grnActions";
 import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
 import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import SubmitButton, { SubmitButton3 } from "../../Common/Pagination/SubmitButton";
+import SubmitButton from "../../Common/Pagination/SubmitButton";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import { SelectAddress } from "../../Common/SelectAddress";
 import { handleFormSubmitCommon } from "../Utils/handleFormSubmit";
+import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
+import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
+import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 
 const CreateBills = () => {
   const dispatch = useDispatch();
@@ -42,192 +42,55 @@ const CreateBills = () => {
   const paymentTerms = ShowMasterData("8");
 
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
-  const [cusData, setcusData] = useState(null);
-  const [fetchDetails, setFetchDetails] = useState(null);
-  const [isVendorSelect, setIsVendorSelect] = useState(false);
-  const [isItemSelect, setIsItemSelect] = useState(false);
+  // const [cusData, setCusData] = useState(null);
+  const [fetchDetails, setFetchDetails] = useState([]);
+  // const [isVendorSelect, setIsVendorSelect] = useState(false);
+  // const [isItemSelect, setIsItemSelect] = useState(false);
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate, } = Object.fromEntries(params.entries());
 
   useEffect(() => {
-    if ((itemId && isEdit) || (itemId && isDuplicate)) {
+    if (!itemId) return;
+
+    if (billDetail && convert !== "purchase_to_bill" && convert !== "grn_to_bill") {
       setFetchDetails(billDetail);
-    } else if (itemId && convert === "purchase_to_bill") {
+    } else if (convert === "purchase_to_bill" && purchases) {
       setFetchDetails(purchases);
-    } else if (itemId && convert === "grn_to_bill") {
+    } else if (convert === "grn_to_bill" && GRNdetail) {
       setFetchDetails(GRNdetail);
     }
-  }, [itemId, isEdit, convert, isDuplicate, GRNdetail, purchases]);
+  }, [itemId, billDetail, convert, purchases, GRNdetail]);
 
-  const [formData, setFormData] = useState({
-    id: 0,
-    purchase_type: "bills",
-    bill_no: null,
-    transaction_date: formatDate(new Date()), // bill date
-    currency: getCurrencyFormData,
-    expiry_date: formatDate(new Date()), // due date
-    vendor_id: "",
-    fy: localStorage.getItem("FinancialYear") || 2024,
-    warehouse_id: localStorage.getItem("selectedWarehouseId") || "",
-    vendor_name: "",
-    display_name: "",
-    phone: "",
-    email: "",
-    terms_and_condition: "",
-    vendor_note: "",
-    subtotal: null,
-    discount: null,
-    shipping_charge: null,
-    adjustment_charge: null,
-    total: null,
-    reference_no: "",
-    reference: null,
-    place_of_supply: null,
-    source_of_supply: null,
-    shipment_date: null,
-    order_no: null,
-    payment_terms: null,
-    upload_image: null,
-    discount: null,
-    tax_amount: null,
-    charges: "",
-    items: [
-      {
-        id: 0,
-        item_id: null,
-        quantity: 1,
-        gross_amount: null,
-        rate: null,
-        final_amount: null,
-        tax_rate: null,
-        tax_amount: null,
-        discount: null,
-        discount_type: 1,
-        item_remark: null,
-        tax_name: ""
-      },
-    ],
-  });
-  const [itemErrors, setItemErrors] = useState([]);
-
-  useEffect(() => {
-    if (
-      (itemId && isEdit && fetchDetails) ||
-      (itemId && isDuplicate && fetchDetails) ||
-      (itemId &&
-        (convert === "toInvoice" ||
-          convert === "quotationToSale" ||
-          convert === "saleToInvoice" ||
-          convert === "purchase_to_bill" ||
-          convert === "grn_to_bill"))
-    ) {
-
-      const calculateTotalTaxAmount = () => {
-        return fetchDetails?.items?.reduce((total, entry) => {
-          return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
-        }, 0);
-      };
-      const itemsFromApi = fetchDetails?.items?.map((item) => ({
-        item_id: +item?.item_id,
-        quantity: convert === "grn_to_bill" ? +item?.gr_qty : +item?.quantity,
-        gross_amount: +item?.gross_amount,
-        rate: +item?.rate,
-        final_amount: +item?.final_amount,
-        tax_rate: +item?.tax_rate,
-        tax_amount: +item?.tax_amount,
-        discount: +item?.discount,
-        discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
-        item_remark: item?.item_remark,
-        item_name: item?.item_name,
-        tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
-        unit_id: item?.unit_id,
-      }));
-
-
-
-      setFormData({
-        ...formData,
-        id: isEdit ? fetchDetails?.id : 0,
-        tax_amount: calculateTotalTaxAmount(),
-        purchase_type: "bills",
-        bill_no: fetchDetails?.bill_no || "BN-1315",
-        transaction_date: fetchDetails?.transaction_date,
-        currency: fetchDetails?.currency,
-        expiry_date: fetchDetails?.expiry_date,
-        vendor_id: +fetchDetails?.vendor_id,
-        vendor_name: fetchDetails?.vendor_name,
-        display_name: fetchDetails?.display_name,
-        phone: fetchDetails?.phone,
-        email: fetchDetails?.email,
-        terms_and_condition: fetchDetails?.terms_and_condition,
-        vendor_note: fetchDetails?.vendor_note,
-        subtotal: fetchDetails?.subtotal,
-        discount: fetchDetails?.discount,
-        shipping_charge: fetchDetails?.shipping_charge,
-        adjustment_charge: fetchDetails?.adjustment_charge,
-        total: fetchDetails?.total,
-        reference_no: convert
-          ? fetchDetails?.reference
-          : fetchDetails?.reference_no == "0"
-            ? ""
-            : fetchDetails?.reference_no,
-        is_grn_convert: convert === "grn_to_bill" ? 1 : 0,
-        // reference: fetchDetails?.reference,
-        place_of_supply: fetchDetails?.place_of_supply == "0" ? "" : fetchDetails?.place_of_supply,
-        source_of_supply: fetchDetails?.source_of_supply,
-        shipment_date: fetchDetails?.shipment_date,
-        order_no: fetchDetails?.order_no == "0" ? "" : fetchDetails?.order_no,
-        payment_terms: fetchDetails?.payment_terms,
-        customer_notes: fetchDetails?.customer_notes,
-        upload_image: fetchDetails?.upload_image,
-        status: fetchDetails?.status,
-        items: itemsFromApi || [],
-      });
-
-      if (fetchDetails?.upload_image) {
-        setImgeLoader("success");
-      }
-
-      if (fetchDetails?.address) {
-        const parsedAddress = JSON?.parse(fetchDetails?.address);
-
-        const dataWithParsedAddress = {
-          ...fetchDetails,
-          address: parsedAddress,
-        };
-
-        setAddSelect({
-          billing: dataWithParsedAddress?.address?.billing,
-          shipping: dataWithParsedAddress?.address?.shipping,
-        });
-
-        setcusData(dataWithParsedAddress?.customer);
-      }
-
-      if (fetchDetails?.vendor_id) {
-        setIsVendorSelect(true);
-      }
-      // if (!fetchDetails?.items) {
-      //   setIsItemSelect(false);
-      // } else {
-      //   setIsItemSelect(true);
-      // }
-      const errors = validateItems(fetchDetails?.items || []);
-      if (errors.length > 0) {
-        setItemErrors(errors);
-      }
-    }
-  }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
+  const {
+    formData,
+    setFormData,
+    addSelect,
+    setAddSelect,
+    isVendorSelect,
+    setIsVendorSelect,
+    itemErrors,
+    setItemErrors,
+    imgLoader,
+    setImgLoader,
+    cusData,
+    setCusData,
+  } = useEditPurchaseForm(
+    {
+      purchase_type: 'bills',
+      bill_no: "",
+      source_of_supply: null,
+      shipment_date: null,
+      order_no: null,
+    },//for set new key's and values
+    [], // for Keys to remove
+    fetchDetails,
+    itemId,
+    isEdit,
+    convert
+  );
 
   const [loading, setLoading] = useState(false);
-
-  // for address select
-  const [addSelect, setAddSelect] = useState({
-    billing: "",
-    shipping: "",
-  });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -260,32 +123,12 @@ const CreateBills = () => {
     setFormData({
       ...formData,
       [name]: newValue,
-      total: calculateTotal(
-        formData.subtotal,
-        newValue,
-        formData.adjustment_charge
-      ),
     });
   };
 
-  //show all addresses popup....
-  const [showPopup, setShowPopup] = useState("");
-  const showAllAddress = (val) => {
-    setShowPopup(val);
-  };
-  //show all addresses....
 
-  const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-    const subTotalValue = parseFloat(subtotal) || 0;
-    const shippingChargeValue = parseFloat(shippingCharge) || 0;
-    const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-    return (
-      subTotalValue +
-      shippingChargeValue +
-      adjustmentChargeValue
-    ).toFixed(2);
-  };
 
+  //trigger show updated address then it updated
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
 
@@ -295,7 +138,7 @@ const CreateBills = () => {
       formData,
       isVendorSelect,
       dropdownRef1,
-      // isItemSelect,
+      itemErrors,
       setItemErrors,
       dropdownRef2,
       dispatch,
@@ -305,33 +148,46 @@ const CreateBills = () => {
       showAllSequenceId,
       itemId,
       convert,
-      type: "bills"
+      type: "bills",
+      additionalData: {
+        charges: stringifyJSON(formData?.charges),
+      },
     });
   };
 
+  //set the customer/vendor data in formData form state when customer/vendor select
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      customer_type: cusData?.customer_type,
-      vendor_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : "",
+      display_name: cusData?.display_name,
       email: cusData?.email,
       phone: cusData?.mobile_no,
-      address: cusData?.address.length,
+      address: cusData?.address?.length,
+      address: addSelect,
       payment_terms: cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
     }));
+
+    if (activeOrg_details?.state?.id === addSelect?.billing?.state?.id) {
+      dispatch(isStateIdEqualAction(true));
+    } else {
+      dispatch(isStateIdEqualAction(false));
+    }
+    dispatch(productTypeItemAction(""));
   }, [cusData]);
 
   useEffect(() => {
-    // dispatch(accountLists());
-    if (itemId && convert) {
-      dispatch(purchasesDetails({ id: itemId, fy: localStorage.getItem('FinancialYear') }));
-      dispatch(GRNdetailsActions({ id: itemId, fy: localStorage.getItem('FinancialYear') }));
-    } else if (itemId && !billDetail) {
-      dispatch(billDetails({ id: itemId, fy: localStorage.getItem('FinancialYear') }));
+    if (!itemId) return;
+    const financialYear = localStorage.getItem('FinancialYear');
+    if (!purchases && convert === "purchase_to_bill") {
+      dispatch(purchasesDetails({ id: itemId, fy: financialYear }));
+    } else if (!GRNdetail && convert === "grn_to_bill") {
+      dispatch(GRNdetailsActions({ id: itemId, fy: financialYear }));
+    } else if (!billDetail && !convert) {
+      dispatch(billDetails({ id: itemId, fy: financialYear }));
     }
-  }, [dispatch]);
-  const dropdownRef = useRef(null);
+  }, [dispatch, itemId, convert, purchases, billDetail, GRNdetail]);
 
+  const dropdownRef = useRef(null);
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -346,23 +202,13 @@ const CreateBills = () => {
   }, []);
 
   // image upload from firebase
-  const [imgLoader, setImgeLoader] = useState("");
-
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-
-  useEffect(() => {
-    OverflowHideBOdy(showPopup);
-    // Clean up the effect by removing the event listener on unmount
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showPopup]);
 
   return (
     <>
       <Toaster reverseOrder={false} />
       <TopLoadbar />
-      {billDetailss?.loading || billDetailss?.loading ? (
+      {billDetailss?.loading || purchase?.loading ? (
         <Loader02 />
       ) : (
         <>
@@ -406,7 +252,7 @@ const CreateBills = () => {
                               onChange={handleChange}
                               name="vendor_id"
                               defaultOption="Select Vendor Name"
-                              setcusData={setcusData}
+                              setcusData={setCusData}
                               cusData={cusData}
                               type="vendor"
                               required
@@ -553,7 +399,7 @@ const CreateBills = () => {
                             {otherIcons.placeofsupply_svg}
                             <input
                               type="text"
-                              value={formData.place_of_supply}
+                              value={preventZeroVal(formData?.place_of_supply)}
                               onChange={handleChange}
                               name="place_of_supply"
                               autoComplete="off"
@@ -568,7 +414,7 @@ const CreateBills = () => {
                             {otherIcons.placeofsupply_svg}
                             <input
                               type="text"
-                              value={formData.reference_no}
+                              value={preventZeroVal(formData?.reference_no)}
                               onChange={handleChange}
                               name="reference_no"
                               autoComplete="off"
@@ -601,17 +447,18 @@ const CreateBills = () => {
                     {/* </div> */}
 
                     <div className="" style={{ padding: 0 }}>
-                      <ItemSelect
-                        formData={formData}
-                        setFormData={setFormData}
-                        handleChange={handleChange}
-                        itemErrors={itemErrors}
-                        setItemErrors={setItemErrors}
-                        // setIsItemSelect={setIsItemSelect}
-                        // isItemSelect={isItemSelect}
-                        extracssclassforscjkls={"extracssclassforscjkls"}
-                        dropdownRef2={dropdownRef2}
-                      />
+
+                      {fetchDetails && formData?.items &&
+                        <ItemSelect
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleChange={handleChange}
+                          itemErrors={itemErrors}
+                          setItemErrors={setItemErrors}
+                          extracssclassforscjkls={"extracssclassforscjkls"}
+                          dropdownRef2={dropdownRef2}
+                        />
+                      }
 
                       <div className="secondtotalsections485s sxfc546sdfr85234e">
                         <div className="textareaofcreatqsiform">
@@ -636,11 +483,12 @@ const CreateBills = () => {
                             setFormData={setFormData}
                             setFreezLoadingImg={setFreezLoadingImg}
                             imgLoader={imgLoader}
-                            setImgeLoader={setImgeLoader}
+                            setImgeLoader={setImgLoader}
                             component="purchase"
                           />
                         </div>
                       </div>
+
                     </div>
                   </div>
                   <SubmitButton isEdit={isEdit} itemId={itemId} cancel="bills" />
@@ -655,5 +503,3 @@ const CreateBills = () => {
 };
 
 export default CreateBills;
-
-

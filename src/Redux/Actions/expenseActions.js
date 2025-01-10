@@ -17,6 +17,10 @@ import {
     EXPENSE_DELETE_REQUEST,
     EXPENSE_DELETE_SUCCESS,
     EXPENSE_DELETE_ERROR,
+
+    EXPENSE_STATUS_REQUEST,
+    EXPENSE_STATUS_SUCCESS,
+    EXPENSE_STATUS_ERROR,
 } from '../Constants/expenseConstants.js';
 
 import { sendData } from '../../Views/Helper/HelperFunctions.js';
@@ -63,6 +67,21 @@ export const createExpenses = (queryParams, Navigate) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: EXPENSE_CREATE_ERROR, payload: error.message });
+    }
+};
+
+export const expensesStatus = (queryParams, Navigate) => async (dispatch) => {
+    // console.log("queryParams", queryParams)
+    dispatch({ type: EXPENSE_STATUS_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/expense/status`,
+            queryParams
+        );
+
+        dispatch({ type: EXPENSE_STATUS_SUCCESS, payload: response.data });
+
+    } catch (error) {
+        dispatch({ type: EXPENSE_STATUS_ERROR, payload: error.message });
     }
 };
 

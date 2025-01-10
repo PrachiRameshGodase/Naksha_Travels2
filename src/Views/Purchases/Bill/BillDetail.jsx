@@ -1,21 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  invoiceDetailes,
-  invoicesDelete,
-  invoicesStatus,
-} from "../../../Redux/Actions/invoiceActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import toast, { Toaster } from "react-hot-toast";
 import {
-  formatDate,
-  formatDate2,
   formatDate3,
-  generatePDF,
 } from "../../Helper/DateFormat";
 import {
   billDeletes,
@@ -23,18 +15,14 @@ import {
   billStatus,
 } from "../../../Redux/Actions/billActions";
 import useOutsideClick from "../../Helper/PopupData";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import { useReactToPrint } from "react-to-print";
-import {
-  showAmountWithCurrencySymbol,
-  showRateWithPercent,
-} from "../../Helper/HelperFunctions";
-import ShowMastersValue from "../../Helper/ShowMastersValue";
+
 import ItemDetailTable from "../../Common/InsideSubModulesCommon/ItemDetailTable";
-import { ShowDropdownContent, TermsAndConditions } from "../../Common/InsideSubModulesCommon/DetailInfo";
+import { ShowDropdownContent } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import { MoreInformation } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import { FromToDetails, FromToDetailsPurchases } from "../../Common/InsideSubModulesCommon/DetailInfo";
+import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
+import { generatePDF } from "../../Helper/createPDF";
+import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 const BillDetail = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,6 +31,7 @@ const BillDetail = () => {
   const invoiceStatus = useSelector((state) => state?.billStatuses);
   const billDelete = useSelector((state) => state?.billDelete);
   const invoice = invoiceDetail?.data?.bill;
+  const masterData = useSelector(state => state?.masterData?.masterData);
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
@@ -79,6 +68,7 @@ const BillDetail = () => {
     }
 
   };
+  const componentRef = useRef(null);
 
   const changeStatus = (statusVal) => {
     try {
@@ -108,40 +98,31 @@ const BillDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-      };
-      dispatch(billDetails(queryParams));
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+  }), [callApi]);
+  useFetchApiData(billDetails, payloadGenerator, [callApi]);
+
+
+  const [loading, setLoading] = useState(false);
+
+
+  const handleDownloadPDF = () => {
+    if (!invoice || !masterData) {
+      alert("Data is still loading, please try again.");
+      return;
     }
-  }, [dispatch, UrlId, callApi]);
 
-  const totalFinalAmount = invoice?.items?.reduce(
-    (acc, item) => acc + parseFloat(item?.final_amount),
-    0
-  );
-
-  // const generatePDF = () => {
-  //     const input = document.getElementById('quotation-content');
-  //     html2canvas(input).then((canvas) => {
-  //         const imgData = canvas.toDataURL('image/png');
-  //         const pdf = new jsPDF();
-  //         pdf.addImage(imgData, 'PNG', 0, 0);
-  //         pdf.save('quotation.pdf');
-  //     });
-  // };
-
-  const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+    const contentComponent = (
+      <PrintContent data={invoice} cusVenData={invoice?.vendor} masterData={masterData} moduleId={invoice?.bill_no} section="Bill" />
+    );
+    generatePDF(contentComponent, "Bill_Document.pdf", setLoading, 500);
+  };
 
   return (
     <>
-      {/* {invoiceStatus?.loading && <MainScreenFreezeLoader />} */}
       {billDelete?.loading ||
-        (invoiceStatus?.loading && <MainScreenFreezeLoader />)}
+        ((invoiceStatus?.loading || loading) && <MainScreenFreezeLoader />)}
       {invoiceDetail?.loading ? (
         <Loader02 />
       ) : (
@@ -170,31 +151,14 @@ const BillDetail = () => {
                 className="mainx1"
                 ref={dropdownRef1}
               >
-                <p>PDF/Print</p>
-                {otherIcons?.arrow_svg}
-                {showDropdownx1 && (
-                  <div className="dropdownmenucustom">
-                    <div
-                      className="dmncstomx1 primarycolortext"
-                      onClick={() => generatePDF(invoice?.items)}
-                    >
-                      {otherIcons?.pdf_svg}
-                      PDF
-                    </div>
-                    <div
-                      className="dmncstomx1 primarycolortext"
-                      onClick={handlePrint}
-                    >
-                      {otherIcons?.print_svg}
-                      Print
-                    </div>
-                  </div>
-                )}
+                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                  PDF/Print
+                </p>
               </div>
 
               <div className="sepc15s63x63"></div>
 
-              {invoice?.status !== "1" && (
+              {invoice?.status != "1" && (
                 <div
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="mainx2"
@@ -341,7 +305,6 @@ const BillDetail = () => {
               tc={invoice?.terms_and_condition}
               section="Vendor"
             />
-            <TermsAndConditions/>
           </div>
         </div>
       )}

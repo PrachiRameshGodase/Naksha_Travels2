@@ -20,6 +20,7 @@ import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const Vendors = () => {
   const itemPayloads = localStorage.getItem(("vendorPayload"));
@@ -159,12 +160,8 @@ const Vendors = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.sort_by || parshPayload?.customer_type || parshPayload?.status || parshPayload?.currentpage > 1) {
-      fetchVendors();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendors); // Use the custom hook for call API
+
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -306,11 +303,9 @@ const Vendors = () => {
     }
   };
 
-
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/vendor-details?id=${quotation.id}`);
   };
-
 
   return (
     <>
@@ -335,7 +330,17 @@ const Vendors = () => {
             All Vendors
           </h1>
 
-          <p id="firsttagp">{cusList?.data?.count} Records</p>
+          <p id="firsttagp">{cusList?.data?.count} Records
+            <span
+              className={`${cusList?.loading && "rotate_01"}`}
+              data-tooltip-content="Reload"
+              data-tooltip-place="bottom"
+              data-tooltip-id="my-tooltip"
+              onClick={() => setSearchTrigger(prev => prev + 1)}>
+              {otherIcons?.refresh_svg}
+            </span>
+
+          </p>
 
           <SearchBox placeholder="Search In Vendor" onSearch={onSearch} />
         </div>
