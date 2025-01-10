@@ -4,113 +4,125 @@ import ImagesCrou from "../../Components/ShowImageCarousel.jsx/ImagesCrou";
 import { RxCross2 } from "react-icons/rx";
 
 const Attachment = ({ attachments }) => {
+  //Show items image
+  const [showImagesModal, setshowImagesModal] = useState(false);
+  // const [showComponent, setShowComponent] = useState(false);
+  const [imagesVal, setImagesVal] = useState([]);
 
-    //Show items image
-    const [showImagesModal, setshowImagesModal] = useState(false);
-    // const [showComponent, setShowComponent] = useState(false);
-    const [imagesVal, setImagesVal] = useState([]);
-
-    const showAllImages = (val) => {
-      const imageUrls = val.map((item) => item.url); 
-        setImagesVal(imageUrls);
-        setshowImagesModal(true);
-        // setShowComponent(true);
-    }
-    return (
-        <div>
-            <p className='sfdjklsd1xs2w4' style={{ marginLeft: "5px" }}>
-                {(attachments)?.length >= 1 ? (
-                    <span onClick={() => showAllImages(attachments)}>
-                        {(attachments)?.length} Images <MdArrowOutward style={{cursor:"pointer"}} />
-                    </span>
-                ) : (
-                    "No Image"
-                )}
-            </p>
-            {showImagesModal && (
-                <ImagesCrou
-                    showModal={showImagesModal}
-                    closeModal={setshowImagesModal}
-                    images={imagesVal}
-                />
-            )}
-        </div>
-    );
+  const showAllImages = (val) => {
+    const imageUrls = val.map((item) => item.url);
+    setImagesVal(imageUrls);
+    setshowImagesModal(true);
+    // setShowComponent(true);
+  };
+  return (
+    <div>
+      <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
+        {attachments?.length >= 1 ? (
+          <span onClick={() => showAllImages(attachments)}>
+            {attachments?.length} Images{" "}
+            <MdArrowOutward style={{ cursor: "pointer" }} />
+          </span>
+        ) : (
+          "No Image"
+        )}
+      </p>
+      {showImagesModal && (
+        <ImagesCrou
+          showModal={showImagesModal}
+          closeModal={setshowImagesModal}
+          images={imagesVal}
+        />
+      )}
+    </div>
+  );
 };
 
 export default Attachment;
 
-
-
-
 export const Attachment2 = ({ attachments }) => {
-    const [showImagesModal, setshowImagesModal] = useState(false);
-    const [imagesVal, setImagesVal] = useState([]);
-    const [selectedImage, setSelectedImage] = useState(null); // For previewing a selected image
+  const [showImagesModal, setshowImagesModal] = useState(false);
+  const [imagesVal, setImagesVal] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null); // For previewing a selected image
 
-    const showAllImages = (val) => {
-        const imageUrls = Array.isArray(val) ? val.map((item) => item.url || item) : [val];
-        setImagesVal(imageUrls);
-        setSelectedImage(imageUrls[0]); // Default to the first image
-        setshowImagesModal(true);
-    };
+  const showAllImages = (val) => {
+    const imageUrls = Array.isArray(val)
+      ? val.map((item) => item.url || item)
+      : [val];
+    setImagesVal(imageUrls);
+    setSelectedImage(imageUrls[0]); // Default to the first image
+    setshowImagesModal(true);
+  };
 
-    const handleImageClick = (image) => {
-        setSelectedImage(image); // Set the clicked image as selected
-    };
+  const handleImageClick = (image) => {
+    setSelectedImage(image); // Set the clicked image as selected
+  };
 
-    return (
-        <div>
-            <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
-                {attachments ? (
-                    <div>
-                        <span onClick={() => showAllImages(attachments)} style={{ cursor: "pointer" }}>
-                            {Array.isArray(attachments) ? `${attachments.length} Image(s)` : "1 Image"} <MdArrowOutward />
-                        </span>
-                    </div>
-                ) : (
-                    "No Image"
-                )}
-            </p>
+  return (
+    <div>
+      <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
+        {attachments ? (
+          <div>
+            <span
+              onClick={() => showAllImages(attachments)}
+              style={{ cursor: "pointer" }}
+            >
+              {Array.isArray(attachments)
+                ? `${attachments.length} Image(s)`
+                : "1 Image"}{" "}
+              <MdArrowOutward />
+            </span>
+          </div>
+        ) : (
+          "No Image"
+        )}
+      </p>
 
-            {/* Image Preview Modal */}
-            {showImagesModal && (
-                <div className="mainxpopups2">
-                    <div className="popup-content02">
-                        <span className="close-button02" onClick={() => setshowImagesModal(false)}>
-                            <RxCross2 />
-                        </span>
-                        {selectedImage ? (
-                            <img 
-                                src={selectedImage} 
-                                alt="Selected Preview" 
-                                style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
-                            />
-                        ) : (
-                            <p>No image selected</p>
-                        )}
-                    </div>
-                    <div className="thumbnail-container">
-                        {imagesVal.map((image, index) => (
-                            <img
-                                key={index}
-                                src={image}
-                                alt={`Thumbnail ${index + 1}`}
-                                style={{
-                                    width: "100px",
-                                    height: "100px",
-                                    margin: "5px",
-                                    cursor: "pointer",
-                                    border: image === selectedImage ? "2px solid blue" : "none",
-                                }}
-                                onClick={() => handleImageClick(image)}
-                            />
-                        ))}
-                    </div>
-                </div>
+      {/* Image Preview Modal */}
+      {showImagesModal && (
+        <div className="mainxpopups2">
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setshowImagesModal(false)}
+            >
+              <RxCross2 />
+            </span>
+            {selectedImage ? (
+              <img
+                src={selectedImage}
+                alt="Selected Preview"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <p>No image selected</p>
             )}
+          </div>
+          <div className="thumbnail-container">
+            {imagesVal.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index + 1}`}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  margin: "5px",
+                  cursor: "pointer",
+                  border: image === selectedImage ? "2px solid blue" : "none",
+                }}
+                onClick={() => handleImageClick(image)}
+              />
+            ))}
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif"];
@@ -208,7 +220,7 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
 };
 
 export const AttachmentPreview2 = ({ attachments }) => {
-    const [showImagesModal, setShowImagesModal] = useState(false);
+  const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews
 
@@ -241,7 +253,7 @@ export const AttachmentPreview2 = ({ attachments }) => {
 
   // Function to extract the file extension from the file name
   const getFileExtension = (fileName) => {
-    return fileName.split('.').pop().toLowerCase();
+    return fileName.split(".").pop().toLowerCase();
   };
 
   return (
@@ -282,87 +294,25 @@ export const AttachmentPreview2 = ({ attachments }) => {
 };
 
 export const AttachmentPreview3 = ({ attachments }) => {
-  const [showImagesModal, setShowImagesModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
-console.log("attachments", attachments?.url)
-  // Function to handle image popup
-  const showImagePopup = (url) => {
-    setSelectedImage(url);
-    setShowImagesModal(true);
-  };
-
   return (
     <div>
       <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
-        {attachments && attachments?.url ? (
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={() => showImagePopup(attachments.url)}
-            title="Open attachment preview"
-          >
-            <MdArrowOutward />
-          </span>
+        {attachments ? (
+          <div>
+            <img
+              src={attachments}
+              alt="Uploaded"
+              style={{
+                width: "50px",
+                height: "50px",
+                objectFit: "cover",
+              }}
+            />
+          </div>
         ) : (
           "-"
         )}
       </p>
-
-      {showImagesModal && (
-        <div
-          className="mainxpopups2"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            className="popup-content02"
-            style={{
-              position: "relative",
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-              maxWidth: "90%",
-              maxHeight: "90%",
-            }}
-          >
-            <span
-              className="close-button02"
-              onClick={() => setShowImagesModal(false)}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                cursor: "pointer",
-                fontSize: "20px",
-                fontWeight: "bold",
-                color: "#333",
-              }}
-            >
-              <RxCross2 />
-            </span>
-            <img
-              src={selectedImage}
-              alt="Preview of uploaded image"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                borderRadius: "8px",
-              }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

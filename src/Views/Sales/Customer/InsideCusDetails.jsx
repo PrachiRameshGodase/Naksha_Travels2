@@ -359,9 +359,7 @@ const InsideCusDetails = ({
                               <tr key={index}>
                                
                                 <td>{index + 1 || "-"}</td>
-                                <td style={{color:"#2626d3", cursor:"pointer"}} onClick={()=>{navigate(`/dashboard/customer-details?id=${item?.id}`)}}>{`${item?.first_name || "-"} ${
-                                  item?.last_name || "-"
-                                }`}</td>
+                                <td style={{color:"#2626d3", cursor:"pointer"}} onClick={()=>{navigate(`/dashboard/customer-details?id=${item?.id}`)}}>{item?.display_name}</td>
 
                                 <td>{item?.mobile_no || "-"}</td>
 
@@ -385,6 +383,7 @@ const InsideCusDetails = ({
                                   />
                                 </td>
                                 <td>
+                                  {console.log("item?.photo", item?.photo)}
                                 <AttachmentPreview3 attachments={item?.photo ? JSON.parse(item?.photo) : {}}/>
 
                                 </td>
