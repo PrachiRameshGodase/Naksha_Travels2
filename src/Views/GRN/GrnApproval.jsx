@@ -11,11 +11,11 @@ import { showAmountWithCurrencySymbol, useDebounceSearch, parseJSONofString } fr
 import DatePicker from "../Common/DatePicker/DatePicker";
 import SearchBox from "../Common/SearchBox/SearchBox";
 import SortBy from "../Common/SortBy/SortBy";
-import FilterBy from "../Common/FilterBy/FilterBy";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { formatDate, formatDate3 } from "../Helper/DateFormat";
-import { GRNApprovalFilterOptions } from "../Helper/SortByFilterContent/filterContent";
 import { GRNApprovalSortOptions, } from "../Helper/SortByFilterContent/sortbyContent";
+import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 const GrnApproval = () => {
   const itemPayloads = localStorage.getItem(("grnPayload"));
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const GrnApproval = () => {
 
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = searchTermFromChild ? 1 : currentPage;
@@ -114,12 +114,8 @@ const GrnApproval = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/grn_approval_detail?id=${quotation.id}`);
@@ -162,7 +158,17 @@ const GrnApproval = () => {
               {otherIcons.all_grn_svg}
               GRN Approval
             </h1>
-            <p id="firsttagp">{grnListss?.length} Records</p>
+            <p id="firsttagp">{grnListss?.length} Records
+              <span
+                className={`${grnList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In GRN Approval" onSearch={onSearch} />
           </div>
 
@@ -254,92 +260,98 @@ const GrnApproval = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {grnListss?.map((quotation, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                          ? "selectedresult"
-                          : ""
-                          }`}
-                        key={index}
-                      >
-                        <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
-                        >
-                          <input
-                            checked={selectedRows.includes(quotation.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(quotation.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {quotation.created_at
-                            ? formatDate3(quotation.created_at)
-                            : ""}
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs2"
-                        >
-                          {quotation.grn_no || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs3"
-                        >
-                          {quotation.display_name == "0" ? "" : quotation.display_name || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs4"
-                        >
-                          {quotation.reference == "0" ? "" : quotation.reference || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs5_item"
-                        >
-                          <p> {showAmountWithCurrencySymbol(quotation?.total)}</p>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                        >
-                          <p
-                            className={
-                              quotation?.status == "1"
-                                ? "open"
-                                : quotation?.status == "0"
-                                  ? "draft"
-                                  : quotation?.status == "2"
-                                    ? "close"
-                                    : quotation?.status == "3"
-                                      ? "pending"
-                                      : quotation?.status == "4"
-                                        ? "overdue"
-                                        : ""
-                            }
+                    {grnListss?.length >= 1 ? (
+                      <>
+                        {grnListss?.map((quotation, index) => (
+                          <div
+                            className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
+                            key={index}
                           >
-                            {quotation?.status == "0"
-                              ? "Draft"
-                              : quotation?.status == "1"
-                                ? "Bill Created"
-                                : quotation?.status == "2"
-                                  ? "Declined"
-                                  : quotation?.status == "3"
-                                    ? "Pending"
-                                    : quotation?.status == "4"
-                                      ? "Overdue"
-                                      : ""}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                            <div
+                              className="table-cellx12 checkboxfx1"
+                              id="styl_for_check_box"
+                            >
+                              <input
+                                checked={selectedRows.includes(quotation.id)}
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(quotation.id)}
+                              />
+                              <div className="checkmark"></div>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              {quotation.created_at
+                                ? formatDate3(quotation.created_at)
+                                : ""}
+                            </div>
+
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                            >
+                              {quotation.grn_no || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {quotation.display_name == "0" ? "" : quotation.display_name || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {quotation.reference == "0" ? "" : quotation.reference || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5_item"
+                            >
+                              <p> {showAmountWithCurrencySymbol(quotation?.total)}</p>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                            >
+                              <p
+                                className={
+                                  quotation?.status == "1"
+                                    ? "open"
+                                    : quotation?.status == "0"
+                                      ? "draft"
+                                      : quotation?.status == "2"
+                                        ? "close"
+                                        : quotation?.status == "3"
+                                          ? "pending"
+                                          : quotation?.status == "4"
+                                            ? "overdue"
+                                            : ""
+                                }
+                              >
+                                {quotation?.status == "0"
+                                  ? "Draft"
+                                  : quotation?.status == "1"
+                                    ? "Bill Created"
+                                    : quotation?.status == "2"
+                                      ? "Declined"
+                                      : quotation?.status == "3"
+                                        ? "Pending"
+                                        : quotation?.status == "4"
+                                          ? "Overdue"
+                                          : ""}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <NoDataFound />
+                    )}
                   </>
                 )}
               </div>

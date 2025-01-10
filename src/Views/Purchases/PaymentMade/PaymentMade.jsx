@@ -22,6 +22,7 @@ import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import { paymentMadeOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import FilterBy from "../../Common/FilterBy/FilterBy";
 import { paymentRecOptions } from "../../Helper/SortByFilterContent/filterContent";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const PaymentMade = () => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const PaymentMade = () => {
   //Search/////////////////////////////////////////////////////////////
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -113,11 +114,8 @@ const PaymentMade = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    if (searchTrigger) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/payment-made-detail?id=${quotation.id}`);
@@ -158,7 +156,17 @@ const PaymentMade = () => {
               {otherIcons.all_payment_made_svg}
               All Payment Made
             </h1>
-            <p id="firsttagp">{qutList?.data?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox
               placeholder="Search In Payment Made"
               onSearch={onSearch}
@@ -385,28 +393,28 @@ const PaymentMade = () => {
                               >
                                 <p
                                   className={
-                                    quotation?.is_approved == "1"
+                                    quotation?.status == "1"
                                       ? "open"
-                                      : quotation?.is_approved == "0"
+                                      : quotation?.status == "0"
                                         ? "draft"
-                                        : quotation?.is_approved == "2"
+                                        : quotation?.status == "2"
                                           ? "close"
-                                          : quotation?.is_approved == "3"
+                                          : quotation?.status == "3"
                                             ? "pending"
-                                            : quotation?.is_approved == "4"
+                                            : quotation?.status == "4"
                                               ? "overdue"
                                               : ""
                                   }
                                 >
-                                  {quotation?.is_approved == "0"
+                                  {quotation?.status == "0"
                                     ? "Draft"
-                                    : quotation?.is_approved == "1"
+                                    : quotation?.status == "1"
                                       ? "Approved"
                                       : quotation?.status == "2"
                                         ? "Close"
-                                        : quotation?.is_approved == "3"
+                                        : quotation?.status == "3"
                                           ? "Pending"
-                                          : quotation?.is_approved == "4"
+                                          : quotation?.status == "4"
                                             ? "Overdue"
                                             : ""}
                                 </p>
@@ -432,8 +440,6 @@ const PaymentMade = () => {
             </div>
           </div>
         </div>
-
-
 
         <Toaster />
       </div >

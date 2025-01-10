@@ -11,6 +11,7 @@ import { PdfShowMastersValue } from "../../ShowMastersValue";
 import { otherIcons } from "../../SVGIcons/ItemsIcons/Icons";
 import { currentTime, formatDate3, todayDate } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
+
 const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
   const [showCharges, setShowCharges] = useState(false);
   const active_orgnization = activeOrg_details;
@@ -206,7 +207,7 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
       {/* /*Section 3 table print and pdf */}
 
       {/* /*Section 4 copy stamp */}
-      <div className="copy_bottom_footer_98" style={{ marginTop: "50px" , marginLeft:"16px"}}>
+      <div className="copy_bottom_footer_98" style={{ marginTop: "50px", marginLeft: "16px" }}>
         {/* <h3>Notes / Terms</h3> */}
         <div className="stamp_remark">
           <div className="remark">

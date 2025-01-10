@@ -5,7 +5,6 @@ import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
-import { expenseTableIcons } from "../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons";
 import { exportItems, importItems } from "../../../Redux/Actions/itemsActions";
 import { RxCross2 } from "react-icons/rx";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
@@ -13,7 +12,6 @@ import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { expenseLists } from "../../../Redux/Actions/expenseActions";
 import newmenuicoslz from "../../../assets/outlineIcons/othericons/newmenuicoslz.svg";
-import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import SearchBox from "../../Common/SearchBox/SearchBox";
@@ -22,6 +20,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import DatePicker from "../../Common/DatePicker/DatePicker";
 import { expenseSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const Expenses = () => {
   const itemPayloads = localStorage.getItem(("expensePayload"));
@@ -154,7 +153,7 @@ const Expenses = () => {
   };
   //Search/////////////////////////////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchVendor = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -186,12 +185,8 @@ const Expenses = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchVendor); // Use the custom hook for call API
+
 
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -266,7 +261,17 @@ const Expenses = () => {
               {otherIcons.all_expense_svg}
               All Expenses
             </h1>
-            <p id="firsttagp">{itemList?.count} Records</p>
+            <p id="firsttagp">{itemList?.count} Records
+              <span
+                className={`${itemListState?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In Expenses" onSearch={onSearch} />
           </div>
 
@@ -406,6 +411,10 @@ const Expenses = () => {
                     {otherIcons?.file_svg}
                     ATTACHMENTS
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6">
+                    {otherIcons?.file_svg}
+                    STATUS
+                  </div>
                 </div>
 
                 {itemListLoading || dataChanging ? (
@@ -498,6 +507,39 @@ const Expenses = () => {
                               ) : (
                                 ""
                               )}
+                            </p>
+                          </div>
+
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                          >
+                            <p
+                              className={
+                                quotation?.status == "1"
+                                  ? "open"
+                                  : quotation?.status == "0"
+                                    ? "draft"
+                                    : quotation?.status == "2"
+                                      ? "close"
+                                      : quotation?.status == "3"
+                                        ? "pending"
+                                        : quotation?.status == "4"
+                                          ? "overdue"
+                                          : ""
+                              }
+                            >
+                              {quotation?.status == "0"
+                                ? "Draft"
+                                : quotation?.status == "1"
+                                  ? "Approved"
+                                  : quotation?.status == "2"
+                                    ? "Close"
+                                    : quotation?.status == "3"
+                                      ? "Pending"
+                                      : quotation?.status == "4"
+                                        ? "Overdue"
+                                        : ""}
                             </p>
                           </div>
                         </div>

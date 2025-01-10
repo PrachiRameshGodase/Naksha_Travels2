@@ -18,6 +18,10 @@ import {
     EXPENSE_DETAIL_REQUEST,
     EXPENSE_DETAIL_SUCCESS,
     EXPENSE_DETAIL_ERROR,
+
+    EXPENSE_STATUS_REQUEST,
+    EXPENSE_STATUS_SUCCESS,
+    EXPENSE_STATUS_ERROR,
 } from '../Constants/expenseConstants.js';
 
 const initialState = {
@@ -116,6 +120,31 @@ export const expenseDetailReducer = (state = initialState, action) => {
                 error: null,
             };
         case EXPENSE_DETAIL_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const expenseStatusReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case EXPENSE_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case EXPENSE_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case EXPENSE_STATUS_ERROR:
             return {
                 ...state,
                 loading: false,

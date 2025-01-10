@@ -122,6 +122,7 @@ import {
   expenseDeleteReducer,
   expenseDetailReducer,
   expenseListReducer,
+  expenseStatusReducer,
 } from "./expenseReducers";
 import {
   createGRNreducer,
@@ -333,7 +334,7 @@ const reducer = combineReducers({
   createPassengerHotel: createPassengerHotelReducer,
   passengerDetail: passengerHotelDetailReducer,
   passengerHotelDelete: passengerHoteltDeleteReducer,
-  
+
   createPassengerFlight: createPassengerFlightReducer,
   passengerFlightDelete: passengerFlighttDeleteReducer,
 
@@ -354,20 +355,20 @@ const reducer = combineReducers({
 
   createPassengerOthers: createPassengerOthersReducer,
   passengerOthersDelete: passengerOthersDeleteReducer,
-  
+
   createDSR: createDSRreducer,
   DSRList: listDSRreducer,
   DSRDetails: DSRDetailReducer,
-  DSRDelete:DeleteDSRReducer,
-  DSRStatus:DSRStatusReducer,
+  DSRDelete: DeleteDSRReducer,
+  DSRStatus: DSRStatusReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
 
   createMICE: createMICEreducer,
   MICEList: listMICEreducer,
   MICEDetails: MICEDetailReducer,
-  MICEDelete:DeleteMICEReducer,
-  MICEStatus:MICEStatusReducer,
+  MICEDelete: DeleteMICEReducer,
+  MICEStatus: MICEStatusReducer,
   addPassenger: AddMPassengerReducer,
   deletePassenger: DeleteMPassengerReducer,
 
@@ -394,7 +395,7 @@ const reducer = combineReducers({
   createPassengerMOther: createPassengerMOtherReducer,
   passengerOtherMDelete: passengerMOtherDeleteReducer,
 
- 
+
 
   masterData: masterDataReducer,
   autoId: autoGenerateIdReducer,
@@ -500,11 +501,15 @@ const reducer = combineReducers({
   createPurchase: createPurchasesReducer,
   detailsPurchase: purchasesDetailsReducer,
   deletePurchase: purchasesDeleteReducer,
+
+  // expense root reducers
   expenseCreate: expenseCreateReducer,
   expenseList: expenseListReducer,
   expenseHeadList: expenseHeadListReducer,
   expenseDelete: expenseDeleteReducer,
   expenseDetail: expenseDetailReducer,
+  expenseStatus: expenseStatusReducer,
+
 
   GRNcreate: createGRNreducer,
   GRNlist: listGRNreducer,
@@ -553,7 +558,7 @@ const reducer = combineReducers({
 
   userMasterCreate: createUserMasterReducer,
   userMasterList: listUserMasterReducer,
-  userMasterDelete:userMasterDeleteReducer,
+  userMasterDelete: userMasterDeleteReducer,
 
   //manage all State data
   type: productTypeReducer,

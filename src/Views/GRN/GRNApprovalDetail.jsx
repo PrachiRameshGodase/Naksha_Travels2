@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
@@ -7,20 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import toast, { Toaster } from 'react-hot-toast';
-import { formatDate, formatDate2, formatDate3, formatDate4, generatePDF } from '../Helper/DateFormat';
+import { formatDate3 } from '../Helper/DateFormat';
 
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import useOutsideClick from '../Helper/PopupData';
-import { purchasesDelete, purchasesDetails, purchasesStatus } from '../../Redux/Actions/purchasesActions';
 import { GRNdeleteActions, GRNdetailsActions, GRNstatusActions } from '../../Redux/Actions/grnActions';
 import ImagesCrou from '../../Components/ShowImageCarousel.jsx/ImagesCrou';
-import { fetchMasterData } from '../../Redux/Actions/globalActions';
-import { parseJSONofString, showAmountWithCurrencySymbol, ShowAutoGenerateId, showRateWithPercent } from '../Helper/HelperFunctions';
+import { parseJSONofString, ShowAutoGenerateId } from '../Helper/HelperFunctions';
 import { GrnItemsDetailTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
-// import { GrnItemsDetailTable } from '../Items/ItemDetailTable';
-import { MoreInformation, TermsAndConditions } from '../Common/InsideSubModulesCommon/DetailInfo';
+import { MoreInformation } from '../Common/InsideSubModulesCommon/DetailInfo';
+import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
 const GRNApprovalDetail = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
@@ -29,7 +27,6 @@ const GRNApprovalDetail = () => {
     const [showDropdownx1, setShowDropdownx1] = useState(false);
     const grnStatus = useSelector(state => state?.GRNstatus);
     const grnDelete = useSelector(state => state?.GRNdelete);
-    const masterData = useSelector(state => state?.masterData?.masterData);
 
 
     const GRNdetails = useSelector(state => state?.GRNdetails);
@@ -50,9 +47,7 @@ const GRNApprovalDetail = () => {
         setImagesVal(val);
         setshowImagesModal(true);
         setShowComponent(true);
-
     }
-
 
     const result = GRNdetail?.items?.map(({ po_qty, rate, gross_amount, final_amount, item_remark, tax_amount, tax_rate, item, discount, discount_type, unit_id }) => ({
         item_id: item?.id,
@@ -75,7 +70,6 @@ const GRNApprovalDetail = () => {
         bill_no: `${autoId.prefix}${autoId.delimiter}${(autoId.sequence_number)}`,//for bill id no correctly +1 
         transaction_date: GRNdetail?.transaction_date, // bill date
         currency: GRNdetail?.purchase_order?.currency || "USD",
-        // expiry_date: "2024-04-21", 
         vendor_id: (+GRNdetail?.vendor?.id),
         fy: GRNdetail?.fy,
         warehouse_id: localStorage.getItem('selectedWarehouseId'),
@@ -91,7 +85,6 @@ const GRNApprovalDetail = () => {
         total: GRNdetail?.total,
         reference_no: GRNdetail?.reference,
         place_of_supply: GRNdetail?.place_of_supply,
-        // source_of_supply: GRNdetail?.,
         shipment_date: GRNdetail?.purchase_order?.shipment_date,
         order_no: GRNdetail?.purchase_order?.order_no,
         payment_terms: GRNdetail?.purchase_order?.payment_terms,
@@ -157,17 +150,10 @@ const GRNApprovalDetail = () => {
         }
     }
 
-
-    useEffect(() => {
-        if (UrlId) {
-            const queryParams = {
-                id: UrlId,
-            };
-            dispatch(GRNdetailsActions(queryParams));
-            dispatch(fetchMasterData());
-        }
-    }, [dispatch, UrlId, callApi]);
-
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: UrlId,
+    }), [callApi]);
+    useFetchApiData(GRNdetailsActions, payloadGenerator, [callApi]);
 
     // pdf & print
     const componentRef = useRef(null);
@@ -312,7 +298,6 @@ const GRNApprovalDetail = () => {
                             </div>
                         </div>
                         <MoreInformation sale={GRNdetail?.sale_person} note={GRNdetail?.vendor_note} tc={GRNdetail?.terms_and_condition} section="Vendor" />
-                        <TermsAndConditions/>
                     </div>
                 </div>}
             {showComponent && (

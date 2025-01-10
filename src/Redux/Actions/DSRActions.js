@@ -8,10 +8,9 @@ export const DSRCreateAction = (queryParams, showAllSequenceId,) => async (dispa
     try {
         const response = await axiosInstance.post(`/service/dsr/create/update`, queryParams);
         dispatch({ type: CREATE_DSR_REQUEST, payload: response.data });
-        
+
         if (response?.data?.message === "DSR created successfully") {
             toast?.success(response?.data?.message);
-           
         } else {
             toast?.error(response?.data?.message);
         }
@@ -61,7 +60,7 @@ export const DSRDetailsAction = (queryParams, setDetail_api_data) => async (disp
                 data
             },
         });
-        
+
 
     } catch (error) {
         dispatch({ type: DSR_DETAIL_ERROR, payload: error.message });
@@ -74,7 +73,7 @@ export const DSRDeleteActions = (queryParams, Navigate) => async (dispatch) => {
         const response = await axiosInstance.post(`/service/dsr/delete`, queryParams);
 
         if (response?.data?.message === "Dsr Deleted Successfully") {
-           
+
             toast.success(response?.data?.message);
             Navigate("/dashboard/dsr");
         } else {
@@ -94,7 +93,7 @@ export const DSRStatusActions = (queryParams, Navigate) => async (dispatch) => {
         const response = await axiosInstance.post(`/service/dsr/invoiced`, queryParams);
 
         if (response?.data?.message === "Dsr Invoiced Successfully") {
-           
+
             toast.success(response?.data?.message);
             Navigate("/dashboard/dsr");
         } else {
@@ -135,7 +134,7 @@ export const PassengerDeleteActions = (queryParams, Navigate) => async (dispatch
         const response = await axiosInstance.post(`/dsr/service/passenger/delete`, queryParams);
 
         if (response?.data?.message === "Passenger Deleted Successfully") {
-           
+
             toast.success(response?.data?.message);
             // Navigate("/dashboard/hotels-services");
         } else {
