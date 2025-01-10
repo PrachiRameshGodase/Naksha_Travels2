@@ -226,7 +226,9 @@ export const ShowDropdownContent = ({ quotation, changeStatus }) => {
   );
 };
 
+
 export const MoreInformation = ({ sale, note, tc, section }) => {
+
   const formatValue = (value) => (value == 0 ? "" : value);
 
   return (
@@ -292,6 +294,7 @@ export const FromToDetails = ({ quotation, section }) => {
           <br />
         </p>
       </div>
+
 
       <div className="cjkls5xs2">
         {section == "Debit Note" ? (
@@ -378,6 +381,7 @@ export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
         </div>
       )
       }
+
       {!(quotation?.status == "1" || quotation?.status == "4") && (
         <div
           className="dmncstomx1"
@@ -387,6 +391,7 @@ export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
           {otherIcons?.delete_svg} Delete
         </div>
       )}
+
     </div>
   );
 };

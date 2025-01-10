@@ -5,7 +5,7 @@ import GenerateIdPopup from '../../Home/GenerateIdPopup';
 import { ShowAutoGenerateId } from '../../Helper/HelperFunctions';
 import WaveLoader from '../../../Components/Loaders/WaveLoader';
 
-const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField, disable, style }) => {
+const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField }) => {
     const { loading } = useSelector(state => state?.autoIdList);
     const autoId = ShowAutoGenerateId(module, showField);
     const [generateId, setGenerateId] = useState(false);
@@ -15,16 +15,20 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
         const { prefix, delimiter, padded_digits, sequence_number, module, id, sequence_type } = autoId || {};
 
         if (prefix !== autoData.prefix || delimiter !== autoData.delimiter || padded_digits !== autoData?.padded_digits || sequence_number !== autoData.sequence_number || module !== autoData.module || id !== autoData.id) {
-            setAutoData({ prefix, delimiter, padded_digits, sequence_number, module, id, sequence_type });
+            const updatedSequenceNumber = '0'.repeat(padded_digits) + sequence_number;
+
+            setAutoData({ prefix, delimiter, padded_digits, sequence_number: updatedSequenceNumber, module, id, sequence_type });
         }
     }, [autoId]);
 
     useEffect(() => {
         if (!showField) {//use when we update the module sequence id is not fetched form sequence list..
-            setFormData(prev => ({ ...prev, [nameVal]: `${autoData.prefix}${autoData.delimiter}${autoData?.padded_digits}${autoData.sequence_number}` }));
+            setFormData(prev => ({ ...prev, [nameVal]: `${autoData.prefix}${autoData.delimiter}${autoData.sequence_number}` }));
             setShowAllSequenceId({ ...autoData });
         }
     }, [autoData, nameVal, setFormData, setShowAllSequenceId, autoId, showField]);
+    // console.log("autoDataautoData", autoData)
+
     return (
         <>
             <span>
@@ -38,16 +42,12 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
                     name={nameVal}
                     autoComplete='off'
                     disabled={autoData.sequence_type == 1}
-                    style={disable ? { cursor: "not-allowed", ...style } : style}
+                    style={{ cursor: "not-allowed" }}
                 />
 
                 {!showField && <span onClick={() => setGenerateId(true)}>{otherIcons.setting_icon}</span>}
             </span>
-            {generateId && !disable && (
-            <GenerateIdPopup
-                formdatas={{ autoData, setAutoData, setGenerateId, disable, style }}
-            />
-        )}
+            {generateId && <GenerateIdPopup formdatas={{ autoData, setAutoData, setGenerateId }} />}
         </>
     );
 };

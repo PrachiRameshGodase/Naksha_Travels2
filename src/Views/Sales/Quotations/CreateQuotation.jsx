@@ -238,6 +238,7 @@ const CreateQuotation = () => {
                           <div id='sepcifixspanflex'>
                             <span id=''>
                               {otherIcons.name_svg}
+
                               <CustomDropdown10
                                 autoComplete='off'
                                 ref={dropdownRef1}
@@ -358,7 +359,6 @@ const CreateQuotation = () => {
                             <span >
                               {otherIcons.placeofsupply_svg}
                               <input type="text" value={preventZeroVal(formData.reference_no)} onChange={handleChange}
-                                // disabled
                                 autoComplete='off'
                                 name='reference_no'
                                 placeholder='Enter Reference Number' />
@@ -384,13 +384,15 @@ const CreateQuotation = () => {
                         </div>
                       </div>
                       {/* </div> */}
-
-                      <AddServices
-                        formData={formData}
-                        setFormData={setFormData}
-                      />
-
                       <div className="">
+                        <AddServices
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleChange={handleChange}
+                          note="customer"
+                        />
+
+                        {/* <div className="">
                         <ItemSelect
                           formData={formData}
                           setFormData={setFormData}
@@ -400,8 +402,8 @@ const CreateQuotation = () => {
                           extracssclassforscjkls={"extracssclassforscjkls"}
                           dropdownRef2={dropdownRef2}
                           note="customer"
-                          section="sales"
-                        />
+                          section="sales" */}
+                        {/* /> */}
 
                         <div className='secondtotalsections485s sxfc546sdfr85234e'>
                           <div className='textareaofcreatqsiform'>

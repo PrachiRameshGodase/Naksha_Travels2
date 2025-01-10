@@ -50,9 +50,11 @@ const CalculationSection = ({
   ]);
 
   const [openCharges, setOpenCharges] = useState(false);
+
   const openExpenseCharges = () => {
     setOpenCharges(!openCharges);
   };
+
   return (
     <div className="calctotalsection">
       <div className="calcuparentc">
@@ -89,6 +91,7 @@ const CalculationSection = ({
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>Tax %:</label>
+
             <CustomDropdown13
               options={tax_rate}
               value={formData?.tax_percent || ""}
@@ -98,6 +101,7 @@ const CalculationSection = ({
               defaultOption="Taxes"
               className2="item3"
             />
+
           </div>
         </div>
       </div>
@@ -121,18 +125,20 @@ const CalculationSection = ({
           <div className="clcsecx12s1">
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
-                Edit and add charges 
-                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{marginTop:"10px"}}>
+                Edit and add charges
+                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{ marginTop: "10px" }}>
                   {otherIcons.question_svg}
                 </span>
               </p>
             </label>
           </div>
+
           {openCharges && (
             <ExpenseCharges
               formValues={{ formData, setFormData, handleChange }}
             />
           )}
+
         </div>
       </div>
       <div className="calcuparentc">
