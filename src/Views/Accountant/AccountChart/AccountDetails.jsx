@@ -16,6 +16,7 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { formatString, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
 
 const AccountDetails = () => {
+
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const itemId = new URLSearchParams(location.search).get("id");
@@ -201,26 +202,22 @@ const AccountDetails = () => {
               <div className="inidbx1s2 inidbx1s2x21s5" style={{ width: "600px", height: "250px" }}>
                 <div className="inidbs1x1a1">
                   <span style={{ zoom: "2" }}> {otherIcons?.doller_svg}</span>
-                  Closing Blance
+                  Closing Balance
                 </div>
-
-                {/* <p className='accountx3'> {Math.abs(+accDetails?.data?.closing_balance)}
-                  {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance > 0 ? "(Dr)" : "(Cr)"}
-                </p> */}
 
                 <ul style={{ width: "516px" }}>
 
                   <li>
-                    <span> Closing Blance:</span>
+                    <span style={{ width: "130px" }}> Closing Balance:</span>
                     <h1>:</h1>
-                    <p className='accountx3'> {Math.abs(+accDetails?.data?.closing_balance)}
+                    <p className='accountx3'> {showAmountWithCurrencySymbol(Math.abs(+accDetails?.data?.closing_balance))}
                       {accDetails?.data?.closing_balance == 0 ? "" : accDetails?.data?.closing_balance > 0 ? <sub>(Dr)</sub> : <sub> (Cr)</sub>}
                     </p>
                   </li>
                   <li>
-                    <span style={{width:"106px"}}>Notes</span>
+                    <span style={{ width: "477px" }}>Notes:</span>
                     <h1>:</h1>
-                    <p style={{width:"300px"}}>
+                    <p>
                       {getAccountVal?.accounts?.description || ""}
                     </p>
                   </li>
@@ -229,8 +226,6 @@ const AccountDetails = () => {
 
                 </div>
               </div>
-
-
 
             </div>
           </div>

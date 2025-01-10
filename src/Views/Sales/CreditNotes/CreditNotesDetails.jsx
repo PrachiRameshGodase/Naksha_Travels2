@@ -18,7 +18,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import useOutsideClick from "../../Helper/PopupData";
 import { formatDate3 } from "../../Helper/DateFormat";
-import { FromToDetails, MoreInformation, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import { generatePDF } from "../../Helper/createPDF";
@@ -105,6 +105,7 @@ const CreditNotesDetails = () => {
   const masterData = useSelector(state => state?.masterData?.masterData);
   const [loading, setLoading] = useState(false);
 
+
   const handleDownloadPDF = () => {
     if (!credit || !masterData) {
       alert("Data is still loading, please try again.");
@@ -114,7 +115,6 @@ const CreditNotesDetails = () => {
     const contentComponent = (
       <PrintContent data={credit} cusVenData={credit?.customer} masterData={masterData} moduleId={credit?.credit_note_id} section="Credit Note" />
     );
-
     generatePDF(contentComponent, "Credit_Note_Document.pdf", setLoading, 500);
   };
 
@@ -287,7 +287,6 @@ const CreditNotesDetails = () => {
             </div>
 
             <MoreInformation sale={credit?.sale_person} note={credit?.customer_note} tc={credit?.terms_and_condition} section="Customer" />
-          <TermsAndConditions/>
           </div>
         </div>
       )}

@@ -55,10 +55,19 @@ const HelpCreate = () => {
 
 
   const handleChange = (e) => {
-     const { name, value } = e.target;
-     const issueTypeName = issue?.find((val) => val?.labelid == value)
-     const moduleName = module?.find((val) => val?.labelid == value)
-     setFormData({
+    const { name, value } = e.target;
+
+
+
+    const issueTypeName = issue?.find((val) => val?.labelid == value)
+
+
+
+
+    const moduleName = module?.find((val) => val?.labelid == value)
+
+
+    setFormData({
       ...formData,
       ...(name === "issue_type_id" && { issue_type_name: issueTypeName?.label }),
       ...(name === "module_id" && { module_name: moduleName?.label }),

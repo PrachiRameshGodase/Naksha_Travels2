@@ -5,20 +5,40 @@ import DatePicker from "react-datepicker";
 import { Toaster, toast } from "react-hot-toast";
 
 import { ManageCurrencyTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
-import { formatDate } from '../Helper/DateFormat';
+import { formatDate, formatDate3, todayDate } from '../Helper/DateFormat';
 import { SubmitButton2 } from '../Common/Pagination/SubmitButton';
 import { handleDropdownError } from '../Helper/HelperFunctions';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip } from 'react-bootstrap';
+import { currencyRateCreateAction, currencyRateListAction } from '../../Redux/Actions/manageCurrencyActions';
+import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 
 const ManageCurrency = () => {
 
     const getCurrency = useSelector((state) => state?.getCurrency);
-    const allCurrency = getCurrency?.data?.currency;
 
-    const [formData, setFormData] = useState([]);  // formData is directly an array now
+    const currencyReateCreate = useSelector((state) => state?.currencyReateCreate);
+
+    const allCurrency = getCurrency?.data?.currency;
+    const [selectedDate, setSelectedDate] = useState(new Date()); // Simplified state
+    const dispatch = useDispatch();
+
+    const [formData, setFormData] = useState([{
+        id: 0,                   //use id on undate
+        date: new Date(),      //todays date
+        currency_id: 0,          //from the currency table  
+        currency_name: "", //from the currency table  
+        code: "",             //from the currency table  
+        country: "",      //from the currency table  
+        symbol: "",             //from the currency table  
+        current_rate: 0,      //User Input
+        exchange_rate: 0,
+    }
+    ]);  // formData is directly an array now
+
+
 
     useEffect(() => {
         if (allCurrency && allCurrency.length > 0) {
@@ -29,23 +49,32 @@ const ManageCurrency = () => {
                 country: val?.country,          // from the currency table  
                 symbol: val?.symbol,            // from the currency table  
                 date: formatDate(new Date()),   // today's date
-                current_rate: '',               // Input field to be updated manually
-                exchange_rate: ''               // Input field to be updated manually
+                current_rate: 0,               // Input field to be updated manually
+                exchange_rate: 0               // Input field to be updated manually
             }));
 
             setFormData(updatedCurrencies);  // Directly set the array
         }
     }, [allCurrency]);
 
+    // console.log("formdataaaaaaaaaa", formData)
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        const buttonName = e.nativeEvent.submitter.name;
-
-        if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-        if (handleDropdownError(isAmountSelect, dropdownRef2)) return;
 
         try {
+
             // Update balance_amount in each entry
+            // console.log("formdataaaaaaaaaa", formData)
+            const filteredEntries = formData.filter(
+                (entry) => entry.current_rate != 0 || entry.exchange_rate != 0
+            );
+            const payload = {
+                currencies: filteredEntries,
+            };
+            dispatch(currencyRateCreateAction(payload)).then((response) => {
+                // console.log("resssssssssssss", response)
+            })
+            // console.log("Filtered Entries:", filteredEntries);
 
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -53,13 +82,13 @@ const ManageCurrency = () => {
     };
 
 
-    // image upload from firebase
 
 
     return (
         <>
 
             <TopLoadbar />
+            {currencyReateCreate?.loading && <MainScreenFreezeLoader />}
             <div className='formsectionsgrheigh'>
                 <div id="Anotherbox" className='formsectionx2'>
                     <div id="leftareax12">
@@ -83,15 +112,16 @@ const ManageCurrency = () => {
                                 <div className="f1wrapofcreq">
                                     <div className="form_commonblock">
                                         <label >Date</label>
-                                        <span data-tooltip-content="Today Date" data-tooltip-place="bottom" data-tooltip-id="my-tooltip"
+                                        <span
                                         >
                                             {otherIcons.date_svg}
                                             <DatePicker
-                                                selected={new Date()}
-                                                minDate={new Date()}
-                                                maxDate={new Date()}
-                                                dateFormat="yyy-MM-dd"
-                                                disabled
+                                                selected={selectedDate}
+                                                onChange={(date) => setSelectedDate(date)} // Directly update the state
+                                                name="date"
+                                                dateFormat="dd-MM-yyyy"
+                                                autoComplete="off"
+                                                disabled // Set dynamically or leave as needed
                                             />
 
                                         </span>
@@ -101,15 +131,12 @@ const ManageCurrency = () => {
 
                                 </div>
 
-
                                 <div className={`${formData?.customer_id ? "f1wrpofcreqsx2" : "f1wrpofcreqsx2"}`}>
+
                                     <div className='itemsectionrows'>
-
                                         <>
-                                            <ManageCurrencyTable formsData={{ formData, setFormData }} />
+                                            <ManageCurrencyTable formData={formData} setFormData={setFormData} section="create" />
                                         </>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -120,9 +147,7 @@ const ManageCurrency = () => {
                     </form>
                 </div>
             </div >
-            <Toaster
-                position="bottom-right"
-                reverseOrder={false} />
+            <Toaster />
 
         </>
     );
