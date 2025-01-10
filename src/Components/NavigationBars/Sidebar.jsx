@@ -117,8 +117,6 @@ import RequisitionDetails from "../../Views/Production/RequisitionDetails";
 import RequisitionApproval from "../../Views/Production/RequisitionApproval";
 import Masters from "../../Views/Masters/Masters";
 import ManageCurrency from "../../Views/Masters/ManageCurrency";
-import AccountTransaction from "../../Views/Reports/ReportsData/AccountantData/AccountTransaction";
-import SaleReports from "../../Views/Reports/ReportsData/SaleData/SaleReports";
 import Services from "../../Views/Items/Products/Services";
 import Hotels from "../../Views/Items/Products/Hotels/Hotels";
 import HotelDetails from "../../Views/Items/Products/Hotels/HotelDetails";
@@ -155,7 +153,17 @@ import MICEDetails from "../../Views/MICE/MICEDetails";
 import MICES from "../../Views/MICE/MICES";
 import FamilyServicesList from "../../Views/MICE/Services/FamilyServicesList";
 import UserMasters from "../../Views/UserMaster/UserMasters";
-
+import AccountTransaction from "../../Views/Reports/ReportsData/AccountantsReport/AccountTransaction";
+import SaleReports from "../../Views/Reports/ReportsData/SaleReport/SaleByCustomerReports";
+import SaleByItemReport from "../../Views/Reports/ReportsData/SaleReport/SaleByItemReport";
+import PurchaseByVendorReport from "../../Views/Reports/ReportsData/PurchasesReport/PurchaseByVendorReport";
+import CustomerBalanceSummaryReport from "../../Views/Reports/ReportsData/ReceivablesReport/CustomerBalanceSummaryReport";
+import VendorBalanceSummaryReport from "../../Views/Reports/ReportsData/PayablesReport/VendorBalanceSummaryReport";
+import CreditNoteDetailsReport from "../../Views/Reports/ReportsData/CreditNoteReport/CreditNoteDetailsReport";
+import DebitNoteDetailsReport from "../../Views/Reports/ReportsData/DebitNoteReport/DebitNoteDetailsReport";
+import ExpenseDetailReport from "../../Views/Reports/ReportsData/ExportReport/ExpenseDetailReport";
+import GerneralLedgerReport from "../../Views/Reports/ReportsData/AccountantsReport/GerneralLedgerReport";
+// import CurrencyList from "../../Views/ManageCurrency/CurrencyList";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -391,10 +399,10 @@ const Sidebar = ({ loggedInUserData }) => {
       case "dsr-flight-details":
         return <PassengerFlightDetails />
       case "dsr-visa-details":
-          return <PassengerVisaDetails />
+        return <PassengerVisaDetails />
 
-       //mice
-       case "create-mice":
+      //mice
+      case "create-mice":
         return <CreateMICE />;
       case "mice":
         return <MICES />;
@@ -406,7 +414,7 @@ const Sidebar = ({ loggedInUserData }) => {
       case "dsr-flight-details":
         return <PassengerFlightDetails />
       case "dsr-visa-details":
-          return <PassengerVisaDetails />
+        return <PassengerVisaDetails />
 
       //customers
       case "customers":
@@ -599,9 +607,38 @@ const Sidebar = ({ loggedInUserData }) => {
       // sale reports
       case "sale-by-customer-report":
         return <SaleReports />;
+      case "sale-by-item-report":
+        return <SaleByItemReport />;
 
+      // purchase reports
+      case "purchase-by-vendor-report":
+        return <PurchaseByVendorReport />;
+
+      // receivables reports
+      case "customer-balance-report":
+        return <CustomerBalanceSummaryReport />;
+
+      // payables reports
+      case "vendor-balance-report":
+        return <VendorBalanceSummaryReport />;
+
+      // credit note reports
+      case "credit-note-details-report":
+        return <CreditNoteDetailsReport />;
+
+      // debit note reports
+      case "debit-note-details-report":
+        return <DebitNoteDetailsReport />;
+
+      // debit note reports
+      case "expense-details-report":
+        return <ExpenseDetailReport />;
+
+      // account reports
       case "account-transactions-report":
         return <AccountTransaction />;
+      case "gernal-ledger-report":
+        return <GerneralLedgerReport />;
 
       case "profit_and_loss":
         return <Profit_and_loss />;
@@ -642,7 +679,7 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "create-user-masters":
         return <UserMasters />;
-  
+
       case "manage-currency":
         return <ManageCurrency />;
       case "sequence-format":

@@ -109,8 +109,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-              formData?.image_url !== null &&
-              formData?.image_url !== "0" ? (
+                formData?.image_url !== null &&
+                formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -127,8 +127,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-              formData?.upload_image !== null &&
-              formData?.upload_image !== "0" ? (
+                formData?.upload_image !== null &&
+                formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -789,9 +789,8 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${
-                currentPOP ? "close_opop" : ""
-              }`}
+              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1124,9 +1123,8 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${
-                          currentPOP ? "close_opop" : ""
-                        }`}
+                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                          }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
@@ -1233,6 +1231,7 @@ export const MultiImageUploadDocument = ({
   setImgeLoader,
   index,
 }) => {
+
   const [showPopup, setShowPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(""); // For the popup
   const popupRef = useRef(null);
@@ -1403,7 +1402,7 @@ export const SingleImageUploadDocument = ({
             updatedEmployeeDetails[index] = {
               ...updatedEmployeeDetails[index],
               photo: url,
-              photoUploadDate: currentDate, 
+              photoUploadDate: currentDate,
             };
             return updatedEmployeeDetails;
           });
@@ -1432,69 +1431,71 @@ export const SingleImageUploadDocument = ({
   };
 
   const isPhotoExpired = expiryDate && new Date() > expiryDate;
-
+  // console.log("formdata", formData)
+  console.log("phooooooooooooooo", photo)
+  console.log("isPhotoExpired", isPhotoExpired)
   return (
     <>
-  {!photo || isPhotoExpired  ? (
-    <div id="formofcreateitems" style={{ width: "140px" }}>
-      <div className="form_commonblock">
-        <div id="inputx1">
-          <div id="imgurlanddesc">
-            <div className="form-group" style={{ width: "145px" }}>
-              <div className="file-upload">
-                <input
-                  type="file"
-                  name="photo"
-                  id={`file-${index}`} // Use index in id for uniqueness
-                  className="inputfile"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-                <span style={{ cursor: "pointer" }}>
-                  {otherIcons.export_svg}
-                </span>
-                <label htmlFor={`file-${index}`} className="file-label">
-                  {formData?.photo ? "Change Photo" : "Browse Files"}
-                </label>
+      {!photo || isPhotoExpired ? (
+        <div id="formofcreateitems" style={{ width: "140px" }}>
+          <div className="form_commonblock">
+            <div id="inputx1">
+              <div id="imgurlanddesc">
+                <div className="form-group" style={{ width: "145px" }}>
+                  <div className="file-upload">
+                    <input
+                      type="file"
+                      name="photo"
+                      id={`file-${index}`} // Use index in id for uniqueness
+                      className="inputfile"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                    <span style={{ cursor: "pointer" }}>
+                      {otherIcons.export_svg}
+                    </span>
+                    <label htmlFor={`file-${index}`} className="file-label">
+                      {formData?.photo ? "Change Photo" : "Browse Files"}
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  ) : (
-    <div style={{  position: "relative" }}>
-      {/* Show image preview */}
-      <img
-        src={photo}
-        alt="Uploaded"
-        style={{
-          width: "50px",
-          height: "50px",
-          objectFit: "cover",
-        }}
-      />
-      <div
-        id="buttonsdata"
-        style={{
-          position: "absolute",
-          top: "-6px",
-          right: "-6px",
-          zIndex: 1, // Ensures the icon is above the image
-        }}
-      >
-        <Link onClick={handleDeletePhoto} className="linkx3">
-          <RxCross2 />
-        </Link>
-      </div>
-      {isPhotoExpired && (
-        <p style={{ color: "red", fontSize: "12px" }}>
-          This photo has expired.
-        </p>
+      ) : (
+        <div style={{ position: "relative" }}>
+          {/* Show image preview */}
+          <img
+            src={photo}
+            alt="Uploaded"
+            style={{
+              width: "50px",
+              height: "50px",
+              objectFit: "cover",
+            }}
+          />
+          <div
+            id="buttonsdata"
+            style={{
+              position: "absolute",
+              top: "-6px",
+              right: "-6px",
+              zIndex: 1, // Ensures the icon is above the image
+            }}
+          >
+            <Link onClick={handleDeletePhoto} className="linkx3">
+              <RxCross2 />
+            </Link>
+          </div>
+          {isPhotoExpired && (
+            <p style={{ color: "red", fontSize: "12px" }}>
+              This photo has expired.
+            </p>
+          )}
+        </div>
       )}
-    </div>
-  )}
-</>
+    </>
 
   );
 };

@@ -4,32 +4,22 @@ import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import DisableEnterSubmitForm from "../../Helper/DisableKeys/DisableEnterSubmitForm";
 import { useDispatch, useSelector } from "react-redux";
-import { customersList } from "../../../Redux/Actions/customerActions";
 import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
-import { accountLists, vendorsLists } from "../../../Redux/Actions/listApisActions";
 import DatePicker from "react-datepicker";
-import { FaEye } from "react-icons/fa";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { updateAddresses } from "../../../Redux/Actions/globalActions";
-import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
-import CustomDropdown14 from "../../../Components/CustomDropdown/CustomDropdown14";
-import DeleveryAddress from "./DeleveryAddress";
-import ViewVendorsDetails from "./ViewVendorsDetails";
+
 import {
   createPurchases,
   purchasesDetails,
 } from "../../../Redux/Actions/purchasesActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import useOutsideClick from "../../Helper/PopupData";
-import { handleKeyPress } from "../../Helper/KeyPressInstance";
-import { formatDate, todayDate } from "../../Helper/DateFormat";
-import { getCurrencyFormData, handleDropdownError, orgnizationEmail, parseJSONofString, ShowMasterData, stringifyJSON, validateItems } from "../../Helper/HelperFunctions";
-import NumericInput from "../../Helper/NumericInput";
+import { formatDate } from "../../Helper/DateFormat";
+import { preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
 import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
 import { SelectAddress } from "../../Common/SelectAddress";
 import { activeOrg_details } from '../../Helper/HelperFunctions';
 import GenerateAutoId from "../Common/GenerateAutoId";
@@ -38,8 +28,9 @@ import SubmitButton from "../../Common/Pagination/SubmitButton";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 
 import { handleFormSubmitCommon } from "../../Purchases/Utils/handleFormSubmit"
-import { showToast } from "../../Helper/ComponentHelper/toastConfigure";
 import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
+import { Toaster } from "react-hot-toast";
+import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
 
 const CreatePurchaseOrder = () => {
   const dispatch = useDispatch();
@@ -48,8 +39,8 @@ const CreatePurchaseOrder = () => {
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const vendorAddress = useSelector((state) => state?.updateAddress);
-  const [cusData, setcusData] = useState(null);
-  const [cusData2, setcusData2] = useState(null);
+  // const [cusData, setCusData] = useState(null);
+  const [cusData2, setCusData2] = useState(null);
 
   const paymentTerms = ShowMasterData("8");
 
@@ -73,239 +64,53 @@ const CreatePurchaseOrder = () => {
     duplicate: isDuplicate,
   } = Object.fromEntries(params.entries());
 
-  const [isVendorSelect, setIsVendorSelect] = useState(false);
-  const [isItemSelect, setIsItemSelect] = useState(false);
-  const [isCustomerSelect, setIsCustomerSelect] = useState(false);
-  const [imgLoader, setImgeLoader] = useState("");
-
-
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const [formData, setFormData] = useState({
-    purchase_type: "purchase_order",
-    transaction_date: formatDate(new Date()),
-    warehouse_id: localStorage.getItem("selectedWarehouseId"),
-    fy: localStorage.getItem("FinancialYear"),
-    purchase_order_id: "PO-254",
-    order_no: null,
-    vendor_id: null,
-    currency: getCurrencyFormData,
-    vendor_name: "",
-    display_name: "",
-    customer_id: "",
+  // 
+  const {
+    formData,
+    setFormData,
+    addSelect,
+    setAddSelect,
+    isVendorSelect,
+    setIsVendorSelect,
+    itemErrors,
+    setItemErrors,
+    imgLoader,
+    setImgLoader,
+    cusData,
+    setCusData,
+  } = useEditPurchaseForm(
+    {
+      purchase_type: 'purchase_order',
+      purchase_order_id: "",
+      expected_delivery_Date: formatDate(new Date()),
+      delivery_address: [
+        {
+          address_type: "1",
+          address: null,
+          customer_id: null
+        }
+      ],
+    },//for set new key's and values
+    [], // Keys to remove
+    purchseDetail,
+    itemId,
+    isEdit,
+    isDuplicate
+  );
 
-    delivery_address: [
-      {
-        address_type: "1",
-        address: null,
-        customer_id: null
-      }
-    ],
+  // console.log("formData in purchases", formData)
 
-    taxes: [{
-      CGST: null,
-      SGST: null,
-      IGST: null
-    }],
-
-    phone: "",
-    sale_person: "",
-    email: "",
-    terms_and_condition: "",
-    vendor_note: "",
-    subtotal: null,
-    discount: null,
-    tcs: null,
-    shipping_charge: null,
-    adjustment_charge: null,
-    total: null,
-    reference: "",
-    upload_image: null,
-    payment_terms: null,
-    date: null,
-    place_of_supply: null,
-    expected_delivery_Date: formatDate(new Date()),
-    shipment_preference: null,
-    customer_note: null,
-    discount: "",
-    address: "",
-    tax_amount: null,
-    total_charges: null,
-    total_gross_amount: null,
-    charges: [
-      {
-        account_id: null,
-        amount: null
-      }
-    ],
-    items: [
-      {
-        item_id: "",
-        item_name: "",
-        hsn_code: "",
-        quantity: 1,
-        unit_id: null,
-        gross_amount: null,
-        tax_name: "",
-        final_amount: null,
-        tax_rate: null,
-        tax_amount: null,
-        discount: 0,
-        discount_type: 1,
-        item_remark: null,
-      },
-    ],
-  });
-
-  const [itemErrors, setItemErrors] = useState([]);
-
-  useEffect(() => {
-    if (
-      (itemId && isEdit && purchseDetail)
-      // || (itemId && isDuplicate && purchseDetail)
-    ) {
-      const calculateTotalTaxAmount = () => {
-        return purchseDetail?.items?.reduce((total, entry) => {
-          return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
-        }, 0);
-      };
-      const itemsFromApi = purchseDetail.items?.map((item) => ({
-        item_id: +item?.item_id,
-        quantity: +item?.quantity,
-        unit_id: item?.unit_id,
-        item_name: item?.item_name,
-        gross_amount: +item?.gross_amount,
-        rate: +item?.rate,
-        hsn_code: item?.hsn_code,
-        final_amount: +item?.final_amount,
-        tax_rate: +item?.tax_rate,
-        tax_amount: +item?.tax_amount,
-        discount: +item?.discount,
-        discount_type: +item?.discount_type,
-        item_remark: item?.item_remark,
-        item_name: item?.item_name,
-        tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
-      }));
-
-      const all_changes = parseJSONofString(purchseDetail?.charges) || [];
-      const total_charges = all_changes?.reduce((acc, item) => {
-        const amount = item.amount && !isNaN(item.amount) ? parseFloat(item.amount) : 0;
-        return acc + amount;
-      }, 0);
-
-      setFormData({
-        ...formData,
-        id: isEdit ? purchseDetail?.id : 0,
-        purchase_type: "purchase_order",
-        transaction_date: purchseDetail.transaction_date,
-        warehouse_id: purchseDetail.warehouse_id,
-        purchase_order_id: purchseDetail.purchase_order_id,
-        vendor_id: +purchseDetail.vendor_id,
-        upload_image: purchseDetail.upload_image,
-        customer_type: purchseDetail.customer_type,
-        customer_name: purchseDetail.customer_name,
-        display_name: purchseDetail.display_name,
-        customer_id: deliveryAddress?.customer_id || "",
-        // delivery_address: deliveryAddressArray,
-        phone: purchseDetail.phone,
-        email: purchseDetail.email,
-        reference: purchseDetail?.reference == "0" ? "" : purchseDetail?.reference,
-        currency: purchseDetail.currency,
-        place_of_supply: purchseDetail?.place_of_supply == "0" ? "" : purchseDetail?.place_of_supply,
-        // expiry_date: purchseDetail.expiry_date,
-        expected_delivery_Date: purchseDetail.expected_delivery_Date,
-        payment_terms: purchseDetail.payment_terms,
-        sale_person: purchseDetail.sale_person == "0" ? "" : purchseDetail.sale_person,
-        vendor_note: purchseDetail?.vendor_note == "0" ? "" : purchseDetail?.vendor_note,
-        terms_and_condition: purchseDetail.terms_and_condition,
-        fy: purchseDetail.fy,
-        subtotal: purchseDetail.subtotal,
-        shipping_charge: purchseDetail.shipping_charge,
-        adjustment_charge: purchseDetail.adjustment_charge,
-        total: ((+purchseDetail.subtotal) + (+purchseDetail.shipping_charge) + (+ purchseDetail.adjustment_charge) + calculateTotalTaxAmount()),
-        tax_amount: calculateTotalTaxAmount(),
-        customer_id: deliveryAddress?.customer_id,
-        charges: all_changes || [],
-        total_charges: total_charges,
-        items: itemsFromApi || [],
-      });
-
-      if (purchseDetail.upload_image) {
-        setImgeLoader("success");
-      }
-
-      if (purchseDetail?.address) {
-        const parsedAddress = purchseDetail?.address ? JSON.parse(purchseDetail?.address) : [];
-        const dataWithParsedAddress = {
-          ...purchseDetail,
-          address: parsedAddress,
-        };
-        setAddSelect({
-          billing: dataWithParsedAddress?.address?.billing,
-          shipping: dataWithParsedAddress?.address?.shipping,
-        });
-        setcusData(dataWithParsedAddress?.vendor);
-      }
-
-
-      // if (purchseDetail?.delivery_address) {
-      //   const deliveryAddressData = {
-      //     address_type: addressType,
-      //     address: deliveryAddress?.address || null,
-      //     customer_id: deliveryAddress?.customer_id || null,
-      //   };
-
-      //   setAddSelectCus({
-      //     billing: deliveryAddressData?.address?.billing,
-      //     shipping: deliveryAddressData?.address?.shipping,
-      //   })
-      //   setcusData2(deliveryAddressData?.customer_id);
-      // }
-
-      if (purchseDetail?.address) {
-        const parsedAddress = JSON.parse(purchseDetail?.address);
-        const dataWithParsedAddress = {
-          ...purchseDetail,
-          address: parsedAddress
-        };
-        setAddSelect({
-          billing: dataWithParsedAddress?.address?.billing,
-          shipping: dataWithParsedAddress?.address?.shipping,
-        });
-        setcusData(dataWithParsedAddress?.vendor)
-      }
-
-      if (purchseDetail.vendor_id) {
-        setIsVendorSelect(true);
-      }
-      const errors = validateItems(quoteDetails?.items || []);
-      if (errors.length > 0) {
-        setItemErrors(errors);
-      }
-     
-    }
-  }, [purchseDetail, itemId, isEdit]);
-
-
-
-
-  // for address select
-  const [addSelect, setAddSelect] = useState({
-    billing: "",
-    shipping: "",
-  });
-
-
+  // set billing/shipping when customer select
   const [addSelectCus, setAddSelectCus] = useState({
     billing: "",
     shipping: "",
   });
 
-  // console.log("cussssssssaaaaaaaaaaaaaaa", addSelect)
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let newValue = value;
+    let newValue = value; ``
 
     if (name === "shipping_charge" || name === "adjustment_charge") {
       newValue = parseFloat(value) || 0; // Convert to float or default to 0
@@ -350,15 +155,9 @@ const CreatePurchaseOrder = () => {
     setFormData({
       ...formData,
       [name]: newValue,
-      total: calculateTotal(
-        formData.subtotal,
-        newValue,
-        formData.adjustment_charge
-      ),
-      address: addSelect ? JSON.stringify(addSelect) : null,
-
     });
   };
+
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -375,18 +174,6 @@ const CreatePurchaseOrder = () => {
   const dropdownRef = useRef(null);
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
-  const dropdownRef3 = useRef(null);
-
-  const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-    const subTotalValue = parseFloat(subtotal) || 0;
-    const shippingChargeValue = parseFloat(shippingCharge) || 0;
-    const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-    return (
-      subTotalValue +
-      shippingChargeValue +
-      adjustmentChargeValue
-    ).toFixed(2);
-  };
 
   const handleFormSubmit = (e) => {
     handleFormSubmitCommon({
@@ -394,7 +181,7 @@ const CreatePurchaseOrder = () => {
       formData,
       isVendorSelect,
       dropdownRef1,
-      // isItemSelect,
+      isItemSelect,
       setItemErrors,
       dropdownRef2,
       dispatch,
@@ -403,7 +190,6 @@ const CreatePurchaseOrder = () => {
       isEdit,
       showAllSequenceId,
       itemId,
-      // convert,
       type: "purchase order",
       additionalData: {
         delivery_address: stringifyJSON(formData?.delivery_address),
@@ -437,34 +223,15 @@ const CreatePurchaseOrder = () => {
     if (itemId && isEdit && !purchseDetail) {
       dispatch(purchasesDetails({ id: itemId, fy: localStorage.getItem('FinancialYear'), }));
     }
-
-    dispatch(accountLists())
-    dispatch(productTypeItemAction(""))
+    dispatch(productTypeItemAction(""));
   }, [dispatch, isEdit, itemId]);
-
-
-
-  const handleDateChange = (date) => {
-    setFormData({
-      ...formData,
-      expected_delivery_Date: formatDate(date),
-    });
-  };
-
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
-
-
-  const handleChildData = (data) => {
-    setDeliveryAddress(data);
-  };
-
 
   return (
     <>
       {purchseDetails?.loading === true ? <Loader02 /> : <>
         {(createPurchse?.loading || purchaseStatus?.loading || vendorAddress?.loading || freezLoadingImg) && <MainScreenFreezeLoader />}
         <TopLoadbar />
-
 
         <div className="formsectionsgrheigh">
           <div id="Anotherbox" className="formsectionx2">
@@ -502,7 +269,7 @@ const CreatePurchaseOrder = () => {
                             onChange={handleChange}
                             name="vendor_id"
                             defaultOption="Select Vendor Name"
-                            setcusData={setcusData}
+                            setcusData={setCusData}
                             cusData={cusData}
                             type="vendor"
                             required
@@ -520,7 +287,7 @@ const CreatePurchaseOrder = () => {
                                     }
                                   }}
                                 >
-                                  Hide Customer Information
+                                  Hide Vendor Information
                                 </button>
                               ) : (
                                 <button
@@ -532,7 +299,7 @@ const CreatePurchaseOrder = () => {
                                     }
                                   }}
                                 >
-                                  View Customer Information
+                                  View Vendor Information
                                 </button>
                               )}
                             </div>
@@ -558,79 +325,9 @@ const CreatePurchaseOrder = () => {
                           viewAllCusDetails={viewAllCusDetails}
                           setViewAllCusDetails={setViewAllCusDetails}
                           type="vendor"
-                        //  section="sales"
                         />
                       </div>
-
-                      {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-
                     </div>
-                    {/* {deliveryAddress === "1" ? (
-                      <>
-                        <div
-                          className="s45w5812cusphxs1"
-                          style={{ fontSize: "13px", fontWeight: 400 }}
-                        >
-                          <p className="dex1s2schilds2">
-                            <p style={{ fontWeight: 700, display: "inline" }}>
-                              Orgnization Name :
-                            </p>
-                            {name}
-                          </p>
-                          <p className="dex1s2schilds2">
-                            <p style={{ fontWeight: 700, display: "inline" }}>
-                              Email :{" "}
-                            </p>
-                            {email}
-                          </p>
-                          <p className="dex1s2schilds2">
-                            <p style={{ fontWeight: 700, display: "inline" }}>
-                              Mobile No :{" "}
-                            </p>
-                            {mobile_no}
-                          </p>
-                          <p className="dex1s2schilds2">
-                            <p style={{ fontWeight: 700, display: "inline" }}>
-                              Address :
-                            </p>{" "}
-                            {street1} {street2}
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="form_commonblock">
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
-                              <CustomDropdown10
-                                ref={dropdownRef2}
-                                label="Customer Name"
-                                options={cusList?.data?.user}
-                                value={formData.customer_id}
-                                onChange={handleChange}
-                                name="customer_id"
-                                defaultOption="Select Customer"
-                                setcusData={setcusData2}
-                                type="vendor"
-                                required
-                              />
-                            </span>
-                          </div>
-                          <SelectAddress
-                            addSelect={addSelectCus}
-                            setAddSelect={setAddSelectCus}
-                            formData={formData}
-                            setFormData={setFormData}
-                            cusData={cusData2}
-                            viewAllCusDetails={viewAllCusDetails}
-                            setViewAllCusDetails={setViewAllCusDetails}
-                            module
-                            type="customer"
-                          />
-                        </div>
-                      </>
-                    )} */}
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -652,8 +349,6 @@ const CreatePurchaseOrder = () => {
                             type="text"
                             value={formData.reference}
                             onChange={handleChange}
-                            // disabled
-
                             name="reference"
                             placeholder="Enter Reference Number"
                           />
@@ -703,7 +398,6 @@ const CreatePurchaseOrder = () => {
                         </span >
                       </div>
 
-
                       <div className="form_commonblock">
                         <label>Expected Delivery Date</label>
                         <span>
@@ -719,7 +413,7 @@ const CreatePurchaseOrder = () => {
                             }
                             name="expected_delivery_Date"
                             placeholderText="Enter Purchase Order Date"
-                            dateFormat="dd-MMM-yyyy"
+                            dateFormat="dd-MM-yyyy"
                             minDate={formData.transaction_date}
                           />
                         </span>
@@ -731,7 +425,7 @@ const CreatePurchaseOrder = () => {
                           {otherIcons.placeofsupply_svg}
                           <input
                             type="text"
-                            value={formData.place_of_supply}
+                            value={preventZeroVal(formData.place_of_supply)}
                             onChange={handleChange}
                             name="place_of_supply"
                             placeholder="Enter Place Of Supply"
@@ -747,7 +441,7 @@ const CreatePurchaseOrder = () => {
                           {otherIcons.vendor_svg}
                           <input
                             type="text"
-                            value={formData.sale_person}
+                            value={preventZeroVal(formData.sale_person)}
                             name="sale_person"
                             onChange={handleChange}
                             placeholder="Enter Sales Person"
@@ -768,11 +462,8 @@ const CreatePurchaseOrder = () => {
                       handleChange={handleChange}
                       itemErrors={itemErrors}
                       setItemErrors={setItemErrors}
-                      // setIsItemSelect={setIsItemSelect}
-                      // isItemSelect={isItemSelect}
                       extracssclassforscjkls={"extracssclassforscjkls"}
                       dropdownRef2={dropdownRef2}
-                      shwoCharges={true}
                     />
 
                     <div className="secondtotalsections485s sxfc546sdfr85234e">
@@ -783,7 +474,7 @@ const CreatePurchaseOrder = () => {
                             formsValues={{ handleChange, formData }}
                             placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
                             name="terms_and_condition"
-                            value={formData?.terms_and_condition}
+                            value={preventZeroVal(formData?.terms_and_condition)}
                           />
                         </div>
                       </div>
@@ -794,9 +485,18 @@ const CreatePurchaseOrder = () => {
                           setFormData={setFormData}
                           setFreezLoadingImg={setFreezLoadingImg}
                           imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
+                          setImgeLoader={setImgLoader}
                           component="purchase"
                         />
+
+                        {/* <ImageUpload
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgLoader}
+                          component="purchase"
+                        /> */}
                       </div>
                     </div>
                   </div>
@@ -806,7 +506,7 @@ const CreatePurchaseOrder = () => {
               </div>
             </DisableEnterSubmitForm>
           </div>
-          {/* <Toaster /> */}
+          <Toaster />
         </div>
       </>}
     </>

@@ -1,7 +1,7 @@
 import React from "react";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import {
-  activeOrg_details, 
+  activeOrg_details,
   getDateStatus,
   getDateStatus1,
 } from "../../Helper/HelperFunctions";
@@ -15,24 +15,24 @@ export const ShowAllStatus = ({ quotation }) => {
         quotation?.status == 0
           ? "draftClassName"
           : quotation?.status == 1
-          ? "approvedClassName"
-          : quotation?.status == 2
-          ? "declinedClassName"
-          : quotation?.status == 3
-          ? "sentClassName"
-          : quotation?.status == 4
-          ? "sentClassName"
-          : quotation?.status == 6
-          ? quotation?.sale_order_id
-            ? "openClassName"
-            : quotation?.quotation_id
-            ? "sentClassName3"
-            : "convertedClassName"
-          : quotation?.status == "7"
-          ? "saleOrderedClassName"
-          : quotation?.status == "8"
-          ? "approvedClassName"
-          : "defaultClassName"
+            ? "approvedClassName"
+            : quotation?.status == 2
+              ? "declinedClassName"
+              : quotation?.status == 3
+                ? "sentClassName"
+                : quotation?.status == 4
+                  ? "sentClassName"
+                  : quotation?.status == 6
+                    ? quotation?.sale_order_id
+                      ? "openClassName"
+                      : quotation?.quotation_id
+                        ? "sentClassName3"
+                        : "convertedClassName"
+                    : quotation?.status == "7"
+                      ? "saleOrderedClassName"
+                      : quotation?.status == "8"
+                        ? "approvedClassName"
+                        : "defaultClassName"
       }
     >
       {quotation?.status == "0" ? (
@@ -68,6 +68,33 @@ export const ShowAllStatus = ({ quotation }) => {
     </div>
   );
 };
+
+export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
+  return (
+    <div className="dropdownmenucustom">
+      {quotation?.status == "0" && (
+        <div
+          className="dmncstomx1"
+          onClick={() => changeStatus("accepted")}
+        >
+          {otherIcons?.check_accepted_svg}
+          Mark As Accepted
+        </div>
+      )
+      }
+      {!(quotation?.status == "1" || quotation?.status == "4") && (
+        <div
+          className="dmncstomx1"
+          style={{ cursor: "pointer" }}
+          onClick={() => changeStatus("delete")}
+        >
+          {otherIcons?.delete_svg} Delete
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const ShowAllStatusPurchase = ({ quotation }) => {
   return (
     <div
@@ -75,35 +102,35 @@ export const ShowAllStatusPurchase = ({ quotation }) => {
         quotation?.status == 0
           ? "draftClassName"
           : quotation?.status == 1
-          ? "approvedClassName"
-          : quotation?.status == 2
-          ? "declinedClassName"
-          : quotation?.status == 3
-          ? "sentClassName"
-          : quotation?.status == 4
-          ? "openClassName"
-          : quotation?.status == 6
-          ? "openClassName"
-          : quotation?.status == "7"
-          ? "approvedClassName"
-          : quotation?.status == "8"
-          ? "approvedClassName"
-          : "defaultClassName"
+            ? "approvedClassName"
+            : quotation?.status == 2
+              ? "declinedClassName"
+              : quotation?.status == 3
+                ? "sentClassName"
+                : quotation?.status == 4
+                  ? "openClassName"
+                  : quotation?.status == 6
+                    ? "openClassName"
+                    : quotation?.status == "7"
+                      ? "approvedClassName"
+                      : quotation?.status == "8"
+                        ? "approvedClassName"
+                        : "defaultClassName"
       }
     >
       {quotation?.status == "0"
         ? "Draft"
         : quotation?.status == "1"
-        ? "Approved"
-        : quotation?.status == "2"
-        ? "Decline"
-        : quotation?.status == "3"
-        ? "Transfer To GRN"
-        : quotation?.status == "4"
-        ? "Billed"
-        : quotation?.status == "6"
-        ? "Open"
-        : ""}
+          ? "Approved"
+          : quotation?.status == "2"
+            ? "Decline"
+            : quotation?.status == "3"
+              ? "Transfer To GRN"
+              : quotation?.status == "4"
+                ? "Billed"
+                : quotation?.status == "6"
+                  ? "Open"
+                  : ""}
     </div>
   );
 };
@@ -114,26 +141,26 @@ export const ShowAllStatus1 = ({ quotation, section }) => {
         quotation?.status == 0
           ? "draftClassName"
           : quotation?.status == 1
-          ? section == "invoices"
-            ? "approvedClassNameInvoice"
-            : "approvedClassNameInvoice"
-          : quotation?.status == 2
-          ? "declinedClassName"
-          : quotation?.status == 3
-          ? section === "invoice_approval"
-            ? "sentClassName2"
-            : "sentClassName"
-          : quotation?.status == 4
-          ? "approvedClassName"
-          : quotation?.status == 5
-          ? "paidClassName"
-          : quotation?.status == 6
-          ? "openClassName"
-          : quotation?.status == 7
-          ? "approvedClassName"
-          : quotation?.status == 8
-          ? "approvedClassName"
-          : "defaultClassName"
+            ? section == "invoices"
+              ? "approvedClassNameInvoice"
+              : "approvedClassNameInvoice"
+            : quotation?.status == 2
+              ? "declinedClassName"
+              : quotation?.status == 3
+                ? section === "invoice_approval"
+                  ? "sentClassName2"
+                  : "sentClassName"
+                : quotation?.status == 4
+                  ? "approvedClassName"
+                  : quotation?.status == 5
+                    ? "paidClassName"
+                    : quotation?.status == 6
+                      ? "openClassName"
+                      : quotation?.status == 7
+                        ? "approvedClassName"
+                        : quotation?.status == 8
+                          ? "approvedClassName"
+                          : "defaultClassName"
       }
     >
       {section === "invoice_approval" ? (
@@ -390,12 +417,12 @@ export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
   );
 };
 export const TermsAndConditions = () => {
-  const handleOpenTerms=()=>{
+  const handleOpenTerms = () => {
     window.open("/Naksha_Terms.pdf")
   }
   return (
     <>
-      <p onClick={handleOpenTerms} style={{cursor:"pointer", display:"flex", justifyContent:"center", color:"#5d369f", fontSize:"13px", marginBottom:"30px"}}>
+      <p onClick={handleOpenTerms} style={{ cursor: "pointer", display: "flex", justifyContent: "center", color: "#5d369f", fontSize: "13px", marginBottom: "30px" }}>
         Terms & Conditions
       </p>
     </>

@@ -5,26 +5,27 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { debitNotesDelete, debitNotesDetails, debitNotesStatus } from '../../../Redux/Actions/notesActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
-import { quotationStatus } from '../../../Redux/Actions/quotationActions';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 
 import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+
 import useOutsideClick from '../../Helper/PopupData';
-import { formatDate, formatDate3, generatePDF } from '../../Helper/DateFormat';
-import { showAmountWithCurrencySymbol, showRateWithPercent } from '../../Helper/HelperFunctions';
+import { formatDate, formatDate3 } from '../../Helper/DateFormat';
 import ShowMastersValue from '../../Helper/ShowMastersValue';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation ,FromToDetailsPurchases, TermsAndConditions} from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, FromToDetailsPurchases } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { generatePDF } from '../../Helper/createPDF';
+import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 
 const DebitNotesDetails = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
+    const componentRef = useRef(null);
 
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const masterData = useSelector(state => state?.masterData?.masterData);
 
     const quoteStatus = useSelector(state => state?.debitNoteStatus);
     const debitDelete = useSelector(state => state?.debitNoteDelete);
@@ -105,25 +106,24 @@ const DebitNotesDetails = () => {
 
 
     // pdf & print
-    const componentRef = useRef(null);
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-    });
+    const [loading, setLoading] = useState(false);
 
-    // const generatePDF = () => {
-    //     const input = document.getElementById('quotation-content');
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL('image/png');
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, 'PNG', 0, 0);
-    //         pdf.save('quotation.pdf');
-    //     });
-    // };
-    // pdf & print
+
+    const handleDownloadPDF = () => {
+        if (!debitDetail || !masterData) {
+            alert("Data is still loading, please try again.");
+            return;
+        }
+
+        const contentComponent = (
+            <PrintContent data={debitDetail} cusVenData={debitDetail?.vendor} masterData={masterData} moduleId={debitDetail?.debit_note_id} section="Debit Note" />
+        );
+        generatePDF(contentComponent, "Purchser_Order_Document.pdf", setLoading, 500);
+    };
 
     return (
         <>
-            {(quoteStatus?.loading || debitDelete?.loading) && <MainScreenFreezeLoader />}
+            {(quoteStatus?.loading || debitDelete?.loading || loading) && <MainScreenFreezeLoader />}
 
             {debitDetails?.loading ? <Loader02 /> :
                 <div ref={componentRef}>
@@ -145,26 +145,9 @@ const DebitNotesDetails = () => {
                                 className="mainx1"
                                 ref={dropdownRef1}
                             >
-                                <p>PDF/Print</p>
-                                {otherIcons?.arrow_svg}
-                                {showDropdownx1 && (
-                                    <div className="dropdownmenucustom">
-                                        <div
-                                            className="dmncstomx1 primarycolortext"
-                                            onClick={() => generatePDF(invoice?.items)}
-                                        >
-                                            {otherIcons?.pdf_svg}
-                                            PDF
-                                        </div>
-                                        <div
-                                            className="dmncstomx1 primarycolortext"
-                                            onClick={handlePrint}
-                                        >
-                                            {otherIcons?.print_svg}
-                                            Print
-                                        </div>
-                                    </div>
-                                )}
+                                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                                    PDF/Print
+                                </p>
                             </div>
 
 
@@ -271,13 +254,11 @@ const DebitNotesDetails = () => {
                             </div>
                         </div>
                         <MoreInformation sale={debitDetail?.sale_person} note={debitDetail?.vendor_note} tc={debitDetail?.terms_and_condition} section="Vendor" />
-                        <TermsAndConditions/>
                     </div>
                 </div>}
             <Toaster />
         </>
     )
 }
-
 
 export default DebitNotesDetails;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,30 +13,31 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { Toaster, toast } from "react-hot-toast";
 import { paymentRecDetail, updatePaymentRec } from '../../../Redux/Actions/PaymentRecAction';
 import { IoCheckbox } from 'react-icons/io5';
-import { formatDate, formatDate3 } from '../../Helper/DateFormat';
+import { formatDate, formatDate3, todayDate } from '../../Helper/DateFormat';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { billDetails, pendingBillLists } from '../../../Redux/Actions/billActions';
 import NumericInput from '../../Helper/NumericInput';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
-import { currencySymbol, handleDropdownError, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
+import { activeOrg_details, currencySymbol, handleDropdownError, preventZeroVal, sendData, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
+import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { isStateIdEqualAction, productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 
 const CreatePaymentMade = () => {
     const dispatch = useDispatch();
     const addUpdate = useSelector((state) => state?.updateAddress);
     const paymentDetails = useSelector((state) => state?.paymentRecDetail);
-    const itemListState = useSelector(state => state?.accountList);
+    const accList = useSelector(state => state?.accountList);
     const createPayment = useSelector((state) => state?.createPayment);
-    const accountList = itemListState?.data?.accounts || [];
+    const accountList = accList?.data?.accounts || [];
     const paymentDetail = paymentDetails?.data?.data?.payment;
-    const [cusData, setcusData] = useState(null);
     const pendingBill = useSelector((state) => state?.pendingBill);
     const vendorList = useSelector((state) => state?.vendorList);
-    const masterData = useSelector(state => state?.masterData?.masterData);
     const billDetail = useSelector(state => state?.billDetail);
     const billDetail1 = billDetail?.data?.bill;
 
@@ -48,115 +49,58 @@ const CreatePaymentMade = () => {
     const allPaymentMode = ShowMasterData("9")
 
     useEffect(() => {
-        if (itemId && isEdit || itemId && isDuplicate) {
+        if (itemId && paymentDetail) {
             setFetchDetails(paymentDetail);
-        } else if (itemId && (convert === "bill_to_payment")) {
+        } else if (itemId && (convert === "bill_to_payment" && billDetail1)) {
             setFetchDetails(billDetail1);
-
         }
-    }, [itemId, isEdit, convert, isDuplicate]);
+        if (fetchDetails?.credit || fetchDetails?.total) {
+            setIsAmoutSelect(true);
+        }
 
+    }, [itemId, isEdit, convert, billDetail1, isDuplicate, paymentDetail, fetchDetails]);
 
-    const [formData, setFormData] = useState({
-        id: 0,
-        payment_id: null,
-        vendor_id: null,
-        inout: 2,
-        credit: null, // amount received
-        bank_charges: null,
-        transaction_date: formatDate(new Date()), // payment date
-        // posting_date: "2024-04-18",
-        fy: localStorage.getItem('FinancialYear'),
-        payment_mode: 1,
-        to_acc: 50, // deposit to#
-        tax_deducted: 1,
-        tax_acc_id: 0,
-        display_name: null,
-        terms_and_condition: "",
-        reference: "",
-        vendor_note: null,
-        upload_image: null,
-        amt_excess: null,
-        entity_type: 1, // for sale    2-for purchase
-        transaction_id: 0,
-
-        entries: [
-            {
-                bill_id: null,
-                bill_no: null,
-                bill_amount: null,
-                amount: null,
-                balance_amount: null,
-                date: null,
-                // order_no: null,
-            }
-        ]
-    });
-
-    useEffect(() => {
-
-        if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && billDetail1 && convert) {
-            const itemsFromApi = fetchDetails?.entries?.map(item => ({
-                bill_no: item?.bill_no,
-                bill_id: item?.id,
-                bill_amount: item?.bill_amount,
-                balance_amount: item?.balance_amount,
-                amount: item?.amount,
-                date: formatDate(item?.bill?.transaction_date)
-            }));
-
-            setFormData({
-                ...formData,
-                id: isEdit ? itemId : 0,
-                payment_id: fetchDetails?.payment_id,
-                vendor_id: (+fetchDetails?.vendor_id),
-                credit: convert ? (fetchDetails?.total) : (+fetchDetails?.credit),
-                bank_charges: fetchDetails?.bank_charges,
-                transaction_date: fetchDetails?.transaction_date,
-                fy: fetchDetails?.fy,
-                payment_mode: (+fetchDetails?.payment_mode || 0),
-                to_acc: (+fetchDetails?.to_acc?.id || 50),
-                tax_deducted: (+fetchDetails?.tax_deducted || 0),
-                tax_acc_id: (+fetchDetails?.tax_acc_id || 0),
-                reference: fetchDetails?.reference == "0" ? "" : fetchDetails?.reference,
-                vendor_note: fetchDetails?.vendor_note,
-                upload_image: fetchDetails?.upload_image,
-                display_name: fetchDetails?.display_name,
-                payment_mode: fetchDetails?.payment_mode || 1,
-                amt_excess: (+fetchDetails?.amt_excess || 0),
-                // this details will be filled when there is one invoice
-                entity_type: fetchDetails?.entity_type, // for sale    2-for purchase
-                transaction_id: fetchDetails?.transaction_id,
-                // when there are multiple invoices
-
-                entries: itemsFromApi || []
-            });
-
-            if (fetchDetails?.vendor_id) {
-                setIsVendorSelect(true);
-            }
-            if (fetchDetails?.credit || fetchDetails?.total) {
-                setIsAmoutSelect(true)
-            }
-
-            if (fetchDetails?.upload_image) {
-                setImgeLoader("success");
-            }
-
-            if (fetchDetails?.vendor_id) {
-                const sendData = {
-                    fy: localStorage.getItem('FinancialYear'),
-                    warehouse_id: localStorage.getItem('selectedWarehouseId'),
-                    vendor_id: fetchDetails?.vendor_id,
+    const {
+        formData,
+        setFormData,
+        isVendorSelect,
+        setIsVendorSelect,
+        imgLoader,
+        setImgLoader,
+        cusData,
+        setCusData,
+    } = useEditPurchaseForm(
+        {
+            payment_id: null,
+            inout: 2,
+            credit: null,
+            bank_charges: null,
+            payment_mode: null,
+            to_acc: null, // deposit to#
+            tax_deducted: 1,
+            tax_acc_id: 0,
+            amt_excess: null,
+            entity_type: 1, // for sale    2-for purchase
+            entries: [
+                {
+                    bill_id: null,
+                    bill_no: null,
+                    bill_amount: null,
+                    amount: null,
+                    balance_amount: null,
+                    date: null,
                 }
-                dispatch(pendingBillLists(sendData, setInoiceData));
-            }
+            ]
+        },//for set new key's and values
+        ["charges", "items", "taxes"], // Keys to remove
+        fetchDetails,
+        itemId,
+        isEdit,
+        convert,
+    );
 
-
-        }
-    }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
-
-
+    // console.log("formdataaaaaaaaaa", formData)
+    // console.log("fetchDetailsfetchDetails", fetchDetails);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
     // Function to handle checkbox clicks
@@ -263,13 +207,12 @@ const CreatePaymentMade = () => {
             ...formData,
             amt_excess: (+formData?.credit) - calculateTotalAmount()
         })
-    }, [calculateTotalAmount()])
-
+    }, [calculateTotalAmount()], fetchDetails)
 
     const dropdownRef1 = useRef(null);
     const dropdownRef2 = useRef(null)
 
-    const [isVendorSelect, setIsVendorSelect] = useState(false);
+    // const [isVendorSelect, setIsVendorSelect] = useState(false);
     const [isAmountSelect, setIsAmoutSelect] = useState(false);
 
     const Navigate = useNavigate()
@@ -310,7 +253,19 @@ const CreatePaymentMade = () => {
             display_name: cusData?.display_name,
             email: cusData?.email,
             phone: cusData?.mobile_no,
+            transaction_date: todayDate(),
         }));
+
+        if (fetchDetails?.vendor_id) {
+            const sendData = {
+                fy: localStorage.getItem('FinancialYear'),
+                warehouse_id: localStorage.getItem('selectedWarehouseId'),
+                vendor_id: fetchDetails?.vendor_id,
+            }
+            dispatch(pendingBillLists(sendData, setInoiceData));
+        }
+        dispatch(productTypeItemAction(""));
+
     }, [cusData]);
 
     useEffect(() => {
@@ -318,21 +273,26 @@ const CreatePaymentMade = () => {
             id: itemId,
 
         };
-        dispatch(accountLists());
 
         if (itemId && !paymentDetail) {
             dispatch(paymentRecDetail(queryParams));
         }
 
-        if (itemId && convert && !billDetail) {
+        if (itemId && convert && !billDetail1) {
             dispatch(billDetails(queryParams));
         }
 
     }, [dispatch, itemId, convert]);
 
-    const [imgLoader, setImgeLoader] = useState("");
+    // const [imgLoader, setImgLoader] = useState("");
 
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        ...sendData
+    }), []);
+
+    useFetchApiData(accountLists, payloadGenerator, []);
 
 
     return (
@@ -350,7 +310,7 @@ const CreatePaymentMade = () => {
                         </h1>
                     </div>
                     <div id="buttonsdata">
-                        <Link to={"/dashboard/quotation"} className="linkx3">
+                        <Link to={"/dashboard/payment-made"} className="linkx3">
                             <RxCross2 />
                         </Link>
                     </div>
@@ -373,7 +333,7 @@ const CreatePaymentMade = () => {
                                                     onChange={handleChange}
                                                     name="vendor_id"
                                                     defaultOption="Select Vendor"
-                                                    setcusData={setcusData}
+                                                    setcusData={setCusData}
                                                     cusData={cusData}
                                                     type="vendor"
                                                 />
@@ -512,7 +472,7 @@ const CreatePaymentMade = () => {
                                             <label>Reference</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.reference} onChange={handleChange}
+                                                <input type="text" value={preventZeroVal(formData.reference)} onChange={handleChange}
                                                     name='reference'
                                                     placeholder='Enter Reference' />
                                             </span>
@@ -561,9 +521,9 @@ const CreatePaymentMade = () => {
 
                                                                     <div style={{ marginLeft: "80px" }}>   <td className="sfdjklsd1xs2w2" >{val?.bill_no}</td></div>
 
-                                                                    <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>{showAmountWithCurrencySymbol(val?.bill_amount?.toFixed(2))}</td>
+                                                                    <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>{showAmountWithCurrencySymbol((parseInt(val?.bill_amount))?.toFixed(2))}</td>
 
-                                                                    <td className="sfdjklsd1xs2w3" style={{ textAlign: "right", width: "23%" }}>{showAmountWithCurrencySymbol(val?.balance_amount?.toFixed(2))}</td>
+                                                                    <td className="sfdjklsd1xs2w3" style={{ textAlign: "right", width: "23%" }}>{showAmountWithCurrencySymbol((parseInt(val?.balance_amount))?.toFixed(2))}</td>
 
                                                                     <td className="sfdjklsd1xs2w3">
 
@@ -659,7 +619,7 @@ const CreatePaymentMade = () => {
                                                     formsValues={{ handleChange, formData }}
                                                     placeholder='Will be displayed on the estimate'
                                                     name="vendor_note"
-                                                    value={formData?.vendor_note}
+                                                    value={preventZeroVal(formData?.vendor_note)}
                                                 />
                                             </div>
 
@@ -690,12 +650,12 @@ const CreatePaymentMade = () => {
                                                     />
                                                 </div>
                                                 <div className='clcsecx12s1'>
-                                                    <label>Amount In Blance: ({currencySymbol})</label>
+                                                    <label>Amount In Balance: ({currencySymbol})</label>
                                                     <input
                                                         className='inputsfocalci465s'
                                                         readOnly
                                                         type="text"
-                                                        value={formData?.amt_excess?.toFixed(2)}
+                                                        value={(parseFloat(formData?.amt_excess)?.toFixed(2))}
                                                         placeholder='0.00'
                                                         style={{ color: formData?.amt_excess < 0 ? 'rgb(255, 46, 18)' : 'black', }}
                                                     />
@@ -719,7 +679,7 @@ const CreatePaymentMade = () => {
                                                     formsValues={{ handleChange, formData }}
                                                     placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
                                                     name="terms_and_condition"
-                                                    value={formData.terms_and_condition == 0 ? "" : formData.terms_and_condition}
+                                                    value={preventZeroVal(formData?.terms_and_condition)}
                                                 />
 
                                             </div>
@@ -733,7 +693,7 @@ const CreatePaymentMade = () => {
                                                     setFormData={setFormData}
                                                     setFreezLoadingImg={setFreezLoadingImg}
                                                     imgLoader={imgLoader}
-                                                    setImgeLoader={setImgeLoader}
+                                                    setImgeLoader={setImgLoader}
                                                     component="purchase"
                                                 />
                                             </div>

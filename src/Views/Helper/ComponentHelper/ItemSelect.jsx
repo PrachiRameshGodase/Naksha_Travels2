@@ -198,7 +198,7 @@ const ItemSelect = ({
   ]);
 
   const handleItemChange = (index, field, value) => {
-  
+
     const newItems = [...formData.items];
     const newErrors = [...itemErrors];
 
@@ -983,8 +983,8 @@ export const ItemSelectGRM = ({
   formData,
   setFormData,
   handleChange,
-  setIsItemSelect,
-  isItemSelect,
+  itemErrors,
+  setItemErrors,
   extracssclassforscjkls,
   dropdownRef2,
   note,
@@ -1098,6 +1098,7 @@ export const ItemSelectGRM = ({
       updatedTotalCharges = calculateTotalCharges(newCharges);
       setTotalCharges(updatedTotalCharges);
     }
+
     if (field === "item_name") {
       newItems[index].item_name = value;
       newItems[index].item_id = "";
@@ -1105,10 +1106,11 @@ export const ItemSelectGRM = ({
     }
 
     if (field === "item_name" && value !== "") {
-      setIsItemSelect(true);
+      setItemErrors(true);
     } else if (field === "item_name" && value === "") {
-      setIsItemSelect(false);
+      setItemErrors(false);
     }
+
     // Update item details
     if (field === "item_id") {
       const selectedItem = itemList?.data?.item?.find(
@@ -1125,8 +1127,9 @@ export const ItemSelectGRM = ({
           item_id: selectedItem?.id,
         };
       }
-      setIsItemSelect(value !== "");
+      setItemErrors(value !== "");
     }
+
     else if (field === "unit_id") {
       newItems[index].unit_id = value;
     }
@@ -1208,7 +1211,7 @@ export const ItemSelectGRM = ({
   }, [totalCharges]);
 
   const handleGRNReset = (index) => {
-    setIsItemSelect(false);
+    setItemErrors(false);
     setIsGrnQntySelect(false);
     const newItems = [...formData?.items];
     newItems[index] = {
@@ -1618,7 +1621,7 @@ export const ItemSelectGRM = ({
               </>
             ))}
           </div>
-          {!isItemSelect && (
+          {!itemErrors && (
             <p className="error-message">
               {otherIcons.error_svg}
               Please Select Item
@@ -1807,9 +1810,9 @@ export const ItemSelectGRM = ({
               </>
             ))}
           </div>
-          {/* {!isItemSelect && <p className="error-message">
-                        {otherIcons.error_svg}
-                        Please Select An Item</p>} */}
+          {!itemErrors && <p className="error-message">
+            {otherIcons.error_svg}
+            Please Select An Item</p>}
 
           <button
             id="additembtn45srow"

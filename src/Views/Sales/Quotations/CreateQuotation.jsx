@@ -151,6 +151,7 @@ const CreateQuotation = () => {
       }, 500);
 
     }
+
     else if (errors.length > 0) {
       setItemErrors(errors);
       if (!isPartiallyInViewport(dropdownRef2.current)) {

@@ -1,26 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
-import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { quotationDelete, quotationDetails, quotationStatus } from '../../../Redux/Actions/quotationActions';
 import Loader02 from "../../../Components/Loaders/Loader02";
 import { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { formatDate, generatePDF } from '../../Helper/DateFormat';
 import useOutsideClick from '../../Helper/PopupData';
 import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { deleteExpenses, expensesDetails } from '../../../Redux/Actions/expenseActions';
+import { deleteExpenses, expensesDetails, expensesStatus } from '../../../Redux/Actions/expenseActions';
 import { InsideExpenseDetailsBox } from '../../Items/InsideItemDetailsBox';
-import { TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { ShowDropdownContent1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
 
 const ExpenseDetails = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const dropdownRef2 = useRef(null);
+
 
     const expenseDetails = useSelector(state => state?.expenseDetail);
     const expenseDetail = expenseDetails?.data?.expense;
@@ -33,9 +30,7 @@ const ExpenseDetails = () => {
 
     useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
     useOutsideClick(dropdownRef, () => setShowDropdown(false));
-
-
-
+    useOutsideClick(dropdownRef2, () => setShowDropdown(false));
 
     const UrlId = new URLSearchParams(location.search).get("id");
 
@@ -77,10 +72,11 @@ const ExpenseDetails = () => {
                 default:
             }
 
+
             if (statusVal === "delete") {
                 dispatch(deleteExpenses(sendData, Navigate));
             } else {
-                dispatch(quotationStatus(sendData)).then(() => {
+                dispatch(expensesStatus(sendData)).then(() => {
                     setCallApi((preState) => !preState);
                 });
             }
@@ -133,7 +129,7 @@ const ExpenseDetails = () => {
                                 <p>Edit</p>
                             </div>
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
+                            {/* <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p>PDF/Print</p>
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
@@ -147,24 +143,18 @@ const ExpenseDetails = () => {
 
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
 
                             <div className="sepc15s63x63"></div>
-                            <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
-                                <img src="/Icons/menu-dots-vertical.svg" alt="" />
-                                {showDropdown && (
-                                    <div className="dropdownmenucustom">
+                            {expenseDetail?.status != "1" &&
+                                <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
+                                    <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-id="my-tooltip" data-tooltip-content="More Options" data-tooltip-place='bottom' />
+                                    {showDropdown && (
+                                        <ShowDropdownContent1 quotation={expenseDetail} changeStatus={changeStatus} />
+                                    )}
 
-                                        <div className='dmncstomx1' onClick={() => handleEditThing("duplicate")}>
-                                            {otherIcons?.duplicate_svg}
-                                            Duplicate</div>
-
-                                        <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
-                                            {otherIcons?.delete_svg}
-                                            Delete</div>
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            }
                             <Link to={"/dashboard/expenses"} className="linkx3">
                                 <RxCross2 />
                             </Link>
@@ -177,9 +167,7 @@ const ExpenseDetails = () => {
                         <div id="item-details">
                             <InsideExpenseDetailsBox itemDetails={expenseDetails?.data?.expense} />
                         </div>
-                        <TermsAndConditions/>
                     </div>
-
 
                 </div>}
             <Toaster />
