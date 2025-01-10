@@ -386,12 +386,12 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                                             </div>
                                         </div>
                                         <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
-                                            <CalculationSection
+                                            {/* <CalculationSection
                                                 formData={formData}
                                                 setFormData={setFormData}
                                                 handleChange={handleChange}
                                                 section="Hotel"
-                                            />
+                                            /> */}
                                         </div>
                                     </div>
                                 </div>

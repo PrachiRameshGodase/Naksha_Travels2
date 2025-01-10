@@ -56,7 +56,7 @@ const AddServices = ({ formData, setFormData }) => {
             final_amount: null,
             discount_type: 1,
             // item_remark: null,
-            data: data
+            name: data
         }
         if (services?.length === 0) {
             setServices([data]);
