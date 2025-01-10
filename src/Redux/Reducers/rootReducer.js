@@ -233,6 +233,7 @@ import {
   DeleteDSRReducer,
   DeletePassengerReducer,
   DSRDetailReducer,
+  DSRStatusReducer,
   listDSRreducer,
 } from "./DSRReducers";
 import {
@@ -253,6 +254,15 @@ import { createPassengerAssistReducer, passengerAssistDeleteReducer } from "./pa
 import { createPassengerInsuranceReducer, passengerInsuranceDeleteReducer } from "./passengerInsuranceReducers";
 import { createPassengerOthersReducer, passengerOthersDeleteReducer } from "./passengerOthersReducers";
 import { createUpdateOrgnizationReducer, orgnizationListReducer } from "./orgnizationReducers";
+import { AddMPassengerReducer, createMICEreducer, DeleteMICEReducer, DeleteMPassengerReducer, listMICEreducer, MICEDetailReducer, MICEStatusReducer } from "./MICEReducers";
+import { createPassengerMHotelReducer, passengerHotelMDetailReducer, passengerMHoteltDeleteReducer } from "./passengerMHotelReducers";
+import { createPassengerMAssistReducer, passengerMAssistDeleteReducer } from "./passengerMAssistsReducers";
+import { createPassengerMCarHireReducer, passengerMCarHireDeleteReducer } from "./passengerMCarHireReducers";
+import { createPassengerMVisaReducer, passengerMVisaDeleteReducer } from "./passengerMVisaReducers";
+import { createPassengerMFlightReducer, passengerMFlightDeleteReducer } from "./passengerMFlightReducers";
+import { createPassengerMInsuranceReducer, passengerMInsuranceDeleteReducer } from "./passengerMInsuranceReducers";
+import { createPassengerMOtherReducer, passengerMOtherDeleteReducer } from "./pasengerMOtherReducers";
+import { createUserMasterReducer, listUserMasterReducer, userMasterDeleteReducer } from "./userMasterReducers";
 const reducer = combineReducers({
   addItemsReducer,
 
@@ -323,7 +333,7 @@ const reducer = combineReducers({
   createPassengerHotel: createPassengerHotelReducer,
   passengerDetail: passengerHotelDetailReducer,
   passengerHotelDelete: passengerHoteltDeleteReducer,
-
+  
   createPassengerFlight: createPassengerFlightReducer,
   passengerFlightDelete: passengerFlighttDeleteReducer,
 
@@ -344,13 +354,47 @@ const reducer = combineReducers({
 
   createPassengerOthers: createPassengerOthersReducer,
   passengerOthersDelete: passengerOthersDeleteReducer,
-
+  
   createDSR: createDSRreducer,
   DSRList: listDSRreducer,
   DSRDetails: DSRDetailReducer,
   DSRDelete:DeleteDSRReducer,
+  DSRStatus:DSRStatusReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
+
+  createMICE: createMICEreducer,
+  MICEList: listMICEreducer,
+  MICEDetails: MICEDetailReducer,
+  MICEDelete:DeleteMICEReducer,
+  MICEStatus:MICEStatusReducer,
+  addPassenger: AddMPassengerReducer,
+  deletePassenger: DeleteMPassengerReducer,
+
+  //mice-passenger-services
+  createPassengerMHotel: createPassengerMHotelReducer,
+  passengerMDetail: passengerHotelMDetailReducer,
+  passengerMHotelDelete: passengerMHoteltDeleteReducer,
+
+  createPassengerMAssist: createPassengerMAssistReducer,
+  passengerAssistMDelete: passengerMAssistDeleteReducer,
+
+  createPassengerMCarHire: createPassengerMCarHireReducer,
+  passengerCarHireMDelete: passengerMCarHireDeleteReducer,
+
+  createPassengerMVisa: createPassengerMVisaReducer,
+  passengerVisaMDelete: passengerMVisaDeleteReducer,
+
+  createPassengerMFlight: createPassengerMFlightReducer,
+  passengerFlightMDelete: passengerMFlightDeleteReducer,
+
+  createPassengerMInsurance: createPassengerMInsuranceReducer,
+  passengerInsuranceMDelete: passengerMInsuranceDeleteReducer,
+
+  createPassengerMOther: createPassengerMOtherReducer,
+  passengerOtherMDelete: passengerMOtherDeleteReducer,
+
+ 
 
   masterData: masterDataReducer,
   autoId: autoGenerateIdReducer,
@@ -506,6 +550,10 @@ const reducer = combineReducers({
   //master
   masterCreate: createMasterReducer,
   masterList: listMasterReducer,
+
+  userMasterCreate: createUserMasterReducer,
+  userMasterList: listUserMasterReducer,
+  userMasterDelete:userMasterDeleteReducer,
 
   //manage all State data
   type: productTypeReducer,

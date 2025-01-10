@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  CreateMasterAction,
+  masterListAction,
+} from "../../Redux/Actions/mastersAction";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { RxCross2 } from "react-icons/rx";
-import { BsArrowRight } from "react-icons/bs";
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { CreateMasterAction } from "../../Redux/Actions/mastersAction";
-import { useNavigate } from "react-router-dom";
+import { SubmitButton7 } from "../Common/Pagination/SubmitButton";
 
 const CreateMaster = ({ popupContent }) => {
   const { setShowPopup, showPopup, isEdit, setSearchTrigger } = popupContent;
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
+  const createMaster = useSelector((state) => state?.masterCreate);
 
   const [formData, setFormData] = useState({
     id: 0,
@@ -23,6 +25,7 @@ const CreateMaster = ({ popupContent }) => {
     label: null,
     value_string: null,
     value: null,
+    note:null
   });
 
   const handleSubmitForm = async (e) => {
@@ -33,6 +36,7 @@ const CreateMaster = ({ popupContent }) => {
       };
       dispatch(CreateMasterAction(sendData, Navigate))
         .then(() => {
+          dispatch(masterListAction());
           setShowPopup(null);
           setSearchTrigger((prev) => prev + 1);
         })
@@ -78,14 +82,14 @@ const CreateMaster = ({ popupContent }) => {
                       id="Anotherbox"
                       className="formsectionx"
                       style={{
-                        height: "120px",
+                        height: "75px",
                         background: "white",
                       }}
                     >
                       <div id="leftareax12">
                         <h1 id="firstheading" className="headingofcreateforems">
                           {isEdit
-                            ? `Update Master ${showPopup.label}`
+                            ? `Update Master ${showPopup?.label? (showPopup?.label):""}`
                             : "Add Master"}
                         </h1>
                       </div>
@@ -111,7 +115,7 @@ const CreateMaster = ({ popupContent }) => {
                             <div className="secondx2">
                               <div className="form_commonblock">
                                 <label>
-                                  Master Label<b className="color_red">*</b>
+                                  Name<b className="color_red">*</b>
                                 </label>
                                 <span>
                                   {otherIcons.name_svg}
@@ -119,12 +123,12 @@ const CreateMaster = ({ popupContent }) => {
                                     value={formData.label}
                                     onChange={handleChange}
                                     name="label"
-                                    placeholder="Enter Master Label"
+                                    placeholder="Enter Name"
                                   />
                                 </span>
                               </div>
                               <div className="form_commonblock">
-                                <label>Master Value</label>
+                                <label>Number Value</label>
                                 <span>
                                   {otherIcons.quantity_svg}
                                   <input
@@ -132,7 +136,19 @@ const CreateMaster = ({ popupContent }) => {
                                     value={formData.value}
                                     onChange={handleChange}
                                     name="value"
-                                    placeholder="Enter Master Value"
+                                    placeholder="Enter Number Value"
+                                  />
+                                </span>
+                              </div>
+                              <div className="form_commonblock">
+                                <label>Text Value</label>
+                                <span>
+                                  {otherIcons.quantity_svg}
+                                  <input
+                                    value={formData.value_string}
+                                    onChange={handleChange}
+                                    name="value_string"
+                                    placeholder="Enter Text Value"
                                   />
                                 </span>
                               </div>
@@ -145,8 +161,8 @@ const CreateMaster = ({ popupContent }) => {
                                   <TextAreaComponentWithTextLimit
                                     formsValues={{ handleChange, formData }}
                                     placeholder="Enter comment...."
-                                    name="value_string"
-                                    value={formData?.value_string}
+                                    name="note"
+                                    value={formData?.note}
                                   />
                                 </div>
                               </div>
@@ -156,37 +172,11 @@ const CreateMaster = ({ popupContent }) => {
                       </div>
                     </div>
 
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "197px",
-                          width: "834px",
-                          position: "absolute",
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${freezLoadingImg ? "disabledbtn" : ""} `}
-                          type="submit"
-                          disabled={freezLoadingImg}
-                        >
-                          {/* {(showPopup?.loading) ? !!Object.keys(selectedItem)?.length ? "Updating..." : "Creating..." : <p>{!!Object.keys(selectedItem)?.length ? "Update" : "Create"}<BsArrowRight /></p>} */}
-                          {isEdit ? "Update" : "Create"}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setShowPopup(null)}
-                          className={`${(showPopup?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          disabled={(showPopup?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
+                    <SubmitButton7
+                      onClick={handleSubmitForm}
+                      createUpdate={createMaster}
+                      setShowPopup={setShowPopup}
+                    />
                   </div>
                 </div>
               </div>

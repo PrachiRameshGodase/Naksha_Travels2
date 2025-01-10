@@ -14,6 +14,8 @@ import SortBy from "../Common/SortBy/SortBy";
 import { warehouseSortByOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import FilterBy1 from "../Common/FilterBy/FilterBy1";
 import { parseJSONofString, showDeparmentLabels, ShowMasterData, stringifyJSON, useDebounceSearch } from "../Helper/HelperFunctions";
+import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 
 const Warehouse = () => {
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ const Warehouse = () => {
 
   // serch,filter and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
+  const fetchWarehouse = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
@@ -104,12 +106,8 @@ const Warehouse = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.warehouse_type || parshPayload?.department || parshPayload?.is_active || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchWarehouse); // Use the custom hook for call API
+
 
 
 
@@ -151,7 +149,17 @@ const Warehouse = () => {
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
               All Warehouses</h1>
-            <p id="firsttagp">{warehouseList?.data?.count} Records</p>
+            <p id="firsttagp">{warehouseList?.data?.count} Records
+              <span
+                className={`${warehouseList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox placeholder="Search In Warehouse" onSearch={onSearch} />
           </div>
 
@@ -245,83 +253,88 @@ const Warehouse = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {warehouseLists?.map((quotation, index) => (
-                      <div
-                        className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                          ? "selectedresult"
-                          : ""
-                          }`}
-                        key={index}
-                      >
+                    {warehouseLists?.length >= 1 ? (
+                      warehouseLists?.map((quotation, index) => (
                         <div
-                          className="table-cellx12 checkboxfx1"
-                          id="styl_for_check_box"
+                          className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                            ? "selectedresult"
+                            : ""
+                            }`}
+                          key={index}
                         >
-                          <input
-                            checked={selectedRows.includes(quotation.id)}
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(quotation.id)}
-                          />
-                          <div className="checkmark"></div>
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {quotation?.name}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs1"
-                        >
-                          {quotation?.warehouse_type}
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs2"
-                        >
-                          {showDeparmentLabels(
-                            quotation?.department,
-                            mainDeparmentVal
-                          )}
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs3"
-                        >
-                          {quotation?.country?.name || ""}
-                        </div>
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs4"
-                        >
-                          {quotation?.city?.name || ""}
-                        </div>
-
-                        <div
-                          onClick={() => handleRowClicked(quotation)}
-                          className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                        >
-                          <p
-                            className={
-                              quotation?.is_active == "1"
-                                ? "open"
-                                : quotation?.is_active == "0"
-                                  ? "declined"
-                                  : ""
-                            }
+                          <div
+                            className="table-cellx12 checkboxfx1"
+                            id="styl_for_check_box"
                           >
-                            {quotation?.is_active == "0"
-                              ? "Inactive"
-                              : quotation?.is_active == "1"
-                                ? "Active"
-                                : ""}
-                          </p>
+                            <input
+                              checked={selectedRows.includes(quotation.id)}
+                              type="checkbox"
+                              onChange={() => handleCheckboxChange(quotation.id)}
+                            />
+                            <div className="checkmark"></div>
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            {quotation?.name}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs1"
+                          >
+                            {quotation?.warehouse_type}
+                          </div>
+
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs2"
+                          >
+                            {showDeparmentLabels(
+                              quotation?.department,
+                              mainDeparmentVal
+                            )}
+                          </div>
+
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs3"
+                          >
+                            {quotation?.country?.name || ""}
+                          </div>
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs4"
+                          >
+                            {quotation?.city?.name || ""}
+                          </div>
+
+                          <div
+                            onClick={() => handleRowClicked(quotation)}
+                            className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                          >
+                            <p
+                              className={
+                                quotation?.is_active == "1"
+                                  ? "open"
+                                  : quotation?.is_active == "0"
+                                    ? "declined"
+                                    : ""
+                              }
+                            >
+                              {quotation?.is_active == "0"
+                                ? "Inactive"
+                                : quotation?.is_active == "1"
+                                  ? "Active"
+                                  : ""}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <NoDataFound />
+                    )}
+
                   </>
                 )}
               </div>

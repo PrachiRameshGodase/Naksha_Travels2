@@ -19,6 +19,7 @@ import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { saleOrderFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { saleOrderSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const SalesOrderList = () => {
 
@@ -120,13 +121,7 @@ const SalesOrderList = () => {
     searchTrigger
   ]);
 
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date || parshPayload?.currentpage > 1) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchQuotations); // Use the custom hook for call API
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/sales-order-details?id=${quotation.id}`);
@@ -168,7 +163,17 @@ const SalesOrderList = () => {
               {otherIcons.all_saleOrder_svg}
               All Sales Orders
             </h1>
-            <p id="firsttagp">{qutList?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)} // Direct call without intermediate variable
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox placeholder="Search In Sale Order" onSearch={onSearch} />
           </div>
 

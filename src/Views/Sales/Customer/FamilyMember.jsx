@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
 import { useDispatch, useSelector } from "react-redux";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown27";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { customersList } from "../../../Redux/Actions/customerActions";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
+import ImageUpload, { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
-import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown27";
-import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
-import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const FamilyMember = ({
   switchCusData,
@@ -21,7 +20,6 @@ const FamilyMember = ({
   tick,
 }) => {
   const { isDuplicate, isEdit, user, customerDetails } = customerData;
-
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
   const cusList = useSelector((state) => state?.customerList);
@@ -50,7 +48,9 @@ const FamilyMember = ({
       ...(fieldName === "relationship" && { relationship: relationName }),
       [fieldName]: value,
     };
-
+    if (fieldName === "photo" && value) {
+      updatedEmployeeDetails[index].photo = JSON.stringify(value);
+    }
     setEmployeeDetails(updatedEmployeeDetails);
   };
 
@@ -84,14 +84,13 @@ const FamilyMember = ({
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
-      family_members: employeeDetails.map((detail) => ({
+      family_members: employeeDetails?.map((detail) => ({
         ...detail,
-        photo: detail.photo ? JSON.stringify(detail.photo) : "", // Serialize only the photo field
+        photo: detail.photo ? JSON.stringify(detail.photo) : "",
       })),
     }));
   }, [employeeDetails, setUserData]);
 
-  // Fetch customer list
   const fetchCustomers = () => {
     const sendData = { customer_type: "Individual" };
     dispatch(customersList(sendData));
@@ -100,16 +99,10 @@ const FamilyMember = ({
   useEffect(() => {
     fetchCustomers();
   }, []);
-  // Function to delete a selected member
+
   const handleDeleteSelectedMember = (indexToDelete) => {
     setEmployeeDetails((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToDelete)
-    );
-  };
-
-  const handleUpdateDocument = (index, updatedDocument) => {
-    setEmployeeDetails((prevDocuments) =>
-      prevDocuments.map((doc, i) => (i === index ? updatedDocument : doc))
     );
   };
 
@@ -120,11 +113,10 @@ const FamilyMember = ({
         member_id: item.id || "",
         food_type: item.food_type || "",
         relationship: item.relationship || null,
-
-        photo: item.photo ? JSON.parse(item.photo) : "",
+        photo: item?.photo ? JSON.parse(item?.photo) : "",
       }));
 
-      setEmployeeDetails(familyDetail); // Update state with the transformed array
+      setEmployeeDetails(familyDetail);
 
       setTick((prevTick) => ({
         ...prevTick,
@@ -135,13 +127,19 @@ const FamilyMember = ({
 
   useEffect(() => {
     if (isEdit) {
-      updateUserData(employeeDetails); // Only call updateUserData when editing
+      updateUserData((prevData) => ({
+        ...prevData,
+        family_members: employeeDetails?.map((detail) => ({
+          ...detail,
+          photo: detail?.photo ? JSON.stringify(detail.photo) : "",
+        })),
+      }));
     }
   }, [employeeDetails]);
-  // Render the member table
+console.log('employeeDetails', employeeDetails)
   const renderMemberTable = () => {
     return (
-      <table className="employee-table">
+      <table className="employee-table" style={{width:"91%"}}>
         <thead>
           <tr>
             <th>No.</th>
@@ -161,11 +159,16 @@ const FamilyMember = ({
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow=member.member_id===user?.relation_id
-            
+              const disabledRow = member?.member_id === customerDetails?.user?.relation_id;
+
               return (
                 selectedMember && (
-                  <tr key={index} style={{backgroundColor:disabledRow?"#f2f2f2":"#fff",  pointerEvents: disabledRow ? "none" : "auto",}}
+                  <tr
+                    key={index}
+                    style={{
+                      backgroundColor: disabledRow ? "#f2f2f2" : "#fff",
+                      pointerEvents: disabledRow ? "none" : "auto",
+                    }}
                   >
                     <td>{index + 1}</td>
                     <td>{selectedMember.display_name}</td>
@@ -201,12 +204,9 @@ const FamilyMember = ({
                       />
                     </td>
                     <td style={{ width: "20px" }}>
-                      {" "}
                       <SingleImageUploadDocument
                         formData={member}
-                        setFormData={(index, updatedDocument) =>
-                          handleUpdateDocument(index, updatedDocument)
-                        }
+                        setFormData={setEmployeeDetails}
                         setFreezLoadingImg={setFreezLoadingImg}
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}

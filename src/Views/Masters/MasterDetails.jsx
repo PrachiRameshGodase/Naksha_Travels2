@@ -42,7 +42,7 @@ const MasterDetails = ({ closePopup, list }) => {
                       id="Anotherbox"
                       className="formsectionx"
                       style={{
-                        height: "120px",
+                        height: "75px",
                         background: "white",
 
                         // position: "sticky",
@@ -93,7 +93,7 @@ const MasterDetails = ({ closePopup, list }) => {
                               </div>
                             </div>
 
-                            {masterLists?.loading || dataChanging === true ? (
+                            {masterList?.loading || dataChanging === true ? (
                               <TableViewSkeleton />
                             ) : (
                               <>
@@ -123,20 +123,20 @@ const MasterDetails = ({ closePopup, list }) => {
                                       onClick={() => handleRowClicked(master)}
                                       className="table-cellx12 quotiosalinvlisxs4 commentss"
                                       data-tooltip-content={
-                                        master?.value_string
+                                        master?.note
                                       }
                                       data-tooltip-place="bottom"
                                       data-tooltip-id="my-tooltip"
                                     >
                                       <p>
                                         {" "}
-                                        {master?.value_string
-                                          ? master.value_string.length > 10
-                                            ? master.value_string.substring(
+                                        {master?.note
+                                          ? master?.note?.length > 10
+                                            ? master?.note?.substring(
                                                 0,
                                                 30
                                               ) + "..."
-                                            : master.value_string
+                                            : master?.note
                                           : ""}
                                       </p>
                                     </div>

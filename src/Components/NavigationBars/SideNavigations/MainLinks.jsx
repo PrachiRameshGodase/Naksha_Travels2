@@ -85,13 +85,24 @@ const MainLinks = ({
     "create-dsr",
     "dsr",
     "dsr-details",
-    "serviceslist"
+    "serviceslist",
+    "create-mice",
+    "mice",
+    "mice-details",
+    "mice-serviceslist"
   ]
   const dsrMenuItems = [
     "create-dsr",
     "dsr",
     "dsr-details",
     "serviceslist"
+  ]
+
+  const miceMenuItems = [
+    "create-mice",
+    "mice",
+    "mice-details",
+    "mice-serviceslist"
   ]
   const categoryMenuItems = [
     "items-categories",
@@ -200,7 +211,7 @@ const MainLinks = ({
   const HelpMenuItem = ["create-help", "help"];
 
   //Masters
-  const MastersMenuItem = ["create-masters"];
+  const MastersMenuItem = ["create-masters", "create-user-masters"];
   return (
     <>
       <div id="sidebarx1">
@@ -348,7 +359,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Items",
             })}
-            className={`menu-title ${salesDataMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||salesDataMenuItems.includes(selectedMenuItem) ||
               dsrMenuItems.includes(selectedMenuItem)
               ? "active"
               : ""
@@ -376,6 +387,15 @@ const MainLinks = ({
               }`}
           >
             <li
+              onClick={() => {
+                handleMenuItemClick("customers");
+              }}
+              className={`menu-item ${customersMenuItems.includes(selectedMenuItem) ? "active" : ""
+                }`}
+            >
+              Customers
+            </li>
+            <li
               onClick={() => handleMenuItemClick("dsr")}
               className={`menu-item ${dsrMenuItems.includes(selectedMenuItem)
                 ? "active"
@@ -383,6 +403,15 @@ const MainLinks = ({
                 }`}
             >
               DSR
+            </li>
+            <li
+              onClick={() => handleMenuItemClick("mice")}
+              className={`menu-item ${miceMenuItems.includes(selectedMenuItem)
+                ? "active"
+                : ""
+                }`}
+            >
+              MICE
             </li>
           </ul>
         </div>
@@ -394,7 +423,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Sales",
             })}
-            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${
               quotationsMenuItems.includes(selectedMenuItem) ||
               salesOrdersMenuItems.includes(selectedMenuItem) ||
               deliveryChallanMenuItems.includes(selectedMenuItem) ||
@@ -429,15 +458,7 @@ const MainLinks = ({
             className={`submenu ${activeMenu === "sales" ? "opensidebardropdownx5" : ""
               }`}
           >
-            <li
-              onClick={() => {
-                handleMenuItemClick("customers");
-              }}
-              className={`menu-item ${customersMenuItems.includes(selectedMenuItem) ? "active" : ""
-                }`}
-            >
-              Customers
-            </li>
+            
 
             <li
               onClick={() => {
@@ -1004,7 +1025,17 @@ const MainLinks = ({
               className={`menu-item ${selectedMenuItem === "create-masters" ? "active" : ""
                 }`}
             >
-              Masters
+             System Masters
+            </li>
+
+            <li
+              onClick={() => {
+                handleMenuItemClick("create-user-masters");
+              }}
+              className={`menu-item ${selectedMenuItem === "create-user-masters" ? "active" : ""
+                }`}
+            >
+             User Masters
             </li>
             <li
               onClick={() => {

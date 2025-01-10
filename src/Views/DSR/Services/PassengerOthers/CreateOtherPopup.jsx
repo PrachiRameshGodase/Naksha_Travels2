@@ -4,16 +4,23 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import { CreatePassengerOtherAction } from "../../../../Redux/Actions/passengerOthersActions";
-import { SubmitButton2, SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import {
+  SubmitButton2,
+  SubmitButton6,
+} from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
-import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import {
+  itemLists,
+  vendorsLists,
+} from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
 
 const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -23,8 +30,12 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const vendorList = useSelector((state) => state?.vendorList);
   const createOther = useSelector((state) => state?.createPassengerOthers);
+  const itemList = useSelector((state) => state?.itemList);
+  const options2 = itemList?.data?.item;
 
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
+
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -35,13 +46,14 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_id: "",
     supplier_name: "",
     //amount
-    charges: null,
-    hotel_price: null,
-    discount: null,
-    tax_percent: null,
-    tax_amount: null,
-    retain: null,
-    total_amount: null,
+    charges: [{ amount: null, account_id: null }],
+    hotel_price: 0.0,
+    discount: 0.0,
+    supplier_total: 0.0,
+    tax_percent: 0.0,
+    tax_amount: 0.0,
+    retain: 0.0,
+    total_amount: 0.0,
     note: null,
     upload_image: null,
   });
@@ -52,13 +64,22 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const selectedSupplierName = vendorList?.data?.user?.find(
-      (item) => item?.id == formData?.supplier_id
-    );
+    let updatedFields = { [name]: value };
+
+    if (name === "supplier_id") {
+      const selectedSupplierName = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
+      updatedFields.supplier_name = selectedSupplierName?.display_name || "";
+    }
+
+    if (name === "item_id") {
+      const selectedItemName = options2?.find((item) => item?.id == value);
+      updatedFields.item_name = selectedItemName?.name || "";
+    }
     setFormData((prev) => ({
       ...prev,
-      supplier_name: selectedSupplierName?.display_name,
-      [name]: value,
+      ...updatedFields,
     }));
   };
 
@@ -67,6 +88,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     try {
       const sendData = {
         ...formData,
+        charges: JSON.stringify(formData?.charges),
       };
       dispatch(CreatePassengerOtherAction(sendData))
         .then((response) => {
@@ -81,10 +103,12 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       console.error("Error updating other service:", error);
     }
   };
- // call item api on page load...
- const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
- useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
- // call item api on page load...
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
+  useFetchApiData(vendorsLists, payloadGenerator, []);
+  useFetchApiData(itemLists, payloadGenerator, []);
+
+  // call item api on page load...
 
   return (
     <div id="formofcreateitems">
@@ -101,10 +125,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
           </div>
 
           <div className="modal-body">
-            <form >
+            <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap">
+                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -131,11 +155,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.item_name}
+                          <CustomDropdown03
+                            options={options2 || []}
+                            value={formData?.item_id}
+                            name="item_id"
                             onChange={handleChange}
-                            name="item_name"
-                            placeholder="Enter Item Details"
+                            type="select_item"
+                            setItemData={setcusData2}
+                            defaultOption="Select Item"
+                            index="0"
+                            extracssclassforscjkls=""
+                            itemData={cusData2}
+                            ref={dropdownRef1}
                           />
                         </span>
                       </div>
@@ -230,16 +261,15 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           section="Other"
                         />
                       </div>
-                      
                     </div>
                   </div>
                 </div>
               </div>
-               <SubmitButton6
-                                          onClick={handleFormSubmit}
-                                          cancel="dsr"
-                                          createUpdate={createOther}
-                                        />
+              <SubmitButton6
+                onClick={handleFormSubmit}
+                createUpdate={createOther}
+                setShowModal={setShowModal}
+              />
             </form>
           </div>
         </div>

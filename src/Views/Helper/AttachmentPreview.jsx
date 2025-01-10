@@ -146,3 +146,4 @@ const AttachmentPreview = ({ attachments }) => {
 };
 
 export default AttachmentPreview;
+

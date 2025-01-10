@@ -43,7 +43,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_name: null,
     // Amount
     gross_amount: null,
-    charges: null,
+    charges: [{amount:null, account_id:null}],
     discount: null,
     supplier_total: null,
     tax_percent: null,
@@ -80,6 +80,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           formData?.guest_ids?.length === 0
             ? null
             : formData?.guest_ids?.join(", "),
+            charges: JSON.stringify(formData?.charges)
       };
       dispatch(CreatePassengerAssistAction(sendData))
         .then((response) => {
@@ -116,7 +117,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           <form>
             {/* Keep your form as it is */}
             <div className="relateivdiv">
-              <div className="itemsformwrap">
+              <div className="itemsformwrap"  style={{paddingBottom:"0px"}}>
                 <div className="f1wrapofcreq">
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
@@ -240,15 +241,16 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           section="Assist"
                         />
                     </div>
-                   =
+                   
                   </div>
                 </div>
               </div>
             </div>
             <SubmitButton6
               onClick={handleFormSubmit}
-              cancel="dsr"
+             
               createUpdate={createAssist}
+              setShowModal={setShowModal}
             />
           </form>
         </div>

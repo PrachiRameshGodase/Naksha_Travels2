@@ -61,20 +61,17 @@ const CreateDSR = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
-
       [name]: value,
     }));
   };
+
   const handleChange2 = (e) => {
     const { name, value } = e.target;
-
     const selectedCustomer = cusList?.data?.user?.find(
       (customer) => customer.id === value
     );
-
     setPassengerData((prev) => ({
       ...prev,
       customer_id: value,
@@ -99,7 +96,7 @@ const CreateDSR = () => {
         customer_name: DSRData?.customer?.display_name,
       });
     }
-  }, [DSRData?.id]);
+  }, [DSRData?.id, DSRData?.dsr_no]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -109,11 +106,15 @@ const CreateDSR = () => {
         ...formData,
       };
 
-      dispatch(DSRCreateAction(sendData))
-        .then((response) => {
-          setIsData(response?.data?.data);
-          setDSRDisabled(true);
-        })
+      dispatch(DSRCreateAction(sendData, showAllSequenceId))
+        .then(
+          (response) => {
+            // if(response?.success===true){
+            setIsData(response?.data?.data);
+            setDSRDisabled(true);
+          }
+          // }
+        )
         .catch((err) => {
           console.error("Error creating DSR:", err);
         });
@@ -124,7 +125,14 @@ const CreateDSR = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
+    const isPassengerExists = DSRData?.passengers?.some(
+      (passenger) => passenger.customer_id === passengerData.customer_id
+    );
 
+    if (isPassengerExists) {
+      toast.error("Passenger already added to the list.");
+      return; // Prevent further execution
+    }
     try {
       const sendData = {
         ...passengerData,
@@ -152,7 +160,7 @@ const CreateDSR = () => {
       dispatch(DSRDetailsAction(sendData));
       setDSRDisabled(true);
     }
-  }, [DSRData?.id, isData?.id]);
+  }, [DSRData?.id, isData?.id, dsrDisabled]);
 
   const handleDeletePassenger = async (id) => {
     const result = await Swal.fire({
@@ -178,25 +186,15 @@ const CreateDSR = () => {
     }
   };
 
-  const handleIconClick = () => {
-    if (DSRData?.id) {
-      const sendData = { dsr_id: DSRData?.id };
-      dispatch(DSRDetailsAction(sendData));
-    }
-    Navigate("/dashboard/dsr");
-  };
-
-  
   return (
     <div>
       <>
         <TopLoadbar />
-        {(freezLoadingImg || createDSR?.loading || addPassenger?.loading || deletePassenger?.loading) && (
-          <MainScreenFreezeLoader />
-        )}
-        {DSRDetails?.loading ? (
-          <Loader02 />
-        ) : (
+        {(freezLoadingImg ||
+          createDSR?.loading ||
+          addPassenger?.loading ||
+          deletePassenger?.loading || DSRDetails?.loading) && <MainScreenFreezeLoader />}
+      
           <div className="formsectionsgrheigh">
             <div id="Anotherbox" className="formsectionx2">
               <div id="leftareax12">
@@ -206,8 +204,7 @@ const CreateDSR = () => {
                 </h1>
               </div>
               <div id="buttonsdata">
-
-                <Link onClick={handleIconClick} className="linkx3">
+                <Link to="/dashboard/dsr" className="linkx3">
                   <RxCross2 />
                 </Link>
               </div>
@@ -245,15 +242,15 @@ const CreateDSR = () => {
                               nameVal="dsr_no"
                               value={formData?.dsr_no}
                               module="dsr"
-                              showField={isEdit}
+                              showField={DSRData?.id}
                               disable={dsrDisabled}
                               style={
                                 dsrDisabled
                                   ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                      backgroundColor: "#f0f0f0",
+                                      pointerEvents: "none",
+                                      cursor: "not-allowed",
+                                    }
                                   : {}
                               }
                             />
@@ -283,10 +280,10 @@ const CreateDSR = () => {
                                   style={
                                     dsrDisabled
                                       ? {
-                                        backgroundColor: "#f0f0f0",
-                                        pointerEvents: "none",
-                                        cursor: "not-allowed",
-                                      }
+                                          backgroundColor: "#f0f0f0",
+                                          pointerEvents: "none",
+                                          cursor: "not-allowed",
+                                        }
                                       : {}
                                   }
                                 />
@@ -306,10 +303,10 @@ const CreateDSR = () => {
                               style={
                                 dsrDisabled
                                   ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                      backgroundColor: "#f0f0f0",
+                                      pointerEvents: "none",
+                                      cursor: "not-allowed",
+                                    }
                                   : {}
                               }
                             />
@@ -390,7 +387,8 @@ const CreateDSR = () => {
                 {/* <SubmitButton4 isEdit={isEdit} itemId={itemId} cancel="dsr" /> */}
               </form>
             </div>
-          </div>)}
+          </div>
+        
         <Toaster reverseOrder={false} />
       </>
     </div>

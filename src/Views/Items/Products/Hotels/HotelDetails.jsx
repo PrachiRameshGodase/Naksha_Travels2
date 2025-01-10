@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Attachment from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import HotelServices from "./HotelServices";
+import AttachmentPreview from "../../../Helper/AttachmentPreview";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
@@ -93,7 +94,7 @@ const HotelDetails = ({ data }) => {
                         </p>
                       </li>
 
-                      <li><span>Attachments</span><h1>:</h1><p><Attachment attachments={images}/></p></li>
+                      <li><span>Attachments</span><h1>:</h1><p><AttachmentPreview2 attachments={images}/></p></li>
                     </ul>
                   </div>
                 </div>

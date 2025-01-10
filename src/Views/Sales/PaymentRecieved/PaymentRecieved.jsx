@@ -8,7 +8,7 @@ import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
 import DatePicker from "../../Common/DatePicker/DatePicker";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -19,10 +19,10 @@ import { paymentRecList } from "../../../Redux/Actions/PaymentRecAction";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { paymentReceiveSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import {
-  creditNotesOptions,
   paymentRecOptions,
 } from "../../Helper/SortByFilterContent/filterContent";
 import { formatDate3 } from "../../Helper/DateFormat";
+import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 const PaymentRecieved = () => {
   const itemPayloads = localStorage.getItem(("paymentPayload"));
 
@@ -33,7 +33,7 @@ const PaymentRecieved = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchTrigger, setSearchTrigger] = useState(1);
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
   // reset current page to 1 when any filters are applied
   const resetPageIfNeeded = () => {
@@ -117,15 +117,8 @@ const PaymentRecieved = () => {
     }
   }, [searchTrigger]);
 
-  useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (searchTrigger || parshPayload?.search || parshPayload?.name || parshPayload?.sort_by || parshPayload?.status || parshPayload?.custom_date || parshPayload?.from_date) {
-    //   fetchQuotations();
-    // }
-    if (searchTrigger) {
-      fetchQuotations();
-    }
-  }, [searchTrigger]);
+  useFetchOnMount(fetchQuotations); // Use the custom hook for call API
+
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/payment-recieved-detail?id=${quotation.id}`);
@@ -167,7 +160,17 @@ const PaymentRecieved = () => {
               {otherIcons.all_payment_rec_svg}
               All Payment Recieved
             </h1>
-            <p id="firsttagp">{qutList?.data?.data?.count} Records</p>
+            <p id="firsttagp">{qutList?.data?.data?.count} Records
+              <span
+                className={`${qutList?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {otherIcons?.refresh_svg}
+              </span>
+
+            </p>
             <SearchBox
               placeholder="Search In Payment Recevied Number"
               onSearch={onSearch}
@@ -369,28 +372,28 @@ const PaymentRecieved = () => {
                               >
                                 <p
                                   className={
-                                    quotation?.is_approved == "1"
+                                    quotation?.status == "1"
                                       ? "open"
-                                      : quotation?.is_approved == "0"
+                                      : quotation?.status == "0"
                                         ? "draft"
-                                        : quotation?.is_approved == "2"
+                                        : quotation?.status == "2"
                                           ? "close"
-                                          : quotation?.is_approved == "3"
+                                          : quotation?.status == "3"
                                             ? "pending"
-                                            : quotation?.is_approved == "4"
+                                            : quotation?.status == "4"
                                               ? "overdue"
                                               : ""
                                   }
                                 >
-                                  {quotation?.is_approved == "0"
+                                  {quotation?.status == "0"
                                     ? "Draft"
-                                    : quotation?.is_approved == "1"
+                                    : quotation?.status == "1"
                                       ? "Approved"
                                       : quotation?.status == "2"
                                         ? "Close"
-                                        : quotation?.is_approved == "3"
+                                        : quotation?.status == "3"
                                           ? "Pending"
-                                          : quotation?.is_approved == "4"
+                                          : quotation?.status == "4"
                                             ? "Overdue"
                                             : ""}
                                 </p>

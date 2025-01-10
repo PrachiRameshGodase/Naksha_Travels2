@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
-import { DSRListActions } from "../../Redux/Actions/DSRActions";
+import { clearDsrState, DSRListActions } from "../../Redux/Actions/DSRActions";
 
 const DSRS = () => {
   const navigate = useNavigate();
@@ -102,10 +102,10 @@ const DSRS = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-            dateRange[0]?.endDate && {
-              from_date: formatDate(new Date(dateRange[0].startDate)),
-              to_date: formatDate(new Date(dateRange[0].endDate)),
-            }),
+              dateRange[0]?.endDate && {
+                from_date: formatDate(new Date(dateRange[0].startDate)),
+                to_date: formatDate(new Date(dateRange[0].endDate)),
+              }),
         }),
       };
 
@@ -155,15 +155,14 @@ const DSRS = () => {
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : DSRLists?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : DSRLists?.map((row) => row.id));
   };
   //logic for checkBox...
 
-  const handleNewDsr = () => {
+  const handleNewDsr = (event) => {
+    event.preventDefault(); // Prevent the default link behavior
     navigate("/dashboard/create-dsr");
-    dispatch(clearDsrState);
+    dispatch(clearDsrState());
   };
 
   return (
@@ -218,6 +217,16 @@ const DSRS = () => {
             <Link onClick={handleNewDsr} className="linkx1">
               New DSR <GoPlus />
             </Link>
+            {/* <div
+              onClick={() => {
+                navigate("/dashboard/create-dsr");
+                dispatch(clearDsrState());
+              }}
+              className="linkx1"
+              style={{ cursor: "pointer" }}
+            >
+              New DSR <GoPlus />
+            </div> */}
             <ResizeFL />
           </div>
         </div>
@@ -256,8 +265,6 @@ const DSRS = () => {
                     Currency
                   </div>
 
-
-
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -272,10 +279,11 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
                                 ? "selectedresult"
                                 : ""
-                              }`}
+                            }`}
                             key={index}
                           >
                             <div
@@ -293,7 +301,6 @@ const DSRS = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-
                               {item?.dsr_no || ""}
                             </div>
                             <div
@@ -323,17 +330,17 @@ const DSRS = () => {
                               <p
                                 className={
                                   item?.is_invoiced == "0"
-                                    ? "open"
+                                    ? "draft"
                                     : item?.is_invoiced == "1"
-                                      ? "declined"
-                                      : ""
+                                    ? "invoiced"
+                                    : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                    ? "Not Invoiced"
-                                    : ""}
+                                  ? "Not Invoiced"
+                                  : ""}
                               </p>
                             </div>
                           </div>

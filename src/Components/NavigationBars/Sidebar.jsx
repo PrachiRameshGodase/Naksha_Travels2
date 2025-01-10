@@ -150,6 +150,11 @@ import SequenceFormat from "../../Views/Masters/SequenceFormat";
 import PassengerHotelDetails from "../../Views/DSR/Services/PassengerHotel/PassengerHotelDetails";
 import PassengerFlightDetails from "../../Views/DSR/Services/PassengerFlight/PassengerFlightDetails.";
 import PassengerVisaDetails from "../../Views/DSR/Services/PassengerVisa/PassengerVisaDetails";
+import CreateMICE from "../../Views/MICE/CreateMICE";
+import MICEDetails from "../../Views/MICE/MICEDetails";
+import MICES from "../../Views/MICE/MICES";
+import FamilyServicesList from "../../Views/MICE/Services/FamilyServicesList";
+import UserMasters from "../../Views/UserMaster/UserMasters";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -383,8 +388,21 @@ const Sidebar = ({ loggedInUserData }) => {
       //dsr-services
       case "serviceslist":
         return <ServicesList />
-      // case "dsr-hotel-details":
-      //   return <PassengerHotelDetails />
+      case "dsr-flight-details":
+        return <PassengerFlightDetails />
+      case "dsr-visa-details":
+          return <PassengerVisaDetails />
+
+       //mice
+       case "create-mice":
+        return <CreateMICE />;
+      case "mice":
+        return <MICES />;
+      case "mice-details":
+        return <MICEDetails />;
+      //mice-services
+      case "mice-serviceslist":
+        return <FamilyServicesList />
       case "dsr-flight-details":
         return <PassengerFlightDetails />
       case "dsr-visa-details":
@@ -622,6 +640,9 @@ const Sidebar = ({ loggedInUserData }) => {
       case "create-masters":
         return <Masters />;
 
+      case "create-user-masters":
+        return <UserMasters />;
+  
       case "manage-currency":
         return <ManageCurrency />;
       case "sequence-format":

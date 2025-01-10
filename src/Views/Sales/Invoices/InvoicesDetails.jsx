@@ -1,41 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { invoiceDetailes, invoiceMailSend, invoicesDelete, invoiceSend, invoicesStatus } from '../../../Redux/Actions/invoiceActions';
+import { invoiceDetailes, invoicesDelete, invoicesStatus } from '../../../Redux/Actions/invoiceActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
-import { formatDate, formatDate3 } from '../../Helper/DateFormat';
-import html2pdf from "html2pdf.js";
-
-import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { formatDate3 } from '../../Helper/DateFormat';
 import useOutsideClick from '../../Helper/PopupData';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowAllStatus1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import { IoMailOpenOutline } from 'react-icons/io5';
-import { parseJSON } from 'date-fns';
 import { parseJSONofString, showRealatedText } from '../../Helper/HelperFunctions';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
-import { createRoot } from "react-dom/client";
-import ReactDOM from "react-dom";
 import { generatePDF } from '../../Helper/createPDF';
-
-
-
-
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const InvoicesDetails = ({ section }) => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   const [showDropdownx2, setShowDropdownx2] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -49,7 +35,6 @@ const InvoicesDetails = ({ section }) => {
   const dropdownRef = useRef(null);
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
-
 
   useOutsideClick(dropdownRef, () => setShowDropdown(false));
   useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
@@ -110,7 +95,6 @@ const InvoicesDetails = ({ section }) => {
         case 'open':
           sendData.status = "6"
           break;
-          break;
         case 'delivered':
           sendData.status = "4"
           break;
@@ -132,16 +116,12 @@ const InvoicesDetails = ({ section }) => {
     }
   }
 
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+    is_invoice: section === "delivery_challan" ? 0 : 1,
+  }), [callApi]);
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-        is_invoice: section === "delivery_challan" ? 0 : 1,
-      };
-      dispatch(invoiceDetailes(queryParams));
-    }
-  }, [dispatch, UrlId, callApi]);
+  useFetchApiData(invoiceDetailes, payloadGenerator, [callApi]);
 
   const totalFinalAmount = invoice?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
@@ -151,6 +131,7 @@ const InvoicesDetails = ({ section }) => {
   const componentRef = useRef(null);
   const masterData = useSelector(state => state?.masterData?.masterData);
   const [loading, setLoading] = useState(false);
+
   const handleDownloadPDF = () => {
     if (!invoice || !masterData) {
       alert("Data is still loading, please try again.");
@@ -160,7 +141,9 @@ const InvoicesDetails = ({ section }) => {
     const contentComponent = (
       <PrintContent data={invoice} cusVenData={invoice?.customer} masterData={masterData} moduleId={invoice?.invoice_id} section={section === "delivery_challan" ? "Delivery Challan" : "Invoice"} />
     );
+
     generatePDF(contentComponent, section === "delivery_challan" ? "Delivery_Challan_Document.pdf" : "Invoice_Document.pdf", setLoading, 500);
+
   };
 
 
@@ -170,7 +153,9 @@ const InvoicesDetails = ({ section }) => {
 
       {invoiceDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >
+
           {/* <PrintContent data={invoice} cusVenData={invoice?.customer} masterData={masterData} moduleId={invoice?.invoice_id} section="Invoice" /> */}
+
           <Toaster />
           <div id="Anotherbox" className='formsectionx1'>
             <div id="leftareax12">
@@ -186,7 +171,6 @@ const InvoicesDetails = ({ section }) => {
                       <p>Send For Approval</p>
                     </div>
                   }
-
 
                   {invoice?.is_mail_sent == "0" && invoice?.status == "1" &&
                     <div className="mainx1" onClick={() => changeStatus("sendMail")}>
@@ -249,9 +233,9 @@ const InvoicesDetails = ({ section }) => {
 
                           </>}
 
-                          <div className='dmncstomx1' onClick={() => handleEditThing("challanToInvoice")}>
+                          {/* <div className='dmncstomx1' onClick={() => handleEditThing("challanToInvoice")}>
                             {otherIcons?.convert_svg}
-                            Convert to Invoice</div>
+                            Convert to Invoice</div> */}
                         </>
                       }
                       <>
@@ -334,7 +318,6 @@ const InvoicesDetails = ({ section }) => {
             </div>
 
             <MoreInformation sale={invoice?.sale_person} note={invoice?.customer_note} tc={invoice?.terms_and_condition} section="Customer" />
-            <TermsAndConditions/>
           </div>
         </div >
       }

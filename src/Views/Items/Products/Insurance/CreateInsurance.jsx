@@ -129,8 +129,8 @@ const CreateInsurance = ({ popupContent }) => {
                         id="modalactionbar"
                         className="actionbar"
                         style={{
-                          left: "238px",
-                          width: "752px",
+                          left: "167px",
+                          width: "895px",
                           position: "absolute",
                           marginBottom:"62px"
                         }}

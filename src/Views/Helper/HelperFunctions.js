@@ -38,6 +38,14 @@ export const ShowMasterData = (type) => {
     return filteredData || [];
 };
 
+export const ShowUserMasterData = (type) => {
+    const userMasterData = useSelector(state => state?.userMasterList?.data);
+
+
+    const filteredData = userMasterData?.filter(item => item.type == type);
+    return filteredData || [];
+};
+
 export const formatString = (str) => {
     return str
         .replace(/_/g, " ") // Replace underscores with spaces

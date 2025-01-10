@@ -326,7 +326,7 @@ const CreateHotel = () => {
                               autoComplete="off"
                               type="text"
                               name="address_line_2"
-                              placeholder="address_line_2"
+                              placeholder="Address Line 2"
                               value={formData.address_line_2}
                               onChange={(e) => handleChange(e)}
                             />

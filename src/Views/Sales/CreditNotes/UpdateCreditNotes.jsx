@@ -710,7 +710,7 @@ const UpdateCreditNotes = () => {
                                             <IoDocumentTextOutline className='svgofsecon65xs6' />
                                             <input
                                                 type="text"
-                                                value={formData.reference_no}
+                                                value={preventZeroVal(formData.reference_no)}
                                                 onChange={(e) => setFormData({ ...formData, reference_no: e.target.value })}
                                             />
                                         </span>
@@ -747,7 +747,7 @@ const UpdateCreditNotes = () => {
                                     <div className='group-form'>
                                         <label>Place of Supply:</label>
                                         <span>
-                                            <MdOutlinePlace className='svgofsecon65xs6' /><input type="text" value={formData.place_of_supply} onChange={(e) => setFormData({ ...formData, place_of_supply: e.target.value })} />
+                                            <MdOutlinePlace className='svgofsecon65xs6' /><input type="text" value={preventZeroVal(formData.place_of_supply)} onChange={(e) => setFormData({ ...formData, place_of_supply: e.target.value })} />
                                         </span>
                                     </div>
                                 </div>
@@ -757,7 +757,7 @@ const UpdateCreditNotes = () => {
                                     <div className='group-form'>
                                         <label>Sale Person:</label>
                                         <span>
-                                            <IoPersonOutline className='svgofsecon65xs6' /><input type="text" value={formData.sale_person} onChange={(e) => setFormData({ ...formData, sale_person: e.target.value })} />
+                                            <IoPersonOutline className='svgofsecon65xs6' /><input type="text" value={preventZeroVal(formData.sale_person)} onChange={(e) => setFormData({ ...formData, sale_person: e.target.value })} />
                                         </span>
                                     </div>
 

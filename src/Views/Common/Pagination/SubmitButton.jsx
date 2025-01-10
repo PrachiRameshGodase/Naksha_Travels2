@@ -547,7 +547,7 @@ export const SubmitButton5 = ({ isEdit, itemId, onClick, cancel }) => {
   );
 };
 
-export const SubmitButton6 = ({onClick ,cancel, createUpdate}) => {
+export const SubmitButton6 = ({ onClick, createUpdate, setShowModal }) => {
   return (
     <div className="actionbarcommon">
       {/* {isEdit && itemId ? (
@@ -558,26 +558,47 @@ export const SubmitButton6 = ({onClick ,cancel, createUpdate}) => {
         </>
       ) : (
         <> */}
-          <button
-            // className={`firstbtnc1`}
-            className={`firstbtnc1 ${
-              createUpdate?.loading ? "disabledbtn" : ""
-            } `}
-            onClick={onClick}
-            disabled={createUpdate?.loading}
-          >
-            {createUpdate?.loading ? "Save" : "Save"}
-          </button>
-        {/* </>
+      <button
+        // className={`firstbtnc1`}
+        className={`firstbtnc1 ${createUpdate?.loading ? "disabledbtn" : ""} `}
+        onClick={onClick}
+        disabled={createUpdate?.loading}
+      >
+        {createUpdate?.loading ? "Save" : "Save"}
+      </button>
+      {/* </>
       )} */}
 
-      <Link
+      <button
         className={`firstbtnc2 ${createUpdate?.loading ? "disabledbtn" : ""} `}
-        to={`/dashboard/${cancel}`}
+        onClick={() => setShowModal(false)} // Close the popup
         disabled={createUpdate?.loading}
       >
         Cancel
-      </Link>
+      </button>
+    </div>
+  );
+};
+
+export const SubmitButton7 = ({ onClick, createUpdate, setShowPopup }) => {
+  return (
+    <div className="actionbarcommon">
+      <button
+        // className={`firstbtnc1`}
+        className={`firstbtnc1 ${createUpdate?.loading ? "disabledbtn" : ""} `}
+        onClick={onClick}
+        disabled={createUpdate?.loading}
+      >
+        {createUpdate?.loading ? "Save" : "Save"}
+      </button>
+
+      <button
+        className={`firstbtnc2 ${createUpdate?.loading ? "disabledbtn" : ""} `}
+        onClick={() => setShowPopup(null)} // Close the popup
+        disabled={createUpdate?.loading}
+      >
+        Cancel
+      </button>
     </div>
   );
 };

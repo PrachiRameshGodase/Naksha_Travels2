@@ -12,6 +12,7 @@ import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import {
   DSRDeleteActions,
   DSRDetailsAction,
+  DSRStatusActions,
   PassengerAddAction,
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
@@ -38,6 +39,7 @@ const DSRDetails = () => {
   const addPassenger = useSelector((state) => state?.addPassenger);
   const deletePassenger = useSelector((state) => state?.deletePassenger);
   const deleteDSR = useSelector((state) => state?.DSRDelete);
+  const statusChangeDSR = useSelector((state) => state?.DSRStatus);
 
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
@@ -86,6 +88,14 @@ const DSRDetails = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
+    const isPassengerExists = DSRData?.passengers?.some(
+      (passenger) => passenger.customer_id === passengerData.customer_id
+    );
+
+    if (isPassengerExists) {
+      toast.error("Passenger already added to the list.");
+      return; // Prevent further execution
+    }
 
     try {
       const sendData = {
@@ -122,6 +132,21 @@ const DSRDetails = () => {
     }
   };
 
+  const handleChangeDSRStatus = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to convert to invoice?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        dsr_id: item?.id,
+      };
+      dispatch(DSRStatusActions(sendData, Navigate));
+    }
+  };
+
   useEffect(() => {
     if (UrlId) {
       const queryParams = {
@@ -135,113 +160,137 @@ const DSRDetails = () => {
     <>
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
-        deleteDSR?.loading) && <MainScreenFreezeLoader />}
-      {DSRDetails?.loading ? (
+        statusChangeDSR?.loading ||
+        deleteDSR?.loading ||
+        DSRDetails?.loading) && <MainScreenFreezeLoader />}
+      {/* {DSRDetails?.loading ? (
         <Loader02 />
-      ) : (
-        <div>
-          <div id="Anotherbox" className="formsectionx1">
-            <div id="leftareax12">
-              <h1 id="firstheading">{DSRData?.dsr_no}</h1>
-            </div>
-            <div id="buttonsdata">
-              <div
-                data-tooltip-content="Delete"
-                data-tooltip-id="my-tooltip"
-                data-tooltip-place="bottom"
-                className="filtersorticos5wx2"
-                onClick={() => {
-                  handleDeleteDSR(DSRData);
+      ) : ( */}
+      <div>
+        <div id="Anotherbox" className="formsectionx1">
+          <div id="leftareax12">
+            <h1 id="firstheading">{DSRData?.dsr_no}</h1>
+          </div>
+          <div id="buttonsdata">
+           {DSRData?.is_invoiced == "0" && <>
+            <div
+              onClick={() => {
+                handleChangeDSRStatus(DSRData);
+              }}
+              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+            >
+              <p
+                className={
+                  DSRData?.is_invoiced == "0"
+                    ? "draft"
+                    : DSRData?.is_invoiced == "1"
+                    ? "invoiced"
+                    : ""
+                }
+                style={{
+                  cursor: "pointer",
+                  padding: "5px 12px",
+                  width: "160px",
                 }}
               >
-                {otherIcons.delete_svg}
-              </div>
-              <Link
-                to={"/dashboard/dsr"}
-                className="linkx3"
-                data-tooltip-id="my-tooltip"
-                data-tooltip-content="Close"
-                data-tooltip-place="bottom"
-              >
-                <RxCross2 />
-              </Link>
+                Convert To Invoice
+              </p>
             </div>
+            <div
+              data-tooltip-content="Delete"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-place="bottom"
+              className="filtersorticos5wx2"
+              onClick={() => {
+                handleDeleteDSR(DSRData);
+              }}
+            >
+              {otherIcons.delete_svg}
+            </div></>} 
+            <Link
+              to={"/dashboard/dsr"}
+              className="linkx3"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
+            >
+              <RxCross2 />
+            </Link>
           </div>
-          <div className="formsectionsgrheigh">
-            
-
-            <div id="formofcreateitems">
-              <form>
-                <div className="relateivdiv">
-                  <div className="itemsformwrap">
-                    <div
-                      className="f1wrapofcreq"
-                      style={{
-                        height: "800px",
-                        overflowY: "auto",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div style={{width:"852px"}}>
-                        <div
-                          className="f1wrapofcreqx1"
-                          style={{ marginTop: "5px" }}
-                        >
-                          <div className="actionbarcommon2">
-                            <div className="form_commonblock ">
-                              <label>
-                                Passengers<b className="color_red">*</b>
-                              </label>
-                              <div id="sepcifixspanflex">
-                                <span id="">
-                                  {otherIcons.name_svg}
-                                  <CustomDropdown10
-                                    autoComplete="off"
-                                    ref={dropdownRef1}
-                                    label="Customer Name"
-                                    options={cusList?.data?.user}
-                                    value={passengerData.customer_id}
-                                    onChange={handleChange2}
-                                    name="customer_id"
-                                    defaultOption="Select Passenger"
-                                    setcusData={setcusData1}
-                                    cusData={cusData1}
-                                    type="vendor"
-                                    required
-                                  />
-                                </span>
-                              </div>
+        </div>
+        <div className="formsectionsgrheigh">
+          <div id="formofcreateitems">
+            <form>
+              <div className="relateivdiv">
+                <div className="itemsformwrap">
+                  <div
+                    className="f1wrapofcreq"
+                    style={{
+                      height: "800px",
+                      overflowY: "auto",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div style={{ width: "852px" }}>
+                      <div
+                        className="f1wrapofcreqx1"
+                        style={{ marginTop: "5px" }}
+                      >
+                        <div className="actionbarcommon2">
+                          <div className="form_commonblock ">
+                            <label>
+                              Passengers<b className="color_red">*</b>
+                            </label>
+                            <div id="sepcifixspanflex">
+                              <span id="">
+                                {otherIcons.name_svg}
+                                <CustomDropdown10
+                                  autoComplete="off"
+                                  ref={dropdownRef1}
+                                  label="Customer Name"
+                                  options={cusList?.data?.user}
+                                  value={passengerData.customer_id}
+                                  onChange={handleChange2}
+                                  name="customer_id"
+                                  defaultOption="Select Passenger"
+                                  setcusData={setcusData1}
+                                  cusData={cusData1}
+                                  type="vendor"
+                                  required
+                                />
+                              </span>
                             </div>
-                            <button
-                              className={`firstbtnc1 `}
-                              onClick={handleFormSubmit2}
-                            >
-                              Add Passenger
-                            </button>
                           </div>
-                        </div>
-
-                        <div>
-                          <PassengerCard
-                            passengers={DSRData}
-                            onDelete={handleDeletePassenger}
-                          />
+                          <button
+                            className={`firstbtnc1 `}
+                            onClick={handleFormSubmit2}
+                          >
+                            Add Passenger
+                          </button>
                         </div>
                       </div>
 
-                      <DSRSummary
-                        passengers={DSRData?.passengers}
-                        customerData={DSRData}
-                      />
+                      <div>
+                        <PassengerCard
+                          passengers={DSRData}
+                          onDelete={handleDeletePassenger}
+                        />
+                      </div>
                     </div>
+
+                    <DSRSummary
+                      passengers={DSRData?.passengers}
+                      customerData={DSRData}
+                    />
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
-      )}
+      </div>
+      {/* )} */}
       <Toaster />
     </>
   );

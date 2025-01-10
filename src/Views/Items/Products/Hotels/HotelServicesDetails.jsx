@@ -11,7 +11,7 @@ import {
   hotelRoomDetailsAction,
   hotelRoomStatusActions,
 } from "../../../../Redux/Actions/hotelActions";
-import Attachment from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 
 const HotelServicesDetails = () => {
@@ -252,7 +252,7 @@ const HotelServicesDetails = () => {
                           <span>Attachment</span>
                           <h1>:</h1>
                           <p>
-                            <Attachment attachments={attachments} />
+                            <AttachmentPreview2 attachments={attachments} />
                           </p>
                         </li>
                       </ul>

@@ -28,6 +28,8 @@ const BasicDetails = ({
   tick,
   setTick,
   dropdownRef1,
+  basicDetails,
+  setBasicDetails
 }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
@@ -45,34 +47,7 @@ const BasicDetails = ({
   const customerBloodGroup = ShowMasterData("44");
   const customerGender = ShowMasterData("45");
 
-  const [basicDetails, setBasicDetails] = useState({
-    salutation: "",
-    first_name: "",
-    last_name: "",
-    email: "",
-    mobile_no: "",
-    work_phone: "",
-    customer_type: "Individual",
-    is_customer: 1,
-    gst_no: "",
-    pan_no: "",
-
-    business_leagal_name: "",
-    display_name: "",
-    company_name: "",
-    place_of_supply: "",
-    tax_preference: null,
-    currency: getCurrencyFormData,
-    registration_type: "",
-    // upload_documents: [],
-    opening_balance: "",
-    department: "",
-    // designation: "",
-    d_o_b: "",
-    gender: "",
-    blood_group: "",
-    citizenship: "",
-  });
+ 
 
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
 
@@ -292,7 +267,7 @@ const BasicDetails = ({
       value: "0",
     },
   ];
-  console.log("basicDetails", basicDetails);
+  // console.log("basicDetails", basicDetails);
   return (
     <>
       {freezLoadingImg && <MainScreenFreezeLoader />}
@@ -300,51 +275,12 @@ const BasicDetails = ({
       {switchCusData === "Basic" ? (
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus">
-            <div className="iconheading">
+            {/* <div className="iconheading">
               {otherIcons.backdetails_svg}
               <p>Basic Details</p>
-            </div>
+            </div> */}
 
-            <div className="form_commonblockx2">
-              <label> Customer Type</label>
-
-              <span>
-                {!masterData ? (
-                  <div className="skelloadtypesce">
-                    <p></p>
-                    <p></p>
-                  </div>
-                ) : (
-                  masterData?.map((type) => {
-                    if (type?.type == "3") {
-                      return (
-                        <button
-                          type="button"
-                          key={type?.labelid}
-                          className={`type-button ${basicDetails.customer_type === type?.label
-                              ? "selectedbtn"
-                              : ""
-                            }`}
-                          onClick={() =>
-                            setBasicDetails({
-                              ...basicDetails,
-                              customer_type: type?.label,
-                            })
-                          }
-                        >
-                          {type?.label}
-                          {basicDetails.customer_type === type?.label && (
-                            <MdCheck />
-                          )}
-                        </button>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })
-                )}
-              </span>
-            </div>
+           
 
             <div className="sections">
               <div id="fcx3s1parent">

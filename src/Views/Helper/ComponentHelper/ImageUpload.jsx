@@ -8,7 +8,7 @@ import { imageDB } from "../../../Configs/Firebase/firebaseConfig";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 
 const ImageUpload = ({
   formData,
@@ -21,6 +21,8 @@ const ImageUpload = ({
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
+
+  console.log("formdata", formData);
 
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;
@@ -41,6 +43,12 @@ const ImageUpload = ({
             setFormData({
               ...formData,
               document: url,
+            });
+          } else if (component === "family") {
+            console.log("firstfirstfirstfirstfirstfirst");
+            setFormData({
+              ...formData,
+              photo: url,
             });
           } else {
             setFormData({
@@ -64,7 +72,13 @@ const ImageUpload = ({
   return (
     <>
       <div className="form-group">
-        {type === "grm" ? "" : <label>Attach Files To Estimate</label>}
+        {type === "grm" ? (
+          ""
+        ) : type === "service" ? (
+          <label>Upload Image</label>
+        ) : (
+          <label>Attach Files To Estimate</label>
+        )}
         <div
           className="file-upload"
           onKeyDown={(event) => {
@@ -159,6 +173,18 @@ const ImageUpload = ({
                   <img
                     src={formData?.document}
                     name="document"
+                    alt=""
+                    height={500}
+                    width={500}
+                  />
+                }
+              </>
+            ) : component === "family" ? (
+              <>
+                {
+                  <img
+                    src={formData?.photo}
+                    name="photo"
                     alt=""
                     height={500}
                     width={500}
@@ -347,26 +373,50 @@ export const MultiImageUploadHelp = ({
   setFreezLoadingImg,
   imgLoader,
   setImgeLoader,
-  // isUploading,
-  // setIsUploading,
-  // setImage,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
   const popupRef = useRef(null);
 
   const handleImageChange = (e) => {
     setFreezLoadingImg(true);
     setImgeLoader(true);
-    // setIsUploading(true);
+    setErrorMessage(""); // Clear any previous error message
 
+    const allowedExtensions = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "webp",
+      "pdf",
+    ];
     const updatedUploadDocuments = Array.isArray(formData?.upload_documents)
       ? [...formData.upload_documents]
       : [];
 
+    const files = Array.from(e.target.files);
+    const invalidFiles = files.filter((file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      return !allowedExtensions.includes(fileExtension);
+    });
+
+    if (invalidFiles.length > 0) {
+      setErrorMessage(
+        `Please upload files with the following extensions: ${allowedExtensions.join(
+          ", "
+        )}`
+      );
+      setFreezLoadingImg(false);
+      setImgeLoader(false);
+      return;
+    }
+
     Promise.all(
-      Array.from(e.target.files).map((file) => {
+      files.map((file) => {
         const imageRef = ref(imageDB, `Documents/${v4()}`);
         return uploadBytes(imageRef, file)
           .then(() => {
@@ -380,7 +430,6 @@ export const MultiImageUploadHelp = ({
           .catch((error) => {
             setFreezLoadingImg(false);
             setImgeLoader("fail");
-            // setIsUploading(false);
             throw error;
           });
       })
@@ -392,28 +441,31 @@ export const MultiImageUploadHelp = ({
           ...formData,
           upload_documents: updatedUploadDocuments,
         });
-        // setIsUploading(false);
       })
       .catch((error) => {
         console.error("Error uploading images:", error);
-        // setIsUploading(false);
       });
   };
 
-  const showimagepopup = (imageUrl) => {
+  const showImagePopup = (imageUrl) => {
     setSelectedImage(imageUrl);
-    OverflowHideBOdy(true); // Set overflow hidden
-    setShowPopup(true); // Show the popup
+    setShowPopup(true);
   };
 
   const handleDeleteImage = (imageUrl) => {
     const updatedUploadDocuments = formData?.upload_documents?.filter(
-      (image) => image !== imageUrl
+      (image) => image.url !== imageUrl
     );
     setFormData({
       ...formData,
       upload_documents: updatedUploadDocuments,
     });
+  };
+
+  const isImage = (fileUrl) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const fileExtension = fileUrl.split(".").pop().toLowerCase();
+    return imageExtensions.includes(fileExtension);
   };
 
   return (
@@ -442,35 +494,49 @@ export const MultiImageUploadHelp = ({
             <div id="spc5s6">
               {otherIcons.export_svg}
               {formData?.upload_documents?.length
-                ? `${formData.upload_documents?.length} Images Uploaded`
+                ? `${formData.upload_documents?.length} Files Uploaded`
                 : "Browse Files"}
             </div>
           </label>
         </div>
 
+        {/* Show error message below input box */}
+        {errorMessage && (
+          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
+            {errorMessage}
+          </p>
+        )}
+
         {imgLoader === "success" &&
           formData?.upload_documents &&
           formData?.upload_documents?.length > 0 && (
             <div>
-              {formData?.upload_documents?.map((image, index) => (
+              {formData?.upload_documents?.map((file, index) => (
                 <div key={index}>
                   <div id="Show_delete_img_new_vendor">
-                    <p style={{ width: "50%" }} title={image?.name || ""}>
-                      {image?.name?.length > 10
-                        ? `${image?.name.substring(0, 12)}...`
-                        : image?.name}
+                    <p style={{ width: "50%" }} title={file?.name || ""}>
+                      {file?.name?.length > 10
+                        ? `${file?.name.substring(0, 12)}...`
+                        : file?.name}
                     </p>
 
-                    <div onClick={() => handleDeleteImage(image)}>
+                    <div onClick={() => handleDeleteImage(file.url)}>
                       <MdOutlineDeleteForever />
-                      {/* Delete */}
                     </div>
-                    <div
-                      onClick={() => showimagepopup(Object.values(image)[0])}
-                    >
-                      <FaEye />
-                      {/* Show */}
-                    </div>
+                    {isImage(file.url) ? (
+                      <div onClick={() => showImagePopup(file.url)}>
+                        <FaEye />
+                      </div>
+                    ) : (
+                      <a
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Preview File"
+                      >
+                        <FaEye />
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -969,17 +1035,6 @@ export const MultiImageUploadEmail = ({
               className="filelabelemail"
               id="uploadAttachment"
             >
-              {/* <div id="spc5s6" style={{display:"flex",gap:"5px"}}>
-                              <div>
-                              {otherIcons.export_svg}
-                              </div>
-                              <div style={{marginTop:"3px"}}>
-                              {formData?.upload_documents?.length
-                                  ? `${formData.upload_documents?.length} Images Uploaded`
-                                  : "Browse Files"}
-                                  </div>
-              </div>  */}
-
               <div
                 id="spc5s6"
                 style={{
@@ -1318,177 +1373,128 @@ export const SingleImageUploadDocument = ({
   setImgeLoader,
   index,
 }) => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(""); // For the popup
-  const popupRef = useRef(null);
+  const [photo, setPhoto] = useState(formData?.photo || null);
+  const [expiryDate, setExpiryDate] = useState(null);
 
-  // Parse photo if it's a JSON string
-  const photo = formData?.photo ? JSON.parse(formData?.photo || "{}") : null;
+  useEffect(() => {
+    if (photo) {
+      // Check photo expiry (6 months)
+      const photoDate = new Date(formData?.photoUploadDate || 0); // Assuming the date when photo was uploaded
+      const expiry = new Date(photoDate.setMonth(photoDate.getMonth() + 6));
+      setExpiryDate(expiry);
+    }
+  }, [photo, formData]);
 
   const handleImageChange = (e) => {
-    if (e.target.files.length === 0) return;
-
-    const file = e.target.files[0];
+    if (e.target.files?.length === 0) return;
     setFreezLoadingImg(true);
     setImgeLoader(true);
-
-    const imageRef = ref(imageDB, `Documents/${v4()}`);
-    uploadBytes(imageRef, file)
-      .then(() => getDownloadURL(imageRef))
-      .then((url) => {
-        const updatedPhoto = {
-          url: url,
-          name: file.name,
-        };
-
-        setFormData(index, {
-          ...formData,
-          photo: JSON.stringify(updatedPhoto),
-        });
+    const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+    uploadBytes(imageRef, e.target.files[0])
+      .then(() => {
         setImgeLoader("success");
         setFreezLoadingImg(false);
+        getDownloadURL(imageRef).then((url) => {
+          // Save the upload date to check expiry
+          const currentDate = new Date().toISOString();
+
+          setFormData((prevState) => {
+            const updatedEmployeeDetails = [...prevState];
+            updatedEmployeeDetails[index] = {
+              ...updatedEmployeeDetails[index],
+              photo: url,
+              photoUploadDate: currentDate, 
+            };
+            return updatedEmployeeDetails;
+          });
+
+          setPhoto(url); // Update the local state with the new photo
+        });
       })
       .catch((error) => {
         setFreezLoadingImg(false);
         setImgeLoader("fail");
-        console.error("Upload error:", error);
       });
   };
 
-  const handleDeleteImage = () => {
-    setFormData(index, {
-      ...formData,
-      photo: JSON.stringify(null),
+  const handleDeletePhoto = () => {
+    // Logic to delete the photo if needed
+    setPhoto(null);
+    setFormData((prevState) => {
+      const updatedEmployeeDetails = [...prevState];
+      updatedEmployeeDetails[index] = {
+        ...updatedEmployeeDetails[index],
+        photo: null,
+        photoUploadDate: null,
+      };
+      return updatedEmployeeDetails;
     });
   };
 
-  const showImagePopup = () => {
-    if (photo?.url) {
-      setSelectedImage(photo.url);
-      OverflowHideBOdy(true); // Hide body scroll
-      setShowPopup(true);
-    }
-  };
+  const isPhotoExpired = expiryDate && new Date() > expiryDate;
 
   return (
     <>
-      <div className="form-group" style={{ width: "202px" }}>
-        <div
-          className="file-upload"
-          tabIndex="0"
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              const input = document.getElementById("file");
-              input.click();
-            }
-          }}
-        >
-          <input
-            type="file"
-            name="image_url"
-            id="file"
-            className="inputfile"
-            onChange={handleImageChange}
-            multiple
-            style={{ display: "none" }}
-          />
-          <label
-            htmlFor="file"
-            className="filelabelemail"
-            id="uploadAttachment"
-          >
-            <div
-              id="spc5s6"
-              style={{
-                display: "flex",
-                gap: "5px",
-                padding: "6px",
-                border: "1px solid lightgray", // Light gray border
-                borderRadius: "8px", // Rounded corners
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft box shadow
-              }}
-            >
-              {/* Conditionally render the export icon only if photo is not present */}
-              {!photo?.url && (
-                <span
-                  style={{ marginTop: "5px", fill: "blue", cursor: "pointer" }}
-                >
+  {!photo || isPhotoExpired  ? (
+    <div id="formofcreateitems" style={{ width: "140px" }}>
+      <div className="form_commonblock">
+        <div id="inputx1">
+          <div id="imgurlanddesc">
+            <div className="form-group" style={{ width: "145px" }}>
+              <div className="file-upload">
+                <input
+                  type="file"
+                  name="photo"
+                  id={`file-${index}`} // Use index in id for uniqueness
+                  className="inputfile"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                <span style={{ cursor: "pointer" }}>
                   {otherIcons.export_svg}
                 </span>
-              )}
-
-              <div
-                style={{ marginTop: "3px", cursor: "pointer", display: "flex" }}
-              >
-                <h3
-                  id="AttachmentHeading"
-                  style={{
-                    fontWeight: "300",
-                    color: "blue",
-                    fontSize: "16px",
-                  }}
-                >
-                  <p
-                    title={photo?.name || "No file selected"} // Full name shown on hover
-                    style={{
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      marginLeft: !photo?.url ? "24px" : "0",
-
-                      textOverflow: "ellipsis",
-                      maxWidth: "140px", // Limit the width for truncation
-                    }}
-                  >
-                    {photo?.name?.length > 20
-                      ? `${photo.name.substring(0, 20)}...`
-                      : photo?.name || "No file selected"}
-                  </p>
-                </h3>
+                <label htmlFor={`file-${index}`} className="file-label">
+                  {formData?.photo ? "Change Photo" : "Browse Files"}
+                </label>
               </div>
-              {imgLoader === "success" && photo && (
-                <div
-                  id="Show_delete_img_new_vendor"
-                  style={{ display: "flex", gap: "2px" }}
-                >
-                  <div
-                    onClick={handleDeleteImage}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <MdOutlineDeleteForever />
-                  </div>
-                  <div onClick={showImagePopup} style={{ cursor: "pointer" }}>
-                    <FaEye />
-                  </div>
-                </div>
-              )}
             </div>
-          </label>
-        </div>
-      </div>
-
-      {/* Popup for viewing photo */}
-      {showPopup && (
-        <div
-          className="mainxpopups2"
-          ref={popupRef}
-          style={{ marginTop: "10px" }}
-        >
-          <div className="popup-content02">
-            <span
-              className="close-button02"
-              onClick={() => setShowPopup(false)}
-            >
-              <RxCross2 />
-            </span>
-            <img
-              src={selectedImage}
-              alt="Selected Photo"
-              height={500}
-              width={500}
-            />
           </div>
         </div>
+      </div>
+    </div>
+  ) : (
+    <div style={{  position: "relative" }}>
+      {/* Show image preview */}
+      <img
+        src={photo}
+        alt="Uploaded"
+        style={{
+          width: "50px",
+          height: "50px",
+          objectFit: "cover",
+        }}
+      />
+      <div
+        id="buttonsdata"
+        style={{
+          position: "absolute",
+          top: "-6px",
+          right: "-6px",
+          zIndex: 1, // Ensures the icon is above the image
+        }}
+      >
+        <Link onClick={handleDeletePhoto} className="linkx3">
+          <RxCross2 />
+        </Link>
+      </div>
+      {isPhotoExpired && (
+        <p style={{ color: "red", fontSize: "12px" }}>
+          This photo has expired.
+        </p>
       )}
-    </>
+    </div>
+  )}
+</>
+
   );
 };
