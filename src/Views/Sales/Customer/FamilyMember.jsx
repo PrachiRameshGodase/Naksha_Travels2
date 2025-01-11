@@ -5,7 +5,7 @@ import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown2
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { customersList } from "../../../Redux/Actions/customerActions";
-import  { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
+import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -136,10 +136,9 @@ const FamilyMember = ({
       }));
     }
   }, [employeeDetails]);
-console.log('employeeDetails', employeeDetails)
   const renderMemberTable = () => {
     return (
-      <table className="employee-table" style={{width:"91%"}}>
+      <table className="employee-table" style={{ width: "91%" }}>
         <thead>
           <tr>
             <th>No.</th>

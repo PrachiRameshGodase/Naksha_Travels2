@@ -53,7 +53,7 @@ const routerConfig = [
   },
 
   {
-    path: "/home_megamarket",
+    path: "/home_nakshatravels",
     element: <ProtectedRouteForUser><AllProductsOfDvts /></ProtectedRouteForUser>,
     errorElement: <Notfoundpage />,
   },

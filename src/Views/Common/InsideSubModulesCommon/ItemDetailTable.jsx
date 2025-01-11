@@ -14,6 +14,7 @@ import {
   formatDate2,
   formatDate3,
   formatDate4,
+  todayDate,
 } from "../../Helper/DateFormat";
 import NumericInput from "../../Helper/NumericInput";
 import { Link } from "react-router-dom";
@@ -216,10 +217,9 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
                     <MdArrowOutward />
                   </span>
                 ) : (
-                  `${
-                    JSON.parse(val?.upload_image)?.length < 1
-                      ? "No"
-                      : JSON.parse(val?.upload_image)?.length
+                  `${JSON.parse(val?.upload_image)?.length < 1
+                    ? "No"
+                    : JSON.parse(val?.upload_image)?.length
                   } Image`
                 )}
               </td>
@@ -284,10 +284,9 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
                     <MdArrowOutward />
                   </span>
                 ) : (
-                  `${
-                    JSON.parse(val?.upload_image)?.length < 1
-                      ? "No"
-                      : JSON.parse(val?.upload_image)?.length
+                  `${JSON.parse(val?.upload_image)?.length < 1
+                    ? "No"
+                    : JSON.parse(val?.upload_image)?.length
                   } Image`
                 )}
               </td>
@@ -663,102 +662,108 @@ export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
   );
 };
 
-export const ManageCurrencyTable = ({ formsData }) => {
-  const { formData, setFormData } = formsData;
+
+//for manage currency list / and create currencies prices...
+export const ManageCurrencyTable = ({ formData, setFormData, section }) => {
+  // console.log("formdataaaaaaaaaaaa", formData)
   return (
     <>
-      <table id="tablex15s56s31s1_currency">
-        <thead className="thaedaksx433">
-          <tr>
-            <div className="table-margin-left">
-              <th className="sfdjklsd1xs2w1 column-width-9"></th>
-            </div>
-            <th className="sfdjklsd1xs2w4 column-width-16 padding-left-40">
-              Date
-            </th>
-            <div className="table-margin-left-80">
-              <th className="sfdjklsd1xs2w4 full-width">Currency Name</th>
-            </div>
-            <th className="sfdjklsd1xs2w4 column-width-20 text-right padding-left-100">
-              Currency Code
-            </th>
-            <div className="table-margin-left-150">
-              <th className="sfdjklsd1xs2w4 full-width text-right">
-                Countries
-              </th>
-            </div>
-            <th className="sfdjklsd1xs2w4 text-right padding-15-40">
-              Currency Symbol
-            </th>
-            <th className="sfdjklsd1xs2w4 text-right padding-15-40">
-              Current Rate {currencySymbol}
-            </th>
-            <th className="sfdjklsd1xs2w4 text-right padding-15-40">
-              Exchange Rate {currencySymbol}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {formData?.map((val, index) => (
-            <tr key={index} className="rowsxs15aksx433">
-              <td className="sfdjklsd1xs2w4 text-right"></td>
-              <td className="sfdjklsd1xs2w4 text-right">{val?.date}</td>
+      {formData?.length >= 1 ? <>
 
-              <td className="sfdjklsd1xs2w4 text-right">
-                {val?.currency_name}
-              </td>
-              <td className="sfdjklsd1xs2w4 text-right">{val?.code}</td>
-              <td className="sfdjklsd1xs2w3 text-right">{val?.country}</td>
-              <td className="sfdjklsd1xs2w3 text-right">{val?.symbol}</td>
-              <td className="sfdjklsd1xs2w3">
-                <div className="tablsxs1a4 text-right">
-                  <div className="tablsxs1a2" style={{ width: "78%" }}>
-                    <NumericInput
-                      style={{ textAlign: "right" }}
-                      value={val.current_rate || ""}
-                      placeholder="0.00"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        setFormData((prevFormData) => {
-                          const updatedFormData = [...prevFormData];
-                          updatedFormData[index] = {
-                            ...updatedFormData[index],
-                            current_rate: inputValue,
-                          };
-                          return updatedFormData;
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-              </td>
-              <td className="sfdjklsd1xs2w3">
-                <div className="tablsxs1a4 text-right">
-                  <div className="tablsxs1a2" style={{ width: "87%" }}>
-                    <NumericInput
-                      style={{ textAlign: "right" }}
-                      className="input-width-40 text-center"
-                      value={val.exchange_rate || ""}
-                      placeholder="0.00"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        setFormData((prevFormData) => {
-                          const updatedFormData = [...prevFormData];
-                          updatedFormData[index] = {
-                            ...updatedFormData[index],
-                            exchange_rate: inputValue,
-                          };
-                          return updatedFormData;
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-              </td>
+        <table id="tablex15s56s31s1_currency">
+          <thead className="thaedaksx433">
+            <tr>
+              <div className="table-margin-left">
+                <th className='sfdjklsd1xs2w1 column-width-9'></th>
+              </div>
+              <th className='sfdjklsd1xs2w4 column-width-16 padding-left-40'>Date</th>
+              <div className="table-margin-left-80">
+                <th className='sfdjklsd1xs2w4 full-width'>Currency Name</th>
+              </div>
+              <th className='sfdjklsd1xs2w4 column-width-20 text-right padding-left-100'>Currency Code</th>
+              <div className="table-margin-left-150">
+                <th className='sfdjklsd1xs2w4 full-width text-right'>Countries</th>
+              </div>
+              <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Currency Symbol</th>
+
+              <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Current Rate {currencySymbol}</th>
+              <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Exchange Rate {currencySymbol}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {formData?.map((val, index) => (
+              <tr key={index} className="rowsxs15aksx433">
+                <td className="sfdjklsd1xs2w4 text-right"></td>
+                <td className="sfdjklsd1xs2w4 text-right">
+                  {todayDate(val?.date)}
+                </td>
+
+                <td className="sfdjklsd1xs2w4 text-right">{val?.currency_name}</td>
+                <td className="sfdjklsd1xs2w4 text-right">
+                  {(val?.code)}
+                </td>
+                <td className="sfdjklsd1xs2w3 text-right">
+                  {(val?.country)}
+                </td>
+                <td className="sfdjklsd1xs2w3 text-right">
+                  {(val?.symbol)}
+                </td>
+                {/* {section === "create" && <> */}
+                <td className="sfdjklsd1xs2w3">
+                  <div className="tablsxs1a4 text-right">
+                    <div className="tablsxs1a2" style={{ width: "78%" }}>
+                      <NumericInput
+                        style={{ textAlign: "right" }}
+                        value={val.current_rate || ''}
+                        placeholder="0.00"
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          setFormData((prevFormData) => {
+                            const updatedFormData = [...prevFormData];
+                            updatedFormData[index] = {
+                              ...updatedFormData[index],
+                              current_rate: inputValue,
+                            };
+                            return updatedFormData;
+                          });
+                        }}
+                        disabled={section === "list" ? true : false}
+                      />
+                    </div>
+                  </div>
+                </td>
+                <td className="sfdjklsd1xs2w3">
+                  <div className="tablsxs1a4 text-right">
+                    <div className="tablsxs1a2" style={{ width: "87%" }}>
+                      <NumericInput
+                        style={{ textAlign: "right" }}
+                        className="input-width-40 text-center"
+                        value={val.exchange_rate || ''}
+                        placeholder="0.00"
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          setFormData((prevFormData) => {
+                            const updatedFormData = [...prevFormData];
+                            updatedFormData[index] = {
+                              ...updatedFormData[index],
+                              exchange_rate: inputValue,
+                            };
+                            return updatedFormData;
+                          });
+                        }}
+                        disabled={section === "list" ? true : false}
+
+                      />
+                    </div>
+                  </div>
+                </td>
+                {/* </>} */}
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+      </> : <p style={{ textAlign: "center" }}>Currencies are not found</p>}
     </>
   );
 };
@@ -788,15 +793,15 @@ export const DSRDetailTable = ({ itemsData, showChargesVal, section }) => {
             <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3Width">Mobile No</th>
             <th className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount ">
               {" "}
-             Services
+              Services
             </th>
             <th className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount ">Actions</th>
           </tr>
         </thead>
         <tbody>
           {/* {itemsData?.items?.map((val, index) => ( */}
-            <tr className="rowsxs15aksx433">
-              {/* <td className="sfdjklsd1xs2w1">{index + 1}</td>
+          <tr className="rowsxs15aksx433">
+            {/* <td className="sfdjklsd1xs2w1">{index + 1}</td>
               <td className="sfdjklsd1xs2w2">{val?.item?.name || ""}</td>
               <td className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">
                 {showAmountWithCurrencySymbol(val?.rate)}
@@ -813,15 +818,15 @@ export const DSRDetailTable = ({ itemsData, showChargesVal, section }) => {
               <td className="sfdjklsd1xs2w3">
                 <ShowMastersValue type="2" id={val?.unit_id} />
               </td> */}
-              <td className="sfdjklsd1xs2w3" id="buttonsdata">
+            <td className="sfdjklsd1xs2w3" id="buttonsdata">
               <Link className="linkx1" to={"/dashboard/serviceslist"}>
                 Services <GoPlus />
               </Link>
-              </td>
-              {/* <td className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount">
+            </td>
+            {/* <td className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount">
                 {showAmountWithCurrencySymbol(val?.final_amount)}
               </td> */}
-            </tr>
+          </tr>
           {/* ))} */}
         </tbody>
       </table>

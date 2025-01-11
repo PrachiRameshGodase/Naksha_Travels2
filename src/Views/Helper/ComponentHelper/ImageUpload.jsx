@@ -1294,6 +1294,9 @@ export const MultiImageUploadDocument = ({
     setShowPopup(true);
   };
 
+
+  // console.log("formdata of imge uopda", formData)
+
   return (
     <>
       <div className="form-group">

@@ -264,6 +264,7 @@ import { createPassengerMFlightReducer, passengerMFlightDeleteReducer } from "./
 import { createPassengerMInsuranceReducer, passengerMInsuranceDeleteReducer } from "./passengerMInsuranceReducers";
 import { createPassengerMOtherReducer, passengerMOtherDeleteReducer } from "./pasengerMOtherReducers";
 import { createUserMasterReducer, listUserMasterReducer, userMasterDeleteReducer } from "./userMasterReducers";
+import { currencyRateCreateReducer, currencyRateListReducer } from "./manageCurrencyReducers";
 const reducer = combineReducers({
   addItemsReducer,
 
@@ -475,7 +476,6 @@ const reducer = combineReducers({
 
   customList: customListReducer,
 
-  getCurrency: getCurrencyReducer,
   getTaxRate: getTaxRateReducer,
   updateAddress: updateAddressReducer,
 
@@ -569,6 +569,12 @@ const reducer = combineReducers({
 
   //account transaction report
   accTran: accountTransactionReducer,
+
+  // manage currencies list and create and update.
+  currencyRateList: currencyRateListReducer,
+  currencyReateCreate: currencyRateCreateReducer,
+  getCurrency: getCurrencyReducer,
+
 });
 
 export default reducer;

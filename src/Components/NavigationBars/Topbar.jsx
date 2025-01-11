@@ -122,11 +122,8 @@ const Topbar = ({ loggedInUserData }) => {
 
   const clearLocalStoragex1 = () => {
     localStorage.clear();
-    // const url = `${externalUrl}/home_megamarket?isLogout=1`;
-    // window.location.href = url;
-
     const url = `${externalUrl}/home_megamarket?isLogout=1`;
-    window.location.replace(url);
+    window.location.href = url;
   };
 
   //fetch all orgnization...
@@ -140,7 +137,6 @@ const Topbar = ({ loggedInUserData }) => {
   // const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
 
-  //fetch all warehouse data...
   //fetch all warehouse data...
   const fetchWarehouseData = useCallback(async () => {
     try {
@@ -511,7 +507,6 @@ const Topbar = ({ loggedInUserData }) => {
                   </div>
 
                   {/* <div className="xskfjlsdl"></div> */}
-
 
                   <span>
                     <Link id="newcomponentmdx2s5" to={"/settings/organisations"} onClick={closeSidebar}>{otherIcons?.iconoflinktab}</Link>

@@ -163,6 +163,7 @@ import CreditNoteDetailsReport from "../../Views/Reports/ReportsData/CreditNoteR
 import DebitNoteDetailsReport from "../../Views/Reports/ReportsData/DebitNoteReport/DebitNoteDetailsReport";
 import ExpenseDetailReport from "../../Views/Reports/ReportsData/ExportReport/ExpenseDetailReport";
 import GerneralLedgerReport from "../../Views/Reports/ReportsData/AccountantsReport/GerneralLedgerReport";
+import CurrencyList from "../../Views/ManageCurrency/CurrencyList";
 // import CurrencyList from "../../Views/ManageCurrency/CurrencyList";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -676,6 +677,12 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "create-masters":
         return <Masters />;
+
+      case "manage-currency":
+        return <ManageCurrency />;
+
+      case "currency-list":
+        return <CurrencyList />;
 
       case "create-user-masters":
         return <UserMasters />;

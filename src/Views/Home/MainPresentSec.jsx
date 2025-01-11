@@ -23,7 +23,7 @@ const MainPresentSec = () => {
 
       // Set a timeout to redirect after 15 seconds
       const redirectTimeout = setTimeout(() => {
-        navigate('/home_megamarket'); // Redirect to the new URL
+        navigate('/home_nakshatravels'); // Redirect to the new URL
       }, 7500); // 15 seconds
 
       const container = containerRef.current;
@@ -78,16 +78,16 @@ const MainPresentSec = () => {
     <>
       <audio ref={audioRef} src="/lord-of-the-rings-main-theme-made-with-Voicemod.mp3" />
       {!hasStarted ? (
-          <div className="x4se55423sdfd5x">
-           <div class="container" onClick={handleStart}>
-    <a class="button is-play" href="#">
-        <div class="button-outer-circle has-scale-animation"></div>
-        <div class="button-outer-circle has-scale-animation has-delay-short"></div>
-        <div class="button-icon is-play"><svg height="100%" width="100%" fill="#f857a6"><polygon class="triangle" points="5,0 30,15 5,30" viewBox="0 0 30 15"></polygon><path class="path" d="M5,0 L30,15 L5,30z" fill="none" stroke="#f857a6" stroke-width="1"></path></svg></div>
-    </a>
-</div>
-            {/* <button onClick={handleStart}>Start</button> */}
+        <div className="x4se55423sdfd5x">
+          <div class="container" onClick={handleStart}>
+            <a class="button is-play" href="#">
+              <div class="button-outer-circle has-scale-animation"></div>
+              <div class="button-outer-circle has-scale-animation has-delay-short"></div>
+              <div class="button-icon is-play"><svg height="100%" width="100%" fill="#f857a6"><polygon class="triangle" points="5,0 30,15 5,30" viewBox="0 0 30 15"></polygon><path class="path" d="M5,0 L30,15 L5,30z" fill="none" stroke="#f857a6" stroke-width="1"></path></svg></div>
+            </a>
           </div>
+          {/* <button onClick={handleStart}>Start</button> */}
+        </div>
       ) : (
         <div className="allproductsofdetsclkx2">
           <div>

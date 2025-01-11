@@ -38,7 +38,7 @@ const Login = () => {
         // Navigate("/organisations")
         Navigate("/")
         // window.location.href = '/home_present_megamarket';
-        // window.location.href = '/home_megamarket';
+        // window.location.href = '/home_nakshatravels';
       }
 
       if (response.data.success === false) {

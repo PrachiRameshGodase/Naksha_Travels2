@@ -212,6 +212,12 @@ const MainLinks = ({
 
   //Masters
   const MastersMenuItem = ["create-masters", "create-user-masters"];
+
+  //ManageCurrency
+  const ManageCurrency = [
+    "currency-list",
+    "manage-currency",
+  ];
   return (
     <>
       <div id="sidebarx1">
@@ -359,7 +365,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Items",
             })}
-            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) ||salesDataMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${customersMenuItems.includes(selectedMenuItem) || salesDataMenuItems.includes(selectedMenuItem) ||
               dsrMenuItems.includes(selectedMenuItem)
               ? "active"
               : ""
@@ -423,8 +429,7 @@ const MainLinks = ({
               "data-tooltip-id": "my-tooltip",
               "data-tooltip-content": "Sales",
             })}
-            className={`menu-title ${
-              quotationsMenuItems.includes(selectedMenuItem) ||
+            className={`menu-title ${quotationsMenuItems.includes(selectedMenuItem) ||
               salesOrdersMenuItems.includes(selectedMenuItem) ||
               deliveryChallanMenuItems.includes(selectedMenuItem) ||
               invoicesMenuItems.includes(selectedMenuItem) ||
@@ -458,7 +463,7 @@ const MainLinks = ({
             className={`submenu ${activeMenu === "sales" ? "opensidebardropdownx5" : ""
               }`}
           >
-            
+
 
             <li
               onClick={() => {
@@ -1025,7 +1030,7 @@ const MainLinks = ({
               className={`menu-item ${selectedMenuItem === "create-masters" ? "active" : ""
                 }`}
             >
-             System Masters
+              System Masters
             </li>
 
             <li
@@ -1035,7 +1040,7 @@ const MainLinks = ({
               className={`menu-item ${selectedMenuItem === "create-user-masters" ? "active" : ""
                 }`}
             >
-             User Masters
+              User Masters
             </li>
             <li
               onClick={() => {
@@ -1059,6 +1064,54 @@ const MainLinks = ({
           </ul>
 
           {/* )} */}
+        </div>
+
+        {/* Currency start */}
+        <div id="" className="menu-itemxse">
+          <div
+            className={`menu-title ${ManageCurrency.includes(selectedMenuItem) ? "active" : ""
+              }`}
+            {...(isSidebarCollapsedx1 && {
+              "data-tooltip-id": "my-tooltip",
+              "data-tooltip-content": "Currency",
+            })}
+            onClick={() => {
+              handleMenuClick("currency");
+              handleShrinkSidebarx1();
+            }}
+          >
+            <span>
+              <img className="svgiconsidebar" src={accountantIco} alt="" />
+              <p className="dispynonesidebarc5w6s">Manage Currency</p>
+            </span>{" "}
+            <p className="dispynonesidebarc5w6s">
+              {activeMenu === "currency" ? (
+                <IoIosArrowUp />
+              ) : (
+                <IoIosArrowDown />
+              )}
+            </p>
+          </div>
+          <ul
+            className={`submenu ${activeMenu === "currency" ? "opensidebardropdownx5" : ""
+              }`}
+          >
+            <li
+              onClick={() => handleMenuItemClick("currency-list")}
+              className={`menu-item ${selectedMenuItem === "currency-list" ? "active" : ""
+                }`}
+            >
+              Currency List
+            </li>
+            <li
+              onClick={() => handleMenuItemClick("manage-currency")}
+              className={`menu-item ${selectedMenuItem === "manage-currency" ? "active" : ""
+                }`}
+            >
+              Manage Currency
+            </li>
+          </ul>
+
         </div>
 
         {/* Help */}
