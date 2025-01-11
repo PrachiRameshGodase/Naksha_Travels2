@@ -101,18 +101,18 @@ const FamilyMember = ({
     fetchCustomers();
   }, []);
 
-  const handleDeleteSelectedMember =async (indexToDelete) => {
-     const result = await Swal.fire({
-          text: "Are you sure you want to delete this member from list?",
-          showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-        });
-        if (result.isConfirmed) {
+  const handleDeleteSelectedMember = async (indexToDelete) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this member from list?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
       setEmployeeDetails((prevDetails) =>
-      prevDetails.filter((_, index) => index !== indexToDelete)
-    );
-  }
+        prevDetails.filter((_, index) => index !== indexToDelete)
+      );
+    }
   };
 
   useEffect(() => {
@@ -167,8 +167,8 @@ const FamilyMember = ({
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow = member?.member_id == customerDetails?.user?.relation_id;
-console.log("customerDetails", customerDetails)
+              const disabledRow =
+                member?.member_id == customerDetails?.user?.relation_id;
               return (
                 selectedMember && (
                   <tr
@@ -224,9 +224,9 @@ console.log("customerDetails", customerDetails)
                     <td>
                       <span
                         onClick={() => {
-                          handleDeleteSelectedMember(index)
+                          handleDeleteSelectedMember(index);
                         }}
-                        style={{cursor:"pointer"}}
+                        style={{ cursor: "pointer" }}
                       >
                         {otherIcons.delete_svg}
                       </span>
@@ -255,6 +255,10 @@ console.log("customerDetails", customerDetails)
           <div id="secondx2_customer">
             <div id="main_forms_desigin_cus">
               <div id="imgurlanddesc" className="calctotalsectionx2">
+                <div className="iconheading">
+                  {otherIcons.quotation_icon}
+                  <p>Family Members</p>
+                </div>
                 <div className="form_commonblock">
                   <label>
                     Member Name <b className="color_red">*</b>

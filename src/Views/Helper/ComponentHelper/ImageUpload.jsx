@@ -9,6 +9,7 @@ import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import "./ImageUpload.scss"
 
 const ImageUpload = ({
   formData,
@@ -1305,7 +1306,7 @@ export const MultiImageUploadDocument = ({
   };
 
   const handleDeleteImage = (imageUrl) => {
-    const updatedUploadDocuments = uploadDocuments.filter(
+    const updatedUploadDocuments = uploadDocuments?.filter(
       (image) => image.url !== imageUrl
     );
 
@@ -1326,68 +1327,76 @@ export const MultiImageUploadDocument = ({
     return imageExtensions.includes(fileExtension);
   };
 
-
   // console.log("formdata of imge uopda", formData)
 
   return (
     <>
-      <div className="form-group">
-        <label>Upload Images/Documents</label>
-        <div className="file-upload" tabIndex="0">
-          <input
-            type="file"
-            id={`file_${index}`}
-            className="inputfile"
-            onChange={handleImageChange}
-            multiple
-          />
-          <label htmlFor={`file_${index}`} className="file-label">
-            <div id="spc5s6">
-              {uploadDocuments.length ? (
-                `${uploadDocuments.length} Images Uploaded`
-              ) : (
-                <>{otherIcons.export_svg} Browse Files</>
-              )}
-            </div>
-          </label>
-        </div>
-        {errorMessage && (
-          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
-            {errorMessage}
-          </p>
-        )}
-
-        {/* Render uploaded documents */}
-        {imgLoader === "success" &&
-          uploadDocuments.map((image, idx) => (
-            <div key={idx} id="Show_delete_img_new_vendor">
-              <p style={{ width: "50%" }} title={image?.name || ""}>
-                {image?.name?.length > 15
-                  ? `${image?.name.substring(0, 10)}...`
-                  : image?.name}
-              </p>
-
-              <div onClick={() => handleDeleteImage(image.url)}>
-                <MdOutlineDeleteForever />
-              </div>
-              {isImage(image.url) ? (
-                <div onClick={() => showImagePopup(image?.url)}>
-                  <FaEye />
+      <div id="formofcreateitems">
+        <div className="form_commonblock">
+          <div id="inputx1">
+            <div id="imgurlanddesc">
+              <div className="form-group">
+                <label>Upload Images/Documents</label>
+                <div className="file-upload" tabIndex="0">
+                  <input
+                    type="file"
+                    id={`file_${index}`}
+                    className="inputfile"
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                  <label htmlFor={`file_${index}`} className="file-label">
+                    <div id="spc5s6">
+                      {uploadDocuments?.length ? (
+                        `${uploadDocuments.length} Images Uploaded`
+                      ) : (
+                        <>{otherIcons.export_svg} Browse Files</>
+                      )}
+                    </div>
+                  </label>
                 </div>
-              ) : (
-                <a
-                  href={image?.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Preview File"
-                >
-                  <FaEye />
-                </a>
-              )}
-            </div>
-          ))}
-      </div>
+                {errorMessage && (
+                  <p
+                    style={{ color: "red", marginTop: "5px", fontSize: "12px" }}
+                  >
+                    {errorMessage}
+                  </p>
+                )}
 
+                {/* Render uploaded documents */}
+                {imgLoader === "success" &&
+                  uploadDocuments.map((image, idx) => (
+                    <div key={idx} id="Show_delete_img_new_vendor">
+                      <p style={{ width: "50%" }} title={image?.name || ""}>
+                        {image?.name?.length > 15
+                          ? `${image?.name.substring(0, 10)}...`
+                          : image?.name}
+                      </p>
+
+                      <div onClick={() => handleDeleteImage(image.url)}>
+                        <MdOutlineDeleteForever />
+                      </div>
+                      {isImage(image.url) ? (
+                        <div onClick={() => showImagePopup(image?.url)}>
+                          <FaEye />
+                        </div>
+                      ) : (
+                        <a
+                          href={image?.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Preview File"
+                        >
+                          <FaEye />
+                        </a>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Popup for viewing images */}
       {showPopup && (
         <div

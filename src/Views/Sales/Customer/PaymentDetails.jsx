@@ -48,31 +48,29 @@ const PaymentDetails = ({
       payment_details: paymentDetails,
     }));
   }, [paymentDetails, setUserData]);
-  
 
   useEffect(() => {
     if (user?.id && isEdit) {
       const userPaymentDetails = user?.payment_details || [];
-  
+
       // Extract the first item's details or set default values
-      const paymentDetailsFromUser = userPaymentDetails.length > 0 ? userPaymentDetails[0] : {};
-  
+      const paymentDetailsFromUser =
+        userPaymentDetails.length > 0 ? userPaymentDetails[0] : {};
+
       setPaymentDetails({
         payment_method: paymentDetailsFromUser.payment_method || "",
         payment_terms: paymentDetailsFromUser.payment_terms || "",
         credit_limit: paymentDetailsFromUser.credit_limit || "",
       });
-  
+
       setTick((prevTick) => ({
         ...prevTick,
         paymentDetailsTick: true,
       }));
     }
   }, [user?.id, isEdit, setTick]);
-  
 
   useEffect(() => {
-   
     if (isEdit) {
       updateUserData(paymentDetails); // Only call updateUserData when editing
     }
@@ -82,7 +80,12 @@ const PaymentDetails = ({
       <div>
         {switchCusData === "Payment Details" ? (
           <div id="secondx2_customer">
-            <div id="main_forms_desigin_cus"></div>
+            <div id="main_forms_desigin_cus">
+              <div className="iconheading">
+                {otherIcons.quotation_icon}
+                <p>Payment Details</p>
+              </div>
+            </div>
             <div className="insidesectiony1">
               <div id="fcx3s1parent">
                 <div className="form_commonblock">
