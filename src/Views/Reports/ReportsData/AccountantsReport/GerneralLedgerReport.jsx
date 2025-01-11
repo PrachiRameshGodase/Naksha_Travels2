@@ -3,12 +3,11 @@ import { otherIcons } from '../../../Helper/SVGIcons/ItemsIcons/Icons';
 import { Link } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
-import { accountTransactionAction, gernalLedgerAction } from '../../../../Redux/Actions/ReportsActions/AccountReportAction';
+import { gernalLedgerAction } from '../../../../Redux/Actions/ReportsActions/AccountReportAction';
 import TableViewSkeleton from '../../../../Components/SkeletonLoder/TableViewSkeleton';
 import NoDataFound from '../../../../Components/NoDataFound/NoDataFound';
 import { formatDate, formatDate3, formatDate4 } from '../../../Helper/DateFormat';
 import { showAmountWithCurrencySymbol } from '../../../Helper/HelperFunctions';
-import ShowMastersValue from '../../../Helper/ShowMastersValue';
 import LoadingText from '../../../../Components/Loaders/LoadingText';
 import ResizeFL from '../../../../Components/ExtraButtons/ResizeFL';
 import DatePicker from '../../../Common/DatePicker/DatePicker';
@@ -20,7 +19,6 @@ const GerneralLedgerReport = () => {
     const reportData = useSelector(state => state?.gernalLedger);
     const allData = reportData?.data?.data;
     // console.log("first", allData)
-    const dispatch = useDispatch();
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     //date range picker

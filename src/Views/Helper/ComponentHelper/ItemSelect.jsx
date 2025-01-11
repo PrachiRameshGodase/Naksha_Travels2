@@ -30,6 +30,14 @@ import {
 } from "../HelperFunctions";
 import TextAreaComponentWithTextLimit from "./TextAreaComponentWithTextLimit";
 import ExpenseCharges from "./ExpenseCharges";
+import AddOtherPopup from "../../Invoices/AddOtherPopup";
+import AddCarHirePopup from "../../Invoices/AddCarHirePopup";
+import AddHotelPopup from "../../Invoices/AddHotelPopup";
+import AddFlightPopup from "../../Invoices/AddFlightPopup";
+import AddVisaPopup from "../../Invoices/AddVisaPopup";
+import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
+import AddAssistPopup from "../../Invoices/AddAssistPopup";
+import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
 
 const ItemSelect = ({
   formData,
@@ -418,8 +426,134 @@ const ItemSelect = ({
 
   useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
 
+
+
+  // for service select code..............................................
+
+
+  const servicesList = ShowMasterData("48");
+
+
+  useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
+
+
+  const [activePopup, setActivePopup] = useState(null);
+
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const handleSelectService = (e) => {
+    const { value } = e.target;
+    setActivePopup({ popupType: value });
+  };
+
+  const handleAddService = (name, data) => {
+    const itemName =
+      name === "Hotel"
+        ? data?.hotel_name
+        : name === "Flight"
+          ? data?.airline_name
+          : name === "Assist"
+            ? data?.airport_name
+            : name === "Insurance"
+              ? data?.company_name
+              : name === "Visa"
+                ? data?.passport_no
+                : name === "CarHire"
+                  ? data?.vehicle_type_id
+                  : name === "Other"
+                    ? data?.item_name
+                    : "";
+    console.log("data of selected hotel", name);
+    const newItems = [
+      ...formData.items,
+      {
+        item_name: itemName,
+        tax_name: "",
+        type: "",
+        quantity: 1,
+        rate: parseFloat(data?.gross_amount || 0),
+        tax_rate: parseInt(data?.tax_percent || 0),
+        tax_amount: parseFloat(data?.tax_amount),
+        discount: 0,
+        gross_amount: parseFloat(data?.gross_amount) * 1,
+        final_amount: parseFloat(data?.gross_amount) * 1,
+        discount_type: 1,
+        // items_data: [data],
+      },
+    ];
+    setFormData({ ...formData, items: newItems });
+  };
+  const renderPopup = () => {
+    if (!activePopup) return null;
+
+    const { popupType } = activePopup;
+
+    switch (popupType) {
+      case "Hotels":
+        return (
+          <AddHotelPopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Flights":
+        return (
+          <AddFlightPopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Visa":
+        return (
+          <AddVisaPopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Insurance":
+        return (
+          <AddInsurancePopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Car Hire":
+        return (
+          <AddCarHirePopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Assist":
+        return (
+          <AddAssistPopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      case "Others":
+        return (
+          <AddOtherPopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  // const [openCharges, setOpenCharges] = useState(false);
+
+  // const openExpenseCharges = () => {
+  //   setOpenCharges(!openCharges);
+  // };
+  // for service select code..............................................
+
   return (
     <>
+      {renderPopup()}
+
       <div className="f1wrpofcreqsx2" id={invoice_section}>
         <div className="itemsectionrows">
           <div className="tableheadertopsxs1">
@@ -802,7 +936,39 @@ const ItemSelect = ({
           Add New Row
           <GoPlus />
         </button>
-
+        <CustomDropdown28
+          label="Services"
+          options={servicesList}
+          value={activePopup?.popupType}
+          onChange={(e) => handleSelectService(e)}
+          name="service"
+          defaultOption="Select Service"
+          type="service"
+        />
+        {showAddModal && (
+          <div className="mainxpopups1" ref={popupRef} tabIndex="0">
+            <div className="popup-content">
+              <span
+                className="close-button"
+                onClick={() => setShowAddModal(false)}
+              >
+                <RxCross2 />
+              </span>
+              <h2>Add Services</h2>
+              <div className="midpopusec12x" style={{ minHeight: "300px" }}>
+                <CustomDropdown28
+                  label="Services"
+                  options={servicesList}
+                  value={formData?.service}
+                  onChange={(e) => handleSelectService(e)}
+                  name="service"
+                  defaultOption="Add Services"
+                  type="service"
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <div className="height5"></div>
         <div className="secondtotalsections485s">
           {note ? (

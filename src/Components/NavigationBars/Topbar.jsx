@@ -434,6 +434,7 @@ const Topbar = ({ loggedInUserData }) => {
         <div className="modalx1-overlay" onClick={closeNotificationPopup}></div>
       }
       {showNotificationPopup && (
+
         <div className="notification-popup" ref={notificationPopupRef}>
           <div className="notification-popup-content">
             <div id="topsecxksx23">
@@ -445,29 +446,21 @@ const Topbar = ({ loggedInUserData }) => {
               </span>
             </div>
 
-
             <div className="notdatafound03">
               <Lottie animationData={bellAnimationData} />
               {/* <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe> */}
               <p>You have no notifications from the last 30 days.</p>
             </div>
 
-
             <div className="divcontxlwextbelocbtn">
               <div className="xklw54c15w3s6">
                 <svg id="fi_4457168" enableBackground="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g><g><g><path d="m360.95 168.9h-300.95c-33.137 0-60 26.863-60 60v122c0 33.137 26.863 60 60 60h15.95v94.19c0 4.677 5.847 6.794 8.841 3.201l81.159-97.391h135c33.137 0 60-26.863 60-60z" fill="#fd5"></path></g></g><g><g><path d="m360.95 168.9v182c0 33.14-26.86 60-60 60h-120.47v-242z" fill="#ffb555"></path></g></g><path d="m290.95 302.9h-220c-8.284 0-15 6.716-15 15s6.716 15 15 15h220c8.284 0 15-6.716 15-15s-6.716-15-15-15z" fill="#ffb555"></path><path d="m305.95 317.9c0 8.28-6.72 15-15 15h-110.47v-30h110.47c8.28 0 15 6.72 15 15z" fill="#ff9000"></path><path d="m70.95 272.9h170.05c8.284 0 15-6.716 15-15s-6.716-15-15-15h-170.05c-8.284 0-15 6.716-15 15s6.716 15 15 15z" fill="#ffb555"></path><path d="m256 257.9c0 8.28-6.72 15-15 15h-60.52v-30h60.52c8.28 0 15 6.72 15 15z" fill="#ff9000"></path><circle cx="346" cy="166.9" fill="#f25a3c" r="105"></circle><path d="m451 166.9c0 57.9-47.1 105-105 105v-210c57.9 0 105 47.1 105 105z" fill="#e43539"></path><path d="m341.756 122.72-15 5c-7.859 2.62-12.106 11.115-9.487 18.974 3.494 10.48 14.13 10.227 14.23 10.26v39.896c0 8.284 6.716 15 15 15s15-6.716 15-15v-59.9c.001-10.225-10.031-17.464-19.743-14.23z" fill="#e9f3fb"></path><path d="m361.5 136.95v59.9c0 8.28-6.72 15-15 15-.17 0-.34 0-.5-.01v-89.89c8.18-.29 15.5 6.26 15.5 15z" fill="#d6e9f8"></path><path d="m346.05 1.9c-8.284 0-15 6.716-15 15v16.05c0 8.284 6.716 15 15 15s15-6.716 15-15v-16.05c0-8.284-6.716-15-15-15z" fill="#f25a3c"></path><path d="m361.05 16.9v16.05c0 8.28-6.72 15-15 15h-.05v-46.05h.05c8.28 0 15 6.72 15 15z" fill="#e43539"></path><path d="m249.147 50.743c-5.857-5.858-15.355-5.858-21.213 0s-5.858 15.355 0 21.213l11.349 11.349c5.857 5.858 15.355 5.859 21.213 0 5.858-5.858 5.858-15.355 0-21.213z" fill="#f25a3c"></path><g fill="#e43539"><path d="m452.617 254.495c-5.857-5.858-15.355-5.858-21.213 0s-5.858 15.355 0 21.213l11.349 11.349c5.857 5.858 15.355 5.859 21.213 0 5.858-5.858 5.858-15.355 0-21.213z"></path><path d="m497 154h-16.05c-8.284 0-15 6.716-15 15s6.716 15 15 15h16.05c8.284 0 15-6.716 15-15s-6.716-15-15-15z"></path><path d="m452.758 83.446 11.349-11.349c5.858-5.858 5.858-15.355 0-21.213-5.857-5.858-15.355-5.858-21.213 0l-11.349 11.349c-5.858 5.858-5.858 15.355 0 21.213 5.857 5.858 15.356 5.859 21.213 0z"></path></g></g></svg>
-
 
                 <Link to={"/settings/create-organisations"} className="buttonx3">
                   <span className="asdf">Manage Notifications</span>
                 </Link>
               </div>
-
-
-
             </div>
-
-
 
           </div>
         </div>
@@ -479,7 +472,6 @@ const Topbar = ({ loggedInUserData }) => {
       {showAccountSlider && (
         <div className="modalx1-overlay" onClick={toggleSidebar02}></div>
       )}
-
 
       {showAccountSlider && (
         <div className={`accountprofile-popup ${showAccountSlider ? "" : ""}`}>
@@ -515,23 +507,23 @@ const Topbar = ({ loggedInUserData }) => {
               )}
 
               <div className="lsixwlinksxkw452s">
-                <Link className="insidclinks65w6x6w">
+                {/* <Link className="insidclinks65w6x6w">
                   <img src={accountmanageIco} alt="" />
-                  Manage Your Account</Link>
+                  Manage Your Account</Link> */}
 
                 <Link className="insidclinks65w6x6w" to={externalUrl}>
                   <img src={appsIcon} alt="" />
                   All Apps</Link>
 
-                <Link className="insidclinks65w6x6w">
+                {/* <Link className="insidclinks65w6x6w">
                   <img src={feedbacksendIco} alt="" />
-                  Send Feedback</Link>
+                  Send Feedback</Link> */}
                 <Link className="insidclinks65w6x6w">
                   <img src={organizationIco} alt="" />
                   Organizations</Link>
-                <Link className="insidclinks65w6x6w">
+                {/* <Link className="insidclinks65w6x6w">
                   <img src={inviteUserIco} alt="" />
-                  Invite Users</Link>
+                  Invite Users</Link> */}
                 <Link className="insidclinks65w6x6w">
                   <img src={helpIco} alt="" />
                   Help?</Link>

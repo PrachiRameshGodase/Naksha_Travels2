@@ -81,6 +81,8 @@ const CreateQuotation = () => {
     isEdit
   );
 
+  console.log("formdat", formData)
+
   const calculateExpiryDate = (transactionDate, terms) => {
     const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
     return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
@@ -385,14 +387,12 @@ const CreateQuotation = () => {
                       </div>
                       {/* </div> */}
                       <div className="">
-                        <AddServices
+                        {/* <AddServices
                           formData={formData}
                           setFormData={setFormData}
                           handleChange={handleChange}
                           note="customer"
-                        />
-
-                        {/* <div className="">
+                        /> */}
                         <ItemSelect
                           formData={formData}
                           setFormData={setFormData}
@@ -402,8 +402,8 @@ const CreateQuotation = () => {
                           extracssclassforscjkls={"extracssclassforscjkls"}
                           dropdownRef2={dropdownRef2}
                           note="customer"
-                          section="sales" */}
-                        {/* /> */}
+                          section="sales"
+                        />
 
                         <div className='secondtotalsections485s sxfc546sdfr85234e'>
                           <div className='textareaofcreatqsiform'>

@@ -34,7 +34,10 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
   const handleDropdownToggle = (index) => {
     setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
   };
+
+
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
+
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
 
   const [activePopup, setActivePopup] = useState(null);
@@ -51,18 +54,18 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
       name === "Hotel"
         ? data?.hotel_name
         : name === "Flight"
-        ? data?.airline_name
-        : name === "Assist"
-        ? data?.airport_name
-        : name === "Insurance"
-        ? data?.company_name
-        : name === "Visa"
-        ? data?.passport_no
-        : name === "CarHire"
-        ? data?.vehicle_type_id
-        : name === "Other"
-        ? data?.item_name
-        : "";
+          ? data?.airline_name
+          : name === "Assist"
+            ? data?.airport_name
+            : name === "Insurance"
+              ? data?.company_name
+              : name === "Visa"
+                ? data?.passport_no
+                : name === "CarHire"
+                  ? data?.vehicle_type_id
+                  : name === "Other"
+                    ? data?.item_name
+                    : "";
     console.log("data of selected hotel", name);
     const newItems = [
       ...formData.items,
@@ -331,6 +334,9 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
   const openExpenseCharges = () => {
     setOpenCharges(!openCharges);
   };
+
+
+
   return (
     <>
       {renderPopup()}
@@ -383,20 +389,24 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                             </span>
                           ) : data?.service_name === "Assist" ? (
                             <span>
+
                               <span>
                                 <b style={{ fontWeight: 500 }}>Airport:</b>{" "}
                                 {data?.airport_name || "-"}{" "}
                               </span>
+
                               <span>
                                 <b style={{ fontWeight: 500 }}>Meeting Type:</b>{" "}
                                 {data?.meeting_type || "-"}{" "}
                               </span>
+
                               <span>
                                 <b style={{ fontWeight: 500 }}>
                                   No Of Persons:
                                 </b>{" "}
                                 {data?.no_of_persons || "-"}
                               </span>
+
                             </span>
                           ) : data?.service_name === "Flight" ? (
                             <span>
@@ -520,10 +530,10 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                               newValue = Math.min(
                                 newValue,
                                 item?.rate * item?.quantity +
-                                  (item?.rate *
-                                    item?.tax_rate *
-                                    item?.quantity) /
-                                    100
+                                (item?.rate *
+                                  item?.tax_rate *
+                                  item?.quantity) /
+                                100
                               );
                               if (newValue > item?.rate * item?.quantity) {
                                 toast(
@@ -551,8 +561,8 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                           {item?.discount_type == 1
                             ? "$"
                             : item?.discount_type == 2
-                            ? "%"
-                            : ""}
+                              ? "%"
+                              : ""}
                           {openDropdownIndex === index && (
                             <div
                               className="dropdownmenucustomx1"
