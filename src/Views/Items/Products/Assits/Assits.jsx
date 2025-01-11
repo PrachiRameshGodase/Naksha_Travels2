@@ -22,13 +22,13 @@ import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { assistListAction } from "../../../../Redux/Actions/assistAction";
 
 const Assit = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
   const totalItems = assistData?.data?.count || 0;
-  console.log("assistData", assistData)
+  console.log("assistData", assistData);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -129,7 +129,7 @@ const Assit = () => {
     //   parshPayload?.from_date ||
     //   parshPayload?.currentpage > 1
     // ) {
-      fetchAssists();
+    fetchAssists();
     // }
   }, [searchTrigger]);
 
@@ -157,12 +157,9 @@ const Assit = () => {
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : assistLists?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : assistLists?.map((row) => row.id));
   };
   //logic for checkBox...
-
 
   return (
     <>
@@ -175,7 +172,18 @@ const Assit = () => {
               {otherIcons?.warehouse_icon}
               All Assists
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${assistData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Assists"
               onSearch={onSearch}
@@ -283,9 +291,7 @@ const Assit = () => {
                               <input
                                 checked={selectedRows.includes(item?.id)}
                                 type="checkbox"
-                                onChange={() =>
-                                  handleCheckboxChange(item?.id)
-                                }
+                                onChange={() => handleCheckboxChange(item?.id)}
                               />
                               <div className="checkmark"></div>
                             </div>
@@ -293,10 +299,9 @@ const Assit = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                             
                               {item?.meeting_type || ""}
                             </div>
-                           
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
@@ -315,7 +320,6 @@ const Assit = () => {
                             >
                               {item?.price || ""}
                             </div>
-                            
 
                             <div
                               onClick={() => handleRowClicked(item)}
@@ -329,7 +333,6 @@ const Assit = () => {
                                       ? "approved"
                                       : item?.status == "0"
                                       ? "draft"
-                                     
                                       : ""
                                   }
                                 >
@@ -349,12 +352,12 @@ const Assit = () => {
                     )}
 
                     <PaginationComponent
-                    itemList={totalItems}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    itemsPerPage={itemsPerPage}
-                    setItemsPerPage={setItemsPerPage}
-                    setSearchCall={setSearchTrigger}
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
                     />
                   </>
                 )}

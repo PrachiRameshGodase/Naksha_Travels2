@@ -9,6 +9,7 @@ import  { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUp
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import Swal from "sweetalert2";
 
 const FamilyMember = ({
   switchCusData,
@@ -100,10 +101,18 @@ const FamilyMember = ({
     fetchCustomers();
   }, []);
 
-  const handleDeleteSelectedMember = (indexToDelete) => {
-    setEmployeeDetails((prevDetails) =>
+  const handleDeleteSelectedMember =async (indexToDelete) => {
+     const result = await Swal.fire({
+          text: "Are you sure you want to delete this member from list?",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+        });
+        if (result.isConfirmed) {
+      setEmployeeDetails((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToDelete)
     );
+  }
   };
 
   useEffect(() => {
@@ -136,7 +145,6 @@ const FamilyMember = ({
       }));
     }
   }, [employeeDetails]);
-console.log('employeeDetails', employeeDetails)
   const renderMemberTable = () => {
     return (
       <table className="employee-table" style={{width:"91%"}}>
@@ -159,8 +167,8 @@ console.log('employeeDetails', employeeDetails)
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow = member?.member_id === customerDetails?.user?.relation_id;
-
+              const disabledRow = member?.member_id == customerDetails?.user?.relation_id;
+console.log("customerDetails", customerDetails)
               return (
                 selectedMember && (
                   <tr
@@ -216,8 +224,9 @@ console.log('employeeDetails', employeeDetails)
                     <td>
                       <span
                         onClick={() => {
-                          handleDeleteSelectedMember(index);
+                          handleDeleteSelectedMember(index)
                         }}
+                        style={{cursor:"pointer"}}
                       >
                         {otherIcons.delete_svg}
                       </span>

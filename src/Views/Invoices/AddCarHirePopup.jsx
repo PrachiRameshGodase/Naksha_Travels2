@@ -8,7 +8,7 @@ import { ShowMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection from "../DSR/CalculationSection";
+import CalculationSection, { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
@@ -23,6 +23,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
 
     const [cusData1, setcusData1] = useState(null);
     const [formData, setFormData] = useState({
+        service_name:"CarHire",
         entry_type: "",
         vehicle_type_id: "",
         days: "",
@@ -90,7 +91,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                         <form>
                             {/* Keep your form as it is */}
                             <div className="relateivdiv">
-                                <div className="itemsformwrap">
+                                <div className="itemsformwrap"  style={{ paddingBottom: "0px" }}>
                                     <div className="f1wrapofcreq">
                                         <div className="f1wrapofcreqx1">
                                             <div className="form_commonblock">
@@ -202,17 +203,17 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
 
                                         <div className="f1wrapofcreqx1">
                                             <div className="secondtotalsections485s">
-                                                <CalculationSection formData={formData} setFormData={setFormData} handleChange={handleChange} section='Carhire' />
+                                                <CalculationSection2 formData={formData} setFormData={setFormData} handleChange={handleChange} section='Carhire' />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <SubmitButton6
-                                onClick={handleFormSubmit}
-                                cancel="dsr"
-                                createUpdate={createCarHire}
-                            />
+              onClick={handleFormSubmit}
+              createUpdate=""
+              setShowModal={setShowModal}
+            />
                         </form>
                     </div>
                 </div>

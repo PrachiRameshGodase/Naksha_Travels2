@@ -1,25 +1,18 @@
 //basic details for customer///
 import React, { useEffect, useRef, useState } from "react";
-import {
-  fetchGetCountries,
-  fetchMasterData,
-} from "../../../Redux/Actions/globalActions";
-import { useDispatch, useSelector } from "react-redux";
-import { MdCheck } from "react-icons/md";
-import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { RxCross2 } from "react-icons/rx";
-import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
-import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown19 from "../../../Components/CustomDropdown/CustomDropdown19";
-import NumericInput from "../../Helper/NumericInput";
-import {
-  getCurrencyFormData,
-  ShowMasterData,
-} from "../../Helper/HelperFunctions";
-import { CustomDropdown006 } from "../../../Components/CustomDropdown/CustomDropdown06";
 import DatePicker from "react-datepicker";
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
+import { CustomDropdown006 } from "../../../Components/CustomDropdown/CustomDropdown06";
+import CustomDropdown19 from "../../../Components/CustomDropdown/CustomDropdown19";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import { fetchGetCountries } from "../../../Redux/Actions/globalActions";
+import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import { formatDate } from "../../Helper/DateFormat";
+import { ShowMasterData } from "../../Helper/HelperFunctions";
+import NumericInput from "../../Helper/NumericInput";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const BasicDetails = ({
   updateUserData,
@@ -29,7 +22,7 @@ const BasicDetails = ({
   setTick,
   dropdownRef1,
   basicDetails,
-  setBasicDetails
+  setBasicDetails,
 }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
@@ -46,8 +39,6 @@ const BasicDetails = ({
   const showdeparment = ShowMasterData("10");
   const customerBloodGroup = ShowMasterData("44");
   const customerGender = ShowMasterData("45");
-
- 
 
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
 
@@ -99,14 +90,14 @@ const BasicDetails = ({
       basicDetails?.salutation == 1
         ? "Mr."
         : basicDetails?.salutation == 2
-          ? "Mrs."
-          : basicDetails?.salutation == 3
-            ? "Ms."
-            : basicDetails?.salutation == 4
-              ? "Miss."
-              : basicDetails?.salutation == 5
-                ? "Dr"
-                : "";
+        ? "Mrs."
+        : basicDetails?.salutation == 3
+        ? "Ms."
+        : basicDetails?.salutation == 4
+        ? "Miss."
+        : basicDetails?.salutation == 5
+        ? "Dr"
+        : "";
     if (basicDetails.first_name && basicDetails.last_name) {
       names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
       if (basicDetails.salutation) {
@@ -194,7 +185,9 @@ const BasicDetails = ({
         is_customer: +user?.is_customer,
         gst_no: user?.gst_no,
         pan_no: user?.pan_no,
-
+        d_o_b:user?.d_o_b,
+        blood_group:user?.blood_group,
+        citizenship:user?.citizenship,
         business_leagal_name: user?.business_leagal_name,
         display_name: user?.display_name,
         company_name: user?.company_name,
@@ -225,8 +218,6 @@ const BasicDetails = ({
       setShowDropdownx1(false);
     }
   };
-
-  // console.log("formdata", basicDetails?.salutation)
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -267,7 +258,7 @@ const BasicDetails = ({
       value: "0",
     },
   ];
-  // console.log("basicDetails", basicDetails);
+
   return (
     <>
       {freezLoadingImg && <MainScreenFreezeLoader />}
@@ -275,15 +266,12 @@ const BasicDetails = ({
       {switchCusData === "Basic" ? (
         <div id="secondx2_customer">
           <div id="main_forms_desigin_cus">
-           <div className="sections">
+            <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblockx3">
                   <label>Primary Contact</label>
                   <div id="fcx3s1">
-                   
-
                     <span>
-                      
                       <CustomDropdown04
                         options={salutation_options}
                         value={basicDetails?.salutation}
@@ -318,19 +306,14 @@ const BasicDetails = ({
                     </span>
                   </div>
                 </div>
-               
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
-              {/* error handling */}
-              {/* {!customerName && emailValidation === false && <p className="error-message">
-                                {otherIcons.error_svg}
-                                Please fill customer Details</p>} */}
             </div>
 
             <div className="sections">
               <div id="fcx3s1parent">
-              <div className="form_commonblock">
+                <div className="form_commonblock">
                   <label>Email</label>
                   <span>
                     {otherIcons.email_svg}
@@ -368,50 +351,7 @@ const BasicDetails = ({
                   </label>
                   <div id="inputx1">
                     <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#525252"}
-                        fill={"none"}
-                      >
-                        <path
-                          d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14 17H10"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      {otherIcons?.quotation_icon}
 
                       <CustomDropdown19
                         label="Display Name"
@@ -433,7 +373,6 @@ const BasicDetails = ({
                     </p>
                   )}
                 </div>
-                
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
@@ -441,7 +380,37 @@ const BasicDetails = ({
 
             <div className="sections">
               <div id="fcx3s1parent">
-              <div className="form_commonblock">
+               
+                <div className="form_commonblock">
+                  <label>Mobile Number</label>
+                  <span>
+                    {otherIcons.mobile_svg}
+                    <NumericInput
+                      style={{ width: "100%" }}
+                      name="mobile_no"
+                      value={basicDetails.mobile_no}
+                      onChange={handleChange}
+                      placeholder="Enter Mobile Number"
+                    />
+                  </span>
+                </div>
+
+                <div className="form_commonblock">
+                  <label className="">Work Phone</label>
+                  <div id="inputx1">
+                    <span>
+                      {otherIcons?.mobile_svg}
+                      <NumericInput
+                        style={{ width: "100%" }}
+                        name="work_phone"
+                        value={basicDetails.work_phone}
+                        onChange={handleChange}
+                        placeholder="Enter Work Phone"
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="form_commonblock">
                   <label>Departmants</label>
                   <span>
                     {otherIcons.vendor_svg}
@@ -455,39 +424,6 @@ const BasicDetails = ({
                     />
                   </span>
                 </div>
-                <div className="form_commonblock">
-                  <label>Mobile Number</label>
-                  <span>
-                    {otherIcons.mobile_no}
-                    <NumericInput
-                      style={{ width: "100%" }}
-                      name="mobile_no"
-                      value={basicDetails.mobile_no}
-                      onChange={handleChange}
-                      placeholder="Enter Mobile Number"
-                    />
-                  </span>
-                  {/* {!customerMobile && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please fill customer Mobile</p>} */}
-                </div>
-
-                <div className="form_commonblock">
-                  <label className="">Work Phone</label>
-                  <div id="inputx1">
-                    <span>
-                      {otherIcons?.phone}
-                      <NumericInput
-                        style={{ width: "100%" }}
-                        name="work_phone"
-                        value={basicDetails.work_phone}
-                        onChange={handleChange}
-                        placeholder="Enter Work Phone"
-                      />
-                    </span>
-                  </div>
-                </div>
-               
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
@@ -508,7 +444,8 @@ const BasicDetails = ({
                       }
                       name="d_o_b"
                       placeholderText="Enter Date"
-                      dateFormat="dd-MM-yyyy" // Ensure the date format is consistent
+                      dateFormat="dd-MM-yyyy"
+                      autoComplete="off"
                     />
                   </span>
                 </div>
@@ -548,15 +485,11 @@ const BasicDetails = ({
                       </select>
                     </span>
                   </div>
-                  {/* {countryErr && <p className="error-message">
-                                                        {otherIcons.error_svg}
-                                                        Please select the country name</p>} */}
                 </div>
               </div>
               <div className="height5"></div>
               <div className="height5"></div>
             </div>
-           
 
             <div id="fcx3s1parent">
               <div className="form_commonblock">
@@ -573,7 +506,6 @@ const BasicDetails = ({
                       defaultOption="Select Registation Types"
                       type="masters"
                     />
-                    {/* <input style={{ width: "100%" }} type="number" name="registration_type" value={basicDetails.registration_type} onChange={handleChange} placeholder="Enter registration type" /> */}
                   </span>
                 </div>
               </div>
@@ -583,8 +515,7 @@ const BasicDetails = ({
                     <label>VAT Number</label>
                     <div id="inputx1">
                       <span>
-                       
-                      {otherIcons.vatno_svg}
+                        {otherIcons.vatno_svg}
 
                         <input
                           autoComplete="off"
@@ -597,16 +528,12 @@ const BasicDetails = ({
                         />
                       </span>
                     </div>
-
-                    {/* {!customerGST && <p className="error-message">
-                                            {otherIcons.error_svg}
-                                            Please fill customer GST</p>} */}
                   </div>
                   <div className="form_commonblock">
                     <label>Taxpayer Identification Number</label>
                     <div id="inputx1">
                       <span>
-                       {otherIcons.taxno_svg}
+                        {otherIcons.taxno_svg}
                         <input
                           autoComplete="off"
                           required
@@ -626,50 +553,7 @@ const BasicDetails = ({
                     </label>
                     <div id="inputx1">
                       <span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          height={24}
-                          color={"#525252"}
-                          fill={"none"}
-                        >
-                          <path
-                            d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M14 17H10"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        {otherIcons.quotation_icon}
                         <input
                           autoComplete="off"
                           style={{ width: "100%" }}
@@ -687,13 +571,11 @@ const BasicDetails = ({
             </div>
 
             <div id="fcx3s1parent">
-              
-
               <div className="form_commonblock">
                 <label>Website</label>
                 <div id="inputx1">
                   <span>
-                  {otherIcons.website_icon_svg}
+                    {otherIcons.website_icon_svg}
                     <input
                       autoComplete="off"
                       style={{ width: "100%" }}

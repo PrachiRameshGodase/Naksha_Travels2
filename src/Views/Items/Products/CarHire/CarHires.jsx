@@ -173,7 +173,18 @@ const CarHires = () => {
               {otherIcons?.warehouse_icon}
               All Car Hires
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${CarHireData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Car Hires"
               onSearch={onSearch}

@@ -28,7 +28,7 @@ const Visas = () => {
   const visaListData = useSelector((state) => state?.visaList);
   const visaLists = visaListData?.data?.data || [];
   const totalItems = visaListData?.data?.count || 0;
-console.log("visaList", visaListData)
+  console.log("visaList", visaListData);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -172,7 +172,18 @@ console.log("visaList", visaListData)
               {otherIcons?.warehouse_icon}
               All Visas
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${visaListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Visas"
               onSearch={onSearch}
@@ -253,8 +264,8 @@ console.log("visaList", visaListData)
 
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {/* <p> */}
-                      {otherIcons?.refrence_svg}
-                      Price
+                    {otherIcons?.refrence_svg}
+                    Price
                     {/* </p> */}
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -295,7 +306,7 @@ console.log("visaList", visaListData)
                             >
                               {item?.visa_entry_name || ""}
                             </div>
-                           
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"

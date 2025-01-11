@@ -578,7 +578,7 @@ const InsideCusDetails = ({
                               </li>
 
                               <li>
-                                <span style={{ width: "374px" }}>
+                                <span style={{ width: "502px" }}>
                                   Payment Terms
                                 </span>
                                 <h1>:</h1>
@@ -1096,7 +1096,7 @@ const InsideCusDetails = ({
                               <td>{formatDate3(item?.issue_date) || "-"}</td>
                               <td>{formatDate3(item?.expiry_date) || "-"}</td>
                               <td>
-                                <AttachmentPreview attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
+                                <AttachmentPreview2 attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
                                </td>
                             </tr>
                           ))}
@@ -1147,7 +1147,7 @@ const InsideCusDetails = ({
 
                                 <td>{item?.vaccination_name || "-"}</td>
                                 <td>
-                                <AttachmentPreview attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
+                                <AttachmentPreview2 attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
                                </td>
                               </tr>
                             )
@@ -1229,7 +1229,7 @@ const InsideCusDetails = ({
                                   Attachment
                                 </span>
                                 <h1>:</h1>
-                                <p><AttachmentPreview attachments={val?.upload_documents ? JSON.parse(val?.upload_documents) : []}/></p>
+                                <p><AttachmentPreview2 attachments={val?.upload_documents ? JSON.parse(val?.upload_documents) : []}/></p>
 
                               </li>
                             </ul>

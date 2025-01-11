@@ -26,7 +26,7 @@ const TourPackages = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
-  
+
   const tourPackageListData = useSelector((state) => state?.tourPackageList);
   const tourPackageLists = tourPackageListData?.data?.data || [];
   const totalItems = tourPackageListData?.data?.count || 0;
@@ -176,7 +176,18 @@ const TourPackages = () => {
               {otherIcons?.warehouse_icon}
               All Tour Packages
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${tourPackageListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Tour Packages"
               onSearch={onSearch}

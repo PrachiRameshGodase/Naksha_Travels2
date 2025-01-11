@@ -1432,11 +1432,9 @@ export const SingleImageUploadDocument = ({
 
   const isPhotoExpired = expiryDate && new Date() > expiryDate;
   // console.log("formdata", formData)
-  console.log("phooooooooooooooo", photo)
-  console.log("isPhotoExpired", isPhotoExpired)
-  return (
+ return (
     <>
-      {!photo || isPhotoExpired ? (
+      {!photo ? (
         <div id="formofcreateitems" style={{ width: "140px" }}>
           <div className="form_commonblock">
             <div id="inputx1">
@@ -1488,11 +1486,11 @@ export const SingleImageUploadDocument = ({
               <RxCross2 />
             </Link>
           </div>
-          {isPhotoExpired && (
+          {/* {isPhotoExpired && (
             <p style={{ color: "red", fontSize: "12px" }}>
               This photo has expired.
             </p>
-          )}
+          )} */}
         </div>
       )}
     </>

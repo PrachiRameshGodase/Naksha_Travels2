@@ -168,7 +168,7 @@ const DSRS = () => {
   return (
     <>
       <TopLoadbar />
-      {/* {DSRListData?.loading && <MainScreenFreezeLoader />} */}
+      {DSRListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -176,7 +176,18 @@ const DSRS = () => {
               {otherIcons?.warehouse_icon}
               All DSRS
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${DSRListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In DSRS"
               onSearch={onSearch}

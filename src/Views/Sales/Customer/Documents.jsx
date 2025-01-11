@@ -7,6 +7,7 @@ import {
 } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 
 const Documents = ({
   setUserData,

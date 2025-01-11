@@ -28,6 +28,9 @@ const CustomerDetails = () => {
   const [loading, setLoading] = useState(true);
   const [switchValue1, setSwitchValue1] = useState(""); // State for the switch button value
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
+  const customerData = useSelector(
+    (state) => state?.viewCustomer
+  );
   const customerDetail = useSelector(
     (state) => state?.viewCustomer?.data || {}
   );
@@ -171,7 +174,7 @@ const CustomerDetails = () => {
     <>
       {cusStatus?.loading && <MainScreenFreezeLoader />}
       {cusDelete?.loading && <MainScreenFreezeLoader />}
-      {loading ? (
+      {customerData?.loading ? (
         <Loader02 />
       ) : (
         <>
