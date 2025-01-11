@@ -16,7 +16,7 @@ const CurrencyList = () => {
 
   const currencyRateList = useSelector((state) => state?.currencyRateList);
   const currencyList = currencyRateList?.data?.data || []
-  console.log("currencyListcurrencyListcurrencyList", currencyList)
+  // console.log("currencyListcurrencyListcurrencyList", currencyList)
 
   const [selectedDate, setSelectedDate] = useState(); // Simplified state
   const dispatch = useDispatch(); // Initialize dispatch
@@ -59,6 +59,7 @@ const CurrencyList = () => {
                     <label >Date</label>
                     <span
                     >
+
                       {otherIcons.date_svg}
                       <DatePicker
                         selected={selectedDate}
@@ -68,6 +69,8 @@ const CurrencyList = () => {
                         autoComplete="off"
                         maxDate={new Date()}
                         placeholderText="Select Date to Display Currencies"
+                        calendarPlacement="bottom" // Open the calendar at the bottom
+
                       />
 
                     </span>

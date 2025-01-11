@@ -2,9 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
+import { getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
 
-const getLocalStorageData = localStorage?.getItem("UserData");
-const UserData = JSON.parse(getLocalStorageData);
+// const getLocalStorageData = localStorage?.getItem("UserData");
+const UserData = getLocalStorage("UserData");
+// const UserData = JSON.parse(getLocalStorageData);
 
 export const showRateWithPercent = (val) => {
     return val ? `${val} %` : 'Non-Taxable';

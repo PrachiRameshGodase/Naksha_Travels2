@@ -71,7 +71,7 @@ const Organizations = () => {
 
   const switchOrganizationToDefault = (organisationId) => {
     axios
-      .post(`${apiUrl}/organisation/default`, { organisation_id: organisationId })
+      .post(`${apiUrl}/organisation/switch`, { organisation_id: organisationId })
       .then((response) => {
         window.location.reload();
       })
