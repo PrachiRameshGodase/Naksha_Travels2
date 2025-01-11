@@ -220,6 +220,7 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
 };
 
 export const AttachmentPreview2 = ({ attachments }) => {
+  console.log("attachments", attachments)
   const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews
@@ -294,6 +295,7 @@ export const AttachmentPreview2 = ({ attachments }) => {
 };
 
 export const AttachmentPreview3 = ({ attachments }) => {
+  console.log("attachments", attachments)
   return (
     <div>
       <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
@@ -301,7 +303,7 @@ export const AttachmentPreview3 = ({ attachments }) => {
           <div>
             <img
               src={attachments}
-              alt="Uploaded"
+              alt=""
               style={{
                 width: "50px",
                 height: "50px",

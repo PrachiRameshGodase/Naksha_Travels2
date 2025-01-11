@@ -9,6 +9,7 @@ import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpl
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import Swal from "sweetalert2";
 
 const FamilyMember = ({
   switchCusData,
@@ -100,10 +101,18 @@ const FamilyMember = ({
     fetchCustomers();
   }, []);
 
-  const handleDeleteSelectedMember = (indexToDelete) => {
-    setEmployeeDetails((prevDetails) =>
+  const handleDeleteSelectedMember =async (indexToDelete) => {
+     const result = await Swal.fire({
+          text: "Are you sure you want to delete this member from list?",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+        });
+        if (result.isConfirmed) {
+      setEmployeeDetails((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToDelete)
     );
+  }
   };
 
   useEffect(() => {
@@ -158,8 +167,8 @@ const FamilyMember = ({
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow = member?.member_id === customerDetails?.user?.relation_id;
-
+              const disabledRow = member?.member_id == customerDetails?.user?.relation_id;
+console.log("customerDetails", customerDetails)
               return (
                 selectedMember && (
                   <tr
@@ -215,8 +224,9 @@ const FamilyMember = ({
                     <td>
                       <span
                         onClick={() => {
-                          handleDeleteSelectedMember(index);
+                          handleDeleteSelectedMember(index)
                         }}
+                        style={{cursor:"pointer"}}
                       >
                         {otherIcons.delete_svg}
                       </span>

@@ -2766,3 +2766,12 @@
 .swal-wide {
   width: 43%;
 }
+.error_message {
+  font-size: 12px;
+  color: red;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 5px;
+}

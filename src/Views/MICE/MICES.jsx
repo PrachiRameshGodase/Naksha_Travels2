@@ -18,7 +18,10 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { DSRListActions } from "../../Redux/Actions/DSRActions";
-import { clearMiceState, MICEListActions } from "../../Redux/Actions/MICEActions";
+import {
+  clearMiceState,
+  MICEListActions,
+} from "../../Redux/Actions/MICEActions";
 
 const MICES = () => {
   const navigate = useNavigate();
@@ -168,7 +171,7 @@ const MICES = () => {
   return (
     <>
       <TopLoadbar />
-      {/* {DSRListData?.loading && <MainScreenFreezeLoader />} */}
+      {DSRListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -176,7 +179,18 @@ const MICES = () => {
               {otherIcons?.warehouse_icon}
               All MICE
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records{" "}
+              <span
+                className={`${DSRListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In MICE"
               onSearch={onSearch}

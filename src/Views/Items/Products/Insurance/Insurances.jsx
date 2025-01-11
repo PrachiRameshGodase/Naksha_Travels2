@@ -231,9 +231,9 @@ const Insurances = () => {
   return (
     <>
       <TopLoadbar />
-      {(insuranceListData?.loading || insuranceStatusUpdate?.loading || insuranceDeleteUpdate?.loading) && (
-        <MainScreenFreezeLoader />
-      )}
+      {(insuranceListData?.loading ||
+        insuranceStatusUpdate?.loading ||
+        insuranceDeleteUpdate?.loading) && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -241,7 +241,18 @@ const Insurances = () => {
               {otherIcons?.warehouse_icon}
               All Insurances
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${insuranceListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Insurances"
               onSearch={onSearch}

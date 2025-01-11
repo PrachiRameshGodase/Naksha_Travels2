@@ -6,18 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {
-  fetchGetCities,
-  fetchGetCountries,
-  fetchGetStates,
-} from "../../../../Redux/Actions/globalActions";
-import {
-  CreateHotelAction,
-  hotelDetailsAction,
-} from "../../../../Redux/Actions/hotelActions";
-import {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
+import {fetchGetCities,fetchGetCountries,fetchGetStates,} from "../../../../Redux/Actions/globalActions";
+import {CreateHotelAction, hotelDetailsAction,} from "../../../../Redux/Actions/hotelActions";
+import {SubmitButton2,} from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";

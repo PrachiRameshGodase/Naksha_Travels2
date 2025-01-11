@@ -125,7 +125,12 @@ const EmployeeDetails = ({
 
   useEffect(() => {
     if (isEdit) {
-      updateUserData(employeeDetails); // Only call updateUserData when editing
+      updateUserData((prevData) => ({
+        ...prevData,
+        employees: employeeDetails?.map((detail) => ({
+          ...detail,
+        })),
+      })); // Only call updateUserData when editing
     }
   }, [employeeDetails]);
   // Render the member table

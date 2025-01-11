@@ -241,7 +241,18 @@ const Flights = () => {
               {otherIcons?.warehouse_icon}
               All Airlines
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              {totalItems} Records
+              <span
+                className={`${flightListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Flights"
               onSearch={onSearch}
@@ -305,7 +316,7 @@ const Flights = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
-                  Airline Name
+                    Airline Name
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">

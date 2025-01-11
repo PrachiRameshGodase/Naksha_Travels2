@@ -9,7 +9,7 @@ import { formatDate } from "../Helper/DateFormat";
 import { ShowMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection from "../DSR/CalculationSection";
+import CalculationSection, { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
@@ -94,7 +94,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                         <form>
                             {/* Keep your form as it is */}
                             <div className="relateivdiv">
-                                <div className="itemsformwrap">
+                                <div className="itemsformwrap"  style={{ paddingBottom: "0px" }}>
                                     <div className="f1wrapofcreq">
                                         <div className="f1wrapofcreqx1">
                                             <div className="form_commonblock">
@@ -255,7 +255,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                                                 {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                                             </div>
                                             <div className="secondtotalsections485s">
-                                                <CalculationSection formData={formData} setFormData={setFormData} handleChange={handleChange} section='Insurance' />
+                                                <CalculationSection2 formData={formData} setFormData={setFormData} handleChange={handleChange} section='Insurance' />
                                             </div>
 
                                         </div>
@@ -263,10 +263,10 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                                 </div>
                             </div>
                             <SubmitButton6
-                                onClick={handleFormSubmit}
-                                cancel="dsr"
-                                createUpdate={createInsurance}
-                            />
+              onClick={handleFormSubmit}
+              createUpdate=""
+              setShowModal={setShowModal}
+            />
                         </form>
                     </div>
                 </div>

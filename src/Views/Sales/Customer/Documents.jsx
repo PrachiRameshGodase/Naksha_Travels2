@@ -7,6 +7,7 @@ import {
 } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
+import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 
 const Documents = ({
   setUserData,
@@ -64,13 +65,17 @@ const Documents = ({
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
-      documents: documents,
+      documents: documents?.map((detail) => ({
+        ...detail,
+        photo: detail.upload_documents ? JSON.stringify(detail?.upload_documents) : "",
+      })),
     }));
   }, [documents, setUserData]);
 
   useEffect(() => {
     if (user?.id && isEdit) {
       const userDocumentDetails = user?.documents || [];
+      console.log("userDocumentDetails", userDocumentDetails)
       const documentsFromUser = userDocumentDetails?.map((item) => ({
         document_name: item.document_name || "",
         document_no: item.document_no || "",
@@ -80,7 +85,6 @@ const Documents = ({
           ? JSON.parse(item.upload_documents)
           : [],
       }));
-
       setDocuments(documentsFromUser); // Update state with the transformed array
 
       setTick((prevTick) => ({
@@ -88,11 +92,17 @@ const Documents = ({
         documentsTick: true,
       }));
     }
-  }, [user?.id, isEdit, setTick]);
+  }, [user?.id, isEdit,]);
 
   useEffect(() => {
     if (isEdit) {
-      updateUserData(documents); // Only call updateUserData when editing
+      updateUserData((prevData) => ({
+        ...prevData,
+        documents: documents?.map((detail) => ({
+          ...detail,
+          upload_documents: detail?.upload_documents ? JSON.stringify(detail?.upload_documents) : "",
+        })),
+      }));
     }
   }, [documents]);
 
