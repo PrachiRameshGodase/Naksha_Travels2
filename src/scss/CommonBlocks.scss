@@ -2390,6 +2390,18 @@
     width: 100%;
     max-width: 1100px;
   }
+
+
+
+  .empty_data_services_messs {
+    background: linear-gradient(to right, #da2400, #63ff6f, #e71111, #ff8cf5, #a3a8ff, #80ffc2, #ff7a7a);
+    color: transparent;
+    text-align: center;
+    background-clip: text;
+    -webkit-background-clip: text;
+    padding: 22px;
+  }
+
 }
 
 
@@ -2624,7 +2636,7 @@
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 135px) ;
+  height: calc(100vh - 135px);
 
   &::-webkit-scrollbar-track {
     background-color: transparent;
@@ -3224,7 +3236,7 @@
 }
 
 .tablsxs1a3x3 {
-  width: 120px;
+  width: 97px;
   display: flex;
   flex-direction: column;
 

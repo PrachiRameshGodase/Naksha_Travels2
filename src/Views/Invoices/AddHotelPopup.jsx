@@ -12,12 +12,12 @@ import { sendData, ShowMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
+import CalculationSection from "../DSR/CalculationSection";
 
 const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
         total_nights: "",
         confirmation_no: "",
         //amount
-        charges: 0.0,
+        charges: [],
         gross_amount: 0,
         discount: 0.0,
         tax_percent: null,
@@ -385,14 +385,16 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
-                                            {/* <CalculationSection
+                                            <CalculationSection
                                                 formData={formData}
                                                 setFormData={setFormData}
                                                 handleChange={handleChange}
                                                 section="Hotel"
-                                            /> */}
+                                            />
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
