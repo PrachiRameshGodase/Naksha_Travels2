@@ -788,7 +788,7 @@ const MainLinks = ({
             >
               Warehouse
             </li>
-            <li
+            {/* <li
               onClick={() => {
                 handleMenuItemClick("zone");
               }}
@@ -829,7 +829,7 @@ const MainLinks = ({
                 }`}
             >
               Bin
-            </li>
+            </li> */}
           </ul>
 
           {/* )} */}

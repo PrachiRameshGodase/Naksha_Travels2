@@ -109,8 +109,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-                formData?.image_url !== null &&
-                formData?.image_url !== "0" ? (
+              formData?.image_url !== null &&
+              formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -127,8 +127,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-                formData?.upload_image !== null &&
-                formData?.upload_image !== "0" ? (
+              formData?.upload_image !== null &&
+              formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -789,8 +789,9 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                }`}
+              className={`close-button02  close_opop  ${
+                currentPOP ? "close_opop" : ""
+              }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1123,8 +1124,9 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
-                          }`}
+                        className={`close-button02  close_opop  ${
+                          currentPOP ? "close_opop" : ""
+                        }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
@@ -1231,9 +1233,10 @@ export const MultiImageUploadDocument = ({
   setImgeLoader,
   index,
 }) => {
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(""); // For the popup
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+
   const popupRef = useRef(null);
 
   // Parse upload_documents if it's a JSON string
@@ -1244,9 +1247,33 @@ export const MultiImageUploadDocument = ({
   const handleImageChange = (e) => {
     setFreezLoadingImg(true);
     setImgeLoader(true);
-
+    setErrorMessage("");
+    const allowedExtensions = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "webp",
+      "pdf",
+    ];
     const updatedUploadDocuments = [...uploadDocuments]; // Start with existing docs
+    const files = Array.from(e.target.files);
+    const invalidFiles = files.filter((file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      return !allowedExtensions.includes(fileExtension);
+    });
 
+    if (invalidFiles.length > 0) {
+      setErrorMessage(
+        `Please upload files with the following extensions: ${allowedExtensions.join(
+          ", "
+        )}`
+      );
+      setFreezLoadingImg(false);
+      setImgeLoader(false);
+      return;
+    }
     Promise.all(
       Array.from(e.target.files).map((file) => {
         const imageRef = ref(imageDB, `Documents/${v4()}`);
@@ -1293,6 +1320,11 @@ export const MultiImageUploadDocument = ({
     OverflowHideBOdy(true); // Hide body scroll
     setShowPopup(true);
   };
+  const isImage = (fileUrl) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const fileExtension = fileUrl.split(".").pop().toLowerCase();
+    return imageExtensions.includes(fileExtension);
+  };
 
   return (
     <>
@@ -1316,6 +1348,11 @@ export const MultiImageUploadDocument = ({
             </div>
           </label>
         </div>
+        {errorMessage && (
+          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
+            {errorMessage}
+          </p>
+        )}
 
         {/* Render uploaded documents */}
         {imgLoader === "success" &&
@@ -1330,9 +1367,20 @@ export const MultiImageUploadDocument = ({
               <div onClick={() => handleDeleteImage(image.url)}>
                 <MdOutlineDeleteForever />
               </div>
-              <div onClick={() => showImagePopup(image.url)}>
-                <FaEye />
-              </div>
+              {isImage(image.url) ? (
+                <div onClick={() => showImagePopup(image?.url)}>
+                  <FaEye />
+                </div>
+              ) : (
+                <a
+                  href={image?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Preview File"
+                >
+                  <FaEye />
+                </a>
+              )}
             </div>
           ))}
       </div>
@@ -1432,7 +1480,7 @@ export const SingleImageUploadDocument = ({
 
   const isPhotoExpired = expiryDate && new Date() > expiryDate;
   // console.log("formdata", formData)
- return (
+  return (
     <>
       {!photo ? (
         <div id="formofcreateitems" style={{ width: "140px" }}>
@@ -1494,6 +1542,5 @@ export const SingleImageUploadDocument = ({
         </div>
       )}
     </>
-
   );
 };
