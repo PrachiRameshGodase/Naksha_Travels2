@@ -48,7 +48,7 @@ const ItemSelect = ({
   note,
   invoice_section,
 
-}) => {
+}) => {  
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
@@ -243,9 +243,7 @@ const ItemSelect = ({
         (item) => item?.id == value
       );
       if (selectedItem) {
-        const showPrice = formData?.sale_type
-          ? selectedItem?.price
-          : selectedItem?.purchase_price;
+        const showPrice = formData?.sale_type ? selectedItem?.price : selectedItem?.purchase_price;
 
         newItems[index].unit_id = selectedItem?.unit;
         newItems[index].item_name = selectedItem?.name;
@@ -430,17 +428,9 @@ const ItemSelect = ({
 
   useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
 
-
-
   // for service select code..............................................
-
-
   const servicesList = ShowMasterData("48");
-
-
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
-
-
   const [activePopup, setActivePopup] = useState(null);
 
   const [showAddModal, setShowAddModal] = useState(false);
@@ -476,7 +466,7 @@ const ItemSelect = ({
       tax_amount: parseFloat(data?.tax_amount),
       discount: 0,
       gross_amount: parseFloat(data?.gross_amount) * 1,
-      final_amount: parseFloat(data?.gross_amount) * 1,
+      final_amount: parseFloat(data?.gross_amount).toFixed(2),
       discount_type: 1,
       type: "Service",
       items_data: data,
@@ -748,7 +738,6 @@ const ItemSelect = ({
                       />
                     </span>
                   </div>
-
                   <div className="tablsxs1a5x3">
                     <span>
                       <NumericInput
@@ -792,11 +781,9 @@ const ItemSelect = ({
                               );
                             }
                           }
-
                           handleItemChange(index, "discount", newValue);
                         }}
                       />
-
                       <div
                         className="dropdownsdfofcus56s"
                         onClick={() => handleDropdownToggle(index)}
@@ -832,7 +819,6 @@ const ItemSelect = ({
                       </div>
                     </span>
                   </div>
-
                   {item?.item_id == "" || item?.item_name == "" ? (
                     <div
                       className="tablsxs1a6x3_rm"
@@ -863,7 +849,11 @@ const ItemSelect = ({
                       }}
                       key={item.id || index}
                     >
+<<<<<<< HEAD
                       {item?.tax_name === "Non-Taxable" ? <> {item?.tax_name} </>
+=======
+                      {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
+>>>>>>> d2b0a5f4503b36583cd1273917539d800cb088ac
                         :
                         item?.tax_rate != 0 ?
                           <>
@@ -1872,7 +1862,6 @@ export const ItemSelectGRM = ({
               Please Select Item
             </p>
           )}
-
           <button
             id="additembtn45srow"
             type="button"
@@ -1883,7 +1872,6 @@ export const ItemSelectGRM = ({
             <GoPlus />
           </button>
         </>
-
         <>
           <div className="itemsectionrows1" style={{ minWidth: "1225px" }}>
             <div className="tableheadertopsxs1" id="new_grm_tabal_2">

@@ -11,9 +11,7 @@ import "../DSR/Services/CreateHotelPopup.scss";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
-import CalculationSection, {
-  CalculationSection2,
-} from "../DSR/CalculationSection";
+import { CalculationSection2} from "../DSR/CalculationSection";
 
 const AddAssistPopup = ({ setShowModal, handleAddService }) => {
   const dropdownRef1 = useRef(null);
@@ -25,7 +23,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
     service_name: "Assist",
-    entry_type: "",
+    // entry_type: "",
     airport_id: null,
     airport_name: "",
     meeting_type: null,
@@ -35,10 +33,9 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
     supplier_name: null,
     // Amount
     gross_amount: 0,
-    charges: [],
+    // charges: [],
     discount: 0.00,
-    supplier_total: 0.00,
-    tax_percent: 0.00,
+    tax_percent: null,
     tax_amount: 0.00,
     total_amount: 0.00,
   });
@@ -114,7 +111,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
                         </label>
@@ -131,7 +128,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                             type="masters2"
                           />
                         </span>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>
                           Airport<b className="color_red">*</b>

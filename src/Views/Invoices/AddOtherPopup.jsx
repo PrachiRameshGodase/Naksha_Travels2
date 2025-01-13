@@ -8,7 +8,7 @@ import { ShowMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection, { CalculationSection2 } from "../DSR/CalculationSection";
+import { CalculationSection2 } from "../DSR/CalculationSection";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
@@ -29,12 +29,12 @@ const AddOtherPopup = ({ setShowModal, handleAddService }) => {
         supplier_id: "",
         supplier_name: "",
         //amount
-        charges: null,
-        hotel_price: null,
-        discount: null,
+        // charges: null,
+        gross_amount: 0,
+        discount: 0.0,
         tax_percent: null,
-        tax_amount: null,
-        total_amount: null
+        tax_amount: 0.0,
+        total_amount: 0.0,
     });
 
     const entryType = ShowMasterData("50");

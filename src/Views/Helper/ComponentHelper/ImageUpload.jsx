@@ -23,7 +23,6 @@ const ImageUpload = ({
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
 
-
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;
     setFreezLoadingImg(true);
@@ -45,7 +44,6 @@ const ImageUpload = ({
               document: url,
             });
           } else if (component === "family") {
-            console.log("firstfirstfirstfirstfirstfirst");
             setFormData({
               ...formData,
               photo: url,

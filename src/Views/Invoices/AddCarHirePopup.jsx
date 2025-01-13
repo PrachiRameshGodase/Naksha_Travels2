@@ -8,7 +8,7 @@ import { ShowMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection, { CalculationSection2 } from "../DSR/CalculationSection";
+import { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
@@ -23,8 +23,8 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
 
     const [cusData1, setcusData1] = useState(null);
     const [formData, setFormData] = useState({
-        service_name:"CarHire",
-        entry_type: "",
+        service_name: "CarHire",
+        // entry_type: "",
         vehicle_type_id: "",
         days: "",
         pickup_location: null,
@@ -33,13 +33,12 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
         supplier_id: 1,
         supplier_name: null,
         // Amount
-        gross_amount: null,
-        charges: null,
-        discount: null,
-        supplier_total: null,
+        // charges: null,
+        gross_amount: 0,
+        discount: 0.0,
         tax_percent: null,
-        tax_amount: null,
-        total_amount: null
+        tax_amount: 0.0,
+        total_amount: 0.0,
     });
 
     const entryType = ShowMasterData("50");
@@ -91,10 +90,10 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                         <form>
                             {/* Keep your form as it is */}
                             <div className="relateivdiv">
-                                <div className="itemsformwrap"  style={{ paddingBottom: "0px" }}>
+                                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                                     <div className="f1wrapofcreq">
                                         <div className="f1wrapofcreqx1">
-                                            <div className="form_commonblock">
+                                            {/* <div className="form_commonblock">
                                                 <label>
                                                     Entry Type<b className="color_red">*</b>
                                                 </label>
@@ -111,7 +110,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                                                         type="masters2"
                                                     />
                                                 </span>
-                                            </div>
+                                            </div> */}
                                             <div className="form_commonblock">
                                                 <label>
                                                     Vechile Type<b className="color_red">*</b>
@@ -210,10 +209,10 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                                 </div>
                             </div>
                             <SubmitButton6
-              onClick={handleFormSubmit}
-              createUpdate=""
-              setShowModal={setShowModal}
-            />
+                                onClick={handleFormSubmit}
+                                createUpdate=""
+                                setShowModal={setShowModal}
+                            />
                         </form>
                     </div>
                 </div>

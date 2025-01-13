@@ -81,8 +81,6 @@ const CreateQuotation = () => {
     isEdit
   );
 
-  console.log("formdat", formData)
-
   const calculateExpiryDate = (transactionDate, terms) => {
     const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
     return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
