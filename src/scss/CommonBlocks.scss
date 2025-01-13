@@ -1593,7 +1593,7 @@
 .itemsectionrows {
   border: 1px solid $stroke;
   border-radius: 5px;
-  width: 81%;
+  width: 90%;
   // max-width: 1200px;
   // width: fit-content;
   // max-width: 80%;
@@ -3136,28 +3136,21 @@
     svg {
       right: 50px !important;
     }
-
-    &:hover {
-      // background: $primary06;
-    }
   }
 }
 
 .extracssclassforscjklsitem {
   min-width: 0px !important;
-
   .dropdown-selected {
     background: $primary12;
     padding-left: 10px !important;
     padding-right: 30px !important;
     // width: 100%;
-    width: 115px !important;
+    width: 90px !important;
     border-radius: 5px;
-
     svg {
       right: 10px !important;
     }
-
     &:hover {
       background: $primary06;
     }
@@ -3167,7 +3160,6 @@
 // grn Stlying
 .grn_tax {
   min-width: 110px !important;
-
   .dropdown-selected {
     width: 100% !important;
   }
@@ -3218,7 +3210,7 @@
 }
 
 .tablsxs1a2x3 {
-  width: 120px;
+  width: 90px;
 
   input {
     border-radius: 5px;
