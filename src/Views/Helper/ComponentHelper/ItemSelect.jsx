@@ -464,6 +464,7 @@ const ItemSelect = ({
                     ? data?.item_name
                     : "";
     console.log("data of selected hotel", name);
+
     const newItems = [
       ...formData.items,
       {
@@ -478,11 +479,14 @@ const ItemSelect = ({
         gross_amount: parseFloat(data?.gross_amount) * 1,
         final_amount: parseFloat(data?.gross_amount) * 1,
         discount_type: 1,
+        type: "Service"
         // items_data: [data],
       },
     ];
     setFormData({ ...formData, items: newItems });
   };
+
+
   const renderPopup = () => {
     if (!activePopup) return null;
 
@@ -496,6 +500,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Flights":
         return (
           <AddFlightPopup
@@ -503,6 +508,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Visa":
         return (
           <AddVisaPopup
@@ -510,6 +516,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Insurance":
         return (
           <AddInsurancePopup
@@ -524,6 +531,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Assist":
         return (
           <AddAssistPopup
@@ -531,6 +539,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Others":
         return (
           <AddOtherPopup
@@ -647,23 +656,30 @@ const ItemSelect = ({
                           }
                         }
                       }}
-                      style={{ width: "60%" }}
+                      style={{
+                        width: "60%",
+                        cursor: item?.type === "Service" ? "not-allowed" : "default",
+                      }}
+                      disabled={item?.type === "Service"} // Explicitly set the disabled attribute
+
                     />
 
-                    {/* <div key={index}>
-                        {" "}
-                        {item?.unit_id && (
-                          <p>
-                            (<ShowMastersValue type="2" id={item?.unit_id} />)
-                          </p>
-                        )}
-                      </div> */}
                   </div>
+
+
 
                   <div
                     className="tablsxs1a5x3"
                     // id="ITEM_Selection6"
-                    style={{ marginRight: "5px" }}
+                    style={{
+                      marginRight: "5px", cursor: item?.type === "Service" ? "not-allowed" : "default",
+                      pointerEvents: item?.type === "Service" ? "none" : "auto", // Prevent interaction
+                    }}
+
+                    disabled={item?.type === "Service"} // Explicitly set the disabled attribute
+                    data-tooltip-content={item?.type === "Service" && "Unit is not allowed for service select"}
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="bottom"
                   >
                     <span>
                       <CustomDropdown04
@@ -682,6 +698,8 @@ const ItemSelect = ({
                         type="masters"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         className2="item"
+
+
                       />
                     </span>
                   </div>
@@ -803,13 +821,9 @@ const ItemSelect = ({
                       {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
 
                         :
-                        <>
-                          <div
-                            className="tablsxs1a6x3_rm"
-                            id="ITEM_Selection7"
-                            key={item.id || index}
-                            style={{ marginRight: "20px" }}
-                          >
+                        item?.tax_rate != 0 ?
+                          <>
+
                             <CustomDropdown13
                               options={tax_rate}
                               value={item?.tax_rate}
@@ -820,14 +834,11 @@ const ItemSelect = ({
                               type="taxRate"
                               defaultOption="Taxes"
                               className2="items"
+                              style={{ width: "100px" }}
                             />
-                          </div>
-                        </>
+                          </> : <>{item?.tax_name}</>
+
                       }
-                      {item?.tax_name === "Non-Taxable" && (
-                        <>{item?.tax_name}</>
-                      )}
-                      {item?.tax_name === "Taxable"}
                     </div>
                   )}
 

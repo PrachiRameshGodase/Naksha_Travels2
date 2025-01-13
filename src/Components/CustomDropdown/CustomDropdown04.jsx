@@ -30,7 +30,9 @@ const CustomDropdown04 = forwardRef((props, ref) => {
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "100px" } : {}}>
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? {
+        width: "100px",  // Prevent interaction
+      } : {}} disabled>
 
         {(type === "masters_salutation" || type === "masters2") ?
           <>
