@@ -55,7 +55,7 @@ const ItemSelect = ({
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbole = activeOrg_details?.symbol;
-  console.log("currencySymbole", currencySymbole)
+  // console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -196,6 +196,7 @@ const ItemSelect = ({
       tax_rate: tax_rate,
       total_gross_amount: gross_amount,
     }));
+
   }, [
     formData.items, // Re-calculate when items change
     formData.shipping_charge, // Re-calculate when shipping charges change
@@ -214,6 +215,7 @@ const ItemSelect = ({
 
     let discountAmount = 0;
     let discountPercentage = 0;
+
     if (field === "item_name") {
       newItems[index].item_name = value;
       newItems[index].item_id = "";
@@ -230,6 +232,7 @@ const ItemSelect = ({
       newItems[index].unit_id = value;
       newErrors[index].unit_id = "";
     }
+
     if (field === "taxRate") {
       newItems[index].tax_rate = value;
       newErrors[index].tax_rate = "";
@@ -251,7 +254,7 @@ const ItemSelect = ({
         newItems[index].gross_amount = +showPrice * +item?.quantity;
         newItems[index].hsn_code = selectedItem?.hsn_code;
 
-        if (selectedItem.tax_preference == "1") {
+        if (selectedItem?.tax_preference == "1") {
           newItems[index].tax_rate = !selectedItem?.tax_rate
             ? 0
             : selectedItem?.tax_rate;
@@ -271,6 +274,7 @@ const ItemSelect = ({
         };
       }
     }
+
 
     if (field === "quantity" || field === "rate") {
       newItems[index].gross_amount = +item?.rate * +item?.quantity;
@@ -572,6 +576,8 @@ const ItemSelect = ({
             </p>
           </div>
 
+          {console?.log('loggggggggggg', formData?.items)}
+
           {formData?.items?.map((item, index) => (
             <>
               <div className="table_item_border">
@@ -581,7 +587,6 @@ const ItemSelect = ({
                   style={{ padding: "21px 5px" }}
                 >
 
-                  <h4>{item?.items_data?.service_name}</h4>
                   {/* /////////////////////////////// */}
                   <div className="tablsxs1a1x3">
 
@@ -858,12 +863,10 @@ const ItemSelect = ({
                       }}
                       key={item.id || index}
                     >
-                      {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
-
+                      {item?.tax_name === "Non-Taxable" ? <> {item?.tax_name} </>
                         :
                         item?.tax_rate != 0 ?
                           <>
-
                             <CustomDropdown13
                               options={tax_rate}
                               value={item?.tax_rate}
@@ -877,7 +880,6 @@ const ItemSelect = ({
                               style={{ width: "100px" }}
                             />
                           </> : <>{item?.tax_name}</>
-
                       }
                     </div>
                   )}
@@ -992,7 +994,7 @@ const ItemSelect = ({
                 >
                   {itemErrors[index]?.tax_rate && (
                     <>
-                      {otherIcons.error_svg} {itemErrors[index].tax_rate}
+                      {otherIcons.error_svg} {itemErrors[index]?.tax_rate}
                     </>
                   )}
                 </span>

@@ -36,7 +36,7 @@ export const CurrencySelect2 = ({ disable, style, ...rest }) => {
         <>
             <label>Currency</label>
             <span >
-                {otherIcons.currency_icon}
+                {otherIcons.main_currency_icon}
                 <CustomDropdown012
                     label="Currency Name"
                     name="currency"

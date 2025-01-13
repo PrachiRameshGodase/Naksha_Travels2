@@ -831,6 +831,7 @@ const CreateAndUpdateItem = () => {
                             </p>
                           )}
                         </div>
+                        {/* {console.log("formData.tax_rate", formData.tax_rate)} */}
                         {formData?.tax_preference && (
                           <div id="">
                             <span className="newspanx21s">
