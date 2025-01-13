@@ -431,6 +431,7 @@
 #absoluteofvalselcc {
   position: absolute;
   display: flex;
+  flex-direction: column;
   gap: 7px;
   row-gap: 7px;
   margin-top: 5px;

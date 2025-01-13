@@ -1,5 +1,6 @@
 import { getAccountTypes } from '../../Redux/Actions/accountsActions';
 import { customersList } from '../../Redux/Actions/customerActions';
+import { flightListAction } from '../../Redux/Actions/flightActions';
 import { hotelListAction } from '../../Redux/Actions/hotelActions';
 import { categoryList, itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
 import { sendData } from './HelperFunctions';
@@ -9,6 +10,9 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, dispatch, produ
 
     if (type === "select_item") {
         dispatch(itemLists({ search: searchTerm, ...sendData, ...productType }));
+    }
+    else if (type === "select_item2") {
+        dispatch(flightListAction({ search: searchTerm, ...sendData, ...productType }));
     }
     else if (type === "vendor" || type === "vendor_charges") {
         dispatch(customersList({ ...sendData, search: searchTerm }));

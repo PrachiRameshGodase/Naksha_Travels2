@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,8 @@ import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
+import { flightListAction } from "../../../../Redux/Actions/flightActions";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -28,9 +30,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const createFlight = useSelector((state) => state?.createPassengerFlight);
+  const flightListData = useSelector((state) => state?.flightList);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -109,6 +113,12 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
+  useEffect(() => {
+    // if (flightListData?.data) {
+    const queryParams = {};
+    dispatch(flightListAction(queryParams));
+    // }
+  }, [dispatch]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
@@ -220,11 +230,18 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.airline_name}
-                            onChange={handleChange}
+                          <CustomDropdown003
+                            options={flightListData?.data?.data}
+                            value={formData?.airline_name}
                             name="airline_name"
-                            placeholder="Enter Airline Name"
+                            onChange={handleChange}
+                            type="select_item2"
+                            setItemData={setcusData2}
+                            defaultOption="Select Airline Name"
+                            index="0"
+                            extracssclassforscjkls=""
+                            itemData={cusData2}
+                            ref={dropdownRef1}
                           />
                         </span>
                       </div>

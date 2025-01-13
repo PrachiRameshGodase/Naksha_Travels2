@@ -1,10 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import { customersList } from "../../../../Redux/Actions/customerActions";
+import { customersList, customersView } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerVisaAction } from "../../../../Redux/Actions/passengerVisaActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
@@ -18,6 +18,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerMVisaAction } from "../../../../Redux/Actions/passengerMVisaActions";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const countryList = useSelector((state) => state?.countries?.countries);
@@ -33,6 +36,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData3, setcusData3] = useState(null);
+  
   const [formData, setFormData] = useState({
     mice_id: data?.id,
     passenger_id: passengerId,
@@ -84,6 +89,13 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems,
+    });
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     try {
@@ -108,7 +120,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       console.error("Error updating visa:", error);
     }
   };
-
+  useEffect(() => {
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
@@ -340,6 +360,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
+                     
                       <div className="form_commonblock ">
                         <label>Expiry Date</label>
                         <span>
@@ -359,6 +380,31 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
+                      <div className="form_commonblock">
+                          <label>
+                            Family Member<b className="color_red">*</b>
+                          </label>
+
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+
+                              <CustomDropdown31
+                                ref={dropdownRef1}
+                                label="Select Family Member"
+                                options={customerData?.family_members}
+                                value={formData.guest_ids}
+                                onChange={handleChange1}
+                                name="guest_ids"
+                                defaultOption="Select Family Member"
+                                setcusData={setcusData3}
+                                cusData={cusData3}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+                        </div>
                       <div className="form_commonblock">
                         <label>
                           Supplier<b className="color_red">*</b>
@@ -385,8 +431,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
@@ -397,6 +441,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           component="purchase"
                         />
                       </div>
+                    </div>
+                    <div className="f1wrapofcreqx1">
+                     
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>

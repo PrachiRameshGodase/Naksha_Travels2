@@ -124,6 +124,10 @@ const Insurances = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Expiry Date
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.refrence_svg}
+                    Family Member
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Action
@@ -159,6 +163,7 @@ const Insurances = ({ data, totalItems }) => {
                             <div className="table-cellx12 x125cd01">
                               {item?.passenger?.display_name || ""}
                             </div>
+
                             <div className="table-cellx12 x125cd01">
                               {item?.company_name || ""}
                             </div>
@@ -170,6 +175,18 @@ const Insurances = ({ data, totalItems }) => {
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               {formatDate3(item?.expiry_date) || ""}
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs3"
+                              title={item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(quotation)}

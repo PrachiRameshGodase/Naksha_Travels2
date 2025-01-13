@@ -167,6 +167,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       dispatch(customersView(queryParams));
     }
   }, [dispatch, data?.customer_id]);
+  
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function

@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
-import { customersList, customersView } from "../../../../Redux/Actions/customerActions";
+import {
+  customersList,
+  customersView,
+} from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerMFlightAction } from "../../../../Redux/Actions/passengerMFlightActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
@@ -32,7 +35,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const vendorList = useSelector((state) => state?.vendorList);
   const createFlight = useSelector((state) => state?.createPassengerMFlight);
   const flightListData = useSelector((state) => state?.flightList);
-  console.log("flightListData", flightListData)
+
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
@@ -64,10 +67,9 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
-  // const [errors, setErrors] = useState({
-  //   airline_name: false,
-  // });
-console.log("flightListData", flightListData)
+  const [errors, setErrors] = useState({
+    airline_name: false,
+  });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -94,16 +96,16 @@ console.log("flightListData", flightListData)
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // let newErrors = {
-    //   airline_name: formData?.airline_name ? false : true,
-    // };
-    // setErrors(newErrors);
-    // const hasAnyError = Object.values(newErrors).some(
-    //   (value) => value === true
-    // );
-    // if (hasAnyError) {
-    //   return;
-    // } else {
+    let newErrors = {
+      airline_name: formData?.airline_name ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
       try {
         const sendData = {
           ...formData,
@@ -125,24 +127,23 @@ console.log("flightListData", flightListData)
       } catch (error) {
         console.error("Error updating flight:", error);
       }
-    // }
+    }
   };
   useEffect(() => {
     // if (flightListData?.data) {
-      const queryParams = {
-      };
-      dispatch(flightListAction(queryParams));
+    const queryParams = {};
+    dispatch(flightListAction(queryParams));
     // }
   }, [dispatch]);
   useEffect(() => {
-      if (data?.customer_id) {
-        const queryParams = {
-          user_id: data?.customer_id,
-          fy: localStorage.getItem("FinancialYear"),
-        };
-        dispatch(customersView(queryParams));
-      }
-    }, [dispatch, data?.customer_id]);
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
@@ -267,7 +268,7 @@ console.log("flightListData", flightListData)
                             ref={dropdownRef1}
                           />
                         </span>
-                        {/* {errors?.airline_name && (
+                        {errors?.airline_name && (
                           <p
                             className="error_message"
                             style={{
@@ -278,7 +279,7 @@ console.log("flightListData", flightListData)
                             {otherIcons.error_svg}
                             Please Select Airline
                           </p>
-                        )} */}
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>Airline Code</label>

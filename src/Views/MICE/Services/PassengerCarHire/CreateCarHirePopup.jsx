@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
@@ -15,6 +15,8 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import {customersView} from "../../../../Redux/Actions/customerActions";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -24,6 +26,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const vendorList = useSelector((state) => state?.vendorList);
   const createCarHire = useSelector((state) => state?.createPassengerMCarHire);
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
 
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
@@ -51,6 +55,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+  const [cusData, setcusData] = useState(null);
 
   const entryType = ShowMasterData("50");
   const vehicleType = ShowMasterData("41");
@@ -68,6 +73,12 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems,
+    });
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     try {
@@ -93,6 +104,15 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
+  useEffect(() => {
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
@@ -205,6 +225,31 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
+                          <label>
+                            Family Member<b className="color_red">*</b>
+                          </label>
+
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+
+                              <CustomDropdown31
+                                ref={dropdownRef1}
+                                label="Select Family Member"
+                                options={customerData?.family_members}
+                                value={formData.guest_ids}
+                                onChange={handleChange1}
+                                name="guest_ids"
+                                defaultOption="Select Family Member"
+                                setcusData={setcusData}
+                                cusData={cusData}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      <div className="form_commonblock">
                         <label>
                           Supplier<b className="color_red">*</b>
                         </label>
@@ -230,6 +275,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
+                      
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
