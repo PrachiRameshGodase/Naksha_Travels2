@@ -670,16 +670,6 @@ const ItemSelect = ({
 
                   <div
                     className="tablsxs1a5x3"
-                    // id="ITEM_Selection6"
-                    style={{
-                      marginRight: "5px", cursor: item?.type === "Service" ? "not-allowed" : "default",
-                      pointerEvents: item?.type === "Service" ? "none" : "auto", // Prevent interaction
-                    }}
-
-                    disabled={item?.type === "Service"} // Explicitly set the disabled attribute
-                    data-tooltip-content={item?.type === "Service" && "Unit is not allowed for service select"}
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-place="bottom"
                   >
                     <span>
                       <CustomDropdown04
@@ -698,8 +688,7 @@ const ItemSelect = ({
                         type="masters"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         className2="item"
-
-
+                        types={item?.type}
                       />
                     </span>
                   </div>
