@@ -472,7 +472,7 @@ const ItemSelect = ({
         type: "",
         quantity: 1,
         rate: parseFloat(data?.gross_amount || 0),
-        tax_rate: parseInt(data?.tax_percent || 0),
+        tax_rate: data?.tax_percent,
         tax_amount: parseFloat(data?.tax_amount),
         discount: 0,
         gross_amount: parseFloat(data?.gross_amount) * 1,
@@ -800,7 +800,30 @@ const ItemSelect = ({
                       }}
                       key={item.id || index}
                     >
-                      {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
+                      {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
+
+                        :
+                        <>
+                          <div
+                            className="tablsxs1a6x3_rm"
+                            id="ITEM_Selection7"
+                            key={item.id || index}
+                            style={{ marginRight: "20px" }}
+                          >
+                            <CustomDropdown13
+                              options={tax_rate}
+                              value={item?.tax_rate}
+                              onChange={(e) =>
+                                handleItemChange(index, "tax_rate", e.target.value)
+                              }
+                              name="tax_rate"
+                              type="taxRate"
+                              defaultOption="Taxes"
+                              className2="items"
+                            />
+                          </div>
+                        </>
+                      }
                       {item?.tax_name === "Non-Taxable" && (
                         <>{item?.tax_name}</>
                       )}
