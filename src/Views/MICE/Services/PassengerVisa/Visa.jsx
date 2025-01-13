@@ -103,6 +103,10 @@ const Visas = ({ data }) => {
                     {otherIcons?.date_svg}
                     Passenger Name
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                                      {otherIcons?.refrence_svg}
+                                      Family Member
+                                    </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Passport No
@@ -162,6 +166,17 @@ const Visas = ({ data }) => {
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.visa_passenger?.display_name || ""}
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs1"
+                              title={item?.guests?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
                             </div>
                             <div
                              

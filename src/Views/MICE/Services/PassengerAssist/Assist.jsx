@@ -15,7 +15,7 @@ import PassengerAssistDetails from "./PassengerAssistDetails";
 
 const Assit = ({ data, totalItems }) => {
   const dispatch = useDispatch();
- 
+
   const itemId = new URLSearchParams(location.search).get("id");
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
@@ -77,7 +77,6 @@ const Assit = ({ data, totalItems }) => {
     setShowPopup((prev) => !prev);
   };
 
-  
   return (
     <>
       <TopLoadbar />
@@ -112,7 +111,10 @@ const Assit = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     No Of Persons
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    Family Member
+                  </div>
                   {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Price
@@ -150,26 +152,29 @@ const Assit = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.meeting_type || ""}
                             </div>
 
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.airport_name || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.no_of_persons || ""}
                             </div>
-
                             <div
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                              title={item?.guests?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
                             >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span
                                 style={{ cursor: "pointer", color: "red" }}
                                 onClick={() => handleDeleteAssist(item)}

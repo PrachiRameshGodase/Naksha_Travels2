@@ -87,7 +87,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
 
                                 <li className="pendingfrombackendx5">
-                                  <span>Passengers</span>
+                                  <span>Family Member</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.guests

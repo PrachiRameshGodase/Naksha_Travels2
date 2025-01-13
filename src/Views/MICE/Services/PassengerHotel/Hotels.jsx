@@ -175,26 +175,22 @@ const Hotels = ({ data }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {formatDate3(item?.booking_date) || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               title={item?.hotel_name}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.hotel_name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.room?.room_number || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                               title={item?.guests?.map((data) => data?.display_name)
                                 .filter(Boolean)
@@ -206,7 +202,6 @@ const Hotels = ({ data }) => {
                                 .join(",  ")}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               <ShowMastersValue
@@ -225,13 +220,11 @@ const Hotels = ({ data }) => {
                             </div> */}
 
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {formatDate3(item?.check_in_date) || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {formatDate3(item?.check_out_date) || ""}
