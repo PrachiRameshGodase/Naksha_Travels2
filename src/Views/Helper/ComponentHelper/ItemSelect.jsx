@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  accountLists,
-  itemLists,
-} from "../../../Redux/Actions/listApisActions";
+import { accountLists, itemLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import NumericInput from "../NumericInput";
 import toast from "react-hot-toast";
@@ -463,29 +460,23 @@ const ItemSelect = ({
                   : name === "Other"
                     ? data?.item_name
                     : "";
-    console.log("data of selected hotel", name);
-
-    const newItems = [
-      ...formData.items,
-      {
-        item_name: itemName,
-        tax_name: "",
-        type: "",
-        quantity: 1,
-        rate: parseFloat(data?.gross_amount || 0),
-        tax_rate: data?.tax_percent,
-        tax_amount: parseFloat(data?.tax_amount),
-        discount: 0,
-        gross_amount: parseFloat(data?.gross_amount) * 1,
-        final_amount: parseFloat(data?.gross_amount) * 1,
-        discount_type: 1,
-        type: "Service"
-        // items_data: [data],
-      },
-    ];
+    const item_data = {
+      item_name: itemName,
+      tax_name: "",
+      quantity: 1,
+      rate: parseFloat(data?.gross_amount || 0),
+      tax_rate: data?.tax_percent,
+      tax_amount: parseFloat(data?.tax_amount),
+      discount: 0,
+      gross_amount: parseFloat(data?.gross_amount) * 1,
+      final_amount: parseFloat(data?.gross_amount) * 1,
+      discount_type: 1,
+      type: "Service"
+      // items_data: [data],
+    };
+    const newItems = (formData?.items[0]?.item_name !== "") ? [...formData.items, item_data] : [item_data];
     setFormData({ ...formData, items: newItems });
   };
-
 
   const renderPopup = () => {
     if (!activePopup) return null;
