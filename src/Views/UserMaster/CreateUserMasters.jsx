@@ -82,7 +82,7 @@ const CreateUserMasters = () => {
         ],
     });
 
-  useEffect(() => {
+    useEffect(() => {
         if (itemId && isEdit && purchseDetail || (itemId && isDuplicate && purchseDetail)) {
             const itemsFromApi = purchseDetail.items?.map(item => ({
                 item_id: (+item?.item_id),

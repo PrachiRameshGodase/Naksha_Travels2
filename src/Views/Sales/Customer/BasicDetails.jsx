@@ -273,46 +273,61 @@ const BasicDetails = ({
                     {otherIcons.quotation_icon}
                     <p>Basic Details</p>
                   </div>
-                  <div id="fcx3s1">
-                    <div className="form_commonblock">
-                      <label>Salutation</label>
-                      <span>
-                        <CustomDropdown04
-                          options={salutation_options}
-                          value={basicDetails?.salutation}
-                          onChange={handleChange}
-                          name="salutation"
-                          defaultOption="Select Salutation"
-                          type="masters_salutation"
-                          // extracssclassforscjkls="extracssclassforscjklsSalutation"
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>First Name</label>
-                      <span>
-                        <input
-                          autoComplete="off"
-                          type="input"
-                          name="first_name"
-                          value={basicDetails.first_name}
-                          onChange={handleChange}
-                          placeholder={`Enter First Name`}
-                        />
-                      </span>
-                    </div>
-                    <div className="form_commonblock">
-                      <label>Last Name</label>
-                      <span>
-                        <input
-                          autoComplete="off"
-                          type="input"
-                          name="last_name"
-                          value={basicDetails.last_name}
-                          onChange={handleChange}
-                          placeholder={`Enter Last Name`}
-                        />
-                      </span>
+                  <div className="sections">
+                    <div id="fcx3s1parent">
+                      <div className="form_commonblock">
+                        <label>Salutation</label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.quotation_icon}
+
+                            <CustomDropdown04
+                              options={salutation_options}
+                              value={basicDetails?.salutation}
+                              onChange={handleChange}
+                              name="salutation"
+                              defaultOption="Select Salutation"
+                              type="masters_salutation"
+                              // extracssclassforscjkls="extracssclassforscjklsSalutation"
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>First Name</label>
+                        <div id="inputx1">
+                          <span>
+                            <input
+                              autoComplete="off"
+                              type="input"
+                              style={{ width: "100%" }}
+                              name="first_name"
+                              value={basicDetails.first_name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder={`Enter First Name`}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                  <label className="">Last Name</label>
+                  <div id="inputx1">
+                    <span>
+                      {/* {otherIcons.company_name_svg} */}
+                      <input
+                        autoComplete="off"
+                        style={{ width: "100%" }}
+                        type="text"
+                        name="last_name"
+                        value={basicDetails.last_name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="Enter Last Name"
+                      />
+                    </span>
+                  </div>
+                </div>
                     </div>
                   </div>
                 </div>
@@ -516,6 +531,27 @@ const BasicDetails = ({
                   </span>
                 </div>
               </div>
+              <div className="form_commonblock">
+                <label>Website</label>
+                <div id="inputx1">
+                  <span>
+                    {otherIcons.website_icon_svg}
+                    <input
+                      autoComplete="off"
+                      style={{ width: "100%" }}
+                      type="text"
+                      name="website"
+                      value={basicDetails.website}
+                      onChange={handleChange}
+                      placeholder="Enter Website"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div id="fcx3s1parent">
+              
               {showRegisterdFields && (
                 <>
                   <div className="form_commonblock">
@@ -575,26 +611,6 @@ const BasicDetails = ({
                   </div>
                 </>
               )}
-            </div>
-
-            <div id="fcx3s1parent">
-              <div className="form_commonblock">
-                <label>Website</label>
-                <div id="inputx1">
-                  <span>
-                    {otherIcons.website_icon_svg}
-                    <input
-                      autoComplete="off"
-                      style={{ width: "100%" }}
-                      type="text"
-                      name="website"
-                      value={basicDetails.website}
-                      onChange={handleChange}
-                      placeholder="Enter Website"
-                    />
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
           {showPopup && (

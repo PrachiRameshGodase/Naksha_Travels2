@@ -1,37 +1,35 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import CustomDropdown02 from "../../../../Components/CustomDropdown/CustomDropdown02";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
-import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerHotelActions";
-import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
-import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../../Helper/DateFormat";
-import { preventZeroVal, sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
-import NumericInput from "../../../Helper/NumericInput";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import "../CreateHotelPopup.scss";
-import CalculationSection from "../../CalculationSection";
-import { customersList } from "../../../../Redux/Actions/customerActions";
-import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import {customersView} from "../../../../Redux/Actions/customerActions";
 import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
-import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import { CreatePassengerMHotelAction } from "../../../../Redux/Actions/passengerMHotelActions";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
+import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import { formatDate } from "../../../Helper/DateFormat";
+import {preventZeroVal,sendData,ShowMasterData,} from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import CalculationSection from "../../CalculationSection";
+import "../CreateHotelPopup.scss";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
-
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
-  const cusList = useSelector((state) => state?.customerList);
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
   const vendorList = useSelector((state) => state?.vendorList);
   const hotelList = useSelector((state) => state?.hotelList?.data?.hotels || []);
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList?.data?.hotels || []);
@@ -61,7 +59,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: [{amount:null, account_id:null}],
+    charges: [{ amount: null, account_id: null }],
     gross_amount: 0,
     discount: 0.0,
     supplier_total: null,
@@ -72,7 +70,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
-
+  const [errors, setErrors] = useState({
+    hotel_id: false,
+  });
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -109,68 +109,94 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       ...updatedFields,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      ...updatedFields,
+      [name]: false,
+    }));
   };
 
   const handleChange1 = (selectedItems) => {
     setFormData({
       ...formData,
-      guest_ids: selectedItems, // Update selected items array
+      guest_ids: selectedItems,
     });
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
-
-      };
-      dispatch(CreatePassengerMHotelAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
-    } catch (error) {
-      console.error("Error updating hotel:", error);
+    let newErrors = {
+      hotel_id: formData?.hotel_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        dispatch(CreatePassengerMHotelAction(sendData))
+          .then((response) => {
+            // if (response?.success === true) {
+            setShowModal(false);
+            // }
+          })
+          .catch((error) => {
+            console.error("Error during dispatch:", error);
+          });
+      } catch (error) {
+        console.error("Error updating hotel:", error);
+      }
     }
   };
 
+  useEffect(() => {
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
-  useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
 
   return (
-    <div id="formofcreateitems">
-      <div className="custom-modal">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5>{isEdit ? "Update Hotel Service" : "Add Hotel Service"}</h5>
-            <button
-              className="close-button"
-              onClick={() => setShowModal(false)}
-            >
-              <RxCross2 />
-            </button>
-          </div>
+    <>
+      <div id="formofcreateitems">
+        <div className="custom-modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5>{isEdit ? "Update Hotel Service" : "Add Hotel Service"}</h5>
+              <button
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                <RxCross2 />
+              </button>
+            </div>
 
-          <div className="modal-body">
-            <form>
-              {/* Keep your form as it is */}
-              <div className="relateivdiv">
-                <div className="itemsformwrap" style={{paddingBottom:"0px"}}>
-                  <div className="f1wrapofcreq">
-                    {/* <div className="f1wrapofcreqx1">
+            <div className="modal-body">
+              <form>
+                {/* Keep your form as it is */}
+                <div className="relateivdiv">
+                  <div
+                    className="itemsformwrap"
+                    style={{ paddingBottom: "0px" }}
+                  >
+                    <div className="f1wrapofcreq">
+                      {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
@@ -191,280 +217,299 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                     </div> */}
 
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Hotel Name<b className="color_red">*</b>
-                        </label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-                            <CustomDropdown29
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Hotel Name"
-                              options={hotelList}
-                              value={formData.hotel_id}
-                              onChange={handleChange}
-                              name="hotel_id"
-                              defaultOption="Select Hotel"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
-                              type="hotalList"
-                              required
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Room Number/Name<b className="color_red">*</b>
-                        </label>
-                        <span>
-                          {otherIcons.placeofsupply_svg}
-                          <CustomDropdown02
-                            autoComplete="off"
-                            ref={dropdownRef1}
-                            label="Room Name"
-                            options={hotelRoomListData}
-                            value={formData.room_id}
-                            onChange={handleChange}
-                            name="room_id"
-                            defaultOption="Select Room Number/Name"
-                            setcusData={setcusData4}
-                            cusData={cusData4}
-                            type="vendor"
-                            hotelID={formData.hotel_id}
-                            required
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Occupancy<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Occupancy"
-                            options={occupancy}
-                            value={formData?.occupancy_id}
-                            onChange={handleChange}
-                            name="occupancy_id"
-                            defaultOption="Select Occupancy"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Meal Plan<b className="color_red">*</b>
-                        </label>
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Meal"
-                            options={meal}
-                            value={formData?.meal_id}
-                            onChange={handleChange}
-                            name="meal_id"
-                            defaultOption="Select Meal"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Bed<b className="color_red">*</b>
-                        </label>
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Bed"
-                            options={bed}
-                            value={formData?.bed}
-                            onChange={handleChange}
-                            name="bed"
-                            defaultOption="Select Bed"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Guest Name<b className="color_red">*</b>
-                        </label>
-
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown31
-                              ref={dropdownRef1}
-                              label="Select Guest"
-                              options={cusList?.data?.user}
-                              value={formData.guest_ids}
-                              onChange={handleChange1}
-                              name="guest_ids"
-                              defaultOption="Select Guest"
-                              setcusData={setcusData}
-                              cusData={cusData}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock ">
-                        <label>Booking Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.booking_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                booking_date: formatDate(date),
-                              })
-                            }
-                            name="booking_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock ">
-                        <label>Checkin Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.check_in_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                check_in_date: formatDate(date),
-                              })
-                            }
-                            name="check_in_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock ">
-                        <label>Checkout Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.chec_out_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                chec_out_date: formatDate(date),
-                              })
-                            }
-                            name="chec_out_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Supplier<b className="color_red">*</b>
-                        </label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-                            <CustomDropdown10
-                              ref={dropdownRef1}
-                              label="Select Supplier"
-                              options={vendorList?.data?.user}
-                              value={formData.supplier_id}
-                              onChange={handleChange}
-                              name="supplier_id"
-                              defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
-                      <div className="form_commonblock">
-                        <label>Total Days</label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.name_svg}
-                            <NumericInput
-                              type="number"
-                              name="total_days"
-                              placeholder="Enter Total Days"
-                              value={formData.total_days}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                      <ImageUpload
-                        formData={formData}
-                        setFormData={setFormData}
-                        setFreezLoadingImg={setFreezLoadingImg}
-                        imgLoader={imgLoader}
-                        setImgeLoader={setImgeLoader}
-                        component="purchase"
-                      />
-                    </div>
-                      <div className="secondtotalsections485s ">
-                        <div className="textareaofcreatqsiform">
-                          <label>Note</label>
-                          <div className="show_no_of_text_limit_0121">
-                            <TextAreaComponentWithTextLimit
-                              formsValues={{ handleChange, formData }}
-                              placeholder="Note..."
-                              name="note"
-                              value={preventZeroVal(formData?.note)}
-                            />
+                      <div className="f1wrapofcreqx1">
+                        <div className="form_commonblock">
+                          <label>
+                            Hotel Name<b className="color_red">*</b>
+                          </label>
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+                              <CustomDropdown29
+                                autoComplete="off"
+                                ref={dropdownRef1}
+                                label="Hotel Name"
+                                options={hotelList}
+                                value={formData.hotel_id}
+                                onChange={handleChange}
+                                name="hotel_id"
+                                defaultOption="Select Hotel"
+                                setcusData={setcusData3}
+                                cusData={cusData3}
+                                type="hotalList"
+                                required
+                              />
+                            </span>
+                            {errors?.hotel_id && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select Hotel Name
+                              </p>
+                            )}
                           </div>
                         </div>
-                       
-                        
+                        <div
+                          className={`form_commonblock ${
+                            formData?.hotel_id ? "" : "disabledfield"
+                          }`}
+                        >
+                          <label>
+                            Room Number/Name<b className="color_red">*</b>
+                          </label>
+                          <span>
+                            {otherIcons.placeofsupply_svg}
+                            <CustomDropdown02
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Room Name"
+                              options={hotelRoomListData}
+                              value={formData.room_id}
+                              onChange={handleChange}
+                              name="room_id"
+                              defaultOption="Select Room Number/Name"
+                              setcusData={setcusData4}
+                              cusData={cusData4}
+                              type="vendor"
+                              hotelID={formData.hotel_id}
+                              required
+                            />
+                          </span>
+                        </div>
+                        <div className="form_commonblock">
+                          <label>
+                            Occupancy<b className="color_red">*</b>
+                          </label>
+
+                          <span id="">
+                            {otherIcons.name_svg}
+                            <CustomDropdown04
+                              label="Occupancy"
+                              options={occupancy}
+                              value={formData?.occupancy_id}
+                              onChange={handleChange}
+                              name="occupancy_id"
+                              defaultOption="Select Occupancy"
+                              type="masters"
+                            />
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}><CalculationSection
+                      <div className="f1wrapofcreqx1">
+                        <div className="form_commonblock">
+                          <label>
+                            Meal Plan<b className="color_red">*</b>
+                          </label>
+                          <span id="">
+                            {otherIcons.name_svg}
+                            <CustomDropdown04
+                              label="Meal"
+                              options={meal}
+                              value={formData?.meal_id}
+                              onChange={handleChange}
+                              name="meal_id"
+                              defaultOption="Select Meal"
+                              type="masters"
+                            />
+                          </span>
+                        </div>
+                        <div className="form_commonblock">
+                          <label>
+                            Bed<b className="color_red">*</b>
+                          </label>
+                          <span id="">
+                            {otherIcons.name_svg}
+                            <CustomDropdown04
+                              label="Bed"
+                              options={bed}
+                              value={formData?.bed}
+                              onChange={handleChange}
+                              name="bed"
+                              defaultOption="Select Bed"
+                              type="masters"
+                            />
+                          </span>
+                        </div>
+                        <div className="form_commonblock">
+                          <label>
+                            Family Member<b className="color_red">*</b>
+                          </label>
+
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+
+                              <CustomDropdown31
+                                ref={dropdownRef1}
+                                label="Select Family Member"
+                                options={customerData?.family_members}
+                                value={formData.guest_ids}
+                                onChange={handleChange1}
+                                name="guest_ids"
+                                defaultOption="Select Family Member"
+                                setcusData={setcusData}
+                                cusData={cusData}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="f1wrapofcreqx1">
+                        <div className="form_commonblock ">
+                          <label>Booking Date</label>
+                          <span>
+                            {otherIcons.date_svg}
+                            <DatePicker
+                              selected={formData?.booking_date}
+                              onChange={(date) =>
+                                setFormData({
+                                  ...formData,
+                                  booking_date: formatDate(date),
+                                })
+                              }
+                              name="booking_date"
+                              placeholderText="Enter Date"
+                              dateFormat="dd-MM-yyyy"
+                              autoComplete="off"
+                            />
+                          </span>
+                        </div>
+                        <div className="form_commonblock ">
+                          <label>Checkin Date</label>
+                          <span>
+                            {otherIcons.date_svg}
+                            <DatePicker
+                              selected={formData?.check_in_date}
+                              onChange={(date) =>
+                                setFormData({
+                                  ...formData,
+                                  check_in_date: formatDate(date),
+                                })
+                              }
+                              name="check_in_date"
+                              placeholderText="Enter Date"
+                              dateFormat="dd-MM-yyyy"
+                              autoComplete="off"
+                            />
+                          </span>
+                        </div>
+                        <div className="form_commonblock ">
+                          <label>Checkout Date</label>
+                          <span>
+                            {otherIcons.date_svg}
+                            <DatePicker
+                              selected={formData?.chec_out_date}
+                              onChange={(date) =>
+                                setFormData({
+                                  ...formData,
+                                  chec_out_date: formatDate(date),
+                                })
+                              }
+                              name="chec_out_date"
+                              placeholderText="Enter Date"
+                              dateFormat="dd-MM-yyyy"
+                              autoComplete="off"
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="f1wrapofcreqx1">
+                        <div className="form_commonblock">
+                          <label>
+                            Supplier<b className="color_red">*</b>
+                          </label>
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+                              <CustomDropdown10
+                                ref={dropdownRef1}
+                                label="Select Supplier"
+                                options={vendorList?.data?.user}
+                                value={formData.supplier_id}
+                                onChange={handleChange}
+                                name="supplier_id"
+                                defaultOption="Select Supplier"
+                                setcusData={setcusData1}
+                                cusData={cusData1}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+
+                          {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
+                        </div>
+                        <div className="form_commonblock">
+                          <label>Total Days</label>
+                          <div id="inputx1">
+                            <span>
+                              {otherIcons.name_svg}
+                              <NumericInput
+                                type="number"
+                                name="total_days"
+                                placeholder="Enter Total Days"
+                                value={formData.total_days}
+                                onChange={(e) => handleChange(e)}
+                              />
+                            </span>
+                          </div>
+                        </div>
+                        <div id="imgurlanddesc" className="calctotalsectionx2">
+                          <ImageUpload
+                            formData={formData}
+                            setFormData={setFormData}
+                            setFreezLoadingImg={setFreezLoadingImg}
+                            imgLoader={imgLoader}
+                            setImgeLoader={setImgeLoader}
+                            component="purchase"
+                          />
+                        </div>
+                        <div className="secondtotalsections485s ">
+                          <div className="textareaofcreatqsiform">
+                            <label>Note</label>
+                            <div className="show_no_of_text_limit_0121">
+                              <TextAreaComponentWithTextLimit
+                                formsValues={{ handleChange, formData }}
+                                placeholder="Note..."
+                                name="note"
+                                value={preventZeroVal(formData?.note)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
+                        <CalculationSection
                           formData={formData}
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Hotel"
-                        /></div>
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <SubmitButton6
-                onClick={handleFormSubmit}
-                
-                createUpdate={createHotel}
-                setShowModal={setShowModal}
-              />
-            </form>
+                <SubmitButton6
+                  onClick={handleFormSubmit}
+                  createUpdate={createHotel}
+                  setShowModal={setShowModal}
+                />
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

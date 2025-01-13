@@ -13,7 +13,7 @@ import CustomDropdown24 from '../../../Components/CustomDropdown/CustomDropdown2
 import NumericInput from '../../Helper/NumericInput';
 import { fetchCurrencies, fetchGetCities, fetchGetCountries, fetchGetStates } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
-import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
+import CurrencySelect, { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { createUpdateOrgAction } from '../../../Redux/Actions/OrgnizationActions';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
@@ -164,6 +164,10 @@ const CreateANewOrganization = () => {
     }
   }, [orgId, orgMainList]);
   // console.log("formdata", formData)
+
+
+  const getCurrencySymbol = getCurrency?.currency
+  console.log("getCurrencySymbol", getCurrencySymbol)
   return (
     <>
       <TopLoadbar />
@@ -343,7 +347,7 @@ const CreateANewOrganization = () => {
                   </div>
 
                   <div className="form_commonblock">
-                    <CurrencySelect
+                    <CurrencySelect2
                       value={formData?.currency}
                       onChange={handleChange}
                     />
@@ -354,9 +358,14 @@ const CreateANewOrganization = () => {
                     <span >
                       {otherIcons.currency_icon}
                       <select name="symbol" value={formData.symbol} onChange={handleChange}>
-                        <option value="$">$</option>
+                        {
+                          getCurrencySymbol?.map((val, index) => (
+                            <option value={val?.symbol} key={index}>{val?.symbol}</option>
+                          ))
+                        }
+                        {/* <option value="$">$</option>
                         <option value="%">%</option>
-                        <option value="#">#</option>
+                        <option value="#">#</option> */}
                       </select>
                     </span>
                   </div>
