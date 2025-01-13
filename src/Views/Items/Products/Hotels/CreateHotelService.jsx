@@ -17,7 +17,7 @@ import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/Text
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import CurrencySelect from "../../../Helper/ComponentHelper/CurrencySelect";
+import CurrencySelect, { CurrencySelect2 } from "../../../Helper/ComponentHelper/CurrencySelect";
 import { CustomDropdown006 } from "../../../../Components/CustomDropdown/CustomDropdown06";
 
 const CreateHotelService = () => {
@@ -102,7 +102,7 @@ const CreateHotelService = () => {
       dispatch(hotelRoomDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
-console.log("hotelRoomData", hotelRoomData)
+  console.log("hotelRoomData", hotelRoomData)
   useEffect(() => {
     if (itemId && isEdit && hotelRoomData) {
       const depArray = JSON.parse(hotelRoomData?.amenities || "[]");
@@ -123,7 +123,7 @@ console.log("hotelRoomData", hotelRoomData)
         price: hotelRoomData?.price,
         availability_status: hotelRoomData?.availability_status,
         description: hotelRoomData?.description,
-        currency:hotelRoomData?.currency,
+        currency: hotelRoomData?.currency,
         upload_documents: hotelRoomData?.upload_documents
           ? JSON.parse(hotelRoomData.upload_documents)
           : [],
@@ -137,7 +137,7 @@ console.log("hotelRoomData", hotelRoomData)
     try {
       const sendData = {
         ...formData,
-          amenities: formData.amenities.join(","),
+        amenities: formData.amenities.join(","),
         upload_documents: JSON.stringify(formData?.upload_documents),
       };
       dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));
@@ -258,7 +258,7 @@ console.log("hotelRoomData", hotelRoomData)
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <CurrencySelect
+                        <CurrencySelect2
                           value={formData?.currency}
                           onChange={handleChange}
                         />

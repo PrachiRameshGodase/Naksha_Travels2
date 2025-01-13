@@ -54,7 +54,8 @@ const ItemSelect = ({
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
-
+  const currencySymbole = activeOrg_details?.symbol;
+  console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -579,92 +580,7 @@ const ItemSelect = ({
                   className="tablerowtopsxs1 border_none"
                   style={{ padding: "21px 5px" }}
                 >
-                  {/* {console.log("items", item)} */}
-                  {/* <div className="tablsxs1a1x3">
-                    {item?.items_data?.map((data, index) => (
-                      <span key={index}>
-                        {data?.service_name === "Hotel" ? (
-                          <span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Hotel Name:</b>{" "}
-                              {data?.hotel_name || "-"}{" "}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Room:</b>{" "}
-                              {data?.room_no || "-"}{" "}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Meal:</b>{" "}
-                              <ShowMastersValue
-                                type="37"
-                                id={data?.meal_id || "-"}
-                              />
-                            </span>
-                          </span>
-                        ) : data?.service_name === "Assist" ? (
-                          <span>
 
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Airport:</b>{" "}
-                              {data?.airport_name || "-"}{" "}
-                            </span>
-
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Meeting Type:</b>{" "}
-                              {data?.meeting_type || "-"}{" "}
-                            </span>
-
-                            <span>
-                              <b style={{ fontWeight: 500 }}>
-                                No Of Persons:
-                              </b>{" "}
-                              {data?.no_of_persons || "-"}
-                            </span>
-
-                          </span>
-                        ) : data?.service_name === "Flight" ? (
-                          <span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Travel Date:</b>{" "}
-                              {formatDate3(data?.travel_date) || "-"}{" "}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Airline Name:</b>{" "}
-                              {data?.airline_name || "-"}{" "}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Ticket No:</b>{" "}
-                              {data?.ticket_no + " " || "-"}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>PRN No:</b>
-                              {data?.prn_no || "-"}
-                            </span>
-                          </span>
-                        ) : data?.service_name === "Visa" ? (
-                          <span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Passport No:</b>{" "}
-                              {data?.passport_no + " " || "-"}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Visa No:</b>{" "}
-                              {data?.visa_no || "-"}{" "}
-                            </span>
-                            <span>
-                              <b style={{ fontWeight: 500 }}>Visa Type:</b>{" "}
-                              <ShowMastersValue
-                                type="40"
-                                id={data?.visa_type_id || "-"}
-                              />
-                            </span>
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                    ))}
-                  </div> */}
                   <h4>{item?.items_data?.service_name}</h4>
                   {/* /////////////////////////////// */}
                   <div className="tablsxs1a1x3">
@@ -731,7 +647,6 @@ const ItemSelect = ({
                     </span>
 
                     {/* item select */}
-
                     {!item?.items_data?.service_name &&
                       <span>
                         <CustomDropdown26
@@ -882,7 +797,7 @@ const ItemSelect = ({
                         onClick={() => handleDropdownToggle(index)}
                       >
                         {item?.discount_type == 1
-                          ? "$"
+                          ? currencySymbole
                           : item?.discount_type == 2
                             ? "%"
                             : ""}
@@ -1631,7 +1546,7 @@ export const ItemSelectGRM = ({
                   marginRight: "20px",
                 }}
               >
-                ITEM PRICE ($)
+                ITEM PRICE ({$})
               </p>
 
               {formData?.purchase_order_id &&

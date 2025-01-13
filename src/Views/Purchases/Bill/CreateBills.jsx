@@ -14,7 +14,7 @@ import { billDetails } from "../../../Redux/Actions/billActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import { formatDate } from "../../Helper/DateFormat";
 import { activeOrg_details, preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
+import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { GRNdetailsActions } from "../../../Redux/Actions/grnActions";
 import GenerateAutoId from "../../Sales/Common/GenerateAutoId";
@@ -386,7 +386,7 @@ const CreateBills = () => {
                         </div>
 
                         <div className="form_commonblock">
-                          <CurrencySelect
+                          <CurrencySelect2
                             options={getCurrency?.currency}
                             value={formData?.currency}
                             onChange={handleChange}
