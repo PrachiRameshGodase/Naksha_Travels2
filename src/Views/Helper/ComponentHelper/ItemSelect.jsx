@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  accountLists,
-  itemLists,
-} from "../../../Redux/Actions/listApisActions";
+import { accountLists, itemLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import NumericInput from "../NumericInput";
 import toast from "react-hot-toast";
@@ -38,6 +35,7 @@ import AddVisaPopup from "../../Invoices/AddVisaPopup";
 import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
+import ShowMastersValue from "../ShowMastersValue";
 
 const ItemSelect = ({
   formData,
@@ -377,6 +375,7 @@ const ItemSelect = ({
         discount_type: 1,
         item_remark: null,
         tax_name: "",
+        items_data: null
       },
     ];
     const newErrors = [
@@ -463,26 +462,24 @@ const ItemSelect = ({
                   : name === "Other"
                     ? data?.item_name
                     : "";
-    console.log("data of selected hotel", name);
-    const newItems = [
-      ...formData.items,
-      {
-        item_name: itemName,
-        tax_name: "",
-        type: "",
-        quantity: 1,
-        rate: parseFloat(data?.gross_amount || 0),
-        tax_rate: parseInt(data?.tax_percent || 0),
-        tax_amount: parseFloat(data?.tax_amount),
-        discount: 0,
-        gross_amount: parseFloat(data?.gross_amount) * 1,
-        final_amount: parseFloat(data?.gross_amount) * 1,
-        discount_type: 1,
-        // items_data: [data],
-      },
-    ];
+    const item_data = {
+      item_name: itemName,
+      tax_name: "",
+      quantity: 1,
+      rate: parseFloat(data?.gross_amount || 0),
+      tax_rate: data?.tax_percent,
+      tax_amount: parseFloat(data?.tax_amount),
+      discount: 0,
+      gross_amount: parseFloat(data?.gross_amount) * 1,
+      final_amount: parseFloat(data?.gross_amount) * 1,
+      discount_type: 1,
+      type: "Service",
+      items_data: data,
+    };
+    const newItems = (formData?.items[0]?.item_name !== "") ? [...formData.items, item_data] : [item_data];
     setFormData({ ...formData, items: newItems });
   };
+
   const renderPopup = () => {
     if (!activePopup) return null;
 
@@ -496,6 +493,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Flights":
         return (
           <AddFlightPopup
@@ -503,6 +501,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Visa":
         return (
           <AddVisaPopup
@@ -510,6 +509,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Insurance":
         return (
           <AddInsurancePopup
@@ -524,6 +524,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Assist":
         return (
           <AddAssistPopup
@@ -531,6 +532,7 @@ const ItemSelect = ({
             handleAddService={handleAddService}
           />
         );
+
       case "Others":
         return (
           <AddOtherPopup
@@ -542,13 +544,6 @@ const ItemSelect = ({
         return null;
     }
   };
-
-  // const [openCharges, setOpenCharges] = useState(false);
-
-  // const openExpenseCharges = () => {
-  //   setOpenCharges(!openCharges);
-  // };
-  // for service select code..............................................
 
   return (
     <>
@@ -584,30 +579,183 @@ const ItemSelect = ({
                   className="tablerowtopsxs1 border_none"
                   style={{ padding: "21px 5px" }}
                 >
+                  {/* {console.log("items", item)} */}
+                  {/* <div className="tablsxs1a1x3">
+                    {item?.items_data?.map((data, index) => (
+                      <span key={index}>
+                        {data?.service_name === "Hotel" ? (
+                          <span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Hotel Name:</b>{" "}
+                              {data?.hotel_name || "-"}{" "}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Room:</b>{" "}
+                              {data?.room_no || "-"}{" "}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Meal:</b>{" "}
+                              <ShowMastersValue
+                                type="37"
+                                id={data?.meal_id || "-"}
+                              />
+                            </span>
+                          </span>
+                        ) : data?.service_name === "Assist" ? (
+                          <span>
+
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Airport:</b>{" "}
+                              {data?.airport_name || "-"}{" "}
+                            </span>
+
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Meeting Type:</b>{" "}
+                              {data?.meeting_type || "-"}{" "}
+                            </span>
+
+                            <span>
+                              <b style={{ fontWeight: 500 }}>
+                                No Of Persons:
+                              </b>{" "}
+                              {data?.no_of_persons || "-"}
+                            </span>
+
+                          </span>
+                        ) : data?.service_name === "Flight" ? (
+                          <span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Travel Date:</b>{" "}
+                              {formatDate3(data?.travel_date) || "-"}{" "}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Airline Name:</b>{" "}
+                              {data?.airline_name || "-"}{" "}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Ticket No:</b>{" "}
+                              {data?.ticket_no + " " || "-"}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>PRN No:</b>
+                              {data?.prn_no || "-"}
+                            </span>
+                          </span>
+                        ) : data?.service_name === "Visa" ? (
+                          <span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Passport No:</b>{" "}
+                              {data?.passport_no + " " || "-"}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Visa No:</b>{" "}
+                              {data?.visa_no || "-"}{" "}
+                            </span>
+                            <span>
+                              <b style={{ fontWeight: 500 }}>Visa Type:</b>{" "}
+                              <ShowMastersValue
+                                type="40"
+                                id={data?.visa_type_id || "-"}
+                              />
+                            </span>
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    ))}
+                  </div> */}
+                  <h4>{item?.items_data?.service_name}</h4>
+                  {/* /////////////////////////////// */}
                   <div className="tablsxs1a1x3">
-                    <span>
-                      <CustomDropdown26
-                        options={options2 || []}
-                        value={item?.item_id}
-                        onChange={(event) =>
-                          handleItemChange(
-                            index,
-                            event.target.name,
-                            event.target.value
-                          )
-                        }
-                        name="item_id"
-                        type="select_item"
-                        setItemData={setItemData}
-                        index={index}
-                        extracssclassforscjkls={extracssclassforscjkls}
-                        itemData={item}
-                        ref={dropdownRef2}
-                      />
+
+                    {/* services select */}
+                    <span key={index}>
+                      {item?.items_data?.service_name === "Hotel" ? (
+                        <span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Room:</b> {item?.items_data?.room_no || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Meal:</b>{" "}
+                            <ShowMastersValue type="37" id={item?.items_data?.meal_id || "-"} />
+                          </span>
+                        </span>
+                      ) : item?.items_data?.service_name === "Assist" ? (
+                        <span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Airport:</b> {item?.items_data?.airport_name || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Meeting Type:</b> {item?.items_data?.meeting_type || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>No Of Persons:</b> {item?.items_data?.no_of_persons || "-"}
+                          </span>
+                        </span>
+                      ) : item?.items_data?.service_name === "Flight" ? (
+                        <span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Travel Date:</b>{" "}
+                            {formatDate3(item?.items_data?.travel_date) || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Airline Name:</b> {item?.items_data?.airline_name || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Ticket No:</b> {item?.items_data?.ticket_no + " " || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>PRN No:</b> {item?.items_data?.prn_no || "-"}
+                          </span>
+                        </span>
+                      ) : item?.items_data?.service_name === "Visa" ? (
+                        <span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Passport No:</b> {item?.items_data?.passport_no + " " || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Visa No:</b> {item?.items_data?.visa_no || "-"}{" "}
+                          </span>
+                          <span>
+                            <b style={{ fontWeight: 500 }}>Visa Type:</b>{" "}
+                            <ShowMastersValue type="40" id={item?.items_data?.visa_type_id || "-"} />
+                          </span>
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </span>
+
+                    {/* item select */}
+
+                    {!item?.items_data?.service_name &&
+                      <span>
+                        <CustomDropdown26
+                          options={options2 || []}
+                          value={item?.item_id}
+                          onChange={(event) =>
+                            handleItemChange(
+                              index,
+                              event.target.name,
+                              event.target.value
+                            )
+                          }
+                          name="item_id"
+                          type="select_item"
+                          setItemData={setItemData}
+                          index={index}
+                          extracssclassforscjkls={extracssclassforscjkls}
+                          itemData={item}
+                          ref={dropdownRef2}
+                        />
+                      </span>
+                    }
                   </div>
 
-                  <div></div>
                   <div className="tablsxs1a2x3" style={{ marginRight: "2px" }}>
                     <NumericInput
                       value={item?.rate}
@@ -647,23 +795,17 @@ const ItemSelect = ({
                           }
                         }
                       }}
-                      style={{ width: "60%" }}
+                      style={{
+                        width: "60%",
+                        cursor: item?.type === "Service" ? "not-allowed" : "default",
+                      }}
+                      disabled={item?.type === "Service"} // Explicitly set the disabled attribute
                     />
 
-                    {/* <div key={index}>
-                        {" "}
-                        {item?.unit_id && (
-                          <p>
-                            (<ShowMastersValue type="2" id={item?.unit_id} />)
-                          </p>
-                        )}
-                      </div> */}
                   </div>
 
                   <div
                     className="tablsxs1a5x3"
-                    // id="ITEM_Selection6"
-                    style={{ marginRight: "5px" }}
                   >
                     <span>
                       <CustomDropdown04
@@ -682,6 +824,7 @@ const ItemSelect = ({
                         type="masters"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         className2="item"
+                        types={item?.type}
                       />
                     </span>
                   </div>
@@ -800,11 +943,27 @@ const ItemSelect = ({
                       }}
                       key={item.id || index}
                     >
-                      {item?.tax_name === "Taxable" && <> {item?.tax_rate} </>}
-                      {item?.tax_name === "Non-Taxable" && (
-                        <>{item?.tax_name}</>
-                      )}
-                      {item?.tax_name === "Taxable"}
+                      {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
+
+                        :
+                        item?.tax_rate != 0 ?
+                          <>
+
+                            <CustomDropdown13
+                              options={tax_rate}
+                              value={item?.tax_rate}
+                              onChange={(e) =>
+                                handleItemChange(index, "tax_rate", e.target.value)
+                              }
+                              name="tax_rate"
+                              type="taxRate"
+                              defaultOption="Taxes"
+                              className2="items"
+                              style={{ width: "100px" }}
+                            />
+                          </> : <>{item?.tax_name}</>
+
+                      }
                     </div>
                   )}
 
@@ -927,24 +1086,27 @@ const ItemSelect = ({
           ))}
         </div>
 
-        <button
-          id="additembtn45srow"
-          type="button"
-          onClick={handleItemAdd}
-          ref={buttonRef}
-        >
-          Add New Row
-          <GoPlus />
-        </button>
-        <CustomDropdown28
-          label="Services"
-          options={servicesList}
-          value={activePopup?.popupType}
-          onChange={(e) => handleSelectService(e)}
-          name="service"
-          defaultOption="Select Service"
-          type="service"
-        />
+        <div className="items_services_add_buttons">
+          <button
+            id="additembtn45srow"
+            type="button"
+            onClick={handleItemAdd}
+            ref={buttonRef}
+          >
+            Add New Row
+            <GoPlus />
+          </button>
+
+          <CustomDropdown28
+            label="Services"
+            options={servicesList}
+            value={activePopup?.popupType}
+            onChange={(e) => handleSelectService(e)}
+            name="service"
+            defaultOption="Select Service"
+            type="service"
+          />
+        </div>
         {showAddModal && (
           <div className="mainxpopups1" ref={popupRef} tabIndex="0">
             <div className="popup-content">

@@ -3,7 +3,7 @@ import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown04 = forwardRef((props, ref) => {
-  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2 } = props;
+  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, types } = props;
   const {
     isOpen,
     setIsOpen,
@@ -27,10 +27,17 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
   }
-
+  console.log("types", types)
   return (
-    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "100px" } : {}}>
+    <div
+      data-tooltip-content={types === "Service" ? "Unit is not allowed for service select" : ""}
+      data-tooltip-id="my-tooltip"
+      data-tooltip-place="bottom"
+
+      ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
+      <div
+        onClick={types !== "Service" ? () => setIsOpen(!isOpen) : undefined}
+        className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "100px", cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
 
         {(type === "masters_salutation" || type === "masters2") ?
           <>
@@ -41,13 +48,16 @@ const CustomDropdown04 = forwardRef((props, ref) => {
             {value ? options?.find(account => account?.labelid == value)?.label : defaultOption}
 
           </>}
+
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
 
       {isOpen && (
-        <div className="dropdown-options">
+        <div className="dropdown-options"
+
+        >
           <RiSearch2Line id="newsvgsearchicox2" />
           <input
             autoComplete='off'
@@ -69,6 +79,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
                   (option.labelid === value ? " selectedoption" : "") +
                   (index === focusedOptionIndex ? " focusedoption" : "")
                 }
+
               >
                 {option.label}
               </div>
