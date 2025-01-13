@@ -17,9 +17,7 @@ import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
-import CalculationSection, {
-  CalculationSection2,
-} from "../DSR/CalculationSection";
+import {CalculationSection2,} from "../DSR/CalculationSection";
 
 const AddHotelPopup = ({ setShowModal, handleAddService }) => {
   const dispatch = useDispatch();
@@ -43,7 +41,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
 
   const [formData, setFormData] = useState({
     service_name: "Hotel",
-    entry_type: "",
+    // entry_type: "",
     hotel_id: "",
     hotel_name: "",
     room_id: "",
@@ -60,7 +58,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     total_nights: "",
     confirmation_no: "",
     //amount
-    charges: [],
+    //charges: [],
     gross_amount: 0,
     discount: 0.0,
     tax_percent: null,
@@ -93,7 +91,6 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
       const selectedHotelRoom = hotelRoomListData?.find(
         (item) => item?.id == value
       );
-      console.log("selectedHotelRoom", selectedHotelRoom);
       updatedFields = {
         ...updatedFields,
         room_no: selectedHotelRoom?.room_number || "",
@@ -178,7 +175,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap"  style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
+                    {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
@@ -197,8 +194,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
-                    </div>
-
+                    </div> */}
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>

@@ -197,10 +197,7 @@ export const CalculationSection2 = ({
 }) => {
   const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
-  const sumCharges = formData?.charges?.reduce(
-    (sum, item) => sum + (item?.amount || 0),
-    0
-  );
+  const sumCharges = formData?.charges?.reduce((sum, item) => sum + (item?.amount || 0), 0);
 
   // Calculate fields based on formData
   const calculateFields = () => {
@@ -208,29 +205,25 @@ export const CalculationSection2 = ({
     const taxPercent = Number(formData?.tax_percent || 0);
 
     const supplierServiceCharge = price * 0.1; // 10% of subtotal
-    const tax_amount = price * (taxPercent / 100);
-
-    const total_amount = price + tax_amount + sumCharges;
-    const retain = formData?.total_amount ;
-    return { supplierServiceCharge, tax_amount, retain, total_amount };
+    const tax_amount = Number((price * (taxPercent / 100)).toFixed(2));
+    const total_amount = Number((price + tax_amount).toFixed(2));
+    // console.log("total_amount", total_amount);
+    return { supplierServiceCharge, tax_amount, total_amount };
   };
 
   useEffect(() => {
     // Recalculate fields and update formData when dependencies change
-    const { tax_amount, total_amount, retain } = calculateFields();
+    const { tax_amount, total_amount } = calculateFields();
     setFormData((prevData) => ({
       ...prevData,
-      tax_amount,
-      total_amount,
-      retain,
+      tax_amount: tax_amount.toFixed(2),
+      total_amount: total_amount.toFixed(2),
     }));
   }, [
     formData.gross_amount,
     formData.tax_percent,
     setFormData,
-
     // formData.total_amount,
-    formData.charges,
   ]);
 
   const [openCharges, setOpenCharges] = useState(false);
@@ -275,7 +268,6 @@ export const CalculationSection2 = ({
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>Tax %:</label>
-
             <CustomDropdown13
               options={tax_rate}
               value={formData?.tax_percent || ""}
@@ -285,7 +277,6 @@ export const CalculationSection2 = ({
               defaultOption="Taxes"
               className2="item3"
             />
-
           </div>
         </div>
       </div>
@@ -296,7 +287,7 @@ export const CalculationSection2 = ({
             <label>Tax:</label>
             <input
               type="text"
-              value={formData?.tax_amount?.toFixed(2) || ""}
+              value={formData?.tax_amount || ""}
               placeholder="0.00"
               className="inputsfocalci465s"
               readOnly
@@ -304,7 +295,7 @@ export const CalculationSection2 = ({
           </div>
         </div>
       </div>
-      <div className="calcuparentc">
+      {/* <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
@@ -316,16 +307,14 @@ export const CalculationSection2 = ({
               </p>
             </label>
           </div>
-
           {openCharges && (
             <ExpenseCharges
               formValues={{ formData, setFormData, handleChange }}
             />
           )}
-
         </div>
-      </div>
-    
+      </div> */}
+
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
@@ -340,7 +329,7 @@ export const CalculationSection2 = ({
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

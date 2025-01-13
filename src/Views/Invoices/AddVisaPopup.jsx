@@ -29,8 +29,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
-    service_name:"Visa",
-    entry_type: "",
+    service_name: "Visa",
+    // entry_type: "",
     passenger_visa_id: "",
     passport_no: "",
     dob: "",
@@ -47,16 +47,15 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
     supplier_name: null,
 
     //amount
-    charges: [],
-    gross_amount: 0.00,
-    discount: 0.00,
-    tax_percent: 0.00,
-    tax_amount: 0.00,
-    total_amount: 0.00,
+    // charges: null,
+    gross_amount: 0,
+    discount: 0.0,
+    tax_percent: null,
+    tax_amount: 0.0,
+    total_amount: 0.0,
   });
-  const [errors, setErrors] = useState({
-    visa_no: false,
-  });
+
+  const [errors, setErrors] = useState({visa_no: false});
 
   const entryType = ShowMasterData("50");
   const visaentryType = ShowMasterData("39");
@@ -92,11 +91,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
     } else {
       const sendData = {
         ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-      };
+        guest_ids: formData?.guest_ids?.length === 0 ? null : formData?.guest_ids?.join(", ")};
       handleAddService("Visa", sendData);
       setShowModal(false);
     }
@@ -126,7 +121,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
+                    {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
@@ -145,7 +140,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -392,7 +387,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}

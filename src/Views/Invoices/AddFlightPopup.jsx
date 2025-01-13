@@ -10,7 +10,7 @@ import { formatDate } from "../Helper/DateFormat";
 import { sendData, ShowMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
-import {CalculationSection2} from "../DSR/CalculationSection";
+import { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
@@ -26,24 +26,24 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
-    service_name:"Flight",
-    entry_type: "",
+    service_name: "Flight",
+    // entry_type: "",
     travel_date: "",
     travel_type_id: "",
     airline_name: "",
     guest_ids: "",
     gds_portal: "",
-    destination_code:"",
+    destination_code: "",
     ticket_no: "",
     prn_no: "",
     route: "",
     supplier_id: "",
     supplier_name: "",
     //amount
-    charges: [],
-    supplier_total: 0.0,
+    // charges: null,
+    gross_amount: 0,
     discount: 0.0,
-    tax_percent: 0.0,
+    tax_percent: null,
     tax_amount: 0.0,
     total_amount: 0.0,
   });
@@ -126,7 +126,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
+                    {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
@@ -145,8 +145,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
-                    </div>
-
+                    </div> */}
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>Travel Date</label>
@@ -341,7 +340,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                         </div>
                       </div>
 
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}
