@@ -48,7 +48,7 @@ const ItemSelect = ({
   note,
   invoice_section,
 
-}) => {  
+}) => {
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
@@ -849,11 +849,7 @@ const ItemSelect = ({
                       }}
                       key={item.id || index}
                     >
-<<<<<<< HEAD
                       {item?.tax_name === "Non-Taxable" ? <> {item?.tax_name} </>
-=======
-                      {item?.tax_name === "Taxable" ? <> {item?.tax_rate} </>
->>>>>>> d2b0a5f4503b36583cd1273917539d800cb088ac
                         :
                         item?.tax_rate != 0 ?
                           <>

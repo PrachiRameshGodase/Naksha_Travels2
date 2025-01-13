@@ -518,13 +518,13 @@ const Topbar = ({ loggedInUserData }) => {
                 {/* <Link className="insidclinks65w6x6w">
                   <img src={feedbacksendIco} alt="" />
                   Send Feedback</Link> */}
-                <Link className="insidclinks65w6x6w">
+                <Link className="insidclinks65w6x6w" to="/settings/organisations">
                   <img src={organizationIco} alt="" />
                   Organizations</Link>
                 {/* <Link className="insidclinks65w6x6w">
                   <img src={inviteUserIco} alt="" />
                   Invite Users</Link> */}
-                <Link className="insidclinks65w6x6w">
+                <Link className="insidclinks65w6x6w" to="/dashboard/help">
                   <img src={helpIco} alt="" />
                   Help?</Link>
               </div>
