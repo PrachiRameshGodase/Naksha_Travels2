@@ -1,10 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import { customersList } from "../../../../Redux/Actions/customerActions";
+import { customersList, customersView } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerMInsuranceAction } from "../../../../Redux/Actions/passengerMInsuranceActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
@@ -16,6 +16,7 @@ import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -28,6 +29,8 @@ const CreateInsurancePopup = ({
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const createInsurance = useSelector(
@@ -36,6 +39,8 @@ const CreateInsurancePopup = ({
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
+
   const [formData, setFormData] = useState({
     mice_id: data?.id,
     passenger_id: passengerId,
@@ -78,7 +83,12 @@ const CreateInsurancePopup = ({
       [name]: value,
     }));
   };
-
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems,
+    });
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -104,6 +114,16 @@ const CreateInsurancePopup = ({
       console.error("Error updating insurance:", error);
     }
   };
+
+  useEffect(() => {
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
@@ -262,8 +282,34 @@ const CreateInsurancePopup = ({
                           />
                         </span>
                       </div>
+                      
                     </div>
                     <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                          <label>
+                            Family Member<b className="color_red">*</b>
+                          </label>
+
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+
+                              <CustomDropdown31
+                                ref={dropdownRef1}
+                                label="Select Family Member"
+                                options={customerData?.family_members}
+                                value={formData.guest_ids}
+                                onChange={handleChange1}
+                                name="guest_ids"
+                                defaultOption="Select Family Member"
+                                setcusData={setcusData2}
+                                cusData={cusData2}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+                        </div>
                       <div className="form_commonblock">
                         <label>
                           Supplier<b className="color_red">*</b>

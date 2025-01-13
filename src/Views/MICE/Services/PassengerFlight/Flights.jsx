@@ -103,14 +103,18 @@ const Flights = ({ data, totalItems }) => {
                     Travel Date
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.status_svg}
                     Travel Type
-                  </div>
+                  </div> */}
 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.status_svg}
                     Airline Name
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    Family Member
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs3">
@@ -166,19 +170,32 @@ const Flights = ({ data, totalItems }) => {
                             >
                               {formatDate3(item?.travel_date) || ""}
                             </div>
-                            <div
+                            {/* <div
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               <ShowMastersValue
                                 type="51"
                                 id={item?.travel_type_id}
                               />
-                            </div>
-                            <div
+                            </div> */}
+                             <div
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.airline_name || ""}
                             </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs2"
+                              title={item?.guests?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            </div>
+                           
                             <div
                               className="table-cellx12 quotiosalinvlisxs2"
                             >

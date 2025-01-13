@@ -91,12 +91,12 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           background: disable ? "#f0f0f0" : "",
         }}
         className={
-          "dropdown-selected" + (value.length > 0 ? " filledcolorIn" : "")
+          "dropdown-selected" + (value?.length > 0 ? " filledcolorIn" : "")
         }
       >
         {cusData
           ? cusData?.display_name
-          : value.length > 0
+          : value?.length > 0
           ? value
               .map((id) => {
                 const selectedOption = options.find(

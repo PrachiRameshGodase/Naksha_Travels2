@@ -6,7 +6,7 @@ import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import "../CreateHotelPopup.scss"
+import "../CreateHotelPopup.scss";
 
 const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
@@ -30,7 +30,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"500px"}}>
+                <div
+                  id="itemsdetailsrowskl"
+                  className="secondinsidedatax15s"
+                  style={{ height: "500px" }}
+                >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -108,27 +112,39 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li>
+                                  <span>Family Members</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.guests
+                                      ?.map((item) => item?.display_name)
+                                      .filter(Boolean)
+                                      .join(", ")}
+                                  </p>
+                                </li>
+                                <li>
                                   <span>Days</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{data?.days || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.days || ""}
+                                  </p>
                                 </li>
+                              </ul>
+                              <ul>
                                 <li>
                                   <span>Country</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{data?.country?.name || ""}</p>
+                                  <p>{data?.country?.name || ""}</p>
                                 </li>
                                 <li>
                                   <span>Issue Date</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{formatDate3(data?.issue_date) || ""}</p>
+                                  <p>{formatDate3(data?.issue_date) || ""}</p>
                                 </li>
-                              
-                              </ul>
-                              <ul>
-                              <li>
+
+                                <li>
                                   <span>Expiry Date</span>
                                   <h1>:</h1>
-                                  <p >{formatDate3(data?.expiry_date) || ""}</p>
+                                  <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Name</span>

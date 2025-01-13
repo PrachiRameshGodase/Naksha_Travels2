@@ -281,42 +281,7 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
               )}
             </>}
 
-          {name === "item_id" ?
-            <div className="lastbuttonsecofdropdown">
-              <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                Add Item
-                <GoPlus />
-              </p>
-            </div>
-            : name === "warehouse_id" ?
-              <div className="lastbuttonsecofdropdown">
-                <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                  Add Warehouse
-                  <GoPlus />
-                </p>
-              </div> :
-              name === "zone_id" ?
-                <div className="lastbuttonsecofdropdown">
-                  <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                    Add Zone
-                    <GoPlus />
-                  </p>
-                </div> :
-                name === "rack_id" ?
-                  <div className="lastbuttonsecofdropdown">
-                    <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                      Add Rack
-                      <GoPlus />
-                    </p>
-                  </div> :
-
-                  <div className="lastbuttonsecofdropdown">
-                    <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                      Add Category
-                      <GoPlus />
-                    </p>
-                  </div>
-          }
+         
         </div>
       )
       }

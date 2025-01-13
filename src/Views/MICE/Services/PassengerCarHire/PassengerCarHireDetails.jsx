@@ -85,6 +85,16 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                                 <h1>:</h1>
                                 <p style={{width:"212px"}}>{data?.drop_location || ""}</p>
                               </li>
+                              <li>
+                                  <span>Family Members</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.guests
+                                      ?.map((item) => item?.display_name)
+                                      .filter(Boolean)
+                                      .join(", ")}
+                                  </p>
+                                </li>
 
                               <li>
                                 <span>Supplier Name</span>

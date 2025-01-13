@@ -114,6 +114,10 @@ const CarHires = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     Dropdown Location
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                                      {otherIcons?.refrence_svg}
+                                      Family Member
+                                    </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Actions
@@ -168,6 +172,18 @@ const CarHires = ({ data, totalItems }) => {
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.drop_location || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                              title={item?.guests?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
                             </div>
                             <div
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
@@ -14,6 +14,8 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import { customersView } from "../../../../Redux/Actions/customerActions";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -21,9 +23,12 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
   const vendorList = useSelector((state) => state?.vendorList);
   const createAssist = useSelector((state) => state?.createPassengerMAssist);
-
+  
+  const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
     mice_id: data?.id,
@@ -65,7 +70,12 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       supplier_name: selectedSupplierName?.display_name,
     }));
   };
-
+  const handleChange1 = (selectedItems) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems,
+    });
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     try {
@@ -91,6 +101,15 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }
   };
 
+  useEffect(() => {
+    if (data?.customer_id) {
+      const queryParams = {
+        user_id: data?.customer_id,
+        fy: localStorage.getItem("FinancialYear"),
+      };
+      dispatch(customersView(queryParams));
+    }
+  }, [dispatch, data?.customer_id]);
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData, }),[]);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
@@ -160,6 +179,31 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         />
                       </span>
                     </div>
+                    <div className="form_commonblock">
+                          <label>
+                            Family Member<b className="color_red">*</b>
+                          </label>
+
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+
+                              <CustomDropdown31
+                                ref={dropdownRef1}
+                                label="Select Family Member"
+                                options={customerData?.family_members}
+                                value={formData.guest_ids}
+                                onChange={handleChange1}
+                                name="guest_ids"
+                                defaultOption="Select Family Member"
+                                setcusData={setcusData}
+                                cusData={cusData}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+                        </div>
                   </div>
 
                   <div className="f1wrapofcreqx1">
