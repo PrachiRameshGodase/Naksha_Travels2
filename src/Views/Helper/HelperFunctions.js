@@ -216,6 +216,7 @@ export const validateItems = (items) => {
         const itemErrors = {};
 
         if (!item?.item_name) itemErrors.item_name = "Please Select An Item";
+        if (!item?.type) itemErrors.type = "Please Select Type";
         if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Add Sale Price";
         if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
         if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";

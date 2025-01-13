@@ -49,13 +49,21 @@ const ItemSelect = ({
   invoice_section,
 
 }) => {
+<<<<<<< HEAD
+=======
+  console.log("itemErrors", itemErrors);
+  console.log("formData?.items", formData?.items);
+>>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbole = activeOrg_details?.symbol;
+<<<<<<< HEAD
   // console.log("currencySymbole", currencySymbole)
+=======
+>>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -65,6 +73,8 @@ const ItemSelect = ({
   const [taxDetails, setTaxDetails] = useState([]);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const unitList = ShowMasterData("2");
+  const itemTypeList = ShowMasterData("5");
+
   const handleDropdownToggle = (index) => {
     setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
   };
@@ -232,7 +242,14 @@ const ItemSelect = ({
       newItems[index].unit_id = value;
       newErrors[index].unit_id = "";
     }
+<<<<<<< HEAD
 
+=======
+    if (field === "type") {
+      newItems[index].type = value;
+      // newErrors[index].type = "";
+    }
+>>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
     if (field === "taxRate") {
       newItems[index].tax_rate = value;
       newErrors[index].tax_rate = "";
@@ -551,17 +568,20 @@ const ItemSelect = ({
               Item<b className="color_red">*</b>
             </p>
             <p className="tablsxs1a2x3">
+              Type<b className="color_red">*</b>
+            </p>
+            <p className="tablsxs1a3x3">
               Sales Price<b className="color_red">*</b>
             </p>
-            <p className="tablsxs1a3x3">Quantity</p>
-            <p className="tablsxs1a3x3" style={{ flexDirection: "row" }}>
+            <p className="tablsxs1a2x3">Quantity</p>
+            <p className="tablsxs1a2x3" style={{ flexDirection: "row" }}>
               Unit<b className="color_red">*</b>
             </p>
-            <p className="tablsxs1a4x3">Discount</p>
-            <p className="tablsxs1a5x3">
+            <p className="tablsxs1a6x3">Discount</p>
+            <p className="tablsxs1a7x3">
               Tax (%)<b className="color_red">*</b>
             </p>
-            <p className="tablsxs1a6x3" style={{ marginLeft: "1%" }}>
+            <p className="tablsxs1a8x3" style={{ marginLeft: "1%" }}>
               Amount
             </p>
           </div>
@@ -576,7 +596,10 @@ const ItemSelect = ({
                   className="tablerowtopsxs1 border_none"
                   style={{ padding: "21px 5px" }}
                 >
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
                   {/* /////////////////////////////// */}
                   <div className="tablsxs1a1x3">
 
@@ -609,10 +632,10 @@ const ItemSelect = ({
                         </span>
                       ) : item?.items_data?.service_name === "Flight" ? (
                         <span>
-                          <span>
+                          {/* <span>
                             <b style={{ fontWeight: 500 }}>Travel Date:</b>{" "}
                             {formatDate3(item?.items_data?.travel_date) || "-"}{" "}
-                          </span>
+                          </span> */}
                           <span>
                             <b style={{ fontWeight: 500 }}>Airline Name:</b> {item?.items_data?.airline_name || "-"}{" "}
                           </span>
@@ -665,7 +688,29 @@ const ItemSelect = ({
                       </span>
                     }
                   </div>
-
+                  <div
+                    className="tablsxs1a2x3"
+                  >
+                    <span>
+                      <CustomDropdown04
+                        options={itemTypeList}
+                        value={item?.type}
+                        onChange={(e) =>
+                          handleItemChange(
+                            index,
+                            "type",
+                            e.target.value,
+                            e.target.option
+                          )
+                        }
+                        name="type"
+                        defaultOption="Type"
+                        type="item_type"
+                        extracssclassforscjkls="extracssclassforscjklsitem"
+                        className2="item"
+                      />
+                    </span>
+                  </div>
                   <div className="tablsxs1a2x3" style={{ marginRight: "2px" }}>
                     <NumericInput
                       value={item?.rate}
@@ -690,7 +735,11 @@ const ItemSelect = ({
                     />
                   </div>
 
-                  <div className="tablsxs1a3x3" style={{ marginRight: "2px" }}>
+                  <div
+                    data-tooltip-content={item?.type === "Service" ? "Quantity is not allowed for service select" : ""}
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="bottom"
+                    className="tablsxs1a4x3" style={{ marginRight: "2px" }}>
                     <NumericInput
                       value={item?.quantity}
                       onChange={(e) => {
@@ -711,11 +760,10 @@ const ItemSelect = ({
                       }}
                       disabled={item?.type === "Service"} // Explicitly set the disabled attribute
                     />
-
                   </div>
 
                   <div
-                    className="tablsxs1a5x3"
+                    className="tablsxs1a2x3"
                   >
                     <span>
                       <CustomDropdown04
@@ -738,7 +786,7 @@ const ItemSelect = ({
                       />
                     </span>
                   </div>
-                  <div className="tablsxs1a5x3">
+                  <div className="tablsxs1a6x3">
                     <span>
                       <NumericInput
                         value={item?.discount}
@@ -821,7 +869,7 @@ const ItemSelect = ({
                   </div>
                   {item?.item_id == "" || item?.item_name == "" ? (
                     <div
-                      className="tablsxs1a6x3_rm"
+                      className="tablsxs1a7x3_rm"
                       id="ITEM_Selection7"
                       key={item.id || index}
                       style={{ marginRight: "20px" }}
@@ -840,12 +888,11 @@ const ItemSelect = ({
                     </div>
                   ) : (
                     <div
-                      className="tablsxs1a6x3_rm"
+                      className="tablsxs1a7x3_rm"
                       id="ITEM_Selection7"
                       style={{
                         marginRight: "20px",
-                        cursor: "not-allowed",
-                        marginTop: "10px",
+                        cursor: "not-allowed"
                       }}
                       key={item.id || index}
                     >
@@ -869,9 +916,8 @@ const ItemSelect = ({
                       }
                     </div>
                   )}
-
                   <div
-                    className="tablsxs1a7x3"
+                    className="tablsxs1a8x3"
                     style={{ cursor: "not-allowed", marginTop: "10px" }}
                   >
                     {item?.final_amount}
