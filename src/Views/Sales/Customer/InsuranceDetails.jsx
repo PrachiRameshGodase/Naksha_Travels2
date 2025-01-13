@@ -81,6 +81,10 @@ const InsuranceDetails = ({
 
       {switchCusData === "Insurance Details" ? (
         <div id="secondx2_customer">
+          <div className="iconheading">
+            {otherIcons.quotation_icon}
+            <p>Insurance Details</p>
+          </div>
           <div id="main_forms_desigin_cus"></div>
           <div className="insidesectiony1">
             <div id="fcx3s1parent">
@@ -131,10 +135,9 @@ const InsuranceDetails = ({
                   />
                 </span>
               </div>
-             
             </div>
             <div id="fcx3s1parent">
-            <div className="form_commonblock " style={{marginTop:"20px"}}>
+              <div className="form_commonblock " style={{ marginTop: "20px" }}>
                 <label>Expiry Date</label>
                 <span>
                   {otherIcons.date_svg}
@@ -153,14 +156,20 @@ const InsuranceDetails = ({
                   />
                 </span>
               </div>
-              <div id="imgurlanddesc" className="calctotalsectionx2" style={{marginTop:"20px"}}>
-                <MultiImageUploadHelp
-                  formData={insuranceDetails}
-                  setFormData={setInsuranceDetails}
-                  setFreezLoadingImg={setFreezLoadingImg}
-                  imgLoader={imgLoader}
-                  setImgeLoader={setImgeLoader}
-                />
+              <div className="form_commonblock " >
+                <div
+                  id="imgurlanddesc"
+                  className="calctotalsectionx2"
+                  style={{ marginTop: "20px" }}
+                >
+                  <MultiImageUploadHelp
+                    formData={insuranceDetails}
+                    setFormData={setInsuranceDetails}
+                    setFreezLoadingImg={setFreezLoadingImg}
+                    imgLoader={imgLoader}
+                    setImgeLoader={setImgeLoader}
+                  />
+                </div>
               </div>
             </div>
           </div>

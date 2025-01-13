@@ -130,7 +130,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
                         </label>
@@ -147,7 +147,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             type="masters2"
                           />
                         </span>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>
                           Item Details<b className="color_red">*</b>

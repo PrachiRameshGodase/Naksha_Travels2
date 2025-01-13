@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MultiImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const VaccinationDetails = ({
   setUserData,
@@ -17,12 +18,13 @@ const VaccinationDetails = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
+  console.log("vaccinationNames", vaccinationNames);
   useEffect(() => {
     if (vaccinationNames.length) {
       setVaccinationDetails(
         vaccinationNames.map((doc) => ({
           vaccination_name: doc.label,
-          upload_documents: JSON.stringify([]),
+          upload_documents: JSON.stringify(null),
         }))
       );
     }
@@ -73,9 +75,12 @@ const VaccinationDetails = ({
     <>
       {freezLoadingImg && <MainScreenFreezeLoader />}
 
-      {switchCusData ===
-        "VaccinationDetails.jsx:73 switchCusData Vaccination Details" && (
+      {switchCusData === "Vaccination Details" && (
         <div id="secondx2_customer">
+          <div className="iconheading">
+            {otherIcons.quotation_icon}
+            <p>Vaccination Details</p>
+          </div>
           {vaccinationDetails.map((item, index) => (
             <div key={index} id="main_forms_desigin_cus">
               <div>{item.vaccination_name}</div>

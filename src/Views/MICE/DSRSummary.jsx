@@ -569,7 +569,7 @@ const DSRSummary = ({ customerData }) => {
 
         <div className="other_user_detils_z03">
           <div className="x001">
-            <p className="x002">{otherIcons?.phone} Mobile</p>
+            <p className="x002">{otherIcons?.mobile_svg} Mobile</p>
             <p className="x1002">{customerData?.customer?.mobile_no}</p>
           </div>
           <div className="x001">

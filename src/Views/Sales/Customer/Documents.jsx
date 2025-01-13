@@ -67,7 +67,9 @@ const Documents = ({
       ...prevData,
       documents: documents?.map((detail) => ({
         ...detail,
-        photo: detail.upload_documents ? JSON.stringify(detail?.upload_documents) : "",
+        upload_documents: detail.upload_documents
+          ? JSON.stringify(detail?.upload_documents)
+          : "",
       })),
     }));
   }, [documents, setUserData]);
@@ -75,7 +77,7 @@ const Documents = ({
   useEffect(() => {
     if (user?.id && isEdit) {
       const userDocumentDetails = user?.documents || [];
-      console.log("userDocumentDetails", userDocumentDetails)
+      console.log("userDocumentDetails", userDocumentDetails);
       const documentsFromUser = userDocumentDetails?.map((item) => ({
         document_name: item.document_name || "",
         document_no: item.document_no || "",
@@ -92,7 +94,7 @@ const Documents = ({
         documentsTick: true,
       }));
     }
-  }, [user?.id, isEdit,]);
+  }, [user?.id, isEdit]);
 
   useEffect(() => {
     if (isEdit) {
@@ -100,7 +102,9 @@ const Documents = ({
         ...prevData,
         documents: documents?.map((detail) => ({
           ...detail,
-          upload_documents: detail?.upload_documents ? JSON.stringify(detail?.upload_documents) : "",
+          upload_documents: detail?.upload_documents
+            ? JSON.stringify(detail?.upload_documents)
+            : "",
         })),
       }));
     }
@@ -112,9 +116,14 @@ const Documents = ({
 
       {switchCusData === "Documents" && (
         <div id="secondx2_customer">
+          <div className="iconheading">
+                  {otherIcons.quotation_icon}
+                  <p>Documents</p>
+                </div>
           <div id="main_forms_desigin_cus">
             {documents.map((document, index) => (
               <div className="x1parenchild54" key={index}>
+                
                 <div className="iconheading">
                   {otherIcons.title_svg}
                   <p>{document.document_name}</p>
@@ -167,6 +176,8 @@ const Documents = ({
                         />
                       </span>
                     </div>
+                  </div>
+                  <div id="fcx3s1parent">
                     <div id="imgurlanddesc" className="calctotalsectionx2">
                       <MultiImageUploadDocument
                         formData={document}

@@ -185,9 +185,9 @@ const BasicDetails = ({
         is_customer: +user?.is_customer,
         gst_no: user?.gst_no,
         pan_no: user?.pan_no,
-        d_o_b:user?.d_o_b,
-        blood_group:user?.blood_group,
-        citizenship:user?.citizenship,
+        d_o_b: user?.d_o_b,
+        blood_group: user?.blood_group,
+        citizenship: user?.citizenship,
         business_leagal_name: user?.business_leagal_name,
         display_name: user?.display_name,
         company_name: user?.company_name,
@@ -269,46 +269,54 @@ const BasicDetails = ({
             <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblockx3">
-                  <label>Primary Contact</label>
+                  <div className="iconheading">
+                    {otherIcons.quotation_icon}
+                    <p>Basic Details</p>
+                  </div>
                   <div id="fcx3s1">
-                    <span>
-                      <CustomDropdown04
-                        options={salutation_options}
-                        value={basicDetails?.salutation}
-                        onChange={handleChange}
-                        name="salutation"
-                        defaultOption="Select Salutation"
-                        type="masters_salutation"
-                        extracssclassforscjkls="extracssclassforscjklsSalutation"
-                      />
-                    </span>
-
-                    <span>
-                      <input
-                        autoComplete="off"
-                        type="input"
-                        name="first_name"
-                        value={basicDetails.first_name}
-                        onChange={handleChange}
-                        placeholder={`Enter First Name`}
-                      />
-                    </span>
-
-                    <span>
-                      <input
-                        autoComplete="off"
-                        type="input"
-                        name="last_name"
-                        value={basicDetails.last_name}
-                        onChange={handleChange}
-                        placeholder={`Enter Last Name`}
-                      />
-                    </span>
+                    <div className="form_commonblock">
+                      <label>Salutation</label>
+                      <span>
+                        <CustomDropdown04
+                          options={salutation_options}
+                          value={basicDetails?.salutation}
+                          onChange={handleChange}
+                          name="salutation"
+                          defaultOption="Select Salutation"
+                          type="masters_salutation"
+                          // extracssclassforscjkls="extracssclassforscjklsSalutation"
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>First Name</label>
+                      <span>
+                        <input
+                          autoComplete="off"
+                          type="input"
+                          name="first_name"
+                          value={basicDetails.first_name}
+                          onChange={handleChange}
+                          placeholder={`Enter First Name`}
+                        />
+                      </span>
+                    </div>
+                    <div className="form_commonblock">
+                      <label>Last Name</label>
+                      <span>
+                        <input
+                          autoComplete="off"
+                          type="input"
+                          name="last_name"
+                          value={basicDetails.last_name}
+                          onChange={handleChange}
+                          placeholder={`Enter Last Name`}
+                        />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="height5"></div>
-              <div className="height5"></div>
             </div>
 
             <div className="sections">
@@ -380,7 +388,6 @@ const BasicDetails = ({
 
             <div className="sections">
               <div id="fcx3s1parent">
-               
                 <div className="form_commonblock">
                   <label>Mobile Number</label>
                   <span>

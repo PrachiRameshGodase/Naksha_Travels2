@@ -133,7 +133,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    <div className="f1wrapofcreqx1">
+                    {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Entry Type<b className="color_red">*</b>
@@ -152,7 +152,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
