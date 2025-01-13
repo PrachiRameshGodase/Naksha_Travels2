@@ -16,11 +16,8 @@ import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 
 const PassengerCard = ({ passengers, onDelete }) => {
   const navigate = useNavigate();
-
   const [activePopup, setActivePopup] = useState(null);
-  const [formData, setFormData] = useState({
-    service: "",
-  });
+  const [formData, setFormData] = useState({service: "",});
 
   const servicesList = ShowMasterData("48");
 
@@ -122,7 +119,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
       </thead>
       <tbody>
         {passengers?.passengers?.length > 0 ? (
-          passengers.passengers.map((passenger, index) => (
+          passengers?.passengers?.map((passenger, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>

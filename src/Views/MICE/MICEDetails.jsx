@@ -3,24 +3,20 @@ import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
-import Loader02 from "../../Components/Loaders/Loader02";
-import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
-import useOutsideClick from "../Helper/PopupData";
-import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
-
-import {
-  ShowDropdownContent,
-  TermsAndConditions,
-} from "../Common/InsideSubModulesCommon/DetailInfo";
-import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
-import { generatePDF } from "../Helper/createPDF";
-import "./DSRDetails.scss";
-import PassengerCard from "./PassengerCard";
+import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import Swal from "sweetalert2";
+import {
+  MICEDeleteActions,
+  MICEDetailsAction,
+  MICEStatusActions,
+  PassengerAddAction,
+  PassengerDeleteActions,
+} from "../../Redux/Actions/MICEActions";
+import "./DSRDetails.scss";
 import DSRSummary from "./DSRSummary";
-import { MICEDeleteActions, MICEDetailsAction, MICEStatusActions, PassengerAddAction, PassengerDeleteActions } from "../../Redux/Actions/MICEActions";
+import PassengerCard from "./PassengerCard";
 
 const MICEDetails = () => {
   const dispatch = useDispatch();
@@ -70,9 +66,9 @@ const MICEDetails = () => {
       };
       dispatch(PassengerDeleteActions(sendData))
         .then((response) => {
-          if (isData?.id) {
+          if (MICEData?.id) {
             const refreshData = {
-              mice_id: isData?.id,
+              mice_id: MICEData?.id,
             };
             dispatch(MICEDetailsAction(refreshData));
           }
@@ -83,34 +79,40 @@ const MICEDetails = () => {
 
   const handleFormSubmit2 = async (e) => {
     e.preventDefault();
+
     const isPassengerExists = MICEData?.passengers?.some(
       (passenger) => passenger.customer_id === passengerData.customer_id
     );
 
-    if (isPassengerExists) {
+    if (!passengerData?.customer_id) {
+      toast.error("Please Select Passenger");
+      return;
+    } else if (isPassengerExists) {
       toast.error("Passenger already added to the list.");
-      return; // Prevent further execution
-    }
-    try {
-      const sendData = {
-        ...passengerData,
-      };
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...passengerData,
+        };
 
-      dispatch(PassengerAddAction(sendData, Navigate))
-        .then((response) => {
-          if (UrlId) {
-            const refreshData = {
-              mice_id: UrlId,
-            };
-            dispatch(MICEDetailsAction(refreshData));
-          }
-        })
-        .catch((err) => console.log(err));
-    } catch (error) {
-      toast.error("Error update passenger:", error);
+        dispatch(PassengerAddAction(sendData, Navigate))
+          .then((response) => {
+            if (MICEData?.id) {
+              const refreshData = {
+                mice_id: MICEData?.id,
+              };
+              dispatch(MICEDetailsAction(refreshData));
+            }
+            
+          })
+          .catch((err) => console.log(err));
+      } catch (error) {
+        toast.error("Error update passenger:", error);
+      }
     }
   };
-
+  
   const handleDeleteDSR = async (item) => {
     const result = await Swal.fire({
       text: "Are you sure you want to delete this mice?",
@@ -153,128 +155,141 @@ const MICEDetails = () => {
   return (
     <>
       {(addPassenger?.loading ||
-        deletePassenger?.loading || statusChangeMICE?.loading ||
-        deleteMICE?.loading || MICEDetails?.loading) && <MainScreenFreezeLoader />}
+        deletePassenger?.loading ||
+        statusChangeMICE?.loading ||
+        deleteMICE?.loading ||
+        MICEDetails?.loading) && <MainScreenFreezeLoader />}
       {/* {MICEDetails?.loading ? (
         <Loader02 />
       ) : ( */}
-        <div>
-          <div id="Anotherbox" className="formsectionx1">
-            <div id="leftareax12">
-              <h1 id="firstheading">{MICEData?.mice_no}</h1>
-            </div>
-            <div id="buttonsdata">
-              {MICEData?.is_invoiced == "0" && (<> <div
-              onClick={() => {handleChangeDSRStatus(MICEData)}}
-              >
-                <p
-                  className={
-                    MICEData?.is_invoiced == "0"
-                      ? "draft"
-                      : MICEData?.is_invoiced == "1"
-                      ? "invoiced"
-                      : ""
-                  }
-                  style={{ cursor: "pointer" , padding:"5px 12px", width:"160px"}}
-                >
-                 Convert To Invoice
-                </p>
-              </div>
-              <div
-                data-tooltip-content="Delete"
-                data-tooltip-id="my-tooltip"
-                data-tooltip-place="bottom"
-                className="filtersorticos5wx2"
-                onClick={() => {
-                  handleDeleteDSR(MICEData);
-                }}
-              >
-                {otherIcons.delete_svg}
-              </div></>)}
-             
-              <Link
-                to={"/dashboard/mice"}
-                className="linkx3"
-                data-tooltip-id="my-tooltip"
-                data-tooltip-content="Close"
-                data-tooltip-place="bottom"
-              >
-                <RxCross2 />
-              </Link>
-            </div>
+      <div>
+        <div id="Anotherbox" className="formsectionx1">
+          <div id="leftareax12">
+            <h1 id="firstheading">{MICEData?.mice_no}</h1>
           </div>
-          <div className="formsectionsgrheigh">
-            <div id="formofcreateitems">
-              <form>
-                <div className="relateivdiv">
-                  <div className="itemsformwrap">
-                    <div
-                      className="f1wrapofcreq"
-                      style={{
-                        height: "800px",
-                        overflowY: "auto",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div style={{ width: "852px" }}>
-                        <div
-                          className="f1wrapofcreqx1"
-                          style={{ marginTop: "5px" }}
-                        >
-                          <div className="actionbarcommon2">
-                            <div className="form_commonblock ">
-                              <label>
-                                Passengers<b className="color_red">*</b>
-                              </label>
-                              <div id="sepcifixspanflex">
-                                <span id="">
-                                  {otherIcons.name_svg}
-                                  <CustomDropdown10
-                                    autoComplete="off"
-                                    ref={dropdownRef1}
-                                    label="Customer Name"
-                                    options={cusList?.data?.user}
-                                    value={passengerData.customer_id}
-                                    onChange={handleChange2}
-                                    name="customer_id"
-                                    defaultOption="Select Passenger"
-                                    setcusData={setcusData1}
-                                    cusData={cusData1}
-                                    type="vendor"
-                                    required
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              className={`firstbtnc1 `}
-                              onClick={handleFormSubmit2}
-                            >
-                              Add Passenger
-                            </button>
-                          </div>
-                        </div>
+          <div id="buttonsdata">
+            {MICEData?.is_invoiced == "0" && (
+              <>
+                {" "}
+                <div
+                  onClick={() => {
+                    handleChangeDSRStatus(MICEData);
+                  }}
+                >
+                  <p
+                    className={
+                      MICEData?.is_invoiced == "0"
+                        ? "draft"
+                        : MICEData?.is_invoiced == "1"
+                        ? "invoiced"
+                        : ""
+                    }
+                    style={{
+                      cursor: "pointer",
+                      padding: "5px 12px",
+                      width: "160px",
+                    }}
+                  >
+                    Convert To Invoice
+                  </p>
+                </div>
+                <div
+                  data-tooltip-content="Delete"
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-place="bottom"
+                  className="filtersorticos5wx2"
+                  onClick={() => {
+                    handleDeleteDSR(MICEData);
+                  }}
+                >
+                  {otherIcons.delete_svg}
+                </div>
+              </>
+            )}
 
-                        <div>
-                          <PassengerCard
-                            passengers={MICEData}
-                            onDelete={handleDeletePassenger}
-                          />
+            <Link
+              to={"/dashboard/mice"}
+              className="linkx3"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
+            >
+              <RxCross2 />
+            </Link>
+          </div>
+        </div>
+        <div className="formsectionsgrheigh">
+          <div id="formofcreateitems">
+            <form>
+              <div className="relateivdiv">
+                <div className="itemsformwrap">
+                  <div
+                    className="f1wrapofcreq"
+                    style={{
+                      height: "800px",
+                      overflowY: "auto",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div style={{ width: "852px" }}>
+                      <div
+                        className="f1wrapofcreqx1"
+                        style={{ marginTop: "5px" }}
+                      >
+                        <div className="actionbarcommon2">
+                          <div className="form_commonblock ">
+                            <label>
+                              Passengers<b className="color_red">*</b>
+                            </label>
+                            <div id="sepcifixspanflex">
+                              <span id="">
+                                {otherIcons.name_svg}
+                                <CustomDropdown10
+                                  autoComplete="off"
+                                  ref={dropdownRef1}
+                                  label="Customer Name"
+                                  options={cusList?.data?.user}
+                                  value={passengerData.customer_id || ""}
+                                  onChange={handleChange2}
+                                  name="customer_id"
+                                  defaultOption="Select Passenger"
+                                  setcusData={setcusData1}
+                                  cusData={cusData1}
+                                  type="vendor"
+                                  required
+                                />
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            className={`firstbtnc1 `}
+                            onClick={handleFormSubmit2}
+                          >
+                            Add Passenger
+                          </button>
                         </div>
                       </div>
 
-                      <DSRSummary
-                        passengers={MICEData?.passengers}
-                        customerData={MICEData}
-                      />
+                      <div>
+                        <PassengerCard
+                          passengers={MICEData}
+                          onDelete={handleDeletePassenger}
+                        />
+                      </div>
                     </div>
+
+                    <DSRSummary
+                      passengers={MICEData?.passengers}
+                      customerData={MICEData}
+                    />
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
       {/* )} */}
       <Toaster />
     </>

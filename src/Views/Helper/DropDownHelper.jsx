@@ -14,13 +14,14 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     const debounceTimeoutRef = useRef(null); // Store debounce timeout reference
     const productType = useSelector((state) => state?.type);
 
+
     const handleSelect = (option) => {
         if (option.active !== "0") {
-
+       
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === "account" ? option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code :type === "currency2" ? `${option?.country} (${option?.code})`: type === "rate" ? option : type === "masters_salutation" ? option?.label: type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
 
                 }
             });
@@ -97,6 +98,11 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     }
 
     if (type === "currency") {
+        options = searchTerm?.length === 0 ? options : options?.filter(option =>
+            option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
+    }
+    if (type === "currency2") {
         options = searchTerm?.length === 0 ? options : options?.filter(option =>
             option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );

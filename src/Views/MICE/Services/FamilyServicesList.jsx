@@ -28,7 +28,7 @@ const FamilyServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerMDetail?.data?.data || {}
   );
- 
+  console.log("passengerData", passengerData);
   const totalHotels = passengerData?.mice_hotel?.length || "";
   const totalVisas = passengerData?.mice_visa?.length || "";
   const totalFlights = passengerData?.mice_flight?.length || "";
@@ -149,9 +149,10 @@ const FamilyServicesList = () => {
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              All Services 
+              All Services
             </h1>
-            {/* <p id="firsttagp">DSR No.{DSR}</p> */}
+
+            {/* <p id="firsttagp">DSR No.{passengerData?.dsr_no ||""}</p> */}
             {/* <SearchBox
               placeholder="Search In DSRS"
               onSearch={onSearch}
@@ -189,18 +190,24 @@ const FamilyServicesList = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
             {/* <ResizeFL /> */}
-            {/* <Link
-              to={`/dashboard/dsr-details?id=${itemId}`}
+            <Link
+              to={`/dashboard/mice-details?id=${passengerData?.mice_passenger?.mice?.id}`}
               className="linkx3"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Close"
               data-tooltip-place="bottom"
             >
-              <RxCross2 /> */}
-            {/* </Link> */}
+              <RxCross2 />
+            </Link>
           </div>
         </div>
-
+        <div id="Anotherbox" style={{height:"20px",}}>
+          <div id="leftareax12">
+            <p style={{fontWeight:500}}>MICE No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.mice?.mice_no || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.passenger?.display_name || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.passenger?.email || "-"}</span></p>
+          </div>
+        </div>
         <div className="ccfz1 formsectionx1 type-button2">
           {servicesList?.map((item, index) => (
             <div className="insideccfz1" key={index}>
@@ -226,7 +233,10 @@ const FamilyServicesList = () => {
             />
           )}
           {switchCusData == "Others" && (
-            <Others data={passengerData?.mice_others} totalItems={totalOthers} />
+            <Others
+              data={passengerData?.mice_others}
+              totalItems={totalOthers}
+            />
           )}
           {switchCusData == "Visa" && (
             <Visa data={passengerData?.mice_visa} totalItems={totalVisas} />
@@ -238,7 +248,10 @@ const FamilyServicesList = () => {
             />
           )}
           {switchCusData == "Assist" && (
-            <Assist data={passengerData?.mice_assist} totalItems={totalAssist} />
+            <Assist
+              data={passengerData?.mice_assist}
+              totalItems={totalAssist}
+            />
           )}
           {switchCusData == "Insurance" && (
             <Insurance

@@ -138,7 +138,7 @@ const ServicesList = () => {
     { label: "Insurance", total: totalInsurance },
     { label: "Others", total: totalOthers },
   ];
-
+console.log("passengerData", passengerData)
   return (
     <>
       <TopLoadbar />
@@ -188,18 +188,24 @@ const ServicesList = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
             {/* <ResizeFL /> */}
-            {/* <Link
-              to={`/dashboard/dsr-details?id=${itemId}`}
+            <Link
+              to={`/dashboard/dsr-details?id=${passengerData?.dsr_passenger?.dsr?.id}`}
               className="linkx3"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Close"
               data-tooltip-place="bottom"
             >
-              <RxCross2 /> */}
-            {/* </Link> */}
+              <RxCross2 />
+            </Link>
           </div>
         </div>
-
+        <div id="Anotherbox" style={{height:"20px",}}>
+          <div id="leftareax12">
+            <p style={{fontWeight:500}}>DSR No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.dsr?.dsr_no || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.email || "-"}</span></p>
+          </div>
+        </div>
         <div className="ccfz1 formsectionx1 type-button2">
           {servicesList?.map((item, index) => (
             <div className="insideccfz1" key={index}>

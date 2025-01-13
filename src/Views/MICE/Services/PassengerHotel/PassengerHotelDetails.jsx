@@ -54,13 +54,13 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                             </div>
                             <div style={{ display: "flex", gap: "20px" }}>
                               <ul>
-                                <li className="pendingfromfrontendx5">
+                                {/* <li className="pendingfromfrontendx5">
                                   <span>Entry Type</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.entry_type || "-"}
                                   </p>
-                                </li>
+                                </li> */}
                                 <li className="pendingfromfrontendx5">
                                   <span>Hotel Name</span>
                                   <h1>:</h1>
@@ -108,7 +108,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
 
                                 <li>
-                                  <span>Guest</span>
+                                  <span>Family Members</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.guests

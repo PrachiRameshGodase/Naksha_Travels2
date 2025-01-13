@@ -75,9 +75,9 @@ const DSRDetails = () => {
       };
       dispatch(PassengerDeleteActions(sendData))
         .then((response) => {
-          if (isData?.id) {
+          if (DSRData?.id) {
             const refreshData = {
-              dsr_id: isData?.id,
+              dsr_id: DSRData?.id,
             };
             dispatch(DSRDetailsAction(refreshData));
           }
@@ -91,29 +91,32 @@ const DSRDetails = () => {
     const isPassengerExists = DSRData?.passengers?.some(
       (passenger) => passenger.customer_id === passengerData.customer_id
     );
-
-    if (isPassengerExists) {
+    if (!passengerData?.customer_id) {
+      toast.error("Please Select Passenger");
+      return;
+    } else if (isPassengerExists) {
       toast.error("Passenger already added to the list.");
       return; // Prevent further execution
-    }
+    } else {
+      try {
+        const sendData = {
+          ...passengerData,
+        };
 
-    try {
-      const sendData = {
-        ...passengerData,
-      };
-
-      dispatch(PassengerAddAction(sendData, Navigate))
-        .then((response) => {
-          if (UrlId) {
-            const refreshData = {
-              dsr_id: UrlId,
-            };
-            dispatch(DSRDetailsAction(refreshData));
-          }
-        })
-        .catch((err) => console.log(err));
-    } catch (error) {
-      toast.error("Error update passenger:", error);
+        dispatch(PassengerAddAction(sendData, Navigate))
+          .then((response) => {
+            if (UrlId) {
+              const refreshData = {
+                dsr_id: UrlId,
+              };
+              dispatch(DSRDetailsAction(refreshData));
+              setcusData1(null)
+            }
+          })
+          .catch((err) => console.log(err));
+      } catch (error) {
+        toast.error("Error update passenger:", error);
+      }
     }
   };
 
@@ -172,41 +175,44 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
-           {DSRData?.is_invoiced == "0" && <>
-            <div
-              onClick={() => {
-                handleChangeDSRStatus(DSRData);
-              }}
-              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-            >
-              <p
-                className={
-                  DSRData?.is_invoiced == "0"
-                    ? "draft"
-                    : DSRData?.is_invoiced == "1"
-                    ? "invoiced"
-                    : ""
-                }
-                style={{
-                  cursor: "pointer",
-                  padding: "5px 12px",
-                  width: "160px",
-                }}
-              >
-                Convert To Invoice
-              </p>
-            </div>
-            <div
-              data-tooltip-content="Delete"
-              data-tooltip-id="my-tooltip"
-              data-tooltip-place="bottom"
-              className="filtersorticos5wx2"
-              onClick={() => {
-                handleDeleteDSR(DSRData);
-              }}
-            >
-              {otherIcons.delete_svg}
-            </div></>} 
+            {DSRData?.is_invoiced == "0" && (
+              <>
+                <div
+                  onClick={() => {
+                    handleChangeDSRStatus(DSRData);
+                  }}
+                  // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                >
+                  <p
+                    className={
+                      DSRData?.is_invoiced == "0"
+                        ? "draft"
+                        : DSRData?.is_invoiced == "1"
+                        ? "invoiced"
+                        : ""
+                    }
+                    style={{
+                      cursor: "pointer",
+                      padding: "5px 12px",
+                      width: "160px",
+                    }}
+                  >
+                    Convert To Invoice
+                  </p>
+                </div>
+                <div
+                  data-tooltip-content="Delete"
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-place="bottom"
+                  className="filtersorticos5wx2"
+                  onClick={() => {
+                    handleDeleteDSR(DSRData);
+                  }}
+                >
+                  {otherIcons.delete_svg}
+                </div>
+              </>
+            )}
             <Link
               to={"/dashboard/dsr"}
               className="linkx3"
