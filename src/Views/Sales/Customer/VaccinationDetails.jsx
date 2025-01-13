@@ -18,13 +18,12 @@ const VaccinationDetails = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
-  console.log("vaccinationNames", vaccinationNames);
   useEffect(() => {
     if (vaccinationNames.length) {
       setVaccinationDetails(
         vaccinationNames.map((doc) => ({
           vaccination_name: doc.label,
-          upload_documents: JSON.stringify(null),
+          upload_documents: JSON.stringify([]),
         }))
       );
     }
@@ -40,7 +39,12 @@ const VaccinationDetails = ({
   useEffect(() => {
     setUserData((prevData) => ({
       ...prevData,
-      vaccination_details: vaccinationDetails,
+      vaccination_details: vaccinationDetails?.map((detail) => ({
+        ...detail,
+        upload_documents: detail.upload_documents
+          ? JSON.stringify(detail?.upload_documents)
+          : "",
+      })),
     }));
   }, [vaccinationDetails, setUserData]);
 
@@ -68,7 +72,15 @@ const VaccinationDetails = ({
 
   useEffect(() => {
     if (isEdit) {
-      updateUserData(vaccinationDetails); // Only call updateUserData when editing
+      updateUserData((prevData) => ({
+        ...prevData,
+        vaccination_details: vaccinationDetails?.map((detail) => ({
+          ...detail,
+          upload_documents: detail?.upload_documents
+            ? JSON.stringify(detail?.upload_documents)
+            : "",
+        })),
+      }));
     }
   }, [VaccinationDetails]);
   return (

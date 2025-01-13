@@ -26,7 +26,7 @@ import { SelectAddress } from "../../Common/SelectAddress";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import GenerateAutoId from "../Common/GenerateAutoId";
 import WaveLoader from "../../../Components/Loaders/WaveLoader";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
+import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../Helper/DateFormat";
 import {
@@ -349,7 +349,7 @@ const CreateQuotation = () => {
                           </div>
 
                           <div className="form_commonblock">
-                            <CurrencySelect
+                            <CurrencySelect2
                               value={formData?.currency}
                               onChange={handleChange}
                             />

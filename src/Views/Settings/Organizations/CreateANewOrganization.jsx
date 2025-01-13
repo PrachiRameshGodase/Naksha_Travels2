@@ -13,7 +13,7 @@ import CustomDropdown24 from '../../../Components/CustomDropdown/CustomDropdown2
 import NumericInput from '../../Helper/NumericInput';
 import { fetchCurrencies, fetchGetCities, fetchGetCountries, fetchGetStates } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
-import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
+import CurrencySelect, { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { createUpdateOrgAction } from '../../../Redux/Actions/OrgnizationActions';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
@@ -347,7 +347,7 @@ const CreateANewOrganization = () => {
                   </div>
 
                   <div className="form_commonblock">
-                    <CurrencySelect
+                    <CurrencySelect2
                       value={formData?.currency}
                       onChange={handleChange}
                     />

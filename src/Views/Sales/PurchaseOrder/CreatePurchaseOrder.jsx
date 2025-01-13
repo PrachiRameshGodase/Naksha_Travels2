@@ -17,7 +17,7 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 import useOutsideClick from "../../Helper/PopupData";
 import { formatDate } from "../../Helper/DateFormat";
 import { preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
-import CurrencySelect from "../../Helper/ComponentHelper/CurrencySelect";
+import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { SelectAddress } from "../../Common/SelectAddress";
@@ -356,7 +356,7 @@ const CreatePurchaseOrder = () => {
                       </div>
 
                       <div className="form_commonblock">
-                        <CurrencySelect
+                        <CurrencySelect2
                           value={formData?.currency}
                           onChange={handleChange}
                         />

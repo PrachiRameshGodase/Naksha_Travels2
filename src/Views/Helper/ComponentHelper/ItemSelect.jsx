@@ -54,7 +54,8 @@ const ItemSelect = ({
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
-
+  const currencySymbole = activeOrg_details?.symbol;
+  console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -796,7 +797,7 @@ const ItemSelect = ({
                         onClick={() => handleDropdownToggle(index)}
                       >
                         {item?.discount_type == 1
-                          ? "$"
+                          ? currencySymbole
                           : item?.discount_type == 2
                             ? "%"
                             : ""}
@@ -1545,7 +1546,7 @@ export const ItemSelectGRM = ({
                   marginRight: "20px",
                 }}
               >
-                ITEM PRICE ($)
+                ITEM PRICE ({$})
               </p>
 
               {formData?.purchase_order_id &&

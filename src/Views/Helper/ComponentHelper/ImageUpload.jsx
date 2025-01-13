@@ -23,7 +23,6 @@ const ImageUpload = ({
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
 
-  console.log("formdata", formData);
 
   const handleImageChange = (e) => {
     if (e.target.files?.length === 0) return;

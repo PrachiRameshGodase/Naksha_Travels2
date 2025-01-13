@@ -117,7 +117,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
         <div
           className={`dropdown-options`}
           id={className}
-          style={{ width: "101%" }}
+          style={{ width: "101%", zIndex: "999" }}
+
         >
           {itemList?.loading || categoryLists?.loading ? (
             <TableViewSkeletonDropdown />

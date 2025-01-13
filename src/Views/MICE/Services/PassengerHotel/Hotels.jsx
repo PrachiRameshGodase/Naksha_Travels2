@@ -5,7 +5,10 @@ import Swal from "sweetalert2";
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {PassengerHotelDeleteActions,PassengerHotelDetailsAction,} from "../../../../Redux/Actions/passengerHotelActions";
+import {
+  PassengerHotelDeleteActions,
+  PassengerHotelDetailsAction,
+} from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
@@ -13,7 +16,10 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
 import PassengerHotelDetails from "./PassengerHotelDetails";
 import { BsEye } from "react-icons/bs";
-import { PassengerMHotelDeleteActions, PassengerMHotelDetailsAction } from "../../../../Redux/Actions/passengerMHotelActions";
+import {
+  PassengerMHotelDeleteActions,
+  PassengerMHotelDetailsAction,
+} from "../../../../Redux/Actions/passengerMHotelActions";
 
 const Hotels = ({ data }) => {
   const dispatch = useDispatch();
@@ -72,9 +78,8 @@ const Hotels = ({ data }) => {
       });
     }
   };
-  const handleRowClicked = (item) => {
-  };
- 
+  const handleRowClicked = (item) => {};
+
   const [showPopup, setShowPopup] = useState(false);
   const [passHotelData, setPassengerHotelData] = useState("");
   const handleShowDetails = (item) => {
@@ -117,15 +122,18 @@ const Hotels = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Room No/Name
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.refrence_svg}
+                    Family Member
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Occupancy
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Meal Plan
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Checkin Date
@@ -188,13 +196,25 @@ const Hotels = ({ data }) => {
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
+                              title={item?.guests?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            >
+                              {item?.guests
+                                ?.map((data) => data?.display_name)
+                                .filter(Boolean)
+                                .join(",  ")}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
                             >
                               <ShowMastersValue
                                 type="36"
                                 id={item?.occupancy_id}
                               />
                             </div>
-                            <div
+                            {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
@@ -202,7 +222,7 @@ const Hotels = ({ data }) => {
                                 type="37"
                                 id={item?.meal_id || ""}
                               />
-                            </div>
+                            </div> */}
 
                             <div
                               onClick={() => handleRowClicked(item)}
