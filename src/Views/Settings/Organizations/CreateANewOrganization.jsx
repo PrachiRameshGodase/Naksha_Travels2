@@ -164,6 +164,10 @@ const CreateANewOrganization = () => {
     }
   }, [orgId, orgMainList]);
   // console.log("formdata", formData)
+
+
+  const getCurrencySymbol = getCurrency?.currency
+  console.log("getCurrencySymbol", getCurrencySymbol)
   return (
     <>
       <TopLoadbar />
@@ -354,9 +358,14 @@ const CreateANewOrganization = () => {
                     <span >
                       {otherIcons.currency_icon}
                       <select name="symbol" value={formData.symbol} onChange={handleChange}>
-                        <option value="$">$</option>
+                        {
+                          getCurrencySymbol?.map((val, index) => (
+                            <option value={val?.symbol} key={index}>{val?.symbol}</option>
+                          ))
+                        }
+                        {/* <option value="$">$</option>
                         <option value="%">%</option>
-                        <option value="#">#</option>
+                        <option value="#">#</option> */}
                       </select>
                     </span>
                   </div>

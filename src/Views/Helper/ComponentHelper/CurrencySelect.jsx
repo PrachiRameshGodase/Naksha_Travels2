@@ -3,6 +3,7 @@ import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown1
 import { otherIcons } from '../SVGIcons/ItemsIcons/Icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { currencySymbol } from '../HelperFunctions';
+import CustomDropdown26 from '../../../Components/CustomDropdown/CustomDropdown26';
 
 const CurrencySelect = ({ disable, style, ...rest }) => {
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
@@ -12,7 +13,7 @@ const CurrencySelect = ({ disable, style, ...rest }) => {
             <label>Currency</label>
             <span >
                 {otherIcons.currency_icon}
-                <CustomDropdown12
+                <CustomDropdown26
                     label="Currency Name"
                     name="currency"
                     defaultOption="Select Currency"
