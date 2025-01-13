@@ -27,7 +27,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
   }
-
+  console.log("types", types)
   return (
     <div
       data-tooltip-content={types === "Service" ? "Unit is not allowed for service select" : ""}
@@ -36,7 +36,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
 
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
-        onClick={types == "Services" ? () => setIsOpen(!isOpen) : undefined}
+        onClick={types !== "Service" ? () => setIsOpen(!isOpen) : undefined}
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "100px", cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
 
         {(type === "masters_salutation" || type === "masters2") ?
