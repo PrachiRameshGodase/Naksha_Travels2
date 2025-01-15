@@ -28,13 +28,13 @@ const ServicesList = () => {
     (state) => state?.passengerDetail?.data?.data || {}
   );
 
-  const totalHotels = passengerData?.dsr_hotel?.length || "";
-  const totalVisas = passengerData?.dsr_visa?.length || "";
-  const totalFlights = passengerData?.dsr_flight?.length || "";
-  const totalCarHires = passengerData?.dsr_car_hire?.length || "";
-  const totalAssist = passengerData?.dsr_assist?.length || "";
-  const totalInsurance = passengerData?.dsr_insurance?.length || "";
-  const totalOthers = passengerData?.dsr_others?.length || "";
+  const totalHotels = passengerData?.dsr_hotel?.length || 0;
+  const totalVisas = passengerData?.dsr_visa?.length || 0;
+  const totalFlights = passengerData?.dsr_flight?.length || 0;
+  const totalCarHires = passengerData?.dsr_car_hire?.length || 0;
+  const totalAssist = passengerData?.dsr_assist?.length || 0;
+  const totalInsurance = passengerData?.dsr_insurance?.length || 0;
+  const totalOthers = passengerData?.dsr_others?.length || 0;
 
   // const servicesList = ShowMasterData("48");
 
@@ -138,7 +138,7 @@ const ServicesList = () => {
     { label: "Insurance", total: totalInsurance },
     { label: "Others", total: totalOthers },
   ];
-console.log("passengerData", passengerData)
+
   return (
     <>
       <TopLoadbar />
@@ -199,10 +199,10 @@ console.log("passengerData", passengerData)
             </Link>
           </div>
         </div>
-        <div id="Anotherbox" style={{height:"20px",}}>
-          <div id="leftareax12">
-            <p style={{fontWeight:500}}>DSR No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.dsr?.dsr_no || "-"}</span></p>
-            <p style={{fontWeight:500, marginLeft:"20px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
+        <div id="Anotherbox" style={{height:"20px",background:"rgb(219 218 231 / 35%)"}}>
+          <div id="leftareax12" style={{width:"100%"}}>
+            <p style={{fontWeight:500, width:"200px"}}>DSR No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.dsr?.dsr_no || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px", width:"212px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
             <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.email || "-"}</span></p>
           </div>
         </div>
@@ -215,7 +215,7 @@ console.log("passengerData", passengerData)
                 }`}
                 onClick={() => setSwitchCusData(`${item?.label || ""}`)}
               >
-                {item?.label || ""} {item?.total || ""}
+                {item?.label || ""} ({item?.total || 0})
               </button>
             </div>
           ))}

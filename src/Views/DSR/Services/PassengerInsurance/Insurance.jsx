@@ -175,7 +175,7 @@ const Insurances = ({ data, totalItems }) => {
                               {formatDate3(item?.expiry_date) || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
-                              {item?.supplier_total || ""}
+                              {item?.total_amount || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(quotation)}

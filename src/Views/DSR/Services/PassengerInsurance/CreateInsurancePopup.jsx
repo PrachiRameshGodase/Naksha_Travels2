@@ -68,6 +68,8 @@ const CreateInsurancePopup = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
+    policy_no:false,
+    insurance_plan:false,
   });
   const entryType = ShowMasterData("50");
 
@@ -92,6 +94,13 @@ const CreateInsurancePopup = ({
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
+      policy_no: formData?.policy_no ? false : true,
+      insurance_plan: formData?.insurance_plan ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -109,7 +118,10 @@ const CreateInsurancePopup = ({
             : formData?.guest_ids?.join(", "),
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerInsuranceAction(sendData, setShowModal))
+      const refreshData = {
+        dsr_id: data?.id,
+      };
+      dispatch(CreatePassengerInsuranceAction(sendData, setShowModal, refreshData))
        
     } catch (error) {
       console.error("Error updating insurance:", error);
@@ -219,7 +231,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Policy No
+                          Policy No<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -230,6 +242,18 @@ const CreateInsurancePopup = ({
                             placeholder="Enter Policy No"
                           />
                         </span>
+                        {errors?.policy_no && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Policy No
+                            </p>
+                          )}
                       </div>
                     </div>
 
@@ -274,7 +298,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Insurance Plan
+                          Insurance Plan<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -285,6 +309,18 @@ const CreateInsurancePopup = ({
                             placeholder="Enter Insurance Plan"
                           />
                         </span>
+                        {errors?.insurance_plan && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Insurance Plan
+                            </p>
+                          )}
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
@@ -341,6 +377,8 @@ const CreateInsurancePopup = ({
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Insurance"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                       </div>
                     </div>

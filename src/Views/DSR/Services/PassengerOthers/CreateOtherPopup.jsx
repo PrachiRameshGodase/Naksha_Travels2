@@ -61,6 +61,8 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     item_id: false,
+    quantity:false,
+    price:false
   });
   const entryType = ShowMasterData("50");
 
@@ -93,6 +95,13 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
+      quantity: formData?.price ? false : true,
+      price: formData?.item_id ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -106,7 +115,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
         ...formData,
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerOtherAction(sendData, setShowModal))
+      const refreshData = {
+        dsr_id: data?.id,
+      };
+      dispatch(CreatePassengerOtherAction(sendData, setShowModal, refreshData))
       
     } catch (error) {
       console.error("Error updating other service:", error);
@@ -193,7 +205,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Quantity</label>
+                        <label>Quantity<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -205,13 +217,25 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               type="number"
                             />
                           </span>
+                          {errors?.quantity && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Quantity
+                          </p>
+                        )}
                         </div>
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Price</label>
+                        <label>Price<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -223,6 +247,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               type="number"
                             />
                           </span>
+                          {errors?.price && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Price
+                          </p>
+                        )}
                         </div>
                       </div>
                       <div className="form_commonblock">
@@ -281,6 +317,8 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Other"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                       </div>
                     </div>

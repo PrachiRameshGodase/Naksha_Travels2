@@ -55,6 +55,13 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [errors, setErrors] = useState({
     airport_name: false,
+    no_of_persons:false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
+
   });
 
   const [imgLoader, setImgeLoader] = useState("");
@@ -82,6 +89,12 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     e.preventDefault();
     let newErrors = {
       airport_name: formData?.airport_name ? false : true,
+      no_of_persons: formData?.no_of_persons ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -99,7 +112,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
             : formData?.guest_ids?.join(", "),
             charges: JSON.stringify(formData?.charges)
       };
-      dispatch(CreatePassengerAssistAction(sendData, setShowModal))
+      const refreshData = {
+        dsr_id: data?.id,
+      };
+      dispatch(CreatePassengerAssistAction(sendData, setShowModal,refreshData))
         
         .catch((error) => {
           console.error("Error during dispatch:", error);
@@ -191,12 +207,13 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           placeholder="Enter Meeting Type"
                         />
                       </span>
+                      
                     </div>
                   </div>
 
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
-                      <label>No Of Persons</label>
+                      <label>No Of Persons<b className="color_red">*</b></label>
                       <div id="inputx1">
                         <span>
                           {otherIcons.name_svg}
@@ -207,6 +224,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
+                        {errors?.no_of_persons && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill No Of Persons
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="form_commonblock">
@@ -265,6 +294,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Assist"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                     </div>
                    

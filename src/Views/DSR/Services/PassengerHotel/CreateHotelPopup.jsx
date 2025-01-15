@@ -76,13 +76,27 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     tax_percent: null,
     tax_amount: 0.0,
     retain: 0.0,
+    supplier_total: 0.0,
     total_amount: 0.0,
     note: null,
     upload_image: null,
   });
-const [errors, setErrors] = useState({
-  hotel_id: false,
-})
+  const [errors, setErrors] = useState({
+    hotel_id: false,
+    room_id: false,
+    occupancy_id: false,
+    meal_id: false,
+    bed: false,
+    guest_ids: false,
+    booking_date: false,
+    chec_out_date: false,
+    check_in_date: false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
+  });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -123,19 +137,69 @@ const [errors, setErrors] = useState({
       ...updatedFields,
       [name]: false,
     }));
-  
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems, // Update selected items array
     });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
+  const handleDateChange = (date, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formatDate(date),
+    }));
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+  
+      const bookingDate = new Date(formData?.booking_date);
+      const checkInDate = new Date(formData?.check_in_date);
+      const checkOutDate = new Date(formData?.chec_out_date);
+      const selectedDate = new Date(date);
+  
+      if (name === "booking_date") {
+        updatedErrors.booking_date =
+          (formData?.check_in_date && selectedDate > checkInDate) ||
+          (formData?.chec_out_date && selectedDate > checkOutDate);
+      }
+  
+      if (name === "check_in_date") {
+        updatedErrors.check_in_date = selectedDate < bookingDate;
+        updatedErrors.chec_out_date =
+          formData?.chec_out_date && selectedDate >= checkOutDate;
+      }
+  
+      if (name === "chec_out_date") {
+        updatedErrors.chec_out_date =
+          selectedDate < bookingDate || selectedDate < checkInDate;
+      }
+  
+      return updatedErrors;
+    });
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       hotel_id: formData?.hotel_id ? false : true,
+      room_id: formData?.room_id ? false : true,
+      occupancy_id: formData?.occupancy_id ? false : true,
+      meal_id: formData?.meal_id ? false : true,
+      bed: formData?.bed ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      booking_date: formData?.booking_date ? false : true,
+      chec_out_date: formData?.chec_out_date ? false : true,
+      check_in_date: formData?.check_in_date ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -144,21 +208,23 @@ const [errors, setErrors] = useState({
     if (hasAnyError) {
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-        charges: JSON.stringify(formData?.charges),
-      };
-      dispatch(CreatePassengerHotelAction(sendData, setShowModal))
-       
-    } catch (error) {
-      console.error("Error updating hotel:", error);
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          dsr_id: data?.id,
+        };
+        dispatch(CreatePassengerHotelAction(sendData, setShowModal, refreshData));
+      } catch (error) {
+        console.error("Error updating hotel:", error);
+      }
     }
-  }
   };
 
   // call item api on page load...
@@ -232,22 +298,22 @@ const [errors, setErrors] = useState({
                             />
                           </span>
                           {errors?.hotel_id && (
-                              <p
-                                className="error_message"
-                                style={{
-                                  whiteSpace: "nowrap",
-                                  marginBottom: "0px important",
-                                }}
-                              >
-                                {otherIcons.error_svg}
-                                Please Select Hotel Name
-                              </p>
-                            )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Hotel Name
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Room Number/Name
+                          Room Number/Name<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -267,10 +333,22 @@ const [errors, setErrors] = useState({
                             required
                           />
                         </span>
+                        {errors?.room_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Room
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Occupancy
+                          Occupancy<b className="color_red">*</b>
                         </label>
 
                         <span id="">
@@ -285,12 +363,24 @@ const [errors, setErrors] = useState({
                             type="masters"
                           />
                         </span>
+                        {errors?.occupancy_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Occupancy
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
-                          Meal Plan
+                          Meal Plan<b className="color_red">*</b>
                         </label>
                         <span id="">
                           {otherIcons.name_svg}
@@ -304,10 +394,22 @@ const [errors, setErrors] = useState({
                             type="masters"
                           />
                         </span>
+                        {errors?.meal_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Meal
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Bed
+                          Bed<b className="color_red">*</b>
                         </label>
                         <span id="">
                           {otherIcons.name_svg}
@@ -321,10 +423,22 @@ const [errors, setErrors] = useState({
                             type="masters"
                           />
                         </span>
+                        {errors?.bed && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Bed
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Guest Name
+                          Guest Name<b className="color_red">*</b>
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -336,7 +450,9 @@ const [errors, setErrors] = useState({
                               label="Select Guest"
                               options={cusList?.data?.user}
                               value={formData.guest_ids}
-                              onChange={handleChange1}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
                               name="guest_ids"
                               defaultOption="Select Guest"
                               setcusData={setcusData}
@@ -345,21 +461,32 @@ const [errors, setErrors] = useState({
                               required
                             />
                           </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock ">
-                        <label>Booking Date</label>
+                        <label>
+                          Booking Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.booking_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                booking_date: formatDate(date),
-                              })
+                              handleDateChange(date, "booking_date")
                             }
                             name="booking_date"
                             placeholderText="Enter Date"
@@ -367,18 +494,29 @@ const [errors, setErrors] = useState({
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.booking_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Booking Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock ">
-                        <label>Checkin Date</label>
+                        <label>
+                          Checkin Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.check_in_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                check_in_date: formatDate(date),
-                              })
+                              handleDateChange(date, "check_in_date")
                             }
                             name="check_in_date"
                             placeholderText="Enter Date"
@@ -386,18 +524,27 @@ const [errors, setErrors] = useState({
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.check_in_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Check In Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock ">
-                        <label>Checkout Date</label>
+                        <label>Checkout Date<b className="color_red">*</b></label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.chec_out_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                chec_out_date: formatDate(date),
-                              })
+                              handleDateChange(date, "chec_out_date")
                             }
                             name="chec_out_date"
                             placeholderText="Enter Date"
@@ -405,13 +552,23 @@ const [errors, setErrors] = useState({
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.chec_out_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Check Out Date
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -481,6 +638,8 @@ const [errors, setErrors] = useState({
                         setFormData={setFormData}
                         handleChange={handleChange}
                         section="Hotel"
+                        errors={errors}
+                        setErrors={setErrors}
                       />
                     </div>
                   </div>

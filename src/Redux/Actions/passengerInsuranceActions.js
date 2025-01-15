@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGER_INSURANCE_ERROR, CREATE_PASSENGER_INSURANCE_REQUEST, CREATE_PASSENGER_INSURANCE_SUCCESS, PASSENGER_INSURANCE_DELETE_ERROR, PASSENGER_INSURANCE_DELETE_REQUEST, PASSENGER_INSURANCE_DELETE_SUCCESS } from "../Constants/passengerInsuranceConstant";
+import { DSRDetailsAction } from "./DSRActions";
 
-export const CreatePassengerInsuranceAction = (queryParams, setShowModal) => async (dispatch) => {
+export const CreatePassengerInsuranceAction = (queryParams, setShowModal, refreshData) => async (dispatch) => {
 
     dispatch({ type: CREATE_PASSENGER_INSURANCE_REQUEST });
     try {
@@ -11,6 +12,7 @@ export const CreatePassengerInsuranceAction = (queryParams, setShowModal) => asy
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGER_INSURANCE_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+            dispatch(DSRDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGER_INSURANCE_ERROR, payload: response.data?.message });

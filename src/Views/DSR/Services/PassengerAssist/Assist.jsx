@@ -170,7 +170,7 @@ const Assit = ({ data, totalItems }) => {
                             <div
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
-                              {item?.supplier_total || ""}
+                              {item?.total_amount || ""}
                             </div>
 
                             <div

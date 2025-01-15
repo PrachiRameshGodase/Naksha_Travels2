@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGER_CARHIRE_ERROR, CREATE_PASSENGER_CARHIRE_REQUEST, CREATE_PASSENGER_CARHIRE_SUCCESS, PASSENGER_CARHIRE_DELETE_ERROR, PASSENGER_CARHIRE_DELETE_REQUEST, PASSENGER_CARHIRE_DELETE_SUCCESS } from "../Constants/passengerCarHireConstants";
+import { DSRDetailsAction } from "./DSRActions";
 
-export const CreatePassengerCarHireAction = (queryParams, setShowModal) => async (dispatch) => {
+export const CreatePassengerCarHireAction = (queryParams, setShowModal,refreshData) => async (dispatch) => {
 
     dispatch({ type: CREATE_PASSENGER_CARHIRE_REQUEST });
     try {
@@ -11,6 +12,7 @@ export const CreatePassengerCarHireAction = (queryParams, setShowModal) => async
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGER_CARHIRE_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+             dispatch(DSRDetailsAction(refreshData))
             setShowModal(false);
         } else {
             dispatch({ type: CREATE_PASSENGER_CARHIRE_ERROR, payload: response.data?.message });

@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGER_FLIGHT_ERROR, CREATE_PASSENGER_FLIGHT_REQUEST, CREATE_PASSENGER_FLIGHT_SUCCESS, PASSENGER_FLIGHT_DELETE_ERROR, PASSENGER_FLIGHT_DELETE_REQUEST, PASSENGER_FLIGHT_DELETE_SUCCESS, PASSENGER_FLIGHT_DETAIL_ERROR, PASSENGER_FLIGHT_DETAIL_REQUEST, PASSENGER_FLIGHT_DETAIL_SUCCESS } from "../Constants/passengerFlightConstant";
+import { DSRDetailsAction } from "./DSRActions";
 
- export const CreatePassengerFlightAction = (queryParams, setShowModal) => async (dispatch) => {
+ export const CreatePassengerFlightAction = (queryParams, setShowModal, refreshData) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGER_FLIGHT_REQUEST });
     try {
@@ -11,6 +12,7 @@ import { CREATE_PASSENGER_FLIGHT_ERROR, CREATE_PASSENGER_FLIGHT_REQUEST, CREATE_
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGER_FLIGHT_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+             dispatch(DSRDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGER_FLIGHT_ERROR, payload: response.data?.message });
