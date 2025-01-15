@@ -123,6 +123,10 @@ const Insurances = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Expiry Date
                   </div>
+                    <div className="table-cellx12 quotiosalinvlisxs3">
+                                      {otherIcons?.refrence_svg}
+                                     Total Amount
+                                    </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Action
@@ -169,6 +173,9 @@ const Insurances = ({ data, totalItems }) => {
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               {formatDate3(item?.expiry_date) || ""}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
+                              {item?.supplier_total || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(quotation)}

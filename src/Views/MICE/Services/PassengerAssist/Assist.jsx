@@ -115,6 +115,10 @@ const Assit = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Family Member
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.status_svg}
+                    Total Amount
+                  </div>
                   {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Price
@@ -173,6 +177,9 @@ const Assit = ({ data, totalItems }) => {
                                 ?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs3">
+                              {item?.supplier_total || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span

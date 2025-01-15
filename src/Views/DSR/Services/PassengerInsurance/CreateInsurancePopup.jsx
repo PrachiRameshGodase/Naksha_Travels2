@@ -66,7 +66,9 @@ const CreateInsurancePopup = ({
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-
+  const [errors, setErrors] = useState({
+    passenger_insurance_id: false,
+  });
   const entryType = ShowMasterData("50");
 
   const handleChange = (e) => {
@@ -80,11 +82,24 @@ const CreateInsurancePopup = ({
 
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
+    let newErrors = {
+      passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
@@ -94,18 +109,12 @@ const CreateInsurancePopup = ({
             : formData?.guest_ids?.join(", "),
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerInsuranceAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+      dispatch(CreatePassengerInsuranceAction(sendData, setShowModal))
+       
     } catch (error) {
       console.error("Error updating insurance:", error);
     }
+  }
   };
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
@@ -180,11 +189,23 @@ const CreateInsurancePopup = ({
                               required
                             />
                           </span>
+                          {errors?.passenger_insurance_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Passenger
+                          </p>
+                        )}
                         </div>
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Company Name<b className="color_red">*</b>
+                          Company Name
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -198,7 +219,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Policy No<b className="color_red">*</b>
+                          Policy No
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -253,7 +274,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Insurance Plan<b className="color_red">*</b>
+                          Insurance Plan
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -269,7 +290,7 @@ const CreateInsurancePopup = ({
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">

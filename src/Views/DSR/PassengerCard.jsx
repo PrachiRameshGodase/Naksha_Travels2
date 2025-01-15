@@ -117,12 +117,13 @@ const PassengerCard = ({ passengers, onDelete }) => {
           <th>Email</th>
           <th>Mobile</th>
           <th>Services</th>
+          <th>Service Total</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {passengers?.passengers?.length > 0 ? (
-          passengers.passengers.map((passenger, index) => (
+          passengers?.passengers?.map((passenger, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>
@@ -139,6 +140,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   type="service"
                 />
               </td>
+              <td>{passenger?.service_total || ""}</td>
               <td>
                 <span
                   style={{ cursor: "pointer", color: "red" }}
@@ -160,6 +162,8 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   <BsEye />
                 </span>
               </td>
+
+
             </tr>
           ))
         ) : (

@@ -49,21 +49,14 @@ const ItemSelect = ({
   invoice_section,
 
 }) => {
-<<<<<<< HEAD
-=======
   console.log("itemErrors", itemErrors);
   console.log("formData?.items", formData?.items);
->>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbole = activeOrg_details?.symbol;
-<<<<<<< HEAD
-  // console.log("currencySymbole", currencySymbole)
-=======
->>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -242,14 +235,10 @@ const ItemSelect = ({
       newItems[index].unit_id = value;
       newErrors[index].unit_id = "";
     }
-<<<<<<< HEAD
-
-=======
     if (field === "type") {
       newItems[index].type = value;
       // newErrors[index].type = "";
     }
->>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
     if (field === "taxRate") {
       newItems[index].tax_rate = value;
       newErrors[index].tax_rate = "";
@@ -596,10 +585,6 @@ const ItemSelect = ({
                   className="tablerowtopsxs1 border_none"
                   style={{ padding: "21px 5px" }}
                 >
-<<<<<<< HEAD
-
-=======
->>>>>>> ef36790bacb1b84447a136d35098fe3ad4508a71
                   {/* /////////////////////////////// */}
                   <div className="tablsxs1a1x3">
 

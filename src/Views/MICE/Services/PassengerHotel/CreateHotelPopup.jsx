@@ -143,15 +143,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
               : formData?.guest_ids?.join(", "),
           charges: JSON.stringify(formData?.charges),
         };
-        dispatch(CreatePassengerMHotelAction(sendData))
-          .then((response) => {
-            // if (response?.success === true) {
-            setShowModal(false);
-            // }
-          })
-          .catch((error) => {
-            console.error("Error during dispatch:", error);
-          });
+        dispatch(CreatePassengerMHotelAction(sendData, setShowModal))
+        
       } catch (error) {
         console.error("Error updating hotel:", error);
       }
@@ -261,7 +254,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           }`}
                         >
                           <label>
-                            Room Number/Name<b className="color_red">*</b>
+                            Room Number/Name
                           </label>
                           <span>
                             {otherIcons.placeofsupply_svg}
@@ -284,7 +277,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                         <div className="form_commonblock">
                           <label>
-                            Occupancy<b className="color_red">*</b>
+                            Occupancy
                           </label>
 
                           <span id="">
@@ -304,7 +297,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
                           <label>
-                            Meal Plan<b className="color_red">*</b>
+                            Meal Plan
                           </label>
                           <span id="">
                             {otherIcons.name_svg}
@@ -321,7 +314,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                         <div className="form_commonblock">
                           <label>
-                            Bed<b className="color_red">*</b>
+                            Bed
                           </label>
                           <span id="">
                             {otherIcons.name_svg}
@@ -338,7 +331,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                         <div className="form_commonblock">
                           <label>
-                            Family Member<b className="color_red">*</b>
+                            Family Member
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -424,7 +417,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
                           <label>
-                            Supplier<b className="color_red">*</b>
+                            Supplier
                           </label>
                           <div id="sepcifixspanflex">
                             <span id="">

@@ -19,8 +19,10 @@ const Flights = ({ data, totalItems }) => {
   const navigate = useNavigate();
 
   const itemId = new URLSearchParams(location.search).get("id");
-  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data || {});
- 
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -125,9 +127,13 @@ const Flights = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     PRN No
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs5">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs5">
                     {otherIcons?.status_svg}
                     Route
+                  </div> */}
+                  <div className="table-cellx12 quotiosalinvlisxs5">
+                    {otherIcons?.status_svg}
+                    Total Amount
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -161,48 +167,36 @@ const Flights = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {formatDate3(item?.travel_date) || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               <ShowMastersValue
                                 type="51"
                                 id={item?.travel_type_id}
                               />
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.airline_name || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.gds_portal || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.ticket_no || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.prn_no || ""}
                             </div>
-                            <div
+                            {/* <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.route || ""}
+                            </div> */}
+                            <div className="table-cellx12 quotiosalinvlisxs4">
+                              {item?.supplier_total || ""}
                             </div>
-
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs6"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs6">
                               <span
                                 onClick={() => {
                                   handleDeleteFlight(item);

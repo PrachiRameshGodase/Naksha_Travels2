@@ -16,6 +16,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { customersView } from "../../../../Redux/Actions/customerActions";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import toast from "react-hot-toast";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -53,6 +54,9 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
+  const [errors, setErrors] = useState({
+    airport_name: false,
+  });
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -69,6 +73,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: value,
       supplier_name: selectedSupplierName?.display_name,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleChange1 = (selectedItems) => {
     setFormData({
@@ -78,28 +86,35 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {
+      airport_name: formData?.airport_name ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
         guest_ids:
           formData?.guest_ids?.length === 0
             ? null
-            : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
+            : formData.guest_ids.join(", "),
+        charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerMAssistAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+  
+      dispatch(CreatePassengerMAssistAction(sendData, setShowModal))
+       
     } catch (error) {
+      toast.error("Unexpected error. Please refresh the page and try again.");
       console.error("Error updating assist:", error);
     }
+    }
   };
+  
 
   useEffect(() => {
     if (data?.customer_id) {
@@ -164,10 +179,22 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           placeholder="Enter Airport Location"
                         />
                       </span>
+                      {errors?.airport_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Airport
+                          </p>
+                        )}
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Meeting Type<b className="color_red">*</b>
+                        Meeting Type
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
@@ -181,7 +208,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
                     <div className="form_commonblock">
                           <label>
-                            Family Member<b className="color_red">*</b>
+                            Family Member
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -223,7 +250,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Supplier<b className="color_red">*</b>
+                        Supplier
                       </label>
                       <div id="sepcifixspanflex">
                         <span id="">

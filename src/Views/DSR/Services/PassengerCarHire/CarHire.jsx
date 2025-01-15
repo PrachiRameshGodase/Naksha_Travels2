@@ -115,6 +115,10 @@ const CarHires = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     Dropdown Location
                   </div>
+                   <div className="table-cellx12 quotiosalinvlisxs4">
+                                      {otherIcons?.refrence_svg}
+                                      Total Amount
+                                    </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Actions
@@ -169,6 +173,9 @@ const CarHires = ({ data, totalItems }) => {
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.drop_location || ""}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs4">
+                              {item?.supplier_total || ""}
                             </div>
                             <div
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

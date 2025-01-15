@@ -150,11 +150,11 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Service Charge</span>
                                   <h1>:</h1>
                                   <p>{data?.charges || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Retain</span>
                                   <h1>:</h1>

@@ -17,7 +17,7 @@ import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 const PassengerCard = ({ passengers, onDelete }) => {
   const navigate = useNavigate();
   const [activePopup, setActivePopup] = useState(null);
-  const [formData, setFormData] = useState({service: "",});
+  const [formData, setFormData] = useState({ service: "" });
 
   const servicesList = ShowMasterData("48");
 
@@ -114,6 +114,8 @@ const PassengerCard = ({ passengers, onDelete }) => {
           <th>Email</th>
           <th>Mobile</th>
           <th>Services</th>
+          <th>Service Total</th>
+
           <th>Action</th>
         </tr>
       </thead>
@@ -136,6 +138,8 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   type="service"
                 />
               </td>
+              <td>{passenger?.service_total || ""}</td>
+
               <td>
                 <span
                   style={{ cursor: "pointer", color: "red" }}
@@ -151,7 +155,9 @@ const PassengerCard = ({ passengers, onDelete }) => {
                     marginLeft: "10px",
                   }}
                   onClick={() => {
-                    navigate(`/dashboard/mice-serviceslist?id=${passenger?.id}`);
+                    navigate(
+                      `/dashboard/mice-serviceslist?id=${passenger?.id}`
+                    );
                   }}
                 >
                   <BsEye />

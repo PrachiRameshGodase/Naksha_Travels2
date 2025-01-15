@@ -93,11 +93,11 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                <li className="pendingfromfrontendx5">
+                                {/* <li className="pendingfromfrontendx5">
                                   <span>Supplier Service Charge</span>
                                   <h1>:</h1>
                                   <p>{data?.charges || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Tax Amount</span>
                                   <h1>:</h1>

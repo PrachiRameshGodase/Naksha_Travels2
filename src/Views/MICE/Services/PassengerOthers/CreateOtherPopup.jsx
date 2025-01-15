@@ -57,7 +57,9 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-
+  const [errors, setErrors] = useState({
+    item_id: false,
+  });
   const entryType = ShowMasterData("50");
 
   const handleChange = (e) => {
@@ -79,27 +81,35 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       ...updatedFields,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {
+      item_id: formData?.item_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerMOtherAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+      dispatch(CreatePassengerMOtherAction(sendData, setShowModal))
+       
     } catch (error) {
       console.error("Error updating other service:", error);
+    }
     }
   };
   // call item api on page load...
@@ -168,6 +178,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             ref={dropdownRef1}
                           />
                         </span>
+                        {errors?.item_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Item
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>Quantity</label>
@@ -204,7 +226,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">

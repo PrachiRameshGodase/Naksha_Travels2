@@ -101,10 +101,10 @@ const Others = ({ data, totalItems }) => {
                     <div className="checkmark"></div>
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs1">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Entry Name
-                  </div>
+                  </div> */}
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
@@ -117,6 +117,10 @@ const Others = ({ data, totalItems }) => {
                   <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Price
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.refrence_svg}
+                    Total Amount
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -151,12 +155,12 @@ const Others = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
+                            {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.entry_type || ""}
-                            </div>
+                            </div> */}
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
@@ -175,7 +179,12 @@ const Others = ({ data, totalItems }) => {
                             >
                               {item?.price || ""}
                             </div>
-
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.supplier_total || ""}
+                            </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

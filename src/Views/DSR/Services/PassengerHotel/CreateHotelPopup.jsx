@@ -26,6 +26,7 @@ import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import toast from "react-hot-toast";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -79,7 +80,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
-
+const [errors, setErrors] = useState({
+  hotel_id: false,
+})
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -115,6 +118,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       ...updatedFields,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      ...updatedFields,
+      [name]: false,
+    }));
+  
   };
 
   const handleChange1 = (selectedItems) => {
@@ -125,7 +134,16 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    let newErrors = {
+      hotel_id: formData?.hotel_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
@@ -135,18 +153,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
             : formData?.guest_ids?.join(", "),
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerHotelAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+      dispatch(CreatePassengerHotelAction(sendData, setShowModal))
+       
     } catch (error) {
       console.error("Error updating hotel:", error);
     }
+  }
   };
 
   // call item api on page load...
@@ -219,11 +231,23 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.hotel_id && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select Hotel Name
+                              </p>
+                            )}
                         </div>
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Room Number/Name<b className="color_red">*</b>
+                          Room Number/Name
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -246,7 +270,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Occupancy<b className="color_red">*</b>
+                          Occupancy
                         </label>
 
                         <span id="">
@@ -266,7 +290,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
-                          Meal Plan<b className="color_red">*</b>
+                          Meal Plan
                         </label>
                         <span id="">
                           {otherIcons.name_svg}
@@ -283,7 +307,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Bed<b className="color_red">*</b>
+                          Bed
                         </label>
                         <span id="">
                           {otherIcons.name_svg}
@@ -300,7 +324,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Guest Name<b className="color_red">*</b>
+                          Guest Name
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -386,7 +410,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">

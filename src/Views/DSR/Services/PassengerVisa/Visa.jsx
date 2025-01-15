@@ -27,8 +27,6 @@ const Visas = ({ data }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-
-
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -113,10 +111,10 @@ const Visas = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Email
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Visa Type
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Visa No
@@ -125,7 +123,10 @@ const Visas = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Country
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Total Amount
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -158,16 +159,10 @@ const Visas = ({ data }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.visa_passenger?.display_name || ""}
                             </div>
-                            <div
-                              
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.passport_no || ""}
                             </div>
 
@@ -177,7 +172,7 @@ const Visas = ({ data }) => {
                             >
                               {item?.email || ""}
                             </div>
-                            <div
+                            {/* <div
                               
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
@@ -185,20 +180,16 @@ const Visas = ({ data }) => {
                                 type="40"
                                 id={item?.visa_type_id || ""}
                               />
-                            </div>
-                            <div
-                            
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
+                            </div> */}
+                            <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.visa_no || ""}
                             </div>
-                            <div
-                             
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.country?.name || ""}
                             </div>
-
+                            <div className="table-cellx12 quotiosalinvlisxs4">
+                              {item?.supplier_total || ""}
+                            </div>
                             <div
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

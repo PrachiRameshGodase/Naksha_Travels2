@@ -85,6 +85,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   const handleChange1 = (selectedItems) => {
@@ -115,15 +119,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
               : formData?.guest_ids?.join(", "),
           charges: JSON.stringify(formData?.charges),
         };
-        dispatch(CreatePassengerMFlightAction(sendData))
-          .then((response) => {
-            // if (response?.success === true) {
-            setShowModal(false);
-            // }
-          })
-          .catch((error) => {
-            console.error("Error during dispatch:", error);
-          });
+        dispatch(CreatePassengerMFlightAction(sendData, setShowModal))
+         
       } catch (error) {
         console.error("Error updating flight:", error);
       }
@@ -231,7 +228,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Travel Type<b className="color_red">*</b>
+                          Travel Type
                         </label>
                         <span id="">
                           {otherIcons.name_svg}
@@ -297,7 +294,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Family Member<b className="color_red">*</b>
+                          Family Member
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -325,7 +322,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
-                          GDS Portal<b className="color_red">*</b>
+                          GDS Portal
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -356,7 +353,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          PRN No<b className="color_red">*</b>
+                          PRN No
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -370,7 +367,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Route<b className="color_red">*</b>
+                          Route
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -387,7 +384,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Destination Code<b className="color_red">*</b>
+                          Destination Code
                         </label>
 
                         <span id="">
@@ -405,7 +402,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">

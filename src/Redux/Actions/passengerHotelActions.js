@@ -3,30 +3,21 @@ import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGER_HOTEL_ERROR, CREATE_PASSENGER_HOTEL_REQUEST, CREATE_PASSENGER_HOTEL_SUCCESS, GET_PASSENGER_HOTEL_ERROR, GET_PASSENGER_HOTEL_REQUEST, GET_PASSENGER_HOTEL_SUCCESS, PASSENGER_HOTEL_DELETE_ERROR, PASSENGER_HOTEL_DELETE_REQUEST, PASSENGER_HOTEL_DELETE_SUCCESS, PASSENGER_HOTEL_DETAIL_ERROR, PASSENGER_HOTEL_DETAIL_REQUEST, PASSENGER_HOTEL_DETAIL_SUCCESS, PASSENGER_HOTEL_STATUS_ERROR, PASSENGER_HOTEL_STATUS_REQUEST, PASSENGER_HOTEL_STATUS_SUCCESS } from "../Constants/passengerHotelConstant";
 
- export const CreatePassengerHotelAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
+ export const CreatePassengerHotelAction = (queryParams, setShowModal) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGER_HOTEL_REQUEST });
     try {
         const response = await axiosInstance.post(`/dsr/passenger/hotel/create`, queryParams);
-        dispatch({ type:CREATE_PASSENGER_HOTEL_REQUEST , payload: response.data });
-
-        if (response?.data?.message === "DSR Service Hotel Created Successfully") {
+        if (response?.data?.success === true) {
+            dispatch({ type: CREATE_PASSENGER_HOTEL_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
-            // Navigate('/dashboard/hotels-services')
-            
-        } 
-        else if (response?.data?.message === "DSR Service Hotel updated Successfully") {
-            toast?.success(response?.data?.message);
-            // Navigate('/dashboard/hotels-services')
-            
-        } 
-        else {
+            setShowModal(false); 
+        } else {
+            dispatch({ type: CREATE_PASSENGER_HOTEL_ERROR, payload: response.data?.message });
             toast?.error(response?.data?.message);
+          
         }
-
-        dispatch({ type: CREATE_PASSENGER_HOTEL_SUCCESS, payload: response.data });
-
-    } catch (error) {
+            } catch (error) {
         dispatch({ type: CREATE_PASSENGER_HOTEL_ERROR, payload: error.message });
         toast.error(error?.message);
     }

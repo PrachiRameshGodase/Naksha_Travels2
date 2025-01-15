@@ -96,11 +96,11 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Service Charge</span>
                                   <h1>:</h1>
                                   <p>{data?.charges || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Retain</span>
                                   <h1>:</h1>

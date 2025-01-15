@@ -39,7 +39,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     pickup_location: null,
     drop_location: null,
     guest_ids: "",
-    supplier_id: 1,
+    supplier_id: "",
     supplier_name: null,
     // Amount
     gross_amount: null,
@@ -52,6 +52,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_amount: null,
     note: null,
     upload_image: null,
+  });
+  const [errors, setErrors] = useState({
+    vehicle_type_id: false,
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -71,6 +74,10 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
 
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   const handleChange1 = (selectedItems) => {
@@ -81,6 +88,16 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {
+      vehicle_type_id: formData?.vehicle_type_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
@@ -90,17 +107,11 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
             : formData?.guest_ids?.join(", "),
             charges: JSON.stringify(formData?.charges)
       };
-      dispatch(CreatePassengerMCarHireAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+      dispatch(CreatePassengerMCarHireAction(sendData,setShowModal))
+        
     } catch (error) {
       console.error("Error updating car hire:", error);
+    }
     }
   };
 
@@ -177,6 +188,18 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             type="masters"
                           />
                         </span>
+                        {errors?.vehicle_type_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Vechile Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>Days</label>
@@ -194,7 +217,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Pickup Location<b className="color_red">*</b>
+                          Pickup Location
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -212,7 +235,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                      
                       <div className="form_commonblock">
                         <label>
-                          Drop Location<b className="color_red">*</b>
+                          Drop Location
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -226,7 +249,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                           <label>
-                            Family Member<b className="color_red">*</b>
+                            Family Member
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -251,7 +274,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -261,7 +284,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                               ref={dropdownRef1}
                               label="Select Supplier"
                               options={vendorList?.data?.user}
-                              value={formData.supplier_id}
+                              value={formData?.supplier_id}
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"

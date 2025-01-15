@@ -3,28 +3,20 @@ import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGER_VISA_ERROR, CREATE_PASSENGER_VISA_REQUEST, CREATE_PASSENGER_VISA_SUCCESS, PASSENGER_VISA_DELETE_ERROR, PASSENGER_VISA_DELETE_REQUEST, PASSENGER_VISA_DELETE_SUCCESS } from "../Constants/passengerVisaConstants";
 
- export const CreatePassengerVisaAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
+ export const CreatePassengerVisaAction = (queryParams, setShowModal) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGER_VISA_REQUEST });
     try {
         const response = await axiosInstance.post(`/dsr/passenger/visa/create`, queryParams);
-        dispatch({ type:CREATE_PASSENGER_VISA_REQUEST , payload: response.data });
-
-        if (response?.data?.message === "DSR Service Visa Created Successfully") {
+        if (response?.data?.success === true) {
+            dispatch({ type: CREATE_PASSENGER_VISA_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
-            // Navigate('/dashboard/hotels-services')
-            
-        } 
-        else if (response?.data?.message === "DSR Service Visa updated Successfully") {
-            toast?.success(response?.data?.message);
-            // Navigate('/dashboard/hotels-services')
-            
-        } 
-        else {
+            setShowModal(false); 
+        } else {
+            dispatch({ type: CREATE_PASSENGER_VISA_ERROR, payload: response.data?.message });
             toast?.error(response?.data?.message);
+          
         }
-
-        dispatch({ type: CREATE_PASSENGER_VISA_SUCCESS, payload: response.data });
 
     } catch (error) {
         dispatch({ type: CREATE_PASSENGER_VISA_ERROR, payload: error.message });
