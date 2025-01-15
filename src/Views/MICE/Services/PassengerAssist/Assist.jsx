@@ -179,7 +179,7 @@ const Assit = ({ data, totalItems }) => {
                                 .join(",  ")}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs3">
-                              {item?.supplier_total || ""}
+                              {item?.total_amount || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span

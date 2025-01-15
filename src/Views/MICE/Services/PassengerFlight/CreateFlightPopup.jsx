@@ -68,7 +68,15 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     upload_image: null,
   });
   const [errors, setErrors] = useState({
+    travel_date:false,
+    booking_date:false,
     airline_name: false,
+    guest_ids: false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -91,17 +99,52 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems, // Update selected items array
     });
+    setErrors((prevData) => ({
+      ...prevData,
+     [name]: false,
+    }));
   };
-
+  const handleDateChange = (date, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formatDate(date),
+    }));
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+  
+      const bookingDate = new Date(formData?.booking_date);
+      const travelDate = new Date(formData?.travel_date);
+     
+      const selectedDate = new Date(date);
+  
+      if (name === "booking_date") {
+        updatedErrors.booking_date =
+          (formData?.travel_date && selectedDate > travelDate) 
+         }
+  
+      if (name === "travel_date") {
+        updatedErrors.travel_date = selectedDate < bookingDate;
+       }
+      return updatedErrors;
+    });
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
+      booking_date: formData?.booking_date ? false : true,
+      travel_date: formData?.travel_date ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -119,7 +162,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
               : formData?.guest_ids?.join(", "),
           charges: JSON.stringify(formData?.charges),
         };
-        dispatch(CreatePassengerMFlightAction(sendData, setShowModal))
+        const refreshData = {
+        mice_id: data?.id,
+        };
+        dispatch(CreatePassengerMFlightAction(sendData, setShowModal, refreshData))
          
       } catch (error) {
         console.error("Error updating flight:", error);
@@ -189,16 +235,13 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Booking Date</label>
+                        <label>Booking Date<b className="color_red">*</b></label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.booking_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                booking_date: formatDate(date),
-                              })
+                              handleDateChange(date, "booking_date")
                             }
                             name="booking_date"
                             placeholderText="Enter Date"
@@ -206,18 +249,27 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.booking_date && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Booking Date
+                            </p>
+                          )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Travel Date</label>
+                        <label>Travel Date<b className="color_red">*</b></label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.travel_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                travel_date: formatDate(date),
-                              })
+                              handleDateChange(date, "travel_date")
                             }
                             name="travel_date"
                             placeholderText="Enter Date"
@@ -225,6 +277,18 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.travel_date && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Travel Date
+                            </p>
+                          )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -294,7 +358,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Family Member
+                          Family Member<b className="color_red">*</b>
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -306,7 +370,9 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               label="Select Family Member"
                               options={customerData?.family_members}
                               value={formData.guest_ids}
-                              onChange={handleChange1}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
                               name="guest_ids"
                               defaultOption="Select Family Member"
                               setcusData={setcusData}
@@ -315,6 +381,18 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.guest_ids && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Family Member
+                          </p>
+                        )}
                         </div>
                       </div>
                     </div>
@@ -453,6 +531,9 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Fare"
+                          errors={errors}
+                          setErrors={setErrors}
+
                         />
                       </div>
                     </div>

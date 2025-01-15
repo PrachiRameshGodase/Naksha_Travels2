@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGERM_FLIGHT_ERROR, CREATE_PASSENGERM_FLIGHT_REQUEST, CREATE_PASSENGERM_FLIGHT_SUCCESS, PASSENGERM_FLIGHT_DELETE_ERROR, PASSENGERM_FLIGHT_DELETE_REQUEST, PASSENGERM_FLIGHT_DELETE_SUCCESS } from "../Constants/passengerMFlightConstants";
+import {MICEDetailsAction } from "./MICEActions";
 
- export const CreatePassengerMFlightAction = (queryParams,setShowModal) => async (dispatch) => {
+ export const CreatePassengerMFlightAction = (queryParams,setShowModal,refreshData) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGERM_FLIGHT_REQUEST });
     try {
@@ -11,6 +12,7 @@ import { CREATE_PASSENGERM_FLIGHT_ERROR, CREATE_PASSENGERM_FLIGHT_REQUEST, CREAT
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGERM_FLIGHT_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+             dispatch(MICEDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGERM_FLIGHT_ERROR, payload: response.data?.message });

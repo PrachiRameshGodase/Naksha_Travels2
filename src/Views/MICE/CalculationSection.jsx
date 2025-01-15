@@ -10,6 +10,8 @@ const CalculationSection = ({
   setFormData,
   handleChange,
   section,
+  errors,
+  setErrors,
 }) => {
   const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
@@ -50,9 +52,262 @@ const CalculationSection = ({
   ]);
 
   const [openCharges, setOpenCharges] = useState(false);
+
   const openExpenseCharges = () => {
     setOpenCharges(!openCharges);
   };
+
+  return (
+    <div className="calctotalsection">
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              {section} Price:<b className="color_red">*</b>
+            </label>
+            <input
+              type="text"
+              value={formData?.gross_amount || ""}
+              onChange={(e) => handleChange(e)}
+              placeholder="0.00"
+              name="gross_amount"
+            />
+          </div>
+          {errors?.gross_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill {section} Price
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>Supplier Service Charge:</label>
+            <input
+              type="text"
+              value={formData?.charges}
+              placeholder="0.00"
+              onChange={(e) => handleChange(e)}
+              name="charges"
+            />
+          </div>
+        </div>
+      </div> */}
+
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              Tax %:<b className="color_red">*</b>
+            </label>
+
+            <CustomDropdown13
+              options={tax_rate}
+              value={formData?.tax_percent || ""}
+              onChange={handleChange}
+              name="tax_percent"
+              type="taxRate"
+              defaultOption="Taxes"
+              className2="item3"
+            />
+          </div>
+          {errors?.tax_percent && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Select Tax
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              Tax:<b className="color_red">*</b>
+            </label>
+            <input
+              type="text"
+              value={formData?.tax_amount?.toFixed(2) || ""}
+              placeholder="0.00"
+              className="inputsfocalci465s"
+              readOnly
+            />
+          </div>
+          {/* {errors?.tax_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Select Tax
+            </p>
+          )} */}
+        </div>
+      </div>
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              <p className="edit_changes_021" onClick={openExpenseCharges}>
+                Edit and add charges
+                <span
+                  title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total."
+                  style={{ marginTop: "10px" }}
+                >
+                  {otherIcons.question_svg}
+                </span>
+              </p>
+            </label>
+          </div>
+
+          {openCharges && (
+            <ExpenseCharges
+              formValues={{ formData, setFormData, handleChange }}
+            />
+          )}
+        </div>
+      </div>
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>Supplier Total:</label>
+            <input
+              type="text"
+              value={formData?.supplier_total}
+              placeholder="0.00"
+              // onChange={(e) => handleChange(e)}
+              name="supplier_total"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              Invoice Total:<b className="color_red">*</b>
+            </label>
+            <input
+              type="text"
+              value={formData?.total_amount}
+              placeholder="0.00"
+              onChange={(e) => handleChange(e)}
+              name="total_amount"
+            />
+          </div>
+          {errors?.total_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill Invoice Total
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="calcuparentc">
+        <div id="tax-details">
+          <div className="clcsecx12s1">
+            <label>
+              Retain:<b className="color_red">*</b>
+            </label>
+            <input
+              type="text"
+              value={formData?.retain?.toFixed(2) || ""}
+              placeholder="0.00"
+              className="inputsfocalci465s"
+              readOnly
+            />
+          </div>
+          {/* {errors?.retain && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill Retain
+            </p>
+          )} */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CalculationSection;
+
+export const CalculationSection2 = ({
+  formData,
+  setFormData,
+  handleChange,
+  section,
+}) => {
+  const dispatch = useDispatch();
+  const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
+  const sumCharges = formData?.charges?.reduce(
+    (sum, item) => sum + (item?.amount || 0),
+    0
+  );
+
+  // Calculate fields based on formData
+  const calculateFields = () => {
+    const price = Number(formData?.gross_amount || 0);
+    const taxPercent = Number(formData?.tax_percent || 0);
+
+    const supplierServiceCharge = price * 0.1; // 10% of subtotal
+    const tax_amount = Number((price * (taxPercent / 100)).toFixed(2));
+    const total_amount = Number((price + tax_amount).toFixed(2));
+    // console.log("total_amount", total_amount);
+    return { supplierServiceCharge, tax_amount, total_amount };
+  };
+
+  useEffect(() => {
+    // Recalculate fields and update formData when dependencies change
+    const { tax_amount, total_amount } = calculateFields();
+    setFormData((prevData) => ({
+      ...prevData,
+      tax_amount: tax_amount.toFixed(2),
+      total_amount: total_amount.toFixed(2),
+    }));
+  }, [
+    formData.gross_amount,
+    formData.tax_percent,
+    setFormData,
+    // formData.total_amount,
+  ]);
+
+  const [openCharges, setOpenCharges] = useState(false);
+
+  const openExpenseCharges = () => {
+    setOpenCharges(!openCharges);
+  };
+
   return (
     <div className="calctotalsection">
       <div className="calcuparentc">
@@ -108,7 +363,7 @@ const CalculationSection = ({
             <label>Tax:</label>
             <input
               type="text"
-              value={formData?.tax_amount?.toFixed(2) || ""}
+              value={formData?.tax_amount || ""}
               placeholder="0.00"
               className="inputsfocalci465s"
               readOnly
@@ -116,13 +371,13 @@ const CalculationSection = ({
           </div>
         </div>
       </div>
-      <div className="calcuparentc">
+      {/* <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
-                Edit and add charges 
-                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{marginTop:"10px"}}>
+                Edit and add charges
+                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{ marginTop: "10px" }}>
                   {otherIcons.question_svg}
                 </span>
               </p>
@@ -134,21 +389,8 @@ const CalculationSection = ({
             />
           )}
         </div>
-      </div>
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Supplier Total:</label>
-            <input
-              type="text"
-              value={formData?.supplier_total}
-              placeholder="0.00"
-              // onChange={(e) => handleChange(e)}
-              name="supplier_total"
-            />
-          </div>
-        </div>
-      </div>
+      </div> */}
+
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
@@ -157,22 +399,8 @@ const CalculationSection = ({
               type="text"
               value={formData?.total_amount}
               placeholder="0.00"
-              onChange={(e) => handleChange(e)}
+              // onChange={(e) => handleChange(e)}
               name="total_amount"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Retain:</label>
-            <input
-              type="text"
-              value={formData?.retain?.toFixed(2) || ""}
-              placeholder="0.00"
-              className="inputsfocalci465s"
-              readOnly
             />
           </div>
         </div>
@@ -180,5 +408,3 @@ const CalculationSection = ({
     </div>
   );
 };
-
-export default CalculationSection;

@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGERM_INSURANCE_ERROR, CREATE_PASSENGERM_INSURANCE_REQUEST, CREATE_PASSENGERM_INSURANCE_SUCCESS, PASSENGERM_INSURANCE_DELETE_ERROR, PASSENGERM_INSURANCE_DELETE_REQUEST, PASSENGERM_INSURANCE_DELETE_SUCCESS } from "../Constants/passengerMInsuranceConstants";
+import { MICEDetailsAction } from "./MICEActions";
 
- export const CreatePassengerMInsuranceAction = (queryParams, setShowModal) => async (dispatch) => {
+ export const CreatePassengerMInsuranceAction = (queryParams, setShowModal, refreshData) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGERM_INSURANCE_REQUEST });
     try {
@@ -11,6 +12,7 @@ import { CREATE_PASSENGERM_INSURANCE_ERROR, CREATE_PASSENGERM_INSURANCE_REQUEST,
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGERM_INSURANCE_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+             dispatch(MICEDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGERM_INSURANCE_ERROR, payload: response.data?.message });

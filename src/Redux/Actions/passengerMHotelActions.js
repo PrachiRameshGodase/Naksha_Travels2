@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGERM_HOTEL_ERROR, CREATE_PASSENGERM_HOTEL_REQUEST, CREATE_PASSENGERM_HOTEL_SUCCESS, GET_PASSENGERM_HOTEL_ERROR, GET_PASSENGERM_HOTEL_REQUEST, GET_PASSENGERM_HOTEL_SUCCESS, PASSENGERM_HOTEL_DELETE_ERROR, PASSENGERM_HOTEL_DELETE_REQUEST, PASSENGERM_HOTEL_DELETE_SUCCESS, PASSENGERM_HOTEL_DETAIL_ERROR, PASSENGERM_HOTEL_DETAIL_REQUEST, PASSENGERM_HOTEL_DETAIL_SUCCESS } from "../Constants/passengerMHotelConstants";
+import { MICEDetailsAction } from "./MICEActions";
 
- export const CreatePassengerMHotelAction = (queryParams,setShowModal) => async (dispatch) => {
+ export const CreatePassengerMHotelAction = (queryParams,setShowModal, refreshData) => async (dispatch) => {
     
     dispatch({ type: CREATE_PASSENGERM_HOTEL_REQUEST });
     try {
@@ -11,6 +12,7 @@ import { CREATE_PASSENGERM_HOTEL_ERROR, CREATE_PASSENGERM_HOTEL_REQUEST, CREATE_
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGERM_HOTEL_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+            dispatch(MICEDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGERM_HOTEL_ERROR, payload: response.data?.message });

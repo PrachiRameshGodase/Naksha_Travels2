@@ -236,7 +236,7 @@ const Hotels = ({ data }) => {
                             <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.supplier_total || ""}
+                              {item?.total_amount || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}

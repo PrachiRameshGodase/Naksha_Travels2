@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGERM_ASSISTS_ERROR, CREATE_PASSENGERM_ASSISTS_REQUEST, CREATE_PASSENGERM_ASSISTS_SUCCESS, PASSENGERM_ASSISTS_DELETE_ERROR, PASSENGERM_ASSISTS_DELETE_REQUEST, PASSENGERM_ASSISTS_DELETE_SUCCESS } from "../Constants/passengerMAssistConstants";
+import { MICEDetailsAction } from "./MICEActions";
 
-export const CreatePassengerMAssistAction = (queryParams, setShowModal) => async (dispatch) => {
+export const CreatePassengerMAssistAction = (queryParams, setShowModal, refreshData) => async (dispatch) => {
     dispatch({ type: CREATE_PASSENGERM_ASSISTS_REQUEST });
     try {
         const response = await axiosInstance.post(`/mice/passenger/assits/create`, queryParams);
@@ -11,6 +12,7 @@ export const CreatePassengerMAssistAction = (queryParams, setShowModal) => async
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGERM_ASSISTS_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+            dispatch(MICEDetailsAction(refreshData))
             setShowModal(false); 
         } else {
             dispatch({ type: CREATE_PASSENGERM_ASSISTS_ERROR, payload: response.data?.message });

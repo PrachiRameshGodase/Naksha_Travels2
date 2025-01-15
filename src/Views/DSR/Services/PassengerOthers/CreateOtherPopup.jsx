@@ -62,7 +62,12 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     item_id: false,
     quantity:false,
-    price:false
+    price:false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
   const entryType = ShowMasterData("50");
 

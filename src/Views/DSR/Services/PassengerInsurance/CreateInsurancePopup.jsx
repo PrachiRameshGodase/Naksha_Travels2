@@ -70,6 +70,11 @@ const CreateInsurancePopup = ({
     passenger_insurance_id: false,
     policy_no:false,
     insurance_plan:false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
   const entryType = ShowMasterData("50");
 

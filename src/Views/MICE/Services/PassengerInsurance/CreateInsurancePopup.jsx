@@ -70,6 +70,14 @@ const CreateInsurancePopup = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
+    guest_ids:false,
+    policy_no:false,
+    insurance_plan:false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
 
   const entryType = ShowMasterData("50");
@@ -90,16 +98,28 @@ const CreateInsurancePopup = ({
       [name]: false,
     }));
   };
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems,
     });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      policy_no: formData?.policy_no ? false : true,
+      insurance_plan: formData?.insurance_plan ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -117,7 +137,10 @@ const CreateInsurancePopup = ({
             : formData?.guest_ids?.join(", "),
         charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerMInsuranceAction(sendData, setShowModal))
+      const refreshData = {
+        mice_id: data?.id,
+      };
+      dispatch(CreatePassengerMInsuranceAction(sendData, setShowModal, refreshData))
        
     } catch (error) {
       console.error("Error updating insurance:", error);
@@ -237,7 +260,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Policy No
+                          Policy No<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -247,7 +270,20 @@ const CreateInsurancePopup = ({
                             name="policy_no"
                             placeholder="Enter Policy No"
                           />
+                          
                         </span>
+                        {errors?.policy_no && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Policy No
+                            </p>
+                          )}
                       </div>
                     </div>
 
@@ -292,7 +328,7 @@ const CreateInsurancePopup = ({
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Insurance Plan
+                          Insurance Plan<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -303,13 +339,25 @@ const CreateInsurancePopup = ({
                             placeholder="Enter Insurance Plan"
                           />
                         </span>
+                        {errors?.insurance_plan && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Insurance Plan
+                            </p>
+                          )}
                       </div>
                       
                     </div>
                     <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                           <label>
-                            Family Member
+                            Family Member<b className="color_red">*</b>
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -321,7 +369,9 @@ const CreateInsurancePopup = ({
                                 label="Select Family Member"
                                 options={customerData?.family_members}
                                 value={formData.guest_ids}
-                                onChange={handleChange1}
+                                onChange={(selectedItems) =>
+                                  handleChange1(selectedItems, "guest_ids")
+                                }
                                 name="guest_ids"
                                 defaultOption="Select Family Member"
                                 setcusData={setcusData2}
@@ -330,6 +380,18 @@ const CreateInsurancePopup = ({
                                 required
                               />
                             </span>
+                            {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Family Member
+                            </p>
+                          )}
                           </div>
                         </div>
                       <div className="form_commonblock">
@@ -385,6 +447,8 @@ const CreateInsurancePopup = ({
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Insurance"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                       </div>
                     </div>

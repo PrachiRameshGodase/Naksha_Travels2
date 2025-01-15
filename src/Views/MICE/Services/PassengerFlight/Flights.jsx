@@ -223,7 +223,7 @@ const Flights = ({ data, totalItems }) => {
                             <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.supplier_total || ""}
+                              {item?.total_amount || ""}
                             </div>
                             <div
                               className="table-cellx12 quotiosalinvlisxs6"

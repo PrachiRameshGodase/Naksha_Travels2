@@ -55,6 +55,14 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [errors, setErrors] = useState({
     vehicle_type_id: false,
+     pickup_location:false,
+    drop_location:false,
+    guest_ids: false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -80,16 +88,28 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems,
     });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let newErrors = {
       vehicle_type_id: formData?.vehicle_type_id ? false : true,
+      pickup_location: formData?.pickup_location ? false : true,
+      drop_location: formData?.drop_location ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -107,7 +127,10 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
             : formData?.guest_ids?.join(", "),
             charges: JSON.stringify(formData?.charges)
       };
-      dispatch(CreatePassengerMCarHireAction(sendData,setShowModal))
+      const refreshData = {
+        mice_id: data?.id,
+      };
+      dispatch(CreatePassengerMCarHireAction(sendData,setShowModal, refreshData))
         
     } catch (error) {
       console.error("Error updating car hire:", error);
@@ -217,7 +240,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Pickup Location
+                          Pickup Location<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -228,6 +251,18 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholder="Enter Pickup Location"
                           />
                         </span>
+                        {errors?.pickup_location && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Pickup Location
+                            </p>
+                          )}
                       </div>
                     </div>
 
@@ -235,7 +270,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                      
                       <div className="form_commonblock">
                         <label>
-                          Drop Location
+                          Drop Location<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -246,10 +281,22 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholder="Enter Drop Location"
                           />
                         </span>
+                        {errors?.drop_location && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Drop Location
+                            </p>
+                          )}
                       </div>
                       <div className="form_commonblock">
                           <label>
-                            Family Member
+                            Family Member<b className="color_red">*</b>
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -261,7 +308,9 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 label="Select Family Member"
                                 options={customerData?.family_members}
                                 value={formData.guest_ids}
-                                onChange={handleChange1}
+                                onChange={(selectedItems) =>
+                                  handleChange1(selectedItems, "guest_ids")
+                                }
                                 name="guest_ids"
                                 defaultOption="Select Family Member"
                                 setcusData={setcusData}
@@ -270,6 +319,18 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 required
                               />
                             </span>
+                            {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
                           </div>
                         </div>
                       <div className="form_commonblock">
@@ -330,6 +391,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Carhire"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                       </div>
                     </div>

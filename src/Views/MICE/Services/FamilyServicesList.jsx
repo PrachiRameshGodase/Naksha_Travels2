@@ -28,14 +28,14 @@ const FamilyServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerMDetail?.data?.data || {}
   );
-  console.log("passengerData", passengerData);
-  const totalHotels = passengerData?.mice_hotel?.length || "";
-  const totalVisas = passengerData?.mice_visa?.length || "";
-  const totalFlights = passengerData?.mice_flight?.length || "";
-  const totalCarHires = passengerData?.mice_car_hire?.length || "";
-  const totalAssist = passengerData?.mice_assist?.length || "";
-  const totalInsurance = passengerData?.mice_insurance?.length || "";
-  const totalOthers = passengerData?.mice_others?.length || "";
+  
+  const totalHotels = passengerData?.mice_hotel?.length || 0;
+  const totalVisas = passengerData?.mice_visa?.length || 0;
+  const totalFlights = passengerData?.mice_flight?.length || 0;
+  const totalCarHires = passengerData?.mice_car_hire?.length || 0;
+  const totalAssist = passengerData?.mice_assist?.length || 0;
+  const totalInsurance = passengerData?.mice_insurance?.length || 0;
+  const totalOthers = passengerData?.mice_others?.length || 0;
 
   // const servicesList = ShowMasterData("48");
 
@@ -201,10 +201,10 @@ const FamilyServicesList = () => {
             </Link>
           </div>
         </div>
-        <div id="Anotherbox" style={{height:"20px",}}>
-          <div id="leftareax12">
-            <p style={{fontWeight:500}}>MICE No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.mice?.mice_no || "-"}</span></p>
-            <p style={{fontWeight:500, marginLeft:"20px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.passenger?.display_name || "-"}</span></p>
+        <div id="Anotherbox"  style={{height:"20px",background:"rgb(219 218 231 / 35%)"}}>
+          <div id="leftareax12" style={{width:"100%"}}>
+            <p style={{fontWeight:500,  width:"212px"}}>MICE No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.mice?.mice_no || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px", width:"312px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.passenger?.display_name || "-"}</span></p>
             <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.mice_passenger?.passenger?.email || "-"}</span></p>
           </div>
         </div>
@@ -217,7 +217,7 @@ const FamilyServicesList = () => {
                 }`}
                 onClick={() => setSwitchCusData(`${item?.label || ""}`)}
               >
-                {item?.label || ""} {item?.total || ""}
+                {item?.label || ""} ({item?.total || 0})
               </button>
             </div>
           ))}

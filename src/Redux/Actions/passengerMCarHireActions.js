@@ -2,8 +2,9 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_PASSENGERM_CARHIRE_ERROR, CREATE_PASSENGERM_CARHIRE_REQUEST, CREATE_PASSENGERM_CARHIRE_SUCCESS, PASSENGERM_CARHIRE_DELETE_ERROR, PASSENGERM_CARHIRE_DELETE_REQUEST, PASSENGERM_CARHIRE_DELETE_SUCCESS } from "../Constants/passengerMCarHireConstants";
+import { MICEDetailsAction } from "./MICEActions";
 
-export const CreatePassengerMCarHireAction = (queryParams, setShowModal) => async (dispatch) => {
+export const CreatePassengerMCarHireAction = (queryParams, setShowModal, refreshData) => async (dispatch) => {
 
     dispatch({ type: CREATE_PASSENGERM_CARHIRE_REQUEST });
     try {
@@ -11,6 +12,7 @@ export const CreatePassengerMCarHireAction = (queryParams, setShowModal) => asyn
         if (response?.data?.success === true) {
             dispatch({ type: CREATE_PASSENGERM_CARHIRE_SUCCESS, payload: response.data });
             toast?.success(response?.data?.message);
+            dispatch(MICEDetailsAction(refreshData))
             setShowModal(false);
         } else {
             dispatch({ type: CREATE_PASSENGERM_CARHIRE_ERROR, payload: response.data?.message });
