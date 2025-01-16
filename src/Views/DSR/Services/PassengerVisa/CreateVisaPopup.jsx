@@ -33,6 +33,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
+
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -405,8 +407,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               }
                               name="guest_ids"
                               defaultOption="Select Guest"
-                              setcusData={setcusData}
-                              cusData={cusData}
+                              setcusData={setcusData2}
+                              cusData={cusData2}
                               type="vendor"
                               required
                             />
@@ -487,8 +489,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
@@ -499,6 +499,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           component="purchase"
                         />
                       </div>
+                    </div>
+                    <div className="f1wrapofcreqx1">
+                    
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
