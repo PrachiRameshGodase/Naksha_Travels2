@@ -49,21 +49,13 @@ const ItemSelect = ({
   invoice_section,
 
 }) => {
-<<<<<<< HEAD
-=======
-  console.log("itemErrors", itemErrors);
-  console.log("formData?.items", formData?.items);
->>>>>>> f0dee809fe97c8d50d7b9f7b424e9d777c876124
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbole = activeOrg_details?.symbol;
-<<<<<<< HEAD
   // console.log("currencySymbole", currencySymbole)
-=======
->>>>>>> f0dee809fe97c8d50d7b9f7b424e9d777c876124
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
