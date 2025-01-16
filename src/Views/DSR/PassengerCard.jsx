@@ -116,11 +116,12 @@ const PassengerCard = ({ passengers, onDelete }) => {
           <th>Name</th>
           <th>Email</th>
           <th>Mobile</th>
-          <th>Services</th>
+          <th style={{ width: "120px" }}>Services</th>
           <th>Service Total</th>
           <th>Action</th>
         </tr>
       </thead>
+
       <tbody>
         {passengers?.passengers?.length > 0 ? (
           passengers?.passengers?.map((passenger, index) => (
@@ -129,7 +130,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
               <td>{passenger?.passenger?.mobile_no || ""}</td>
-              <td style={{ width: "120px" }}>
+              <td>
                 <CustomDropdown28
                   label="Services"
                   options={servicesList}
@@ -137,6 +138,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   onChange={(e) => handleServiceChange(e, passenger?.id)}
                   name="service"
                   defaultOption="Select Service"
+                  extracssclassforscjkls="extracssclassforscjklsitem"
                   type="service"
                 />
               </td>

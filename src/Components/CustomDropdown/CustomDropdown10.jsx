@@ -39,11 +39,11 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   };
 
   const fullName = options?.find(account => account?.id == value);
+  console.log("name", name)
 
   useEffect(() => {
     const parsedPayload = parseJSONofString(itemPayloads);
     const parsedPayload1 = parseJSONofString(itemPayloads1);
-
     // Check if API call is necessary
     if (
       isOpen && // Ensure modal or component is open
@@ -60,13 +60,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     ) {
       dispatch(vendorsLists({ ...sendData }));
     }
-    if (
-      isOpen && // Ensure modal or component is open
-      name === "passenger_insurance_id" &&
-      (parsedPayload?.search || !customList?.data)
-    ) {
-      dispatch(customersList({ ...sendData }));
-    }
+
     setSearchTerm("");
   }, [isOpen, dispatch]);
 

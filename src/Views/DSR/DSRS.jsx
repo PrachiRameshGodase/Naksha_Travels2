@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import PaginationComponent from "../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
@@ -18,6 +18,7 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { clearDsrState, DSRListActions } from "../../Redux/Actions/DSRActions";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
 const DSRS = () => {
   const navigate = useNavigate();
@@ -78,58 +79,32 @@ const DSRS = () => {
   };
   //Search/////////////////////////////////////////////////////////////
 
-  // serch,filterS and sortby////////////////////////////////////
-
-  const fetchDSR = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && {
-          sort_by: selectedSortBy,
-          sort_order: sortOrder,
+  //fetch all data
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    fy: localStorage.getItem("FinancialYear"),
+    noofrec: itemsPerPage,
+    currentpage: currentPage,
+    ...(selectedSortBy !== "Normal" && {
+      sort_by: selectedSortBy,
+      sort_order: sortOrder,
+    }),
+    ...(status && {
+      status: status == "expiry_date" ? 6 : status,
+      ...(status == "expiry_date" && { expiry_date: 1 }),
+    }),
+    ...(searchTermFromChild && { search: searchTermFromChild }),
+    ...(clearFilter === false && {
+      ...(specificDate
+        ? { custom_date: formatDate(new Date(specificDate)) }
+        : dateRange[0]?.startDate &&
+        dateRange[0]?.endDate && {
+          from_date: formatDate(new Date(dateRange[0].startDate)),
+          to_date: formatDate(new Date(dateRange[0].endDate)),
         }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
-        }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
-        }),
-      };
+    }),
+  }), [searchTrigger]);
 
-      dispatch(DSRListActions(sendData));
-    } catch (error) {
-      console.error("Error fetching DSR:", error);
-    }
-  }, [searchTrigger]);
-
-  useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchDSR();
-    // }
-  }, [searchTrigger]);
+  useFetchApiData(DSRListActions, payloadGenerator, [searchTrigger]);
 
   const handleRowClicked = (quotation) => {
     navigate(`/dashboard/dsr-details?id=${quotation.id}`);
@@ -168,7 +143,7 @@ const DSRS = () => {
   return (
     <>
       <TopLoadbar />
-      {DSRListData?.loading && <MainScreenFreezeLoader />}
+      {/* {DSRListData?.loading && <MainScreenFreezeLoader />} */}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -290,11 +265,10 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -343,15 +317,15 @@ const DSRS = () => {
                                   item?.is_invoiced == "0"
                                     ? "draft"
                                     : item?.is_invoiced == "1"
-                                    ? "invoiced"
-                                    : ""
+                                      ? "invoiced"
+                                      : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                  ? "Not Invoiced"
-                                  : ""}
+                                    ? "Not Invoiced"
+                                    : ""}
                               </p>
                             </div>
                           </div>

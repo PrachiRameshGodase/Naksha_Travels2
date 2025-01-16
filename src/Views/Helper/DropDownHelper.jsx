@@ -17,11 +17,11 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
 
     const handleSelect = (option) => {
         if (option.active !== "0") {
-       
+
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code :type === "currency2" ? `${option?.country} (${option?.code})`: type === "rate" ? option : type === "masters_salutation" ? option?.label: type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "currency2" ? `${option?.country} (${option?.code})` : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
 
                 }
             });
@@ -52,7 +52,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             clearTimeout(debounceTimeoutRef.current); // Clear previous timeout
         }
         debounceTimeoutRef.current = setTimeout(() => {
-            DropdownSearchHealperfunctions(searchTerm, type, dispatch, productType);
+            DropdownSearchHealperfunctions(searchTerm, type, name, dispatch, productType);
         }, 800);
         // }
     };

@@ -6,7 +6,7 @@ import { categoryList, itemLists, vendorsLists } from '../../Redux/Actions/listA
 import { sendData } from './HelperFunctions';
 
 
-export const DropdownSearchHealperfunctions = (searchTerm, type, dispatch, productType) => {
+export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch, productType) => {
 
     if (type === "select_item") {
         dispatch(itemLists({ search: searchTerm, ...sendData, ...productType }));
@@ -14,14 +14,19 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, dispatch, produ
     else if (type === "select_item2") {
         dispatch(flightListAction({ search: searchTerm, ...sendData, ...productType }));
     }
+
     else if (type === "vendor" || type === "vendor_charges") {
-        dispatch(customersList({ ...sendData, search: searchTerm }));
-        dispatch(vendorsLists({ ...sendData, search: searchTerm }));
+        if (name === "customer_id" || "guest_ids") {
+            dispatch(customersList({ ...sendData, search: searchTerm }));
+        } else if (name === "vendor_id") {
+            dispatch(vendorsLists({ ...sendData, search: searchTerm }));
+        }
     }
 
     else if (type === "categories") {
         dispatch(categoryList({ search: searchTerm, status: "1", fy: localStorage.getItem("FinancialYear"), }));
     }
+
     else if (type === "account") {
         dispatch(getAccountTypes({ search: searchTerm, fy: localStorage.getItem("FinancialYear"), }));
     }

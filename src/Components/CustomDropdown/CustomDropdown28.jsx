@@ -23,11 +23,11 @@ const CustomDropdown28 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  // if (type === "masters") {
-  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
-  //     option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  //   );
-  // }
+  if (type === "masters") {
+    options = searchTerm?.length === 0 ? options : options?.filter(option =>
+      option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
+  }
 
 
   return (

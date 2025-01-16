@@ -993,6 +993,7 @@ const ItemSelect = ({
                 <RxCross2 />
               </span>
               <h2>Add Services</h2>
+
               <div className="midpopusec12x" style={{ minHeight: "300px" }}>
                 <CustomDropdown28
                   label="Services"
