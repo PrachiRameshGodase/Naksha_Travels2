@@ -22,6 +22,7 @@ const NumericInput = ({ value, onChange, name, placeholder, ...rest }) => {
                 }
             }}
             {...rest}
+            style={{ width: "100%" }}
         />
 
 

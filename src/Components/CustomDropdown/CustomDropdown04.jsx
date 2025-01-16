@@ -14,7 +14,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     optionRefs,
     handleKeyDown,
     handleSelect,
-    focusedOptionIndex
+    focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type);
 
   const combinedRef = (node) => {
@@ -36,7 +36,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
         onClick={types !== "Service" ? () => setIsOpen(!isOpen) : undefined}
-        className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "90px", cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
+        className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
 
         {(type === "masters_salutation" || type === "masters2" || type === "item_type") ?
           <>
@@ -65,6 +65,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="dropdown-search"
             ref={inputRef}
+
           />
           <div className="dropdownoptoscroll">
             {options?.map((option, index) => (

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
-const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls ,className2}) => {
+const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, types }) => {
 
   const {
     isOpen,
@@ -18,26 +18,11 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
     focusedOptionIndex
   } = DropDownHelper(options, onChange, name, type);
 
-
-
-  // const handleSelect = (option) => {
-  //   onChange({ target: { name, value: option?.tax_percentge } });  // using `labelid` as the value
-  //   setIsOpen(false);
-  //   setSearchTerm(''); // Reset search term on select
-  // };
-
-  // if (type === "taxRate") {
-  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
-  //     option?.tax_percentge?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  //   );
-  // }
-
   return (
-    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "items" ? { minWidth: "10%", backgroundColor:"#f6f8fa", borderRadius:"5px" } :className2 === "item3" ? { minWidth: "185px", backgroundColor:"white", borderRadius:"5px" }: {}}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}  style={className2 === "items" ? {  borderRadius:"5px", paddingLeft:"12px" } : {}}>
+    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown}>
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
         <svg
-        style={className2 === "items" ? { marginRight:"4px"} : {}}
           width="13"
           height="7"
           viewBox="0 0 13 7"

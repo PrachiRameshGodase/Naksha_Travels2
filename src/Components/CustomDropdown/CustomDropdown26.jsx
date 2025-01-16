@@ -19,6 +19,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     extracssclassforscjkls,
     className,
     itemData,
+
   } = props;
 
   const nextFocusRef = useRef(null);
@@ -90,8 +91,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     >
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={"dropdown-selected " + (value ? " filledcolorIn" : "")}
-        style={{ width: "314px", top: "110%" }}
+        className={"dropdown-select" + (value ? " filledcolorIn" : "")}
+      // style={{ width: "314px", top: "110%" }}
       >
         <textarea
           type="text"
@@ -100,11 +101,11 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           onChange={handleInputChange}
           onBlur={handleInputBlur}
           style={{
-            minWidth: "321px",
-            height: "30px",
-            margin: "10px -13px",
-            height: "60px",
-            border: "1px solid #ebdada",
+            width: "100%",
+            // height: "30px",
+            // margin: "10px -13px",
+            // height: "60px",
+            border: "none",
             resize: "none",
           }}
           className="dropdown-search customdropdownx12s86 custom-scrollbar"
