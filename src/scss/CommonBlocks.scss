@@ -1371,7 +1371,7 @@
     border: 1px solid $stroke;
     position: relative;
     zoom: 0.89;
-    height: 800px;
+    height: 542px;
     // overflow: hidden;
 
     .dsr_x012 {
@@ -1514,7 +1514,12 @@
       }
 
       .other_passangers_detils_z01 {
-        margin-top: 36px;
+        display: flex;
+            justify-content: space-between;
+            background: #8080800d;
+            height: 54px;
+            align-items: center;
+            margin-top: 151px;
 
         .pasanggers_details_table_z02 {
           border: solid #d0d7de40;
@@ -1528,12 +1533,12 @@
 
         .add_passangers_001 {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          padding: 19px 0;
+          width: 386px;
+          margin-left: 16px;
 
           h2 {
-            font-weight: 300;
+            font-weight: 500;
           }
 
           p {
@@ -1556,6 +1561,51 @@
   }
 
   // dsr summary design
+}
+
+.other_passangers_detils_z01 {
+  display: flex;
+      justify-content: space-between;
+      background: #8080800d;
+      height: 54px;
+      align-items: center;
+      margin-top: 65px;
+
+  .pasanggers_details_table_z02 {
+    border: solid #d0d7de40;
+    border-width: 1px 1px 0px 1px;
+    border-radius: 5px;
+  }
+
+  .table_head_z02_ {
+    background-color: #FAF6FF;
+  }
+
+  .add_passangers_001 {
+    display: flex;
+    justify-content: space-between;
+    width: 386px;
+    margin-left: 16px;
+    font-size: 15px;
+
+    h2 {
+      font-weight: 500;
+    }
+
+    p {
+      cursor: pointer;
+      color: $greenbackbutton;
+      text-decoration: underline;
+    }
+  }
+
+  .table_head_z02 {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    border-bottom: 2px solid #d0d7de40;
+    padding: 18px 9px;
+  }
 }
 
 #expense_charges_3223 {

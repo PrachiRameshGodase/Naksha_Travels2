@@ -2,6 +2,7 @@ import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
+import { currencySymbol } from "../Helper/HelperFunctions";
 
 const DSRSummary = ({ customerData }) => {
   return (
@@ -543,7 +544,7 @@ const DSRSummary = ({ customerData }) => {
         </div>
 
         <div className="user_detail_id_x002">
-        <p
+          <p
             className={
               customerData?.is_invoiced == "0"
                 ? "draft"
@@ -551,7 +552,12 @@ const DSRSummary = ({ customerData }) => {
                 ? "invoiced2"
                 : ""
             }
-            style={{ cursor: "pointer", padding: "5px 12px", marginTop:"-32px", marginBottom:"10px" }}
+            style={{
+              cursor: "pointer",
+              padding: "5px 12px",
+              marginTop: "-32px",
+              marginBottom: "10px",
+            }}
           >
             {customerData?.is_invoiced == "1"
               ? "Invoiced"
@@ -560,7 +566,6 @@ const DSRSummary = ({ customerData }) => {
               : ""}
           </p>
           <p>{customerData?.dsr_no || ""}</p>
-         
         </div>
       </div>
 
@@ -584,30 +589,35 @@ const DSRSummary = ({ customerData }) => {
             <p className="x002">{otherIcons?.main_currency_icon} Currency</p>
             <p className="x1002">{customerData?.currency}</p>
           </div>
+          {/* {customerData?.passengers?.map((item, index) => (
+              <div className="x001" key={index}>
+                
+                <p className="x002"> Service Total</p>
+                <p className="x1002">{item?.service_total || 0}</p>
+               
+              </div>
+            ))} */}
         </div>
 
         {/* dsr summary user passangers details */}
-        {/* <div className="other_passangers_detils_z01">
-          <div className="other_passangers_detils_z03">
-            <div className="add_passangers_001">
-              <h2>Added Passangers</h2>
-            </div>
-            
-              <div className="pasanggers_details_table_z02" >
-                <div className="table_head_z02 table_head_z02_">
-                  <p>Name</p>
-                  <p>Services</p>
-                </div>
-                {customerData?.passengers?.map((item, index) => (
-                <div className="table_head_z02 " key={index}>
-                  <p>{item?.passenger?.display_name ||""}</p>
-                  <p onClick={()=>{navigate(`/dashboard/serviceslist?id=${item?.id}`)}}>ServiceList</p>
-                </div>
-                    ))}
-              </div>
-        
+      </div>
+      <div className="other_passangers_detils_z01">
+        <div className="other_passangers_detils_z03">
+          {/* {customerData?.passengers?.map((item, index) => ( */}
+          <div className="add_passangers_001">
+            <h2>Service Total:({currencySymbol})</h2>
+
+            <h2>
+              {customerData?.passengers
+                ?.reduce(
+                  (acc, item) => acc + parseFloat(item?.service_total || 0),
+                  0
+                )
+                .toFixed(2)}
+            </h2>
           </div>
-        </div> */}
+          {/* ))} */}
+        </div>
       </div>
     </div>
   );

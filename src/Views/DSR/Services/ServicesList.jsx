@@ -202,7 +202,7 @@ const ServicesList = () => {
         <div id="Anotherbox" style={{height:"20px",background:"rgb(219 218 231 / 35%)"}}>
           <div id="leftareax12" style={{width:"100%"}}>
             <p style={{fontWeight:500, width:"200px"}}>DSR No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.dsr?.dsr_no || "-"}</span></p>
-            <p style={{fontWeight:500, marginLeft:"20px", width:"212px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px", width:"312px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
             <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.email || "-"}</span></p>
           </div>
         </div>
