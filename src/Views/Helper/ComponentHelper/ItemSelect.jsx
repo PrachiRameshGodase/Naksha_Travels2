@@ -363,6 +363,20 @@ const ItemSelect = ({
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   const handleItemAdd = () => {
+
+    // if type is not selected or undedined then we can not add new row
+
+    const isTypeNull =
+      formData?.items?.length > 0 &&
+      formData.items[formData.items.length - 1]?.type !== "" &&
+      formData.items[formData.items.length - 1]?.item_name !== "";
+    console.log("is type null", isTypeNull)
+    console.log(formData?.items)
+    if (!isTypeNull) {
+      toast.error("Please select the type and valid item name of above row");
+      return;
+    }
+
     setSearchTrigger((prev) => prev + 1);
     const newItems = [
       ...formData.items,
@@ -445,7 +459,17 @@ const ItemSelect = ({
     setActivePopup({ popupType: value });
   };
 
+
+  // add services function
   const handleAddService = (name, data) => {
+
+    // if type is not selected or undedined then we can not add new row
+    const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name); // 
+    if (isTypeNull) {
+      toast.error("Please select the type and valid item name of above row");
+      return;
+    }
+
     const itemName =
       name === "Hotel"
         ? data?.hotel_name
@@ -549,11 +573,10 @@ const ItemSelect = ({
     <>
       {renderPopup()}
 
-
-
       <div className="f1wrpofcreqsx2" id={invoice_section}>
         {/* Table Started */}
         <table className="itemTable_01">
+
           <thead className="table_head_item_02">
             <tr className="table_head_item_02_row">
               <th className="table_column_item item_table_width_01">
@@ -577,10 +600,12 @@ const ItemSelect = ({
               {/* <th>Actions</th> */}
             </tr>
           </thead>
+
           <tbody className="table_head_item_02">
             {formData?.items?.map((item, index) => (
               <React.Fragment key={index}>
                 <tr className="table_head_item_02_row">
+
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
                     {item?.items_data?.service_name === "Hotel" ? (
@@ -678,6 +703,7 @@ const ItemSelect = ({
                         type="item_type"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         style={{ fontSize: "11px" }}
+                        types={item?.type}
                       />
                     </span>
                   </td>
@@ -731,6 +757,7 @@ const ItemSelect = ({
                     />
                   </td>
 
+
                   {/* Unit Dropdown */}
                   <td className="table_column_item item_table_text_transform">
                     <CustomDropdown04
@@ -748,7 +775,6 @@ const ItemSelect = ({
                       defaultOption="Units"
                       type="masters"
                       extracssclassforscjkls="extracssclassforscjklsitem"
-                      className2="item"
                       types={item?.type}
                     />
                   </td>
