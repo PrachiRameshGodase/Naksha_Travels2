@@ -128,6 +128,10 @@ const Insurances = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     Family Member
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.refrence_svg}
+                   Total Amount
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Action
@@ -187,6 +191,9 @@ const Insurances = ({ data, totalItems }) => {
                                 ?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
+                              {item?.total_amount || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(quotation)}

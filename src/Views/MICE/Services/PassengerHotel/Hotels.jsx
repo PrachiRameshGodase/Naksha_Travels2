@@ -126,10 +126,10 @@ const Hotels = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Family Member
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Occupancy
-                  </div>
+                  </div> */}
                   {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Meal Plan
@@ -141,6 +141,10 @@ const Hotels = ({ data }) => {
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Checkout Date
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Total Amount
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -201,14 +205,14 @@ const Hotels = ({ data }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             </div>
-                            <div
+                            {/* <div
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               <ShowMastersValue
                                 type="36"
                                 id={item?.occupancy_id}
                               />
-                            </div>
+                            </div> */}
                             {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
@@ -228,6 +232,11 @@ const Hotels = ({ data }) => {
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {formatDate3(item?.check_out_date) || ""}
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.total_amount || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}

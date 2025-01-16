@@ -16,15 +16,17 @@ import PassengerCarHireDetails from "./PassengerCarHireDetails";
 
 const CarHires = ({ data, totalItems }) => {
   const dispatch = useDispatch();
-  
+
   const itemId = new URLSearchParams(location.search).get("id");
-  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data || {});
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
- //logic for checkBox...
+  //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const handleCheckboxChange = (rowId) => {
@@ -114,10 +116,15 @@ const CarHires = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     Dropdown Location
                   </div>
+
                   <div className="table-cellx12 quotiosalinvlisxs3">
-                                      {otherIcons?.refrence_svg}
-                                      Family Member
-                                    </div>
+                    {otherIcons?.refrence_svg}
+                    Family Member
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons?.refrence_svg}
+                    Total Amount
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Actions
@@ -150,33 +157,26 @@ const CarHires = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               <ShowMastersValue
                                 type="41"
                                 id={item?.vehicle_type_id || ""}
                               />
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.days || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.pickup_location || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.drop_location || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
-                              title={item?.guests?.map((data) => data?.display_name)
+                              title={item?.guests
+                                ?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
                             >
@@ -185,9 +185,10 @@ const CarHires = ({ data, totalItems }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs4">
+                              {item?.total_amount || ""}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span
                                 style={{ cursor: "pointer", color: "red" }}
                                 onClick={() => handleDeleteCarHire(item)}

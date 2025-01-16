@@ -72,6 +72,19 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [errors, setErrors] = useState({
     hotel_id: false,
+    room_id: false,
+    occupancy_id: false,
+    meal_id: false,
+    bed: false,
+    guest_ids: false,
+    booking_date: false,
+    chec_out_date: false,
+    check_in_date: false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
   });
 
   const [imgLoader, setImgeLoader] = useState("");
@@ -116,16 +129,66 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems,
+    });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
+  };
+  const handleDateChange = (date, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formatDate(date),
+    }));
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+  
+      const bookingDate = new Date(formData?.booking_date);
+      const checkInDate = new Date(formData?.check_in_date);
+      const checkOutDate = new Date(formData?.chec_out_date);
+      const selectedDate = new Date(date);
+  
+      if (name === "booking_date") {
+        updatedErrors.booking_date =
+          (formData?.check_in_date && selectedDate > checkInDate) ||
+          (formData?.chec_out_date && selectedDate > checkOutDate);
+      }
+  
+      if (name === "check_in_date") {
+        updatedErrors.check_in_date = selectedDate < bookingDate;
+        updatedErrors.chec_out_date =
+          formData?.chec_out_date && selectedDate >= checkOutDate;
+      }
+  
+      if (name === "chec_out_date") {
+        updatedErrors.chec_out_date =
+          selectedDate < bookingDate || selectedDate < checkInDate;
+      }
+  
+      return updatedErrors;
     });
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       hotel_id: formData?.hotel_id ? false : true,
+      room_id: formData?.room_id ? false : true,
+      occupancy_id: formData?.occupancy_id ? false : true,
+      meal_id: formData?.meal_id ? false : true,
+      bed: formData?.bed ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      booking_date: formData?.booking_date ? false : true,
+      chec_out_date: formData?.chec_out_date ? false : true,
+      check_in_date: formData?.check_in_date ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -143,15 +206,11 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
               : formData?.guest_ids?.join(", "),
           charges: JSON.stringify(formData?.charges),
         };
-        dispatch(CreatePassengerMHotelAction(sendData))
-          .then((response) => {
-            // if (response?.success === true) {
-            setShowModal(false);
-            // }
-          })
-          .catch((error) => {
-            console.error("Error during dispatch:", error);
-          });
+        const refreshData = {
+          mice_id: data?.id,
+        };
+        dispatch(CreatePassengerMHotelAction(sendData, setShowModal, refreshData))
+        
       } catch (error) {
         console.error("Error updating hotel:", error);
       }
@@ -281,6 +340,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.room_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Room
+                          </p>
+                        )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -299,6 +370,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               type="masters"
                             />
                           </span>
+                          {errors?.occupancy_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Occupancy
+                          </p>
+                        )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
@@ -318,6 +401,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               type="masters"
                             />
                           </span>
+                          {errors?.meal_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Meal
+                          </p>
+                        )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -335,6 +430,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               type="masters"
                             />
                           </span>
+                          {errors?.bed && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Bed
+                          </p>
+                        )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -350,7 +457,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 label="Select Family Member"
                                 options={customerData?.family_members}
                                 value={formData.guest_ids}
-                                onChange={handleChange1}
+                                onChange={(selectedItems) =>
+                                  handleChange1(selectedItems, "guest_ids")
+                                }
                                 name="guest_ids"
                                 defaultOption="Select Family Member"
                                 setcusData={setcusData}
@@ -364,16 +473,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock ">
-                          <label>Booking Date</label>
+                          <label>Booking Date<b className="color_red">*</b></label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
                               selected={formData?.booking_date}
                               onChange={(date) =>
-                                setFormData({
-                                  ...formData,
-                                  booking_date: formatDate(date),
-                                })
+                                handleDateChange(date, "booking_date")
                               }
                               name="booking_date"
                               placeholderText="Enter Date"
@@ -381,18 +487,27 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               autoComplete="off"
                             />
                           </span>
+                          {errors?.booking_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Booking Date
+                          </p>
+                        )}
                         </div>
                         <div className="form_commonblock ">
-                          <label>Checkin Date</label>
+                          <label>Checkin Date<b className="color_red">*</b></label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
                               selected={formData?.check_in_date}
                               onChange={(date) =>
-                                setFormData({
-                                  ...formData,
-                                  check_in_date: formatDate(date),
-                                })
+                                handleDateChange(date, "check_in_date")
                               }
                               name="check_in_date"
                               placeholderText="Enter Date"
@@ -400,18 +515,27 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               autoComplete="off"
                             />
                           </span>
+                          {errors?.check_in_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Check In Date
+                          </p>
+                        )}
                         </div>
                         <div className="form_commonblock ">
-                          <label>Checkout Date</label>
+                          <label>Checkout Date<b className="color_red">*</b></label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
                               selected={formData?.chec_out_date}
                               onChange={(date) =>
-                                setFormData({
-                                  ...formData,
-                                  chec_out_date: formatDate(date),
-                                })
+                                handleDateChange(date, "chec_out_date")
                               }
                               name="chec_out_date"
                               placeholderText="Enter Date"
@@ -419,12 +543,24 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               autoComplete="off"
                             />
                           </span>
+                          {errors?.chec_out_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Check Out Date
+                          </p>
+                        )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
                           <label>
-                            Supplier<b className="color_red">*</b>
+                            Supplier
                           </label>
                           <div id="sepcifixspanflex">
                             <span id="">
@@ -495,6 +631,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Hotel"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                       </div>
                     </div>

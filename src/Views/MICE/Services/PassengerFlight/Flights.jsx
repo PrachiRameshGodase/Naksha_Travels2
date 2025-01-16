@@ -129,9 +129,13 @@ const Flights = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     PRN No
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs5">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs5">
                     {otherIcons?.status_svg}
                     Route
+                  </div> */}
+                  <div className="table-cellx12 quotiosalinvlisxs5">
+                    {otherIcons?.status_svg}
+                    Total Amount
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -211,12 +215,16 @@ const Flights = ({ data, totalItems }) => {
                             >
                               {item?.prn_no || ""}
                             </div>
-                            <div
+                            {/* <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.route || ""}
+                            </div> */}
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {item?.total_amount || ""}
                             </div>
-
                             <div
                               className="table-cellx12 quotiosalinvlisxs6"
                             >

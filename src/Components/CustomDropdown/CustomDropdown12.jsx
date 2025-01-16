@@ -203,7 +203,7 @@ export const CustomDropdown012 = ({
       </div>
       {isOpen && (
         <div className="dropdown-options">
-          <RiSearch2Line id="newsvgsearchicox2" />
+          {/* <RiSearch2Line id="newsvgsearchicox2" /> */}
           <input
             type="text"
             placeholder="Search..."

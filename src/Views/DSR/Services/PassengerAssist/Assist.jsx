@@ -114,10 +114,10 @@ const Assit = ({ data, totalItems }) => {
                     No Of Persons
                   </div>
 
-                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
+                  <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
-                    Price
-                  </div> */}
+                    Total Amount
+                  </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -166,6 +166,11 @@ const Assit = ({ data, totalItems }) => {
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               {item?.no_of_persons || ""}
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {item?.total_amount || ""}
                             </div>
 
                             <div

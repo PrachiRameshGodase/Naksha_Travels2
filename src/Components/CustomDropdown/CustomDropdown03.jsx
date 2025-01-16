@@ -191,7 +191,7 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
     dropdownRef.current = node;
     if (ref) ref.current = node;
   };
-  console.log("value", value)
+  
   return (
     <div
       tabIndex="0"

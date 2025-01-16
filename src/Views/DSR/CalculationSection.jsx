@@ -10,6 +10,8 @@ const CalculationSection = ({
   setFormData,
   handleChange,
   section,
+  errors,
+  setErrors,
 }) => {
   const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
@@ -60,7 +62,9 @@ const CalculationSection = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>{section} Price:</label>
+            <label>
+              {section} Price:<b className="color_red">*</b>
+            </label>
             <input
               type="text"
               value={formData?.gross_amount || ""}
@@ -69,6 +73,18 @@ const CalculationSection = ({
               name="gross_amount"
             />
           </div>
+          {errors?.gross_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill {section} Price
+            </p>
+          )}
         </div>
       </div>
 
@@ -90,7 +106,9 @@ const CalculationSection = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Tax %:</label>
+            <label>
+              Tax %:<b className="color_red">*</b>
+            </label>
 
             <CustomDropdown13
               options={tax_rate}
@@ -101,15 +119,28 @@ const CalculationSection = ({
               defaultOption="Taxes"
               className2="item3"
             />
-
           </div>
+          {errors?.tax_percent && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Select Tax
+            </p>
+          )}
         </div>
       </div>
 
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Tax:</label>
+            <label>
+              Tax:<b className="color_red">*</b>
+            </label>
             <input
               type="text"
               value={formData?.tax_amount?.toFixed(2) || ""}
@@ -118,6 +149,18 @@ const CalculationSection = ({
               readOnly
             />
           </div>
+          {/* {errors?.tax_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Select Tax
+            </p>
+          )} */}
         </div>
       </div>
       <div className="calcuparentc">
@@ -126,7 +169,10 @@ const CalculationSection = ({
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
                 Edit and add charges
-                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{ marginTop: "10px" }}>
+                <span
+                  title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total."
+                  style={{ marginTop: "10px" }}
+                >
                   {otherIcons.question_svg}
                 </span>
               </p>
@@ -138,7 +184,6 @@ const CalculationSection = ({
               formValues={{ formData, setFormData, handleChange }}
             />
           )}
-
         </div>
       </div>
       <div className="calcuparentc">
@@ -158,7 +203,9 @@ const CalculationSection = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Invoice Total:</label>
+            <label>
+              Invoice Total:<b className="color_red">*</b>
+            </label>
             <input
               type="text"
               value={formData?.total_amount}
@@ -167,12 +214,26 @@ const CalculationSection = ({
               name="total_amount"
             />
           </div>
+          {errors?.total_amount && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill Invoice Total
+            </p>
+          )}
         </div>
       </div>
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Retain:</label>
+            <label>
+              Retain:<b className="color_red">*</b>
+            </label>
             <input
               type="text"
               value={formData?.retain?.toFixed(2) || ""}
@@ -181,6 +242,18 @@ const CalculationSection = ({
               readOnly
             />
           </div>
+          {/* {errors?.retain && (
+            <p
+              className="error_message"
+              style={{
+                whiteSpace: "nowrap",
+                marginBottom: "0px important",
+              }}
+            >
+              {otherIcons.error_svg}
+              Please Fill Retain
+            </p>
+          )} */}
         </div>
       </div>
     </div>
@@ -197,7 +270,10 @@ export const CalculationSection2 = ({
 }) => {
   const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
-  const sumCharges = formData?.charges?.reduce((sum, item) => sum + (item?.amount || 0), 0);
+  const sumCharges = formData?.charges?.reduce(
+    (sum, item) => sum + (item?.amount || 0),
+    0
+  );
 
   // Calculate fields based on formData
   const calculateFields = () => {
@@ -329,7 +405,6 @@ export const CalculationSection2 = ({
           </div>
         </div>
       </div>
-
     </div>
   );
 };

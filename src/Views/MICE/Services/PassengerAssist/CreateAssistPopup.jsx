@@ -16,6 +16,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { customersView } from "../../../../Redux/Actions/customerActions";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import toast from "react-hot-toast";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -53,6 +54,16 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     note: null,
     upload_image: null,
   });
+  const [errors, setErrors] = useState({
+    airport_name: false,
+    no_of_persons:false,
+    guest_ids:false,
+    gross_amount: false,
+    tax_amount: false,
+    tax_percent: false,
+    retain: false,
+    total_amount: false,
+  });
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -69,37 +80,61 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: value,
       supplier_name: selectedSupplierName?.display_name,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems,
     });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {
+      guest_ids: formData?.guest_ids ? false : true,
+      airport_name: formData?.airport_name ? false : true,
+      no_of_persons: formData?.no_of_persons ? false : true,
+      gross_amount: formData?.gross_amount ? false : true,
+      tax_amount: formData?.tax_amount ? false : true,
+      tax_percent: formData?.tax_percent ? false : true,
+      retain: formData?.retain ? false : true,
+      total_amount: formData?.total_amount ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
     try {
       const sendData = {
         ...formData,
         guest_ids:
           formData?.guest_ids?.length === 0
             ? null
-            : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
+            : formData.guest_ids.join(", "),
+        charges: JSON.stringify(formData?.charges),
       };
-      dispatch(CreatePassengerMAssistAction(sendData))
-        .then((response) => {
-          // if (response?.success === true) {
-          setShowModal(false);
-          // }
-        })
-        .catch((error) => {
-          console.error("Error during dispatch:", error);
-        });
+      const refreshData = {
+        mice_id: data?.id,
+      };
+      dispatch(CreatePassengerMAssistAction(sendData, setShowModal, refreshData))
+       
     } catch (error) {
+      toast.error("Unexpected error. Please refresh the page and try again.");
       console.error("Error updating assist:", error);
     }
+    }
   };
+  
 
   useEffect(() => {
     if (data?.customer_id) {
@@ -164,10 +199,22 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           placeholder="Enter Airport Location"
                         />
                       </span>
+                      {errors?.airport_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Airport
+                          </p>
+                        )}
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Meeting Type<b className="color_red">*</b>
+                        Meeting Type
                       </label>
                       <span>
                         {otherIcons.placeofsupply_svg}
@@ -193,7 +240,9 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 label="Select Family Member"
                                 options={customerData?.family_members}
                                 value={formData.guest_ids}
-                                onChange={handleChange1}
+                                onChange={(selectedItems) =>
+                                  handleChange1(selectedItems, "guest_ids")
+                                }
                                 name="guest_ids"
                                 defaultOption="Select Family Member"
                                 setcusData={setcusData}
@@ -202,13 +251,25 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 required
                               />
                             </span>
+                            {errors?.guest_ids && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Family Members
+                          </p>
+                        )}
                           </div>
                         </div>
                   </div>
 
                   <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
-                      <label>No Of Persons</label>
+                      <label>No Of Persons<b className="color_red">*</b></label>
                       <div id="inputx1">
                         <span>
                           {otherIcons.name_svg}
@@ -219,11 +280,23 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
+                        {errors?.no_of_persons && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill No Of Persons
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="form_commonblock">
                       <label>
-                        Supplier<b className="color_red">*</b>
+                        Supplier
                       </label>
                       <div id="sepcifixspanflex">
                         <span id="">
@@ -277,6 +350,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setFormData={setFormData}
                           handleChange={handleChange}
                           section="Assist"
+                          errors={errors}
+                          setErrors={setErrors}
                         />
                     </div>
                    
