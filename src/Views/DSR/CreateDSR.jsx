@@ -58,7 +58,7 @@ const CreateDSR = () => {
     customer_id: false,
   });
   const [showAllSequenceId, setShowAllSequenceId] = useState([]);
-  const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+  const [freezLoadingImg] = useState(false);
   const [dsrDisabled, setDSRDisabled] = useState(false);
 
   const handleChange = (e) => {
@@ -267,10 +267,10 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                  backgroundColor: "#f0f0f0",
+                                  pointerEvents: "none",
+                                  cursor: "not-allowed",
+                                }
                                 : {}
                             }
                           />
@@ -300,10 +300,10 @@ const CreateDSR = () => {
                                 style={
                                   dsrDisabled
                                     ? {
-                                        backgroundColor: "#f0f0f0",
-                                        pointerEvents: "none",
-                                        cursor: "not-allowed",
-                                      }
+                                      backgroundColor: "#f0f0f0",
+                                      pointerEvents: "none",
+                                      cursor: "not-allowed",
+                                    }
                                     : {}
                                 }
                               />
@@ -335,10 +335,10 @@ const CreateDSR = () => {
                             style={
                               dsrDisabled
                                 ? {
-                                    backgroundColor: "#f0f0f0",
-                                    pointerEvents: "none",
-                                    cursor: "not-allowed",
-                                  }
+                                  backgroundColor: "#f0f0f0",
+                                  pointerEvents: "none",
+                                  cursor: "not-allowed",
+                                }
                                 : {}
                             }
                           />

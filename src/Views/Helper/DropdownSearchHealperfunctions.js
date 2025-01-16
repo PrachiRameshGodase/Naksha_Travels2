@@ -16,7 +16,7 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     }
 
     else if (type === "vendor" || type === "vendor_charges") {
-        if (name === "customer_id" || "guest_ids") {
+        if (name === "customer_id" || name === "guest_ids") {
             dispatch(customersList({ ...sendData, search: searchTerm }));
         } else if (name === "vendor_id") {
             dispatch(vendorsLists({ ...sendData, search: searchTerm }));

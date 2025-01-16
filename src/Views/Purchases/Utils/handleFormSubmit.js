@@ -21,7 +21,7 @@ export const handleFormSubmitCommon = async ({
     const button = e.nativeEvent.submitter.name;
 
     if (handleDropdownError(isVendorSelect, dropdownRef1)) return;
-    if (handleDropdownError(isItemSelect, dropdownRef2)) return;
+    // if (handleDropdownError(isItemSelect, dropdownRef2)) return;
 
     try {
         const updatedItems = formData?.items?.map(({ tax_name, ...rest }) => rest);

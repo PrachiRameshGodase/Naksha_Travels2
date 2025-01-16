@@ -218,6 +218,7 @@ const ItemSelect = ({
     let discountAmount = 0;
     let discountPercentage = 0;
 
+
     if (field === "item_name") {
       newItems[index].item_name = value;
       newItems[index].item_id = "";
@@ -232,7 +233,7 @@ const ItemSelect = ({
 
     if (field === "unit_id") {
       newItems[index].unit_id = value;
-      newErrors[index].unit_id = "";
+      // newErrors[index].unit_id = "";
     }
     if (field === "type") {
       newItems[index].type = value;
@@ -276,6 +277,7 @@ const ItemSelect = ({
           rate: "",
         };
       }
+
     }
 
 
