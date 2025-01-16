@@ -14,7 +14,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     optionRefs,
     handleKeyDown,
     handleSelect,
-    focusedOptionIndex
+    focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type);
 
   const combinedRef = (node) => {
@@ -27,16 +27,22 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
   }
+
   return (
     <div
-      data-tooltip-content={types === "Service" ? "Unit is not allowed for service select" : ""}
+      data-tooltip-content={(types === "Service" && name === "unit_id") ? "Unit is not changed for service type select" : (types !== "" && name === "type") ? "Selected type is not changed" : ""}
       data-tooltip-id="my-tooltip"
       data-tooltip-place="bottom"
+      // show tool tip of related message if any type is selected or unit is service selected in item select module
 
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
-        onClick={types !== "Service" ? () => setIsOpen(!isOpen) : undefined}
-        className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { width: "90px", cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
+        onClick={((types === "Service" && name === "unit_id") || ((types !== "" && name === "type"))) ? undefined : () => setIsOpen(!isOpen)}
+        //  disable onclick only when open dropdown. where type is selected or unit is service selected in item select module
+
+        className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}
+        style={{ cursor: ((types === "Service" && name === "unit_id") || ((types !== "" && name === "type"))) ? "not-allowed" : "pointer", }}>
+        {/* show cursor not allowed if any type is selected or unit is service selected in item select module*/}
 
         {(type === "masters_salutation" || type === "masters2" || type === "item_type") ?
           <>

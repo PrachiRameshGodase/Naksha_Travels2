@@ -216,7 +216,9 @@ const CreateGRN = () => {
         return item ? item.name : 'Unknown Item'; // Handle missing ids
       };
 
-      const itemsWithGrQty = formData?.items?.filter((val) => val?.gr_qty === 0 && val?.item_id); // Ensure item_id exists
+
+      // if any grn quantity is empty then show a warning message before submit
+      const itemsWithGrQty = formData?.items?.filter((val) => val?.gr_qty === 0 && val?.item_id); // 
 
       let confirmed = null;
 

@@ -49,14 +49,13 @@ const ItemSelect = ({
   invoice_section,
 
 }) => {
-  console.log("itemErrors", itemErrors);
-  console.log("formData?.items", formData?.items);
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbole = activeOrg_details?.symbol;
+  // console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
 
@@ -364,6 +363,20 @@ const ItemSelect = ({
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   const handleItemAdd = () => {
+
+    // if type is not selected or undedined then we can not add new row
+
+    const isTypeNull =
+      formData?.items?.length > 0 &&
+      formData.items[formData.items.length - 1]?.type !== "" &&
+      formData.items[formData.items.length - 1]?.item_name !== "";
+    console.log("is type null", isTypeNull)
+    console.log(formData?.items)
+    if (!isTypeNull) {
+      toast.error("Please select the type and valid item name of above row");
+      return;
+    }
+
     setSearchTrigger((prev) => prev + 1);
     const newItems = [
       ...formData.items,
@@ -446,7 +459,17 @@ const ItemSelect = ({
     setActivePopup({ popupType: value });
   };
 
+
+  // add services function
   const handleAddService = (name, data) => {
+
+    // if type is not selected or undedined then we can not add new row
+    const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name); // 
+    if (isTypeNull) {
+      toast.error("Please select the type and valid item name of above row");
+      return;
+    }
+
     const itemName =
       name === "Hotel"
         ? data?.hotel_name
@@ -551,152 +574,142 @@ const ItemSelect = ({
       {renderPopup()}
 
       <div className="f1wrpofcreqsx2" id={invoice_section}>
-        <div className="itemsectionrows">
-          <div className="tableheadertopsxs1">
-            <p className="tablsxs1a1x3">
-              Item<b className="color_red">*</b>
-            </p>
-            <p className="tablsxs1a2x3">
-              Type<b className="color_red">*</b>
-            </p>
-            <p className="tablsxs1a3x3">
-              Sales Price<b className="color_red">*</b>
-            </p>
-            <p className="tablsxs1a2x3">Quantity</p>
-            <p className="tablsxs1a2x3" style={{ flexDirection: "row" }}>
-              Unit<b className="color_red">*</b>
-            </p>
-            <p className="tablsxs1a6x3">Discount</p>
-            <p className="tablsxs1a7x3">
-              Tax (%)<b className="color_red">*</b>
-            </p>
-            <p className="tablsxs1a8x3" style={{ marginLeft: "1%" }}>
-              Amount
-            </p>
-          </div>
+        {/* Table Started */}
+        <table className="itemTable_01">
 
-          {console?.log('loggggggggggg', formData?.items)}
+          <thead className="table_head_item_02">
+            <tr className="table_head_item_02_row">
+              <th className="table_column_item item_table_width_01">
+                Item <b className="color_red">*</b>
+              </th>
+              <th className="table_column_item item_table_width_03">
+                Type <b className="color_red">*</b>
+              </th>
 
-          {formData?.items?.map((item, index) => (
-            <>
-              <div className="table_item_border">
-                <div
-                  key={index}
-                  className="tablerowtopsxs1 border_none"
-                  style={{ padding: "21px 5px" }}
-                >
-                  {/* /////////////////////////////// */}
-                  <div className="tablsxs1a1x3">
+              <th className="table_column_item item_text_end_01 item_table_width_02">Sales Price</th>
 
-                    {/* services select */}
-                    <span key={index}>
-                      {item?.items_data?.service_name === "Hotel" ? (
-                        <span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Room:</b> {item?.items_data?.room_no || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Meal:</b>{" "}
-                            <ShowMastersValue type="37" id={item?.items_data?.meal_id || "-"} />
-                          </span>
-                        </span>
-                      ) : item?.items_data?.service_name === "Assist" ? (
-                        <span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Airport:</b> {item?.items_data?.airport_name || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Meeting Type:</b> {item?.items_data?.meeting_type || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>No Of Persons:</b> {item?.items_data?.no_of_persons || "-"}
-                          </span>
-                        </span>
-                      ) : item?.items_data?.service_name === "Flight" ? (
-                        <span>
-                          {/* <span>
-                            <b style={{ fontWeight: 500 }}>Travel Date:</b>{" "}
-                            {formatDate3(item?.items_data?.travel_date) || "-"}{" "}
-                          </span> */}
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Airline Name:</b> {item?.items_data?.airline_name || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Ticket No:</b> {item?.items_data?.ticket_no + " " || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>PRN No:</b> {item?.items_data?.prn_no || "-"}
-                          </span>
-                        </span>
-                      ) : item?.items_data?.service_name === "Visa" ? (
-                        <span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Passport No:</b> {item?.items_data?.passport_no + " " || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Visa No:</b> {item?.items_data?.visa_no || "-"}{" "}
-                          </span>
-                          <span>
-                            <b style={{ fontWeight: 500 }}>Visa Type:</b>{" "}
-                            <ShowMastersValue type="40" id={item?.items_data?.visa_type_id || "-"} />
-                          </span>
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </span>
+              <th className="table_column_item item_qty_01 item_table_width_02">Quantity</th>
+              <th className="table_column_item item_table_width_02">
+                Unit <b className="color_red">*</b>
+              </th>
+              <th className="table_column_item item_table_width_03">Discount</th>
+              <th className="table_column_item item_table_width_02">
+                Tax (%) <b className="color_red">*</b>
+              </th>
+              <th className="table_column_item item_table_width_02 item_text_end_01">Amount</th>
+              {/* <th>Actions</th> */}
+            </tr>
+          </thead>
 
-                    {/* item select */}
-                    {!item?.items_data?.service_name &&
-                      <span>
-                        <CustomDropdown26
-                          options={options2 || []}
-                          value={item?.item_id}
-                          onChange={(event) =>
-                            handleItemChange(
-                              index,
-                              event.target.name,
-                              event.target.value
-                            )
-                          }
-                          name="item_id"
-                          type="select_item"
-                          setItemData={setItemData}
-                          index={index}
-                          extracssclassforscjkls={extracssclassforscjkls}
-                          itemData={item}
-                          ref={dropdownRef2}
-                        />
-                      </span>
-                    }
-                  </div>
-                  <div
-                    className="tablsxs1a2x3"
-                  >
+          <tbody className="table_head_item_02">
+            {formData?.items?.map((item, index) => (
+              <React.Fragment key={index}>
+                <tr className="table_head_item_02_row">
+
+                  {/* Item Details */}
+                  <td className="table_column_item item_table_width_01 item_table_text_transform">
+                    {item?.items_data?.service_name === "Hotel" ? (
+                      <>
+                        <div>
+                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
+                        </div>
+                        <div>
+                          <b>Room:</b> {item?.items_data?.room_no || "-"}
+                        </div>
+                        <div>
+                          <b>Meal:</b>{" "}
+                          <ShowMastersValue
+                            type="37"
+                            id={item?.items_data?.meal_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Assist" ? (
+                      <>
+                        <div>
+                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
+                        </div>
+                        <div>
+                          <b>Meeting Type:</b>{" "}
+                          {item?.items_data?.meeting_type || "-"}
+                        </div>
+                        <div>
+                          <b>No Of Persons:</b>{" "}
+                          {item?.items_data?.no_of_persons || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Flight" ? (
+                      <>
+                        <div>
+                          <b>Airline Name:</b>{" "}
+                          {item?.items_data?.airline_name || "-"}
+                        </div>
+                        <div>
+                          <b>Ticket No:</b> {item?.items_data?.ticket_no || "-"}
+                        </div>
+                        <div>
+                          <b>PRN No:</b> {item?.items_data?.prn_no || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Visa" ? (
+                      <>
+                        <div>
+                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa Type:</b>{" "}
+                          <ShowMastersValue
+                            type="40"
+                            id={item?.items_data?.visa_type_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <CustomDropdown26
+                        options={options2 || []}
+                        value={item?.item_id}
+                        onChange={(event) =>
+                          handleItemChange(
+                            index,
+                            event.target.name,
+                            event.target.value
+                          )
+                        }
+                        name="item_id"
+                        type="select_item"
+                        setItemData={setItemData}
+                        index={index}
+                        extracssclassforscjkls={extracssclassforscjkls}
+                        itemData={item}
+                        ref={dropdownRef2}
+                      />
+                    )}
+                  </td>
+
+                  {/* Type Dropdown */}
+                  <td className="table_column_item item_table_text_transform item_table_width_02">
                     <span>
                       <CustomDropdown04
                         options={itemTypeList}
                         value={item?.type}
                         onChange={(e) =>
-                          handleItemChange(
-                            index,
-                            "type",
-                            e.target.value,
-                            e.target.option
-                          )
+                          handleItemChange(index, "type", e.target.value, e.target.option)
                         }
                         name="type"
                         defaultOption="Type"
                         type="item_type"
                         extracssclassforscjkls="extracssclassforscjklsitem"
-                        className2="item"
+                        style={{ fontSize: "11px" }}
+                        types={item?.type}
                       />
                     </span>
-                  </div>
-                  <div className="tablsxs1a2x3" style={{ marginRight: "2px" }}>
+                  </td>
+
+                  {/* Sales Price */}
+                  <td className="table_column_item table_input_01">
                     <NumericInput
                       value={item?.rate}
                       placeholder="0.00"
@@ -717,62 +730,58 @@ const ItemSelect = ({
                           });
                         }
                       }}
+                      className="item_text_end_01"
                     />
-                  </div>
+                  </td>
 
-                  <div
-                    data-tooltip-content={item?.type === "Service" ? "Quantity is not allowed for service select" : ""}
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-place="bottom"
-                    className="tablsxs1a4x3" style={{ marginRight: "2px" }}>
+                  {/* Quantity */}
+                  <td className="table_column_item table_input_01">
                     <NumericInput
                       value={item?.quantity}
                       onChange={(e) => {
                         const inputValue = e.target.value;
                         if (inputValue === "") {
-                          handleItemChange(index, "quantity", 0); // or some other default value
+                          handleItemChange(index, "quantity", 0);
                         } else {
                           const newValue = parseInt(inputValue, 10);
-                          if (newValue === NaN) newValue = 0;
-                          if (!isNaN(newValue) && newValue >= 1) {
+                          if (isNaN(newValue)) newValue = 0;
+                          if (newValue >= 1) {
                             handleItemChange(index, "quantity", newValue);
                           }
                         }
                       }}
+                      disabled={item?.type === "Service"}
                       style={{
-                        width: "60%",
                         cursor: item?.type === "Service" ? "not-allowed" : "default",
                       }}
-                      disabled={item?.type === "Service"} // Explicitly set the disabled attribute
                     />
-                  </div>
+                  </td>
 
-                  <div
-                    className="tablsxs1a2x3"
-                  >
-                    <span>
-                      <CustomDropdown04
-                        options={unitList}
-                        value={item?.unit_id}
-                        onChange={(e) =>
-                          handleItemChange(
-                            index,
-                            "unit_id",
-                            e.target.value,
-                            e.target.option
-                          )
-                        }
-                        name="unit_id"
-                        defaultOption="Units"
-                        type="masters"
-                        extracssclassforscjkls="extracssclassforscjklsitem"
-                        className2="item"
-                        types={item?.type}
-                      />
-                    </span>
-                  </div>
-                  <div className="tablsxs1a6x3">
-                    <span>
+
+                  {/* Unit Dropdown */}
+                  <td className="table_column_item item_table_text_transform">
+                    <CustomDropdown04
+                      options={unitList}
+                      value={item?.unit_id}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "unit_id",
+                          e.target.value,
+                          e.target.option
+                        )
+                      }
+                      name="unit_id"
+                      defaultOption="Units"
+                      type="masters"
+                      extracssclassforscjkls="extracssclassforscjklsitem"
+                      types={item?.type}
+                    />
+                  </td>
+
+                  {/* Discount */}
+                  <td className="table_column_item table_input_01 ">
+                    <div className="discount_type_dropdown">
                       <NumericInput
                         value={item?.discount}
                         onChange={(e) => {
@@ -850,15 +859,12 @@ const ItemSelect = ({
                           </div>
                         )}
                       </div>
-                    </span>
-                  </div>
-                  {item?.item_id == "" || item?.item_name == "" ? (
-                    <div
-                      className="tablsxs1a7x3_rm"
-                      id="ITEM_Selection7"
-                      key={item.id || index}
-                      style={{ marginRight: "20px" }}
-                    >
+                    </div>
+                  </td>
+
+                  {/* Tax Rate */}
+                  <td className="table_column_item item_table_text_transform">
+                    {item?.item_id === "" || item?.item_name === "" ? (
                       <CustomDropdown13
                         options={tax_rate}
                         value={item?.tax_rate}
@@ -868,157 +874,85 @@ const ItemSelect = ({
                         name="tax_rate"
                         type="taxRate"
                         defaultOption="Taxes"
+                        extracssclassforscjkls="extracssclassforscjklsitem"
                         className2="items"
                       />
-                    </div>
-                  ) : (
-                    <div
-                      className="tablsxs1a7x3_rm"
-                      id="ITEM_Selection7"
-                      style={{
-                        marginRight: "20px",
-                        cursor: "not-allowed"
-                      }}
-                      key={item.id || index}
-                    >
-                      {item?.tax_name === "Non-Taxable" ? <> {item?.tax_name} </>
-                        :
-                        item?.tax_rate != 0 ?
-                          <>
-                            <CustomDropdown13
-                              options={tax_rate}
-                              value={item?.tax_rate}
-                              onChange={(e) =>
-                                handleItemChange(index, "tax_rate", e.target.value)
-                              }
-                              name="tax_rate"
-                              type="taxRate"
-                              defaultOption="Taxes"
-                              className2="items"
-                              style={{ width: "100px" }}
-                            />
-                          </> : <>{item?.tax_name}</>
-                      }
-                    </div>
-                  )}
-                  <div
-                    className="tablsxs1a8x3"
-                    style={{ cursor: "not-allowed", marginTop: "10px" }}
-                  >
-                    {item?.final_amount}
-                  </div>
+                    ) : (
+                      <span style={{ cursor: "not-allowed" }}>
+                        {item?.tax_name === "Non-Taxable"
+                          ? item?.tax_name
+                          : item?.tax_rate}
+                      </span>
+                    )}
+                  </td>
 
-                  {formData?.items?.length > 1 ? (
-                    <button
-                      className="removeicoofitemrow"
-                      type="button"
-                      onClick={() => handleItemRemove(index)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          handleItemRemove(index);
-                        }
-                      }}
-                    >
-                      {" "}
-                      <RxCross2 />{" "}
-                    </button>
-                  ) : (
-                    <button
-                      className="removeicoofitemrow"
-                      type="button"
-                      onClick={() => handleItemReset(index)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          handleItemReset(index);
-                        }
-                      }}
-                    >
-                      {" "}
-                      <SlReload />{" "}
-                    </button>
-                  )}
-                </div>
+                  {/* Amount */}
+                  <td className="table_column_item item_table_width_02 item_text_end_01 item_table_text_transform">{item?.final_amount}</td>
 
-                {item?.hsn_code && (
-                  <div className="itemDetailsData_900">
-                    <p className="item_type_00">{item?.type}</p>
-                    <p>
-                      HSN Code:{" "}
-                      <span className="item_hsn_code_9">{item?.hsn_code}</span>
-                    </p>
-                  </div>
-                )}
-              </div>
+                  {/* reload and remove butttons */}
+                  <td className="table_column_item refresh_remove_button_item">
+                    {formData?.items?.length > 1 ? (
+                      <button
 
-              <div style={{ display: "flex" }}>
-                {/* Item Name Error */}
-                <span
-                  className="error-message"
-                  style={{
-                    width: "323px",
-                    visibility: itemErrors[index]?.item_name
-                      ? "visible"
-                      : "hidden",
-                  }}
-                >
-                  {itemErrors[index]?.item_name && (
-                    <>
-                      {otherIcons.error_svg} {itemErrors[index].item_name}
-                    </>
-                  )}
-                </span>
+                        className="refresh_remove_button_item"
+                        type="button"
+                        onClick={() => handleItemRemove(index)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") {
+                            handleItemRemove(index);
+                          }
+                        }}
+                      >
+                        <RxCross2 className="react_icn_items" />
+                      </button>
+                    ) : (
+                      <button
+                        className="refresh_remove_button_item"
+                        type="button"
+                        onClick={() => handleItemReset(index)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") {
+                            handleItemReset(index);
+                          }
+                        }}
+                      >
+                        <SlReload />
+                      </button>
+                    )}
+                  </td>
+                </tr>
 
-                {/* Rate Error */}
-                <span
-                  className="error-message"
-                  style={{
-                    width: "254px",
-                    visibility: itemErrors[index]?.rate ? "visible" : "hidden",
-                  }}
-                >
-                  {itemErrors[index]?.rate && (
-                    <>
-                      {otherIcons.error_svg} {itemErrors[index].rate}
-                    </>
-                  )}
-                </span>
+                {/* Validation Errors */}
+                {/* <tr className="error-row">
+                  <td colSpan={9}>
+                    {itemErrors[index]?.item_name && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].item_name}
+                      </span>
+                    )}
+                    {itemErrors[index]?.rate && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].rate}
+                      </span>
+                    )}
+                    {itemErrors[index]?.unit_id && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].unit_id}
+                      </span>
+                    )}
+                    {itemErrors[index]?.tax_rate && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].tax_rate}
+                      </span>
+                    )}
+                  </td>
+                </tr> */}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
 
-                {/* Unit ID Error */}
-                <span
-                  className="error-message"
-                  style={{
-                    width: "253px",
-                    visibility: itemErrors[index]?.unit_id
-                      ? "visible"
-                      : "hidden",
-                  }}
-                >
-                  {itemErrors[index]?.unit_id && (
-                    <>
-                      {otherIcons.error_svg} {itemErrors[index].unit_id}
-                    </>
-                  )}
-                </span>
-
-                {/* Tax Rate Error */}
-                <span
-                  className="error-message"
-                  style={{
-                    visibility: itemErrors[index]?.tax_rate
-                      ? "visible"
-                      : "hidden",
-                  }}
-                >
-                  {itemErrors[index]?.tax_rate && (
-                    <>
-                      {otherIcons.error_svg} {itemErrors[index]?.tax_rate}
-                    </>
-                  )}
-                </span>
-              </div>
-            </>
-          ))}
-        </div>
+        {/* Table End */}
 
         <div className="items_services_add_buttons">
           <button
@@ -1031,16 +965,24 @@ const ItemSelect = ({
             <GoPlus />
           </button>
 
-          <CustomDropdown28
-            label="Services"
-            options={servicesList}
-            value={activePopup?.popupType}
-            onChange={(e) => handleSelectService(e)}
-            name="service"
-            defaultOption="Select Service"
-            type="service"
-          />
+          <div className="form_commonblock">
+            <span style={{ width: "200px" }}>
+              {otherIcons.name_svg}
+              <CustomDropdown28
+                label="Services"
+                options={servicesList}
+                value={activePopup?.popupType}
+                onChange={(e) => handleSelectService(e)}
+                name="service"
+                defaultOption="Select Service"
+                type="service"
+              />
+            </span>
+          </div>
         </div>
+
+
+
         {showAddModal && (
           <div className="mainxpopups1" ref={popupRef} tabIndex="0">
             <div className="popup-content">
@@ -1235,7 +1177,7 @@ const ItemSelect = ({
 
         <div className="breakerci"></div>
         <div className="height5"></div>
-      </div>
+      </div >
     </>
   );
 };
@@ -1608,7 +1550,7 @@ export const ItemSelectGRM = ({
 
               <p
                 className="tablsxs1a6x3 tablsxs1a2x8"
-                style={{ width: "120px", textAlign: "right" }}
+                style={{ width: "100px", textAlign: "right" }}
               >
                 FINAL AMOUNT ($)
               </p>

@@ -2293,8 +2293,9 @@
 }
 
 .dropdownsdfofcus56s {
-  width: 40px;
-  height: 35px;
+  width: 36px;
+  // height: 35px;
+  padding: 8px 8px;
   border: none;
   background: $primary06;
   border-radius: 5px;
@@ -2304,17 +2305,19 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  font-size: 14px;
+  font-size: 11px;
 
   &:hover {
     background: $primary10;
   }
+
+
 }
 
 .dropdownmenucustomx1 {
   font-size: 14px;
   position: absolute;
-  top: 40px;
+  top: 34px;
   display: flex;
   flex-direction: column;
   background: $white;
@@ -2323,7 +2326,7 @@
   // gap: 10px;
   border-radius: 5px;
   overflow: hidden;
-  right: -20px;
+  right: auto;
   width: max-content;
   align-items: center;
 
@@ -2333,7 +2336,7 @@
     gap: 5px;
     align-items: center;
     transition: 0.3s all;
-    padding: 8px 20px;
+    padding: 8px 10px;
 
     &:hover {
       background: $primary09;
@@ -2343,6 +2346,8 @@
       transform: scale(0.95);
     }
   }
+
+
 }
 
 .dropdownmenucustomx2 {
@@ -2441,8 +2446,6 @@
     max-width: 1100px;
   }
 
-
-
   .empty_data_services_messs {
     background: linear-gradient(to right, #da2400, #63ff6f, #e71111, #ff8cf5, #a3a8ff, #80ffc2, #ff7a7a);
     color: transparent;
@@ -2458,6 +2461,111 @@
     align-items: center;
   }
 }
+
+// itemTable_01 scss
+.itemTable_01 {
+  table-layout: fixed;
+  border-radius: 5px;
+  // height: 150px;
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+
+  .table_head_item_02 {
+
+    background: #f6f8fa;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    .table_head_item_02_row {
+
+      .table_column_item {
+        color: #222;
+        padding: 8px 10px;
+        border-color: #d0d7de;
+        border: 1px solid #cccccc5e;
+        vertical-align: top;
+        word-wrap: break-word;
+
+
+        .discount_type_dropdown {
+          display: flex;
+          gap: 5px;
+          // flex-direction: column;
+        }
+      }
+
+
+
+      .table_input_01 {
+        input {
+          border-radius: 5px;
+          font-size: 13px;
+          // width: 24px;
+          border: none;
+
+          &::placeholder {
+            font-size: 13px;
+          }
+
+          &:focus-visible {
+            outline: none;
+          }
+
+          padding: 5px;
+          @include focusVisible;
+        }
+      }
+
+      // item/service select width
+      .item_table_width_01 {
+        width: 300px;
+      }
+
+      // other all width
+      .item_table_width_02 {
+        width: 100px;
+      }
+
+      // type width
+      .item_table_width_03 {
+        width: 126px;
+      }
+
+      // discount width
+      .item_table_width_04 {
+        width: 126px;
+      }
+
+      //for right align content
+      .item_text_end_01 {
+        text-align: right !important;
+      }
+
+      .item_table_text_transform {
+        text-transform: capitalize;
+        font-size: 13px;
+      }
+
+      .refresh_remove_button_item {
+        border: none;
+        background: white;
+
+        button {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .react_icn_items {
+    color: red;
+    font-weight: 900;
+  }
+}
+
+// itemTable_01 scss
 
 
 #invoice_section_style_001 {
@@ -2632,7 +2740,7 @@
       @include focusVisible;
 
       &::placeholder {
-        font-size: 13px;
+        font-size: 11px;
       }
     }
 
@@ -3191,16 +3299,19 @@
 
 .extracssclassforscjklsitem {
   min-width: 0px !important;
+
   .dropdown-selected {
     background: $primary12;
     padding-left: 10px !important;
     padding-right: 30px !important;
     // width: 100%;
-    width: 90px !important;
+    // width: 90px !important;
     border-radius: 5px;
+
     svg {
       right: 10px !important;
     }
+
     &:hover {
       background: $primary06;
     }
@@ -3210,6 +3321,7 @@
 // grn Stlying
 .grn_tax {
   min-width: 110px !important;
+
   .dropdown-selected {
     width: 100% !important;
   }
@@ -3260,7 +3372,7 @@
 }
 
 .tablsxs1a2x3 {
-  width: 90px;
+  width: 107px;
 
   input {
     border-radius: 5px;
@@ -3283,7 +3395,7 @@
 }
 
 .tablsxs1a3x3 {
-  width: 97px;
+  width: 114px;
   display: flex;
   flex-direction: column;
 

@@ -28,6 +28,8 @@ export const showAmountWithCurrencySymbol = (val) => {
     return val == "0" ? `${currencySymbol} 0.00` : val ? `${currencySymbol} ${val} ` : "";
 }
 
+console.log("activeOrg_details", activeOrg_details)
+
 export const showAmountWithCurrencySymbolWithPoints = (val) => {
     return val ? `${currencySymbol} ${val}.00` : '';
 }
