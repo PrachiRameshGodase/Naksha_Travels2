@@ -11,7 +11,7 @@ import {
 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";

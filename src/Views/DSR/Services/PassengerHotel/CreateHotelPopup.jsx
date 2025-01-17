@@ -37,13 +37,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-
-  const hotelList = useSelector(
-    (state) => state?.hotelList?.data?.hotels || []
-  );
-  const hotelRoomListData = useSelector(
-    (state) => state?.hotelRoomList?.data?.hotels || []
-  );
+  const hotelList = useSelector((state) => state?.hotelList?.data?.hotels || []);
+  const hotelRoomListData = useSelector((state) => state?.hotelRoomList?.data?.hotels || []);
   const createHotel = useSelector((state) => state?.createPassengerHotel);
 
   const [cusData, setcusData] = useState(null);
@@ -62,7 +57,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     meal_id: "",
     bed: "",
     guest_ids: "",
-    booking_date: "",
+    booking_date: formatDate(new Date()),
     check_in_date: "",
     chec_out_date: "",
     supplier_id: "",

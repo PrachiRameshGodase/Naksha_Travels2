@@ -130,7 +130,7 @@ const SalesOrderList = () => {
         fy,
         noofrec: itemsPerPage,
         // active: 0,
-        active: 1, //When customer is active or inactive long time
+        // active: 1, 
         currentpage,
         ...(selectedSortBy !== "Normal" && {
           sort_by: selectedSortBy,

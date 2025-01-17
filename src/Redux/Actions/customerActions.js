@@ -23,7 +23,7 @@ import {
 
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from 'react-hot-toast';
-import { sendData } from '../../Views/Helper/HelperFunctions';
+import { sendData, sendData2 } from '../../Views/Helper/HelperFunctions';
 
 export const createCustomers = (queryParams, Navigate, editDub) => async (dispatch) => {
 
@@ -33,7 +33,7 @@ export const createCustomers = (queryParams, Navigate, editDub) => async (dispat
         const response = await axiosInstance.post(`/customer/create/update`,
             queryParams
         );
-        dispatch(customersList(sendData));// call customer list api when We change something on it...
+        dispatch(customersList(sendData2));// call customer list api when We change something on it...
         if (editDub === "edit" && (response?.data?.message === "Record Updated Successfully")) {
             toast.success(response?.data?.message);
             Navigate('/dashboard/customers');
@@ -104,7 +104,7 @@ export const customerStatus = (queryParams) => async (dispatch) => {
         );
 
         dispatch({ type: CUSTOMER_STATUS_SUCCESS, payload: response.data });
-        dispatch(customersList(sendData));// call customer list api when We change something on it...
+        dispatch(customersList(sendData2));// call customer list api when We change something on it...
         // if (response?.data?.message === "Status Updated successfully.") {
         //     toast.success(response?.data?.message);
         // } else {
