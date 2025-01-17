@@ -101,23 +101,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     setSearchTerm("");
   }, []);
 
-
-
-  const renderSelectedOptions = () => {
-    // Ensure value is always an array
-    const selectedValues = Array.isArray(value) ? value : [];
-   
-    return selectedValues.map(id => {
-      const selectedCustomer = options?.find(account => account?.id == id);
-     
-      return (
-        <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-          {selectedCustomer?.display_name}
-          <div className="remove-option" onClick={() => handleSelect(selectedCustomer)}><RxCross2 /></div>
-        </div>
-      );
-    });
-  };
   return (
     <div
       ref={combinedRef}
@@ -204,9 +187,17 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
-      <div id='absoluteofvalselcc' style={{flexDirection:"row", marginLeft:"99px"}}>
-          {renderSelectedOptions()}
-        </div>
+
+      <div id='absoluteofvalselcc' style={{ flexDirection: "row" , marginLeft:"90px"}}>
+        {storeData?.map((val, index) => (
+          <div key={index} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
+            {val?.display_name}
+            <div className="remove-option" onClick={() => handleSelect({ id: val.id, display_name: val.display_name })}
+            ><RxCross2 /></div>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 });
