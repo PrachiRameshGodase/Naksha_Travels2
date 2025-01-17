@@ -101,8 +101,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     setSearchTerm("");
   }, []);
 
-<<<<<<< HEAD
-=======
 
 
   const renderSelectedOptions = () => {
@@ -121,7 +119,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
       );
     });
   };
->>>>>>> 613c34018f8ff4a86945a3b05548808ce53cc856
   return (
     <div
       ref={combinedRef}
@@ -208,23 +205,9 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
-<<<<<<< HEAD
-
-      <div id='absoluteofvalselcc' style={{ flexDirection: "row" }}>
-        {storeData?.map((val, index) => (
-          <div key={index} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-            {val?.display_name}
-            <div className="remove-option" onClick={() => handleSelect({ id: val.id, display_name: val.display_name })}
-            ><RxCross2 /></div>
-          </div>
-        ))}
-      </div>
-
-=======
       <div id='absoluteofvalselcc' style={{flexDirection:"row"}}>
           {renderSelectedOptions()}
         </div>
->>>>>>> 613c34018f8ff4a86945a3b05548808ce53cc856
     </div>
   );
 });
