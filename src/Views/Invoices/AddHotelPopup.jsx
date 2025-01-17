@@ -34,7 +34,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
   );
   const createHotel = useSelector((state) => state?.createPassengerHotel);
 
-  const [cusData, setcusData] = useState(null);
+  const [cusData, setcusData] = useState("anurag");
   const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { RiSearch2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { customersList } from "../../Redux/Actions/customerActions";
@@ -36,11 +36,13 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     inputRef,
     optionRefs,
     handleKeyDown,
+    // handleSelect,
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
   const customList = useSelector((state) => state?.customerList);
   const itemPayloads = localStorage.getItem("customerPayload");
+  const [storeData, setStoredData] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -50,16 +52,37 @@ const CustomDropdown31 = forwardRef((props, ref) => {
   };
 
   const handleSelect = (account) => {
+    console.log("account", account);
+
+    // Copy the current value
     const selectedItems = [...value];
-    const index = selectedItems?.findIndex((item) => item === account?.id);
+
+    // Find if the account.id is already in the list
+    const index = selectedItems.findIndex((item) => item === account?.id);
 
     if (index === -1) {
+      // Add account.id to selectedItems
       selectedItems.push(account?.id);
+
+      // Add account to storeData
+      setStoredData((prevStoreData) => [
+        ...prevStoreData,
+        { id: account?.id, display_name: account?.display_name }
+      ]);
     } else {
+      // Remove account.id from selectedItems
       selectedItems.splice(index, 1);
+
+      // Remove account from storeData
+      setStoredData((prevStoreData) =>
+        prevStoreData.filter((item) => item.id !== account?.id)
+      );
     }
 
+    // Call onChange with updated selectedItems
     onChange(selectedItems);
+
+    // Reset search term
     setSearchTerm("");
   };
 
@@ -77,24 +100,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     }
     setSearchTerm("");
   }, []);
-
-
-
-  const renderSelectedOptions = () => {
-    // Ensure value is always an array
-    const selectedValues = Array.isArray(value) ? value : [];
-
-    return selectedValues.map(id => {
-      const selectedCustomer = options?.find(account => account?.id == id);
-      return (
-        <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-          {selectedCustomer?.display_name}
-          <div className="remove-option" onClick={() => handleSelect(selectedCustomer)}><RxCross2 /></div>
-        </div>
-      );
-    });
-  };
-
 
   return (
     <div
@@ -182,9 +187,17 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
+
       <div id='absoluteofvalselcc' style={{ flexDirection: "row" }}>
-        {renderSelectedOptions()}
+        {storeData?.map((val, index) => (
+          <div key={index} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
+            {val?.display_name}
+            <div className="remove-option" onClick={() => handleSelect({ id: val.id, display_name: val.display_name })}
+            ><RxCross2 /></div>
+          </div>
+        ))}
       </div>
+
     </div>
   );
 });
