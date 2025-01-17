@@ -3,7 +3,7 @@ import PaginationComponent from "../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../Helper/DateFormat";
+import { formatDate, generatePDF } from "../Helper/DateFormat";
 import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
 import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
@@ -19,6 +19,8 @@ import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { clearDsrState, DSRListActions } from "../../Redux/Actions/DSRActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
+import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
 
 const DSRS = () => {
   const navigate = useNavigate();
@@ -80,29 +82,33 @@ const DSRS = () => {
   //Search/////////////////////////////////////////////////////////////
 
   //fetch all data
-  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-    fy: localStorage.getItem("FinancialYear"),
-    noofrec: itemsPerPage,
-    currentpage: currentPage,
-    ...(selectedSortBy !== "Normal" && {
-      sort_by: selectedSortBy,
-      sort_order: sortOrder,
+  const payloadGenerator = useMemo(
+    () => () => ({
+      //useMemo because  we ensure that this function only changes when [dependency] changes
+      fy: localStorage.getItem("FinancialYear"),
+      noofrec: itemsPerPage,
+      currentpage: currentPage,
+      ...(selectedSortBy !== "Normal" && {
+        sort_by: selectedSortBy,
+        sort_order: sortOrder,
+      }),
+      ...(status && {
+        status: status == "expiry_date" ? 6 : status,
+        ...(status == "expiry_date" && { expiry_date: 1 }),
+      }),
+      ...(searchTermFromChild && { search: searchTermFromChild }),
+      ...(clearFilter === false && {
+        ...(specificDate
+          ? { custom_date: formatDate(new Date(specificDate)) }
+          : dateRange[0]?.startDate &&
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
+      }),
     }),
-    ...(status && {
-      status: status == "expiry_date" ? 6 : status,
-      ...(status == "expiry_date" && { expiry_date: 1 }),
-    }),
-    ...(searchTermFromChild && { search: searchTermFromChild }),
-    ...(clearFilter === false && {
-      ...(specificDate
-        ? { custom_date: formatDate(new Date(specificDate)) }
-        : dateRange[0]?.startDate &&
-        dateRange[0]?.endDate && {
-          from_date: formatDate(new Date(dateRange[0].startDate)),
-          to_date: formatDate(new Date(dateRange[0].endDate)),
-        }),
-    }),
-  }), [searchTrigger]);
+    [searchTrigger]
+  );
 
   useFetchApiData(DSRListActions, payloadGenerator, [searchTrigger]);
 
@@ -139,7 +145,20 @@ const DSRS = () => {
     navigate("/dashboard/create-dsr");
     dispatch(clearDsrState());
   };
+  const [loading, setLoading] = useState(false);
 
+  const handleDownloadPDF = (item) => {
+    console.log("item", item)
+    if (!DSRListData) {
+      alert("Data is still loading, please try again.");
+      return;
+    }
+
+    const contentComponent = (
+      <PrintContent2 data={item} cusVenData="" moduleId="" section="DSR" />
+    );
+    generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
+  };
   return (
     <>
       <TopLoadbar />
@@ -255,6 +274,10 @@ const DSRS = () => {
                     {otherIcons?.status_svg}
                     Status
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6">
+                    {otherIcons?.status_svg}
+                    Actions
+                  </div>
                 </div>
 
                 {DSRListData?.loading ? (
@@ -265,10 +288,11 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(item?.id)
-                              ? "selectedresult"
-                              : ""
-                              }`}
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
+                                ? "selectedresult"
+                                : ""
+                            }`}
                             key={index}
                           >
                             <div
@@ -317,15 +341,27 @@ const DSRS = () => {
                                   item?.is_invoiced == "0"
                                     ? "draft"
                                     : item?.is_invoiced == "1"
-                                      ? "invoiced"
-                                      : ""
+                                    ? "invoiced"
+                                    : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                    ? "Not Invoiced"
-                                    : ""}
+                                  ? "Not Invoiced"
+                                  : ""}
+                              </p>
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              <p
+                                onClick={()=>{handleDownloadPDF(item)}}
+                                style={{ cursor: "pointer" }}
+                              >
+                               
+                                Print/pdf
                               </p>
                             </div>
                           </div>

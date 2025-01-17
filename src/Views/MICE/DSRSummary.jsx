@@ -2,6 +2,7 @@ import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
+import { currencySymbol } from "../Helper/HelperFunctions";
 
 const DSRSummary = ({ customerData }) => {
   return (
@@ -613,7 +614,7 @@ const DSRSummary = ({ customerData }) => {
         <div className="other_passangers_detils_z03">
           {/* {customerData?.passengers?.map((item, index) => ( */}
           <div className="add_passangers_001">
-            <h2>Service Total</h2>
+            <h2>Service Total:({currencySymbol})</h2>
 
             <h2>
               {customerData?.passengers
