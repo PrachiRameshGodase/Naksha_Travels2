@@ -91,7 +91,7 @@ const EmployeeDetails = ({
 
   // Fetch customer list
   const fetchCustomers = () => {
-    const sendData = { customer_type: "Individual" };
+    const sendData = { customer_type: "Individual",status:1, active:1 };
     dispatch(customersList(sendData));
   };
 
@@ -136,7 +136,7 @@ const EmployeeDetails = ({
   // Render the member table
   const renderMemberTable = () => {
     return (
-      <table className="employee-table" style={{width:"71%"}}>
+      <table className="employee-table" style={{width:"90%"}}>
         <thead>
           <tr>
             <th>No.</th>

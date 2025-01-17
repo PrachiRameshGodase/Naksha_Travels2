@@ -65,6 +65,25 @@ const CustomDropdown31 = forwardRef((props, ref) => {
 
   const isSelected = (accountId) => value?.includes(accountId);
 
+ 
+
+  const renderSelectedOptions = () => {
+    // Ensure value is always an array
+    const selectedValues = Array.isArray(value) ? value : [];
+   
+    return selectedValues.map(id => {
+      const selectedCustomer = options?.find(account => account?.id == id);
+      console.log("options", options)
+      console.log("selectedCustomer", selectedCustomer)
+      return (
+        <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
+          {selectedCustomer?.display_name}
+          <div className="remove-option" onClick={() => handleSelect(selectedCustomer)}><RxCross2 /></div>
+        </div>
+      );
+    });
+  };
+
   useEffect(() => {
     const parshPayload = parseJSONofString(itemPayloads);
     if (parshPayload?.search) {
@@ -75,21 +94,8 @@ const CustomDropdown31 = forwardRef((props, ref) => {
       );
     }
     setSearchTerm("");
-  }, [isOpen]);
-  const renderSelectedOptions = () => {
-    // Ensure value is always an array
-    const selectedValues = Array.isArray(value) ? value : [];
-
-    return selectedValues.map(id => {
-      const selectedCustomer = options?.find(account => account?.id == id);
-      return (
-        <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-          {selectedCustomer?.display_name}
-          <div className="remove-option" onClick={() => handleSelect(selectedCustomer)}><RxCross2 /></div>
-        </div>
-      );
-    });
-  };
+  }, [isOpen,]);
+  
   return (
     <div
       ref={combinedRef}
@@ -188,7 +194,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
-      <div id='absoluteofvalselcc' style={{flexDirection:"row"}}>
+      <div id='absoluteofvalselcc' style={{flexDirection:"row", marginLeft:"115px"}}>
           {renderSelectedOptions()}
         </div>
     </div>

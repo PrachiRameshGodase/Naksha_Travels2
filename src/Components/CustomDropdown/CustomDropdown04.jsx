@@ -28,9 +28,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     );
   }
 
-  console.log("value", value)
-  console.log("optons", options)
-  console.log("optons", defaultOption)
+ 
 
   return (
     <div

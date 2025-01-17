@@ -14,7 +14,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     const debounceTimeoutRef = useRef(null); // Store debounce timeout reference
     const productType = useSelector((state) => state?.type);
 
-
+    
     const handleSelect = (option) => {
         if (option.active !== "0") {
 

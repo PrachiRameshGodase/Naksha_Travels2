@@ -93,7 +93,7 @@ const FamilyMember = ({
   }, [employeeDetails, setUserData]);
 
   const fetchCustomers = () => {
-    const sendData = { customer_type: "Individual" };
+    const sendData = { customer_type: "Individual", active:1 };
     dispatch(customersList(sendData));
   };
 
@@ -147,7 +147,7 @@ const FamilyMember = ({
   }, [employeeDetails]);
   const renderMemberTable = () => {
     return (
-      <table className="employee-table" style={{ width: "91%" }}>
+      <table className="employee-table" style={{ width: "100%" }}>
         <thead>
           <tr>
             <th>No.</th>
