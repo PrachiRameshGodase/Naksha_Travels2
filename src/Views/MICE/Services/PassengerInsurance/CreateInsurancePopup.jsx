@@ -4,7 +4,10 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import { customersList, customersView } from "../../../../Redux/Actions/customerActions";
+import {
+  customersList,
+  customersView,
+} from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerMInsuranceAction } from "../../../../Redux/Actions/passengerMInsuranceActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
@@ -70,9 +73,9 @@ const CreateInsurancePopup = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
-    guest_ids:false,
-    policy_no:false,
-    insurance_plan:false,
+    guest_ids: false,
+    policy_no: false,
+    insurance_plan: false,
     gross_amount: false,
     tax_amount: false,
     tax_percent: false,
@@ -128,23 +131,24 @@ const CreateInsurancePopup = ({
     if (hasAnyError) {
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-        charges: JSON.stringify(formData?.charges),
-      };
-      const refreshData = {
-        mice_id: data?.id,
-      };
-      dispatch(CreatePassengerMInsuranceAction(sendData, setShowModal, refreshData))
-       
-    } catch (error) {
-      console.error("Error updating insurance:", error);
-    }
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          mice_id: data?.id,
+        };
+        dispatch(
+          CreatePassengerMInsuranceAction(sendData, setShowModal, refreshData)
+        );
+      } catch (error) {
+        console.error("Error updating insurance:", error);
+      }
     }
   };
 
@@ -231,23 +235,21 @@ const CreateInsurancePopup = ({
                             />
                           </span>
                           {errors?.passenger_insurance_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Passenger
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Passenger
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Company Name
-                        </label>
+                        <label>Company Name</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
@@ -270,20 +272,19 @@ const CreateInsurancePopup = ({
                             name="policy_no"
                             placeholder="Enter Policy No"
                           />
-                          
                         </span>
                         {errors?.policy_no && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Policy No
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Policy No
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -326,6 +327,48 @@ const CreateInsurancePopup = ({
                           />
                         </span>
                       </div>
+
+                      <div className="form_commonblock">
+                        <label>
+                          Family Member<b className="color_red">*</b>
+                        </label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown31
+                              ref={dropdownRef1}
+                              label="Select Family Member"
+                              options={customerData?.family_members}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Family Member"
+                              setcusData={setcusData2}
+                              cusData={cusData2}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Family Member
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Insurance Plan<b className="color_red">*</b>
@@ -340,64 +383,20 @@ const CreateInsurancePopup = ({
                           />
                         </span>
                         {errors?.insurance_plan && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Insurance Plan
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Insurance Plan
+                          </p>
+                        )}
                       </div>
-                      
-                    </div>
-                    <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
-                          <label>
-                            Family Member<b className="color_red">*</b>
-                          </label>
-
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
-
-                              <CustomDropdown31
-                                ref={dropdownRef1}
-                                label="Select Family Member"
-                                options={customerData?.family_members}
-                                value={formData.guest_ids}
-                                onChange={(selectedItems) =>
-                                  handleChange1(selectedItems, "guest_ids")
-                                }
-                                name="guest_ids"
-                                defaultOption="Select Family Member"
-                                setcusData={setcusData2}
-                                cusData={cusData2}
-                                type="vendor"
-                                required
-                              />
-                            </span>
-                            {errors?.guest_ids && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Family Member
-                            </p>
-                          )}
-                          </div>
-                        </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}

@@ -52,7 +52,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
   };
 
   const handleSelect = (account) => {
-    console.log("account", account);
+    
 
     // Copy the current value
     const selectedItems = [...value];
@@ -109,8 +109,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
    
     return selectedValues.map(id => {
       const selectedCustomer = options?.find(account => account?.id == id);
-      console.log("options", options)
-      console.log("selectedCustomer", selectedCustomer)
+     
       return (
         <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
           {selectedCustomer?.display_name}
@@ -205,7 +204,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
-      <div id='absoluteofvalselcc' style={{flexDirection:"row"}}>
+      <div id='absoluteofvalselcc' style={{flexDirection:"row", marginLeft:"99px"}}>
           {renderSelectedOptions()}
         </div>
     </div>
