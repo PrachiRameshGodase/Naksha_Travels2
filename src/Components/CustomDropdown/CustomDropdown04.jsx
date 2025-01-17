@@ -28,8 +28,6 @@ const CustomDropdown04 = forwardRef((props, ref) => {
     );
   }
 
- 
-
   return (
     <div
       data-tooltip-content={(types === "Service" && name === "unit_id") ? "Unit is not changed for service type select" : (types !== "" && name === "type") ? "Selected type is not changed" : ""}

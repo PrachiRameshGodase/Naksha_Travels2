@@ -3,12 +3,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
-import Loader02 from "../../Components/Loaders/Loader02";
 import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
-import useOutsideClick from "../Helper/PopupData";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
+
 import {
   DSRDeleteActions,
   DSRDetailsAction,
@@ -16,12 +14,7 @@ import {
   PassengerAddAction,
   PassengerDeleteActions,
 } from "../../Redux/Actions/DSRActions";
-import {
-  ShowDropdownContent,
-  TermsAndConditions,
-} from "../Common/InsideSubModulesCommon/DetailInfo";
-import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
-import { generatePDF } from "../Helper/createPDF";
+
 import "./DSRDetails.scss";
 import PassengerCard from "./PassengerCard";
 import Swal from "sweetalert2";
@@ -32,7 +25,6 @@ const DSRDetails = () => {
   const Navigate = useNavigate();
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
-
   const cusList = useSelector((state) => state?.customerList);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
@@ -181,15 +173,15 @@ const DSRDetails = () => {
                   onClick={() => {
                     handleChangeDSRStatus(DSRData);
                   }}
-                  // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                 >
                   <p
                     className={
                       DSRData?.is_invoiced == "0"
                         ? "draft"
                         : DSRData?.is_invoiced == "1"
-                        ? "invoiced"
-                        : ""
+                          ? "invoiced"
+                          : ""
                     }
                     style={{
                       cursor: "pointer",

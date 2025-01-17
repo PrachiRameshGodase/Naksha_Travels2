@@ -39,7 +39,6 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   };
 
   const fullName = options?.find(account => account?.id == value);
-  
 
   useEffect(() => {
     const parsedPayload = parseJSONofString(itemPayloads);

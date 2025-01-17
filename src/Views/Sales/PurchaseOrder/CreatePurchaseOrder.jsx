@@ -171,6 +171,7 @@ const CreatePurchaseOrder = () => {
 
   }, [deliveryAddress, addSelectCus, cusData2])
 
+
   const dropdownRef = useRef(null);
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
@@ -181,7 +182,7 @@ const CreatePurchaseOrder = () => {
       formData,
       isVendorSelect,
       dropdownRef1,
-      isItemSelect,
+      // isItemSelect,
       setItemErrors,
       dropdownRef2,
       dispatch,
@@ -260,7 +261,6 @@ const CreatePurchaseOrder = () => {
                       <div id="sepcifixspanflex">
                         <span id="">
                           {otherIcons.name_svg}
-
                           <CustomDropdown10
                             ref={dropdownRef1}
                             label="Select vendor"

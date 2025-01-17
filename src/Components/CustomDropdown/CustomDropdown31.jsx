@@ -65,7 +65,20 @@ const CustomDropdown31 = forwardRef((props, ref) => {
 
   const isSelected = (accountId) => value?.includes(accountId);
 
- 
+  useEffect(() => {
+    const parsedPayload = parseJSONofString(itemPayloads);
+    // Check if API call is necessary
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "guest_ids" &&
+      (parsedPayload?.search || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData }));
+    }
+    setSearchTerm("");
+  }, []);
+
+
 
   const renderSelectedOptions = () => {
     // Ensure value is always an array
@@ -83,19 +96,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
       );
     });
   };
-
-  useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
-    if (parshPayload?.search) {
-      dispatch(
-        customersList({
-          ...sendData,
-        })
-      );
-    }
-    setSearchTerm("");
-  }, [isOpen,]);
-  
   return (
     <div
       ref={combinedRef}
@@ -115,18 +115,6 @@ const CustomDropdown31 = forwardRef((props, ref) => {
         }
       >
         {defaultOption}
-        {/* {cusData
-          ? cusData?.display_name
-          : value?.length > 0
-          ? value
-              .map((id) => {
-                const selectedOption = options.find(
-                  (option) => option.id === id
-                );
-                return selectedOption?.display_name;
-              })
-              .join(", ")
-          : defaultOption} */}
         <svg
           width="13"
           height="7"
@@ -173,7 +161,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
                     (index === focusedOptionIndex ? " focusedoption" : "")
                   }
                 >
-                 
+
                   {option?.display_name || ""}
                 </div>
               ))
@@ -194,7 +182,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
           </div>
         </div>
       )}
-      <div id='absoluteofvalselcc' style={{flexDirection:"row", marginLeft:"115px"}}>
+      <div id='absoluteofvalselcc' style={{flexDirection:"row"}}>
           {renderSelectedOptions()}
         </div>
     </div>

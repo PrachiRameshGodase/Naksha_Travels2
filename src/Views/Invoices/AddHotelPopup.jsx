@@ -17,7 +17,7 @@ import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
-import {CalculationSection2,} from "../DSR/CalculationSection";
+import { CalculationSection2, } from "../DSR/CalculationSection";
 
 const AddHotelPopup = ({ setShowModal, handleAddService }) => {
   const dispatch = useDispatch();
@@ -67,8 +67,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
   });
   const [errors, setErrors] = useState({
     hotel_id: false,
-   });
-   
+  });
+
   const entryType = ShowMasterData("50");
   const occupancy = ShowMasterData("36");
   const meal = ShowMasterData("37");
@@ -128,7 +128,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     e.preventDefault();
     let newErrors = {
       hotel_id: formData?.hotel_id ? false : true,
-     
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -173,7 +173,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap"  style={{ paddingBottom: "0px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -236,6 +236,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                         <label>
                           Room Number/Name<b className="color_red">*</b>
                         </label>
+
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown02
@@ -254,7 +255,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                             required
                           />
                         </span>
-                        
+
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -274,6 +275,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
+
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -355,7 +357,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                             autoComplete="off"
                           />
                         </span>
-                       
+
                       </div>
                       <div className="form_commonblock ">
                         <label>Checkin Date</label>
@@ -452,10 +454,10 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                 </div>
               </div>
               <SubmitButton6
-              onClick={handleFormSubmit}
-              createUpdate=""
-              setShowModal={setShowModal}
-            />
+                onClick={handleFormSubmit}
+                createUpdate=""
+                setShowModal={setShowModal}
+              />
             </form>
           </div>
         </div>
