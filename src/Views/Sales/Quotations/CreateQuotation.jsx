@@ -19,6 +19,7 @@ import {
   handleDropdownError,
   preventZeroVal,
   ShowMasterData,
+  stringifyJSON,
   validateItems,
 } from "../../Helper/HelperFunctions";
 import SubmitButton from "../../Common/Pagination/SubmitButton";
@@ -141,6 +142,7 @@ const CreateQuotation = () => {
     e.preventDefault();
     const buttonName = e.nativeEvent.submitter.name;
     const errors = validateItems(formData?.items);
+    // console.log("error", errors)
 
     if (!isCustomerSelect) {
       if (!isPartiallyInViewport(dropdownRef1.current)) {
@@ -152,15 +154,18 @@ const CreateQuotation = () => {
 
     }
 
-    else if (errors.length > 0) {
-      setItemErrors(errors);
-      if (!isPartiallyInViewport(dropdownRef2.current)) {
-        dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      setTimeout(() => {
-        dropdownRef2.current.focus();
-      }, 500);
-    } else {
+    // else if (errors.length > 0) {
+    //   setItemErrors(errors);
+    //   if (!isPartiallyInViewport(dropdownRef2.current)) {
+    //     dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //   }
+
+    //   setTimeout(() => {
+    //     dropdownRef2.current.focus();
+    //   }, 500);
+
+    // }
+    else {
       try {
         const updatedItems = formData?.items?.map((item) => {
           const { tax_name, ...itemWithoutTaxName } = item;

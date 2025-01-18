@@ -16,7 +16,7 @@ export const showRateWithPercent = (val) => {
 export const sendData = {
     fy: 2024,
     noofrec: 10,
-    active: 1, status:1
+    active: 1, status: 1
 }
 export const sendData2 = {
     fy: 2024,
@@ -223,7 +223,7 @@ export const validateItems = (items) => {
 
         if (!item?.item_name) itemErrors.item_name = "Please Select An Item";
         if (!item?.type) itemErrors.type = "Please Select Type";
-        if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Add Sale Price";
+        if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Fill the Price";
         if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
         if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
 

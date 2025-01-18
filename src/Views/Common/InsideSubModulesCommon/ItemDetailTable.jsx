@@ -51,7 +51,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
           {itemsData?.items?.map((val, index) => (
             <tr key={index} className="rowsxs15aksx433">
               <td className="sfdjklsd1xs2w1">{index + 1}</td>
-              <td className="sfdjklsd1xs2w2">{val?.item?.name || ""}</td>
+              <td className="sfdjklsd1xs2w2">{val?.item?.name || val?.item_name}</td>
               <td className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">
                 {showAmountWithCurrencySymbol(val?.rate)}
               </td>

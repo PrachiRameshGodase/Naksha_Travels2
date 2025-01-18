@@ -59,20 +59,20 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         items: [
             {
-                item_id: null,
-                unit_id: null,
+                item_id: 0,
+                unit_id: 0,
                 item_name: "",
                 tax_name: "",
                 hsn_code: "",
                 type: "",
                 quantity: 1,
-                tax_rate: null,
-                tax_amount: null,
+                tax_rate: 0,
+                tax_amount: 0,
                 discount: 0,
-                gross_amount: null,
-                final_amount: null,
+                gross_amount: 0,
+                final_amount: 0,
                 discount_type: 1,
-                item_remark: null,
+                item_remark: "",
             },
         ],
     };

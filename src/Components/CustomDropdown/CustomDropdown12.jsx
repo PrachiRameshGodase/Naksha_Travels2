@@ -167,23 +167,22 @@ export const CustomDropdown012 = ({
         }}
         className={"dropdown-selected" + (value ? " filledcolorIn" : "")}
       >
-        {value
-          ? options?.find(
-              (account) => `${account?.country} (${account?.code})` === value
-            )
-            ? `${
-                options?.find(
-                  (account) =>
-                    `${account?.country} (${account?.code})` === value
-                )?.country
-              } (${
-                options?.find(
-                  (account) =>
-                    `${account?.country} (${account?.code})` === value
-                )?.code
-              })`
+
+        {value ? (options?.find((account) => account?.code == value)?.country + " " + (options?.find((account) => account?.code == value)?.code)) : defaultOption}
+
+        {/* {value ? options?.find( (account) => `${account?.country} (${account?.code})` === value
+          )
+            ? `${options?.find(
+              (account) =>
+                `${account?.country} (${account?.code})` === value
+            )?.country
+            } (${options?.find(
+              (account) =>
+                `${account?.country} (${account?.code})` === value
+            )?.code
+            })`
             : defaultOption
-          : defaultOption}
+          : defaultOption} */}
         {/* defaultOption */}
         <svg
           width="13"

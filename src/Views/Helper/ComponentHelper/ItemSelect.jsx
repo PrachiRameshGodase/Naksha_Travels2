@@ -273,7 +273,7 @@ const ItemSelect = ({
           item_id: "",
           item_name: "",
           tax_rate: "",
-          unit_id: "",
+          unit_id: 0,
           rate: "",
         };
       }
@@ -325,7 +325,7 @@ const ItemSelect = ({
       hsn_code: "",
       gross_amount: 0,
       rate: 0,
-      unit_id: null,
+      unit_id: 0,
       type: "",
       final_amount: 0,
       tax_amount: 0,
@@ -386,18 +386,18 @@ const ItemSelect = ({
         item_id: "",
         item_name: "",
         quantity: 1,
-        unit_id: null,
+        unit_id: 0,
         hsn_code: "",
         type: "",
-        gross_amount: null,
-        rate: null,
-        final_amount: null,
-        tax_amount: null,
-        tax_rate: null,
+        gross_amount: 0,
+        rate: 0,
+        final_amount: 0,
+        tax_amount: 0,
+        tax_rate: 0,
         tax_amount: 0,
         discount: 0,
         discount_type: 1,
-        item_remark: null,
+        item_remark: "",
         tax_name: "",
         items_data: null
       },
@@ -499,6 +499,8 @@ const ItemSelect = ({
       gross_amount: parseFloat(data?.gross_amount) * 1,
       final_amount: parseFloat(data?.gross_amount).toFixed(2),
       discount_type: 1,
+      unit_id: 0,
+      item_id: "0",
       type: "Service",
       items_data: data,
     };
@@ -570,6 +572,8 @@ const ItemSelect = ({
         return null;
     }
   };
+
+  // console.log("formdtaaaaaaaaaaaaaaa", formData?.items)
 
   return (
     <>
@@ -705,7 +709,7 @@ const ItemSelect = ({
                         type="item_type"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         style={{ fontSize: "11px" }}
-                        types={item?.type}
+                        item_data={item}
                       />
                     </span>
                   </td>
@@ -935,6 +939,11 @@ const ItemSelect = ({
                     {itemErrors[index]?.rate && (
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].rate}
+                      </span>
+                    )}
+                    {itemErrors[index]?.type && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].type}
                       </span>
                     )}
                     {itemErrors[index]?.unit_id && (
@@ -1427,11 +1436,11 @@ export const ItemSelectGRM = ({
       tax_amount: 0,
       gr_qty: 0,
       po_qty: null,
-      gross_amount: null,
-      rate: null,
-      final_amount: null,
-      tax_rate: null,
-      item_remark: null,
+      gross_amount: 0,
+      rate: 0,
+      final_amount: 0,
+      tax_rate: 0,
+      item_remark: "",
       upload_image: "",
     };
   };
@@ -1443,13 +1452,13 @@ export const ItemSelectGRM = ({
         item_id: "",
         item_name: "",
         gr_qty: 0,
-        po_qty: null,
-        gross_amount: null,
-        rate: null,
-        final_amount: null,
+        po_qty: 0,
+        gross_amount: 0,
+        rate: 0,
+        final_amount: 0,
         tax_amount: 0,
-        tax_rate: null,
-        item_remark: null,
+        tax_rate: 0,
+        item_remark: "",
         upload_image: "",
       },
     ];
