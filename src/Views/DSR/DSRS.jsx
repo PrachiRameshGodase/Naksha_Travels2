@@ -147,18 +147,7 @@ const DSRS = () => {
   };
   const [loading, setLoading] = useState(false);
 
-  const handleDownloadPDF = (item) => {
-    console.log("item", item)
-    if (!DSRListData) {
-      alert("Data is still loading, please try again.");
-      return;
-    }
-
-    const contentComponent = (
-      <PrintContent2 data={item} cusVenData="" moduleId="" section="DSR" />
-    );
-    generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
-  };
+ 
   return (
     <>
       <TopLoadbar />
@@ -274,10 +263,7 @@ const DSRS = () => {
                     {otherIcons?.status_svg}
                     Status
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6">
-                    {otherIcons?.status_svg}
-                    Actions
-                  </div>
+                 
                 </div>
 
                 {DSRListData?.loading ? (
@@ -352,18 +338,7 @@ const DSRS = () => {
                                   : ""}
                               </p>
                             </div>
-                            <div
-                              // onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              <p
-                                onClick={()=>{handleDownloadPDF(item)}}
-                                style={{ cursor: "pointer" }}
-                              >
-                               
-                                Print/pdf
-                              </p>
-                            </div>
+                           
                           </div>
                         ))}
                       </>

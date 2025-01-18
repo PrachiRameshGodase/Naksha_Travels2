@@ -1,109 +1,349 @@
 // PdfTemplate.js
-import React, { useState } from "react";
-import nakshalogo from "../../../../assets/Naksha.png";
-import { formatDate3 } from "../../DateFormat";
-import {activeOrg_details,parseJSONofString,showAmountWithCurrencySymbol,showRateWithPercent,} from "../../HelperFunctions";
-import { PdfShowMastersValue } from "../../ShowMastersValue";
+import React, { useEffect, useState } from "react";
+import { activeOrg_details, parseJSONofString } from "../../HelperFunctions";
 import "./PdfTemplate.scss";
+import "./PrintContent2.scss";
+
+import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
 
 const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
-  const [showCharges, setShowCharges] = useState(false);
-  const active_orgnization = activeOrg_details;
-
-  const calculateTotalTaxAmount = () => {
-    return data?.items?.reduce((total, entry) => {
-      return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);
-    }, 0);
-  };
-
-  const totalExpenseCharges = parseJSONofString(data?.charges);
-console.log("data", data)
-
   return (
     <div id="pdf_print_container">
-     <>
-        <table id="tablex15s56s31s1" style={{ marginLeft: "13px" }}>
-          <thead className="thaedaksx433">
+      <div className="top_section" style={{ justifyContent: "center" }}>
+        <div className="contacts_321">
+          <h1>{section} Summary</h1>
+        </div>
+      </div>
+      <div>
+        <p>Customer Details:</p>
+        <table>
+          <thead className="">
             <tr>
-              <th className="sfdjklsd1xs2w1">#</th>
-              <th className="sfdjklsd1xs2w2" style={{ width: "12%" }}>
-                Item & Description
-              </th>
-              <th className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">Rate</th>
-              <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3qty">Qty</th>
-              {/* <th className="sfdjklsd1xs2w3">Unit</th> */}
-              <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3Width">Tax Rate</th>
-              <th className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount ">Amount</th>
+              <th style={{ width: "244px" }}>DSR NO</th>
+              <td>{data?.dsr_no || ""}</td>
+              <th>Customer Name</th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th style={{ width: "244px" }}>Customer Type</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Email</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th style={{ width: "244px" }}>Status</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Mobile No.</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
             </tr>
           </thead>
-          <tbody>
-            
-          </tbody>
         </table>
-        <div className="finalcalculateiosxl44s">
-          <span>
-            <p>Subtotal</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(data?.subtotal)}</h5>
-          </span>
-          <span>
-            <p>Total Tax</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount())}</h5>
-          </span>
-          <span>
-            <p>Shipping Charge</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(data?.shipping_charge)}</h5>
-          </span>
-          <span>
-            <p>Adjustment Charge</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(data?.adjustment_charge)}</h5>
-          </span>
-
-          {totalExpenseCharges?.length >= 1 && (
-            <>
-              <span
-                onClick={() => setShowCharges(!showCharges)}
-                style={{ cursor: "pointer", color: "#408dfb" }}
-              >
-                <p>Charges</p>{" "}
-              </span>
-              <>
-                {totalExpenseCharges?.map((val) => (
-                  <span>
-                    <p>{val?.account_name}</p>{" "}
-                    <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5>
-                  </span>
-                ))}
-              </>
-            </>
-          )}
-
-          <span>
-            <p>Total</p> <h5>{showAmountWithCurrencySymbol(data?.total)}</h5>
-          </span>
-        </div>
-      </>
-
-      {/* /*Section 3 table print and pdf */}
-
-      {/* /*Section 4 copy stamp */}
-      <div className="copy_bottom_footer_98" style={{ marginTop: "50px", marginLeft: "16px" }}>
-        {/* <h3>Notes / Terms</h3> */}
-        <div className="stamp_remark">
-          <div className="remark">
-            <p>Notes: {data?.customer?.remarks}</p>
-          </div>
-        </div>
-        <p>Banking Details:</p>
-        <p>Account Name : Naksha Travels Limited</p>
-        <p>Account Number KES : 0587122001</p>
-        <p>Account Number USD : 0587122002</p>
-        <p>Bank Name : Diamond Trust Bank Ltd</p>
-        <p>Bank Branch : DTB Center</p>
-        <p>Bank Branch Code 052 </p>
-        <p>Bank Swift Code : DTKEKENA </p>
       </div>
-      {/* /*Section 4 copy stamp */}
+      <div style={{ marginTop: "20px" }}>
+        <p>Passenger Details:</p>
+        <table>
+          {data?.passengers?.map((item, index) => (
+            <thead key={index}>
+              <tr>
+                <th style={{ width: "285px" }}>Sr No.</th>
+                <td style={{ width: "230px" }}>{index + 1}</td>
+                <th style={{ width: "285px" }}>Name</th>
+                <td>{item?.passenger?.display_name || "-"}</td>
+              </tr>
+              <tr>
+                <th style={{ width: "285px" }}>Email</th>
+                <td style={{ width: "230px" }}>
+                  {item?.passenger?.email || "-"}
+                </td>
+                <th style={{ width: "285px" }}>Mobile No.</th>
+                <td>{item?.passenger?.mobile_no || "-"}</td>
+              </tr>
+            </thead>
+          ))}
+        </table>
+      </div>
 
+      <div style={{ marginTop: "20px" }}>
+        <p>Services:</p>
+        <p>Hotel:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th>Booking Date</th>
+              <td>{data?.dsr_no || ""}</td>
+              <th>Hotel Name</th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th>Room No</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Occupany</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th>Meal</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Guest</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+            <tr>
+              <th>Check In</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Check Out</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th>Bed</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Amount</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+          </thead>
+        </table>
+        <p>Flight:</p>
+        <table style={{marginBottom:"20px"}}>
+          <thead className="" >
+            <tr>
+              <th style={{width:"230px"}}>Booking Date</th>
+              <td style={{width:"270px"}}>{data?.booking_date || ""}</td>
+              <th>Travel Date</th>
+              <td>{data?.travel_date || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"230px"}}>Airline Name</th>
+              <td style={{width:"270px"}}>{data?.air_line_name || ""}</td>
+
+              <th>Airline Code</th>
+              <td>{data?.air_line_code || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"230px"}}>Travel Type</th>
+              <td style={{width:"270px"}}>{data?.travel_type || ""}</td>
+
+              <th>GDS Portal</th>
+              <td>{data?.gds_portal || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"230px"}}>Ticket No.</th>
+              <td style={{width:"270px"}}>{data?.ticket_no || ""}</td>
+
+              <th>PNR No.</th>
+              <td>{data?.prn_no || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"230px"}}>Destination Code</th>
+              <td style={{width:"270px"}}>{data?.destination_code || ""}</td>
+
+              <th>Route</th>
+              <td>{data?.route || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"230px"}}>Passenger</th>
+              <td style={{width:"270px"}}>{data?.passenger_name || ""}</td>
+
+              <th>Amount</th>
+              <td>{data?.amount || ""}</td>
+            </tr>
+          </thead>
+        </table>
+        <p>Visa:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th>Passenger</th>
+              <td>{data?.passenger_name || ""}</td>
+              <th>Passport No</th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th>Date Of Birth</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Email</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th>Expiry Date</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Issue Date</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+            <tr>
+              <th>Visa No</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Visa Type</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th>Visa Entry Type</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Days</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th>Amount</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+          </thead>
+        </table>
+        <p>Car Hire:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th>Vehicle Type</th>
+              <td  style={{width:"240px"}}>
+                {" "}
+                {data?.customer?.status == "0"
+                  ? "Pending"
+                  : data?.customer?.status == "1"
+                  ? "Approved"
+                  : ""}
+              </td>
+
+              <th  style={{width:"240px"}}>Days</th>
+              <td  style={{width:"240px"}}>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+            <tr>
+              <th>Pickup Location</th>
+              <td  style={{width:"240px"}}>{data?.customer?.customer_type || ""}</td>
+
+              <th  style={{width:"240px"}}>Drop Location</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td  style={{width:"240px"}}></td>
+
+              <th  style={{width:"240px"}}>Amount</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+          </thead>
+        </table>
+
+        <p>Assit:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th style={{width:"265px"}}>Meeting Type</th>
+              <td style={{width:"260px"}}>{data?.passenger_name || ""}</td>
+              <th style={{width:"260px"}}>Airport </th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th style={{width:"265px"}}>No Of Persons</th>
+              <td style={{width:"260px"}}>{data?.customer?.customer_type || ""}</td>
+
+              <th style={{width:"260px"}}>Amount</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+          </thead>
+        </table>
+        <p>Insurance:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th>Passenger</th>
+              <td>{data?.passenger_name || ""}</td>
+              <th>Company Name</th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th>Policy No</th>
+              <td>{data?.customer?.customer_type || ""}</td>
+
+              <th>Insurance Plan</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+            <tr>
+              <th>Issue Date</th>
+              <td></td>
+
+              <th>Expiry Date</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+
+            <tr>
+              <th></th>
+              <td></td>
+
+              <th>Amount</th>
+              <td>{data?.customer?.mobile_no || ""}</td>
+            </tr>
+          </thead>
+        </table>
+        <p>Other:</p>
+        <table style={{ marginBottom: "20px" }}>
+          <thead className="">
+            <tr>
+              <th>Item Name</th>
+              <td>{data?.passenger_name || ""}</td>
+              <th>Quantity </th>
+              <td>{data?.customer?.display_name || ""}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td></td>
+
+              <th>Amount</th>
+              <td>{data?.customer?.email || ""}</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
       {/* /*Section 5 main footer boxes */}
       <h4 style={{ color: "gray", fontSize: "13px" }}>
         Travel, Tours & Safaris

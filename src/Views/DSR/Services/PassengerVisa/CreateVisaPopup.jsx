@@ -62,7 +62,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_total: 0.0,
     tax_amount: 0.0,
     retain: 0.0,
-    total_amount: 0.0,
+    total_amount: null,
     note: null,
     upload_image: null,
   });
