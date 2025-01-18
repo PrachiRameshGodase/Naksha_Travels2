@@ -52,7 +52,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
   };
 
   const handleSelect = (account) => {
-    console.log("account", account);
+    
 
     // Copy the current value
     const selectedItems = [...value];
@@ -118,8 +118,11 @@ const CustomDropdown31 = forwardRef((props, ref) => {
         className={
           "dropdown-selected" + (value?.length > 0 ? " filledcolorIn" : "")
         }
+        title={storeData.map((val) => val.display_name).join(", ")}
       >
-        {defaultOption}
+       {storeData.length > 0
+    ? storeData.map((val) => val.display_name).join(", ")
+    : defaultOption}
         <svg
           width="13"
           height="7"
@@ -188,15 +191,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
         </div>
       )}
 
-      <div id='absoluteofvalselcc' style={{ flexDirection: "row" }}>
-        {storeData?.map((val, index) => (
-          <div key={index} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-            {val?.display_name}
-            <div className="remove-option" onClick={() => handleSelect({ id: val.id, display_name: val.display_name })}
-            ><RxCross2 /></div>
-          </div>
-        ))}
-      </div>
+      
 
     </div>
   );

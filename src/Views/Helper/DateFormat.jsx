@@ -264,4 +264,90 @@ export const generatePDF2 = async (data) => {
 
 
 
+export const generatePDF3 = async (data) => {
+    console.log("Data for PDF:", data);
+    try {
+        // Simulate fetch data
+        const fetchData = async () => {
+            return [
+                ['DSR123', 'John Doe', 'Regular', 'john@example.com', 'Active', '1234567890'],
+            ];
+        };
+
+        const apiData = await fetchData();
+
+        // Flatten the table for two-row layout in one line
+        const tableData = [
+            ['DSR No.', apiData[0][0], 'Customer Name', apiData[0][1]],
+            ['Customer Type', apiData[0][2], 'Email', apiData[0][3]],
+            ['Status', apiData[0][4], 'Mobile No', apiData[0][5]],
+        ];
+
+        const pdfDoc = await PDFDocument.create();
+        const page = pdfDoc.addPage([600, 400]);
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+        const tableTop = 350;
+        const marginLeft = 50;
+        const rowHeight = 20;
+        const columnWidths = [120, 120, 120, 120];
+        const headerBgColor = rgb(1, 1, 1); // White background for the header
+        const headerTextColor = rgb(0, 0, 0); // Slightly dark text for the header
+        const borderColor = rgb(0.3, 0.3, 0.3);
+        const textColor = rgb(0.4, 0.4, 0.4);
+        // Draw table rows
+        tableData.forEach((row, rowIndex) => {
+            const y = tableTop - rowHeight * rowIndex;
+
+            row.forEach((cell, cellIndex) => {
+                const x = marginLeft + columnWidths.slice(0, cellIndex).reduce((a, b) => a + b, 0);
+                const cellWidth = columnWidths[cellIndex];
+                const cellHeight = rowHeight;
+
+                // Draw cell background for header column
+                if (cellIndex % 2 === 0) {
+                    page.drawRectangle({
+                        x,
+                        y: y - cellHeight,
+                        width: cellWidth,
+                        height: cellHeight,
+                        color: headerBgColor,
+                    });
+                }
+
+                // Draw cell text
+                const textWidth = font.widthOfTextAtSize(cell, 10);
+                const textX = x + (cellWidth - textWidth) / 2;
+                const textY = y - (cellHeight / 2 + 4); // Adjust for vertical alignment
+
+                page.drawText(cell, {
+                    x: textX,
+                    y: textY,
+                    size: 10,
+                    font,
+                    color: cellIndex % 2 === 0 ? headerTextColor : textColor,
+                });
+
+                // Draw cell borders
+                page.drawRectangle({
+                    x,
+                    y: y - cellHeight,
+                    width: cellWidth,
+                    height: cellHeight,
+                    borderWidth: 1,
+                    borderColor: borderColor,
+                });
+            });
+        });
+
+        // Save and open the PDF
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        window.open(url);
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+    }
+};
 

@@ -16,6 +16,9 @@ import Hotels from "./PassengerHotel/Hotels";
 import Visa from "./PassengerVisa/Visa";
 import Others from "./PassengerOthers/Others";
 import { RxCross2 } from "react-icons/rx";
+import PrintContent2 from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
+import { generatePDF } from "../../Helper/createPDF";
+
 
 const ServicesList = () => {
   const navigate = useNavigate();
@@ -27,7 +30,7 @@ const ServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
   );
-
+console.log("passengerData", passengerData)
   const totalHotels = passengerData?.dsr_hotel?.length || 0;
   const totalVisas = passengerData?.dsr_visa?.length || 0;
   const totalFlights = passengerData?.dsr_flight?.length || 0;
@@ -139,8 +142,10 @@ const ServicesList = () => {
     { label: "Others", total: totalOthers },
   ];
 
+  
   return (
     <>
+     
       <TopLoadbar />
       {hotelListData?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
@@ -188,6 +193,7 @@ const ServicesList = () => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
             {/* <ResizeFL /> */}
+           
             <Link
               to={`/dashboard/dsr-details?id=${passengerData?.dsr_passenger?.dsr?.id}`}
               className="linkx3"
@@ -197,13 +203,15 @@ const ServicesList = () => {
             >
               <RxCross2 />
             </Link>
+
           </div>
         </div>
         <div id="Anotherbox" style={{height:"20px",background:"rgb(219 218 231 / 35%)"}}>
           <div id="leftareax12" style={{width:"100%"}}>
             <p style={{fontWeight:500, width:"200px"}}>DSR No:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.dsr?.dsr_no || "-"}</span></p>
             <p style={{fontWeight:500, marginLeft:"20px", width:"312px"}}>Passenger Name:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.display_name || "-"}</span></p>
-            <p style={{fontWeight:500, marginLeft:"20px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.email || "-"}</span></p>
+            <p style={{fontWeight:500, marginLeft:"20px", width:"312px"}} >Email:<span style={{fontWeight:350, marginLeft:"10px"}}>{passengerData?.dsr_passenger?.passenger?.email || "-"}</span></p>
+            
           </div>
         </div>
         <div className="ccfz1 formsectionx1 type-button2">

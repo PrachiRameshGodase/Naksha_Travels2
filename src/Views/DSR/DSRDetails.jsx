@@ -19,6 +19,8 @@ import "./DSRDetails.scss";
 import PassengerCard from "./PassengerCard";
 import Swal from "sweetalert2";
 import DSRSummary from "./DSRSummary";
+import { generatePDF } from "../Helper/createPDF";
+import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
 
 const DSRDetails = () => {
   const dispatch = useDispatch();
@@ -150,9 +152,23 @@ const DSRDetails = () => {
       dispatch(DSRDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
+  const [loading, setLoading] = useState(false);
 
+  const handleDownloadPDF = () => {
+    if (!DSRDetails) {
+      alert("Data is still loading, please try again.");
+      return;
+    }
+
+    const contentComponent = (
+      <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" />
+    );
+    generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
+  };
+  
   return (
     <>
+    {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeDSR?.loading ||
@@ -167,6 +183,11 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
+          {/* <div className="mainx1">
+                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                  PDF/Print
+                </p>
+              </div> */}
             {DSRData?.is_invoiced == "0" && (
               <>
                 <div

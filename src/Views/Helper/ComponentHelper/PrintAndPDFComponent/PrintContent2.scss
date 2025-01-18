@@ -1,0 +1,54 @@
+#pdf_print_container {
+    .top_section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+  
+    .contacts_321 {
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+  
+      th, td {
+        width: 250px;
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #9e9c9c;
+        font-size: 14px;
+      }
+  
+      th {
+        // background-color: #f4f4f4;
+        // font-weight: bold;
+      }
+  
+      td {
+        background-color: #fff;
+      }
+  
+      tr:nth-child(even) {
+        // background-color: #f9f9f9;
+      }
+  
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  
+    h4 {
+      color: gray;
+      font-size: 13px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  }
+  

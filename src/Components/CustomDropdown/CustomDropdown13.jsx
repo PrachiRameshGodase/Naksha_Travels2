@@ -19,8 +19,9 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
   } = DropDownHelper(options, onChange, name, type);
 
   return (
-    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : {}}>
+    <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "item3" ? { minWidth: "181px", background: "white" } : {}}
+>
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } :className2 === "item3" ? {marginRight:"8px"} : {}}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
         <svg
           width="13"

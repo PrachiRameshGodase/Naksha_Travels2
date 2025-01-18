@@ -135,6 +135,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   onChange={(e) => handleServiceChange(e, passenger?.id)}
                   name="service"
                   defaultOption="Select Service"
+                  extracssclassforscjkls="extracssclassforscjklsitem"
                   type="service"
                 />
               </td>

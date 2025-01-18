@@ -62,7 +62,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_total: 0.0,
     tax_amount: 0.0,
     retain: 0.0,
-    total_amount: 0.0,
+    total_amount: null,
     note: null,
     upload_image: null,
   });
@@ -364,6 +364,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
+                      
                       <div className="form_commonblock">
                         <label>Country / Region</label>
                         <div id="inputx1">
@@ -387,6 +388,45 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         {/* {countryErr && <p className="error-message">
                                                             {otherIcons.error_svg}
                                                             Please select the country name</p>} */}
+                      </div>
+                     
+                      <div className="form_commonblock ">
+                        <label>Issue Date</label>
+                        <span>
+                          {otherIcons.date_svg}
+                          <DatePicker
+                            selected={formData?.issue_date}
+                            onChange={(date) =>
+                              setFormData({
+                                ...formData,
+                                issue_date: formatDate(date),
+                              })
+                            }
+                            name="issue_date"
+                            placeholderText="Enter Date"
+                            dateFormat="dd-MM-yyyy"
+                            autoComplete="off"
+                          />
+                        </span>
+                      </div>
+                      <div className="form_commonblock ">
+                        <label>Expiry Date</label>
+                        <span>
+                          {otherIcons.date_svg}
+                          <DatePicker
+                            selected={formData?.expiry_date}
+                            onChange={(date) =>
+                              setFormData({
+                                ...formData,
+                                expiry_date: formatDate(date),
+                              })
+                            }
+                            name="expiry_date"
+                            placeholderText="Enter Date"
+                            dateFormat="dd-MM-yyyy"
+                            autoComplete="off"
+                          />
+                        </span>
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -427,44 +467,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock ">
-                        <label>Issue Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.issue_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                issue_date: formatDate(date),
-                              })
-                            }
-                            name="issue_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock ">
-                        <label>Expiry Date</label>
-                        <span>
-                          {otherIcons.date_svg}
-                          <DatePicker
-                            selected={formData?.expiry_date}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                expiry_date: formatDate(date),
-                              })
-                            }
-                            name="expiry_date"
-                            placeholderText="Enter Date"
-                            dateFormat="dd-MM-yyyy"
-                            autoComplete="off"
-                          />
-                        </span>
-                      </div>
                       <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
@@ -499,6 +501,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           component="purchase"
                         />
                       </div>
+
+                      
                     </div>
                     <div className="f1wrapofcreqx1">
                     
