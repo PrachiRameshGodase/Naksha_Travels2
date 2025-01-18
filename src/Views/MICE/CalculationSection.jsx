@@ -107,7 +107,7 @@ const CalculationSection = ({
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
-              Tax %:<b className="color_red">*</b>
+              Tax %:
             </label>
 
             <CustomDropdown13
@@ -120,18 +120,7 @@ const CalculationSection = ({
               className2="item3"
             />
           </div>
-          {errors?.tax_percent && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Select Tax
-            </p>
-          )}
+         
         </div>
       </div>
 
@@ -139,7 +128,7 @@ const CalculationSection = ({
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
-              Tax:<b className="color_red">*</b>
+              Tax:
             </label>
             <input
               type="text"
@@ -149,18 +138,7 @@ const CalculationSection = ({
               readOnly
             />
           </div>
-          {/* {errors?.tax_amount && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Select Tax
-            </p>
-          )} */}
+        
         </div>
       </div>
       <div className="calcuparentc">

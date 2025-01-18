@@ -87,8 +87,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     chec_out_date: false,
     check_in_date: false,
     gross_amount: false,
-    tax_amount: false,
-    tax_percent: false,
+   
     retain: false,
     total_amount: false,
   });
@@ -191,8 +190,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       chec_out_date: formData?.chec_out_date ? false : true,
       check_in_date: formData?.check_in_date ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      tax_amount: formData?.tax_amount ? false : true,
-      tax_percent: formData?.tax_percent ? false : true,
+    
       retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };

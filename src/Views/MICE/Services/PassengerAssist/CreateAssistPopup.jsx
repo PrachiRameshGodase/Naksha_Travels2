@@ -59,8 +59,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     no_of_persons:false,
     guest_ids:false,
     gross_amount: false,
-    tax_amount: false,
-    tax_percent: false,
+ 
     retain: false,
     total_amount: false,
   });
@@ -102,8 +101,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       airport_name: formData?.airport_name ? false : true,
       no_of_persons: formData?.no_of_persons ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      tax_amount: formData?.tax_amount ? false : true,
-      tax_percent: formData?.tax_percent ? false : true,
+    
       retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };

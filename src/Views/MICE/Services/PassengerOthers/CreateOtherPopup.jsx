@@ -62,8 +62,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     quantity:false,
     price:false,
     gross_amount: false,
-    tax_amount: false,
-    tax_percent: false,
+   
     retain: false,
     total_amount: false,
   });
@@ -102,8 +101,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       quantity: formData?.price ? false : true,
       price: formData?.item_id ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      tax_amount: formData?.tax_amount ? false : true,
-      tax_percent: formData?.tax_percent ? false : true,
+    
       retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
