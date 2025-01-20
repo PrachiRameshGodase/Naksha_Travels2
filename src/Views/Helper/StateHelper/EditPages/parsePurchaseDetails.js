@@ -23,18 +23,18 @@ export const parsePurchaseDetails = (detailData, convert) => {
         }),
 
         unit_id: item?.unit_id,
-        item_name: item?.item?.name,
+        item_name: item?.item_name,
         gross_amount: +item?.gross_amount,
         rate: +item?.rate,
         hsn_code: +item?.item?.hsn_code,
-        type: item?.item?.type,
+        type: item?.type,
         final_amount: +item?.final_amount,
         tax_rate: +item?.tax_rate,
         tax_amount: +item?.tax_amount,
         discount: +item?.discount,
         discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
         item_remark: item?.item_remark,
-        tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable",
+        tax_name: item?.item?.tax_preference == "2" && "Non-Taxable",
         unit_id: item?.unit_id,
     }));
 

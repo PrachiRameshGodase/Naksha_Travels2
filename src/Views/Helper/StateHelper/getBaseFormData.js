@@ -10,22 +10,22 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         customer_id: '',
         customer_name: '',
-        customer_note: null,
-        customer_type: null,
-        display_name: null,
+        customer_note: "",
+        customer_type: "",
+        display_name: "",
         vendor_id: '',
         vendor_name: '',
         vendor_note: null,
 
-        upload_image: null,
+        upload_image: "null",
         phone: null,
-        email: null,
+        email: "",
         sale_person: '',
         address: "",
         currency: getCurrencyFormData,
         payment_terms: "",
         delivery_method: '',
-        place_of_supply: null,
+        place_of_supply: "",
 
         reference_no: "",
         reference: "",
@@ -34,32 +34,32 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
         transaction_date: formatDate(new Date()),
 
 
-        terms_and_condition: null,
-        tcs: null,
+        terms_and_condition: "",
+        tcs: "",
 
-        subtotal: null,
-        total: null,
+        subtotal: 0,
+        total: 0,
         discount: "",
-        total_tax: null,
-        total_charges: null,
-        total_gross_amount: null,
+        total_tax: 0,
+        total_charges: 0,
+        total_gross_amount: 0,
 
         taxes: [{
-            CGST: null,
-            SGST: null,
-            IGST: null
+            CGST: 0,
+            SGST: 0,
+            IGST: 0
         }],
 
         charges: [
             {
                 account_id: null,
-                amount: null
+                amount: 0
             }
         ],
 
         items: [
             {
-                item_id: 0,
+                item_id: null,
                 unit_id: 0,
                 item_name: "",
                 tax_name: "",

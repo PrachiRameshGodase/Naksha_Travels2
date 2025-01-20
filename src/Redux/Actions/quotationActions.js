@@ -27,8 +27,6 @@ import { handleQuotationNavigation } from '../../Views/Helper/ReduxHelperFunctio
 import { handleSaleOrderNavigation } from '../../Views/Helper/ReduxHelperFunctions/salesOrdersHelper';
 import { convertStatus } from '../../Views/Helper/ReduxHelperFunctions/convertStatus';
 import { invoiceHelper } from '../../Views/Helper/ReduxHelperFunctions/invoiceHelper';
-import { invoiceLists, quotationLists, saleOrderLists } from './listApisActions';
-import { sendData } from '../../Views/Helper/HelperFunctions';
 
 export const quotationDetails = (queryParams, setDetail_api_data) => async (dispatch) => {
     try {
@@ -68,7 +66,7 @@ export const updateQuotation = (quotationData, navigate, section, editDub, butto
 
         if (response?.data?.message === "Transaction Created Successfully") {
 
-            convertStatus(dispatch, section, navigate, itemId, convert, response, quotationData);
+            convertStatus(dispatch, section, navigate, itemId, convert, response, quotationData);//change status in convert
 
             let confirmed = null;
             if (buttonName === "saveAndSend" && confirmed === null) {
@@ -88,13 +86,10 @@ export const updateQuotation = (quotationData, navigate, section, editDub, butto
 
             if (section === "quotation") {
                 handleQuotationNavigation(editDub, buttonName, confirmed, navigate, response);
-                dispatch(quotationLists(sendData))//call list api when data is updated
             } else if (section === "sale-order") {
                 handleSaleOrderNavigation(editDub, buttonName, confirmed, navigate, response)
-                dispatch(saleOrderLists(sendData))//call list api when data is updated
             } else if (section === "invoices" || section === "delivery_challan") {
                 invoiceHelper(editDub, buttonName, navigate, section);
-                dispatch(invoiceLists(sendData))//call list api when data is updated
             }
 
         } else {
@@ -157,7 +152,6 @@ export const quotationStatus = (quotationData, setCallApi) => async (dispatch) =
                 data
             },
         });
-        dispatch(quotationLists(sendData))//call list api when data is updated
         if (setCallApi) {
             if (data?.message === "Quotation Declined Updated Successfully") {
                 setCallApi((prev) => prev + 1);
@@ -197,7 +191,6 @@ export const quotationDelete = (quotationData, Navigate) => async (dispatch) => 
             },
         });
 
-        dispatch(quotationLists(sendData))//call list api when data is updated
         if (data?.message === "Quotation deleted Successfully") {
             Navigate('/dashboard/quotation');
             toast.success(data?.message);
@@ -233,7 +226,6 @@ export const quotationSend = (quotationData, Navigate) => async (dispatch) => {
         // console.log("quotaion send data", quotationData)
 
         if (data?.message === "Quotation sent Successfully") {
-            dispatch(quotationLists(sendData))//call list api when data is updated
             const sendData = {
                 id: quotationData?.id,
                 status: 6,

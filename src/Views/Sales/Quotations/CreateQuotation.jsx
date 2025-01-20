@@ -36,6 +36,8 @@ import {
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import AddServices from "../../Invoices/AddServices";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
+import Swal from 'sweetalert2';
+import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 const CreateQuotation = () => {
 
   const dispatch = useDispatch();
@@ -138,8 +140,10 @@ const CreateQuotation = () => {
 
   const Navigate = useNavigate();
 
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    let confirmed = null;
     const buttonName = e.nativeEvent.submitter.name;
     const errors = validateItems(formData?.items);
     // console.log("error", errors)
@@ -147,25 +151,32 @@ const CreateQuotation = () => {
     if (!isCustomerSelect) {
       if (!isPartiallyInViewport(dropdownRef1.current)) {
         dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          dropdownRef1.current.focus();
+        }, 500);
       }
-      setTimeout(() => {
-        dropdownRef1.current.focus();
-      }, 500);
-
+      return;
     }
 
-    // else if (errors.length > 0) {
-    //   setItemErrors(errors);
-    //   if (!isPartiallyInViewport(dropdownRef2.current)) {
-    //     dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //   }
+    else if (errors.length > 0) {
+      setItemErrors(errors);
+      if (!isPartiallyInViewport(dropdownRef2.current)) {
+        dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
 
-    //   setTimeout(() => {
-    //     dropdownRef2.current.focus();
-    //   }, 500);
+      setTimeout(() => {
+        dropdownRef2.current.focus();
+      }, 500);
+      return
+    }
 
-    // }
-    else {
+    // if the amount is zero then show a confirm for proceed to create or not....
+    else if (parseInt(formData?.total) <= 0) {
+      confirmed = await confirmWithZeroAmount('quotation');
+      // if (confirmed === false) return;
+    }
+    console.log("fon", !confirmed)
+    if (confirmed || confirmed == null) {
       try {
         const updatedItems = formData?.items?.map((item) => {
           const { tax_name, ...itemWithoutTaxName } = item;
@@ -181,6 +192,8 @@ const CreateQuotation = () => {
 
   };
 
+
+  // set all customer data when customer is select
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -292,7 +305,6 @@ const CreateQuotation = () => {
                             <SelectAddress addSelect={addSelect} setAddSelect={setAddSelect} formData={formData} setFormData={setFormData} cusData={cusData} isEdit={isEdit} itemId={itemId} viewAllCusDetails={viewAllCusDetails} setViewAllCusDetails={setViewAllCusDetails} type='customer' />
                           </div>
                         </div>
-
 
                         <div className="f1wrapofcreqx1">
                           <div className="form_commonblock">

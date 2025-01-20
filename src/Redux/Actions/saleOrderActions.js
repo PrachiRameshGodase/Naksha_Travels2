@@ -18,9 +18,6 @@ import {
     SALE_ORDER_SEND_ERROR,
 
 } from "../Constants/saleOrderConstants";
-import SalesOrderList from '../../Views/Sales/SalesOrder/SalesOrderList';
-import { sendData } from '../../Views/Helper/HelperFunctions';
-import { saleOrderLists } from './listApisActions';
 
 export const saleOrderDetails = (queryParams, setDetail_api_data) => async (dispatch) => {
     try {
@@ -58,7 +55,6 @@ export const saleOrderStatus = (saleOrderData, setCallApi) => async (dispatch) =
             saleOrderData
         );
 
-        dispatch(saleOrderLists(sendData))//update sale list if data is updated
 
         if (setCallApi) {
             if (data?.message === "Sales Order Declined Updated Successfully") {
@@ -91,7 +87,6 @@ export const saleOrderDelete = (saleOrderData, Navigate) => async (dispatch) => 
             `/sales-order/delete`,
             saleOrderData
         );
-        dispatch(saleOrderLists(sendData))//update sale list if data is updated
 
         dispatch({
             type: SALEORDER_DELETE_SUCCESS,
@@ -124,7 +119,6 @@ export const saleOrderSend = (queryParams, Navigate) => async (dispatch) => {
         );
 
         if (data?.message === "Sales Order sent Successfully") {
-            dispatch(saleOrderLists(sendData))//update sale list if data is updated
             const sendData = {
                 id: queryParams?.id,
                 status: 6,

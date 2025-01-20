@@ -110,6 +110,8 @@ export const journalLists = (data) => async dispatch => {
 
 
 export const quotationLists = (data, setAllListValue) => async dispatch => {
+    console.log("data payload", data)
+
     localStorage.setItem("quotPayload", JSON.stringify(data));
     dispatch({ type: FETCH_QUOTE_LIST_DATA_REQUEST });
     try {

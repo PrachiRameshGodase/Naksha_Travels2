@@ -3,22 +3,22 @@ import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { ASSIST_DELETE_ERROR, ASSIST_DELETE_REQUEST, ASSIST_DELETE_SUCCESS, ASSIST_DETAIL_ERROR, ASSIST_DETAIL_REQUEST, ASSIST_DETAIL_SUCCESS, ASSIST_STATUS_ERROR, ASSIST_STATUS_REQUEST, ASSIST_STATUS_SUCCESS, CREATE_ASSIST_ERROR, CREATE_ASSIST_REQUEST, CREATE_ASSIST_SUCCESS, GET_ASSIST_ERROR, GET_ASSIST_REQUEST, GET_ASSIST_SUCCESS } from "../Constants/assistConstant";
 
- export const CreateAssistAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
+export const CreateAssistAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
     dispatch({ type: CREATE_ASSIST_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/assist/create/update`, queryParams);
-        dispatch({ type:CREATE_ASSIST_REQUEST , payload: response.data });
+        dispatch({ type: CREATE_ASSIST_REQUEST, payload: response.data });
 
         if (response?.data?.message === "Assists Added Successfully") {
             toast?.success(response?.data?.message);
             Navigate('/dashboard/assists-services')
-            
-        } 
-        else  if (response?.data?.message === "Assists Updated Successfully") {
+
+        }
+        else if (response?.data?.message === "Assists Updated Successfully") {
             toast?.success(response?.data?.message);
             Navigate('/dashboard/assists-services')
-            
-        } 
+
+        }
         else {
             toast?.error(response?.data?.message);
         }
@@ -73,7 +73,7 @@ export const assistDetailsAction = (queryParams, setDetail_api_data) => async (d
     }
 };
 
-export const assiststatusActions = (queryParams,navigate, setCallApi, billData, autoId, tracking_details) => async (dispatch) => {
+export const assiststatusActions = (queryParams, navigate, setCallApi, billData, autoId, tracking_details) => async (dispatch) => {
     dispatch({ type: ASSIST_STATUS_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/assist/status`, queryParams);
@@ -83,8 +83,8 @@ export const assiststatusActions = (queryParams,navigate, setCallApi, billData, 
 
             // navigate("/dashborad/assists-services")
 
-        } 
-      
+        }
+
         dispatch({ type: ASSIST_STATUS_SUCCESS, payload: response.data });
 
     } catch (error) {

@@ -4,7 +4,7 @@ import { RiSearch2Line } from 'react-icons/ri';
 
 
 const CustomDropdown15 = forwardRef((props, ref) => {
-  const { options, value, type, onChange, name, defaultOption, index } = props;
+  const { options, value, type, onChange, name, defaultOption, index, extracssclassforscjkls } = props;
   const nextFocusRef = useRef(null);
   const {
     isOpen,
@@ -39,7 +39,7 @@ const CustomDropdown15 = forwardRef((props, ref) => {
   };
 
   return (
-    <div ref={combinedRef} tabIndex="0" className="customdropdownx12s86" onKeyDown={handleKeyDown}>
+    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {name === "paid_by" || name === "payment_mode" || name === "sale_acc_id" || name === "purchase_acc_id" || name === "account_id" || name === "to_acc" || name === "acc_id" || name === "paid_by" || name === "parent_id" ?
           <> {value ? options?.find(account => account?.id == value)?.account_name : defaultOption}</>

@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
 import { getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
+import useFetchApiData from "./ComponentHelper/useFetchApiData";
 
 // const getLocalStorageData = localStorage?.getItem("UserData");
 const UserData = getLocalStorage("UserData");
@@ -58,16 +59,15 @@ export const formatString = (str) => {
         .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
 };
 
-export const ShowAutoGenerateId = (module, showField) => {
-    const dispatch = useDispatch();
+export const ShowAutoGenerateId = (module) => {
     const moduleIdList = useSelector(state => state?.autoIdList);
     const showMainGenerateIdData = moduleIdList?.data?.sequence[0];
 
-    useEffect(() => {
-        dispatch(autoGenerateIdList({ module: module }))
-    }, [dispatch]);
-
-    return showMainGenerateIdData || [];
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        module: module
+    }), []);
+    useFetchApiData(autoGenerateIdList, payloadGenerator, []);
+    return showMainGenerateIdData || "";
 };
 
 export const activeCustomerData = (type) => {
@@ -221,11 +221,11 @@ export const validateItems = (items) => {
     items.forEach((item, index) => {
         const itemErrors = {};
 
-        if (!item?.item_name) itemErrors.item_name = "Please Select An Item";
-        if (!item?.type) itemErrors.type = "Please Select Type";
-        if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Fill the Price";
-        if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
-        if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
+        if (!item?.item_name) itemErrors.item_name = "Please Select/type An Item or select Services";
+        // if (!item?.type) itemErrors.type = "Please Select Type";
+        // if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Fill the Price";
+        // if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
+        // if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
 
         if (Object.keys(itemErrors).length > 0) {
             errors[index] = itemErrors;
