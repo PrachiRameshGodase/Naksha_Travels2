@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
@@ -22,6 +22,7 @@ import { quotationFilterOptions } from "../../Helper/SortByFilterContent/filterC
 import { quotationSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 
 
 const Quotations = () => {
@@ -83,38 +84,29 @@ const Quotations = () => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchQuotations = useCallback(async () => {
-    try {
-      const fy = localStorage.getItem("FinancialYear");
-      const currentpage = currentPage;
-
-      const sendData = {
-        fy,
-        noofrec: itemsPerPage,
-        currentpage,
-        ...(selectedSortBy !== "Normal" && { sort_by: selectedSortBy, sort_order: sortOrder }),
-        ...(status && {
-          status: status == "expiry_date" ? 6 : status,
-          ...(status == "expiry_date" && { expiry_date: 1 }),
+  //fetch all data
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    fy: localStorage.getItem('FinancialYear'),
+    noofrec: itemsPerPage,
+    currentpage: currentPage,
+    noofrec: itemsPerPage,
+    ...(selectedSortBy !== "Normal" && { sort_by: selectedSortBy, sort_order: sortOrder }),
+    ...(status && {
+      status: status == "expiry_date" ? 6 : status,
+      ...(status == "expiry_date" && { expiry_date: 1 }),
+    }),
+    ...(searchTermFromChild && { search: searchTermFromChild }),
+    ...(clearFilter === false && {
+      ...(specificDate
+        ? { custom_date: formatDate(new Date(specificDate)) }
+        : dateRange[0]?.startDate && dateRange[0]?.endDate && {
+          from_date: formatDate(new Date(dateRange[0].startDate)),
+          to_date: formatDate(new Date(dateRange[0].endDate)),
         }),
-        ...(searchTermFromChild && { search: searchTermFromChild }),
-        ...(clearFilter === false && {
-          ...(specificDate
-            ? { custom_date: formatDate(new Date(specificDate)) }
-            : dateRange[0]?.startDate && dateRange[0]?.endDate && {
-              from_date: formatDate(new Date(dateRange[0].startDate)),
-              to_date: formatDate(new Date(dateRange[0].endDate)),
-            }),
-        }),
-      };
+    }),
+  }), [searchTrigger, currentPage]);
 
-      dispatch(quotationLists(sendData));
-    } catch (error) {
-      console.error("Error fetching quotations:", error);
-    }
-  }, [searchTrigger]);
-
-  useFetchOnMount(fetchQuotations); // Use the custom hook for call API
+  useFetchApiData(quotationLists, payloadGenerator, [searchTrigger, currentPage]);
 
 
   const handleRowClicked = (quotation) => {

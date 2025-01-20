@@ -283,7 +283,7 @@ const ItemSelect = ({
 
     if (field === "quantity" || field === "rate") {
       newItems[index].gross_amount = +item?.rate * +item?.quantity;
-      newErrors[index].rate = "";
+      // newErrors[index].rate = "";
     }
 
     const grossAmount = item?.rate * item?.quantity;
@@ -573,7 +573,7 @@ const ItemSelect = ({
     }
   };
 
-  // console.log("formdtaaaaaaaaaaaaaaa", formData?.items)
+  console.log("formdtaaaaaaaaaaaaaaa", formData?.items)
 
   return (
     <>
@@ -614,6 +614,7 @@ const ItemSelect = ({
 
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
+                    {/* it is desplay when service select */}
                     {item?.items_data?.service_name === "Hotel" ? (
                       <>
                         <div>
@@ -673,26 +674,28 @@ const ItemSelect = ({
                           />
                         </div>
                       </>
-                    ) : (
-                      <CustomDropdown26
-                        options={options2 || []}
-                        value={item?.item_id}
-                        onChange={(event) =>
-                          handleItemChange(
-                            index,
-                            event.target.name,
-                            event.target.value
-                          )
-                        }
-                        name="item_id"
-                        type="select_item"
-                        setItemData={setItemData}
-                        index={index}
-                        extracssclassforscjkls={extracssclassforscjkls}
-                        itemData={item}
-                        ref={dropdownRef2}
-                      />
-                    )}
+                    ) :
+                      // display when item is selected. item id is found 
+                      (
+                        <CustomDropdown26
+                          options={options2 || []}
+                          value={item?.item_id}
+                          onChange={(event) =>
+                            handleItemChange(
+                              index,
+                              event.target.name,
+                              event.target.value
+                            )
+                          }
+                          name="item_id"
+                          type="select_item"
+                          setItemData={setItemData}
+                          index={index}
+                          extracssclassforscjkls={extracssclassforscjkls}
+                          itemData={item}
+                          ref={dropdownRef2}
+                        />
+                      )}
                   </td>
 
                   {/* Type Dropdown */}
@@ -781,7 +784,7 @@ const ItemSelect = ({
                       defaultOption="Units"
                       type="masters"
                       extracssclassforscjkls="extracssclassforscjklsitem"
-                      types={item?.type}
+                      item_data={item}
                     />
                   </td>
 
@@ -929,14 +932,14 @@ const ItemSelect = ({
                 </tr>
 
                 {/* Validation Errors */}
-                {/* <tr className="error-row">
+                <tr className="error-row">
                   <td colSpan={9}>
                     {itemErrors[index]?.item_name && (
-                      <span className="error-message">
+                      <span className="error-message" style={{ textTransform: "capitalize" }}>
                         {otherIcons.error_svg} {itemErrors[index].item_name}
                       </span>
                     )}
-                    {itemErrors[index]?.rate && (
+                    {/* {itemErrors[index]?.rate && (
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].rate}
                       </span>
@@ -955,9 +958,9 @@ const ItemSelect = ({
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].tax_rate}
                       </span>
-                    )}
+                    )} */}
                   </td>
-                </tr> */}
+                </tr>
               </React.Fragment>
             ))}
           </tbody>
@@ -1123,55 +1126,13 @@ const ItemSelect = ({
               </div>
 
               {/* Add expense changes */}
-              <div className="clcsecx12s1">
-                <label>
-                  <p className="edit_changes_021" onClick={openExpenseCharges}>
-                    {" "}
-                    Edit and add charges
-                  </p>
-                </label>
+              <div className='clcsecx12s1'>
+                <label><p className='edit_changes_021' onClick={openExpenseCharges}> Edit and add charges {openCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg}</p></label>
               </div>
               {openCharges && (
                 <ExpenseCharges
                   formValues={{ formData, setFormData, handleChange }}
                 />
-              )}
-
-              {!formData?.items[0]?.item_id ? (
-                <b className="idofbtagwarninhxs5">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width={40}
-                    height={40}
-                    color={"#f6b500"}
-                    fill={"none"}
-                  >
-                    <path
-                      d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                    <path
-                      d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M11.992 8.99997H12.001"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  To edit the shipping and adjustment charge, select an item
-                  first.
-                </b>
-              ) : (
-                ""
               )}
             </div>
 
