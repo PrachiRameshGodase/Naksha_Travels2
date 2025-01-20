@@ -6,9 +6,16 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {fetchGetCities,fetchGetCountries,fetchGetStates,} from "../../../../Redux/Actions/globalActions";
-import {CreateHotelAction, hotelDetailsAction,} from "../../../../Redux/Actions/hotelActions";
-import {SubmitButton2,} from "../../../Common/Pagination/SubmitButton";
+import {
+  fetchGetCities,
+  fetchGetCountries,
+  fetchGetStates,
+} from "../../../../Redux/Actions/globalActions";
+import {
+  CreateHotelAction,
+  hotelDetailsAction,
+} from "../../../../Redux/Actions/hotelActions";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
@@ -46,7 +53,9 @@ const CreateHotel = () => {
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
-
+  const [errors, setErrors] = useState({
+    hotel_id: false,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,8 +90,11 @@ const CreateHotel = () => {
       ...(name === "hotel_type" && {
         hotel_type_name: hotelTypeName?.label,
       }),
-
       [name]: value,
+    }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
     }));
   };
 
@@ -99,7 +111,7 @@ const CreateHotel = () => {
       dispatch(hotelDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
- 
+
   useEffect(() => {
     if (itemId && isEdit && hotelData) {
       setFormData({
@@ -121,21 +133,30 @@ const CreateHotel = () => {
       });
     }
   }, [itemId, isEdit, hotelData]);
-  
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-        upload_documents: JSON.stringify(formData?.upload_documents),
-      };
-      dispatch(CreateHotelAction(sendData, Navigate));
-    } catch (error) {
-      toast.error("Error updating hotel:", error);
+    let newErrors = {
+      hotel_id: formData?.hotel_id ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          upload_documents: JSON.stringify(formData?.upload_documents),
+        };
+        dispatch(CreateHotelAction(sendData, Navigate));
+      } catch (error) {
+        toast.error("Error updating hotel:", error);
+      }
     }
   };
-
   return (
     <div>
       <>

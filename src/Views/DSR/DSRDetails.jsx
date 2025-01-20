@@ -183,11 +183,11 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
-          {/* <div className="mainx1">
+          <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
                   PDF/Print
                 </p>
-              </div> */}
+              </div>
             {DSRData?.is_invoiced == "0" && (
               <>
                 <div

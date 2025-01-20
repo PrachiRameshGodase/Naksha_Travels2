@@ -59,8 +59,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     drop_location:false,
     guest_ids: false,
     gross_amount: false,
-    tax_amount: false,
-    tax_percent: false,
+    
     retain: false,
     total_amount: false,
   });
@@ -106,8 +105,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       drop_location: formData?.drop_location ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      tax_amount: formData?.tax_amount ? false : true,
-      tax_percent: formData?.tax_percent ? false : true,
+    
       retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };

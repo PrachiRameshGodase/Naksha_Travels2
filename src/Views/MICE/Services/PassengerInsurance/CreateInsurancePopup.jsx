@@ -62,8 +62,7 @@ const CreateInsurancePopup = ({
     gross_amount: null,
     discount: null,
     supplier_total: null,
-    tax_percent: null,
-    tax_amount: null,
+  
     retain: null,
     total_amount: null,
     note: null,
@@ -119,8 +118,7 @@ const CreateInsurancePopup = ({
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      tax_amount: formData?.tax_amount ? false : true,
-      tax_percent: formData?.tax_percent ? false : true,
+     
       retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };

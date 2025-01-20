@@ -605,16 +605,15 @@ const DSRSummary = ({ customerData }) => {
         <div className="other_passangers_detils_z03">
           {/* {customerData?.passengers?.map((item, index) => ( */}
           <div className="add_passangers_001">
-            <h2>Service Total:({currencySymbol})</h2>
+            <h3>Service Total:</h3>
 
-            <h2>
-              {customerData?.passengers
+            <h3>({currencySymbol}) {customerData?.passengers
                 ?.reduce(
                   (acc, item) => acc + parseFloat(item?.service_total || 0),
                   0
                 )
-                .toFixed(2)}
-            </h2>
+                .toFixed(2)} 
+            </h3>
           </div>
           {/* ))} */}
         </div>
