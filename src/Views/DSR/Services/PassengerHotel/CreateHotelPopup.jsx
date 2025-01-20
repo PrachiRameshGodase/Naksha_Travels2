@@ -240,7 +240,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
   const isDisabled = formData.room_id;
-console.log("formData", formData)
+
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">

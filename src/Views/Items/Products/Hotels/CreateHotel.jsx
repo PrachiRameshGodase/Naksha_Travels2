@@ -54,6 +54,7 @@ const CreateHotel = () => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
   const [errors, setErrors] = useState({
+    hotel_type:false,
     hotel_id: false,
   });
 
@@ -137,7 +138,9 @@ const CreateHotel = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
+      hotel_type: formData?.hotel_type ? false : true,
       hotel_id: formData?.hotel_id ? false : true,
+      
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -205,15 +208,18 @@ const CreateHotel = () => {
                           />
                         </span>
 
-                        {/* {!isCustomerSelect && (
+                        {errors?.hotel_type && (
                             <p
-                              className="error-message"
-                              style={{ whiteSpace: "nowrap" }}
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
                             >
                               {otherIcons.error_svg}
                               Please Select Hotel Type
                             </p>
-                          )} */}
+                          )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -228,6 +234,18 @@ const CreateHotel = () => {
                             placeholder="Enter Hotel Name"
                           />
                         </span>
+                        {errors?.hotel_id && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Hotel Name
+                            </p>
+                          )}
                       </div>
 
                       <div className="f1wrapofcreqx1">
