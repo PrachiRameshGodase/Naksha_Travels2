@@ -89,7 +89,6 @@ const Quotations = () => {
     fy: localStorage.getItem('FinancialYear'),
     noofrec: itemsPerPage,
     currentpage: currentPage,
-    noofrec: itemsPerPage,
     ...(selectedSortBy !== "Normal" && { sort_by: selectedSortBy, sort_order: sortOrder }),
     ...(status && {
       status: status == "expiry_date" ? 6 : status,
@@ -105,7 +104,7 @@ const Quotations = () => {
         }),
     }),
   }), [searchTrigger, currentPage]);
-
+  console.log("payload", payloadGenerator)
   useFetchApiData(quotationLists, payloadGenerator, [searchTrigger, currentPage]);
 
 

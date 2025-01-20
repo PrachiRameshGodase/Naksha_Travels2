@@ -45,6 +45,8 @@ export const invoiceDetailes = (queryParams) => async (dispatch) => {
             },
         });
 
+        return data;
+
     } catch (error) {
         dispatch({ type: INVOICE_DETAIL_ERROR, payload: error.message });
     }
