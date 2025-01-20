@@ -2,15 +2,19 @@ import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import CustomDropdown02 from "../../../../Components/CustomDropdown/CustomDropdown02";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerHotelAction } from "../../../../Redux/Actions/passengerHotelActions";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
 import {
   preventZeroVal,
@@ -19,14 +23,8 @@ import {
 } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
-import { customersList } from "../../../../Redux/Actions/customerActions";
-import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
-import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
-import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
-import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
-import toast from "react-hot-toast";
+import "../CreateHotelPopup.scss";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -87,7 +85,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     chec_out_date: false,
     check_in_date: false,
     gross_amount: false,
-   
     retain: false,
     total_amount: false,
   });
@@ -112,6 +109,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       };
     }
 
+    if (name === "room_id") {
+      const selectedRoom = hotelRoomListData?.find((room) => room?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        room_name: selectedRoom?.room_name || "",
+        occupancy_id: selectedRoom?.occupancy_id || "", 
+        meal_id: selectedRoom?.meal_id || "", 
+        bed: selectedRoom?.bed || "", 
+        
+
+      };
+    }
     if (name === "supplier_id") {
       const selectedHotel = vendorList?.data?.user?.find(
         (item) => item?.id == value
@@ -129,6 +138,11 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       ...updatedFields,
+      ...(name === "room_id" && {
+        occupancy_id: false, // Clear error for occupancy when room changes
+        meal_id: false,      // Clear error for meal when room changes
+        bed: false,          // Clear error for bed
+      }),
       [name]: false,
     }));
   };
@@ -225,7 +239,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+  const isDisabled = formData.room_id;
+console.log("formData", formData)
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -354,7 +369,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="occupancy_id"
                             defaultOption="Select Occupancy"
                             type="masters"
+                            disabled={isDisabled}
+                          
                           />
+                          
                         </span>
                         {errors?.occupancy_id && (
                           <p
@@ -385,6 +403,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="meal_id"
                             defaultOption="Select Meal"
                             type="masters"
+                            disabled={isDisabled}
                           />
                         </span>
                         {errors?.meal_id && (
@@ -607,6 +626,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           setImgeLoader={setImgeLoader}
                           component="purchase"
                         />
+                      </div>
+                      <div className="f1wrapofcreqx1">
+                     
                       </div>
                       <div className="secondtotalsections485s ">
                         <div className="textareaofcreatqsiform">

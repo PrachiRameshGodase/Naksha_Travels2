@@ -617,8 +617,7 @@ const DSRSummary = ({ customerData }) => {
             <h3>Service Total:</h3>
 
             <h3>
-            ({currencySymbol})
-              {customerData?.passengers
+            ({currencySymbol}) {customerData?.passengers
                 ?.reduce(
                   (acc, item) => acc + parseFloat(item?.service_total || 0),
                   0

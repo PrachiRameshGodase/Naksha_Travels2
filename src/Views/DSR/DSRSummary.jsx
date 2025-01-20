@@ -607,14 +607,12 @@ const DSRSummary = ({ customerData }) => {
           <div className="add_passangers_001">
             <h3>Service Total:</h3>
 
-            <h3>
-            ({currencySymbol})
-              {customerData?.passengers
+            <h3>({currencySymbol}) {customerData?.passengers
                 ?.reduce(
                   (acc, item) => acc + parseFloat(item?.service_total || 0),
                   0
                 )
-                .toFixed(2)}
+                .toFixed(2)} 
             </h3>
           </div>
           {/* ))} */}
