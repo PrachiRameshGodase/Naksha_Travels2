@@ -129,17 +129,13 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                {" "}
+                               
                                 <li>
                                   <span>Fare Price</span>
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
                                 </li>
-                                {/* <li>
-                                  <span>Supplier Service Charge</span>
-                                  <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
+                               
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>

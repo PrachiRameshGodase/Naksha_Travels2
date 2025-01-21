@@ -59,11 +59,15 @@ const CreateInsurancePopup = ({
     supplier_name: "",
     //amount
     charges: [{ amount: null, account_id: null }],
-    gross_amount: null,
-    discount: null,
-    supplier_total: null,
-  
+    gross_amount: 0,
+    discount: 0.0,
+    tax_percent: null,
+    tax_amount: 0.0,
     retain: null,
+    supplier_amount: 0.0,
+    supplier_tax: 0.0,
+    customer_amount: 0.0,
+    supplier_total: 0.0,
     total_amount: null,
     note: null,
     upload_image: null,
@@ -78,7 +82,7 @@ const CreateInsurancePopup = ({
     gross_amount: false,
     tax_amount: false,
     tax_percent: false,
-    retain: false,
+    // retain: false,
     total_amount: false,
   });
 
@@ -119,7 +123,7 @@ const CreateInsurancePopup = ({
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
      
-      retain: formData?.retain ? false : true,
+      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);

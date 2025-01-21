@@ -7,7 +7,7 @@ import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdo
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
-import {customersView} from "../../../../Redux/Actions/customerActions";
+import { customersView } from "../../../../Redux/Actions/customerActions";
 import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerMHotelAction } from "../../../../Redux/Actions/passengerMHotelActions";
@@ -16,7 +16,11 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import {preventZeroVal,sendData,ShowMasterData,} from "../../../Helper/HelperFunctions";
+import {
+  preventZeroVal,
+  sendData,
+  ShowMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
@@ -31,8 +35,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const customerDetail = useSelector((state) => state?.viewCustomer);
   const customerData = customerDetail?.data || {};
   const vendorList = useSelector((state) => state?.vendorList);
-  const hotelList = useSelector((state) => state?.hotelList?.data?.hotels || []);
-  const hotelRoomListData = useSelector((state) => state?.hotelRoomList?.data?.hotels || []);
+  const hotelList = useSelector(
+    (state) => state?.hotelList?.data?.hotels || []
+  );
+  const hotelRoomListData = useSelector(
+    (state) => state?.hotelRoomList?.data?.hotels || []
+  );
   const createHotel = useSelector((state) => state?.createPassengerMHotel);
 
   const [cusData, setcusData] = useState(null);
@@ -51,7 +59,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     meal_id: "",
     bed: "",
     guest_ids: "",
-    booking_date: "",
+    booking_date: formatDate(new Date()),
     check_in_date: "",
     chec_out_date: "",
     supplier_id: "",
@@ -62,10 +70,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     charges: [{ amount: null, account_id: null }],
     gross_amount: 0,
     discount: 0.0,
-    supplier_total: null,
     tax_percent: null,
     tax_amount: 0.0,
-    retain: 0.0,
+    retain: null,
+    supplier_amount: 0.0,
+    supplier_tax: 0.0,
+    customer_amount: 0.0,
+    supplier_total: 0.0,
     total_amount: null,
     note: null,
     upload_image: null,
@@ -81,8 +92,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     chec_out_date: false,
     check_in_date: false,
     gross_amount: false,
-  
-    retain: false,
+
+    // retain: false,
     total_amount: false,
   });
 
@@ -106,7 +117,16 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         hotel_name: selectedHotel?.hotel_name || "",
       };
     }
-
+    if (name === "room_id") {
+      const selectedRoom = hotelRoomListData?.find((room) => room?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        room_name: selectedRoom?.room_name || "",
+        occupancy_id: selectedRoom?.occupancy_id || "",
+        meal_id: selectedRoom?.meal_id || "",
+        bed: selectedRoom?.bed_id || "",
+      };
+    }
     if (name === "supplier_id") {
       const selectedHotel = vendorList?.data?.user?.find(
         (item) => item?.id == value
@@ -124,6 +144,11 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       ...updatedFields,
+      ...(name === "room_id" && {
+        occupancy_id: false,
+        meal_id: false, 
+        bed: false, 
+      }),
       [name]: false,
     }));
   };
@@ -145,29 +170,29 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
     setErrors((prevErrors) => {
       const updatedErrors = { ...prevErrors };
-  
+
       const bookingDate = new Date(formData?.booking_date);
       const checkInDate = new Date(formData?.check_in_date);
       const checkOutDate = new Date(formData?.chec_out_date);
       const selectedDate = new Date(date);
-  
+
       if (name === "booking_date") {
         updatedErrors.booking_date =
           (formData?.check_in_date && selectedDate > checkInDate) ||
           (formData?.chec_out_date && selectedDate > checkOutDate);
       }
-  
+
       if (name === "check_in_date") {
         updatedErrors.check_in_date = selectedDate < bookingDate;
         updatedErrors.chec_out_date =
           formData?.chec_out_date && selectedDate >= checkOutDate;
       }
-  
+
       if (name === "chec_out_date") {
         updatedErrors.chec_out_date =
           selectedDate < bookingDate || selectedDate < checkInDate;
       }
-  
+
       return updatedErrors;
     });
   };
@@ -184,8 +209,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       chec_out_date: formData?.chec_out_date ? false : true,
       check_in_date: formData?.check_in_date ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-     
-      retain: formData?.retain ? false : true,
+
+      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -207,8 +232,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         const refreshData = {
           mice_id: data?.id,
         };
-        dispatch(CreatePassengerMHotelAction(sendData, setShowModal, refreshData))
-        
+        dispatch(
+          CreatePassengerMHotelAction(sendData, setShowModal, refreshData)
+        );
       } catch (error) {
         console.error("Error updating hotel:", error);
       }
@@ -224,12 +250,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       dispatch(customersView(queryParams));
     }
   }, [dispatch, data?.customer_id]);
-  
+
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+  const isDisabled = formData.room_id;
   return (
     <>
       <div id="formofcreateitems">
@@ -339,17 +365,17 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.room_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Room
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Room
+                            </p>
+                          )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -366,20 +392,21 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               name="occupancy_id"
                               defaultOption="Select Occupancy"
                               type="masters"
+                              disabled={isDisabled}
                             />
                           </span>
                           {errors?.occupancy_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Occupancy
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Occupancy
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
@@ -397,20 +424,21 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               name="meal_id"
                               defaultOption="Select Meal"
                               type="masters"
+                              disabled={isDisabled}
                             />
                           </span>
                           {errors?.meal_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Meal
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Meal
+                            </p>
+                          )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -426,20 +454,21 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               name="bed"
                               defaultOption="Select Bed"
                               type="masters"
+                              disabled={isDisabled}
                             />
                           </span>
                           {errors?.bed && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Bed
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Bed
+                            </p>
+                          )}
                         </div>
                         <div className="form_commonblock">
                           <label>
@@ -471,7 +500,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock ">
-                          <label>Booking Date<b className="color_red">*</b></label>
+                          <label>
+                            Booking Date<b className="color_red">*</b>
+                          </label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
@@ -486,20 +517,22 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.booking_date && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Booking Date
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Booking Date
+                            </p>
+                          )}
                         </div>
                         <div className="form_commonblock ">
-                          <label>Checkin Date<b className="color_red">*</b></label>
+                          <label>
+                            Checkin Date<b className="color_red">*</b>
+                          </label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
@@ -514,20 +547,22 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.check_in_date && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Check In Date
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Check In Date
+                            </p>
+                          )}
                         </div>
                         <div className="form_commonblock ">
-                          <label>Checkout Date<b className="color_red">*</b></label>
+                          <label>
+                            Checkout Date<b className="color_red">*</b>
+                          </label>
                           <span>
                             {otherIcons.date_svg}
                             <DatePicker
@@ -542,24 +577,22 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.chec_out_date && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Check Out Date
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Check Out Date
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
-                          <label>
-                            Supplier
-                          </label>
+                          <label>Supplier</label>
                           <div id="sepcifixspanflex">
                             <span id="">
                               {otherIcons.name_svg}

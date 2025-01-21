@@ -62,12 +62,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
     //amount
     charges: [{ amount: null, account_id: null }],
-    gross_amount: null,
-    discount: null,
+    gross_amount: 0,
+    discount: 0.0,
     tax_percent: null,
-    supplier_total: null,
-    tax_amount: null,
+    tax_amount: 0.0,
     retain: null,
+    supplier_amount: 0.0,
+    supplier_tax: 0.0,
+    customer_amount: 0.0,
+    supplier_total: 0.0,
     total_amount: null,
     note: null,
     upload_image: null,
@@ -83,7 +86,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     guest_ids: false,
     gross_amount: false,
 
-    retain: false,
+    // retain: false,
     total_amount: false,
   });
 
@@ -126,7 +129,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       visa_no: formData?.visa_no ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      retain: formData?.retain ? false : true,
+      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);

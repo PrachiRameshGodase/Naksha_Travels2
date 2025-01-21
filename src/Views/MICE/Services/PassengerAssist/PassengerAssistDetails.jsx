@@ -20,7 +20,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5>
-                  <ShowMastersValue type="41" id={data?.meeting_type || ""} />
+                 Airport Name: {data?.airport_name || ""}
                 </h5>
                 <button
                   className="close-button"

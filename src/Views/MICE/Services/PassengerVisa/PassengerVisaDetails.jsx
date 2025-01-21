@@ -128,24 +128,30 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.days || ""}
                                   </p>
                                 </li>
-                              </ul>
-                              <ul>
                                 <li>
                                   <span>Country</span>
                                   <h1>:</h1>
-                                  <p>{data?.country?.name || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.country?.name || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>Issue Date</span>
                                   <h1>:</h1>
-                                  <p>{formatDate3(data?.issue_date) || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.issue_date) || ""}
+                                  </p>
                                 </li>
 
                                 <li>
                                   <span>Expiry Date</span>
                                   <h1>:</h1>
-                                  <p>{formatDate3(data?.expiry_date) || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.expiry_date) || ""}
+                                  </p>
                                 </li>
+                              </ul>
+                              <ul>
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
@@ -156,21 +162,27 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
                                 </li>
-                                {/* <li>
-                                  <span>Supplier Service Charge</span>
-                                  <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
                                 <li>
-                                  <span>Tax Amount</span>
+                                  <span>Supplier Tax</span>
                                   <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
+                                  <p>{data?.supplier_tax || ""}</p>
                                 </li>
                                 <li>
-                                  <span>Total Amount</span>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
                                   <h1>:</h1>
                                   <p>{data?.total_amount || ""}</p>
                                 </li>
+                                <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
+                                </li>
+
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>

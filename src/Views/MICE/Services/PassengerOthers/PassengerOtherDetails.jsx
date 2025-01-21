@@ -27,7 +27,11 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"400px"}}>
+                <div
+                  id="itemsdetailsrowskl"
+                  className="secondinsidedatax15s"
+                  style={{ height: "400px" }}
+                >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -54,13 +58,6 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.item_name || ""}
                                   </p>
                                 </li>
-                                <li className="pendingfromfrontendx5">
-                                  <span>Entry type</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.entry_type || ""}
-                                  </p>
-                                </li>
 
                                 <li>
                                   <span>Quantity</span>
@@ -85,7 +82,7 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li className="pendingfromfrontendx5">
-                                  <span>Other Charges</span>
+                                  <span>Other Price</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.gross_amount || ""}
@@ -93,25 +90,30 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                {/* <li className="pendingfromfrontendx5">
-                                  <span>Supplier Service Charge</span>
-                                  <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
                                 <li>
-                                  <span>Tax Amount</span>
+                                  <span>Customer tax</span>
                                   <h1>:</h1>
                                   <p>{data?.tax_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
                                 </li>
                                 <li>
                                   <span>Retain</span>
                                   <h1>:</h1>
                                   <p>{data?.retain || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Total Amount</span>
-                                  <h1>:</h1>
-                                  <p>{data?.total_amount || ""}</p>
                                 </li>
 
                                 <li>

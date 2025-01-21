@@ -29,7 +29,11 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"350px"}}>
+                <div
+                  id="itemsdetailsrowskl"
+                  className="secondinsidedatax15s"
+                  style={{ height: "350px" }}
+                >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -57,13 +61,6 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.airline_name || ""}
-                                  </p>
-                                </li>
-                                <li className="pendingfromfrontendx5">
-                                  <span>Entry type</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.entry_type || ""}
                                   </p>
                                 </li>
 
@@ -103,28 +100,61 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.gds_portal || ""}
                                   </p>
                                 </li>
-                              </ul>
-                              <ul>
-                                {" "}
                                 <li>
                                   <span>Ticket Number</span>
                                   <h1>:</h1>
-                                  <p>{data?.ticket_no || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.ticket_no || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>PRN Number</span>
                                   <h1>:</h1>
-                                  <p>{data?.prn_no || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.prn_no || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>Route</span>
                                   <h1>:</h1>
-                                  <p>{data?.route || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.route || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
-                                  <p>{data?.supplier_name || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.supplier_name || ""}
+                                  </p>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li>
+                                  <span>Fare Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.gross_amount || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span>Customer tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.tax_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
                                 </li>
                                 <li>
                                   <span>Notes</span>

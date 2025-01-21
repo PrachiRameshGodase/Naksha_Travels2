@@ -61,7 +61,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     guest_ids: "",
     booking_date: formatDate(new Date()),
     check_in_date: "",
-    chec_out_date: "",
+    check_out_date: "",
     supplier_id: "",
     supplier_name: "",
     total_nights: "",
@@ -89,7 +89,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     bed: false,
     guest_ids: false,
     booking_date: false,
-    chec_out_date: false,
+    check_out_date: false,
     check_in_date: false,
     gross_amount: false,
     // retain: false,
@@ -206,7 +206,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       bed: formData?.bed ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       booking_date: formData?.booking_date ? false : true,
-      chec_out_date: formData?.chec_out_date ? false : true,
+      check_out_date: formData?.check_out_date ? false : true,
       check_in_date: formData?.check_in_date ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
@@ -566,17 +566,17 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
-                            selected={formData?.chec_out_date}
+                            selected={formData?.check_out_date}
                             onChange={(date) =>
-                              handleDateChange(date, "chec_out_date")
+                              handleDateChange(date, "check_out_date")
                             }
-                            name="chec_out_date"
+                            name="check_out_date"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                           />
                         </span>
-                        {errors?.chec_out_date && (
+                        {errors?.check_out_date && (
                           <p
                             className="error_message"
                             style={{
