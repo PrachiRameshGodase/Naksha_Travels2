@@ -172,23 +172,23 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
       const bookingDate = new Date(formData?.booking_date);
       const checkInDate = new Date(formData?.check_in_date);
-      const checkOutDate = new Date(formData?.chec_out_date);
+      const checkOutDate = new Date(formData?.check_out_date);
       const selectedDate = new Date(date);
 
       if (name === "booking_date") {
         updatedErrors.booking_date =
           (formData?.check_in_date && selectedDate > checkInDate) ||
-          (formData?.chec_out_date && selectedDate > checkOutDate);
+          (formData?.check_out_date && selectedDate > checkOutDate);
       }
 
       if (name === "check_in_date") {
         updatedErrors.check_in_date = selectedDate < bookingDate;
-        updatedErrors.chec_out_date =
-          formData?.chec_out_date && selectedDate >= checkOutDate;
+        updatedErrors.check_out_date =
+          formData?.check_out_date && selectedDate >= checkOutDate;
       }
 
-      if (name === "chec_out_date") {
-        updatedErrors.chec_out_date =
+      if (name === "check_out_date") {
+        updatedErrors.check_out_date =
           selectedDate < bookingDate || selectedDate < checkInDate;
       }
 

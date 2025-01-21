@@ -168,7 +168,7 @@ const CalculationSection = ({
               </div>
               <div className="tablerowtopsxs1">
                 <div className="tablsxs1a1x3" style={{ display: "flex" }}>
-                  <span style={{fontSize:"12px"}}>Tax(%)</span>
+                  <span style={{fontSize:"12px", display:"flex", alignItems:"center"}}>Tax(%)</span>
                   <div style={{ marginLeft: "20px", fontSize: "12px" }}>
                     <CustomDropdown13
                       options={tax_rate}
@@ -178,7 +178,7 @@ const CalculationSection = ({
                       type="taxRate"
                       defaultOption="Taxes"
                       extracssclassforscjkls="extracssclassforscjklsitem"
-                      className2="item3"
+                      className2="item4"
                     />
                   </div>
                 </div>

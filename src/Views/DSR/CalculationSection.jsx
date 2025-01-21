@@ -145,15 +145,17 @@ const CalculationSection = ({
                 className="tableheadertopsxs1"
                 style={{ textTransform: "inherit" }}
               >
-                <p className="tablsxs1a1x3" ></p>
+                <p className="tablsxs1a1x3"></p>
                 <p className="tablsxs1a2x3">Supplier Price</p>
                 <p className="tablsxs1a2x3">Customer Price</p>
               </div>
 
               <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Amount</div>
+                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>
+                  Amount
+                </div>
 
-                <div className="tablsxs1a2x3" >
+                <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_amount || 0}
                     // onChange={handleChange}
@@ -168,7 +170,15 @@ const CalculationSection = ({
               </div>
               <div className="tablerowtopsxs1">
                 <div className="tablsxs1a1x3" style={{ display: "flex" }}>
-                  <span style={{fontSize:"12px"}}>Tax(%)</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    Tax(%)
+                  </span>
                   <div style={{ marginLeft: "20px", fontSize: "12px" }}>
                     <CustomDropdown13
                       options={tax_rate}
@@ -178,7 +188,7 @@ const CalculationSection = ({
                       type="taxRate"
                       defaultOption="Taxes"
                       extracssclassforscjkls="extracssclassforscjklsitem"
-                      className2="item3"
+                      className2="item4"
                     />
                   </div>
                 </div>
@@ -197,7 +207,9 @@ const CalculationSection = ({
                 </div>
               </div>
               <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Final Amount</div>
+                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>
+                  Final Amount
+                </div>
 
                 <div className="tablsxs1a2x3">
                   <NumericInput
@@ -220,9 +232,7 @@ const CalculationSection = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>
-              Retain:
-            </label>
+            <label>Retain:</label>
             <input
               type="text"
               value={formData?.retain}

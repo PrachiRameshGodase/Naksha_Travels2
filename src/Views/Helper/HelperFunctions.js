@@ -19,10 +19,17 @@ export const sendData = {
     noofrec: 10,
     active: 1, status: 1
 }
+//this is only for customer
 export const sendData2 = {
     fy: 2024,
     noofrec: 10,
     active: 1
+}
+//this is only for accounts
+export const sendData3 = {
+    fy: 2024,
+    // noofrec: 10,
+    active: 1, status: 1
 }
 export const activeOrg_details = UserData?.active_organisation;
 export const currencySymbol = activeOrg_details?.symbol ? activeOrg_details?.symbol : "$";

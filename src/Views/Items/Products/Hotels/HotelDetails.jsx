@@ -7,7 +7,7 @@ import AttachmentPreview from "../../../Helper/AttachmentPreview";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
-  const images = JSON.parse(data?.upload_documents || '');
+  const images = data?.upload_documents? JSON.parse(data?.upload_documents || ''):""
 
   return (
     <>
