@@ -57,6 +57,7 @@ const CreateHotel = () => {
     hotel_id: false,
   });
 
+  console.log(imgLoader)
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -131,31 +132,43 @@ const CreateHotel = () => {
           ? JSON.parse(hotelData.upload_documents)
           : [],
       });
+
+      if (hotelData?.state_id) {
+        dispatch(fetchGetCities({ state_id: hotelData?.state_id }));
+      }
+
+      if (hotelData?.country_id) {
+        dispatch(fetchGetStates({ country_id: hotelData?.country_id }));
+      }
+      if (hotelData?.upload_documents) {
+        setImgeLoader("success")
+      }
     }
   }, [itemId, isEdit, hotelData]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    let newErrors = {
-      hotel_id: formData?.hotel_id ? false : true,
-    };
-    setErrors(newErrors);
-    const hasAnyError = Object.values(newErrors).some(
-      (value) => value === true
-    );
-    if (hasAnyError) {
-      return;
-    } else {
-      try {
-        const sendData = {
-          ...formData,
-          upload_documents: JSON.stringify(formData?.upload_documents),
-        };
-        dispatch(CreateHotelAction(sendData, Navigate));
-      } catch (error) {
-        toast.error("Error updating hotel:", error);
-      }
+    // let newErrors = {
+    //   hotel_id: formData?.hotel_id ? false : true,
+    // };
+    // setErrors(newErrors);
+    // const hasAnyError = Object.values(newErrors).some(
+    //   (value) => value === true
+    // );
+    console.log("caaaaaaaaaaaaaa")
+    // if (hasAnyError) {
+    //   return;
+    // } else {
+    try {
+      const sendData = {
+        ...formData,
+        upload_documents: JSON.stringify(formData?.upload_documents),
+      };
+      dispatch(CreateHotelAction(sendData, Navigate));
+    } catch (error) {
+      toast.error("Error updating hotel:", error);
     }
+    // }
   };
   return (
     <div>
@@ -236,7 +249,6 @@ const CreateHotel = () => {
                           <div id="inputx1">
                             <span>
                               {otherIcons.country_svg}
-
                               <select
                                 name="country_id"
                                 value={formData.country_id}
@@ -257,9 +269,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData.country_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData.country_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>Province/State</label>
                           <div id="inputx1">
@@ -286,9 +297,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData.state_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>City</label>
                           <div id="inputx1">

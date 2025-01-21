@@ -485,7 +485,6 @@ const Topbar = ({ loggedInUserData }) => {
               </span>
             </div> */}
 
-
             <div className="blckaccountprociwls63">
 
               {loggedInUserData && (
@@ -499,7 +498,6 @@ const Topbar = ({ loggedInUserData }) => {
                   </div>
 
                   {/* <div className="xskfjlsdl"></div> */}
-
                   <span>
                     <Link id="newcomponentmdx2s5" to={"/settings/organisations"} onClick={closeSidebar}>{otherIcons?.iconoflinktab}</Link>
                   </span>
@@ -511,7 +509,7 @@ const Topbar = ({ loggedInUserData }) => {
                   <img src={accountmanageIco} alt="" />
                   Manage Your Account</Link> */}
 
-                <Link className="insidclinks65w6x6w" to={externalUrl}>
+                <Link className="insidclinks65w6x6w" to={`${externalUrl}/home_nakshatravels`}>
                   <img src={appsIcon} alt="" />
                   All Apps</Link>
 
@@ -531,9 +529,6 @@ const Topbar = ({ loggedInUserData }) => {
 
             </div>
 
-
-
-
             <div className="divcontxlwextbelocbtn">
               <div className="xklw54c15w3s6">
                 {/* <svg height="512pt" viewBox="0 0 512.00533 512" width="512pt" xmlns="http://www.w3.org/2000/svg" id="fi_1828490"><path d="m298.667969 277.335938c-35.285157 0-64-28.714844-64-64 0-35.285157 28.714843-64 64-64h42.664062v-85.332032c0-35.285156-28.714843-63.99999975-64-63.99999975h-229.332031c-7.019531 0-13.589844 3.45312475-17.578125 9.23437475-3.96875 5.78125-4.863281 13.144531-2.347656 19.691407l154.667969 405.335937c3.136718 8.277344 11.070312 13.738281 19.925781 13.738281h74.664062c35.285157 0 64-28.714844 64-64v-106.667968zm0 0" fill="#2196f3"></path><path d="m397.164062 318.382812c-7.957031-3.308593-13.164062-11.09375-13.164062-19.714843v-64h-85.332031c-11.777344 0-21.335938-9.554688-21.335938-21.332031 0-11.777344 9.558594-21.332032 21.335938-21.332032h85.332031v-64c0-8.621094 5.207031-16.40625 13.164062-19.714844 7.976563-3.304687 17.152344-1.46875 23.25 4.632813l85.335938 85.332031c8.339844 8.339844 8.339844 21.824219 0 30.164063l-85.335938 85.335937c-6.097656 6.097656-15.273437 7.933594-23.25 4.628906zm0 0" fill="#607d8b"></path><path d="m184.449219 44.84375-128.191407-42.730469c-28.929687-8.894531-56.257812 12.460938-56.257812 40.554688v384c0 18.242187 11.605469 34.519531 28.886719 40.492187l128.167969 42.730469c4.714843 1.449219 9.046874 2.113281 13.613281 2.113281 23.53125 0 42.664062-19.136718 42.664062-42.667968v-384c0-18.238282-11.605469-34.515626-28.882812-40.492188zm0 0" fill="#64b5f6"></path></svg> */}
@@ -544,9 +539,6 @@ const Topbar = ({ loggedInUserData }) => {
             </div>
 
 
-
-
-
             {/* <div onClick={clearLocalStoragex1} className="buttonx3"id="newcirclecenterxklsd2">
             <span id="newcirclecenterxkls" className="circle" aria-hidden="true">
               <span className="newcircnterxkls"> <BiLogOutCircle /> </span> </span>
@@ -555,7 +547,7 @@ const Topbar = ({ loggedInUserData }) => {
 
 
           </div>
-        </div>
+        </div >
       )}
 
 
@@ -565,19 +557,20 @@ const Topbar = ({ loggedInUserData }) => {
 
 
 
-      {loading && (
-        <>
-          <div id="freezeloader">
+      {
+        loading && (
+          <>
+            <div id="freezeloader">
 
-            <div className="loader__wrap" role="alertdialog" aria-busy="true" aria-live="polite" aria-label="Loading…">
-              <div className="loader" aria-hidden="true">
-                <div className="loader__sq"></div>
-                <div className="loader__sq"></div>
+              <div className="loader__wrap" role="alertdialog" aria-busy="true" aria-live="polite" aria-label="Loading…">
+                <div className="loader" aria-hidden="true">
+                  <div className="loader__sq"></div>
+                  <div className="loader__sq"></div>
+                </div>
               </div>
-            </div>
 
 
-            {/* <div className="cs-loader">
+              {/* <div className="cs-loader">
   <div className="cs-loader-inner">
     <label>●</label>
     <label>●</label>
@@ -588,7 +581,7 @@ const Topbar = ({ loggedInUserData }) => {
   </div>
 </div> */}
 
-            {/* <div className="containeroffreezeloader">
+              {/* <div className="containeroffreezeloader">
               <div className="loaderoffreezeloa">
                 <div className="loaderoffreezeloa--dotx454we"></div>
                 <div className="loaderoffreezeloa--dotx454we"></div>
@@ -599,9 +592,10 @@ const Topbar = ({ loggedInUserData }) => {
                 <div className="loaderoffreezeloa--text"></div>
               </div>
             </div> */}
-          </div>
-        </>
-      )}
+            </div>
+          </>
+        )
+      }
 
 
     </>

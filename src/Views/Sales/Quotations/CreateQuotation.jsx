@@ -15,8 +15,6 @@ import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
 import {
   activeOrg_details,
-  getCurrencyFormData,
-  handleDropdownError,
   preventZeroVal,
   ShowMasterData,
   stringifyJSON,
@@ -26,17 +24,13 @@ import SubmitButton from "../../Common/Pagination/SubmitButton";
 import { SelectAddress } from "../../Common/SelectAddress";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import GenerateAutoId from "../Common/GenerateAutoId";
-import WaveLoader from "../../../Components/Loaders/WaveLoader";
-import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
+import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { formatDate } from "../../Helper/DateFormat";
 import {
   isStateIdEqualAction,
   productTypeItemAction,
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
-import AddServices from "../../Invoices/AddServices";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
-import Swal from 'sweetalert2';
 import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 const CreateQuotation = () => {
 
@@ -140,13 +134,11 @@ const CreateQuotation = () => {
 
   const Navigate = useNavigate();
 
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let confirmed = null;
     const buttonName = e.nativeEvent.submitter.name;
     const errors = validateItems(formData?.items);
-    // console.log("error", errors)
 
     if (!isCustomerSelect) {
       if (!isPartiallyInViewport(dropdownRef1.current)) {
@@ -159,6 +151,7 @@ const CreateQuotation = () => {
     }
 
     else if (errors.length > 0) {
+
       setItemErrors(errors);
       if (!isPartiallyInViewport(dropdownRef2.current)) {
         dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -175,7 +168,7 @@ const CreateQuotation = () => {
       confirmed = await confirmWithZeroAmount('quotation');
       // if (confirmed === false) return;
     }
-    console.log("fon", !confirmed)
+
     if (confirmed || confirmed == null) {
       try {
         const updatedItems = formData?.items?.map((item) => {
