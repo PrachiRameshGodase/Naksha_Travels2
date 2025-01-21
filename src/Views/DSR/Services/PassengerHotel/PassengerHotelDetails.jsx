@@ -20,7 +20,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.hotel_name}</h5>
+                <h5>Hotel Name: {data?.hotel_name ||""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -123,28 +123,29 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>{formatDate3(data?.booking_date) || ""}</p>
                                 </li>
-                              </ul>
-                              <ul>
-                               
                                 <li>
                                   <span>CheckIn Date</span>
                                   <h1>:</h1>
-                                  <p>
+                                  <p style={{ width: "212px" }}>
                                     {formatDate3(data?.check_in_date) || ""}
                                   </p>
                                 </li>
                                 <li>
                                   <span>CheckOut Date</span>
                                   <h1>:</h1>
-                                  <p>
+                                  <p style={{ width: "212px" }}>
                                     {formatDate3(data?.check_out_date) || ""}
                                   </p>
                                 </li>
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
-                                  <p>{data?.supplier_name || ""}</p>
+                                  <p style={{ width: "212px" }}>{data?.supplier_name || ""}</p>
                                 </li>
+                              </ul>
+                              <ul>
+                               
+                                
                                 <li>
                                   <span>Hotel Price</span>
                                   <h1>:</h1>
@@ -155,21 +156,32 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.charges || ""}</p>
                                 </li> */}
+                                 <li>
+                                  <span>Customer tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.tax_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                 <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
+                                </li>
                                 <li>
                                   <span>Retain</span>
                                   <h1>:</h1>
                                   <p>{data?.retain || ""}</p>
                                 </li>
-                                <li>
-                                  <span>Tax Amount</span>
-                                  <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Total Amount</span>
-                                  <h1>:</h1>
-                                  <p>{data?.total_amount || ""}</p>
-                                </li>
+                               
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>

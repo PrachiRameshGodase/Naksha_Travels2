@@ -30,15 +30,11 @@ const CreateVisa = () => {
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+
   const VisaCreates = useSelector((state) => state?.createVisa);
   const VisaDetails = useSelector((state) => state?.visaDetails);
   const visaData = VisaDetails?.data?.data?.data || {};
-
   const countryList = useSelector((state) => state?.countries?.countries);
-  const states = useSelector((state) => state?.states?.state);
-  const statesLoader = useSelector((state) => state?.states?.loading);
-  const cities = useSelector((state) => state?.cities?.city);
-  const citiesLoader = useSelector((state) => state?.cities?.loading);
 
   const visaentryType = ShowMasterData("39");
   const visatype = ShowMasterData("40");
@@ -46,31 +42,26 @@ const CreateVisa = () => {
   const [formData, setFormData] = useState({
     visa_entry_type: "",
     visa_entry_name: "",
-    country_id: 0,
+    country_id: "",
     country_name: "",
     visa_type_id: "",
     visa_type_name: "",
     days: "",
     price: "",
   });
- 
+  const [errors, setErrors] = useState({
+    visa_entry_type: false,
+    country_name: false,
+    visa_type_id: false,
+    days: false,
+    price: false,
+  });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let updatedFormData = { ...formData };
 
-    if (name === "country_id") {
-      const countryId = value;
-
-      updatedFormData = {
-        ...updatedFormData,
-        country_id: countryId,
-        state_id: "",
-        city_id: "",
-      };
-    }
     const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
     const visaType = visatype?.find((val) => val?.labelid == value);
 
@@ -83,6 +74,10 @@ const CreateVisa = () => {
         visa_type_name: visaType?.label,
       }),
       [name]: value,
+    }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
     }));
   };
 
@@ -120,14 +115,28 @@ const CreateVisa = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-      };
-      dispatch(CreateVisaAction(sendData, navigate));
-    } catch (error) {
-      toast.error("Error updating visa:", error);
+    let newErrors = {
+      visa_entry_type: formData?.visa_entry_type ? false : true,
+      country_name: formData?.country_name ? false : true,
+      visa_type_id: formData?.visa_type_id ? false : true,
+      days: formData?.days ? false : true,
+      price: formData?.price ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+        };
+        dispatch(CreateVisaAction(sendData, navigate));
+      } catch (error) {
+        toast.error("Error updating visa:", error);
+      }
     }
   };
   return (
@@ -175,6 +184,18 @@ const CreateVisa = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.visa_entry_type && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Entry Type
+                          </p>
+                        )}
                       </div>
 
                       <div className="form_commonblock">
@@ -194,59 +215,110 @@ const CreateVisa = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.visa_type_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Country / Region</label>
+                        <label>
+                          Country / Region<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.country_svg}
 
                             <select
-                              name="country_id"
-                              value={formData.country_id}
-                              onChange={(e) => handleChange(e, "country_id")}
+                              name="country_name"
+                              value={formData?.country_name}
+                              onChange={(e) => handleChange(e, "country_name")}
                             >
                               <option value="">Select Country</option>
                               {countryList?.country?.map((country) => (
-                                <option key={country.id} value={country.id}>
+                                <option key={country.id} value={country.name}>
                                   {country.name}
                                 </option>
                               ))}
                             </select>
                           </span>
+                          {errors?.country_name && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Country
+                            </p>
+                          )}
                         </div>
-                        {/* {countryErr && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please select the country name</p>} */}
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Days</label>
+                        <label>
+                          Days<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <NumericInput
                               name="days"
                               placeholder="Enter Days"
-                              value={formData.days}
+                              value={formData?.days}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.days && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Days
+                            </p>
+                          )}
                         </div>
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Price</label>
+                        <label>
+                          Price<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <NumericInput
                               name="price"
                               placeholder="Enter Price"
-                              value={formData.price}
+                              value={formData?.price}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.price && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Price
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

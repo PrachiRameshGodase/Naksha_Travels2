@@ -11,7 +11,7 @@ import {
   hotelRoomDetailsAction,
   hotelRoomStatusActions,
 } from "../../../../Redux/Actions/hotelActions";
-import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 
 const HotelServicesDetails = () => {
@@ -100,8 +100,7 @@ const HotelServicesDetails = () => {
     }
   };
 
-  const attachments = JSON.parse(hotelRoomData?.upload_documents || "[]");
-
+  const attachments = JSON.parse(hotelRoomData?.upload_documents || "");
   return (
     <>
       {hotelRoomStatusUpdate?.loading && <MainScreenFreezeLoader />}
@@ -252,7 +251,7 @@ const HotelServicesDetails = () => {
                           <span>Attachment</span>
                           <h1>:</h1>
                           <p>
-                            <AttachmentPreview2 attachments={attachments} />
+                            <AttachmentPreview4 document={attachments} />
                           </p>
                         </li>
                       </ul>

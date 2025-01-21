@@ -10,9 +10,7 @@ import {
   carHireDetailsAction,
   CreateCarHireAction,
 } from "../../../../Redux/Actions/carHireActions";
-import {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
@@ -32,24 +30,26 @@ const CreateCarHires = () => {
   const [formData, setFormData] = useState({
     type_of_vehicle: "",
     select_days: "",
-    price: 0,
+    price: null,
     description: "",
+  });
+  const [errors, setErrors] = useState({
+    type_of_vehicle: false,
+    select_days: false,
+    price: false,
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    const VechileType = vehicleType?.find((val) => val?.labelid == value);
-
     setFormData((prev) => ({
       ...prev,
-
-      ...(name === "vechile_type" && {
-        vechile_type: VechileType?.label,
-      }),
       [name]: value,
+    }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
     }));
   };
 
@@ -78,18 +78,30 @@ const CreateCarHires = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-        upload_documents: JSON.stringify(formData?.upload_documents),
-      };
-      dispatch(CreateCarHireAction(sendData, navigate));
-    } catch (error) {
-      toast.error("Error updating car hire:", error);
+    let newErrors = {
+      type_of_vehicle: formData?.type_of_vehicle ? false : true,
+      select_days: formData?.select_days ? false : true,
+      price: formData?.price ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          upload_documents: JSON.stringify(formData?.upload_documents),
+        };
+        dispatch(CreateCarHireAction(sendData, navigate));
+      } catch (error) {
+        toast.error("Error updating car hire:", error);
+      }
     }
   };
-  
+
   return (
     <div>
       <>
@@ -135,10 +147,22 @@ const CreateCarHires = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.type_of_vehicle && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Type Of Vehicle
+                            </p>
+                          )}
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Days</label>
+                        <label>Days<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -149,11 +173,23 @@ const CreateCarHires = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.select_days && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Days
+                            </p>
+                          )}
                         </div>
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Price</label>
+                        <label>Price<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -164,6 +200,18 @@ const CreateCarHires = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.price && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Price
+                            </p>
+                          )}
                         </div>
                       </div>
 

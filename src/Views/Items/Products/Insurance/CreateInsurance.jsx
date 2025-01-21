@@ -1,44 +1,58 @@
 import React, { useEffect, useState } from "react";
-import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import { RxCross2 } from "react-icons/rx";
-import { BsArrowRight } from "react-icons/bs";
 import toast from "react-hot-toast";
+import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateMasterAction } from "../../../../Redux/Actions/mastersAction";
 import { useNavigate } from "react-router-dom";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import { CreateInsuranceAction } from "../../../../Redux/Actions/InsuranceActions";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 
 const CreateInsurance = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const insuranceCreates = useSelector((state) => state?.createInsurance);
 
-  const { setshowAddPopup, showAddPopup,  isEditIndividual, selectedItem,setSearchTrigger, } =
-    popupContent;
+  const {
+    setshowAddPopup,
+    showAddPopup,
+    isEditIndividual,
+    selectedItem,
+    setSearchTrigger,
+  } = popupContent;
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [formData, setFormData] = useState({
-    company_name:null
+    company_name: null,
   });
- 
+  const [errors, setErrors] = useState({
+    company_name: false,
+  });
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    try {
-      const sendData = {
-        ...formData,
-      };
-      dispatch(CreateInsuranceAction(sendData, Navigate))
-        .then(() => {
-          setshowAddPopup(null);
-          setSearchTrigger((prev) => prev + 1);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      toast.error("Error creating insurance:", error);
+    let newErrors = {
+      company_name: formData?.company_name ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+        };
+        dispatch(CreateInsuranceAction(sendData, Navigate))
+          .then(() => {
+            setshowAddPopup(null);
+            setSearchTrigger((prev) => prev + 1);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        toast.error("Error creating insurance:", error);
+      }
     }
   };
 
@@ -49,6 +63,10 @@ const CreateInsurance = ({ popupContent }) => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   useEffect(() => {
@@ -56,113 +74,80 @@ const CreateInsurance = ({ popupContent }) => {
       setFormData({
         ...formData,
         id: selectedItem?.id,
-       company_name:selectedItem?.company_name
+        company_name: selectedItem?.company_name,
       });
     }
   }, [selectedItem, isEditIndividual]);
 
   return (
     <div id="formofcreateitems">
-      <form action="">
-        <div className="itemsformwrap itemformtyop02">
-          <div id="forminside">
-            <div className="secondx2 thirdx2extra">
-              <div className="mainxpopups2">
-                <div className="popup-content02" style={{ height: "65vh" }}>
-                  <div className={``} style={{ height: "fit-content" }}>
-                    <div
-                      id="Anotherbox"
-                      className="formsectionx"
-                      style={{
-                        height: "120px",
-                        background: "white",
-                      }}
-                    >
-                      <div id="leftareax12">
-                        <h1 id="firstheading" className="headingofcreateforems">
-                          {isEditIndividual ? `Update Insurance` : "Add Insurance"}
-                        </h1>
-                      </div>
+      <div className="custom-modal">
+        <div className="modal-content" style={{ width: "50%" }}>
+          <div className="modal-header">
+            <h5>
+              {isEditIndividual
+                ? "Update Insurance Service"
+                : "Add Insurance Service"}
+            </h5>
+            <button
+              className="close-button"
+              onClick={() => setshowAddPopup(false)}
+            >
+              <RxCross2 />
+            </button>
+          </div>
 
-                      <div id="buttonsdata">
-                        <div
-                          className="linkx3"
-                          onClick={() => setshowAddPopup(null)}
-                        >
-                          <RxCross2 />
+          <div className="modal-body">
+            <form>
+              {/* Keep your form as it is */}
+              <div className="relateivdiv">
+                <div
+                  className="itemsformwrap"
+                  style={{ paddingBottom: "0px", minHeight: "100px" }}
+                >
+                  <div className="f1wrapofcreq">
+                    <div className="f1wrapofcreqx1">
+                      <div className="form_commonblock">
+                        <label>
+                          Company Name<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <input
+                              value={formData?.company_name}
+                              onChange={handleChange}
+                              name="company_name"
+                              placeholder="Enter Company Name"
+                            />
+                          </span>
+                          {errors?.company_name && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Company Name
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="bordersinglestroke"></div> */}
-                    <div id="middlesection" style={{}}>
-                      <div id="formofcreateitems">
-                        <div
-                          className={`itemsformwrap1`}
-                          style={{ paddingBottom: "0px" }}
-                        >
-                          <div id="forminside">
-                            <div className="secondx2">
-                              <div className="form_commonblock">
-                                <label>
-                                  Company Name<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.company_name}
-                                    onChange={handleChange}
-                                    name="company_name"
-                                    placeholder="Enter Company Name"
-                                  />
-                                </span>
-                              </div>
-                              
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "167px",
-                          width: "895px",
-                          position: "absolute",
-                          marginBottom:"62px"
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${(insuranceCreates?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          disabled={(insuranceCreates?.loading || freezLoadingImg)}
-                          type="submit"
-                        >
-                          {isEditIndividual ? "Update" : "Create"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setshowAddPopup(null)}
-                          className={`${(insuranceCreates?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          disabled={(insuranceCreates?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
                   </div>
                 </div>
               </div>
-            </div>
+              <SubmitButton6
+                onClick={handleSubmitForm}
+                createUpdate={insuranceCreates}
+                setShowModal={setshowAddPopup}
+              />
+            </form>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

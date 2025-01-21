@@ -4,6 +4,7 @@ import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
 import { fetchTexRates } from "../../Redux/Actions/globalActions";
 import ExpenseCharges from "../Helper/ComponentHelper/ExpenseCharges";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import NumericInput from "../Helper/NumericInput";
 
 const CalculationSection = ({
   formData,
@@ -13,7 +14,6 @@ const CalculationSection = ({
   errors,
   setErrors,
 }) => {
-  const dispatch = useDispatch();
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
   const sumCharges = formData?.charges?.reduce(
     (sum, item) => sum + (item?.amount || 0),
@@ -23,32 +23,57 @@ const CalculationSection = ({
   // Calculate fields based on formData
   const calculateFields = () => {
     const price = Number(formData?.gross_amount || 0);
+    const remain = Number(formData?.retain || 0);
+    const supplier_amount = price + sumCharges;
+    const customer_amount = price + sumCharges + remain;
+
     const taxPercent = Number(formData?.tax_percent || 0);
+    const supplier_tax = supplier_amount * (taxPercent / 100);
+    const tax_amount = customer_amount * (taxPercent / 100);
 
-    const supplierServiceCharge = price * 0.1; // 10% of subtotal
-    const tax_amount = price * (taxPercent / 100);
-
-    const supplier_total = price + tax_amount + sumCharges;
-    const retain = formData?.total_amount - supplier_total;
-    return { supplierServiceCharge, tax_amount, retain, supplier_total };
+    const supplier_total = supplier_amount + supplier_tax;
+    const total_amount = customer_amount + tax_amount;
+    return {
+      tax_amount,
+      supplier_total,
+      supplier_amount,
+      customer_amount,
+      supplier_tax,
+      total_amount,
+    };
   };
 
   useEffect(() => {
     // Recalculate fields and update formData when dependencies change
-    const { tax_amount, supplier_total, retain } = calculateFields();
+    const {
+      tax_amount,
+      supplier_total,
+
+      supplier_amount,
+      customer_amount,
+      supplier_tax,
+      total_amount,
+    } = calculateFields();
     setFormData((prevData) => ({
       ...prevData,
       tax_amount,
       supplier_total,
-      retain,
+      supplier_amount,
+      customer_amount,
+      supplier_tax,
+      total_amount,
     }));
   }, [
     formData.gross_amount,
     formData.tax_percent,
     setFormData,
-
+    formData?.supplier_amount,
+    formData?.customer_amount,
     formData.total_amount,
+    formData?.supplier_tax,
     formData.charges,
+    formData?.total_amount,
+    formData?.retain,
   ]);
 
   const [openCharges, setOpenCharges] = useState(false);
@@ -71,6 +96,7 @@ const CalculationSection = ({
               onChange={(e) => handleChange(e)}
               placeholder="0.00"
               name="gross_amount"
+              autoComplete="off"
             />
           </div>
           {errors?.gross_amount && (
@@ -88,70 +114,6 @@ const CalculationSection = ({
         </div>
       </div>
 
-      {/* <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Supplier Service Charge:</label>
-            <input
-              type="text"
-              value={formData?.charges}
-              placeholder="0.00"
-              onChange={(e) => handleChange(e)}
-              name="charges"
-            />
-          </div>
-        </div>
-      </div> */}
-
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              Tax %:
-            </label>
-
-            <CustomDropdown13
-              options={tax_rate}
-              value={formData?.tax_percent || ""}
-              onChange={handleChange}
-              name="tax_percent"
-              type="taxRate"
-              defaultOption="Taxes"
-              className2="item3"
-            />
-          </div>
-         
-        </div>
-      </div>
-
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              Tax:
-            </label>
-            <input
-              type="text"
-              value={formData?.tax_amount?.toFixed(2) || ""}
-              placeholder="0.00"
-              className="inputsfocalci465s"
-              readOnly
-            />
-          </div>
-          {/* {errors?.tax_amount && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Select Tax
-            </p>
-          )} */}
-        </div>
-      </div>
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
@@ -178,71 +140,98 @@ const CalculationSection = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Supplier Total:</label>
-            <input
-              type="text"
-              value={formData?.supplier_total}
-              placeholder="0.00"
-              // onChange={(e) => handleChange(e)}
-              name="supplier_total"
-            />
+            <div className="itemsectionrows" id="expense_charges_3223">
+              <div
+                className="tableheadertopsxs1"
+                style={{ textTransform: "inherit" }}
+              >
+                <p className="tablsxs1a1x3" ></p>
+                <p className="tablsxs1a2x3">Supplier Price</p>
+                <p className="tablsxs1a2x3">Customer Price</p>
+              </div>
+
+              <div className="tablerowtopsxs1">
+                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Amount</div>
+
+                <div className="tablsxs1a2x3" >
+                  <NumericInput
+                    value={formData?.supplier_amount || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+                <div className="tablsxs1a2x3">
+                  <NumericInput
+                    value={formData?.customer_amount || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="tablerowtopsxs1">
+                <div className="tablsxs1a1x3" style={{ display: "flex" }}>
+                  <span style={{fontSize:"12px"}}>Tax(%)</span>
+                  <div style={{ marginLeft: "20px", fontSize: "12px" }}>
+                    <CustomDropdown13
+                      options={tax_rate}
+                      value={formData?.tax_percent || ""}
+                      onChange={handleChange}
+                      name="tax_percent"
+                      type="taxRate"
+                      defaultOption="Taxes"
+                      extracssclassforscjkls="extracssclassforscjklsitem"
+                      className2="item3"
+                    />
+                  </div>
+                </div>
+
+                <div className="tablsxs1a2x3">
+                  <NumericInput
+                    value={formData?.supplier_tax || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+                <div className="tablsxs1a2x3">
+                  <NumericInput
+                    value={formData?.tax_amount || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="tablerowtopsxs1">
+                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Final Amount</div>
+
+                <div className="tablsxs1a2x3">
+                  <NumericInput
+                    value={formData?.supplier_total || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+                <div className="tablsxs1a2x3">
+                  <NumericInput
+                    value={formData?.total_amount || 0}
+                    // onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
-              Invoice Total:<b className="color_red">*</b>
+              Retain:
             </label>
             <input
               type="text"
-              value={formData?.total_amount}
+              value={formData?.retain}
               placeholder="0.00"
-              onChange={(e) => handleChange(e)}
-              name="total_amount"
+              onChange={handleChange}
+              name="retain"
+              autoComplete="off"
             />
           </div>
-          {errors?.total_amount && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Fill Invoice Total
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              Retain:<b className="color_red">*</b>
-            </label>
-            <input
-              type="text"
-              value={formData?.retain?.toFixed(2) || ""}
-              placeholder="0.00"
-              className="inputsfocalci465s"
-              readOnly
-            />
-          </div>
-          {/* {errors?.retain && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Fill Retain
-            </p>
-          )} */}
         </div>
       </div>
     </div>
@@ -269,11 +258,10 @@ export const CalculationSection2 = ({
     const price = Number(formData?.gross_amount || 0);
     const taxPercent = Number(formData?.tax_percent || 0);
 
-    const supplierServiceCharge = price * 0.1; // 10% of subtotal
     const tax_amount = Number((price * (taxPercent / 100)).toFixed(2));
     const total_amount = Number((price + tax_amount).toFixed(2));
     // console.log("total_amount", total_amount);
-    return { supplierServiceCharge, tax_amount, total_amount };
+    return { tax_amount, total_amount };
   };
 
   useEffect(() => {

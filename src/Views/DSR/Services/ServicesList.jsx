@@ -30,7 +30,7 @@ const ServicesList = () => {
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
   );
-console.log("passengerData", passengerData)
+
   const totalHotels = passengerData?.dsr_hotel?.length || 0;
   const totalVisas = passengerData?.dsr_visa?.length || 0;
   const totalFlights = passengerData?.dsr_flight?.length || 0;

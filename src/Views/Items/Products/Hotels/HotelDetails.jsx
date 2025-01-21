@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import HotelServices from "./HotelServices";
@@ -7,7 +7,7 @@ import AttachmentPreview from "../../../Helper/AttachmentPreview";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
-  const images = JSON.parse(data?.upload_documents || '[]');
+  const images = JSON.parse(data?.upload_documents || '');
 
   return (
     <>
@@ -94,7 +94,7 @@ const HotelDetails = ({ data }) => {
                         </p>
                       </li>
 
-                      <li><span>Attachments</span><h1>:</h1><p><AttachmentPreview2 attachments={images}/></p></li>
+                      <li><span>Attachments</span><h1>:</h1><p><AttachmentPreview4 document={images}/></p></li>
                     </ul>
                   </div>
                 </div>

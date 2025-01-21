@@ -6,7 +6,7 @@ import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import "../CreateHotelPopup.scss"
+import "../CreateHotelPopup.scss";
 
 const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
@@ -30,7 +30,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"500px"}}>
+                <div
+                  id="itemsdetailsrowskl"
+                  className="secondinsidedatax15s"
+                  style={{ height: "500px" }}
+                >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -110,25 +114,30 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Days</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{data?.days || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.days || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>Country</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{data?.country?.name || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.country?.name || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>Issue Date</span>
                                   <h1>:</h1>
-                                  <p style={{width:"212px"}}>{formatDate3(data?.issue_date) || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.issue_date) || ""}
+                                  </p>
                                 </li>
-                              
                               </ul>
                               <ul>
-                              <li>
+                                <li>
                                   <span>Expiry Date</span>
                                   <h1>:</h1>
-                                  <p >{formatDate3(data?.expiry_date) || ""}</p>
+                                  <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Name</span>
@@ -140,21 +149,32 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
                                 </li>
-                                {/* <li>
-                                  <span>Supplier Service Charge</span>
-                                  <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
                                 <li>
-                                  <span>Tax Amount</span>
+                                  <span>Customer tax</span>
                                   <h1>:</h1>
                                   <p>{data?.tax_amount || ""}</p>
                                 </li>
                                 <li>
-                                  <span>Total Amount</span>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
                                   <h1>:</h1>
                                   <p>{data?.total_amount || ""}</p>
                                 </li>
+                                <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
+                                </li>
+
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>

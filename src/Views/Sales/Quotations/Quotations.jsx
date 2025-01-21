@@ -104,7 +104,7 @@ const Quotations = () => {
         }),
     }),
   }), [searchTrigger, currentPage]);
-  console.log("payload", payloadGenerator)
+ 
   useFetchApiData(quotationLists, payloadGenerator, [searchTrigger, currentPage]);
 
 

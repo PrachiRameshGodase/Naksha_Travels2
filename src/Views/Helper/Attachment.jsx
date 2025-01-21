@@ -220,7 +220,7 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
 };
 
 export const AttachmentPreview2 = ({ attachments }) => {
-  console.log("attachments", attachments)
+ 
   const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews
@@ -295,7 +295,7 @@ export const AttachmentPreview2 = ({ attachments }) => {
 };
 
 export const AttachmentPreview3 = ({ attachments }) => {
-  console.log("attachments", attachments)
+  
   return (
     <div>
       <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
@@ -315,6 +315,78 @@ export const AttachmentPreview3 = ({ attachments }) => {
           "-"
         )}
       </p>
+    </div>
+  );
+};
+
+export const AttachmentPreview4 = ({ document }) => {
+  console.log("document", document)
+ const [showImagesModal, setShowImagesModal] = useState(false);
+  const [imagesVal, setImagesVal] = useState([]);
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"]; // Supported image file extensions
+
+  // Function to handle image popup
+  const showImagePopup = (url) => {
+    setImagesVal([url]);
+    setShowImagesModal(true);
+  };
+
+  // Function to open non-image file in a new tab
+  const openFileInNewTab = (url) => {
+    window.open(url, "_blank");
+  };
+
+  // Handle arrow click to preview the attachment
+  const handleArrowClick = () => {
+    if (document) {
+      const fileExtension = getFileExtension(document.name); // Extract file extension
+
+      if (imageExtensions.includes(fileExtension)) {
+        showImagePopup(document.url); // Show image preview if it's an image file
+      } else {
+        openFileInNewTab(document.url); // Open non-image file in a new tab
+      }
+    }
+  };
+
+  // Function to extract file extension
+  const getFileExtension = (fileName) => {
+    return fileName.split(".").pop().toLowerCase();
+  };
+
+  return (
+    <div>
+      <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
+        {document?.url ? (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={handleArrowClick} // Preview or open the attachment
+          >
+            <MdArrowOutward />
+          </span>
+        ) : (
+          "-"
+        )}
+      </p>
+
+      {showImagesModal && (
+        <div className="mainxpopups2">
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setShowImagesModal(false)}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={imagesVal[0]} 
+              alt="Attachment"
+              height={500}
+              width={500}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
