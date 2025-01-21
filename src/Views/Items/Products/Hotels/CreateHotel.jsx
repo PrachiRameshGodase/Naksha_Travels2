@@ -29,7 +29,7 @@ const CreateHotel = () => {
   const hotelCreates = useSelector((state) => state?.createHotel);
   const hotelDetails = useSelector((state) => state?.hotelDetail);
   const hotelData = hotelDetails?.data?.data?.hotels || {};
- 
+
   const countryList = useSelector((state) => state?.countries?.countries);
   const states = useSelector((state) => state?.states?.state);
   const statesLoader = useSelector((state) => state?.states?.loading);
@@ -151,30 +151,9 @@ const CreateHotel = () => {
       }
     }
   }, [itemId, isEdit, hotelData]);
- 
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    // let newErrors = {
-    //   hotel_id: formData?.hotel_id ? false : true,
-    // };
-    // setErrors(newErrors);
-    // const hasAnyError = Object.values(newErrors).some(
-    //   (value) => value === true
-    // );
-    console.log("caaaaaaaaaaaaaa")
-    // if (hasAnyError) {
-    //   return;
-    // } else {
-    try {
-      const sendData = {
-        ...formData,
-        upload_documents: JSON.stringify(formData?.upload_documents),
-      };
-      dispatch(CreateHotelAction(sendData, Navigate));
-    } catch (error) {
-      toast.error("Error updating hotel:", error);
-=======
     let newErrors = {
       hotel_type: formData?.hotel_type ? false : true,
       hotel_name: formData?.hotel_name ? false : true,
@@ -200,7 +179,6 @@ const CreateHotel = () => {
       } catch (error) {
         toast.error("Error updating hotel:", error);
       }
->>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
     }
     // }
   };
@@ -329,13 +307,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-<<<<<<< HEAD
-                          className={`form_commonblock ${formData.country_id ? "" : "disabledfield"
+                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
                             }`}
-=======
-                          className={`form_commonblock ${
-                            formData?.country_id ? "" : "disabledfield"
-                          }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""
@@ -343,7 +316,6 @@ const CreateHotel = () => {
                           }
                           data-tooltip-id="my-tooltip"
                           data-tooltip-place="bottom"
->>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
                         >
                           <label>
                             Province/State<b className="color_red">*</b>
