@@ -26,6 +26,7 @@ import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAre
 import { formatDate } from '../../Helper/DateFormat';
 import { isStateIdEqualAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
+import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 const CreateSalesOrders = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -183,30 +184,41 @@ const CreateSalesOrders = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        let confirmed = null;
         const buttonName = e.nativeEvent.submitter.name;
-    const errors = validateItems(formData?.items);
+        const errors = validateItems(formData?.items);
+        // console.log("error", errors)
 
         if (!isCustomerSelect) {
             if (!isPartiallyInViewport(dropdownRef1.current)) {
                 dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            setTimeout(() => {
-                dropdownRef1.current.focus();
-            }, 500);
-
-        }
-         else
-          if (errors.length > 0) {
-                setItemErrors(errors);
-                if (!isPartiallyInViewport(dropdownRef2.current)) {
-                  dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
                 setTimeout(() => {
-                  dropdownRef2.current.focus();
+                    dropdownRef1.current.focus();
                 }, 500);
-              }
-         else {
+            }
+            return;
+        }
 
+        else if (errors.length > 0) {
+
+            setItemErrors(errors);
+            if (!isPartiallyInViewport(dropdownRef2.current)) {
+                dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            setTimeout(() => {
+                dropdownRef2.current.focus();
+            }, 500);
+            return
+        }
+
+        // if the amount is zero then show a confirm for proceed to create or not....
+        else if (parseInt(formData?.total) <= 0) {
+            confirmed = await confirmWithZeroAmount('sale-order');
+            // if (confirmed === false) return;
+        }
+
+        if (confirmed || confirmed == null) {
             try {
                 // const { tax_name, ...formDataWithoutTaxName } = formData;
                 const updatedItems = formData?.items?.map((item) => {

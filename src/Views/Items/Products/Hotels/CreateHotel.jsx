@@ -63,6 +63,7 @@ const CreateHotel = () => {
     pincode: false,
   });
 
+  console.log(imgLoader)
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -137,11 +138,43 @@ const CreateHotel = () => {
           ? JSON.parse(hotelData.upload_documents)
           : "",
       });
+
+      if (hotelData?.state_id) {
+        dispatch(fetchGetCities({ state_id: hotelData?.state_id }));
+      }
+
+      if (hotelData?.country_id) {
+        dispatch(fetchGetStates({ country_id: hotelData?.country_id }));
+      }
+      if (hotelData?.upload_documents) {
+        setImgeLoader("success")
+      }
     }
   }, [itemId, isEdit, hotelData]);
  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
+    // let newErrors = {
+    //   hotel_id: formData?.hotel_id ? false : true,
+    // };
+    // setErrors(newErrors);
+    // const hasAnyError = Object.values(newErrors).some(
+    //   (value) => value === true
+    // );
+    console.log("caaaaaaaaaaaaaa")
+    // if (hasAnyError) {
+    //   return;
+    // } else {
+    try {
+      const sendData = {
+        ...formData,
+        upload_documents: JSON.stringify(formData?.upload_documents),
+      };
+      dispatch(CreateHotelAction(sendData, Navigate));
+    } catch (error) {
+      toast.error("Error updating hotel:", error);
+=======
     let newErrors = {
       hotel_type: formData?.hotel_type ? false : true,
       hotel_name: formData?.hotel_name ? false : true,
@@ -167,7 +200,9 @@ const CreateHotel = () => {
       } catch (error) {
         toast.error("Error updating hotel:", error);
       }
+>>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
     }
+    // }
   };
   return (
     <div>
@@ -265,7 +300,6 @@ const CreateHotel = () => {
                           <div id="inputx1">
                             <span>
                               {otherIcons.country_svg}
-
                               <select
                                 name="country_id"
                                 value={formData.name_svg}
@@ -295,6 +329,10 @@ const CreateHotel = () => {
                         </div>
 
                         <div
+<<<<<<< HEAD
+                          className={`form_commonblock ${formData.country_id ? "" : "disabledfield"
+                            }`}
+=======
                           className={`form_commonblock ${
                             formData?.country_id ? "" : "disabledfield"
                           }`}
@@ -305,6 +343,7 @@ const CreateHotel = () => {
                           }
                           data-tooltip-id="my-tooltip"
                           data-tooltip-place="bottom"
+>>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
                         >
                           <label>
                             Province/State<b className="color_red">*</b>
@@ -345,9 +384,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData.state_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>
                             City<b className="color_red">*</b>

@@ -19,6 +19,7 @@ import {
 import NumericInput from "../../Helper/NumericInput";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);
@@ -33,29 +34,30 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
 
   return (
     <>
-      <table id="tablex15s56s31s1">
-        <thead className="thaedaksx433">
-          <tr>
-            <th className="sfdjklsd1xs2w1">#</th>
-            <th className="sfdjklsd1xs2w2" style={{ width: "12%" }}>
+      <table className="itemTable_01" id="modidy_table_form_details">
+        <thead className="table_head_item_02">
+          <tr className="table_head_item_02_row">
+            <th className="table_column_item item_table_width_01" >#</th>
+            <th className="table_column_item item_table_width_02">
               Item & Description
             </th>
-            <th className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">Rate</th>
-            <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3qty">Qty</th>
-            {/* <th className="sfdjklsd1xs2w3">Unit</th> */}
-            <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3Width">Tax Rate</th>
-            <th className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount ">Amount</th>
+            <th className="table_column_item">Type</th>
+            <th className="table_column_item item_text_end_01">Rate</th>
+            <th className="table_column_item">Qty</th>
+            <th className="table_column_item">Tax Rate</th>
+            <th className="table_column_item item_text_end_01 ">Amount</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="table_head_item_02" style={{ background: "white" }}>
           {itemsData?.items?.map((val, index) => (
-            <tr key={index} className="rowsxs15aksx433">
-              <td className="sfdjklsd1xs2w1">{index + 1}</td>
-              <td className="sfdjklsd1xs2w2">{val?.item?.name || val?.item_name}</td>
-              <td className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">
+            <tr key={index} className="table_head_item_02_row">
+              <td className="table_column_item">{index + 1}</td>
+              <td className="table_column_item ">{val?.item?.name || val?.item_name}</td>
+              <td className="table_column_item">{val?.item?.type}</td>
+              <td className="table_column_item item_text_end_01">
                 {showAmountWithCurrencySymbol(val?.rate)}
               </td>
-              <td className="sfdjklsd1xs2w3 sfdjklsd1xs2w3qty">
+              <td className="table_column_item">
                 {val?.quantity || ""}
                 {"  "}
                 {val?.unit_id && (
@@ -64,70 +66,44 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
                   </>
                 )}
               </td>
-              {/* <td className="sfdjklsd1xs2w3"><ShowMastersValue type="2" id={val?.unit_id} /></td> */}
-              <td className="sfdjklsd1xs2w3">
+              <td className="table_column_item">
                 {showRateWithPercent(val?.tax_rate)}
               </td>
-              <td className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount">
+              <td className="table_column_item item_text_end_01">
                 {showAmountWithCurrencySymbol(val?.final_amount)}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
       <div className="finalcalculateiosxl44s">
-        <span>
-          <p>Subtotal</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(itemsData?.subtotal)}</h5>
-        </span>
-        <span>
-          <p>Total Tax</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount())}</h5>
-        </span>
-        {/* <span><p>Shipping Charge</p> <h5>{showAmountWithCurrencySymbol(itemsData?.shipping_charge)}</h5></span>
-                <span><p>Adjustment Charge</p> <h5>{showAmountWithCurrencySymbol(itemsData?.adjustment_charge)}</h5></span> */}
+        <p><p>Subtotal</p> <h5>{showAmountWithCurrencySymbol(itemsData?.subtotal)}</h5></p>
+        <p><p>Total Tax</p> <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount()?.toFixed(2))}</h5></p>
 
-        {showChargesVal && totalExpenseCharges?.length >= 1 && (
-          <>
-            <span
-              onClick={() => setShowCharges(!showCharges)}
-              style={{ cursor: "pointer", color: "#408dfb" }}
-            >
-              <p>Charges</p>{" "}
-            </span>
-          </>
-        )}
+        {totalExpenseCharges?.[0]?.account_name && totalExpenseCharges?.[0]?.amount && <>
+          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#408dfb" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
+        </>}
 
-        {showCharges && (
-          <>
-            {totalExpenseCharges?.map((val) => (
-              <span>
-                <p>{val?.account_name}</p>{" "}
-                <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5>
-              </span>
-            ))}
-          </>
-        )}
-        {/* <span><p>Total</p> <h5>{showAmountWithCurrencySymbol(((+itemsData?.subtotal) + (+itemsData?.shipping_charge) + (+ itemsData?.adjustment_charge) + calculateTotalTaxAmount()))}</h5></span> */}
-        <span>
-          <p>Total</p> <h5>{showAmountWithCurrencySymbol(itemsData?.total)}</h5>
-        </span>
+        {showCharges && <>
+          {totalExpenseCharges?.map((val, index) => (
+            <p><p className='' key={index}>{val?.account_name}</p> <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5></p>
+          ))}
+        </>}
+        {/* <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol(((parseFloat(itemsData?.total)) + (parseFloat(calculateTotalTaxAmount() || 0)) + (parseFloat(calculateTotalCharges() || 0))))}</h5></p> */}
+        <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol((parseFloat(itemsData?.total)))}</h5></p>
 
-        {section === "bill" ? (
+        {section === "bill" ?
           <>
-            <span>
-              <p>Payment Made</p>{" "}
-              <h5>{showAmountWithCurrencySymbol(itemsData?.amount_paid)}</h5>
-            </span>
-            <span>
-              <p>Amount In Excess</p>{" "}
-              <h5>{showAmountWithCurrencySymbol(itemsData?.amt_excess)}</h5>
-            </span>
+            <p><p>Payment Made</p> <h5>{showAmountWithCurrencySymbol(itemsData?.amount_paid)}</h5></p>
+            <p><p>Amount In Excess</p> <h5>{showAmountWithCurrencySymbol(itemsData?.amt_excess)}</h5></p>
+          </> :
+          <>
           </>
-        ) : (
-          <></>
-        )}
-      </div>
+
+        }
+      </div >
     </>
   );
 };

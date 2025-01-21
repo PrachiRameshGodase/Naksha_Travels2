@@ -933,18 +933,18 @@ const ItemSelect = ({
 
                 {/* Validation Errors */}
                 <tr className="error-row">
-                  <td colSpan={9}>
+                  <td colSpan={9} style={{ textTransform: "capitalize" }}>
                     {itemErrors[index]?.item_name && (
-                      <span className="error-message" style={{ textTransform: "capitalize" }}>
+                      <span className="error-message" >
                         {otherIcons.error_svg} {itemErrors[index].item_name}
                       </span>
                     )}
-                    {/* {itemErrors[index]?.rate && (
+                    {itemErrors[index]?.rate && (
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].rate}
                       </span>
                     )}
-                    {itemErrors[index]?.type && (
+                    {/*  {itemErrors[index]?.type && (
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].type}
                       </span>

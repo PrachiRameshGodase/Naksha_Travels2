@@ -108,7 +108,7 @@ const CreateSalesOrders = ({ section }) => {
         convert
     );
 
-   
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -202,7 +202,7 @@ const CreateSalesOrders = ({ section }) => {
         e.preventDefault();
 
         const buttonName = e.nativeEvent.submitter.name;
-          const errors = validateItems(formData?.items);
+        const errors = validateItems(formData?.items);
         if (!isCustomerSelect) {
             if (!isPartiallyInViewport(dropdownRef1.current)) {
                 dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -212,20 +212,21 @@ const CreateSalesOrders = ({ section }) => {
             }, 500);
 
         } else if (errors.length > 0) {
-              setItemErrors(errors);
-              if (!isPartiallyInViewport(dropdownRef2.current)) {
+            setItemErrors(errors);
+            if (!isPartiallyInViewport(dropdownRef2.current)) {
                 dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-              setTimeout(() => {
+            }
+            setTimeout(() => {
                 dropdownRef2.current.focus();
-              }, 500);
-            } else {
+            }, 500);
+        } else {
             try {
                 // const { tax_name, ...formDataWithoutTaxName } = formData;
                 const updatedItems = formData?.items?.map((item) => {
                     const { tax_name, ...itemWithoutTaxName } = item;
                     return itemWithoutTaxName;
                 });
+
                 dispatch(updateQuotation({
                     ...formData,
                     items: updatedItems,
