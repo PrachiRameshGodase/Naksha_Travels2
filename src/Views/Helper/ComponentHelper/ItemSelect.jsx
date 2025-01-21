@@ -372,7 +372,7 @@ const ItemSelect = ({
       formData?.items?.length > 0 &&
       formData.items[formData.items.length - 1]?.type !== "" &&
       formData.items[formData.items.length - 1]?.item_name !== "";
-    console.log("is type null", isTypeNull)
+    
     // console.log(formData?.items)
     if (!isTypeNull) {
       toast.error("Please select the type and valid item name of above row");
@@ -573,7 +573,7 @@ const ItemSelect = ({
     }
   };
 
-  console.log("formdtaaaaaaaaaaaaaaa", formData?.items)
+
 
   return (
     <>

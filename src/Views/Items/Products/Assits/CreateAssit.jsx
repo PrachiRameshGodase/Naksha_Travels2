@@ -9,9 +9,7 @@ import {
   assistDetailsAction,
   CreateAssistAction,
 } from "../../../../Redux/Actions/assistAction";
-import {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
@@ -35,21 +33,24 @@ const CreateAssit = () => {
     price: "",
     description: "",
   });
+  const [errors, setErrors] = useState({
+    meeting_type: false,
+    airport: false,
+    no_of_person: false,
+    price: false,
+  });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    const VechileType = vehicleType?.find((val) => val?.labelid == value);
-
     setFormData((prev) => ({
       ...prev,
-
-      ...(name === "vechile_type" && {
-        vechile_type: VechileType?.label,
-      }),
       [name]: value,
+    }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
     }));
   };
 
@@ -78,21 +79,34 @@ const CreateAssit = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-      };
-      dispatch(CreateAssistAction(sendData, navigate));
-    } catch (error) {
-      toast.error("Error updating hotel:", error);
+    let newErrors = {
+      meeting_type: formData?.meeting_type ? false : true,
+      price: formData?.price ? false : true,
+      airport: formData?.airport ? false : true,
+      no_of_person: formData?.no_of_person ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+        };
+        dispatch(CreateAssistAction(sendData, navigate));
+      } catch (error) {
+        toast.error("Error updating hotel:", error);
+      }
     }
   };
   return (
     <div>
       <>
         <TopLoadbar />
-        {(freezLoadingImg || assitCreates?.loading ) && (
+        {(freezLoadingImg || assitCreates?.loading) && (
           <MainScreenFreezeLoader />
         )}
         <div className="formsectionsgrheigh">
@@ -124,12 +138,24 @@ const CreateAssit = () => {
                         <span id="">
                           {otherIcons.placeofsupply_svg}
                           <input
-                            value={formData.meeting_type}
+                            value={formData?.meeting_type}
                             onChange={handleChange}
                             name="meeting_type"
                             placeholder="Enter Meeting Type"
                           />
                         </span>
+                        {errors?.meeting_type && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Meeting Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -139,30 +165,58 @@ const CreateAssit = () => {
                         <span id="">
                           {otherIcons.placeofsupply_svg}
                           <input
-                            value={formData.airport}
+                            value={formData?.airport}
                             onChange={handleChange}
                             name="airport"
                             placeholder="Enter Airport"
                           />
                         </span>
+                        {errors?.airport && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Airport
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>No Of Persons</label>
+                        <label>
+                          No Of Persons<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <NumericInput
                               name="no_of_person"
                               placeholder="Enter No Of Persons"
-                              value={formData.no_of_person}
+                              value={formData?.no_of_person}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.no_of_person && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill No Of Persons
+                            </p>
+                          )}
                         </div>
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Price</label>
+                        <label>
+                          Price<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -173,6 +227,18 @@ const CreateAssit = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.price && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Price
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

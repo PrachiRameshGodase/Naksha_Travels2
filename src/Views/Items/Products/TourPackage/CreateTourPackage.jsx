@@ -18,7 +18,10 @@ import {
 } from "../../../../Redux/Actions/globalActions";
 import { transport } from "../../../Helper/ComponentHelper/DropdownData";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { CreateTourPackageAction, tourPackageDetailsAction } from "../../../../Redux/Actions/tourPackageActions";
+import {
+  CreateTourPackageAction,
+  tourPackageDetailsAction,
+} from "../../../../Redux/Actions/tourPackageActions";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 
@@ -46,9 +49,17 @@ const CreateTourPackage = () => {
     upload_documents: [],
     discount: 0,
     is_transport: 0,
-   
   });
-  
+  const [errors, setErrors] = useState({
+    package_name: false,
+    destination: false,
+    days: false,
+    hotel_type: false,
+    meal_id: false,
+    price_per_person: false,
+    is_transport:false
+  });
+
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
@@ -68,6 +79,10 @@ const CreateTourPackage = () => {
       }),
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   useEffect(() => {
     if (itemId) {
@@ -78,7 +93,7 @@ const CreateTourPackage = () => {
       dispatch(tourPackageDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
- 
+
   useEffect(() => {
     if (itemId && isEdit && tourPackageData) {
       setFormData({
@@ -86,8 +101,8 @@ const CreateTourPackage = () => {
         id: tourPackageData?.id,
         hotel_type: tourPackageData?.hotel_type,
         package_name: tourPackageData?.package_name,
-        meal_id:tourPackageData?.meal_id,
-        meal_name:tourPackageData?.meal_name,
+        meal_id: tourPackageData?.meal_id,
+        meal_name: tourPackageData?.meal_name,
         days: tourPackageData?.days,
         price_per_person: tourPackageData?.price_per_person,
         is_transport: tourPackageData?.is_transport,
@@ -99,20 +114,41 @@ const CreateTourPackage = () => {
           ? JSON.parse(tourPackageData.upload_documents)
           : [],
       });
+
+      if(tourPackageData?.upload_documents){
+        setImgeLoader("success")
+      }
     }
   }, [itemId, isEdit, tourPackageData]);
-  
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    let newErrors = {
+      package_name: formData?.package_name ? false : true,
+      destination: formData?.destination ? false : true,
+      days: formData?.days ? false : true,
+      meal_id: formData?.meal_id ? false : true,
+      hotel_type: formData?.hotel_type ? false : true,
+      price_per_person: formData?.price_per_person ? false : true,
+      is_transport: formData?.is_transport ? false : true,
 
-    try {
-      const sendData = {
-        ...formData,
-        upload_documents: JSON.stringify(formData?.upload_documents),
-      };
-      dispatch(CreateTourPackageAction(sendData, Navigate));
-    } catch (error) {
-      toast.error("Error updating tour package:", error);
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          upload_documents: JSON.stringify(formData?.upload_documents),
+        };
+        dispatch(CreateTourPackageAction(sendData, Navigate));
+      } catch (error) {
+        toast.error("Error updating tour package:", error);
+      }
     }
   };
 
@@ -157,6 +193,18 @@ const CreateTourPackage = () => {
                             placeholder="Enter Package Name"
                           />
                         </span>
+                        {errors?.package_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Package Name
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -171,9 +219,23 @@ const CreateTourPackage = () => {
                             placeholder="Enter Destination"
                           />
                         </span>
+                        {errors?.destination && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Destination
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Days</label>
+                        <label>
+                          Days<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -184,6 +246,18 @@ const CreateTourPackage = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.days && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Days
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
@@ -203,16 +277,18 @@ const CreateTourPackage = () => {
                             type="masters"
                           />
                         </span>
-
-                        {/* {!isCustomerSelect && (
-                            <p
-                              className="error-message"
-                              style={{ whiteSpace: "nowrap" }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Hotel Type
-                            </p>
-                          )} */}
+                        {errors?.hotel_type && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Hotel Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -232,15 +308,18 @@ const CreateTourPackage = () => {
                           />
                         </span>
 
-                        {/* {!isCustomerSelect && (
-                            <p
-                              className="error-message"
-                              style={{ whiteSpace: "nowrap" }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Hotel Type
-                            </p>
-                          )} */}
+                        {errors?.meal_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Meal
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -259,11 +338,25 @@ const CreateTourPackage = () => {
                               type="masters"
                             />
                           </span>
+                          {errors?.is_transport && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Transport
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
-                          <label>Price Per Person</label>
+                          <label>
+                            Price Per Person<b className="color_red">*</b>
+                          </label>
                           <div id="inputx1">
                             <span>
                               {otherIcons.name_svg}
@@ -274,6 +367,18 @@ const CreateTourPackage = () => {
                                 onChange={(e) => handleChange(e)}
                               />
                             </span>
+                            {errors?.price_per_person && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Fill Price Per Person
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>

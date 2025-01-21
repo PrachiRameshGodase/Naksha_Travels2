@@ -12,12 +12,14 @@ import {
   hotelRoomDetailsAction,
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
-import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
+import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import CurrencySelect, { CurrencySelect2 } from "../../../Helper/ComponentHelper/CurrencySelect";
+import CurrencySelect, {
+  CurrencySelect2,
+} from "../../../Helper/ComponentHelper/CurrencySelect";
 import { CustomDropdown006 } from "../../../../Components/CustomDropdown/CustomDropdown06";
 
 const CreateHotelService = () => {
@@ -50,8 +52,18 @@ const CreateHotelService = () => {
     availability_status: 1,
     description: null,
     price: null,
-    upload_documents: [],
+    upload_documents: "",
     currency: "",
+  });
+  const [errors, setErrors] = useState({
+    room_number: false,
+    occupancy_id: false,
+    meal_id: false,
+    bed_id: false,
+    max_occupancy: false,
+    // currency:false,
+    price: false,
+    amenities: false,
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
@@ -81,13 +93,21 @@ const CreateHotelService = () => {
 
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       amenities: selectedItems, // Update selected items array
     });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   useEffect(() => {
@@ -102,11 +122,10 @@ const CreateHotelService = () => {
       dispatch(hotelRoomDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
-  console.log("hotelRoomData", hotelRoomData)
+
   useEffect(() => {
     if (itemId && isEdit && hotelRoomData) {
-      const depArray = JSON.parse(hotelRoomData?.amenities || "[]");
-      console.log("depArray", depArray)
+      const depArray = JSON.parse(hotelRoomData?.amenities || "");
       setFormData({
         ...formData,
         id: hotelRoomData?.id,
@@ -126,23 +145,43 @@ const CreateHotelService = () => {
         currency: hotelRoomData?.currency,
         upload_documents: hotelRoomData?.upload_documents
           ? JSON.parse(hotelRoomData.upload_documents)
-          : [],
+          : "",
       });
+      if(hotelRoomData?.upload_documents){
+        setImgeLoader("success")
+      }
     }
   }, [itemId, isEdit, hotelRoomData]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const sendData = {
-        ...formData,
-        amenities: formData.amenities.join(","),
-        upload_documents: JSON.stringify(formData?.upload_documents),
-      };
-      dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));
-    } catch (error) {
-      toast.error("Error updating hotel room:", error);
+    let newErrors = {
+      room_number: formData?.room_number ? false : true,
+      max_occupancy: formData?.max_occupancy ? false : true,
+      occupancy_id: formData?.occupancy_id ? false : true,
+      meal_id: formData?.meal_id ? false : true,
+      bed_id: formData?.bed_id ? false : true,
+      amenities: formData?.amenities ? false : true,
+      price: formData?.price ? false : true,
+      // currency: formData?.currency ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          amenities:JSON.stringify(formData.amenities),
+          upload_documents: JSON.stringify(formData?.upload_documents),
+        };
+        dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));
+      } catch (error) {
+        toast.error("Error updating hotel room:", error);
+      }
     }
   };
 
@@ -187,6 +226,18 @@ const CreateHotelService = () => {
                             placeholder="Enter Room Name"
                           />
                         </span>
+                        {errors?.room_number && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Room Name/Number
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -205,6 +256,18 @@ const CreateHotelService = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.occupancy_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Occupancy
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -223,6 +286,18 @@ const CreateHotelService = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.bed_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Bed
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -241,10 +316,24 @@ const CreateHotelService = () => {
                             type="masters"
                           />
                         </span>
+                        {errors?.meal_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Meal
+                          </p>
+                        )}
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Max Occupancy Of Persons</label>
+                        <label>
+                          Max Occupancy Of Persons<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -255,6 +344,18 @@ const CreateHotelService = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.max_occupancy && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Max Occupancy Of Persons
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
@@ -264,7 +365,9 @@ const CreateHotelService = () => {
                         />
                       </div>
                       <div className="form_commonblock">
-                        <label>Price</label>
+                        <label>
+                          Price<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -275,28 +378,56 @@ const CreateHotelService = () => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.price && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Price
+                            </p>
+                          )}
                         </div>
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Amenities</label>
+                        <label>
+                          Amenities<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <CustomDropdown006
                               options={amenitiesType}
                               value={formData?.amenities}
-                              onChange={handleChange1}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "amenities")
+                              }
                               name="amenities"
                               defaultOption="Select Ammenties"
                               id1="position_depart_3221"
                             />
                           </span>
+                          {errors?.amenities && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Amenities
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
                         <div id="imgurlanddesc" className="calctotalsectionx2">
-                          <MultiImageUploadHelp
+                          <SingleImageUpload
                             formData={formData}
                             setFormData={setFormData}
                             setFreezLoadingImg={setFreezLoadingImg}

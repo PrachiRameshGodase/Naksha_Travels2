@@ -8,7 +8,7 @@ const ShowMastersValue = ({ type, id }) => {
 
     const findUnitNameById = () => {
         const lable = allMasters?.find(unit => unit.labelid == id);
-        return lable ? lable.label : '-';
+        return lable ? lable.label : '';
     };
     return (
         <span>{findUnitNameById()}</span>

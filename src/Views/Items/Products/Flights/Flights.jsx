@@ -27,6 +27,7 @@ import {
 } from "../../../../Redux/Actions/flightActions";
 import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
+import ShowMastersValue from "../../../Helper/ShowMastersValue";
 
 const Flights = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,8 @@ const Flights = () => {
   const flightLists = flightListData?.data?.data || [];
   const totalItems = flightListData?.data?.count || 0;
   const flightStatusUpdate = useSelector((state) => state?.flightStatus);
+  const flightDeleteData= useSelector((state) => state?.flightDelete);
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -231,7 +234,7 @@ const Flights = () => {
   return (
     <>
       <TopLoadbar />
-      {(flightStatusUpdate?.loading || flightListData?.loading) && (
+      {(flightStatusUpdate?.loading || flightListData?.loading || flightDeleteData?.loading) && (
         <MainScreenFreezeLoader />
       )}
       <div id="middlesection">
@@ -318,7 +321,14 @@ const Flights = () => {
                     {otherIcons?.quotation_icon}
                     Airline Name
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Airline Code
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs2">
+                    {otherIcons?.quotation_icon}
+                    Destination Code
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -361,7 +371,18 @@ const Flights = () => {
                             >
                               {item?.flight_name || ""}
                             </div>
-
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
+                            >
+                              {item?.air_line_code || ""}
+                            </div>
+                            <div
+                              // onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 x125cd01"
+                            >
+                               {item?.destination_code||""}
+                            </div>
                             <div
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

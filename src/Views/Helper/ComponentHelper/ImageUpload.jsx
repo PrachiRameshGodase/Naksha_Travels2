@@ -1553,3 +1553,171 @@ export const SingleImageUploadDocument = ({
     </>
   );
 };
+
+
+export const SingleImageUpload = ({
+  formData,
+  setFormData,
+  setFreezLoadingImg,
+  imgLoader,
+  setImgeLoader,
+}) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+
+  const popupRef = useRef(null);
+
+  const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "pdf"];
+
+  const handleImageChange = (e) => {
+    setFreezLoadingImg(true);
+    setImgeLoader(true);
+    setErrorMessage(""); // Clear any previous error message
+
+    const file = e.target.files[0];
+    if (!file) {
+      setFreezLoadingImg(false);
+      setImgeLoader(false);
+      return;
+    }
+
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      setErrorMessage(
+        `Please upload a file with one of the following extensions: ${allowedExtensions.join(
+          ", "
+        )}`
+      );
+      setFreezLoadingImg(false);
+      setImgeLoader(false);
+      return;
+    }
+
+    const imageRef = ref(imageDB, `Documents/${v4()}`);
+    uploadBytes(imageRef, file)
+      .then(() => {
+        return getDownloadURL(imageRef).then((url) => {
+          setFormData({
+            ...formData,
+            upload_documents: { url, name: file.name },
+          });
+          setImgeLoader("success");
+          setFreezLoadingImg(false);
+        });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        setFreezLoadingImg(false);
+        setImgeLoader("fail");
+      });
+  };
+
+  const handleDeleteImage = () => {
+    setFormData({
+      ...formData,
+      upload_documents: null,
+    });
+  };
+
+  const isImage = (fileUrl) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const fileExtension = fileUrl.split(".").pop().toLowerCase();
+    return imageExtensions.includes(fileExtension);
+  };
+
+  const handlePreview = () => {
+    if (!formData?.upload_documents) return;
+
+    const { url, name } = formData.upload_documents;
+    const fileExtension = name.split(".").pop().toLowerCase();
+
+    if (isImage(url)) {
+      setSelectedImage(url);
+      setShowPopup(true); // Show image preview if it's an image
+    } else {
+      window.open(url, "_blank"); // Open non-image file in a new tab
+    }
+  };
+
+  return (
+    <>
+      <div className="form-group">
+        <label style={{ marginLeft: "2px" }}>Upload Image/Document</label>
+        <div
+          className="file-upload"
+          tabIndex="0"
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              const input = document.getElementById("file");
+              input.click();
+            }
+          }}
+        >
+          <input
+            type="file"
+            name="image_url"
+            id="file"
+            className="inputfile"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="file" className="file-label">
+            <div id="spc5s6">
+              {otherIcons.export_svg}
+              {formData?.upload_documents ? "1 File Uploaded" : "Browse File"}
+            </div>
+          </label>
+        </div>
+
+        {errorMessage && (
+          <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
+            {errorMessage}
+          </p>
+        )}
+
+        {imgLoader === "success" && formData?.upload_documents && (
+          <div>
+            <div id="Show_delete_img_new_vendor">
+              <p style={{ width: "50%" }} title={formData?.upload_documents?.name || ""}>
+                {formData?.upload_documents?.name?.length > 10
+                  ? `${formData?.upload_documents?.name.substring(0, 12)}...`
+                  : formData?.upload_documents?.name}
+              </p>
+              <div onClick={handleDeleteImage}>
+                <MdOutlineDeleteForever />
+              </div>
+              <div onClick={handlePreview}>
+                <FaEye />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {showPopup && (
+        <div
+          className="mainxpopups2"
+          ref={popupRef}
+          style={{ marginTop: "10px" }}
+        >
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setShowPopup(false)}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={selectedImage}
+              alt="Selected Image"
+              height={500}
+              width={500}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+

@@ -16,7 +16,7 @@ import {
   hotelDetailsAction,
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
-import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
+import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -29,7 +29,7 @@ const CreateHotel = () => {
   const hotelCreates = useSelector((state) => state?.createHotel);
   const hotelDetails = useSelector((state) => state?.hotelDetail);
   const hotelData = hotelDetails?.data?.data?.hotels || {};
-
+ 
   const countryList = useSelector((state) => state?.countries?.countries);
   const states = useSelector((state) => state?.states?.state);
   const statesLoader = useSelector((state) => state?.states?.loading);
@@ -46,15 +46,21 @@ const CreateHotel = () => {
     country_id: 0,
     state_id: 0,
     city_id: 0,
-    pin_code: "",
+    pincode: "",
     status: 0,
     ratings: 0,
-    upload_documents: [],
+    upload_documents: "",
   });
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
   const [errors, setErrors] = useState({
-    hotel_id: false,
+    hotel_type: false,
+    hotel_name: false,
+    address_line_1: false,
+    country_id: false,
+    state_id: false,
+    city_id: false,
+    pincode: false,
   });
 
   console.log(imgLoader)
@@ -122,15 +128,15 @@ const CreateHotel = () => {
         hotel_name: hotelData?.hotel_name,
         address_line_1: hotelData?.address_line_1,
         address_line_2: hotelData?.address_line_2,
-        country_id: hotelData?.country_id,
-        state_id: hotelData?.state_id,
-        city_id: hotelData?.city_id,
-        pin_code: hotelData?.pin_code,
+        country_id: hotelData?.country?.id,
+        state_id: hotelData?.state?.id,
+        city_id: hotelData?.city?.id,
+        pincode: hotelData?.pincode,
         status: hotelData?.status,
         ratings: hotelData?.ratings,
         upload_documents: hotelData?.upload_documents
           ? JSON.parse(hotelData.upload_documents)
-          : [],
+          : "",
       });
 
       if (hotelData?.state_id) {
@@ -145,9 +151,10 @@ const CreateHotel = () => {
       }
     }
   }, [itemId, isEdit, hotelData]);
-
+ 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     // let newErrors = {
     //   hotel_id: formData?.hotel_id ? false : true,
     // };
@@ -167,6 +174,33 @@ const CreateHotel = () => {
       dispatch(CreateHotelAction(sendData, Navigate));
     } catch (error) {
       toast.error("Error updating hotel:", error);
+=======
+    let newErrors = {
+      hotel_type: formData?.hotel_type ? false : true,
+      hotel_name: formData?.hotel_name ? false : true,
+      address_line_1: formData?.address_line_1 ? false : true,
+      country_id: formData?.country_id ? false : true,
+      state_id: formData?.state_id ? false : true,
+      city_id: formData?.city_id ? false : true,
+      pincode: formData?.pincode ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+          upload_documents: JSON.stringify(formData?.upload_documents),
+        };
+        dispatch(CreateHotelAction(sendData, Navigate));
+      } catch (error) {
+        toast.error("Error updating hotel:", error);
+      }
+>>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
     }
     // }
   };
@@ -218,15 +252,18 @@ const CreateHotel = () => {
                           />
                         </span>
 
-                        {/* {!isCustomerSelect && (
-                            <p
-                              className="error-message"
-                              style={{ whiteSpace: "nowrap" }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Hotel Type
-                            </p>
-                          )} */}
+                        {errors?.hotel_type && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Hotel Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -241,17 +278,31 @@ const CreateHotel = () => {
                             placeholder="Enter Hotel Name"
                           />
                         </span>
+                        {errors?.hotel_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Hotel Name
+                          </p>
+                        )}
                       </div>
 
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
-                          <label>Country / Region</label>
+                          <label>
+                            Country / Region<b className="color_red">*</b>
+                          </label>
                           <div id="inputx1">
                             <span>
                               {otherIcons.country_svg}
                               <select
                                 name="country_id"
-                                value={formData.country_id}
+                                value={formData.name_svg}
                                 onChange={(e) => handleChange(e, "country_id")}
                               >
                                 <option value="">Select Country</option>
@@ -262,20 +313,44 @@ const CreateHotel = () => {
                                 ))}
                               </select>
                             </span>
+                            {errors?.country_id && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select Country
+                              </p>
+                            )}
                           </div>
-                          {/* {countryErr && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please select the country name</p>} */}
                         </div>
 
                         <div
+<<<<<<< HEAD
                           className={`form_commonblock ${formData.country_id ? "" : "disabledfield"
                             }`}
+=======
+                          className={`form_commonblock ${
+                            formData?.country_id ? "" : "disabledfield"
+                          }`}
+                          data-tooltip-content={
+                            formData?.country_id
+                              ? ""
+                              : "Please Select Country First"
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom"
+>>>>>>> acf9ab2ce0d0b9668a2c40ce6f2aa16a30181f92
                         >
-                          <label>Province/State</label>
+                          <label>
+                            Province/State<b className="color_red">*</b>
+                          </label>
                           <div id="inputx1">
                             <span>
-                              {otherIcons.state_svg}
+                              {otherIcons.name_svg}
 
                               <select
                                 name="state_id"
@@ -290,6 +365,18 @@ const CreateHotel = () => {
                                 ))}
                               </select>
                             </span>
+                            {errors?.state_id && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select State
+                              </p>
+                            )}
                           </div>
                           {/* {stateErr && <p className="error-message">
                                         {otherIcons.error_svg}
@@ -300,13 +387,15 @@ const CreateHotel = () => {
                           className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
                             }`}
                         >
-                          <label>City</label>
+                          <label>
+                            City<b className="color_red">*</b>
+                          </label>
                           <div id="inputx1">
                             <span>
                               {otherIcons.city_svg}
                               <select
                                 name="city_id"
-                                value={formData.city_id}
+                                value={formData.name_svg}
                                 onChange={(e) => handleChange(e)}
                               >
                                 <option value="">Select City</option>
@@ -317,6 +406,18 @@ const CreateHotel = () => {
                                 ))}
                               </select>
                             </span>
+                            {errors?.city_id && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select City
+                              </p>
+                            )}
                           </div>
                           {/* {cityErr && <p className="error-message">
                                         {otherIcons.error_svg}
@@ -324,10 +425,12 @@ const CreateHotel = () => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Address Line 1</label>
+                        <label>
+                          Address Line 1<b className="color_red">*</b>
+                        </label>
 
                         <span>
-                          {otherIcons.street_svg}
+                          {otherIcons.name_svg}
                           <input
                             autoComplete="off"
                             type="text"
@@ -337,13 +440,25 @@ const CreateHotel = () => {
                             onChange={(e) => handleChange(e)}
                           />
                         </span>
+                        {errors?.address_line_1 && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Address
+                          </p>
+                        )}
                       </div>
 
                       <div className="form_commonblock">
                         <label>Address Line 2</label>
                         <div id="inputx1">
                           <span>
-                            {otherIcons.street_svg}
+                            {otherIcons.name_svg}
                             <input
                               autoComplete="off"
                               type="text"
@@ -357,21 +472,35 @@ const CreateHotel = () => {
                       </div>
 
                       <div className="form_commonblock">
-                        <label>Pin Code</label>
+                        <label>
+                          Pin Code<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
-                            {otherIcons.zip_code_svg}
+                            {otherIcons.name_svg}
                             <NumericInput
-                              name="pin_code"
+                              name="pincode"
                               placeholder="Enter Pin Code"
-                              value={formData.pin_code}
+                              value={formData.pincode}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.pincode && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Pin Code
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <MultiImageUploadHelp
+                        <SingleImageUpload
                           formData={formData}
                           setFormData={setFormData}
                           setFreezLoadingImg={setFreezLoadingImg}
@@ -386,7 +515,7 @@ const CreateHotel = () => {
                 <SubmitButton2
                   isEdit={isEdit}
                   itemId={itemId}
-                  cancel="hotel-services"
+                  cancel="hotels-services"
                 />
               </div>
             </form>

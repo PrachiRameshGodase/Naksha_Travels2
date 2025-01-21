@@ -56,12 +56,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
     //amount
     charges: [{ amount: null, account_id: null }],
-    gross_amount: 0.0,
+    gross_amount: 0,
     discount: 0.0,
-    tax_percent: 0.0,
-    supplier_total: 0.0,
+    tax_percent: null,
     tax_amount: 0.0,
-    retain: 0.0,
+    retain: null,
+    supplier_amount: 0.0,
+    supplier_tax: 0.0,
+    customer_amount: 0.0,
+    supplier_total: 0.0,
     total_amount: null,
     note: null,
     upload_image: null,
@@ -77,7 +80,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     guest_ids: false,
     gross_amount: false,
 
-    retain: false,
+    // retain: false,
     total_amount: false,
   });
 
@@ -118,8 +121,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       visa_no: formData?.visa_no ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-     
-      retain: formData?.retain ? false : true,
+
+      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -141,7 +144,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
         const refreshData = {
           dsr_id: data?.id,
         };
-        dispatch(CreatePassengerVisaAction(sendData, setShowModal, refreshData));
+        dispatch(
+          CreatePassengerVisaAction(sendData, setShowModal, refreshData)
+        );
       } catch (error) {
         console.error("Error updating visa:", error);
       }
@@ -232,7 +237,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Passport No<b className="color_red">*</b></label>
+                        <label>
+                          Passport No<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
@@ -243,17 +250,17 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.passport_no && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Passport No
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Passport No
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock ">
                         <label>Date Of Birth</label>
@@ -290,7 +297,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
-                        <label>Visa No<b className="color_red">*</b></label>
+                        <label>
+                          Visa No<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
@@ -301,17 +310,17 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.visa_no && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Visa No
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Visa No
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>Visa Type</label>
@@ -362,7 +371,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
                       </div>
-                      
+
                       <div className="form_commonblock">
                         <label>Country / Region</label>
                         <div id="inputx1">
@@ -387,7 +396,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                                             {otherIcons.error_svg}
                                                             Please select the country name</p>} */}
                       </div>
-                     
+
                       <div className="form_commonblock ">
                         <label>Issue Date</label>
                         <span>
@@ -499,11 +508,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           component="purchase"
                         />
                       </div>
-
-                      
                     </div>
                     <div className="f1wrapofcreqx1">
-                    
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
@@ -533,7 +539,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                 onClick={handleFormSubmit}
                 createUpdate={createVisa}
                 setShowModal={setShowModal}
-                
               />
             </form>
           </div>

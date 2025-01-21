@@ -20,7 +20,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5>
-                  <ShowMastersValue type="41" id={data?.meeting_type || ""} />
+                  Airport Name: {data?.airport_name || ""}
                 </h5>
                 <button
                   className="close-button"
@@ -57,13 +57,13 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.meeting_type || ""}
                                   </p>
                                 </li>
-                                <li className="pendingfromfrontendx5">
+                                {/* <li className="pendingfromfrontendx5">
                                   <span>Entry type</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.entry_type || ""}
                                   </p>
-                                </li>
+                                </li> */}
 
                                 <li>
                                   <span>Airport</span>
@@ -101,20 +101,30 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.charges || ""}</p>
                                 </li> */}
-                                <li>
-                                  <span>Retain</span>
-                                  <h1>:</h1>
-                                  <p>{data?.retain || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Tax Amount</span>
+                               <li>
+                                  <span>Customer tax</span>
                                   <h1>:</h1>
                                   <p>{data?.tax_amount || ""}</p>
                                 </li>
                                 <li>
-                                  <span>Total Amount</span>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                 <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Customer Price</span>
                                   <h1>:</h1>
                                   <p>{data?.total_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
                                 </li>
                                 <li>
                                   <span>Notes</span>

@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreateFlightAction } from "../../../../Redux/Actions/flightActions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import "../../../DSR/Services/CreateHotelPopup.scss";
 const CreateFlight = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const flightCreates = useSelector((state) => state?.createFlight);
 
+  const destinationCode = ShowMasterData("52");
   const {
     setshowAddPopup,
     showAddPopup,
@@ -21,26 +25,41 @@ const CreateFlight = ({ popupContent }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [formData, setFormData] = useState({
     flight_name: null,
-    airline_code:null,
-    destination_code:null,
+    air_line_code: null,
+    destination_code: null,
   });
-
+  const [errors, setErrors] = useState({
+    flight_name: false,
+    air_line_code: false,
+  });
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    try {
-      const sendData = {
-        ...formData,
-      };
-      dispatch(CreateFlightAction(sendData, Navigate))
-        .then(() => {
-          setshowAddPopup(null);
-          setSearchTrigger((prev) => prev + 1);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      toast.error("Error creating flight:", error);
+    let newErrors = {
+      flight_name: formData?.flight_name ? false : true,
+      air_line_code: formData?.air_line_code ? false : true,
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    } else {
+      try {
+        const sendData = {
+          ...formData,
+        };
+        dispatch(CreateFlightAction(sendData, Navigate))
+          .then(() => {
+            setshowAddPopup(null);
+            setSearchTrigger((prev) => prev + 1);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        toast.error("Error creating flight:", error);
+      }
     }
   };
 
@@ -50,6 +69,10 @@ const CreateFlight = ({ popupContent }) => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   useEffect(() => {
     if (selectedItem && isEditIndividual) {
@@ -57,144 +80,118 @@ const CreateFlight = ({ popupContent }) => {
         ...formData,
         id: selectedItem?.id,
         flight_name: selectedItem?.flight_name,
+        air_line_code:selectedItem?.air_line_code,
+        destination_code:selectedItem?.destination_code
       });
     }
   }, [selectedItem, isEditIndividual]);
 
-
   return (
     <div id="formofcreateitems">
-      <form action="">
-        <div className="itemsformwrap itemformtyop02">
-          <div id="forminside">
-            <div className="secondx2 thirdx2extra">
-              <div className="mainxpopups2">
-                <div className="popup-content02" style={{ height: "65vh" }}>
-                  <div className={``} style={{ height: "fit-content" }}>
-                    <div
-                      id="Anotherbox"
-                      className="formsectionx"
-                      style={{
-                        height: "70px",
-                        background: "white",
-                      }}
-                    >
-                      <div id="leftareax12">
-                        <h1 id="firstheading" className="headingofcreateforems">
-                          {isEditIndividual ? `Update Airline` : "Add Airline"}
-                        </h1>
-                      </div>
+      <div className="custom-modal">
+        <div className="modal-content" style={{width:"50%"}}>
+          <div className="modal-header">
+            <h5>
+              {isEditIndividual
+                ? "Update Flight Service"
+                : "Add Flight Service"}
+            </h5>
+            <button
+              className="close-button"
+              onClick={() => setshowAddPopup(false)}
+            >
+              <RxCross2 />
+            </button>
+          </div>
 
-                      <div id="buttonsdata">
-                        <div
-                          className="linkx3"
-                          onClick={() => setshowAddPopup(null)}
-                        >
-                          <RxCross2 />
+          <div className="modal-body">
+            <form>
+              {/* Keep your form as it is */}
+              <div className="relateivdiv">
+                <div className="itemsformwrap" style={{ paddingBottom: "0px", minHeight:"100px" }}>
+                  <div className="f1wrapofcreq">
+                    <div className="f1wrapofcreqx1">
+                      <div className="form_commonblock">
+                        <label>
+                          Airline Name<b className="color_red">*</b>
+                        </label>
+                        <span>
+                          {otherIcons.placeofsupply_svg}
+                          <input
+                            value={formData.flight_name}
+                            onChange={handleChange}
+                            name="flight_name"
+                            placeholder="Enter Airline Name"
+                          />
+                        </span>
+                        {errors?.flight_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Airline Name
+                          </p>
+                        )}
+                      </div>
+                      <div className="form_commonblock">
+                        <label>Airline Code<b className="color_red">*</b></label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <input
+                              value={formData.air_line_code}
+                              onChange={handleChange}
+                              name="air_line_code"
+                              placeholder="Enter Airline Code"
+                            />
+                          </span>
+                          {errors?.air_line_code && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill AirLine Code
+                          </p>
+                        )}
                         </div>
                       </div>
-                    </div>
+                      <div className="form_commonblock">
+                        <label>Destination Code</label>
 
-                    {/* <div className="bordersinglestroke"></div> */}
-                    <div id="middlesection" style={{}}>
-                      <div id="formofcreateitems">
-                        <div
-                          className={`itemsformwrap1`}
-                          style={{ paddingBottom: "0px" }}
-                        >
-                          <div id="forminside">
-                            <div className="secondx2">
-                              <div className="form_commonblock">
-                                <label>
-                                  Airline Name<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.flight_name}
-                                    onChange={handleChange}
-                                    name="flight_name"
-                                    placeholder="Enter Airline Name"
-                                  />
-                                </span>
-                              </div>
-                              <div className="form_commonblock">
-                                <label>
-                                  Airline Code<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.airline_code}
-                                    onChange={handleChange}
-                                    name="airline_code"
-                                    placeholder="Enter Airline Code"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <div className="secondx2">
-                              <div className="form_commonblock">
-                                <label>
-                                  Desitination Code<b className="color_red">*</b>
-                                </label>
-                                <span>
-                                  {otherIcons.name_svg}
-                                  <input
-                                    value={formData.destination_code}
-                                    onChange={handleChange}
-                                    name="destination_code"
-                                    placeholder="Enter Destination Code"
-                                  />
-                                </span>
-                              </div>
-                             
-                            </div>
-                          </div>
-                          
-                        </div>
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Destination Code"
+                            options={destinationCode}
+                            value={formData?.destination_code}
+                            onChange={handleChange}
+                            name="destination_code"
+                            defaultOption="Select Destination Code"
+                            type="masters2"
+                          />
+                        </span>
                       </div>
                     </div>
-
-                    {
-                      <div
-                        id="modalactionbar"
-                        className="actionbar"
-                        style={{
-                          left: "167px",
-                          width: "894px",
-                          position: "absolute",
-                          marginBottom: "62px",
-                        }}
-                      >
-                        <button
-                          onClick={handleSubmitForm}
-                          id="herobtnskls"
-                          //${!isAllReqFilled ? 'disabledbtn' : ''}
-                          className={`${flightCreates?.loading ||freezLoadingImg ? "disabledbtn" : ""} `}
-                          type="submit"
-                          disabled={flightCreates?.loading || freezLoadingImg}
-                        >
-                          {isEditIndividual ? "Update" : "Create"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setshowAddPopup(null)}
-                          className={`${(flightCreates?.loading || freezLoadingImg) ? 'disabledbtn' : ''} `}
-                          disabled={(flightCreates?.loading || freezLoadingImg)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    }
                   </div>
                 </div>
               </div>
-            </div>
+              <SubmitButton6
+                onClick={handleSubmitForm}
+                createUpdate={flightCreates}
+                setShowModal={setshowAddPopup}
+              />
+            </form>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

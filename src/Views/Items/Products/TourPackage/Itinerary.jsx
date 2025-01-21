@@ -33,7 +33,7 @@ import {
   itineraryListAction,
   itinerarystatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
 
 const Itinerary = ({ data }) => {
   const dispatch = useDispatch();
@@ -44,7 +44,9 @@ const Itinerary = ({ data }) => {
   const itineraryLists = itinaeraryListData?.data?.data || [];
   const totalItems = itinaeraryListData?.data?.count || 0;
   const itineraryStatusUpdate = useSelector((state) => state?.itineraryStatus);
-  console.log("itineraryLists", itinaeraryListData);
+  const itineryDelete = useSelector((state) => state?.itineraryDelete);
+  
+ 
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -198,7 +200,7 @@ const Itinerary = ({ data }) => {
   return (
     <>
       <TopLoadbar />
-      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading) && (
+      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading ||itineryDelete?.loading) && (
         <MainScreenFreezeLoader />
       )}
       <div id="middlesection">
@@ -346,9 +348,10 @@ const Itinerary = ({ data }) => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                              <AttachmentPreview2
-                                attachments={JSON.parse(
-                                  item?.upload_documents || "[]"
+                             
+                              <AttachmentPreview4
+                                document={JSON.parse(
+                                  item?.upload_documents || ""
                                 )}
                               />
                             </div>
