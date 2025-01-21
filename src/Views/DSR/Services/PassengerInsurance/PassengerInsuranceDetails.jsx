@@ -3,9 +3,8 @@ import { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
 import { Attachment2 } from "../../../Helper/Attachment";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { formatDate3 } from "../../../Helper/DateFormat";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
@@ -20,7 +19,7 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>Passenger Name:{data?.passenger?.display_name || ""}</h5>
+                <h5>Passenger Name: {data?.passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
