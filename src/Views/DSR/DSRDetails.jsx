@@ -104,7 +104,7 @@ const DSRDetails = () => {
                 dsr_id: UrlId,
               };
               dispatch(DSRDetailsAction(refreshData));
-              setcusData1(null)
+              setcusData1(null);
             }
           })
           .catch((err) => console.log(err));
@@ -161,14 +161,21 @@ const DSRDetails = () => {
     }
 
     const contentComponent = (
-      <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" />
+      <PrintContent2
+        data={DSRData}
+        cusVenData=""
+        masterData=""
+        moduleId=""
+        section="DSR"
+      />
     );
     generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
   };
-  const isDisabled=DSRData?.is_invoiced == "1"
+
+  const isDisabled = DSRData?.is_invoiced == "1";
   return (
     <>
-    {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
+      {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeDSR?.loading ||
@@ -183,27 +190,28 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
-          {DSRData?.is_invoiced == "1" &&
-          <div className="mainx1">
-                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+            {DSRData?.is_invoiced == "1" && (
+              <div className="mainx1">
+                <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>
                   PDF/Print
                 </p>
-              </div>}
+              </div>
+            )}
             {DSRData?.is_invoiced == "0" && (
               <>
                 <div
                   onClick={() => {
                     handleChangeDSRStatus(DSRData);
                   }}
-                // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                  // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                 >
                   <p
                     className={
                       DSRData?.is_invoiced == "0"
                         ? "draft"
                         : DSRData?.is_invoiced == "1"
-                          ? "invoiced"
-                          : ""
+                        ? "invoiced"
+                        : ""
                     }
                     style={{
                       cursor: "pointer",
@@ -278,13 +286,24 @@ const DSRDetails = () => {
                                   cusData={cusData1}
                                   type="vendor"
                                   required
+                                  disabled={isDisabled}
                                 />
                               </span>
                             </div>
                           </div>
                           <button
+                            data-tooltip-content={
+                              isDisabled
+                                ? "Not able to click. It is invoiced."
+                                : ""
+                            }
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-place="bottom"
+                            style={{
+                              cursor: isDisabled ? "not-allowed" : "pointer",
+                            }}
                             className={`firstbtnc1 `}
-                            onClick={handleFormSubmit2}
+                            onClick={() => {if (!isDisabled) {handleFormSubmit2();}}}
                           >
                             Add Passenger
                           </button>

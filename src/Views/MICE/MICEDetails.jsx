@@ -151,6 +151,7 @@ const MICEDetails = () => {
       dispatch(MICEDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
+  const isDisabled = MICEData?.is_invoiced == "1";
 
   return (
     <>
@@ -168,9 +169,16 @@ const MICEDetails = () => {
             <h1 id="firstheading">{MICEData?.mice_no}</h1>
           </div>
           <div id="buttonsdata">
+          {MICEData?.is_invoiced == "1" && (
+              <div className="mainx1">
+                <p  style={{ cursor: "pointer" }}>
+                  PDF/Print
+                </p>
+              </div>
+            )}
             {MICEData?.is_invoiced == "0" && (
               <>
-                {" "}
+              
                 <div
                   onClick={() => {
                     handleChangeDSRStatus(MICEData);
@@ -258,13 +266,20 @@ const MICEDetails = () => {
                                   cusData={cusData1}
                                   type="vendor"
                                   required
+                                  disabled={isDisabled}
+                                  
                                 />
                               </span>
                             </div>
                           </div>
                           <button
+                           data-tooltip-content={isDisabled? "Not able to click. It is invoiced.": ""}
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom"
                             className={`firstbtnc1 `}
+                            // onClick={(e) => {e.preventDefault();if (!isDisabled) {handleFormSubmit2();}}}
                             onClick={handleFormSubmit2}
+                            
                           >
                             Add Passenger
                           </button>
@@ -275,6 +290,7 @@ const MICEDetails = () => {
                         <PassengerCard
                           passengers={MICEData}
                           onDelete={handleDeletePassenger}
+                           disabled={isDisabled}
                         />
                       </div>
                     </div>

@@ -14,7 +14,7 @@ import CreateInsurancePopup from "./Services/PassengerInsurance/CreateInsuranceP
 import CreateOtherPopup from "./Services/PassengerOthers/CreateOtherPopup";
 import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 
-const PassengerCard = ({ passengers, onDelete }) => {
+const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const navigate = useNavigate();
 
   const [activePopup, setActivePopup] = useState(null);
@@ -125,9 +125,7 @@ const PassengerCard = ({ passengers, onDelete }) => {
       <tbody>
         {passengers?.passengers?.length > 0 ? (
           passengers?.passengers?.map((passenger, index) => (
-            
             <tr key={index}>
-             
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
@@ -142,13 +140,20 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   defaultOption="Select Service"
                   extracssclassforscjkls="extracssclassforscjklsitem"
                   type="service"
+                  disabled={disabled}
                 />
               </td>
               <td>{passenger?.service_total || ""}</td>
               <td>
                 <span
-                  style={{ cursor: "pointer", color: "red" }}
-                  onClick={() => onDelete(passenger?.id)}
+                  data-tooltip-content={disabled ? "Not able to click It is invoiced" : ""}
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-place="bottom"
+                  style={{
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    color: "red",
+                  }}
+                  onClick={!disabled ? () => onDelete(passenger?.id) : ""}
                 >
                   {otherIcons.delete_svg}
                 </span>
@@ -166,8 +171,6 @@ const PassengerCard = ({ passengers, onDelete }) => {
                   <BsEye />
                 </span>
               </td>
-
-
             </tr>
           ))
         ) : (

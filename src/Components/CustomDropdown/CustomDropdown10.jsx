@@ -9,7 +9,7 @@ import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions'
 import { vendorsLists } from '../../Redux/Actions/listApisActions';
 
 const CustomDropdown10 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, } = props;
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877,disabled } = props;
 
   const {
     isOpen,
@@ -65,8 +65,10 @@ const CustomDropdown10 = forwardRef((props, ref) => {
 
 
   return (
-    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+    <div  data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
+    data-tooltip-id="my-tooltip"
+    data-tooltip-place="bottom" ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
+      <div onClick={!disabled ?() => setIsOpen(!isOpen):""} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
 
         {cusData ? cusData?.display_name : value ? fullName?.display_name : defaultOption}
 

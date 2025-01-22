@@ -6,6 +6,7 @@ import "./PdfTemplate.scss";
 import "./PrintContent2.scss";
 
 const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
+  console.log("data", data);
   return (
     <div id="pdf_print_container" style={{ backgroundColor: "#f9f9f9" }}>
       <div className="top_section" style={{ justifyContent: "center" }}>
@@ -20,36 +21,44 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
         <p className="customer-title">Customer Details:</p>
         <div className="customer-grid">
           <div className="customer-card">
-            <span className="customer-label">DSR NO:</span>
+            <span className="customer-label">DSR NO</span>
+            <span className="customer-label">:</span>
             <span className="customer-value">{data?.dsr_no || ""}</span>
-            {/* {data?.dsr_no || ""} */}
           </div>
+
           <div className="customer-card">
-            <span className="customer-label">Customer Name:</span>{" "}
+            <span className="customer-label">Customer Name</span>
+            <span className="customer-label">:</span>
             <span className="customer-value">
               {" "}
               {data?.customer?.display_name || ""}
             </span>
           </div>
+
           <div className="customer-card">
-            <span className="customer-label">Customer Type:</span>{" "}
+            <span className="customer-label">Customer Type</span>
+            <span className="customer-label">:</span>
             <span className="customer-value">
-              {" "}
               {data?.customer?.customer_type || ""}
-            </span>{" "}
+            </span>
           </div>
         </div>
         <div className="customer-grid" style={{ marginTop: "20px" }}>
           <div className="customer-card">
-            <span className="customer-label">Email:</span>{" "}
+            <span className="customer-label">Email</span>
+            <span className="customer-label" style={{ marginLeft: "17px" }}>
+              :
+            </span>
             <span className="customer-value">
               {data?.customer?.email || ""}
             </span>
           </div>
           <div className="customer-card">
-            <span className="customer-label">Status:</span>{" "}
+            <span className="customer-label">Status</span>
+            <span className="customer-label" style={{marginLeft:"30px"}}>:</span>
+
             <span className="customer-value">
-              {" "}
+              Pending
               {data?.customer?.status === "0"
                 ? "Pending"
                 : data?.customer?.status === "1"
@@ -58,13 +67,14 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
             </span>
           </div>
           <div className="customer-card">
-            <span className="customer-label">Mobile No.:</span>{" "}
+            <span className="customer-label">Mobile No.</span>
+            <span className="customer-label" style={{marginLeft:"10px"}}>:</span>
             <span>{data?.customer?.mobile_no || ""}</span>
           </div>
         </div>
       </div>
 
-      <div style={{ marginTop: "20px", marginBottom:"20px" }}>
+      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
         {data?.passengers?.map((item, index) => (
           <div key={index}>
             <div
@@ -93,13 +103,27 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                 </div>
               </div>
             </div>
-            <div  style={{ marginLeft: "30px", marginRight: "10px", marginBottom:"20px", marginTop:"20px" }}> <h3 className="customer-title">Services:</h3></div>
+            <div
+              style={{
+                marginLeft: "30px",
+                marginRight: "10px",
+                marginBottom: "20px",
+                marginTop: "20px",
+              }}
+            >
+              {" "}
+              <h3 className="customer-title">Services:</h3>
+            </div>
             <div style={{ marginTop: "20px" }}>
               {item?.hotels?.map((data, index) => (
                 <div key={index}>
                   <div
                     className="customer-details"
-                    style={{ marginLeft: "20px", marginRight: "10px", marginBottom:"20px" }}
+                    style={{
+                      marginLeft: "20px",
+                      marginRight: "10px",
+                      marginBottom: "20px",
+                    }}
                   >
                     <p className="customer-title" style={{ fontSize: "15px" }}>
                       Hotel ({index + 1}):
@@ -551,7 +575,11 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
               {item?.others?.map((data, index) => (
                 <div
                   className="customer-details"
-                  style={{ marginLeft: "20px", marginRight: "10px", marginTop:"20px" }}
+                  style={{
+                    marginLeft: "20px",
+                    marginRight: "10px",
+                    marginTop: "20px",
+                  }}
                 >
                   <p className="customer-title" style={{ fontSize: "15px" }}>
                     Other ({index + 1}):

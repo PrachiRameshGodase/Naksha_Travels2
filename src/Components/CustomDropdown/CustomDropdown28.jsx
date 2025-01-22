@@ -1,9 +1,19 @@
-import React, { forwardRef } from 'react';
-import DropDownHelper from '../../Views/Helper/DropDownHelper';
-import { RiSearch2Line } from 'react-icons/ri';
+import React, { forwardRef } from "react";
+import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import { RiSearch2Line } from "react-icons/ri";
 
 const CustomDropdown28 = forwardRef((props, ref) => {
-  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2 } = props;
+  let {
+    options,
+    value,
+    onChange,
+    name,
+    type,
+    defaultOption,
+    extracssclassforscjkls,
+    className2,
+    disabled,
+  } = props;
   const {
     isOpen,
     setIsOpen,
@@ -15,7 +25,7 @@ const CustomDropdown28 = forwardRef((props, ref) => {
     filteredOptions,
     handleKeyDown,
     handleSelect,
-    focusedOptionIndex
+    focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type);
 
   const combinedRef = (node) => {
@@ -24,28 +34,58 @@ const CustomDropdown28 = forwardRef((props, ref) => {
   };
 
   if (type === "masters") {
-    options = searchTerm?.length === 0 ? options : options?.filter(option =>
-      option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    );
+    options =
+      searchTerm?.length === 0
+        ? options
+        : options?.filter((option) =>
+            option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+          );
   }
 
-
   return (
-    <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} style={{ width: "200px", minWidth: 0 }} onKeyDown={handleKeyDown} >
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} >
-
-        {type === "masters_salutation" ?
+    <div
+      data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
+      data-tooltip-id="my-tooltip"
+      data-tooltip-place="bottom"
+      ref={combinedRef}
+      tabIndex="0"
+      className={`customdropdownx12s86 ${extracssclassforscjkls}`}
+      style={{ width: "200px", minWidth: 0 }}
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        className={"dropdown-selected" + (value ? " filledcolorIn" : "")}
+        style={{ cursor: disabled ? "not-allowed" : "pointer" }}
+      >
+        {type === "masters_salutation" ? (
           <>
-            {value ? options?.find(account => account?.label == value)?.label : defaultOption}
+            {value
+              ? options?.find((account) => account?.label == value)?.label
+              : defaultOption}
           </>
-          :
+        ) : (
           <>
-            {value ? options?.find(account => account?.label == value)?.label : defaultOption}
+            {value
+              ? options?.find((account) => account?.label == value)?.label
+              : defaultOption}
+          </>
+        )}
 
-          </>}
-
-        <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          width="13"
+          height="7"
+          viewBox="0 0 13 7"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953"
+            stroke="#797979"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </div>
 
@@ -53,13 +93,14 @@ const CustomDropdown28 = forwardRef((props, ref) => {
         <div className="dropdown-options">
           <RiSearch2Line id="newsvgsearchicox2" />
           <input
-            autoComplete='off'
+            autoComplete="off"
             type="text"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="dropdown-search"
             ref={inputRef}
+            disabled={disabled}
           />
           <div className="dropdownoptoscroll">
             {options?.map((option, index) => (
@@ -76,14 +117,19 @@ const CustomDropdown28 = forwardRef((props, ref) => {
                 {option.label}
               </div>
             ))}
-            {options?.length === 0 &&
+            {options?.length === 0 && (
               <>
                 <div className="notdatafound02">
-                  <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe>
+                  <iframe
+                    src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json"
+                    frameBorder="0"
+                  ></iframe>
                 </div>
-                <div className="dropdown-option centeraligntext">No options found</div>
+                <div className="dropdown-option centeraligntext">
+                  No options found
+                </div>
               </>
-            }
+            )}
           </div>
         </div>
       )}
