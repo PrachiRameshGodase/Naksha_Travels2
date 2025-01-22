@@ -165,7 +165,7 @@ const DSRDetails = () => {
     );
     generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
   };
-  
+  const isDisabled=DSRData?.is_invoiced == "1"
   return (
     <>
     {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
@@ -183,11 +183,12 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
+          {DSRData?.is_invoiced == "1" &&
           <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
                   PDF/Print
                 </p>
-              </div>
+              </div>}
             {DSRData?.is_invoiced == "0" && (
               <>
                 <div
@@ -294,6 +295,7 @@ const DSRDetails = () => {
                         <PassengerCard
                           passengers={DSRData}
                           onDelete={handleDeletePassenger}
+                          disabled={isDisabled}
                         />
                       </div>
                     </div>

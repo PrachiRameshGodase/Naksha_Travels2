@@ -278,6 +278,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            showYearDropdown
+                            scrollableYearDropdown 
+                            yearDropdownItemNumber={15} 
+                            showMonthDropdown 
                           />
                         </span>
                       </div>

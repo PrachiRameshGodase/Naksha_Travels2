@@ -51,4 +51,44 @@
       text-align: center;
     }
   }
+  .customer-details {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    .customer-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+  
+    .customer-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+  
+      .customer-card {
+        font-size: 14px;
+      
+        // flex: 1 1 calc(50% - 16px);
+        // background-color: #f9f9f9;
+        // padding: 12px;
+        // border-radius: 8px;
+        // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+        .customer-label {
+          font-weight: bold;
+          margin-right: 8px;
+          width: 300px;
+        }
+        .customer-value {
+          // font-weight: bold;
+          margin-right: 8px;
+          width: 300px;
+        }
+      }
+    }
+  }
   

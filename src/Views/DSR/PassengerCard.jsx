@@ -125,7 +125,9 @@ const PassengerCard = ({ passengers, onDelete }) => {
       <tbody>
         {passengers?.passengers?.length > 0 ? (
           passengers?.passengers?.map((passenger, index) => (
+            
             <tr key={index}>
+             
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
