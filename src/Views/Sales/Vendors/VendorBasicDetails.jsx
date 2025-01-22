@@ -15,7 +15,6 @@ import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown0
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown19 from '../../../Components/CustomDropdown/CustomDropdown19';
 import NumericInput from '../../Helper/NumericInput';
-import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
 import ImageUpload, { MultiImageUpload } from '../../Helper/ComponentHelper/ImageUpload';
 import { getCurrencyFormData, ShowMasterData } from '../../Helper/HelperFunctions';
 import { CustomDropdown006 } from '../../../Components/CustomDropdown/CustomDropdown06';

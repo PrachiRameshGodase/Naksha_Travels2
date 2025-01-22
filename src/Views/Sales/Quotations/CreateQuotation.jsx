@@ -93,6 +93,8 @@ const CreateQuotation = () => {
     } else if (name === "customer_id" && value === "") {
       setIsCustomerSelect(false);
     }
+
+
     if (name === "customer_id") {
       const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
       const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === 1);
@@ -102,6 +104,7 @@ const CreateQuotation = () => {
         shipping: findfirstshipping,
       });
     }
+
     if (name === "terms_and_condition") {
       // Remove spaces for counting purposes
       const countableText = value.replace(/\s/g, '');
@@ -351,7 +354,6 @@ const CreateQuotation = () => {
                                 placeholderText="Enter Expiry Date"
                                 dateFormat="dd-MM-yyy"
                                 autoComplete='off'
-                                minDate={formData?.transaction_date}
                               />
                             </span>
                           </div>

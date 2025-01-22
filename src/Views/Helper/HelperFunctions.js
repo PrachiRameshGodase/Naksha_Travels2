@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
 import { getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
@@ -19,6 +19,7 @@ export const sendData = {
     noofrec: 10,
     active: 1, status: 1
 }
+
 export const sendData2 = {
     fy: 2024,
     noofrec: 10,
@@ -33,7 +34,7 @@ export const showAmountWithCurrencySymbol = (val) => {
     return val == "0" ? `${currencySymbol} 0.00` : val ? `${currencySymbol} ${val} ` : "";
 }
 
-console.log("activeOrg_details", activeOrg_details)
+// console.log("activeOrg_details", activeOrg_details)
 
 export const showAmountWithCurrencySymbolWithPoints = (val) => {
     return val ? `${currencySymbol} ${val}.00` : '';
@@ -47,7 +48,6 @@ export const ShowMasterData = (type) => {
 
 export const ShowUserMasterData = (type) => {
     const userMasterData = useSelector(state => state?.userMasterList?.data);
-
 
     const filteredData = userMasterData?.filter(item => item.type == type);
     return filteredData || [];
@@ -118,6 +118,7 @@ export const handleDropdownError = (isSelected, dropdownRef) => {
     return false;
 };
 
+
 export const stringifyJSON = (data) => {
     try {
         return JSON.stringify(data);
@@ -142,8 +143,10 @@ export const parseJSONofString = (jsonString) => {
 export const preventZeroVal = (val) => {
     return val == "0" ? "" : val
 }
+
 // show department
 // utils.js
+
 export const showDeparmentLabels = (department, mainDeparmentVal) => {
     if (typeof department !== "string") return "";
 
@@ -220,7 +223,6 @@ export const validateItems = (items) => {
 
     items.forEach((item, index) => {
         const itemErrors = {};
-
         if (!item?.item_name) itemErrors.item_name = "Please Select/type An Item or select Services";
         // if (!item?.type) itemErrors.type = "Please Select Type";
         if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Fill the Price";
@@ -230,6 +232,7 @@ export const validateItems = (items) => {
         if (Object.keys(itemErrors).length > 0) {
             errors[index] = itemErrors;
         }
+
     });
 
     return errors;

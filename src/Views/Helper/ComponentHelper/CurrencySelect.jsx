@@ -41,7 +41,7 @@ export const CurrencySelect2 = ({ disable, style, ...rest }) => {
                     label="Currency Name"
                     name="currency"
                     defaultOption="Select Currency"
-                    type="currency2"
+                    type="currency"
                     options={getCurrency?.currency}
                     disable={disable}
                     style={style}

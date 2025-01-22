@@ -5,6 +5,7 @@
   @include flex(center, center);
   font-size: 15px !important;
 }
+
 .react-datepicker__current-month,
 .react-datepicker-time__header,
 .react-datepicker-year-header {
@@ -28,6 +29,7 @@
   width: 2.2rem;
   line-height: 2.1rem;
 }
+
 .react-datepicker__navigation {
   background: $white;
   width: 28px;
@@ -36,16 +38,18 @@
   border-radius: 8px;
 
   margin: 5px 5px;
+
   span {
     border: none !important;
   }
+
   &:hover {
     background: $white;
   }
 
 }
-.group-form .react-datepicker__current-month {
-}
+
+.group-form .react-datepicker__current-month {}
 
 .react-datepicker__navigation-icon--next::before {
   border-color: $btext;
@@ -66,9 +70,8 @@
   border-width: 2px 2px 0 0;
   left: -5px;
   top: 8px;
-  span {
-    
-  }
+
+  span {}
 }
 
 .react-datepicker__year-read-view--down-arrow {
@@ -99,6 +102,56 @@
 .react-datepicker__day--selected {
   background: $primary !important;
 }
+
+.react-datepicker__header__dropdown {
+  position: absolute;
+  top: 6px;
+  display: hidden;
+  left: 33%;
+  // border: 1px solid;
+  width: 35%;
+
+}
+
+.react-datepicker__year-read-view {
+  span {
+    padding: 0 49px !important;
+    visibility: hidden;
+  }
+}
+
+.react-datepicker__year-dropdown--scrollable {
+  max-height: 200px;
+  /* Limit the dropdown height */
+  overflow-y: scroll;
+  width: 100%;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.react-datepicker__year-dropdown::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox (hide scrollbar but keep scrolling) */
+.react-datepicker__year-dropdown {
+  left: 0;
+  border: none;
+  scrollbar-width: none;
+  /* Hides scrollbar in Firefox */
+  -ms-overflow-style: none;
+  /* For older versions of Internet Explorer */
+}
+
+.react-datepicker__year-option {
+  span {
+    display: block;
+    border: none;
+    position: absolute;
+    display: block
+  }
+}
+
+.react-datepicker__navigation {}
 
 
 
