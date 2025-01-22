@@ -7,7 +7,7 @@ import PaginationComponent from "../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { GRNreceiptListActions } from "../../Redux/Actions/grnActions";
-import { showAmountWithCurrencySymbol, useDebounceSearch, parseJSONofString } from "../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch, } from "../Helper/HelperFunctions";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import DatePicker from "../Common/DatePicker/DatePicker";
 import SearchBox from "../Common/SearchBox/SearchBox";
@@ -18,9 +18,10 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { GRNRecAreaSortOptions, } from "../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const GRNreceipt = () => {
-  const itemPayloads = localStorage.getItem(("grnReceptPayload"));
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -233,7 +234,7 @@ const GRNreceipt = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
-                    {otherIcons.doller_svg}
+                    {currencySymbol}{" "}
                     Final AMOUNT
                   </div>
 

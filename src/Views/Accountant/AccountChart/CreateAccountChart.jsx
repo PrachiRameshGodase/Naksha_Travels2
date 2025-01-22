@@ -59,7 +59,7 @@ const CreateAccountChart = () => {
         currency: currency,
     });
 
-    const data = JSON.parse(localStorage.getItem("editAccount"));
+    const data = JSON?.parse(localStorage.getItem("editAccount"));
     const getAccountVal = data?.accounts;
 
     useEffect(() => {

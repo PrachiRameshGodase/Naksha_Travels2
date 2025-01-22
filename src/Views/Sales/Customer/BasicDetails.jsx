@@ -90,14 +90,14 @@ const BasicDetails = ({
       basicDetails?.salutation == 1
         ? "Mr."
         : basicDetails?.salutation == 2
-        ? "Mrs."
-        : basicDetails?.salutation == 3
-        ? "Ms."
-        : basicDetails?.salutation == 4
-        ? "Miss."
-        : basicDetails?.salutation == 5
-        ? "Dr"
-        : "";
+          ? "Mrs."
+          : basicDetails?.salutation == 3
+            ? "Ms."
+            : basicDetails?.salutation == 4
+              ? "Miss."
+              : basicDetails?.salutation == 5
+                ? "Dr"
+                : "";
     if (basicDetails.first_name && basicDetails.last_name) {
       names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
       if (basicDetails.salutation) {
@@ -171,7 +171,7 @@ const BasicDetails = ({
 
   useEffect(() => {
     if ((user?.id && isEdit) || (user?.id && isDuplicate)) {
-      const depArray = JSON.parse(user?.department || "[]");
+      const depArray = JSON?.parse(user?.department || "[]");
       setBasicDetails({
         ...basicDetails,
         salutation: user?.salutation,
@@ -288,7 +288,7 @@ const BasicDetails = ({
                               name="salutation"
                               defaultOption="Select Salutation"
                               type="masters_salutation"
-                              // extracssclassforscjkls="extracssclassforscjklsSalutation"
+                            // extracssclassforscjkls="extracssclassforscjklsSalutation"
                             />
                           </span>
                         </div>
@@ -311,23 +311,23 @@ const BasicDetails = ({
                         </div>
                       </div>
                       <div className="form_commonblock">
-                  <label className="">Last Name</label>
-                  <div id="inputx1">
-                    <span>
-                      {/* {otherIcons.company_name_svg} */}
-                      <input
-                        autoComplete="off"
-                        style={{ width: "100%" }}
-                        type="text"
-                        name="last_name"
-                        value={basicDetails.last_name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        placeholder="Enter Last Name"
-                      />
-                    </span>
-                  </div>
-                </div>
+                        <label className="">Last Name</label>
+                        <div id="inputx1">
+                          <span>
+                            {/* {otherIcons.company_name_svg} */}
+                            <input
+                              autoComplete="off"
+                              style={{ width: "100%" }}
+                              type="text"
+                              name="last_name"
+                              value={basicDetails.last_name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Enter Last Name"
+                            />
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -551,7 +551,7 @@ const BasicDetails = ({
             </div>
 
             <div id="fcx3s1parent">
-              
+
               {showRegisterdFields && (
                 <>
                   <div className="form_commonblock">

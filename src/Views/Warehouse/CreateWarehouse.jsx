@@ -73,7 +73,7 @@ const CreateWarehouse = () => {
 
     useEffect(() => {
         if ((itemId && isEdit && warehouseDetail) || (itemId && isDublicate && warehouseDetail) || itemId && (convert === "saleToInvoice")) {
-            const depArray = JSON.parse(warehouseDetail?.department || "[]");
+            const depArray = JSON?.parse(warehouseDetail?.department || "[]");
             setFormData({
                 id: isEdit ? itemId : 0,
                 name: (warehouseDetail?.name),

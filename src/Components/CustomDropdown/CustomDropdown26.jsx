@@ -4,7 +4,7 @@ import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import { useSelector } from "react-redux";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 import { itemLists } from "../../Redux/Actions/listApisActions";
-import { parseJSONofString } from "../../Views/Helper/HelperFunctions";
+import { } from "../../Views/Helper/HelperFunctions";
 
 const CustomDropdown26 = forwardRef((props, ref) => {
   const {

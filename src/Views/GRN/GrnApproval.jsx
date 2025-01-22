@@ -7,7 +7,7 @@ import PaginationComponent from "../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { GRNlistActions } from "../../Redux/Actions/grnActions";
-import { showAmountWithCurrencySymbol, useDebounceSearch, parseJSONofString } from "../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch, } from "../Helper/HelperFunctions";
 import DatePicker from "../Common/DatePicker/DatePicker";
 import SearchBox from "../Common/SearchBox/SearchBox";
 import SortBy from "../Common/SortBy/SortBy";
@@ -16,10 +16,11 @@ import { formatDate, formatDate3 } from "../Helper/DateFormat";
 import { GRNApprovalSortOptions, } from "../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 const GrnApproval = () => {
-  const itemPayloads = localStorage.getItem(("grnPayload"));
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   // const qutList = useSelector(state => state?.GRNlist);
   const grnList = useSelector((state) => state?.GRNlist);
@@ -246,7 +247,7 @@ const GrnApproval = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       AMOUNT
                     </p>
                   </div>

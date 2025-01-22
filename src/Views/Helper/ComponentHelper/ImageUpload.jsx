@@ -107,8 +107,8 @@ const ImageUpload = ({
           {formData?.image_url ? (
             <>
               {imgLoader === "success" &&
-              formData?.image_url !== null &&
-              formData?.image_url !== "0" ? (
+                formData?.image_url !== null &&
+                formData?.image_url !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -125,8 +125,8 @@ const ImageUpload = ({
           ) : (
             <>
               {imgLoader === "success" &&
-              formData?.upload_image !== null &&
-              formData?.upload_image !== "0" ? (
+                formData?.upload_image !== null &&
+                formData?.upload_image !== "0" ? (
                 <label
                   className="imageviewico656s"
                   htmlFor=""
@@ -787,9 +787,8 @@ export const ImageUploadGRN = ({
           <div>
             <span
               id="close-button02"
-              className={`close-button02  close_opop  ${
-                currentPOP ? "close_opop" : ""
-              }`}
+              className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                }`}
               onClick={CloseShowDeleteImg}
             >
               <RxCross2 />
@@ -1122,9 +1121,8 @@ export const MultiImageUploadEmail = ({
                     <div>
                       <span
                         id="close-button02"
-                        className={`close-button02  close_opop  ${
-                          currentPOP ? "close_opop" : ""
-                        }`}
+                        className={`close-button02  close_opop  ${currentPOP ? "close_opop" : ""
+                          }`}
                         onClick={CloseShowDeleteImg}
                       >
                         <RxCross2 />
@@ -1240,7 +1238,7 @@ export const MultiImageUploadDocument = ({
   // Parse upload_documents if it's a JSON string
   const uploadDocuments = Array.isArray(formData?.upload_documents)
     ? formData?.upload_documents
-    : JSON.parse(formData?.upload_documents || "[]");
+    : JSON?.parse(formData?.upload_documents || "[]");
 
   const handleImageChange = (e) => {
     setFreezLoadingImg(true);

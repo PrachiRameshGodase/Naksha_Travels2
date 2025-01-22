@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { parsePurchaseDetails } from "./parsePurchaseDetails";
 import { getBaseFormData } from "../getBaseFormData";
-import { parseJSONofString, stringifyJSON } from "../../HelperFunctions";
+import { stringifyJSON } from "../../HelperFunctions";
 
 //Common component for state management
 export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], detailData, itemId, isEdit, convert) => {
@@ -68,7 +68,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                 ...(detailData?.invoice_id && {
                     tracking_details: stringifyJSON({
                         ...(convert === "saleToInvoice" && { module: convert, id: itemId }),
-                        ...(detailData?.tracking_details && { module_data: parseJSONofString(detailData?.tracking_details) })
+                        ...(detailData?.tracking_details && { module_data: JSON?.parse(detailData?.tracking_details) })
                     })
                 }),
 
@@ -100,7 +100,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
             // console.log("detailData", detailData)
             if (detailData?.address) {
-                const parsedAddress = JSON.parse(detailData?.address);
+                const parsedAddress = JSON?.parse(detailData?.address);
                 setAddSelect({
                     billing: parsedAddress?.billing,
                     shipping: parsedAddress?.shipping,

@@ -5,12 +5,12 @@ import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
-import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
+import { sendData } from '../../Views/Helper/HelperFunctions';
 import { hotelRoomListAction } from '../../Redux/Actions/hotelActions';
 import { assistListAction } from '../../Redux/Actions/assistAction';
 
 const CustomDropdown30 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, hotelID} = props;
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, hotelID } = props;
   const {
     isOpen,
     setIsOpen,
@@ -24,8 +24,8 @@ const CustomDropdown30 = forwardRef((props, ref) => {
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
-    const assistData = useSelector((state) => state?.assistList);
-  
+  const assistData = useSelector((state) => state?.assistList);
+
   const itemPayloads = localStorage.getItem(("customerPayload"));
 
   const dispatch = useDispatch();
@@ -41,12 +41,12 @@ const CustomDropdown30 = forwardRef((props, ref) => {
 
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
+    // const parshPayload = JSON?.parse(itemPayloads);
     // if (parshPayload?.search) {
-    const sendData={
-        
+    const sendData = {
+
     }
-      dispatch(assistListAction(sendData));
+    dispatch(assistListAction(sendData));
     // }
     // setSearchTerm("");
   }, [isOpen]);

@@ -74,9 +74,8 @@ const TourPackageDetails = () => {
     const value = event.target.value; // Get the selected value
     // Confirmation modal
     const result = await Swal.fire({
-      text: `Do you want to ${
-        value == 0 ? "Inactive" : "Active"
-      } this tour package?`,
+      text: `Do you want to ${value == 0 ? "Inactive" : "Active"
+        } this tour package?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -100,7 +99,7 @@ const TourPackageDetails = () => {
     }
   };
 
-  const attachments = JSON.parse(tourPackageData?.upload_documents || "[]");
+  const attachments = JSON?.parse(tourPackageData?.upload_documents || "[]");
 
   return (
     <>
@@ -180,17 +179,15 @@ const TourPackageDetails = () => {
           <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
             <div className="buttonscontainxs2">
               <div
-                className={`divac12cs32 ${
-                  activeSection === "roomDetails" ? "activediv12cs" : ""
-                }`}
+                className={`divac12cs32 ${activeSection === "roomDetails" ? "activediv12cs" : ""
+                  }`}
                 onClick={() => setActiveSection("roomDetails")}
               >
                 Tour Package Details
               </div>
               <div
-                className={`divac12cs32 ${
-                  activeSection === "itinerary" ? "activediv12cs" : ""
-                }`}
+                className={`divac12cs32 ${activeSection === "itinerary" ? "activediv12cs" : ""
+                  }`}
                 onClick={() => setActiveSection("itinerary")}
               >
                 Itinerary List
@@ -261,8 +258,8 @@ const TourPackageDetails = () => {
                             {tourPackageData?.status == "1"
                               ? "Active"
                               : tourPackageData?.status == "1"
-                              ? "Inactive"
-                              : ""}
+                                ? "Inactive"
+                                : ""}
                           </p>
                         </li>
                         <li>

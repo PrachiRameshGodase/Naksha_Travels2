@@ -59,7 +59,7 @@ const InsuranceDetails = ({
         issue_date: insuranceDetailsFromUser.issue_date || "",
         expiry_date: insuranceDetailsFromUser?.expiry_date || "",
         upload_documents: insuranceDetailsFromUser?.upload_documents
-          ? JSON.parse(insuranceDetailsFromUser.upload_documents)
+          ? JSON?.parse(insuranceDetailsFromUser.upload_documents)
           : [],
       });
 

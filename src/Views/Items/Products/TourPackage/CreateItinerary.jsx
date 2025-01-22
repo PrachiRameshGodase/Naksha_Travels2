@@ -94,15 +94,15 @@ const CreateItinerary = ({ popupContent }) => {
         day_plan: selectedItem?.day_plan,
         description: selectedItem?.description,
         upload_documents: selectedItem?.upload_documents
-          ? JSON.parse(selectedItem.upload_documents)
+          ? JSON?.parse(selectedItem.upload_documents)
           : "",
       });
-      if(selectedItem?.upload_documents){
+      if (selectedItem?.upload_documents) {
         setImgeLoader("success")
       }
     }
   }, [selectedItem, isEditIndividual]);
-console.log("formData",formData)
+  console.log("formData", formData)
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">

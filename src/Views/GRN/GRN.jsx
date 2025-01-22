@@ -16,13 +16,14 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import FilterBy from "../Common/FilterBy/FilterBy";
 import { GRNFilterOptions } from "../Helper/SortByFilterContent/filterContent";
 import { GRNSortOptions } from "../Helper/SortByFilterContent/sortbyContent";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 
 const GRN = () => {
-  const itemPayloads = localStorage.getItem(("grnPayload"));
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -244,7 +245,7 @@ const GRN = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>

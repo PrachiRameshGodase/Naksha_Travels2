@@ -257,7 +257,7 @@ const CreditNotesDetails = () => {
                   <p>
                     {(() => {
                       try {
-                        const address = JSON.parse(credit?.address || "{}");
+                        const address = JSON?.parse(credit?.address || "{}");
                         const shipping = address?.shipping;
                         if (!shipping) return "Address not available";
 

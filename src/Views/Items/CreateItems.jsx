@@ -458,7 +458,7 @@ const CreateAndUpdateItem = () => {
       (itemId && isDuplicate && item_details)
     ) {
       if (item_details?.custom_fields) {
-        const customFieldsArray = JSON.parse(item_details.custom_fields);
+        const customFieldsArray = JSON?.parse(item_details.custom_fields);
         setCustomFieldValues(customFieldsArray);
       }
     }
@@ -1130,7 +1130,7 @@ const CreateAndUpdateItem = () => {
                                   onChange={e => handleCustomFieldChange(e, customField.field_name)}
                                 >
                                   <option value="">Select {customField.label}</option>
-                                  {JSON.parse(customField.dropdown_value).map(option => (
+                                  {JSON?.parse(customField.dropdown_value).map(option => (
                                     <option key={option} value={option}>{option}</option>
                                   ))}
                                 </select>
@@ -1209,7 +1209,7 @@ const CreateAndUpdateItem = () => {
                                   <option value="">
                                     Select {customField.label}
                                   </option>
-                                  {JSON.parse(customField.dropdown_value).map(
+                                  {JSON?.parse(customField.dropdown_value).map(
                                     (option) => (
                                       <option key={option} value={option}>
                                         {option}

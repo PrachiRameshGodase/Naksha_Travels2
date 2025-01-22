@@ -23,11 +23,12 @@ import { invoiceDetailes, pendingInvoices } from '../../../Redux/Actions/invoice
 import NumericInput from '../../Helper/NumericInput';
 import SubmitButton, { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { currencySymbol, handleDropdownError, preventZeroVal, ShowMasterData } from '../../Helper/HelperFunctions';
+import { handleDropdownError, preventZeroVal, ShowMasterData } from '../../Helper/HelperFunctions';
 import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const CreatePaymentRec = () => {
     const dispatch = useDispatch();
@@ -36,6 +37,9 @@ const CreatePaymentRec = () => {
     const paymentDetails = useSelector((state) => state?.paymentRecDetail);
     const allAccounts = useSelector((state) => state?.accountList);
     const accountList = allAccounts?.data?.accounts || [];
+
+    // get currency symbol from active orgnization form localStorage
+    const currencySymbol = getCurrencySymbol();
 
     const createPayment = useSelector((state) => state?.createPayment);
     const paymentRecStatus = useSelector((state) => state?.paymentRecStatus);

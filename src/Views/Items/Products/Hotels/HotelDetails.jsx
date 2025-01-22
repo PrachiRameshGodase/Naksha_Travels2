@@ -7,7 +7,7 @@ import AttachmentPreview from "../../../Helper/AttachmentPreview";
 
 const HotelDetails = ({ data }) => {
   const [activeSection, setActiveSection] = useState("basicDetails");
-  const images = data?.upload_documents? JSON.parse(data?.upload_documents || ''):""
+  const images = data?.upload_documents ? JSON?.parse(data?.upload_documents || '') : ""
 
   return (
     <>
@@ -15,18 +15,16 @@ const HotelDetails = ({ data }) => {
         <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
           <div className="buttonscontainxs2">
             <div
-              className={`divac12cs32 ${
-                activeSection === "basicDetails" ? "activediv12cs" : ""
-              }`}
+              className={`divac12cs32 ${activeSection === "basicDetails" ? "activediv12cs" : ""
+                }`}
               onClick={() => setActiveSection("basicDetails")}
             >
               {/* <img src={overviewIco} alt="" /> */}
               Basic Details
             </div>
             <div
-              className={`divac12cs32 ${
-                activeSection === "Hotel-Services" ? "activediv12cs" : ""
-              }`}
+              className={`divac12cs32 ${activeSection === "Hotel-Services" ? "activediv12cs" : ""
+                }`}
               onClick={() => setActiveSection("Hotel-Services")}
             >
               {/* <img src={stocktransactionIco} alt="" /> */}
@@ -89,12 +87,12 @@ const HotelDetails = ({ data }) => {
                           {data?.status == "0"
                             ? "Active"
                             : data?.status == "1"
-                            ? "Inactive"
-                            : ""}
+                              ? "Inactive"
+                              : ""}
                         </p>
                       </li>
 
-                      <li><span>Attachments</span><h1>:</h1><p><AttachmentPreview4 document={images}/></p></li>
+                      <li><span>Attachments</span><h1>:</h1><p><AttachmentPreview4 document={images} /></p></li>
                     </ul>
                   </div>
                 </div>

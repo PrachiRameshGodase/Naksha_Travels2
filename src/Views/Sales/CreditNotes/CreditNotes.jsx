@@ -17,7 +17,7 @@ import FilterBy from "../../Common/FilterBy/FilterBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { creditNotesOptions } from "../../Helper/SortByFilterContent/filterContent";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const CreditNotes = () => {

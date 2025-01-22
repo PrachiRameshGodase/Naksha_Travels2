@@ -29,7 +29,7 @@ const CreateUpdateOrg = () => {
         fetchCountries();
     }, []);
   
-    const myData = JSON.parse(localStorage.getItem('UserData') || '{}');
+    const myData = JSON?.parse(localStorage.getItem('UserData') || '{}');
     // console.log(myData.id)
     const fetchCountries = async () => {
         try {

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import "./PdfTemplate.scss";
 import {
   activeOrg_details,
-  parseJSONofString,
   showAmountWithCurrencySymbol,
   showRateWithPercent,
 } from "../../HelperFunctions";
@@ -22,7 +21,7 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
     }, 0);
   };
 
-  const totalExpenseCharges = parseJSONofString(data?.charges);
+  const totalExpenseCharges = JSON?.parse(data?.charges);
   console.log("active_orgnization", active_orgnization);
   // const showModuleText = section==="Quotation"?
   console.log("cusVenData", cusVenData);

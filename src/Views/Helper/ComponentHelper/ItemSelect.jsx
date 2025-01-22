@@ -20,8 +20,6 @@ import useFetchApiData from './useFetchApiData';
 
 import {
   activeOrg_details,
-  currencySymbol,
-  parseJSONofString,
   sendData,
   ShowMasterData,
 } from "../HelperFunctions";
@@ -36,7 +34,8 @@ import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
 import ShowMastersValue from "../ShowMastersValue";
-import { getCurrencySymbol, getLocalStorage } from "./ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "./ManageLocalStorage/localStorageUtils";
+import { useLocation } from "react-router-dom";
 
 const ItemSelect = ({
   formData,
@@ -54,8 +53,14 @@ const ItemSelect = ({
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
+  const location = useLocation()
+
+  const params = new URLSearchParams(location.search);
+
+  // const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+
   const gstType = activeOrg_details?.tax_type;
-  const currencySymbole = getCurrencySymbol();
+  const currencySymbol = getCurrencySymbol();
   // console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
@@ -428,7 +433,7 @@ const ItemSelect = ({
   const itemPayloads = localStorage.getItem("itemPayload");
 
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
+    const parshPayload = JSON?.parse(itemPayloads);
 
     if (parshPayload?.search) {
       dispatch(
@@ -614,6 +619,8 @@ const ItemSelect = ({
 
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
+
+
                     {/* it is desplay when service select */}
                     {item?.items_data?.service_name === "Hotel" ? (
                       <>
@@ -840,7 +847,7 @@ const ItemSelect = ({
                         onClick={() => handleDropdownToggle(index)}
                       >
                         {item?.discount_type == 1
-                          ? currencySymbole
+                          ? currencySymbol
                           : item?.discount_type == 2
                             ? "%"
                             : ""}
@@ -1179,6 +1186,8 @@ export const ItemSelectGRM = ({
   const accountList = useSelector((state) => state?.accountList);
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
+
+  const currencySymbol = getCurrencySymbol();
 
   const unitList = ShowMasterData("2");
 

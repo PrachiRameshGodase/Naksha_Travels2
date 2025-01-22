@@ -57,7 +57,7 @@ const CreateTourPackage = () => {
     hotel_type: false,
     meal_id: false,
     price_per_person: false,
-    is_transport:false
+    is_transport: false
   });
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -111,11 +111,11 @@ const CreateTourPackage = () => {
         discount: tourPackageData?.discount,
         description: tourPackageData?.description,
         upload_documents: tourPackageData?.upload_documents
-          ? JSON.parse(tourPackageData.upload_documents)
+          ? JSON?.parse(tourPackageData.upload_documents)
           : [],
       });
 
-      if(tourPackageData?.upload_documents){
+      if (tourPackageData?.upload_documents) {
         setImgeLoader("success")
       }
     }

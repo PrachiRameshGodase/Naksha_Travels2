@@ -14,7 +14,7 @@ export const setLocalStorage = (key, value) => {
 export const getLocalStorage = (key) => {
     try {
         const value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
+        return value ? JSON?.parse(value) : null;
     } catch (error) {
         console.error("Error reading from localStorage:", error);
         return null;

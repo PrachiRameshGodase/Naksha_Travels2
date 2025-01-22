@@ -22,7 +22,7 @@ const HelpList = () => {
   const [dataChanging, setDataChanging] = useState(false);
   const [searchTrigger, setSearchTrigger] = useState(0);
   const getLocalStorageData = localStorage?.getItem("UserData");
-  const userData = JSON.parse(getLocalStorageData);
+  const userData = JSON?.parse(getLocalStorageData);
   // console.log("userData", userData?.is_admin);
 
   const fetchData = useCallback(async () => {
@@ -229,23 +229,23 @@ const HelpList = () => {
                             </p>
                           </div>
                           <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 help_pointer">
-                            {JSON.parse(quotation?.upload_documents)?.length >=
+                            {JSON?.parse(quotation?.upload_documents)?.length >=
                               1 ? (
                               <span
                                 onClick={() =>
                                   showAllImages(
-                                    JSON.parse(quotation?.upload_documents)
+                                    JSON?.parse(quotation?.upload_documents)
                                   )
                                 }
                               >
-                                {JSON.parse(quotation?.upload_documents)?.length}{" "}
+                                {JSON?.parse(quotation?.upload_documents)?.length}{" "}
                                 Images <MdArrowOutward />
                               </span>
                             ) : (
-                              `${JSON.parse(quotation?.upload_documents)?.length <
+                              `${JSON?.parse(quotation?.upload_documents)?.length <
                                 1
                                 ? "No"
-                                : JSON.parse(quotation?.upload_documents)
+                                : JSON?.parse(quotation?.upload_documents)
                                   ?.length
                               } Image`
                             )}

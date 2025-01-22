@@ -18,11 +18,12 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { billFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { billSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import { useDebounceSearch, parseJSONofString } from "../../Helper/HelperFunctions";
+import { useDebounceSearch, } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const Quotations = () => {
-  const itemPayloads = localStorage.getItem(("billPayload"));
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -244,21 +245,21 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>
 
                   {/* <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount Paid
                     </p>
                   </div> */}
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Balance Due
                     </p>
                   </div>

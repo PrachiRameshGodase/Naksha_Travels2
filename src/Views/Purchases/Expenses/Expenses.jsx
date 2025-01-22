@@ -13,7 +13,7 @@ import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { expenseLists } from "../../../Redux/Actions/expenseActions";
 import newmenuicoslz from "../../../assets/outlineIcons/othericons/newmenuicoslz.svg";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy from "../../Common/SortBy/SortBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";

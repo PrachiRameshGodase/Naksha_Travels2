@@ -44,7 +44,7 @@ const Roles = () => {
               <strong>Description:</strong> {role.description || 'NA'}<br />
               <strong>Permissions:</strong> {role.permissions ? (
                 <ul>
-                  {JSON.parse(role.permissions).map(permission => (
+                  {JSON?.parse(role.permissions).map(permission => (
                     <li key={permission.entity}>
                       <strong>Entity:</strong> {permission.entity}<br />
                       <strong>Full Access:</strong> {permission.full_access !== undefined ? permission.full_access.toString() : 'NA'}<br />

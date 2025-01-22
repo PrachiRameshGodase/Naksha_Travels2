@@ -5,11 +5,11 @@ import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
-import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
+import { sendData } from '../../Views/Helper/HelperFunctions';
 import { vendorsLists } from '../../Redux/Actions/listApisActions';
 
 const CustomDropdown10 = forwardRef((props, ref) => {
-  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877,disabled } = props;
+  const { options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877, disabled } = props;
 
   const {
     isOpen,
@@ -41,8 +41,8 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   const fullName = options?.find(account => account?.id == value);
 
   useEffect(() => {
-    const parsedPayload = parseJSONofString(itemPayloads);
-    const parsedPayload1 = parseJSONofString(itemPayloads1);
+    const parsedPayload = JSON?.parse(itemPayloads);
+    const parsedPayload1 = JSON?.parse(itemPayloads1);
     // Check if API call is necessary
     if (
       isOpen && // Ensure modal or component is open
@@ -65,10 +65,10 @@ const CustomDropdown10 = forwardRef((props, ref) => {
 
 
   return (
-    <div  data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
-    data-tooltip-id="my-tooltip"
-    data-tooltip-place="bottom" ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
-      <div onClick={!disabled ?() => setIsOpen(!isOpen):""} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
+    <div data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
+      data-tooltip-id="my-tooltip"
+      data-tooltip-place="bottom" ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
+      <div onClick={!disabled ? () => setIsOpen(!isOpen) : ""} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
 
         {cusData ? cusData?.display_name : value ? fullName?.display_name : defaultOption}
 

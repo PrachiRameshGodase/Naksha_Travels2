@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
-import { currencySymbol, ShowMasterData } from "../Helper/HelperFunctions";
+import { ShowMasterData } from "../Helper/HelperFunctions";
 // import "./PassengerCard.scss";
 import { RxCross2 } from "react-icons/rx";
 import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
@@ -18,7 +18,8 @@ import toast from "react-hot-toast";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import ExpenseCharges from "../Helper/ComponentHelper/ExpenseCharges";
 import ShowMastersValue from "../Helper/ShowMastersValue";
-import {formatDate3 } from "../Helper/DateFormat";
+import { formatDate3 } from "../Helper/DateFormat";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const dispatch = useDispatch();
@@ -27,6 +28,10 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const popupRef = useRef(null);
     const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
     const servicesList = ShowMasterData("48");
+
+    // get currency symbol from active orgnization form localStorage
+    const currencySymbol = getCurrencySymbol();
+
 
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 

@@ -162,7 +162,7 @@ const EditQuotation = () => {
 
     //convert quotation function
     const handleSubmitData = async () => {
-        const getLocaData = JSON.parse(localStorage.getItem("ConFormData"));
+        const getLocaData = JSON?.parse(localStorage.getItem("ConFormData"));
         setLoading(true);
         try {
             const response = await axiosInstance.post(`/sales/create/update`, getLocaData);

@@ -135,7 +135,7 @@ const CreateHotel = () => {
         status: hotelData?.status,
         ratings: hotelData?.ratings,
         upload_documents: hotelData?.upload_documents
-          ? JSON.parse(hotelData.upload_documents)
+          ? JSON?.parse(hotelData.upload_documents)
           : "",
       });
 

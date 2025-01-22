@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { parsePurchaseDetails } from "./parsePurchaseDetails";
 import { getBaseFormData } from "../getBaseFormData";
-import { parseJSONofString, stringifyJSON, validateItems } from "../../HelperFunctions";
+import { stringifyJSON, validateItems } from "../../HelperFunctions";
 
 //Common component for state management
 export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], detailData, itemId, isEdit, convert) => {
@@ -21,7 +21,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
     // use only When the form is edit/dublicate/convert
     useEffect(() => {
         if (itemId && isEdit && detailData || (itemId && (convert === "toInvoice" || convert === "quotationToInvoice" || convert === "invoiceToCredit" || convert === "quotationToSale" || convert === "saleToInvoice" || convert === "purchase_to_bill" || convert === "bill_to_payment" || convert === "purchase_to_grn" || convert === "grn_to_bill" || convert === "bill_to_debit"))) {
-            // console.log("detailData", detailData)
+            console.log("detailData", detailData)
             const {
                 calculateTotalTaxAmount,
                 itemsFromApi,
@@ -68,7 +68,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                 ...(detailData?.invoice_id && {
                     tracking_details: stringifyJSON({
                         ...(convert === "saleToInvoice" && { module: convert, id: itemId }),
-                        ...(detailData?.tracking_details && { module_data: parseJSONofString(detailData?.tracking_details) })
+                        ...(detailData?.tracking_details && { module_data: JSON?.parse(detailData?.tracking_details) })
                     })
                 }),
 
@@ -100,7 +100,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
             // console.log("detailData", detailData)
             if (detailData?.address) {
-                const parsedAddress = JSON.parse(detailData?.address);
+                const parsedAddress = JSON?.parse(detailData?.address);
                 setAddSelect({
                     billing: parsedAddress?.billing,
                     shipping: parsedAddress?.shipping,
@@ -131,6 +131,8 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
         // console.log("formDataformDataformDataformData", formData)
 
     }, [detailData, itemId, isEdit, convert]);
+
+    console.log("formaaaaaaaaaaaaaaaa", formData)
 
     return {
         formData,

@@ -38,7 +38,7 @@ const CustomDropdown02 = forwardRef((props, ref) => {
 
   //prevent for again and again loding api when we are open dropdown
   // useEffect(() => {
-  //   // const parshPayload = parseJSONofString(itemPayloads);
+  //   // const parshPayload = JSON?.parse(itemPayloads);
   //   // if (parshPayload?.search) {
   //   const sendData={
   //       hotel_id:hotelID

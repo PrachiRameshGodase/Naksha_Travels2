@@ -19,14 +19,15 @@ import { billDetails, pendingBillLists } from '../../../Redux/Actions/billAction
 import NumericInput from '../../Helper/NumericInput';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
-import { activeOrg_details, currencySymbol, handleDropdownError, preventZeroVal, sendData, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
+import { handleDropdownError, preventZeroVal, sendData, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
-import { isStateIdEqualAction, productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
+import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const CreatePaymentMade = () => {
     const dispatch = useDispatch();
@@ -40,6 +41,9 @@ const CreatePaymentMade = () => {
     const vendorList = useSelector((state) => state?.vendorList);
     const billDetail = useSelector(state => state?.billDetail);
     const billDetail1 = billDetail?.data?.bill;
+
+    // get currency symbol from active orgnization form localStorage
+    const currencySymbol = getCurrencySymbol();
 
     const [fetchDetails, setFetchDetails] = useState("");
     const [showAllSequenceId, setShowAllSequenceId] = useState([]);

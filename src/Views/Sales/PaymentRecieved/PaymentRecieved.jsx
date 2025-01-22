@@ -23,11 +23,13 @@ import {
 } from "../../Helper/SortByFilterContent/filterContent";
 import { formatDate3 } from "../../Helper/DateFormat";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+
 const PaymentRecieved = () => {
-  const itemPayloads = localStorage.getItem(("paymentPayload"));
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const qutList = useSelector((state) => state?.paymentRecList);
 
@@ -258,7 +260,7 @@ const PaymentRecieved = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>

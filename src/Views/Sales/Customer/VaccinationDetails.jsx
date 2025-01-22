@@ -56,7 +56,7 @@ const VaccinationDetails = ({
           id: item?.id,
           vaccination_name: item.vaccination_name || "",
           upload_documents: item.upload_documents
-            ? JSON.parse(item.upload_documents)
+            ? JSON?.parse(item.upload_documents)
             : [],
         })
       );

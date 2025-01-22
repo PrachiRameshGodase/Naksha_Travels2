@@ -78,7 +78,7 @@ const CreateQuotation = () => {
     itemId,
     isEdit
   );
-
+  console.log("formdaa", formData?.payment_terms)
   const calculateExpiryDate = (transactionDate, terms) => {
     const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
     return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
@@ -200,7 +200,7 @@ const CreateQuotation = () => {
       phone: cusData?.mobile_no,
       address: cusData?.address?.length,
       address: addSelect,
-      payment_terms: cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
+      payment_terms: cusData?.payment_terms,
       expiry_date: calculateExpiryDate(new Date(prev.transaction_date), cusData?.payment_terms)
     }));
 
@@ -335,7 +335,7 @@ const CreateQuotation = () => {
                               <CustomDropdown04
                                 autoComplete='off'
                                 options={paymentTerms}
-                                value={formData?.payment_terms}
+                                value={preventZeroVal(formData?.payment_terms)}
                                 onChange={handleChange}
                                 name="payment_terms"
                                 defaultOption='Enter Quotation Terms'
@@ -385,7 +385,7 @@ const CreateQuotation = () => {
                               <input
                                 autoComplete='off'
                                 type="text"
-                                value={formData.delivery_method}
+                                value={preventZeroVal(formData.delivery_method)}
                                 name='delivery_method'
                                 onChange={handleChange}
                                 placeholder='Enter Delivery Method'
@@ -396,14 +396,9 @@ const CreateQuotation = () => {
                           </div>
                         </div>
                       </div>
+
                       {/* </div> */}
                       <div className="">
-                        {/* <AddServices
-                          formData={formData}
-                          setFormData={setFormData}
-                          handleChange={handleChange}
-                          note="customer"
-                        /> */}
                         <ItemSelect
                           formData={formData}
                           setFormData={setFormData}

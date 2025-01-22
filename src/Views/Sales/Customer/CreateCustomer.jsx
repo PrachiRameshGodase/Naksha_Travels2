@@ -113,7 +113,7 @@ const CreateCustomer = () => {
         ...prevUserData,
         remarks: user?.remarks,
         upload_documents: user?.upload_documents
-          ? JSON.parse(user?.upload_documents)
+          ? JSON?.parse(user?.upload_documents)
           : [],
       }));
 
@@ -163,7 +163,7 @@ const CreateCustomer = () => {
         ...prevUserData,
         remarks: user?.remarks,
         upload_documents: user?.upload_documents
-          ? JSON.parse(user.upload_documents)
+          ? JSON?.parse(user.upload_documents)
           : [],
       }));
 

@@ -125,7 +125,7 @@ const CreateHotelService = () => {
 
   useEffect(() => {
     if (itemId && isEdit && hotelRoomData) {
-      const depArray = JSON.parse(hotelRoomData?.amenities || "");
+      const depArray = JSON?.parse(hotelRoomData?.amenities || "");
       setFormData({
         ...formData,
         id: hotelRoomData?.id,
@@ -144,10 +144,10 @@ const CreateHotelService = () => {
         description: hotelRoomData?.description,
         currency: hotelRoomData?.currency,
         upload_documents: hotelRoomData?.upload_documents
-          ? JSON.parse(hotelRoomData.upload_documents)
+          ? JSON?.parse(hotelRoomData.upload_documents)
           : "",
       });
-      if(hotelRoomData?.upload_documents){
+      if (hotelRoomData?.upload_documents) {
         setImgeLoader("success")
       }
     }
@@ -175,7 +175,7 @@ const CreateHotelService = () => {
       try {
         const sendData = {
           ...formData,
-          amenities:JSON.stringify(formData.amenities),
+          amenities: JSON.stringify(formData.amenities),
           upload_documents: JSON.stringify(formData?.upload_documents),
         };
         dispatch(CreateHotelRoomAction(sendData, Navigate, itemId));

@@ -13,7 +13,6 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
-  parseJSONofString,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
@@ -105,10 +104,10 @@ const Hotels = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
         }),
       };
 
@@ -119,7 +118,7 @@ const Hotels = () => {
   }, [searchTrigger]);
 
   useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
+    // const parshPayload = JSON?.parse(itemPayloads);
     // if (
     //   searchTrigger ||
     //   parshPayload?.search ||
@@ -289,11 +288,10 @@ const Hotels = () => {
                       <>
                         {hotelLists.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -330,9 +328,9 @@ const Hotels = () => {
                             >
                               {item?.address_line_1?.split(" ").length > 20
                                 ? item.address_line_1
-                                    .split(" ")
-                                    .slice(0, 20)
-                                    .join(" ") + "..."
+                                  .split(" ")
+                                  .slice(0, 20)
+                                  .join(" ") + "..."
                                 : item?.address_line_1 || ""}
                             </div>
                             <div
@@ -364,15 +362,15 @@ const Hotels = () => {
                                   item?.status == "1"
                                     ? "open"
                                     : item?.status == "0"
-                                    ? "declined"
-                                    : ""
+                                      ? "declined"
+                                      : ""
                                 }
                               >
                                 {item?.status == "1"
                                   ? "Active"
                                   : item?.status == "0"
-                                  ? "Inactive"
-                                  : ""}
+                                    ? "Inactive"
+                                    : ""}
                               </p>
                             </div>
                           </div>

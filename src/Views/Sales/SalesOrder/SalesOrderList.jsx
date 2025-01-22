@@ -18,17 +18,18 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { saleOrderFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { saleOrderSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const SalesOrderList = () => {
 
-  const itemPayloads = localStorage.getItem(("salePayload"));
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const qutList = useSelector((state) => state?.saleList);
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
+  const qutList = useSelector((state) => state?.saleList);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -251,7 +252,7 @@ const SalesOrderList = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>
