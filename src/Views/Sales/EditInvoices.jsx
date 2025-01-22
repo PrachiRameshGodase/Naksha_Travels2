@@ -19,13 +19,13 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import CustomerProfilePopup from './CustomerProfilePopup';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../Configs/axiosInstance';
-
-import { getCurrencyFormData } from '../Helper/HelperFunctions';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const EditInvoices = () => {
     const [customers, setCustomers] = useState([]);
     const [items, setItems] = useState([]);
     const [fetchInvoices, setFetchInvoices] = useState([]);
+    const currency = getCurrencyValue();
 
     const { id } = useParams();
     const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ const EditInvoices = () => {
         phone: null,
         email: null,
         // currency: localStorage.getItem('Currency'),
-        currency: getCurrencyFormData,
+        currency: currency,
 
         place_of_supply: '',
         expiry_date: "",

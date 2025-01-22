@@ -31,7 +31,6 @@ import Loader02 from '../../Components/Loaders/Loader02';
 import useOutsideClick from '../Helper/PopupData';
 import { handleKeyPress } from '../Helper/KeyPressInstance';
 import { formatDate, formatDate3, todayDate } from '../Helper/DateFormat';
-import { getCurrencyFormData } from '../Helper/HelperFunctions';
 
 import NumericInput from '../Helper/NumericInput';
 import CurrencySelect from '../Helper/ComponentHelper/CurrencySelect';
@@ -39,6 +38,7 @@ import ItemSelect from '../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../Helper/ComponentHelper/ImageUpload';
 import { isPartiallyInViewport } from '../Helper/is_scroll_focus';
 import "./CreateMasters.scss"
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 const CreateMasters = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -64,6 +64,8 @@ const CreateMasters = () => {
     const [clickTrigger, setClickTrigger] = useState(false);
     const buttonRef = useRef(null);
 
+    const currency = getCurrencyValue();
+
     const [formData, setFormData] = useState({
         purchase_type: "purchase_order",
         transaction_date: todayDate(),
@@ -72,7 +74,7 @@ const CreateMasters = () => {
         purchase_order_id: "PO-254",
         order_no: null,
         vendor_id: null,
-        currency: getCurrencyFormData,
+        currency: currency,
         vendor_name: "",
         phone: "",
         sale_person: "",

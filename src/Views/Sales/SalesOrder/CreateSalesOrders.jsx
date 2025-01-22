@@ -15,7 +15,7 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { isPartiallyInViewport } from '../../Helper/is_scroll_focus';
-import { activeCustomerData, activeOrg_details, getCurrencyFormData, preventZeroVal, ShowMasterData, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
+import { activeCustomerData, activeOrg_details, preventZeroVal, ShowMasterData, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import { SelectAddress } from '../../Common/SelectAddress';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';

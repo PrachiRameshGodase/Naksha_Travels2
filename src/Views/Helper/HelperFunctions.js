@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
-import { getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
 import useFetchApiData from "./ComponentHelper/useFetchApiData";
 
 // const getLocalStorageData = localStorage?.getItem("UserData");
@@ -27,9 +27,9 @@ export const sendData2 = {
 }
 export const activeOrg_details = UserData?.active_organisation;
 export const currencySymbol = activeOrg_details?.symbol ? activeOrg_details?.symbol : "$";
-export const getCurrencyFormData = activeOrg_details?.currency ? activeOrg_details?.currency : "INR";
 export const orgnizationEmail = activeOrg_details?.email ? activeOrg_details?.email : "";
 
+console.log("currencySymbol", currencySymbol)
 export const showAmountWithCurrencySymbol = (val) => {
     return val == "0" ? `${currencySymbol} 0.00` : val ? `${currencySymbol} ${val} ` : "";
 }

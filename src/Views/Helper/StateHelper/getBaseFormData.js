@@ -1,8 +1,9 @@
+import { getCurrencyValue } from "../ComponentHelper/ManageLocalStorage/localStorageUtils";
 import { formatDate } from "../DateFormat";
-import { getCurrencyFormData } from "../HelperFunctions";
 
 export const getBaseFormData = (overrides = {}, removeKeys = []) => {
     // Base form data structure
+    const currency = getCurrencyValue();
     let baseData = {
         id: "",
         warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
@@ -22,7 +23,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
         email: "",
         sale_person: '',
         address: "",
-        currency: getCurrencyFormData,
+        currency: currency,
         payment_terms: "",
         delivery_method: '',
         place_of_supply: "",

@@ -10,8 +10,8 @@ import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import { Toaster } from 'react-hot-toast';
 import { purchasesDetails } from '../../Redux/Actions/purchasesActions';
 import { todayDate } from '../Helper/DateFormat';
-import { getCurrencyFormData } from '../Helper/HelperFunctions';
 import "./CreateUserMasters.scss";
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const CreateUserMasters = () => {
     const dispatch = useDispatch();
@@ -31,6 +31,8 @@ const CreateUserMasters = () => {
     const [isItemSelect, setIsItemSelect] = useState(false);
     const [clickTrigger, setClickTrigger] = useState(false);
 
+    const currency = getCurrencyValue();
+
 
     const [formData, setFormData] = useState({
         purchase_type: "purchase_order",
@@ -40,7 +42,7 @@ const CreateUserMasters = () => {
         purchase_order_id: "PO-254",
         order_no: null,
         vendor_id: null,
-        currency: getCurrencyFormData,
+        currency: currency,
         vendor_name: "",
         phone: "",
         sale_person: "",

@@ -22,11 +22,12 @@ import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { todayDate } from '../../Helper/DateFormat';
-import { getCurrencyFormData, handleDropdownError, ShowMasterData, validateItems } from '../../Helper/HelperFunctions';
+import { handleDropdownError, ShowMasterData, validateItems } from '../../Helper/HelperFunctions';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { formatDate } from '../../Helper/DateFormat';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 const CreateDebitNotes = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -72,13 +73,14 @@ const CreateDebitNotes = () => {
 
     }, [itemId, isEdit, convert, billDetail, debitNote, isDuplicate])
 
+    const currency = getCurrencyValue();
 
     const [formData, setFormData] = useState({
         tran_type: "debit_note",
         vendor_id: null,
         warehouse_id: 40,
         bill_id: null,
-        currency: getCurrencyFormData,
+        currency: currency,
         reference_no: "",
         debit_note_id: null,
         transaction_date: formatDate(new Date()), // debit_note date

@@ -18,8 +18,8 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import CustomerProfilePopup from '.././CustomerProfilePopup';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../../Configs/axiosInstance';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
-import { getCurrencyFormData } from '../../Helper/HelperFunctions';
 const UpdateCreditNotes = () => {
     const [customers, setCustomers] = useState([]);
     const [invoices, setInvoices] = useState([]);
@@ -27,6 +27,9 @@ const UpdateCreditNotes = () => {
     const [fetchCredtiNoteDetail, setFetchCredtiNoteDetails] = useState([]);
     // console.log("invoice dataaaaaaaaa", invoices);
     const { slug1, id } = useParams();
+
+    const currency = getCurrencyValue();
+
 
     const [formData, setFormData] = useState({
         id: id,
@@ -44,7 +47,7 @@ const UpdateCreditNotes = () => {
         phone: null,//
         email: null,//
         // currency: localStorage.getItem('Currency'),
-        currency: getCurrencyFormData,
+        currency: currency,
 
         place_of_supply: '',//
         sale_person: '',//

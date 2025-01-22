@@ -18,17 +18,15 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import CustomerProfilePopup from './CustomerProfilePopup';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../Configs/axiosInstance';
-import { getCurrencyFormData } from '../Helper/HelperFunctions';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const EditSalesOrder = () => {
     const [customers, setCustomers] = useState([]);
     const [items, setItems] = useState([]);
     const [fetchSalesOrderDetail, setFetchSalesOrderDetails] = useState([]);
-
+    const currency = getCurrencyValue();
 
     const { slug1, id } = useParams();
-
-
     // console.log("items", convert)
     const [formData, setFormData] = useState({
         id: id,
@@ -43,7 +41,7 @@ const EditSalesOrder = () => {
         customer_name: null,
         phone: null,
         email: null,
-        currency: getCurrencyFormData,
+        currency: currency,
         place_of_supply: '',
         sale_person: '',
         delivery_method: "",

@@ -168,7 +168,7 @@ export const CustomDropdown012 = ({
         className={"dropdown-selected" + (value ? " filledcolorIn" : "")}
       >
 
-        {value ? (options?.find((account) => account?.code == value)?.country + " (" + (options?.find((account) => account?.code == value)?.code) + ")") : defaultOption}
+        {options ? `${options?.find((account) => account?.code == value)?.country || ""} (${(options?.find((account) => account?.code == value)?.code || "")})` : defaultOption}
 
         {/* {value ? options?.find( (account) => `${account?.country} (${account?.code})` === value
           )

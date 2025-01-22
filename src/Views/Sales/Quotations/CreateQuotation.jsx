@@ -32,8 +32,9 @@ import {
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
-const CreateQuotation = () => {
 
+
+const CreateQuotation = () => {
   const dispatch = useDispatch();
   const cusList = useSelector((state) => state?.customerList);
   const quoteDetail = useSelector((state) => state?.quoteDetail);

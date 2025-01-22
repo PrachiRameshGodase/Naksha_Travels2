@@ -21,6 +21,18 @@ export const getLocalStorage = (key) => {
     }
 };
 
+export const getCurrencySymbol = () => {
+    const UserData = getLocalStorage("UserData");
+    const activeOrg_details = UserData?.active_organisation;
+    return activeOrg_details?.symbol || "$";
+};
+
+export const getCurrencyValue = () => {
+    const UserData = getLocalStorage("UserData");
+    const activeOrg_details = UserData?.active_organisation;
+    return activeOrg_details?.currency || "USD";
+};
+
 // Remove item from localStorage
 export const removeLocalStorage = (key) => {
     try {
