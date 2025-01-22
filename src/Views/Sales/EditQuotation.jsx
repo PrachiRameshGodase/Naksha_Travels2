@@ -19,7 +19,7 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import CustomerProfilePopup from './CustomerProfilePopup';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../Configs/axiosInstance';
-import { getCurrencyFormData } from '../Helper/HelperFunctions';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 
 const EditQuotation = () => {
@@ -27,7 +27,7 @@ const EditQuotation = () => {
     const [items, setItems] = useState([]);
     const [fetchQuotations, setFetchQuotations] = useState([]);
 
-    // console.log("items", items)
+    const currency = getCurrencyValue();
     const { id, convert } = useParams();
 
     const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ const EditQuotation = () => {
         customer_name: null,
         phone: null,
         email: null,
-        currency: getCurrencyFormData,
+        currency: currency,
         place_of_supply: '',
         expiry_date: "",
         sale_person: '',

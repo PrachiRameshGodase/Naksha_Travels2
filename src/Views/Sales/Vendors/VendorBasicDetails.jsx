@@ -15,10 +15,10 @@ import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown0
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown19 from '../../../Components/CustomDropdown/CustomDropdown19';
 import NumericInput from '../../Helper/NumericInput';
-import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
 import ImageUpload, { MultiImageUpload } from '../../Helper/ComponentHelper/ImageUpload';
-import { getCurrencyFormData, ShowMasterData } from '../../Helper/HelperFunctions';
+import { ShowMasterData } from '../../Helper/HelperFunctions';
 import { CustomDropdown006 } from '../../../Components/CustomDropdown/CustomDropdown06';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const registerationtypes = [
     {
@@ -57,7 +57,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     const paymentTerms = ShowMasterData("8");
     const showdeparment = ShowMasterData("10");
 
-
+    const currency = getCurrencyValue();
     const [basicDetails, setBasicDetails] = useState({
         salutation: "",
         first_name: "",
@@ -75,7 +75,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
         company_name: "",
         place_of_supply: "",
         tax_preference: 1,
-        currency: getCurrencyFormData,
+        currency: currency,
         registration_type: "",
         // upload_documents: [],
         opening_balance: "",

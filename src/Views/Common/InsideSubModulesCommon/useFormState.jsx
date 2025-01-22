@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { getCurrencyFormData } from '../../Helper/HelperFunctions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 export const useFormState = (quoteDetails, itemId, isEdit, convert, module) => {
+    const currency = getCurrencyValue();
 
     const [formData, setFormData] = useState({
         sale_type: module,
@@ -16,7 +17,7 @@ export const useFormState = (quoteDetails, itemId, isEdit, convert, module) => {
         email: null,
         address: "",
         reference_no: "",
-        currency: getCurrencyFormData,
+        currency: currency,
         [module === "quotation" ? "expiry_date" : module === "sale_order" ? "shipment_date" : ""]: module === "quotation" ? new Date() : module === "sale_order" ? "" : "",
         sale_person: '',
         payment_terms: "",

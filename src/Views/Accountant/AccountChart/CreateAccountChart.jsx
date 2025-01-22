@@ -13,13 +13,14 @@ import { toast, Toaster } from 'react-hot-toast';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown16 from '../../../Components/CustomDropdown/CustomDropdown16';
 import CustomDropdown20 from '../../../Components/CustomDropdown/CustomDropdown20';
-import { getCurrencyFormData, handleDropdownError } from '../../Helper/HelperFunctions';
+import { handleDropdownError } from '../../Helper/HelperFunctions';
 import { accountTableIcons } from '../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons';
 import NumericInput from '../../Helper/NumericInput';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { Nav } from 'react-bootstrap';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 
 const CreateAccountChart = () => {
@@ -38,6 +39,7 @@ const CreateAccountChart = () => {
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
     const [imgLoader, setImgeLoader] = useState(false);
 
+    const currency = getCurrencyValue();
     const [formData, setFormData] = useState({
         id: 0,
         account_type: "Bank",
@@ -54,7 +56,7 @@ const CreateAccountChart = () => {
         parent_name: null,
         sub_account: 0,
         ifsc: "",
-        currency: getCurrencyFormData,
+        currency: currency,
     });
 
     const data = JSON.parse(localStorage.getItem("editAccount"));

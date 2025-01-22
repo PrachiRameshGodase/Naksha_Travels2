@@ -1,8 +1,6 @@
 // pdfUtils.js
 import html2pdf from "html2pdf.js";
 import { createRoot } from "react-dom/client";
-import { imageDB } from "../../Configs/Firebase/firebaseConfig";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 /**
  * Generates a PDF from the specified React component.
@@ -55,8 +53,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 //         }
 //     }, delay);
 // };
-
-
 
 
 // without firebase without firebase 

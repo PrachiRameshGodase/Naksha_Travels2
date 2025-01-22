@@ -14,7 +14,7 @@ import { billDetails } from "../../../Redux/Actions/billActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import { formatDate } from "../../Helper/DateFormat";
 import { activeOrg_details, preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
-import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
+import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { GRNdetailsActions } from "../../../Redux/Actions/grnActions";
 import GenerateAutoId from "../../Sales/Common/GenerateAutoId";

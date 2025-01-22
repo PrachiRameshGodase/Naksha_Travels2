@@ -23,7 +23,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
 import { JournalDetails } from '../../../Redux/Actions/JournalAndAccount';
 import Loader02 from '../../../Components/Loaders/Loader02';
-import { currencySymbol, getCurrencyFormData } from '../../Helper/HelperFunctions';
+import { currencySymbol } from '../../Helper/HelperFunctions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const CreateNewJournal = () => {
     const dispatch = useDispatch();
@@ -37,6 +38,8 @@ const CreateNewJournal = () => {
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, duplicate: isDuplicate } = Object.fromEntries(params.entries());
 
+    const currency = getCurrencyValue();
+
     const [formData, setFormData] = useState({
         journal_no: "",
         fy: localStorage.getItem('FinancialYear') || 2024,
@@ -44,7 +47,7 @@ const CreateNewJournal = () => {
         reference: null,
         notes: null,
         journal_type: 0,
-        currency: getCurrencyFormData,
+        currency: currency,
         sub_total_credit: null,
         sub_total_debit: null,
         total_debit: null,

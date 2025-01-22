@@ -11,7 +11,7 @@ const ShowMastersValue = ({ type, id }) => {
         return lable ? lable.label : '';
     };
     return (
-        <span>{findUnitNameById()}</span>
+        <span style={{ border: "none" }} >{findUnitNameById()}</span>
     )
 }
 

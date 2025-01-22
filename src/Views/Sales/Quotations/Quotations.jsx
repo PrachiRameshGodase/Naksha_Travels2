@@ -21,12 +21,9 @@ import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { quotationFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { quotationSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
-import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 
-
 const Quotations = () => {
-  const dispatch = useDispatch();
   const Navigate = useNavigate();
   const qutList = useSelector((state) => state?.quoteList);
   const qutSend = useSelector((state) => state?.quoteSend);
@@ -104,9 +101,8 @@ const Quotations = () => {
         }),
     }),
   }), [searchTrigger, currentPage]);
- 
-  useFetchApiData(quotationLists, payloadGenerator, [searchTrigger, currentPage]);
 
+  useFetchApiData(quotationLists, payloadGenerator, [searchTrigger, currentPage]);
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/quotation-details?id=${quotation.id}`);

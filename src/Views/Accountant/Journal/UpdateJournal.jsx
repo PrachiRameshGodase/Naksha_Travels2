@@ -3,7 +3,7 @@ import './AddJournalListData.scss';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../../Configs/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { getCurrencyFormData } from '../../Helper/HelperFunctions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 
 const UpdateJournal = () => {
@@ -11,6 +11,7 @@ const UpdateJournal = () => {
     const [customer, setCustomer] = useState([]);
     const [account, setAccount] = useState([]);
     const [journalDetail, setJonuralDetail] = useState([]);
+    const currency = getCurrencyValue();
 
     const [journalData, setJournalData] = useState({
         journal_no: "Journal 01",
@@ -18,7 +19,7 @@ const UpdateJournal = () => {
         fy: localStorage.getItem('FinancialYear'),
         notes: "",
         journal_type: "Cash based Journal",
-        currency: getCurrencyFormData,
+        currency: currency,
         sub_total_credit: 1000,
         sub_total_debit: 1000,
         total_debit: 1000,

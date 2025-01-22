@@ -29,7 +29,7 @@ const CreateHotel = () => {
   const hotelCreates = useSelector((state) => state?.createHotel);
   const hotelDetails = useSelector((state) => state?.hotelDetail);
   const hotelData = hotelDetails?.data?.data?.hotels || {};
- 
+
   const countryList = useSelector((state) => state?.countries?.countries);
   const states = useSelector((state) => state?.states?.state);
   const statesLoader = useSelector((state) => state?.states?.loading);
@@ -151,7 +151,7 @@ const CreateHotel = () => {
       }
     }
   }, [itemId, isEdit, hotelData]);
- 
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -307,9 +307,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData?.country_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                            }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""

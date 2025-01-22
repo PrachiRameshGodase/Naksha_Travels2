@@ -36,6 +36,7 @@ import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
 import ShowMastersValue from "../ShowMastersValue";
+import { getCurrencySymbol, getLocalStorage } from "./ManageLocalStorage/localStorageUtils";
 
 const ItemSelect = ({
   formData,
@@ -54,11 +55,10 @@ const ItemSelect = ({
   const [itemData, setItemData] = useState(false);
 
   const gstType = activeOrg_details?.tax_type;
-  const currencySymbole = activeOrg_details?.symbol;
+  const currencySymbole = getCurrencySymbol();
   // console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
   const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
-
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -372,7 +372,7 @@ const ItemSelect = ({
       formData?.items?.length > 0 &&
       formData.items[formData.items.length - 1]?.type !== "" &&
       formData.items[formData.items.length - 1]?.item_name !== "";
-    
+
     // console.log(formData?.items)
     if (!isTypeNull) {
       toast.error("Please select the type and valid item name of above row");
@@ -856,6 +856,7 @@ const ItemSelect = ({
                               }
                             >
                               {currencySymbol}
+
                             </div>
                             <div
                               className="dmncstomx1"

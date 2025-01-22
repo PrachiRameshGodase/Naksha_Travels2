@@ -48,12 +48,12 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
             <th className="table_column_item item_text_end_01 ">Amount</th>
           </tr>
         </thead>
-        <tbody className="table_head_item_02" style={{ background: "white" }}>
+        <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
           {itemsData?.items?.map((val, index) => (
             <tr key={index} className="table_head_item_02_row">
               <td className="table_column_item">{index + 1}</td>
               <td className="table_column_item ">{val?.item?.name || val?.item_name}</td>
-              <td className="table_column_item">{val?.item?.type}</td>
+              <td className="table_column_item">{val?.item?.type || val?.type}</td>
               <td className="table_column_item item_text_end_01">
                 {showAmountWithCurrencySymbol(val?.rate)}
               </td>
