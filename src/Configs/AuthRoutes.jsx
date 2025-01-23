@@ -25,8 +25,6 @@ const externalUrl = import.meta.env.VITE_EXTERNAL_URL;
 // };
 
 
-
-
 export const ProtectedRouteForUser = ({ children }) => {
   const location = useLocation();
   // const storedAccessToken = localStorage.getItem('AccessToken');
@@ -43,7 +41,7 @@ export const ProtectedRouteForUser = ({ children }) => {
     // return <Navigate to="/login" replace={true} />;//for local
 
     // const url = `${externalUrl}/login`;
-    const url = `http://localhost:5173/login`;
+    const url = `${externalUrl}/login`;
     window.location.href = url;
     // return <Navigate to={`/${externalUrl}/login`} replace={true} />;//for live url
   }

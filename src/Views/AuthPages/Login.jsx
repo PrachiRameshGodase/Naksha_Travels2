@@ -3,6 +3,7 @@ import axios from "axios";
 import "./authcss.scss";
 import { Toaster, toast } from 'react-hot-toast';
 import { Link, useNavigate } from "react-router-dom";
+import { setCookie } from "../Helper/ComponentHelper/ManageStorage/cookeeStorageUtils";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 // const apiUrlx2 = import.meta.env.VITE_REACT_APP_API_URLx2;
@@ -30,7 +31,7 @@ const Login = () => {
 
       // Store user data and access token in local storage
       localStorage.setItem("UserData", JSON.stringify(user));
-      localStorage.setItem("AccessToken", access_token);
+      setCookie("AccessToken", access_token, 7); // 7 days expiry
 
       // Show alert for successful login
       if (response.data.success === true) {
