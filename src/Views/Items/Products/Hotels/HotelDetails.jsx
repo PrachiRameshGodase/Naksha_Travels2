@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview4 } from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import HotelServices from "./HotelServices";

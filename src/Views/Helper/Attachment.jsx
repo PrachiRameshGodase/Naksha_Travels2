@@ -220,7 +220,7 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
 };
 
 export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
-  GiConsoleController.log("attachments", attachments)
+  console.log("attachments", attachments)
   const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews

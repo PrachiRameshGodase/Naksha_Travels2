@@ -1284,7 +1284,7 @@ const InsideCusDetails = ({
                                 <h1>:</h1>
 
                                 <p>
-                                  <AttachmentPreview2
+                                  <AttachmentPreviewMultipleDocument
                                     attachments={
                                       val?.upload_documents
                                         ? JSON?.parse(val?.upload_documents)

@@ -11,7 +11,7 @@ import {
   hotelRoomDetailsAction,
   hotelRoomStatusActions,
 } from "../../../../Redux/Actions/hotelActions";
-import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
+import Attachment, {  AttachmentPreview4 } from "../../../Helper/Attachment";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 
 const HotelServicesDetails = () => {

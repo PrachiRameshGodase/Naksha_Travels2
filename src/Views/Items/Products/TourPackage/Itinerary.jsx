@@ -29,7 +29,7 @@ import {
   itineraryListAction,
   itinerarystatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import Attachment, { AttachmentPreview2, AttachmentPreview4 } from "../../../Helper/Attachment";
+import Attachment, { AttachmentPreview4 } from "../../../Helper/Attachment";
 
 const Itinerary = ({ data }) => {
   const dispatch = useDispatch();

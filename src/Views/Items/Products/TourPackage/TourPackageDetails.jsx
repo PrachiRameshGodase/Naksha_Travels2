@@ -11,10 +11,10 @@ import {
   tourPackageDetailsAction,
   tourPackagestatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import Attachment, { AttachmentPreview2 } from "../../../Helper/Attachment";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import Itinerary from "./Itinerary";
+import { AttachmentPreviewMultipleDocument } from "../../../Helper/Attachment";
 
 const TourPackageDetails = () => {
   const navigate = useNavigate();
@@ -272,7 +272,7 @@ const TourPackageDetails = () => {
                           <span>Attachment</span>
                           <h1>:</h1>
                           <p>
-                            <AttachmentPreview2 attachments={attachments} />
+                            <AttachmentPreviewMultipleDocument attachments={attachments} />
                           </p>
                         </li>
                       </ul>
