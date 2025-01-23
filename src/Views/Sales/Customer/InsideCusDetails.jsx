@@ -108,17 +108,15 @@ const InsideCusDetails = ({
     <div id="itemsdetailsrowskl">
       <div className="buttonscontainxs2">
         <div
-          className={`divac12cs32 ${
-            activeSection === "basicdetails" ? "activediv12cs" : ""
-          }`}
+          className={`divac12cs32 ${activeSection === "basicdetails" ? "activediv12cs" : ""
+            }`}
           onClick={() => setActiveSection("basicdetails")}
         >
           Basic Details
         </div>
         <div
-          className={`divac12cs32 ${
-            activeSection === "transaction" ? "activediv12cs" : ""
-          }`}
+          className={`divac12cs32 ${activeSection === "transaction" ? "activediv12cs" : ""
+            }`}
           onClick={() => setActiveSection("transaction")}
         >
           Transaction
@@ -136,9 +134,8 @@ const InsideCusDetails = ({
           Mails
         </div> */}
         <div
-          className={`divac12cs32 ${
-            activeSection === "statement" ? "activediv12cs" : ""
-          }`}
+          className={`divac12cs32 ${activeSection === "statement" ? "activediv12cs" : ""
+            }`}
           onClick={() => setActiveSection("statement")}
         >
           Statement
@@ -151,9 +148,8 @@ const InsideCusDetails = ({
             <div className="inidbcusx2">
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[0] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[0] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(0)}
                 >
                   <p>
@@ -167,9 +163,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[0] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[0] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -237,9 +232,8 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[1] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[1] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(1)}
                 >
                   <p>
@@ -251,9 +245,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[1] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[1] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -321,9 +314,8 @@ const InsideCusDetails = ({
               {customerDetails?.customer_type == "Individual" ? (
                 <div className="accordion-item">
                   <div
-                    className={`accordion-header ${
-                      isOpen[2] ? "openedaccordina" : ""
-                    }`}
+                    className={`accordion-header ${isOpen[2] ? "openedaccordina" : ""
+                      }`}
                     onClick={() => toggleAccordion(2)}
                   >
                     <p>
@@ -335,9 +327,8 @@ const InsideCusDetails = ({
                     </span>
                   </div>
                   <div
-                    className={`accordion-content ${
-                      isOpen[2] ? "openedaccordina" : ""
-                    }`}
+                    className={`accordion-content ${isOpen[2] ? "openedaccordina" : ""
+                      }`}
                   >
                     <div className="contents">
                       <div className="ProjectList">
@@ -358,7 +349,7 @@ const InsideCusDetails = ({
                           <tbody>
                             {family_members?.map((item, index) => {
                               const disabledRow = item?.id === item?.relation_id;
-                              
+
                               return (
                                 <tr
                                   key={index}
@@ -426,9 +417,8 @@ const InsideCusDetails = ({
               ) : (
                 <div className="accordion-item">
                   <div
-                    className={`accordion-header ${
-                      isOpen[2] ? "openedaccordina" : ""
-                    }`}
+                    className={`accordion-header ${isOpen[2] ? "openedaccordina" : ""
+                      }`}
                     onClick={() => toggleAccordion(2)}
                   >
                     <p>
@@ -440,9 +430,8 @@ const InsideCusDetails = ({
                     </span>
                   </div>
                   <div
-                    className={`accordion-content ${
-                      isOpen[2] ? "openedaccordina" : ""
-                    }`}
+                    className={`accordion-content ${isOpen[2] ? "openedaccordina" : ""
+                      }`}
                   >
                     <div className="contents">
                       <div className="ProjectList">
@@ -463,9 +452,8 @@ const InsideCusDetails = ({
                             {employees?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1 || "-"}</td>
-                                <td>{`${item?.first_name || "-"} ${
-                                  item?.last_name || "-"
-                                }`}</td>
+                                <td>{`${item?.first_name || "-"} ${item?.last_name || "-"
+                                  }`}</td>
                                 <td style={{ color: "#2626d3" }}>
                                   {item?.company_name || "-"}
                                 </td>
@@ -497,9 +485,8 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[3] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[3] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(3)}
                 >
                   <p>
@@ -510,11 +497,10 @@ const InsideCusDetails = ({
                     {isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
-                {}
+                { }
                 <div
-                  className={`accordion-content ${
-                    isOpen[3] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[3] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div>
                     {customerDetails?.bank_details?.map((val, index) => (
@@ -565,9 +551,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[10] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[10] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(10)}
                 >
                   <p>
@@ -578,11 +563,10 @@ const InsideCusDetails = ({
                     {isOpen[10] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
-                {}
+                { }
                 <div
-                  className={`accordion-content ${
-                    isOpen[10] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[10] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div>
                     {customerDetails?.payment_details?.map((val, index) => (
@@ -627,9 +611,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[4] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[4] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(4)}
                 >
                   <p>
@@ -641,9 +624,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[4] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[4] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="cusdes1sec">
                     <div className="">
@@ -656,9 +638,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[5] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[5] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(5)}
                 >
                   <p>
@@ -670,9 +651,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[5] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="cusdes1sec">
                     <div
@@ -942,9 +922,8 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[6] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[6] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(6)}
                 >
                   <p>
@@ -956,9 +935,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[5] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div>
                     {customerDetails?.address?.map((val, index) => (
@@ -1084,9 +1062,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[7] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[7] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(7)}
                 >
                   <p>
@@ -1098,9 +1075,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[7] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[7] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="contents">
                     <div className="ProjectList">
@@ -1133,7 +1109,7 @@ const InsideCusDetails = ({
                                   : "-"}
                               </td>
                               <td>
-                                {console.log("document",item?.upload_documents)}
+                                {/* {console.log("document", item?.upload_documents)} */}
                                 <AttachmentPreviewMultipleDocument attachments={item?.upload_documents ? JSON?.parse(item?.upload_documents) : "-"} />
                               </td>
                             </tr>
@@ -1149,9 +1125,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[8] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[8] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(8)}
                 >
                   <p>
@@ -1163,9 +1138,8 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${
-                    isOpen[8] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[8] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div className="contents">
                     <div className="ProjectList">
@@ -1177,6 +1151,7 @@ const InsideCusDetails = ({
                             <th>Attachment</th>
                           </tr>
                         </thead>
+                        {/* {console.log("customerDetails?.vaccination_details", customerDetails?.vaccination_details)} */}
                         <tbody>
                           {customerDetails?.vaccination_details?.map(
                             (item, index) => (
@@ -1184,14 +1159,15 @@ const InsideCusDetails = ({
                                 <td>{index + 1 || "-"}</td>
 
                                 <td>{item?.vaccination_name || "-"}</td>
+                                {/* {console.log("itemitemitemitem", item)} */}
                                 <td>
-                                 
                                   <AttachmentPreviewMultipleDocument
                                     attachments={
                                       item?.upload_documents
                                         ? JSON?.parse(item?.upload_documents)
                                         : []
                                     }
+                                  // attachments={item}
                                   />
                                 </td>
                               </tr>
@@ -1208,9 +1184,8 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${
-                    isOpen[9] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-header ${isOpen[9] ? "openedaccordina" : ""
+                    }`}
                   onClick={() => toggleAccordion(9)}
                 >
                   <p>
@@ -1223,9 +1198,8 @@ const InsideCusDetails = ({
                 </div>
 
                 <div
-                  className={`accordion-content ${
-                    isOpen[9] ? "openedaccordina" : ""
-                  }`}
+                  className={`accordion-content ${isOpen[9] ? "openedaccordina" : ""
+                    }`}
                 >
                   <div>
                     {customerDetails?.insurrance_details?.map((val, index) => (

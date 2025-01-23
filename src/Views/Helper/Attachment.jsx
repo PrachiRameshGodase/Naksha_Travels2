@@ -128,7 +128,7 @@ export const Attachment2 = ({ attachments }) => {
 const imageExtensions = ["jpg", "jpeg", "png", "gif"];
 
 // Helper function to get the file extension
-const getFileExtension = (fileName) => fileName.split(".").pop().toLowerCase();
+const getFileExtension = (fileName) => fileName?.split(".").pop().toLowerCase();
 
 // Component to render the file preview
 const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
@@ -220,7 +220,11 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
 };
 
 export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
-  console.log("attachments", attachments)
+  // const newParse = JSON.parse(attachments)
+  // JSON.parse(attachments)
+
+  // console.log("attachments", typeof attachments)
+  // console.log("newParse", newParse)
   const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews
@@ -229,7 +233,7 @@ export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
 
   // Function to handle image popup
   const showImagePopup = (url) => {
-    setImagesVal([url]);
+    // setImagesVal([url]);
     setShowImagesModal(true);
   };
 
@@ -239,34 +243,41 @@ export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
   };
 
   // Handle arrow click to directly open previews for images or open non-image files in new tab
-  const handleArrowClick = () => {
-    if (attachments && attachments.length > 0) {
-      const firstAttachment = attachments[0];
-      const fileExtension = getFileExtension(firstAttachment.name);
+  const handleArrowClick = (url) => {
+    console.log("first", url[0]);
+    // if (attachments && attachments.length > 0) {
+    //   const firstAttachment = attachments[0];
+    //   const fileExtension = getFileExtension(firstAttachment.name);
 
-      if (imageExtensions.includes(fileExtension)) {
-        showImagePopup(firstAttachment.url); // Show image preview if it's an image file
-      } else {
-        openFileInNewTab(firstAttachment.url); // Open non-image file in a new tab
-      }
-    }
+    //   if (imageExtensions.includes(fileExtension)) {
+    //     showImagePopup(firstAttachment.url); // Show image preview if it's an image file
+    //   } else {
+    //     openFileInNewTab(firstAttachment.url); // Open non-image file in a new tab
+    //   }
+    // }
   };
 
   // Function to extract the file extension from the file name
   const getFileExtension = (fileName) => {
-    return fileName.split(".").pop().toLowerCase();
+    return fileName?.split(".").pop().toLowerCase();
   };
 
   return (
     <div>
       <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
+
+        {/* {JSON.parse(attachments)} */}
         {attachments?.length >= 1 ? (
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={handleArrowClick} // Directly show the preview or open the file
-          >
-            <MdArrowOutward />
-          </span>
+          <>
+            <span
+              style={{ cursor: "pointer" }}
+            // Directly show the preview or open the file
+            >
+              {JSON.parse(attachments).length >= 1 && <span><MdArrowOutward onClick={() => handleArrowClick(JSON.parse(attachments))} /></span>}
+              {console.log("attachments", JSON.parse(attachments))}
+              {/* <MdArrowOutward /> */}
+            </span>
+          </>
         ) : (
           "-"
         )}
@@ -295,14 +306,14 @@ export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
 };
 
 export const AttachmentPreview3 = ({ attachments }) => {
- 
+
   return (
     <div>
       <p className="sfdjklsd1xs2w4" style={{ marginLeft: "5px" }}>
-        {attachments !="-" ? (
+        {attachments != "-" ? (
           <div>
             <img
-              src={attachments ||"-"}
+              src={attachments || "-"}
               alt=""
               style={{
                 width: "50px",
@@ -320,8 +331,8 @@ export const AttachmentPreview3 = ({ attachments }) => {
 };
 
 export const AttachmentPreview4 = ({ document }) => {
- 
- const [showImagesModal, setShowImagesModal] = useState(false);
+
+  const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"]; // Supported image file extensions
 
@@ -337,7 +348,8 @@ export const AttachmentPreview4 = ({ document }) => {
   };
 
   // Handle arrow click to preview the attachment
-  const handleArrowClick = () => {
+  const handleArrowClick = (url) => {
+    console.log("rullllll", url)
     if (document) {
       const fileExtension = getFileExtension(document.name); // Extract file extension
 
@@ -351,7 +363,7 @@ export const AttachmentPreview4 = ({ document }) => {
 
   // Function to extract file extension
   const getFileExtension = (fileName) => {
-    return fileName.split(".").pop().toLowerCase();
+    return fileName?.split(".").pop().toLowerCase();
   };
 
   return (
@@ -379,7 +391,7 @@ export const AttachmentPreview4 = ({ document }) => {
               <RxCross2 />
             </span>
             <img
-              src={imagesVal[0]} 
+              src={imagesVal[0]}
               alt="Attachment"
               height={500}
               width={500}
