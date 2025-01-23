@@ -42,7 +42,8 @@ export const ProtectedRouteForUser = ({ children }) => {
   if (!storedAccessToken && !urlAccessToken) {
     // return <Navigate to="/login" replace={true} />;//for local
 
-    const url = `${externalUrl}/login`;
+    // const url = `${externalUrl}/login`;
+    const url = `http://localhost:5173/login`;
     window.location.href = url;
     // return <Navigate to={`/${externalUrl}/login`} replace={true} />;//for live url
   }
