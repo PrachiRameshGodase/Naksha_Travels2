@@ -2,12 +2,12 @@ import { useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
-import { getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol, getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
 import useFetchApiData from "./ComponentHelper/useFetchApiData";
 
 // const getLocalStorageData = localStorage?.getItem("UserData");
 const UserData = getLocalStorage("UserData");
-// const UserData = JSON.parse(getLocalStorageData);
+// const UserData = JSON?.parse(getLocalStorageData);
 
 export const showRateWithPercent = (val) => {
     return val ? `${val} %` : 'Non-Taxable';
@@ -35,13 +35,18 @@ export const currencySymbol = activeOrg_details?.symbol ? activeOrg_details?.sym
 export const orgnizationEmail = activeOrg_details?.email ? activeOrg_details?.email : "";
 
 
+
+
+// console.log("currencySymbol", currencySymbol)
 export const showAmountWithCurrencySymbol = (val) => {
+    const currencySymbol = getCurrencySymbol();
     return val == "0" ? `${currencySymbol} 0.00` : val ? `${currencySymbol} ${val} ` : "";
 }
 
 // console.log("activeOrg_details", activeOrg_details)
 
 export const showAmountWithCurrencySymbolWithPoints = (val) => {
+    const currencySymbol = getCurrencySymbol();
     return val ? `${currencySymbol} ${val}.00` : '';
 }
 
@@ -133,16 +138,6 @@ export const stringifyJSON = (data) => {
 };
 
 
-export const parseJSONofString = (jsonString) => {
-    try {
-        return JSON.parse(jsonString);
-    } catch (error) {
-        console.error("Error parsing JSON:", error);
-        return null;
-    }
-};
-
-
 //it does not seen the 0 value..
 export const preventZeroVal = (val) => {
     return val == "0" ? "" : val
@@ -155,7 +150,7 @@ export const showDeparmentLabels = (department, mainDeparmentVal) => {
     if (typeof department !== "string") return "";
 
     try {
-        const depArray = JSON.parse(department);
+        const depArray = JSON?.parse(department);
         const labels = depArray
             .map((depId) => {
                 const depObj = mainDeparmentVal.find((val) => val.labelid == depId);

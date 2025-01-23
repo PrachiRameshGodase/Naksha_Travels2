@@ -74,9 +74,8 @@ const HotelServicesDetails = () => {
     const value = event.target.value; // Get the selected value
     // Confirmation modal
     const result = await Swal.fire({
-      text: `Do you want to ${
-        value == 0 ? "Unavialable" : "Available"
-      } this assist?`,
+      text: `Do you want to ${value == 0 ? "Unavialable" : "Available"
+        } this assist?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -100,7 +99,7 @@ const HotelServicesDetails = () => {
     }
   };
 
-  const attachments = JSON.parse(hotelRoomData?.upload_documents || "");
+  const attachments = JSON?.parse(hotelRoomData?.upload_documents || "");
   return (
     <>
       {hotelRoomStatusUpdate?.loading && <MainScreenFreezeLoader />}
@@ -180,9 +179,8 @@ const HotelServicesDetails = () => {
           <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
             <div className="buttonscontainxs2">
               <div
-                className={`divac12cs32 ${
-                  activeSection === "roomDetails" ? "activediv12cs" : ""
-                }`}
+                className={`divac12cs32 ${activeSection === "roomDetails" ? "activediv12cs" : ""
+                  }`}
                 onClick={() => setActiveSection("roomDetails")}
               >
                 Room Details
@@ -237,8 +235,8 @@ const HotelServicesDetails = () => {
                             {hotelRoomData?.availability_status == "1"
                               ? "Available"
                               : hotelRoomData?.availability_status == "0"
-                              ? "Unavailable"
-                              : ""}
+                                ? "Unavailable"
+                                : ""}
                           </p>
                         </li>
                         <li>

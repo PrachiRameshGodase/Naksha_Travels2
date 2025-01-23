@@ -13,20 +13,19 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import SearchBox from "../../../Common/SearchBox/SearchBox";
 import {
-  parseJSONofString,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 
-const HotelServices = ({data}) => {
-  const dispatch=useDispatch()
+const HotelServices = ({ data }) => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
-  const hotelRoomLists=hotelRoomListData?.data?.hotels ||[];
-  const totalItems=hotelRoomListData?.data?.count ||0;
- 
+  const hotelRoomLists = hotelRoomListData?.data?.hotels || [];
+  const totalItems = hotelRoomListData?.data?.count || 0;
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -86,7 +85,7 @@ const HotelServices = ({data}) => {
       const currentpage = currentPage;
 
       const sendData = {
-       hotel_id: data?.id
+        hotel_id: data?.id
         // fy,
         // noofrec: itemsPerPage,
         // currentpage,
@@ -117,7 +116,7 @@ const HotelServices = ({data}) => {
   }, [searchTrigger]);
 
   useEffect(() => {
-    const parshPayload = parseJSONofString(itemPayloads);
+    const parshPayload = JSON?.parse(itemPayloads);
     // if (
     //   searchTrigger ||
     //   parshPayload?.search ||
@@ -128,7 +127,7 @@ const HotelServices = ({data}) => {
     //   parshPayload?.from_date ||
     //   parshPayload?.currentpage > 1
     // ) {
-      fetchHotels();
+    fetchHotels();
     // }
   }, [searchTrigger]);
 
@@ -162,8 +161,8 @@ const HotelServices = ({data}) => {
   };
   //logic for checkBox...
 
-  
- 
+
+
   return (
     <>
       <TopLoadbar />
@@ -236,7 +235,7 @@ const HotelServices = ({data}) => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                  
+
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Room Name
@@ -260,8 +259,8 @@ const HotelServices = ({data}) => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {/* <p> */}
-                      {otherIcons?.doller_svg}
-                      Price
+                    {otherIcons?.doller_svg}
+                    Price
                     {/* </p> */}
 
                   </div>
@@ -269,22 +268,21 @@ const HotelServices = ({data}) => {
                     {otherIcons?.status_svg}
                     Availability Status
                   </div>
-                 
+
                 </div>
 
-               {hotelRoomListData?.loading ? (
+                {hotelRoomListData?.loading ? (
                   <TableViewSkeleton />
-                ) : ( 
+                ) : (
                   <>
-                    {hotelRoomLists.length >= 1 ? ( 
+                    {hotelRoomLists.length >= 1 ? (
                       <>
                         {hotelRoomLists.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -304,8 +302,8 @@ const HotelServices = ({data}) => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              
-                              {item?.room_number ||""}
+
+                              {item?.room_number || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
@@ -319,68 +317,68 @@ const HotelServices = ({data}) => {
                             >
                               {item?.max_occupancy || ""}
                             </div>
-                            
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
-                              {item?.bed_name ||""}
+                              {item?.bed_name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.meal_name ||""}
+                              {item?.meal_name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              {item?.price ||""}
+                              {item?.price || ""}
                             </div>
-                           
+
                             <div
-                          onClick={() => handleRowClicked(item)}
-                          className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                        >
-                          <p
-                            className={
-                              item?.availability_status == "1"
-                                ? "open"
-                                : item?.availability_status == "0"
-                                  ? "declined"
-                                  : ""
-                            }
-                          >
-                            {item?.availability_status == "1"
-                              ? "Available"
-                              : item?.availability_status == "0"
-                                ? "Unavailable"
-                                : ""}
-                          </p>
-                        </div>
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                            >
+                              <p
+                                className={
+                                  item?.availability_status == "1"
+                                    ? "open"
+                                    : item?.availability_status == "0"
+                                      ? "declined"
+                                      : ""
+                                }
+                              >
+                                {item?.availability_status == "1"
+                                  ? "Available"
+                                  : item?.availability_status == "0"
+                                    ? "Unavailable"
+                                    : ""}
+                              </p>
+                            </div>
                           </div>
                         ))}
                       </>
-                     ) : (
+                    ) : (
                       <NoDataFound />
-                    )} 
+                    )}
 
                     <PaginationComponent
-                    itemList={totalItems}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    itemsPerPage={itemsPerPage}
-                    setItemsPerPage={setItemsPerPage}
-                    setSearchCall={setSearchTrigger}
+                      itemList={totalItems}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      itemsPerPage={itemsPerPage}
+                      setItemsPerPage={setItemsPerPage}
+                      setSearchCall={setSearchTrigger}
                     />
                   </>
-               )} 
+                )}
               </div>
             </div>
           </div>
         </div>
-       
+
         <Toaster />
       </div>
     </>

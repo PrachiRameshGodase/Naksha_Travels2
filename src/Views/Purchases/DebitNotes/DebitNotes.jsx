@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy from "../../Common/SortBy/SortBy";
 import FilterBy from "../../Common/FilterBy/FilterBy";

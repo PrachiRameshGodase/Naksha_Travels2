@@ -1,7 +1,7 @@
 // PdfTemplate.js
 import React, { useState } from 'react';
 // import './PdfTemplate.scss';
-import { activeOrg_details, parseJSONofString, showAmountWithCurrencySymbol, showRateWithPercent } from '../../../HelperFunctions';
+import { activeOrg_details, showAmountWithCurrencySymbol, showRateWithPercent } from '../../../HelperFunctions';
 import { PdfShowMastersValue } from '../../../ShowMastersValue';
 import { otherIcons } from '../../../SVGIcons/ItemsIcons/Icons';
 import { currentTime, formatDate3, todayDate } from '../../../DateFormat';

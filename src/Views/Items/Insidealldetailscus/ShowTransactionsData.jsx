@@ -26,9 +26,12 @@ import {
   ShowStatusInList,
 } from "../../Helper/ComponentHelper/ShowStatus";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 const ShowTransactionsData = ({ activeSection, type }) => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -363,7 +366,7 @@ const ShowTransactionsData = ({ activeSection, type }) => {
                     )}
                     <div className="table-cellx12 quotiosalinvlisxs6_item">
                       <p>
-                        {otherIcons.doller_svg}
+                        {currencySymbol}{" "}
                         AMOUNT
                       </p>
                     </div>

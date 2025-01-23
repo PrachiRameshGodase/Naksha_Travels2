@@ -13,7 +13,6 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
-  parseJSONofString,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,7 +37,7 @@ const Flights = () => {
   const flightLists = flightListData?.data?.data || [];
   const totalItems = flightListData?.data?.count || 0;
   const flightStatusUpdate = useSelector((state) => state?.flightStatus);
-  const flightDeleteData= useSelector((state) => state?.flightDelete);
+  const flightDeleteData = useSelector((state) => state?.flightDelete);
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,10 +115,10 @@ const Flights = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
         }),
       };
 
@@ -130,7 +129,7 @@ const Flights = () => {
   }, [searchTrigger]);
 
   useEffect(() => {
-    // const parshPayload = parseJSONofString(itemPayloads);
+    // const parshPayload = JSON?.parse(itemPayloads);
     // if (
     //   searchTrigger ||
     //   parshPayload?.search ||
@@ -347,11 +346,10 @@ const Flights = () => {
                       <>
                         {flightLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -381,7 +379,7 @@ const Flights = () => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                               {item?.destination_code||""}
+                              {item?.destination_code || ""}
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}
@@ -392,15 +390,15 @@ const Flights = () => {
                                   item?.status == "1"
                                     ? "approved"
                                     : item?.status == "0"
-                                    ? "draft"
-                                    : ""
+                                      ? "draft"
+                                      : ""
                                 }
                               >
                                 {item?.status == "0"
                                   ? "Inactive"
                                   : item?.status == "1"
-                                  ? "Active"
-                                  : ""}
+                                    ? "Active"
+                                    : ""}
                                 <span
                                   onClick={() => {
                                     handleStatusChange(item);

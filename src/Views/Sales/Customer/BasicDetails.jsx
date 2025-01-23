@@ -171,7 +171,7 @@ const BasicDetails = ({
 
   useEffect(() => {
     if ((user?.id && isEdit) || (user?.id && isDuplicate)) {
-      const depArray = JSON.parse(user?.department || "[]");
+      const depArray = JSON?.parse(user?.department || "[]");
       setBasicDetails({
         ...basicDetails,
         salutation: user?.salutation,
@@ -294,7 +294,9 @@ const BasicDetails = ({
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>First Name<b className="color_red">*</b></label>
+                        <label>
+                          First Name<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             <input
@@ -311,23 +313,25 @@ const BasicDetails = ({
                         </div>
                       </div>
                       <div className="form_commonblock">
-                  <label className="">Last Name<b className="color_red">*</b></label>
-                  <div id="inputx1">
-                    <span>
-                      {/* {otherIcons.company_name_svg} */}
-                      <input
-                        autoComplete="off"
-                        style={{ width: "100%" }}
-                        type="text"
-                        name="last_name"
-                        value={basicDetails.last_name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        placeholder="Enter Last Name"
-                      />
-                    </span>
-                  </div>
-                </div>
+                        <label className="">
+                          Last Name<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {/* {otherIcons.company_name_svg} */}
+                            <input
+                              autoComplete="off"
+                              style={{ width: "100%" }}
+                              type="text"
+                              name="last_name"
+                              value={basicDetails.last_name}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Enter Last Name"
+                            />
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -337,7 +341,9 @@ const BasicDetails = ({
             <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblock">
-                  <label>Email<b className="color_red">*</b></label>
+                  <label>
+                    Email<b className="color_red">*</b>
+                  </label>
                   <span>
                     {otherIcons.email_svg}
                     <input
@@ -551,7 +557,6 @@ const BasicDetails = ({
             </div>
 
             <div id="fcx3s1parent">
-              
               {showRegisterdFields && (
                 <>
                   <div className="form_commonblock">

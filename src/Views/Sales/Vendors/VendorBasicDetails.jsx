@@ -206,7 +206,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     //for edit and duplicate
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDuplicate)) {
-            const depArray = JSON.parse(user?.department || "[]");
+            const depArray = JSON?.parse(user?.department || "[]");
 
             setBasicDetails({
                 ...basicDetails,

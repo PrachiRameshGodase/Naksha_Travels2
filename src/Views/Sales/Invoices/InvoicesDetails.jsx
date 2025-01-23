@@ -14,7 +14,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { FromToDetails, MoreInformation, ShowAllStatus1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import { IoMailOpenOutline } from 'react-icons/io5';
-import { parseJSONofString, showRealatedText } from '../../Helper/HelperFunctions';
+import { showRealatedText } from '../../Helper/HelperFunctions';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
@@ -109,7 +109,7 @@ const InvoicesDetails = ({ section }) => {
         Navigate(`/dashboard/send_mail?${queryParams.toString()}`, { state: { data: invoice } });
       }
       else {
-        dispatch(invoicesStatus(sendData, setCallApi, Navigate, parseJSONofString(invoice?.tracking_details)))
+        dispatch(invoicesStatus(sendData, setCallApi, Navigate, JSON?.parse(invoice?.tracking_details)))
       }
     } catch (error) {
       console.log("error", error);

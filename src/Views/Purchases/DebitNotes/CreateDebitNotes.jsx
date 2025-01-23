@@ -195,7 +195,7 @@ const CreateDebitNotes = () => {
             }
 
             if (fetchDetails?.address) {
-                const parsedAddress = JSON.parse(fetchDetails?.address);
+                const parsedAddress = JSON?.parse(fetchDetails?.address);
                 const dataWithParsedAddress = {
                     ...fetchDetails,
                     address: parsedAddress

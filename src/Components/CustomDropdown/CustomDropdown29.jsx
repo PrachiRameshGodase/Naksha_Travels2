@@ -5,7 +5,7 @@ import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 import { customersList } from '../../Redux/Actions/customerActions';
-import { parseJSONofString, sendData } from '../../Views/Helper/HelperFunctions';
+import { sendData } from '../../Views/Helper/HelperFunctions';
 import { hotelListAction } from '../../Redux/Actions/hotelActions';
 import useFetchApiData from '../../Views/Helper/ComponentHelper/useFetchApiData';
 
@@ -41,7 +41,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
-    const parshPayload = parseJSONofString(hotelPayloads);
+    const parshPayload = JSON?.parse(hotelPayloads);
     if (parshPayload?.search) {
       dispatch(hotelListAction({
         ...sendData,

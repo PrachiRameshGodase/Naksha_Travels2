@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { customersList } from "../../Redux/Actions/customerActions";
 import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import {
-  parseJSONofString,
   sendData,
 } from "../../Views/Helper/HelperFunctions";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
@@ -87,7 +86,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
   const isSelected = (accountId) => value?.includes(accountId);
 
   useEffect(() => {
-    const parsedPayload = parseJSONofString(itemPayloads);
+    const parsedPayload = JSON?.parse(itemPayloads);
     // Check if API call is necessary
     if (
       isOpen && // Ensure modal or component is open
@@ -203,7 +202,7 @@ export default CustomDropdown31;
 // import { customersList } from "../../Redux/Actions/customerActions";
 // import DropDownHelper from "../../Views/Helper/DropDownHelper";
 // import {
-//   parseJSONofString,
+//   JSON?.parse,
 //   sendData,
 // } from "../../Views/Helper/HelperFunctions";
 // import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
@@ -297,7 +296,7 @@ export default CustomDropdown31;
 //   const isSelected = (accountId) => value?.includes(accountId);
 
 //   useEffect(() => {
-//     const parsedPayload = parseJSONofString(itemPayloads);
+//     const parsedPayload = JSON?.parse(itemPayloads);
 //     // Check if API call is necessary
 //     if (
 //       isOpen && // Ensure modal or component is open

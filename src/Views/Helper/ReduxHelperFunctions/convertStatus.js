@@ -6,7 +6,7 @@ import { CreditNotesStatus, debitNotesStatus } from "../../../Redux/Actions/note
 import { purchasesStatus } from "../../../Redux/Actions/purchasesActions";
 import { quotationStatus } from "../../../Redux/Actions/quotationActions";
 import { saleOrderStatus } from "../../../Redux/Actions/saleOrderActions";
-import { parseJSONofString, sendData } from "../HelperFunctions";
+import { sendData } from "../HelperFunctions";
 
 export const convertStatus = (dispatch, section, navigate, itemId, convert, response, quotationData) => {
     // quotation to sale-order show sale-ordered status
@@ -27,7 +27,7 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
         dispatch(invoicesStatus({ id: response?.data?.transaction?.id, status: "3" }, null, null));
 
         const tracking_details = quotationData?.tracking_details
-        const parshTracking_details = parseJSONofString(tracking_details)
+        const parshTracking_details = JSON?.parse(tracking_details)
 
         if (parshTracking_details?.module_data?.module === "quotationToSale") {
             dispatch(quotationStatus({ id: parshTracking_details?.module_data?.id, status: "4" }, null));//status shown pending in invoice

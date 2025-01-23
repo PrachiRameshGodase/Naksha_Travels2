@@ -798,7 +798,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                             onChange={e => handleCustomFieldChange(e, customField.field_name)}
                                                         >
                                                             <option value="">Select {customField.label}</option>
-                                                            {JSON.parse(customField.dropdown_value).map(option => (
+                                                            {JSON?.parse(customField.dropdown_value).map(option => (
                                                                 <option key={option} value={option}>{option}</option>
                                                             ))}
                                                         </select>

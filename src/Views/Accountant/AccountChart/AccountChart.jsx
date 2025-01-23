@@ -25,7 +25,7 @@ import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy from "../../Common/SortBy/SortBy";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { accountsSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const AccountChart = () => {

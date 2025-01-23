@@ -13,7 +13,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import SortBy from "../Common/SortBy/SortBy";
 import { warehouseSortByOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import FilterBy1 from "../Common/FilterBy/FilterBy1";
-import { parseJSONofString, showDeparmentLabels, ShowMasterData, stringifyJSON, useDebounceSearch } from "../Helper/HelperFunctions";
+import { showDeparmentLabels, ShowMasterData, stringifyJSON, useDebounceSearch } from "../Helper/HelperFunctions";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 

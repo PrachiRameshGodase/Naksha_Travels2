@@ -1,4 +1,4 @@
-import { parseJSONofString } from "../../HelperFunctions";
+import { } from "../../HelperFunctions";
 
 // this is the common calculation part of formdata
 export const parsePurchaseDetails = (detailData, convert) => {
@@ -19,7 +19,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
             gr_qty: +item?.gr_qty,
             charges_weight: +item?.charges_weight,
             custom_duty: item?.custom_duty,
-            ...(convert === "purchase_to_grn" ? "" : { upload_image: JSON.parse(item?.upload_image) }),
+            ...(convert === "purchase_to_grn" ? "" : { upload_image: JSON?.parse(item?.upload_image) }),
         }),
 
         unit_id: item?.unit_id,
@@ -38,7 +38,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
         unit_id: item?.unit_id,
     }));
 
-    const all_changes = parseJSONofString(detailData?.charges) || [];
+    const all_changes = JSON?.parse(detailData?.charges) || [];
 
     const total_charges = all_changes.reduce((acc, item) => {
         const amount = item.amount && !isNaN(item.amount) ? parseFloat(item.amount) : 0;

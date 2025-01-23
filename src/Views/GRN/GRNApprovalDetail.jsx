@@ -15,7 +15,7 @@ import html2canvas from 'html2canvas';
 import useOutsideClick from '../Helper/PopupData';
 import { GRNdeleteActions, GRNdetailsActions, GRNstatusActions } from '../../Redux/Actions/grnActions';
 import ImagesCrou from '../../Components/ShowImageCarousel.jsx/ImagesCrou';
-import { parseJSONofString, ShowAutoGenerateId } from '../Helper/HelperFunctions';
+import { ShowAutoGenerateId } from '../Helper/HelperFunctions';
 import { GrnItemsDetailTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
 import { MoreInformation } from '../Common/InsideSubModulesCommon/DetailInfo';
 import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
@@ -112,7 +112,7 @@ const GRNApprovalDetail = () => {
             queryParams.set("duplicate", true);
             Navigate(`/dashboard/new-grn?${queryParams.toString()}`);
         } else if (val === "approved") {
-            dispatch(GRNstatusActions({ id: UrlId, status: 1 }, setCallApi, billData, autoId, parseJSONofString(GRNdetail?.tracking_details), Navigate));
+            dispatch(GRNstatusActions({ id: UrlId, status: 1 }, setCallApi, billData, autoId, JSON?.parse(GRNdetail?.tracking_details), Navigate));
         } else if (val === "declined") {
             dispatch(GRNstatusActions({ id: UrlId, status: 2 }, setCallApi));
         }

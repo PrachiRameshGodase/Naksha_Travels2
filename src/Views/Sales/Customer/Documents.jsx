@@ -84,7 +84,7 @@ const Documents = ({
         issue_date: item.issue_date || null,
         expiry_date: item.expiry_date || null,
         upload_documents: item.upload_documents
-          ? JSON.parse(item.upload_documents)
+          ? JSON?.parse(item.upload_documents)
           : [],
       }));
       setDocuments(documentsFromUser); // Update state with the transformed array
@@ -117,13 +117,13 @@ const Documents = ({
       {switchCusData === "Documents" && (
         <div id="secondx2_customer">
           <div className="iconheading">
-                  {otherIcons.quotation_icon}
-                  <p>Documents</p>
-                </div>
+            {otherIcons.quotation_icon}
+            <p>Documents</p>
+          </div>
           <div id="main_forms_desigin_cus">
             {documents.map((document, index) => (
               <div className="x1parenchild54" key={index}>
-                
+
                 <div className="iconheading">
                   {otherIcons.title_svg}
                   <p>{document.document_name}</p>

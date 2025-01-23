@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { GoPlus } from "react-icons/go";
 import { quotationLists } from "../../../Redux/Actions/listApisActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import "./quoations.scss";
@@ -22,12 +22,13 @@ import { quotationFilterOptions } from "../../Helper/SortByFilterContent/filterC
 import { quotationSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const Quotations = () => {
   const Navigate = useNavigate();
   const qutList = useSelector((state) => state?.quoteList);
   const qutSend = useSelector((state) => state?.quoteSend);
-
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -238,7 +239,8 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons?.doller_svg}
+                      {/* {otherIcons?.doller_svg} */}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>

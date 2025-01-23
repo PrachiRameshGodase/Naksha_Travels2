@@ -19,6 +19,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { deliveryChallanFilterOptions, invoiceFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const Invoices = ({ section }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ const Invoices = ({ section }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
+
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
+
 
   // reset current page to 1 when any filters are applied
   const resetPageIfNeeded = () => {
@@ -309,7 +313,7 @@ const Invoices = ({ section }) => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Amount
                     </p>
                   </div>
@@ -317,7 +321,7 @@ const Invoices = ({ section }) => {
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
 
                     <p>
-                      {otherIcons.doller_svg}
+                      {currencySymbol}{" "}
                       Balance Due
                     </p>
 

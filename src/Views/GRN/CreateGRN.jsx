@@ -32,7 +32,7 @@ import { GRNype } from "../Helper/ComponentHelper/DropdownData";
 import { SubmitButton2 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
-import { activeOrg_details, parseJSONofString, preventZeroVal, sendData } from "../Helper/HelperFunctions";
+import { activeOrg_details, preventZeroVal, sendData } from "../Helper/HelperFunctions";
 import Swal from "sweetalert2";
 import { useEditPurchaseForm } from "../Helper/StateHelper/EditPages/useEditPurchaseForm";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
@@ -243,7 +243,7 @@ const CreateGRN = () => {
       // if (!confirmed) return;
 
       const prepareFormDataForApi = (formData) => {
-        const preparedFormData = JSON.parse(JSON.stringify(formData));
+        const preparedFormData = JSON?.parse(JSON.stringify(formData));
         preparedFormData.items = preparedFormData.items.map(item => ({
           ...item,
           upload_image: JSON.stringify(item.upload_image)

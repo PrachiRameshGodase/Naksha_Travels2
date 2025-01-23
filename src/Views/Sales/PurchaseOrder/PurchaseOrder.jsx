@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { parseJSONofString, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy from "../../Common/SortBy/SortBy";
@@ -19,10 +19,11 @@ import { purchaseOrderFilterOptions } from "../../Helper/SortByFilterContent/fil
 import { purchaseOrderSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 
 const PurchaseOrder = () => {
-  const itemPayloads = localStorage.getItem(("purchasePayload"));
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -259,7 +260,7 @@ const PurchaseOrder = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
-                    {otherIcons.doller_svg}
+                    {currencySymbol}{" "}
                     AMOUNT
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">

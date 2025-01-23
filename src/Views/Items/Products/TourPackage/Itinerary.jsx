@@ -13,7 +13,6 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
-  parseJSONofString,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,9 +20,6 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 
 import {
-  flightdeleteActions,
-  flightListAction,
-  flightstatusActions,
 } from "../../../../Redux/Actions/flightActions";
 import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
@@ -45,8 +41,8 @@ const Itinerary = ({ data }) => {
   const totalItems = itinaeraryListData?.data?.count || 0;
   const itineraryStatusUpdate = useSelector((state) => state?.itineraryStatus);
   const itineryDelete = useSelector((state) => state?.itineraryDelete);
-  
- 
+
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -149,7 +145,7 @@ const Itinerary = ({ data }) => {
       const sendData = {
         itinerary_id: item?.id,
       };
-      const sendData2={
+      const sendData2 = {
         tour_package_id: data?.id,
       }
       dispatch(itinerarydeleteActions(sendData, sendData2));
@@ -178,7 +174,7 @@ const Itinerary = ({ data }) => {
         itinerary_id: item?.id,
         status: newValue,
       };
-      const sendData2={
+      const sendData2 = {
         tour_package_id: data?.id,
       }
       dispatch(itinerarystatusActions(sendData, sendData2))
@@ -200,7 +196,7 @@ const Itinerary = ({ data }) => {
   return (
     <>
       <TopLoadbar />
-      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading ||itineryDelete?.loading) && (
+      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading || itineryDelete?.loading) && (
         <MainScreenFreezeLoader />
       )}
       <div id="middlesection">
@@ -306,11 +302,10 @@ const Itinerary = ({ data }) => {
                       <>
                         {itineraryLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -348,9 +343,9 @@ const Itinerary = ({ data }) => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-                             
+
                               <AttachmentPreview4
-                                document={JSON.parse(
+                                document={JSON?.parse(
                                   item?.upload_documents || ""
                                 )}
                               />
@@ -364,15 +359,15 @@ const Itinerary = ({ data }) => {
                                   item?.status == "1"
                                     ? "approved"
                                     : item?.status == "0"
-                                    ? "draft"
-                                    : ""
+                                      ? "draft"
+                                      : ""
                                 }
                               >
                                 {item?.status == "0"
                                   ? "Inactive"
                                   : item?.status == "1"
-                                  ? "Active"
-                                  : ""}
+                                    ? "Active"
+                                    : ""}
                                 <span
                                   onClick={() => {
                                     handleStatusChange(item);

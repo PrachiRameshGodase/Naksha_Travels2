@@ -93,7 +93,7 @@ const FamilyMember = ({
   }, [employeeDetails, setUserData]);
 
   const fetchCustomers = () => {
-    const sendData = { customer_type: "Individual", active:1 };
+    const sendData = { customer_type: "Individual", active: 1 };
     dispatch(customersList(sendData));
   };
 
@@ -123,7 +123,7 @@ const FamilyMember = ({
         member_id: item.id || "",
         food_type: item.food_type || "",
         relationship: item.relationship || null,
-        photo: item?.photo ? JSON.parse(item?.photo) : "",
+        photo: item?.photo ? JSON?.parse(item?.photo) : "",
       }));
 
       setEmployeeDetails(familyDetail);

@@ -19,7 +19,7 @@ import newmenuicoslz from "../../../assets/outlineIcons/othericons/newmenuicoslz
 import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
-import { parseJSONofString, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 
 const Vendors = () => {

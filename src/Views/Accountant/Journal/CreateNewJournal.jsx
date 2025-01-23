@@ -23,8 +23,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
 import { JournalDetails } from '../../../Redux/Actions/JournalAndAccount';
 import Loader02 from '../../../Components/Loaders/Loader02';
-import { currencySymbol } from '../../Helper/HelperFunctions';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const CreateNewJournal = () => {
     const dispatch = useDispatch();
@@ -39,6 +38,7 @@ const CreateNewJournal = () => {
     const { id: itemId, edit: isEdit, duplicate: isDuplicate } = Object.fromEntries(params.entries());
 
     const currency = getCurrencyValue();
+    const currencySymbol = getCurrencySymbol();
 
     const [formData, setFormData] = useState({
         journal_no: "",

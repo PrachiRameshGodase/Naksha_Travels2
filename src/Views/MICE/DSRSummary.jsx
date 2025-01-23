@@ -1,15 +1,18 @@
 import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { useNavigate } from "react-router-dom";
-import { currencySymbol } from "../Helper/HelperFunctions";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const DSRSummary = ({ customerData }) => {
+
+  // get currency symbol from active orgnization form localStorage
+  const currencySymbol = getCurrencySymbol();
+
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}
       <div className="dsr_x012">
-        <p className="dsr_x012_p" style={{fontSize:"26px"}}>MICE Summary</p>
+        <p className="dsr_x012_p" style={{ fontSize: "26px" }}>MICE Summary</p>
         <div className="dsr_svg">
           <div className="dsr_x012_svg dsr_x012_svg_1">
             <svg
@@ -544,24 +547,24 @@ const DSRSummary = ({ customerData }) => {
         </div>
 
         <div className="user_detail_id_x002">
-        <p
+          <p
             className={
               customerData?.is_invoiced == "0"
                 ? "draft"
                 : customerData?.is_invoiced == "1"
-                ? "invoiced2"
-                : ""
+                  ? "invoiced2"
+                  : ""
             }
-            style={{ cursor: "pointer", padding: "5px 12px", width: "160px", marginTop:"-32px", marginBottom:"10px" }}
+            style={{ cursor: "pointer", padding: "5px 12px", width: "160px", marginTop: "-32px", marginBottom: "10px" }}
           >
             {customerData?.is_invoiced == "1"
               ? "Invoiced"
               : customerData?.is_invoiced == "0"
-              ? "Not Invoiced"
-              : ""}
+                ? "Not Invoiced"
+                : ""}
           </p>
           <p>{customerData?.mice_no || ""}</p>
-         
+
         </div>
       </div>
 
@@ -617,7 +620,7 @@ const DSRSummary = ({ customerData }) => {
             <h3>Service Total:</h3>
 
             <h3>
-            ({currencySymbol}) {customerData?.passengers
+              ({currencySymbol}) {customerData?.passengers
                 ?.reduce(
                   (acc, item) => acc + parseFloat(item?.service_total || 0),
                   0

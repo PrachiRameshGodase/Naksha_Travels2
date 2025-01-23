@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import {
-  currencySymbol,
-  parseJSONofString,
   showAmountWithCurrencySymbol,
-  showAmountWithCurrencySymbolWithPoints,
   showRateWithPercent,
 } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { MdArrowOutward } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
-  formatDate,
-  formatDate2,
-  formatDate3,
   formatDate4,
   todayDate,
 } from "../../Helper/DateFormat";
@@ -20,6 +14,7 @@ import NumericInput from "../../Helper/NumericInput";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);
@@ -29,7 +24,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
     }, 0);
   };
 
-  const totalExpenseCharges = parseJSONofString(itemsData?.charges);
+  const totalExpenseCharges = JSON?.parse(itemsData?.charges || "[]");
   // console.log("totalExpenseCharges", totalExpenseCharges);
 
   return (
@@ -60,7 +55,8 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
               <td className="table_column_item">
                 {val?.quantity || ""}
                 {"  "}
-                {val?.unit_id && (
+
+                {(val?.unit_id || val?.unit_id != 0) && (
                   <>
                     (<ShowMastersValue type="2" id={val?.unit_id} />)
                   </>
@@ -185,17 +181,17 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
               </td>
 
               <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                {JSON.parse(val?.upload_image)?.length > 1 ? (
+                {JSON?.parse(val?.upload_image)?.length > 1 ? (
                   <span
-                    onClick={() => showAllImages(JSON.parse(val?.upload_image))}
+                    onClick={() => showAllImages(JSON?.parse(val?.upload_image))}
                   >
-                    {JSON.parse(val?.upload_image)?.length} Images{" "}
+                    {JSON?.parse(val?.upload_image)?.length} Images{" "}
                     <MdArrowOutward />
                   </span>
                 ) : (
-                  `${JSON.parse(val?.upload_image)?.length < 1
+                  `${JSON?.parse(val?.upload_image)?.length < 1
                     ? "No"
-                    : JSON.parse(val?.upload_image)?.length
+                    : JSON?.parse(val?.upload_image)?.length
                   } Image`
                 )}
               </td>
@@ -252,17 +248,17 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
                 {val?.remarks || ""}
               </td>
               <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                {JSON.parse(val?.upload_image)?.length >= 1 ? (
+                {JSON?.parse(val?.upload_image)?.length >= 1 ? (
                   <span
-                    onClick={() => showAllImages(JSON.parse(val?.upload_image))}
+                    onClick={() => showAllImages(JSON?.parse(val?.upload_image))}
                   >
-                    {JSON.parse(val?.upload_image)?.length} Images{" "}
+                    {JSON?.parse(val?.upload_image)?.length} Images{" "}
                     <MdArrowOutward />
                   </span>
                 ) : (
-                  `${JSON.parse(val?.upload_image)?.length < 1
+                  `${JSON?.parse(val?.upload_image)?.length < 1
                     ? "No"
-                    : JSON.parse(val?.upload_image)?.length
+                    : JSON?.parse(val?.upload_image)?.length
                   } Image`
                 )}
               </td>
@@ -366,6 +362,8 @@ export const PaymentMadeDetailTable = ({ payment }) => {
 };
 
 export const Payment_Receive_DetailTable = ({ payment }) => {
+
+  const currencySymbol = getCurrencySymbol();
   const calculateTotalAmount = () => {
     const total = payment?.entries?.reduce((total, entry) => {
       return +total + (entry.amount ? parseFloat(entry.amount) : 0.0);
@@ -642,6 +640,8 @@ export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
 //for manage currency list / and create currencies prices...
 export const ManageCurrencyTable = ({ formData, setFormData, section }) => {
   // console.log("formdataaaaaaaaaaaa", formData)
+
+  const currencySymbol = getCurrencySymbol();
   return (
     <>
       {formData?.length >= 1 ? <>
@@ -752,7 +752,7 @@ export const DSRDetailTable = ({ itemsData, showChargesVal, section }) => {
     }, 0);
   };
 
-  const totalExpenseCharges = parseJSONofString(itemsData?.charges);
+  const totalExpenseCharges = JSON?.parse(itemsData?.charges);
   // console.log("totalExpenseCharges", totalExpenseCharges);
 
   return (

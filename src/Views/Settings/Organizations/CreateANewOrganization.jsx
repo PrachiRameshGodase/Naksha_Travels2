@@ -167,7 +167,6 @@ const CreateANewOrganization = () => {
 
 
   const getCurrencySymbol = getCurrency?.currency
-  console.log("getCurrencySymbol", getCurrencySymbol)
   return (
     <>
       <TopLoadbar />

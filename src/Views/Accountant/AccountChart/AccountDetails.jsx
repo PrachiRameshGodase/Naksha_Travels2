@@ -14,13 +14,15 @@ import useOutsideClick from '../../Helper/PopupData';
 import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatString, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
 
 const AccountDetails = () => {
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const itemId = new URLSearchParams(location.search).get("id");
-  const getAccountVal = JSON.parse(localStorage.getItem("editAccount"));
+  const getAccountVal = JSON?.parse(localStorage.getItem("editAccount"));
+  const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
 
   const accDetails = useSelector((state) => state?.accountDetails);
   const accountStatues = useSelector((state) => state?.accountStatus);
@@ -201,7 +203,7 @@ const AccountDetails = () => {
             <div id="coninsd2x3s" >
               <div className="inidbx1s2 inidbx1s2x21s5" style={{ width: "600px", height: "250px" }}>
                 <div className="inidbs1x1a1">
-                  <span style={{ zoom: "2" }}> {otherIcons?.doller_svg}</span>
+                  <span style={{ zoom: "2" }}> {currencySymbol}{" "}</span>
                   Closing Balance
                 </div>
 
