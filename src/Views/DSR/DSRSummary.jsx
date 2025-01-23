@@ -2,9 +2,11 @@ import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
-import { currencySymbol } from "../Helper/HelperFunctions";
+
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const DSRSummary = ({ customerData }) => {
+   const currencySymbol = getCurrencySymbol()
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}

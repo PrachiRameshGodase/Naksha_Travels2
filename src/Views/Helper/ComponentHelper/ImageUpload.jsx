@@ -1426,6 +1426,183 @@ export const SingleImageUploadDocument = ({
   imgLoader,
   setImgeLoader,
   index,
+}) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(""); // For the popup
+  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+
+  const popupRef = useRef(null);
+
+  // Parse upload_documents if it's a JSON string
+  const uploadDocument = Array.isArray(formData?.upload_documents)
+    ? formData?.upload_documents[0] || null
+    : JSON?.parse(formData?.upload_documents || "[]")[0] || null;
+
+  const handleImageChange = (e) => {
+    setFreezLoadingImg(true);
+    setImgeLoader(true);
+    setErrorMessage("");
+
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "pdf"];
+    const file = e.target.files[0]; // Get only the first file
+
+    if (file) {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      if (!allowedExtensions.includes(fileExtension)) {
+        setErrorMessage(
+          `Please upload a file with one of the following extensions: ${allowedExtensions.join(
+            ", "
+          )}`
+        );
+        setFreezLoadingImg(false);
+        setImgeLoader(false);
+        return;
+      }
+
+      const imageRef = ref(imageDB, `Documents/${v4()}`);
+      uploadBytes(imageRef, file)
+        .then(() => getDownloadURL(imageRef))
+        .then((url) => {
+          const newUploadDocument = {
+            url: url,
+            name: file.name,
+          };
+          // Update the formData with stringified JSON
+          setFormData(index, {
+            ...formData,
+            upload_documents: JSON.stringify([newUploadDocument]),
+          });
+          setImgeLoader("success");
+        })
+        .catch((error) => {
+          setFreezLoadingImg(false);
+          setImgeLoader("fail");
+          console.error("Upload error:", error);
+        })
+        .finally(() => setFreezLoadingImg(false));
+    }
+  };
+
+  const handleDeleteImage = () => {
+    setFormData(index, {
+      ...formData,
+      upload_documents: JSON.stringify([]),
+    });
+  };
+
+  const showImagePopup = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    OverflowHideBOdy(true); // Hide body scroll
+    setShowPopup(true);
+  };
+
+  const isImage = (fileUrl) => {
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const fileExtension = fileUrl.split(".").pop().toLowerCase();
+    return imageExtensions.includes(fileExtension);
+  };
+
+  return (
+    <>
+      <div id="formofcreateitems">
+        <div className="form_commonblock">
+          <div id="inputx1">
+            <div id="imgurlanddesc">
+              <div className="form-group">
+                <label>Upload Image/Document</label>
+                <div className="file-upload" tabIndex="0">
+                  <input
+                    type="file"
+                    id={`file_${index}`}
+                    className="inputfile"
+                    onChange={handleImageChange}
+                  />
+                  <label htmlFor={`file_${index}`} className="file-label">
+                    <div id="spc5s6">
+                      {uploadDocument ? (
+                        "1 File Uploaded"
+                      ) : (
+                        <>{otherIcons.export_svg} Browse File</>
+                      )}
+                    </div>
+                  </label>
+                </div>
+                {errorMessage && (
+                  <p
+                    style={{ color: "red", marginTop: "5px", fontSize: "12px" }}
+                  >
+                    {errorMessage}
+                  </p>
+                )}
+
+                {/* Render uploaded document */}
+                {imgLoader === "success" && uploadDocument && (
+                  <div id="Show_delete_img_new_vendor">
+                    <p style={{ width: "50%" }} title={uploadDocument?.name || ""}>
+                      {uploadDocument?.name?.length > 15
+                        ? `${uploadDocument?.name.substring(0, 10)}...`
+                        : uploadDocument?.name}
+                    </p>
+
+                    <div onClick={handleDeleteImage}>
+                      <MdOutlineDeleteForever />
+                    </div>
+                    {isImage(uploadDocument.url) ? (
+                      <div onClick={() => showImagePopup(uploadDocument?.url)}>
+                        <FaEye />
+                      </div>
+                    ) : (
+                      <a
+                        href={uploadDocument?.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Preview File"
+                      >
+                        <FaEye />
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Popup for viewing image */}
+      {showPopup && (
+        <div
+          className="mainxpopups2"
+          ref={popupRef}
+          style={{ marginTop: "10px" }}
+        >
+          <div className="popup-content02">
+            <span
+              className="close-button02"
+              onClick={() => setShowPopup(false)}
+            >
+              <RxCross2 />
+            </span>
+            <img
+              src={selectedImage}
+              alt="Selected Image"
+              height={500}
+              width={500}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+
+export const SingleImagePhoto = ({
+  formData,
+  setFormData,
+  setFreezLoadingImg,
+  imgLoader,
+  setImgeLoader,
+  index,
   disabled
 }) => {
   const [photo, setPhoto] = useState(formData?.photo || null);
@@ -1487,7 +1664,8 @@ export const SingleImageUploadDocument = ({
   };
 
   const isPhotoExpired = expiryDate && new Date() > expiryDate;
-  // console.log("formdata", formData)
+  
+
   return (
     <>
       {!photo ? (
@@ -1504,6 +1682,8 @@ export const SingleImageUploadDocument = ({
                       className="inputfile"
                       accept="image/*"
                       onChange={!disabled ? ()=>{handleImageChange()}:undefined}
+                      disabled={disabled}
+                 
                     />
                     <span style={{ cursor: "pointer" }}>
                       {otherIcons.export_svg}
@@ -1552,7 +1732,6 @@ export const SingleImageUploadDocument = ({
     </>
   );
 };
-
 
 export const SingleImageUpload = ({
   formData,

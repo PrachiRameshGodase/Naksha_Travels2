@@ -29,7 +29,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" style={{height:"550px"}}>
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>

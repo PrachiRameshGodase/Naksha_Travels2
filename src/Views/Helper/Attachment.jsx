@@ -219,8 +219,8 @@ const renderFilePreview = (file, index, showImagePopup, openFileInNewTab) => {
   );
 };
 
-export const AttachmentPreview2 = ({ attachments }) => {
-//  console.log("attachments", attachments?.length)
+export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
+  GiConsoleController.log("attachments", attachments)
   const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const [showAttachmentPreviews, setShowAttachmentPreviews] = useState(false); // New state for toggling previews
@@ -320,7 +320,7 @@ export const AttachmentPreview3 = ({ attachments }) => {
 };
 
 export const AttachmentPreview4 = ({ document }) => {
-  console.log("document", document)
+ 
  const [showImagesModal, setShowImagesModal] = useState(false);
   const [imagesVal, setImagesVal] = useState([]);
   const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"]; // Supported image file extensions

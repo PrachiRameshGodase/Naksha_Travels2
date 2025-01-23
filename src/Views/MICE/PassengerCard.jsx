@@ -13,6 +13,7 @@ import CreateHotelPopup from "./Services/PassengerHotel/CreateHotelPopup";
 import CreateInsurancePopup from "./Services/PassengerInsurance/CreateInsurancePopup";
 import CreateOtherPopup from "./Services/PassengerOthers/CreateOtherPopup";
 import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const [formData, setFormData] = useState({ service: "" });
 
   const servicesList = ShowMasterData("48");
-
+  const currencySymbol = getCurrencySymbol();
+  
   const handleServiceChange = (e, passengerId) => {
     const { value } = e.target;
     setFormData((prev) => ({

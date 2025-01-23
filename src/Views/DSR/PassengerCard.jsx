@@ -13,10 +13,11 @@ import CreateHotelPopup from "./Services/PassengerHotel/CreateHotelPopup";
 import CreateInsurancePopup from "./Services/PassengerInsurance/CreateInsurancePopup";
 import CreateOtherPopup from "./Services/PassengerOthers/CreateOtherPopup";
 import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const navigate = useNavigate();
-
+   const currencySymbol = getCurrencySymbol()
   const [activePopup, setActivePopup] = useState(null);
   const [formData, setFormData] = useState({
     service: "",

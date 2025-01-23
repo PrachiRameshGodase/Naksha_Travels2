@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MultiImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
+import { MultiImageUploadDocument, SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -97,7 +97,7 @@ const VaccinationDetails = ({
             <div key={index} id="main_forms_desigin_cus">
               <div>{item.vaccination_name}</div>
               <div id="imgurlanddesc" className="calctotalsectionx2">
-                <MultiImageUploadDocument
+                <SingleImageUploadDocument
                   formData={item}
                   setFormData={(index, updatedDocument) =>
                     handleUpdateDocument(index, updatedDocument)

@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import TransactionCus from "../../Items/Insidealldetailscus/TransactionCus";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { RxCross2 } from "react-icons/rx";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import ShowMastersValue from "../../Helper/ShowMastersValue";
+import React, { useEffect, useRef, useState } from "react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
+import {
+  AttachmentPreview3,
+  AttachmentPreviewMultipleDocument,
+} from "../../Helper/Attachment";
+import { formatDate3 } from "../../Helper/DateFormat";
 import {
   showDeparmentLabels,
   ShowMasterData,
 } from "../../Helper/HelperFunctions";
+import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { formatDate, formatDate3 } from "../../Helper/DateFormat";
-import { Navigate, useNavigate } from "react-router-dom";
-import AttachmentPreview from "../../Helper/AttachmentPreview";
-import {
-  AttachmentPreview2,
-  AttachmentPreview3,
-} from "../../Helper/Attachment";
+import TransactionCus from "../../Items/Insidealldetailscus/TransactionCus";
 const InsideCusDetails = ({
   customerDetails,
   employees,
@@ -1134,8 +1133,8 @@ const InsideCusDetails = ({
                                   : "-"}
                               </td>
                               <td>
-                                {/* {console.log("document",item?.upload_documents)} */}
-                                {/* <AttachmentPreview2 attachments={item?.upload_documents ? JSON?.parse(item?.upload_documents) : []} /> */}
+                                {console.log("document",item?.upload_documents)}
+                                <AttachmentPreviewMultipleDocument attachments={item?.upload_documents ? JSON?.parse(item?.upload_documents) : "-"} />
                               </td>
                             </tr>
                           ))}
@@ -1186,11 +1185,8 @@ const InsideCusDetails = ({
 
                                 <td>{item?.vaccination_name || "-"}</td>
                                 <td>
-                                  {console.log(
-                                    "item?.u",
-                                    item?.upload_documents
-                                  )}
-                                  <AttachmentPreview2
+                                 
+                                  <AttachmentPreviewMultipleDocument
                                     attachments={
                                       item?.upload_documents
                                         ? JSON?.parse(item?.upload_documents)

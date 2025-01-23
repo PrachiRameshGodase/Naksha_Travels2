@@ -5,7 +5,7 @@ import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown2
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { customersList } from "../../../Redux/Actions/customerActions";
-import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
+import { SingleImagePhoto, SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -93,7 +93,7 @@ const FamilyMember = ({
   }, [employeeDetails, setUserData]);
 
   const fetchCustomers = () => {
-    const sendData = { customer_type: "Individual", active: 1 };
+    const sendData = { customer_type: "Individual", active: 1 , status: 1};
     dispatch(customersList(sendData));
   };
 
@@ -199,7 +199,7 @@ const FamilyMember = ({
                     </td>
 
                     <td>
-                      <SingleImageUploadDocument
+                      <SingleImagePhoto
                         formData={member}
                         setFormData={setEmployeeDetails}
                         setFreezLoadingImg={setFreezLoadingImg}

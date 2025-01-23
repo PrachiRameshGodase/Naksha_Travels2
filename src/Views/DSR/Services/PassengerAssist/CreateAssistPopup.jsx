@@ -1,24 +1,21 @@
 import { useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown30 from "../../../../Components/CustomDropdown/CustomDropdown30";
+import { customersList } from "../../../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerAssistAction } from "../../../../Redux/Actions/passengerAssistActions";
 import {
-  SubmitButton2,
-  SubmitButton6,
+  SubmitButton6
 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import "../CreateHotelPopup.scss";
-import { customersList } from "../../../../Redux/Actions/customerActions";
-import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
-import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CalculationSection from "../../CalculationSection";
+import "../CreateHotelPopup.scss";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -306,7 +303,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
             </div>
             <SubmitButton6
               onClick={handleFormSubmit}
-             
               createUpdate={createAssist}
               setShowModal={setShowModal}
             />

@@ -30,7 +30,7 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                 <div
                   id="itemsdetailsrowskl"
                   className="secondinsidedatax15s"
-                  style={{ height: "400px" }}
+                  // style={{ height: "400px" }}
                 >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (

@@ -4,6 +4,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import {
   MultiImageUploadDocument,
   MultiImageUploadHelp,
+  SingleImageUploadDocument,
 } from "../../Helper/ComponentHelper/ImageUpload";
 import { ShowMasterData } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
@@ -77,7 +78,6 @@ const Documents = ({
   useEffect(() => {
     if (user?.id && isEdit) {
       const userDocumentDetails = user?.documents || [];
-      console.log("userDocumentDetails", userDocumentDetails);
       const documentsFromUser = userDocumentDetails?.map((item) => ({
         document_name: item.document_name || "",
         document_no: item.document_no || "",
@@ -88,7 +88,7 @@ const Documents = ({
           : [],
       }));
       setDocuments(documentsFromUser); // Update state with the transformed array
-
+      
       setTick((prevTick) => ({
         ...prevTick,
         documentsTick: true,
@@ -180,7 +180,7 @@ const Documents = ({
                   </div>
                   <div id="fcx3s1parent">
                     <div id="imgurlanddesc" className="calctotalsectionx2">
-                      <MultiImageUploadDocument
+                      <SingleImageUploadDocument
                         formData={document}
                         setFormData={(index, updatedDocument) =>
                           handleUpdateDocument(index, updatedDocument)
