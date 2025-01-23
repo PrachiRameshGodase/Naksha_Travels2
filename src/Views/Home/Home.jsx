@@ -52,9 +52,9 @@ const Home = () => {
     const userData = searchParams.get('UserData');
 
     if (accessToken && userData) {
-      localStorage.setItem('AccessToken', accessToken);
-      // localStorage.setItem('UserData', userData);
-      setCookie("UserData", JSON.stringify(user), 7);
+      // localStorage.setItem('AccessToken', accessToken);
+      setCookie("AccessToken", JSON.stringify(accessToken), 7);
+      localStorage.setItem('UserData', userData);
       navigate('/');
     }
   }, [location.search, navigate]);
