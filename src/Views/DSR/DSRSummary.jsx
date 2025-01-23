@@ -586,7 +586,7 @@ const DSRSummary = ({ customerData }) => {
             <p className="x1002">{customerData?.customer?.customer_type}</p>
           </div>
           <div className="x001">
-            <p className="x002">{otherIcons?.main_currency_icon} Currency</p>
+            <p className="x002"> Currency</p>
             <p className="x1002">{customerData?.currency}</p>
           </div>
           {/* {customerData?.passengers?.map((item, index) => (

@@ -31,7 +31,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
             zip_code: "",
             address_type: "",
             is_billing: 0,
-            is_shipping: 0,
+            is_shipping: 1,
             phone_no: "",
             fax_no: "",
             // id: 1
@@ -121,7 +121,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                 city_id: "",
                 zip_code: "",
                 address_type: "",
-                is_billing: 0,
+                is_billing: 1,
                 is_shipping: 0,
                 phone_no: "",
                 fax_no: "",

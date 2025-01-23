@@ -10,6 +10,7 @@ import CustomDropdown27 from "../../../Components/CustomDropdown/CustomDropdown2
 import { SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
+import Swal from "sweetalert2";
 
 const EmployeeDetails = ({
   switchCusData,
@@ -99,10 +100,18 @@ const EmployeeDetails = ({
     fetchCustomers();
   }, []);
   // Function to delete a selected member
-  const handleDeleteSelectedMember = (indexToDelete) => {
+  const handleDeleteSelectedMember = async(indexToDelete) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this member from list?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
     setEmployeeDetails((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToDelete)
     );
+  }
   };
 
   
@@ -187,6 +196,7 @@ const EmployeeDetails = ({
                         onClick={() => {
                           handleDeleteSelectedMember(index);
                         }}
+                        style={{ cursor: "pointer" }}
                       >
                         {otherIcons.delete_svg}
                       </span>

@@ -99,7 +99,7 @@ const InsideCusDetails = ({
     OverflowHideBOdy(true); // Set overflow hidden
     setShowPopup(true); // Show the popup
   };
-
+console.log("customerDetails",customerDetails?.address)
   // close emoji mart
   let billingIndex = 0;
   let shippingIndex = 0;
@@ -578,7 +578,7 @@ const InsideCusDetails = ({
                               </li>
 
                               <li>
-                                <span style={{ width: "502px" }}>
+                                <span style={{ width: "567px" }}>
                                   Payment Terms
                                 </span>
                                 <h1>:</h1>
@@ -1093,8 +1093,8 @@ const InsideCusDetails = ({
 
                               <td>{item?.document_name || "-"}</td>
                               <td>{item?.document_no || "-"}</td>
-                              <td>{formatDate3(item?.issue_date) || "-"}</td>
-                              <td>{formatDate3(item?.expiry_date) || "-"}</td>
+                              <td>{item?.issue_date ? formatDate3(item?.issue_date) : "-"}</td>
+                              <td>{item?.expiry_date ? formatDate3(item?.expiry_date) : "-"}</td>
                               <td>
                                 <AttachmentPreview2 attachments={item?.upload_documents ? JSON.parse(item?.upload_documents) : []}/>
                                </td>
@@ -1209,7 +1209,7 @@ const InsideCusDetails = ({
                                 </span>
                                 <h1>:</h1>
 
-                                <p>{formatDate3(val?.issue_date)}</p>
+                                <p>{val?.issue_date ? formatDate3(val?.issue_date) : ""}</p>
                               </li>
                             </ul>
                           </div>
@@ -1222,7 +1222,7 @@ const InsideCusDetails = ({
                                 </span>
                                 <h1>:</h1>
 
-                                <p>{formatDate3(val?.expiry_date)}</p>
+                                <p>{val?.expiry_date ? formatDate3(val?.expiry_date) : ""}</p>
                               </li>
                               <li>
                                 <span style={{ width: "180px" }}>

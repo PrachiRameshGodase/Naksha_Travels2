@@ -101,7 +101,8 @@ const FamilyMember = ({
     fetchCustomers();
   }, []);
 
-  const handleDeleteSelectedMember = async (indexToDelete) => {
+  const handleDeleteSelectedMember = async(indexToDelete) => {
+    console.log("indexToDelete", indexToDelete)
     const result = await Swal.fire({
       text: "Are you sure you want to delete this member from list?",
       showCancelButton: true,
@@ -109,10 +110,10 @@ const FamilyMember = ({
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
-      setEmployeeDetails((prevDetails) =>
-        prevDetails.filter((_, index) => index !== indexToDelete)
-      );
-    }
+    setEmployeeDetails((prevDetails) =>
+      prevDetails.filter((_, index) => index !== indexToDelete)
+    );
+  }
   };
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const FamilyMember = ({
             <th>No.</th>
             <th>Member Name</th>
             <th>Email</th>
-            <th>Mobile Number</th>
+            {/* <th>Mobile Number</th> */}
             <th>Gender</th>
             <th style={{ minWidth: "100px" }}>Relationship</th>
             <th style={{ minWidth: "100px" }}>Food Type</th>
@@ -172,7 +173,7 @@ const FamilyMember = ({
               return (
                 selectedMember && (
                   <tr
-                    key={index}
+                  key={member.member_id}
                     style={{
                       backgroundColor: disabledRow ? "#f2f2f2" : "#fff",
                       pointerEvents: disabledRow ? "none" : "auto",
@@ -181,7 +182,7 @@ const FamilyMember = ({
                     <td>{index + 1}</td>
                     <td>{selectedMember.display_name}</td>
                     <td>{selectedMember.email}</td>
-                    <td>{selectedMember.mobile_no}</td>
+                    {/* <td>{selectedMember.mobile_no}</td> */}
                     <td>
                       <ShowMastersValue type="45" id={selectedMember.gender} />
                     </td>

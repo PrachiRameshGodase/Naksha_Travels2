@@ -190,6 +190,31 @@ const DSRDetails = () => {
             <h1 id="firstheading">{DSRData?.dsr_no}</h1>
           </div>
           <div id="buttonsdata">
+            <div
+              onClick={() => {
+                handleChangeDSRStatus(DSRData);
+              }}
+              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+            >
+              <p
+                className={
+                  DSRData?.is_invoiced == "0"
+                    ? "draft"
+                    : DSRData?.is_invoiced == "1"
+                    ? "invoiced2"
+                    : ""
+                }
+                style={{
+                  cursor: "pointer",
+                  padding: "5px 12px",
+                  width: "160px",
+                }}
+              >
+                {DSRData?.is_invoiced == "0"
+                  ? "Convert To Invoice"
+                  : "Invoiced"}
+              </p>
+            </div>
             {DSRData?.is_invoiced == "1" && (
               <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>
@@ -198,42 +223,17 @@ const DSRDetails = () => {
               </div>
             )}
             {DSRData?.is_invoiced == "0" && (
-              <>
-                <div
-                  onClick={() => {
-                    handleChangeDSRStatus(DSRData);
-                  }}
-                  // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                >
-                  <p
-                    className={
-                      DSRData?.is_invoiced == "0"
-                        ? "draft"
-                        : DSRData?.is_invoiced == "1"
-                        ? "invoiced"
-                        : ""
-                    }
-                    style={{
-                      cursor: "pointer",
-                      padding: "5px 12px",
-                      width: "160px",
-                    }}
-                  >
-                    Convert To Invoice
-                  </p>
-                </div>
-                <div
-                  data-tooltip-content="Delete"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-place="bottom"
-                  className="filtersorticos5wx2"
-                  onClick={() => {
-                    handleDeleteDSR(DSRData);
-                  }}
-                >
-                  {otherIcons.delete_svg}
-                </div>
-              </>
+              <div
+                data-tooltip-content="Delete"
+                data-tooltip-id="my-tooltip"
+                data-tooltip-place="bottom"
+                className="filtersorticos5wx2"
+                onClick={() => {
+                  handleDeleteDSR(DSRData);
+                }}
+              >
+                {otherIcons.delete_svg}
+              </div>
             )}
             <Link
               to={"/dashboard/dsr"}
@@ -303,7 +303,7 @@ const DSRDetails = () => {
                               cursor: isDisabled ? "not-allowed" : "pointer",
                             }}
                             className={`firstbtnc1 `}
-                            onClick={() => {if (!isDisabled) {handleFormSubmit2();}}}
+                            onClick={handleFormSubmit2}
                           >
                             Add Passenger
                           </button>

@@ -104,7 +104,6 @@ const MICEDetails = () => {
               };
               dispatch(MICEDetailsAction(refreshData));
             }
-            
           })
           .catch((err) => console.log(err));
       } catch (error) {
@@ -112,7 +111,7 @@ const MICEDetails = () => {
       }
     }
   };
-  
+
   const handleDeleteDSR = async (item) => {
     const result = await Swal.fire({
       text: "Are you sure you want to delete this mice?",
@@ -169,50 +168,49 @@ const MICEDetails = () => {
             <h1 id="firstheading">{MICEData?.mice_no}</h1>
           </div>
           <div id="buttonsdata">
-          {MICEData?.is_invoiced == "1" && (
+            <div
+              onClick={() => {
+                handleChangeDSRStatus(DSRData);
+              }}
+              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+            >
+              <p
+                className={
+                  MICEData?.is_invoiced == "0"
+                    ? "draft"
+                    : MICEData?.is_invoiced == "1"
+                    ? "invoiced2"
+                    : ""
+                }
+                style={{
+                  cursor: "pointer",
+                  padding: "5px 12px",
+                  width: "160px",
+                }}
+              >
+                {MICEData?.is_invoiced == "0"
+                  ? "Convert To Invoice"
+                  : "Invoiced"}
+              </p>
+            </div>
+            {MICEData?.is_invoiced == "1" && (
               <div className="mainx1">
-                <p  style={{ cursor: "pointer" }}>
-                  PDF/Print
-                </p>
+                <p style={{ cursor: "pointer" }}>PDF/Print</p>
               </div>
             )}
+
             {MICEData?.is_invoiced == "0" && (
-              <>
-              
-                <div
-                  onClick={() => {
-                    handleChangeDSRStatus(MICEData);
-                  }}
-                >
-                  <p
-                    className={
-                      MICEData?.is_invoiced == "0"
-                        ? "draft"
-                        : MICEData?.is_invoiced == "1"
-                        ? "invoiced"
-                        : ""
-                    }
-                    style={{
-                      cursor: "pointer",
-                      padding: "5px 12px",
-                      width: "160px",
-                    }}
-                  >
-                    Convert To Invoice
-                  </p>
-                </div>
-                <div
-                  data-tooltip-content="Delete"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-place="bottom"
-                  className="filtersorticos5wx2"
-                  onClick={() => {
-                    handleDeleteDSR(MICEData);
-                  }}
-                >
-                  {otherIcons.delete_svg}
-                </div>
-              </>
+              <div
+                data-tooltip-content="Delete"
+                data-tooltip-id="my-tooltip"
+                data-tooltip-place="bottom"
+                className="filtersorticos5wx2"
+                onClick={() => {
+                  handleDeleteDSR(MICEData);
+                }}
+              >
+                {otherIcons.delete_svg}
+              </div>
             )}
 
             <Link
@@ -267,19 +265,20 @@ const MICEDetails = () => {
                                   type="vendor"
                                   required
                                   disabled={isDisabled}
-                                  
                                 />
                               </span>
                             </div>
                           </div>
                           <button
-                           data-tooltip-content={isDisabled? "Not able to click. It is invoiced.": ""}
-                          data-tooltip-id="my-tooltip"
-                          data-tooltip-place="bottom"
+                            data-tooltip-content={
+                              isDisabled
+                                ? "Not able to click. It is invoiced."
+                                : ""
+                            }
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-place="bottom"
                             className={`firstbtnc1 `}
-                            // onClick={(e) => {e.preventDefault();if (!isDisabled) {handleFormSubmit2();}}}
                             onClick={handleFormSubmit2}
-                            
                           >
                             Add Passenger
                           </button>
@@ -290,7 +289,7 @@ const MICEDetails = () => {
                         <PassengerCard
                           passengers={MICEData}
                           onDelete={handleDeletePassenger}
-                           disabled={isDisabled}
+                          disabled={isDisabled}
                         />
                       </div>
                     </div>

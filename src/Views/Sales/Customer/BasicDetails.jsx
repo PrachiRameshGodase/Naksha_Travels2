@@ -294,7 +294,7 @@ const BasicDetails = ({
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>First Name</label>
+                        <label>First Name<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             <input
@@ -311,7 +311,7 @@ const BasicDetails = ({
                         </div>
                       </div>
                       <div className="form_commonblock">
-                  <label className="">Last Name</label>
+                  <label className="">Last Name<b className="color_red">*</b></label>
                   <div id="inputx1">
                     <span>
                       {/* {otherIcons.company_name_svg} */}
@@ -337,7 +337,7 @@ const BasicDetails = ({
             <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblock">
-                  <label>Email</label>
+                  <label>Email<b className="color_red">*</b></label>
                   <span>
                     {otherIcons.email_svg}
                     <input

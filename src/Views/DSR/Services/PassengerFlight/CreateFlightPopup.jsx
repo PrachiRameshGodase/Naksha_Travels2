@@ -13,7 +13,7 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
@@ -83,7 +83,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const entryType = ShowMasterData("50");
   const travelType = ShowMasterData("51");
-  const destinationCode = ShowMasterData("52");
+  const destinationCode = ShowUserMasterData("52");
   const GDSPortal = ShowMasterData("53");
   const flightRoute = ShowMasterData("54");
 

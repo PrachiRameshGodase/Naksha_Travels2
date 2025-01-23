@@ -11,6 +11,7 @@ import { fetchCurrencies, fetchGetCountries, fetchMasterData, fetchTexRates } fr
 
 // list api datas
 import { useDispatch } from "react-redux";
+import { UserMasterListAction } from "../Redux/Actions/userMasterActions";
 
 const useFetchOnMount = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const useFetchOnMount = () => {
         // dispatch(binViewAction(sendData));
 
         dispatch(fetchMasterData());
+        dispatch(UserMasterListAction())
         dispatch(fetchCurrencies());
         dispatch(fetchTexRates());
         dispatch(fetchGetCountries());

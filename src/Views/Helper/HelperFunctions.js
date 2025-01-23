@@ -34,7 +34,7 @@ export const activeOrg_details = UserData?.active_organisation;
 export const currencySymbol = activeOrg_details?.symbol ? activeOrg_details?.symbol : "$";
 export const orgnizationEmail = activeOrg_details?.email ? activeOrg_details?.email : "";
 
-console.log("currencySymbol", currencySymbol)
+
 export const showAmountWithCurrencySymbol = (val) => {
     return val == "0" ? `${currencySymbol} 0.00` : val ? `${currencySymbol} ${val} ` : "";
 }
@@ -53,7 +53,6 @@ export const ShowMasterData = (type) => {
 
 export const ShowUserMasterData = (type) => {
     const userMasterData = useSelector(state => state?.userMasterList?.data);
-
     const filteredData = userMasterData?.filter(item => item.type == type);
     return filteredData || [];
 };
