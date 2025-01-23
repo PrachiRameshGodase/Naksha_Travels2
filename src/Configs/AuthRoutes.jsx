@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { Navigate, useLocation } from 'react-router-dom';
-import { getCookie } from "../Views/Helper/ComponentHelper/ManageStorage/cookeeStorageUtils";
 const externalUrl = import.meta.env.VITE_EXTERNAL_URL;
 
 // export const ProtectedRouteForAuthSlash = ({ children }) => {
@@ -25,12 +24,11 @@ const externalUrl = import.meta.env.VITE_EXTERNAL_URL;
 // };
 
 
+
+
 export const ProtectedRouteForUser = ({ children }) => {
   const location = useLocation();
-  // const storedAccessToken = localStorage.getItem('AccessToken');
-  const storedAccessToken = getCookie('AccessToken');
-
-
+  const storedAccessToken = localStorage.getItem('AccessToken');
 
   // Parse URL parameters
   const searchParams = new URLSearchParams(location.search);
@@ -40,7 +38,6 @@ export const ProtectedRouteForUser = ({ children }) => {
   if (!storedAccessToken && !urlAccessToken) {
     // return <Navigate to="/login" replace={true} />;//for local
 
-    // const url = `${externalUrl}/login`;
     const url = `${externalUrl}/login`;
     window.location.href = url;
     // return <Navigate to={`/${externalUrl}/login`} replace={true} />;//for live url

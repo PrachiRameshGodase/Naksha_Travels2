@@ -126,8 +126,8 @@ const Topbar = ({ loggedInUserData }) => {
     // window.location.href = url;
 
     // this is use for logout to the domain of erp.nakshatravels when it is redirect..
-    document.cookie = "UserData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    document.cookie = "UserData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.erp.nakshatravels.com;";
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.erp.nakshatravels.com;";
     // alert("Logged out from localhost:5174 and localhost:5175");
 
   };

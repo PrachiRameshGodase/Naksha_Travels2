@@ -7,7 +7,6 @@ import './home.scss'
 import { useLocation, useNavigate } from 'react-router-dom';
 import callApisOnPageLoad from '../../Configs/callApisOnPageLoad';
 import useFetchOnMount from '../Helper/ComponentHelper/useFetchOnMount';
-import { getCookie, setCookie } from '../Helper/ComponentHelper/ManageStorage/cookeeStorageUtils';
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 const externalUrl = import.meta.env.VITE_EXTERNAL_URL;
 
@@ -20,8 +19,7 @@ const Home = () => {
   const fetchLoggedInUser = useCallback(async () => {
     localStorage.setItem('FinancialYear', '2024');
     try {
-      // const token = localStorage.getItem('AccessToken');
-      const token = getCookie('AccessToken')
+      const token = localStorage.getItem('AccessToken');
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const response = await axios.post(`${apiUrl}/user/getloggedinuser`);
@@ -30,7 +28,6 @@ const Home = () => {
 
       // Store user data and access token in local storage
       localStorage.setItem("UserData", JSON.stringify(user));
-
       if (response.data.success) {
         setLoggedInUserData(response?.data?.user);
       } else {
@@ -52,8 +49,7 @@ const Home = () => {
     const userData = searchParams.get('UserData');
 
     if (accessToken && userData) {
-      // localStorage.setItem('AccessToken', accessToken);
-      setCookie("AccessToken", JSON.stringify(accessToken), 7);
+      localStorage.setItem('AccessToken', accessToken);
       localStorage.setItem('UserData', userData);
       navigate('/');
     }
