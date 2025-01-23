@@ -87,6 +87,9 @@ const Documents = ({
           ? JSON?.parse(item.upload_documents)
           : [],
       }));
+      if (documentsFromUser?.map((item) => item?.upload_documents)) {
+        setImgeLoader("success")
+      }
       setDocuments(documentsFromUser); // Update state with the transformed array
       
       setTick((prevTick) => ({

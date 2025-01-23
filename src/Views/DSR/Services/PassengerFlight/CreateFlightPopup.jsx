@@ -510,7 +510,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         />
                       </div>
                       <div className="secondtotalsections485s">
-                        <div className="textareaofcreatqsiform">
+                      <div className="textareaofcreatqsiform">
                           <label>Note</label>
                           <div className="show_no_of_text_limit_0121">
                             <TextAreaComponentWithTextLimit
@@ -521,6 +521,9 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
+                      </div>
+                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                        
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

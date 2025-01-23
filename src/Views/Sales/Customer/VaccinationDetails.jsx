@@ -60,6 +60,9 @@ const VaccinationDetails = ({
             : [],
         })
       );
+      if (vaccinationDetailsFromUser?.map((item) => item?.upload_documents)) {
+        setImgeLoader("success")
+      }
 
       setVaccinationDetails(vaccinationDetailsFromUser); // Update state with the transformed array
 
