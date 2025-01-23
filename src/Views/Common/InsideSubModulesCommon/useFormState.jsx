@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 export const useFormState = (quoteDetails, itemId, isEdit, convert, module) => {
     const currency = getCurrencyValue();

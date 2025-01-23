@@ -27,7 +27,7 @@ import FamilyMember from "./FamilyMember";
 import {
   SubmitButton2,
 } from "../../Common/Pagination/SubmitButton";
-import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const CreateCustomer = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();

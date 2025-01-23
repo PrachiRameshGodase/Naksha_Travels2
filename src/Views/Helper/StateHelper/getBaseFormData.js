@@ -1,4 +1,4 @@
-import { getCurrencyValue } from "../ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageUtils";
 import { formatDate } from "../DateFormat";
 
 export const getBaseFormData = (overrides = {}, removeKeys = []) => {

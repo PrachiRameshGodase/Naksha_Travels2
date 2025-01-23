@@ -23,7 +23,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
 import { JournalDetails } from '../../../Redux/Actions/JournalAndAccount';
 import Loader02 from '../../../Components/Loaders/Loader02';
-import { getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreateNewJournal = () => {
     const dispatch = useDispatch();

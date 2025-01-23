@@ -20,7 +20,7 @@ import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { Nav } from 'react-bootstrap';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 
 const CreateAccountChart = () => {

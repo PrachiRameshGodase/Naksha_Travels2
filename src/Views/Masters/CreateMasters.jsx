@@ -38,7 +38,7 @@ import ItemSelect from '../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../Helper/ComponentHelper/ImageUpload';
 import { isPartiallyInViewport } from '../Helper/is_scroll_focus';
 import "./CreateMasters.scss"
-import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 const CreateMasters = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);

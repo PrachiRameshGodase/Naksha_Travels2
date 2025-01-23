@@ -27,7 +27,7 @@ import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { formatDate } from '../../Helper/DateFormat';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 const CreateDebitNotes = () => {
     const dispatch = useDispatch();
     const location = useLocation();

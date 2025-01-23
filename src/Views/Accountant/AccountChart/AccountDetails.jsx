@@ -14,7 +14,7 @@ import useOutsideClick from '../../Helper/PopupData';
 import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatString, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
-import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const AccountDetails = () => {
 

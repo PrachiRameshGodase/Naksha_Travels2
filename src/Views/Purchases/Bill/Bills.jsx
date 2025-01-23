@@ -20,7 +20,7 @@ import { billSortOptions } from "../../Helper/SortByFilterContent/sortbyContent"
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDebounceSearch, } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Quotations = () => {
   const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage

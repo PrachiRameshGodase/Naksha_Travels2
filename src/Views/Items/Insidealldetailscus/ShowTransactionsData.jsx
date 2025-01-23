@@ -26,7 +26,7 @@ import {
   ShowStatusInList,
 } from "../../Helper/ComponentHelper/ShowStatus";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const ShowTransactionsData = ({ activeSection, type }) => {
   const location = useLocation();
   const dispatch = useDispatch();

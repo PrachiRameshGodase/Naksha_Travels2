@@ -122,8 +122,14 @@ const Topbar = ({ loggedInUserData }) => {
 
   const clearLocalStoragex1 = () => {
     localStorage.clear();
-    const url = `${externalUrl}/home_megamarket?isLogout=1`;
-    window.location.href = url;
+    // const url = `${externalUrl}/home_nakshatravels?isLogout=1`;
+    // window.location.href = url;
+
+    // this is use for logout to the domain of erp.nakshatravels when it is redirect..
+    document.cookie = "UserData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    // alert("Logged out from localhost:5174 and localhost:5175");
+
   };
 
   //fetch all orgnization...

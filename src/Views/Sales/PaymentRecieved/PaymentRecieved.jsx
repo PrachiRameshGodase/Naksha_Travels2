@@ -23,7 +23,7 @@ import {
 } from "../../Helper/SortByFilterContent/filterContent";
 import { formatDate3 } from "../../Helper/DateFormat";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PaymentRecieved = () => {
 

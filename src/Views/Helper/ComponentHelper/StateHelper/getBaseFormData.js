@@ -1,5 +1,5 @@
 import { formatDate } from "../DateFormat";
-import { getCurrencyValue } from "../ManageLocalStorage/localStorageUtils";
+import { getCurrencyValue } from "../ManageStorage/localStorageUtils";
 
 export const getBaseFormData = (overrides = {}, removeKeys = []) => {
     const currency = getCurrencyValue();

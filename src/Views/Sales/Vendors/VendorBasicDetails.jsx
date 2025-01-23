@@ -18,7 +18,7 @@ import NumericInput from '../../Helper/NumericInput';
 import ImageUpload, { MultiImageUpload } from '../../Helper/ComponentHelper/ImageUpload';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
 import { CustomDropdown006 } from '../../../Components/CustomDropdown/CustomDropdown06';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const registerationtypes = [
     {

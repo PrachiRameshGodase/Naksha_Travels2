@@ -27,7 +27,7 @@ import { ShowMasterData } from '../../Helper/HelperFunctions';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
-import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreatePaymentMade = () => {
     const dispatch = useDispatch();
