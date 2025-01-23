@@ -62,11 +62,11 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     vehicle_type_id: false,
-    pickup_location:false,
-    drop_location:false,
+    pickup_location: false,
+    drop_location: false,
     guest_ids: false,
     gross_amount: false,
- 
+
     // retain: false,
     total_amount: false,
   });
@@ -108,7 +108,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       drop_location: formData?.drop_location ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-    
+
       // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -119,24 +119,25 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (hasAnyError) {
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-        charges: JSON.stringify(formData?.charges),
-      };
-      const refreshData = {
-        dsr_id: data?.id,
-      };
-      dispatch(CreatePassengerCarHireAction(sendData, setShowModal, refreshData))
-        
-    } catch (error) {
-      console.error("Error updating car hire:", error);
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          dsr_id: data?.id,
+        };
+        dispatch(
+          CreatePassengerCarHireAction(sendData, setShowModal, refreshData)
+        );
+      } catch (error) {
+        console.error("Error updating car hire:", error);
+      }
     }
-  }
   };
 
   // call item api on page load...
@@ -229,7 +230,6 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                         </div>
-
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -245,22 +245,21 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.pickup_location && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Pickup Location
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Pickup Location
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                     
                       <div className="form_commonblock">
                         <label>
                           Drop Location<b className="color_red">*</b>
@@ -275,17 +274,17 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.drop_location && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Drop Location
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Drop Location
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -327,9 +326,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -365,7 +362,6 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
@@ -378,6 +374,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
+                      </div>
+                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

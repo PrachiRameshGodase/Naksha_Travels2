@@ -16,7 +16,11 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
@@ -72,8 +76,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     upload_image: null,
   });
   const [errors, setErrors] = useState({
-    travel_date:false,
-    booking_date:false,
+    travel_date: false,
+    booking_date: false,
     airline_name: false,
     guest_ids: false,
     gross_amount: false,
@@ -110,7 +114,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     });
     setErrors((prevData) => ({
       ...prevData,
-     [name]: false,
+      [name]: false,
     }));
   };
   const handleDateChange = (date, name) => {
@@ -120,20 +124,20 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
     setErrors((prevErrors) => {
       const updatedErrors = { ...prevErrors };
-  
+
       const bookingDate = new Date(formData?.booking_date);
       const travelDate = new Date(formData?.travel_date);
-     
+
       const selectedDate = new Date(date);
-  
+
       if (name === "booking_date") {
         updatedErrors.booking_date =
-          (formData?.travel_date && selectedDate > travelDate) 
-         }
-  
+          formData?.travel_date && selectedDate > travelDate;
+      }
+
       if (name === "travel_date") {
         updatedErrors.travel_date = selectedDate < bookingDate;
-       }
+      }
       return updatedErrors;
     });
   };
@@ -145,7 +149,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       travel_date: formData?.travel_date ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      
+
       // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -166,10 +170,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
           charges: JSON.stringify(formData?.charges),
         };
         const refreshData = {
-        mice_id: data?.id,
+          mice_id: data?.id,
         };
-        dispatch(CreatePassengerMFlightAction(sendData, setShowModal, refreshData))
-         
+        dispatch(
+          CreatePassengerMFlightAction(sendData, setShowModal, refreshData)
+        );
       } catch (error) {
         console.error("Error updating flight:", error);
       }
@@ -238,7 +243,9 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Booking Date<b className="color_red">*</b></label>
+                        <label>
+                          Booking Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
@@ -253,20 +260,22 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.booking_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Booking Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Booking Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Travel Date<b className="color_red">*</b></label>
+                        <label>
+                          Travel Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
@@ -281,22 +290,20 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.travel_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Travel Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Travel Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Travel Type
-                        </label>
+                        <label>Travel Type</label>
                         <span id="">
                           {otherIcons.name_svg}
                           <CustomDropdown04
@@ -385,26 +392,24 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.guest_ids && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Family Member
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Family Member
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>
-                          GDS Portal
-                        </label>
+                        <label>GDS Portal</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown04
@@ -433,9 +438,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          PRN No
-                        </label>
+                        <label>PRN No</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
@@ -447,9 +450,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Route
-                        </label>
+                        <label>Route</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown04
@@ -464,9 +465,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Destination Code
-                        </label>
+                        <label>Destination Code</label>
 
                         <span id="">
                           {otherIcons.name_svg}
@@ -482,9 +481,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -507,6 +504,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
+
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
@@ -517,6 +515,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           component="purchase"
                         />
                       </div>
+
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
@@ -529,6 +528,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
+                      </div>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}
@@ -536,7 +540,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           section="Fare"
                           errors={errors}
                           setErrors={setErrors}
-
                         />
                       </div>
                     </div>

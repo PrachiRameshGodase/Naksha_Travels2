@@ -346,6 +346,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </div>
                       </div>
+                      </div>
+
+                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+
                       <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

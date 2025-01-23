@@ -122,7 +122,7 @@ const CreateInsurancePopup = ({
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-     
+
       // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -443,6 +443,12 @@ const CreateInsurancePopup = ({
                             />
                           </div>
                         </div>
+                      </div>
+
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

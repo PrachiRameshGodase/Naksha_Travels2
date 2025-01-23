@@ -15,7 +15,10 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import CalculationSection from "../../CalculationSection";
-import { itemLists, vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import {
+  itemLists,
+  vendorsLists,
+} from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { CreatePassengerMOtherAction } from "../../../../Redux/Actions/passengerMOtherActions";
 import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
@@ -62,10 +65,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     item_id: false,
-    quantity:false,
-    price:false,
+    quantity: false,
+    price: false,
     gross_amount: false,
-   
+
     // retain: false,
     total_amount: false,
   });
@@ -74,14 +77,14 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
-  
+
     if (name === "supplier_id") {
       const selectedSupplierName = vendorList?.data?.user?.find(
         (item) => item?.id == value
       );
       updatedFields.supplier_name = selectedSupplierName?.display_name || "";
     }
-  
+
     if (name === "item_id") {
       const selectedItemName = options2?.find((item) => item?.id == value);
       updatedFields.item_name = selectedItemName?.name || "";
@@ -95,7 +98,6 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
-  
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -104,7 +106,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       quantity: formData?.price ? false : true,
       price: formData?.item_id ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-    
+
       // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -115,25 +117,26 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (hasAnyError) {
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        charges: JSON.stringify(formData?.charges),
-      };
-      const refreshData = {
-        mice_id: data?.id,
-      };
-      dispatch(CreatePassengerMOtherAction(sendData, setShowModal, refreshData))
-       
-    } catch (error) {
-      console.error("Error updating other service:", error);
-    }
+      try {
+        const sendData = {
+          ...formData,
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          mice_id: data?.id,
+        };
+        dispatch(
+          CreatePassengerMOtherAction(sendData, setShowModal, refreshData)
+        );
+      } catch (error) {
+        console.error("Error updating other service:", error);
+      }
     }
   };
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
-  useFetchApiData(vendorsLists, payloadGenerator, []); 
-  useFetchApiData(itemLists, payloadGenerator, []); 
+  useFetchApiData(vendorsLists, payloadGenerator, []);
+  useFetchApiData(itemLists, payloadGenerator, []);
 
   // call item api on page load...
 
@@ -210,7 +213,9 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Quantity<b className="color_red">*</b></label>
+                        <label>
+                          Quantity<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -223,24 +228,26 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.quantity && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Fill Quantity
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Quantity
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Price<b className="color_red">*</b></label>
+                        <label>
+                          Price<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -253,23 +260,21 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.price && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Fill Price
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Price
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -317,6 +322,12 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
+                      </div>
+
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}
