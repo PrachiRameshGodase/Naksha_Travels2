@@ -147,7 +147,7 @@ const FamilyMember = ({
     }
   }, [employeeDetails]);
 
-  console.log("employeeDetails", employeeDetails);
+
   const renderMemberTable = () => {
     return (
       <table className="employee-table" style={{ width: "100%" }}>

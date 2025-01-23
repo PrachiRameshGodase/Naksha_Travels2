@@ -62,6 +62,9 @@ const InsuranceDetails = ({
           ? JSON?.parse(insuranceDetailsFromUser.upload_documents)
           : [],
       });
+      if (insuranceDetailsFromUser.upload_documents) {
+        setImgeLoader("success")
+      }
 
       setTick((prevTick) => ({
         ...prevTick,

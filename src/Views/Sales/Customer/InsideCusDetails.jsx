@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import {
   AttachmentPreview3,
+  AttachmentPreview5,
   AttachmentPreviewMultipleDocument,
 } from "../../Helper/Attachment";
 import { formatDate3 } from "../../Helper/DateFormat";
@@ -1133,8 +1134,7 @@ const InsideCusDetails = ({
                                   : "-"}
                               </td>
                               <td>
-                                {console.log("document",item?.upload_documents)}
-                                <AttachmentPreviewMultipleDocument attachments={item?.upload_documents ? JSON?.parse(item?.upload_documents) : "-"} />
+                                <AttachmentPreview5 document={item?.upload_documents ? JSON?.parse(item?.upload_documents) : "-"} />
                               </td>
                             </tr>
                           ))}
@@ -1186,11 +1186,11 @@ const InsideCusDetails = ({
                                 <td>{item?.vaccination_name || "-"}</td>
                                 <td>
                                  
-                                  <AttachmentPreviewMultipleDocument
-                                    attachments={
+                                  <AttachmentPreview5
+                                    document={
                                       item?.upload_documents
                                         ? JSON?.parse(item?.upload_documents)
-                                        : []
+                                        : ""
                                     }
                                   />
                                 </td>
