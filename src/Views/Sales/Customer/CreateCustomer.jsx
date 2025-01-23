@@ -106,7 +106,11 @@ const CreateCustomer = () => {
     blood_group: "",
     citizenship: "",
   });
-
+const [errors, setErrors]=useState({
+  first_name:false,
+  last_name:false,
+  display_name:false
+})
   useEffect(() => {
     if ((cusId && isEdit) || (cusId && isEdit && isDuplicate)) {
       setUserData((prevUserData) => ({
@@ -189,15 +193,20 @@ const CreateCustomer = () => {
   const dropdownRef1 = useRef();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    if (!tick?.basicTick) {
-      dropdownRef1.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      dropdownRef1.current.focus();
-    } else {
+    e.preventDefault(); 
+    let newErrors = {
+      first_name: basicDetails?.first_name ? false : true,
+      email: basicDetails?.email ? false : true,
+      display_name: basicDetails?.display_name ? false : true,
+     
+    };
+    setErrors(newErrors);
+    const hasAnyError = Object.values(newErrors).some(
+      (value) => value === true
+    );
+    if (hasAnyError) {
+      return;
+    }  else {
       if (cusId && isEdit) {
         dispatch(
           createCustomers(
@@ -549,6 +558,8 @@ const CreateCustomer = () => {
                     dropdownRef1={dropdownRef1}
                     basicDetails={basicDetails}
                     setBasicDetails={setBasicDetails}
+                    errors={errors}
+                    setErrors={setErrors}
                   />
 
                   <CustomerAddress

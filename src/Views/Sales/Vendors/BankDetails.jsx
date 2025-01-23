@@ -179,9 +179,9 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
                         </span>
                       </div>
-                      {banks_nameError && <p className="error-message">
+                      {/* {banks_nameError && <p className="error-message">
                         {otherIcons.error_svg}
-                        Please fill the bank name.</p>}
+                        Please fill the bank name.</p>} */}
                     </div>
 
 
@@ -203,9 +203,9 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                         </span>
                       </div>
 
-                      {account_noError && <p className="error-message">
+                      {/* {account_noError && <p className="error-message">
                         {otherIcons.error_svg}
-                        Please fill the account no.</p>}
+                        Please fill the account no.</p>} */}
                     </div>
 
                   </div>
@@ -249,9 +249,9 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                           <input type="text" autoComplete='off' value={person.ifsc_code} onChange={(e) => handleChange("ifsc_code", index, e.target.value)} placeholder="Enter IBAN Code" name="ifsc_code" />
                         </span>
                       </div>
-                      {ifsc_codeError && <p className="error-message">
+                      {/* {ifsc_codeError && <p className="error-message">
                         {otherIcons.error_svg}
-                        Please Enter IBAN Code.</p>}
+                        Please Enter IBAN Code.</p>} */}
                     </div>
 
 

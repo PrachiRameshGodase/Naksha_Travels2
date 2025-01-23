@@ -287,7 +287,7 @@ export const MultiImageUpload = ({
 
   return (
     <>
-      <div className="form-group">
+      <div className="form-group" style={{display:"flex", flexDirection:"column", gap:"15px"}}>
         <label style={{ marginLeft: "2px" }}>Upload Images/Documents</label>
         <div
           className="file-upload"
@@ -1426,6 +1426,7 @@ export const SingleImageUploadDocument = ({
   imgLoader,
   setImgeLoader,
   index,
+  disabled
 }) => {
   const [photo, setPhoto] = useState(formData?.photo || null);
   const [expiryDate, setExpiryDate] = useState(null);
@@ -1502,7 +1503,7 @@ export const SingleImageUploadDocument = ({
                       id={`file-${index}`} // Use index in id for uniqueness
                       className="inputfile"
                       accept="image/*"
-                      onChange={handleImageChange}
+                      onChange={!disabled ? ()=>{handleImageChange()}:undefined}
                     />
                     <span style={{ cursor: "pointer" }}>
                       {otherIcons.export_svg}

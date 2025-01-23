@@ -101,8 +101,8 @@ const FamilyMember = ({
     fetchCustomers();
   }, []);
 
-  const handleDeleteSelectedMember = async(indexToDelete) => {
-    console.log("indexToDelete", indexToDelete)
+  const handleDeleteSelectedMember = async (indexToDelete) => {
+    console.log("indexToDelete", indexToDelete);
     const result = await Swal.fire({
       text: "Are you sure you want to delete this member from list?",
       showCancelButton: true,
@@ -110,10 +110,10 @@ const FamilyMember = ({
       cancelButtonText: "No",
     });
     if (result.isConfirmed) {
-    setEmployeeDetails((prevDetails) =>
-      prevDetails.filter((_, index) => index !== indexToDelete)
-    );
-  }
+      setEmployeeDetails((prevDetails) =>
+        prevDetails.filter((_, index) => index !== indexToDelete)
+      );
+    }
   };
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const FamilyMember = ({
         member_id: item.id || "",
         food_type: item.food_type || "",
         relationship: item.relationship || null,
-        photo: item?.photo ? JSON?.parse(item?.photo) : "",
+        photo: item?.photo ? JSON.parse(item?.photo) : "",
       }));
 
       setEmployeeDetails(familyDetail);
@@ -146,6 +146,8 @@ const FamilyMember = ({
       }));
     }
   }, [employeeDetails]);
+
+  console.log("employeeDetails", employeeDetails);
   const renderMemberTable = () => {
     return (
       <table className="employee-table" style={{ width: "100%" }}>
@@ -156,9 +158,11 @@ const FamilyMember = ({
             <th>Email</th>
             {/* <th>Mobile Number</th> */}
             <th>Gender</th>
+
+            <th>Photo</th>
             <th style={{ minWidth: "100px" }}>Relationship</th>
             <th style={{ minWidth: "100px" }}>Food Type</th>
-            <th>Photo</th>
+
             <th>Action</th>
           </tr>
         </thead>
@@ -169,15 +173,22 @@ const FamilyMember = ({
                 (user) => user.id === member.member_id
               );
               const disabledRow =
-                member?.member_id == customerDetails?.user?.relation_id;
+                member?.member_id == customerDetails?.user?.id;
               return (
                 selectedMember && (
                   <tr
-                  key={member.member_id}
+                    key={index}
                     style={{
                       backgroundColor: disabledRow ? "#f2f2f2" : "#fff",
-                      pointerEvents: disabledRow ? "none" : "auto",
+                      cursor: disabledRow ? "not-allowed" : "pointer",
                     }}
+                    data-tooltip-content={
+                      disabledRow
+                        ? "Not able to do anything yourself as a family member"
+                        : ""
+                    }
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="bottom"
                   >
                     <td>{index + 1}</td>
                     <td>{selectedMember.display_name}</td>
@@ -185,6 +196,18 @@ const FamilyMember = ({
                     {/* <td>{selectedMember.mobile_no}</td> */}
                     <td>
                       <ShowMastersValue type="45" id={selectedMember.gender} />
+                    </td>
+
+                    <td>
+                      <SingleImageUploadDocument
+                        formData={member}
+                        setFormData={setEmployeeDetails}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                        index={index}
+                        disabled={disabledRow}
+                      />
                     </td>
                     <td style={{ width: "40px" }}>
                       <CustomDropdown27
@@ -212,22 +235,12 @@ const FamilyMember = ({
                         type="masters"
                       />
                     </td>
-                    <td style={{ width: "20px" }}>
-                      <SingleImageUploadDocument
-                        formData={member}
-                        setFormData={setEmployeeDetails}
-                        setFreezLoadingImg={setFreezLoadingImg}
-                        imgLoader={imgLoader}
-                        setImgeLoader={setImgeLoader}
-                        index={index}
-                      />
-                    </td>
+
                     <td>
                       <span
                         onClick={() => {
                           handleDeleteSelectedMember(index);
                         }}
-                        style={{ cursor: "pointer" }}
                       >
                         {otherIcons.delete_svg}
                       </span>
@@ -261,9 +274,7 @@ const FamilyMember = ({
                   <p>Family Members</p>
                 </div>
                 <div className="form_commonblock">
-                  <label>
-                    Member Name <b className="color_red">*</b>
-                  </label>
+                  <label>Member Name</label>
                   <div id="sepcifixspanflex">
                     <span>
                       {otherIcons.name_svg}

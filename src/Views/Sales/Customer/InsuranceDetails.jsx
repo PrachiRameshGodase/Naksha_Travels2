@@ -90,7 +90,7 @@ const InsuranceDetails = ({
             <div id="fcx3s1parent">
               <div className="form_commonblock">
                 <label>
-                  Company Name<b className="color_red">*</b>
+                  Company Name
                 </label>
                 <span>
                   {otherIcons.placeofsupply_svg}
@@ -99,6 +99,7 @@ const InsuranceDetails = ({
                     onChange={handleChange}
                     name="company_name"
                     placeholder="Enter Company Name"
+                    autoComplete="off"
                   />
                 </span>
               </div>
@@ -106,7 +107,7 @@ const InsuranceDetails = ({
                 <label>Policy Number</label>
                 <div id="inputx1">
                   <span>
-                    {otherIcons.zip_code_svg}
+                    {otherIcons.quotation_icon}
                     <NumericInput
                       name="policy_no"
                       placeholder="Enter Policy Number"
