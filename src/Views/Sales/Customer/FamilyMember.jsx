@@ -147,7 +147,7 @@ const FamilyMember = ({
     }
   }, [employeeDetails]);
 
-
+console.log("employeeDetails", employeeDetails)
   const renderMemberTable = () => {
     return (
       <table className="employee-table" style={{ width: "100%" }}>
@@ -168,25 +168,21 @@ const FamilyMember = ({
         </thead>
         <tbody>
           {employeeDetails?.length > 0 ? (
+            
             employeeDetails?.map((member, index) => {
+              console.log("member", member)
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.member_id
               );
-              const disabledRow =
-                member?.member_id == customerDetails?.user?.id;
+              console.log("selectedMember", selectedMember)
+              const disabledRow =member?.member_id == customerDetails?.user?.id;
+              console.log("member", customerDetails?.user?.id)
               return (
                 selectedMember && (
                   <tr
                     key={index}
-                    style={{
-                      backgroundColor: disabledRow ? "#f2f2f2" : "#fff",
-                      cursor: disabledRow ? "not-allowed" : "pointer",
-                    }}
-                    data-tooltip-content={
-                      disabledRow
-                        ? "Not able to do anything yourself as a family member"
-                        : ""
-                    }
+                    style={{backgroundColor: disabledRow ? "#f2f2f2" : "#fff",cursor: disabledRow ? "not-allowed" : "pointer",}}
+                    data-tooltip-content={disabledRow? "Not able to do anything yourself as a family member": ""}
                     data-tooltip-id="my-tooltip"
                     data-tooltip-place="bottom"
                   >
@@ -206,7 +202,7 @@ const FamilyMember = ({
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}
                         index={index}
-                        disabled={disabledRow}
+                        // disabled={disabledRow}
                       />
                     </td>
                     <td style={{ width: "40px" }}>
@@ -241,6 +237,7 @@ const FamilyMember = ({
                         onClick={() => {
                           handleDeleteSelectedMember(index);
                         }}
+                        style={{cursor:"pointer"}}
                       >
                         {otherIcons.delete_svg}
                       </span>
