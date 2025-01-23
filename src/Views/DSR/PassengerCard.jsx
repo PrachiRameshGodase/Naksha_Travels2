@@ -3,7 +3,7 @@ import { BsEye } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { ShowMasterData } from "../Helper/HelperFunctions";
+import { currencySymbol, ShowMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "./PassengerCard.scss";
 import CreateAssistPopup from "./Services/PassengerAssist/CreateAssistPopup";
@@ -143,7 +143,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                   disabled={disabled}
                 />
               </td>
-              <td>{passenger?.service_total || ""}</td>
+              <td>({currencySymbol}) {passenger?.service_total || ""}</td>
               <td>
                 <span
                   data-tooltip-content={disabled ? "Not able to click It is invoiced" : ""}

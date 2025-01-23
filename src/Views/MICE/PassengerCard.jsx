@@ -140,7 +140,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                   disabled={disabled}
                 />
               </td>
-              <td>{passenger?.service_total || ""}</td>
+              <td>({currencySymbol}) {passenger?.service_total || ""}</td>
 
               <td>
                 <span

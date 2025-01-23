@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { CreateFlightAction } from "../../../../Redux/Actions/flightActions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import "../../../DSR/Services/CreateHotelPopup.scss";
 const CreateFlight = ({ popupContent }) => {
@@ -14,7 +14,7 @@ const CreateFlight = ({ popupContent }) => {
   const Navigate = useNavigate();
   const flightCreates = useSelector((state) => state?.createFlight);
 
-  const destinationCode = ShowMasterData("52");
+  const destinationCode = ShowUserMasterData("52");
   const {
     setshowAddPopup,
     showAddPopup,

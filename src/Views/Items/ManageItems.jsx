@@ -19,7 +19,10 @@ import FilterIco from "../../assets/outlineIcons/othericons/FilterIco.svg";
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { Tooltip } from "react-tooltip";
 import { OutsideClick } from "../Helper/ComponentHelper/OutsideClick";
-import { showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
+import {
+  showAmountWithCurrencySymbol,
+  useDebounceSearch,
+} from "../Helper/HelperFunctions";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
@@ -77,7 +80,6 @@ const Quotations = () => {
   const handleImportButtonClick = () => {
     setShowImportPopup(true);
   };
-
 
   const handleFileImport = async (e) => {
     e.preventDefault();
@@ -149,7 +151,7 @@ const Quotations = () => {
       setItemType("");
       setStatus("");
     }
-    resetPageIfNeeded()
+    resetPageIfNeeded();
   };
   // filter//
 
@@ -166,8 +168,8 @@ const Quotations = () => {
         purchasePrice === "Ascending"
           ? "1"
           : purchasePrice === "Descending"
-            ? "0"
-            : "",
+          ? "0"
+          : "",
       price: price === "Ascending" ? "1" : price === "Descending" ? "0" : "",
       name: names ? "1" : "",
     };
@@ -190,7 +192,6 @@ const Quotations = () => {
     setSearchTrigger((prev) => prev + 1);
     sortByDropdown?.handleToggle();
     setAllSort(filteredValues);
-
   };
 
   useEffect(() => {
@@ -258,8 +259,8 @@ const Quotations = () => {
 
   // Handle search term change from child component
   const handleSearch = (e) => {
-    resetPageIfNeeded()
-    const term = e.target.value
+    resetPageIfNeeded();
+    const term = e.target.value;
     setSearchTerm(term);
     const searchInput = document.getElementById("commonmcsearchbar");
     if (searchInput) {
@@ -276,15 +277,19 @@ const Quotations = () => {
   // serch and filter
 
   //fetch all data
-  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-    fy: localStorage.getItem('FinancialYear'),
-    noofrec: itemsPerPage,
-    currentpage: currentPage,
-    active: 1,
-    ...(searchTerm && { search: searchTerm }),
-    ...(Object.keys(allFilters)?.length > 0 && allFilters),
-    ...(Object.keys(allSort)?.length > 0 && allSort),
-  }), [searchTrigger]);
+  const payloadGenerator = useMemo(
+    () => () => ({
+      //useMemo because  we ensure that this function only changes when [dependency] changes
+      fy: localStorage.getItem("FinancialYear"),
+      noofrec: itemsPerPage,
+      currentpage: currentPage,
+      active: 1,
+      ...(searchTerm && { search: searchTerm }),
+      ...(Object.keys(allFilters)?.length > 0 && allFilters),
+      ...(Object.keys(allSort)?.length > 0 && allSort),
+    }),
+    [searchTrigger]
+  );
 
   useFetchApiData(itemLists, payloadGenerator, [searchTrigger]);
 
@@ -331,7 +336,6 @@ const Quotations = () => {
     }
   };
 
-
   // outside close and open filter, sortBy and more dropdown
   const filterDropdown = OutsideClick();
   const sortByDropdown = OutsideClick();
@@ -340,7 +344,9 @@ const Quotations = () => {
 
   return (
     <>
-      {(importItemss?.loading || exportItemss?.loading) && <MainScreenFreezeLoader />}
+      {(importItemss?.loading || exportItemss?.loading) && (
+        <MainScreenFreezeLoader />
+      )}
       <TopLoadbar />
       <Tooltip id="my-tooltip" className="extraclassoftooltip" />
 
@@ -406,14 +412,15 @@ const Quotations = () => {
               </svg>
               All Items
             </h1>
-            <p id="firsttagp">{totalItems} Records
-
+            <p id="firsttagp">
+              {totalItems} Records
               <span
                 className={`${itemListState?.loading && "rotate_01"}`}
                 data-tooltip-content="Reload"
                 data-tooltip-place="bottom"
                 data-tooltip-id="my-tooltip"
-                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
                 {otherIcons?.refresh_svg}
               </span>
             </p>
@@ -478,8 +485,9 @@ const Quotations = () => {
                         </label>
 
                         <label
-                          className={`${names ? "active-filter" : "labelfistc51s"
-                            } `}
+                          className={`${
+                            names ? "active-filter" : "labelfistc51s"
+                          } `}
                         >
                           <input
                             type="checkbox"
@@ -512,8 +520,9 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${price === "Ascending" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                price === "Ascending" ? "selected" : ""
+                              }`}
                             >
                               Ascending
                             </span>
@@ -532,8 +541,9 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${price === "Descending" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                price === "Descending" ? "selected" : ""
+                              }`}
                             >
                               Descending
                             </span>
@@ -573,8 +583,6 @@ const Quotations = () => {
                           className={
                             selectAllItems ? "active-filter" : "labelfistc51s"
                           }
-
-
                         >
                           <input
                             type="checkbox"
@@ -605,8 +613,9 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${itemType === "Product" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                itemType === "Product" ? "selected" : ""
+                              }`}
                             >
                               Products
                             </span>
@@ -625,27 +634,11 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${itemType === "Service" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                itemType === "Service" ? "selected" : ""
+                              }`}
                             >
                               Services
-                            </span>
-                          </label>
-
-
-                          <label htmlFor="serviceCheckboxRaw">
-                            <input
-                              id="serviceCheckboxRaw"
-                              type="checkbox"
-                              checked={itemType === "Raw"}
-                              onChange={(e) =>
-                                handleAllItemsChange1(e.target.checked, "type", "Raw")
-                              }
-                            />
-                            <span
-                              className={`filter-button ${itemType === "Raw" ? "selected" : ""}`}
-                            >
-                              Raw Material
                             </span>
                           </label>
 
@@ -655,33 +648,21 @@ const Quotations = () => {
                               type="checkbox"
                               checked={itemType === "Packaging"}
                               onChange={(e) =>
-                                handleAllItemsChange1(e.target.checked, "type", "Packaging")
+                                handleAllItemsChange1(
+                                  e.target.checked,
+                                  "type",
+                                  "Packaging"
+                                )
                               }
                             />
                             <span
-                              className={`filter-button ${itemType === "Packaging" ? "selected" : ""}`}
+                              className={`filter-button ${
+                                itemType === "Packaging" ? "selected" : ""
+                              }`}
                             >
                               Packaging
                             </span>
                           </label>
-
-
-                          <label htmlFor="serviceCheckboxScrap">
-                            <input
-                              id="serviceCheckboxScrap"
-                              type="checkbox"
-                              checked={itemType === "Scrap"}
-                              onChange={(e) =>
-                                handleAllItemsChange1(e.target.checked, "type", "Scrap")
-                              }
-                            />
-                            <span
-                              className={`filter-button ${itemType === "Scrap" ? "selected" : ""}`}
-                            >
-                              Scrap
-                            </span>
-                          </label>
-
                         </div>
                       </div>
                       <div className={`cusfilters12x2`}>
@@ -702,8 +683,9 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${status == "active" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                status == "active" ? "selected" : ""
+                              }`}
                             >
                               Active
                             </span>
@@ -723,8 +705,9 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${status == "inactive" ? "selected" : ""
-                                }`}
+                              className={`filter-button ${
+                                status == "inactive" ? "selected" : ""
+                              }`}
                             >
                               Inactive
                             </span>
@@ -1039,101 +1022,109 @@ const Quotations = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {itemList?.length >= 1 ? <>
-                      {itemList?.map((quotation, index) => (
-                        <div
-                          className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                            ? "selectedresult"
-                            : ""
-                            }`}
-                          key={index}
-                        >
+                    {itemList?.length >= 1 ? (
+                      <>
+                        {itemList?.map((quotation, index) => (
                           <div
-                            className="table-cellx12 checkboxfx1"
-                            id="styl_for_check_box"
-                          >
-                            <input
-                              checked={selectedRows.includes(quotation.id)}
-                              type="checkbox"
-                              onChange={() => handleCheckboxChange(quotation.id)}
-                            />
-                            <div className="checkmark"></div>
-                          </div>
-                          <div
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-content={quotation?.name}
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs1"
-                          >
-                            {quotation.name}
-                          </div>
-
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs2_item"
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-content={`${quotation?.category?.name || ""
-                              }${quotation?.sub_category?.name
-                                ? ` / ${quotation?.sub_category?.name}`
+                            className={`table-rowx12 ${
+                              selectedRows.includes(quotation.id)
+                                ? "selectedresult"
                                 : ""
-                              }`}
+                            }`}
+                            key={index}
                           >
-                            {`${quotation?.category?.name || ""}${quotation?.sub_category?.name
-                              ? ` / ${quotation?.sub_category?.name}`
-                              : ""
-                              }`}
-                          </div>
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs3"
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-content={quotation?.sku}
-                          >
-                            {quotation?.sku || ""}
-                          </div>
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs4"
-                          >
-                            {quotation?.type === "Raw"
-                              ? "Raw Material"
-                              : quotation?.type || ""}
-                          </div>
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs5"
-                          >
-                            <span
-                              style={{
-                                color: quotation?.stock < 0 ? "red" : "inherit",
-                              }}
+                            <div
+                              className="table-cellx12 checkboxfx1"
+                              id="styl_for_check_box"
                             >
-                              {quotation?.stock || 0.0}
-                            </span>
+                              <input
+                                checked={selectedRows.includes(quotation.id)}
+                                type="checkbox"
+                                onChange={() =>
+                                  handleCheckboxChange(quotation.id)
+                                }
+                              />
+                              <div className="checkmark"></div>
+                            </div>
+                            <div
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={quotation?.name}
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              {quotation.name}
+                            </div>
+
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs2_item"
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={`${
+                                quotation?.category?.name || ""
+                              }${
+                                quotation?.sub_category?.name
+                                  ? ` / ${quotation?.sub_category?.name}`
+                                  : ""
+                              }`}
+                            >
+                              {`${quotation?.category?.name || ""}${
+                                quotation?.sub_category?.name
+                                  ? ` / ${quotation?.sub_category?.name}`
+                                  : ""
+                              }`}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={quotation?.sku}
+                            >
+                              {quotation?.sku || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs4"
+                            >
+                              {quotation?.type === "Raw"
+                                ? "Raw Material"
+                                : quotation?.type || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5"
+                            >
+                              <span
+                                style={{
+                                  color:
+                                    quotation?.stock < 0 ? "red" : "inherit",
+                                }}
+                              >
+                                {quotation?.stock || 0.0}
+                              </span>
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5"
+                            >
+                              {quotation?.tax_rate
+                                ? `${parseInt(quotation.tax_rate, 10)} %`
+                                : ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(quotation)}
+                              className="table-cellx12 quotiosalinvlisxs5_item"
+                            >
+                              <p>
+                                {" "}
+                                {showAmountWithCurrencySymbol(quotation?.price)}
+                              </p>
+                            </div>
                           </div>
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs5"
-                          >
-                            {quotation?.tax_rate
-                              ? `${parseInt(quotation.tax_rate, 10)} %`
-                              : ""}
-                          </div>
-                          <div
-                            onClick={() => handleRowClicked(quotation)}
-                            className="table-cellx12 quotiosalinvlisxs5_item"
-                          >
-                            <p>
-                              {" "}
-                              {showAmountWithCurrencySymbol(quotation?.price)}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                      : (
-                        <NoDataFound />
-                      )}
+                        ))}
+                      </>
+                    ) : (
+                      <NoDataFound />
+                    )}
 
                     <PaginationComponent
                       itemList={totalItems}
@@ -1149,7 +1140,7 @@ const Quotations = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
 
       {showImportPopup && (
         <div
@@ -1198,8 +1189,7 @@ const Quotations = () => {
             </form>
           </div>
         </div>
-      )
-      }
+      )}
       <Toaster />
     </>
   );

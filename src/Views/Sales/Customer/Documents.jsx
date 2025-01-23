@@ -134,12 +134,13 @@ const Documents = ({
                       <label>Document Number</label>
                       <div id="inputx1">
                         <span>
-                          {otherIcons.zip_code_svg}
+                          {otherIcons.quotation_icon}
                           <input
                             name="document_no"
                             placeholder="Enter Document Number"
                             value={document.document_no}
                             onChange={(e) => handleChange(e, index)}
+                            autoComplete="off"
                           />
                         </span>
                       </div>

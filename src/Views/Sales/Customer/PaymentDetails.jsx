@@ -18,7 +18,7 @@ const PaymentDetails = ({
   const [paymentDetails, setPaymentDetails] = useState({
     payment_method: "",
     payment_terms: "",
-    credit_limit: "",
+    credit_limit: null,
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,7 +90,7 @@ const PaymentDetails = ({
               <div id="fcx3s1parent">
                 <div className="form_commonblock">
                   <label>
-                    Preferred Payment Method<b className="color_red">*</b>
+                    Preferred Payment Method
                   </label>
                   <span>
                     {otherIcons.placeofsupply_svg}
@@ -99,6 +99,7 @@ const PaymentDetails = ({
                       onChange={handleChange}
                       name="payment_method"
                       placeholder="Enter Payment Method"
+                      autoComplete="off"
                     />
                   </span>
                 </div>
@@ -106,11 +107,11 @@ const PaymentDetails = ({
                   <label>Credit Limit</label>
                   <div id="inputx1">
                     <span>
-                      {otherIcons.zip_code_svg}
+                      {otherIcons.quotation_icon}
                       <NumericInput
                         name="credit_limit"
                         placeholder="Enter Credit Limit"
-                        value={paymentDetails.credit_limit}
+                        value={paymentDetails.credit_limit || 0}
                         onChange={handleChange}
                       />
                     </span>

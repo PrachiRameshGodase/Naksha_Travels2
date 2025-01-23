@@ -10,7 +10,10 @@ import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreeze
 import { fetchGetCountries } from "../../../Redux/Actions/globalActions";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import { formatDate } from "../../Helper/DateFormat";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
+import {
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../Helper/HelperFunctions";
 import NumericInput from "../../Helper/NumericInput";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
@@ -23,6 +26,8 @@ const BasicDetails = ({
   dropdownRef1,
   basicDetails,
   setBasicDetails,
+  errors,
+  setErrors,
 }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
@@ -38,25 +43,14 @@ const BasicDetails = ({
   const paymentTerms = ShowMasterData("8");
   const showdeparment = ShowMasterData("10");
   const customerBloodGroup = ShowMasterData("44");
-  const customerGender = ShowMasterData("45");
+  const customerGender = ShowUserMasterData("45");
 
   const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const bloodGroupName = customerBloodGroup?.find(
-      (val) => val?.labelid == value
-    );
-    const genderName = customerGender?.find((val) => val?.labelid == value);
-
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
-      ...(name === "blood_group" && {
-        blood_group: bloodGroupName?.label,
-      }),
-      ...(name === "gender" && {
-        gender: genderName?.label,
-      }),
       ...(name === "country_id" && { citizenship: value }),
       [name]: value,
     }));
@@ -66,6 +60,10 @@ const BasicDetails = ({
     } else if (name === "registration_type" && value === "Un-Registered") {
       setShowRegisterdFields(false);
     }
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: false,
+    }));
   };
 
   useEffect(() => {
@@ -90,15 +88,15 @@ const BasicDetails = ({
       basicDetails?.salutation == 1
         ? "Mr."
         : basicDetails?.salutation == 2
-          ? "Mrs."
-          : basicDetails?.salutation == 3
-            ? "Ms."
-            : basicDetails?.salutation == 4
-              ? "Miss."
-              : basicDetails?.salutation == 5
-                ? "Dr"
-                : "";
-    if (basicDetails.first_name && basicDetails.last_name) {
+        ? "Mrs."
+        : basicDetails?.salutation == 3
+        ? "Ms."
+        : basicDetails?.salutation == 4
+        ? "Miss."
+        : basicDetails?.salutation == 5
+        ? "Dr"
+        : "";
+    if (basicDetails.first_name) {
       names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
       if (basicDetails.salutation) {
         names.add(
@@ -185,6 +183,7 @@ const BasicDetails = ({
         is_customer: +user?.is_customer,
         gst_no: user?.gst_no,
         pan_no: user?.pan_no,
+        gender:user?.gender,
         d_o_b: user?.d_o_b,
         blood_group: user?.blood_group,
         citizenship: user?.citizenship,
@@ -288,13 +287,15 @@ const BasicDetails = ({
                               name="salutation"
                               defaultOption="Select Salutation"
                               type="masters_salutation"
-                            // extracssclassforscjkls="extracssclassforscjklsSalutation"
+                              // extracssclassforscjkls="extracssclassforscjklsSalutation"
                             />
                           </span>
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>First Name</label>
+                        <label>
+                          First Name<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             <input
@@ -309,6 +310,18 @@ const BasicDetails = ({
                             />
                           </span>
                         </div>
+                        {errors?.first_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill First Name
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label className="">Last Name</label>
@@ -337,7 +350,9 @@ const BasicDetails = ({
             <div className="sections">
               <div id="fcx3s1parent">
                 <div className="form_commonblock">
-                  <label>Email</label>
+                  <label>
+                    Email<b className="color_red">*</b>
+                  </label>
                   <span>
                     {otherIcons.email_svg}
                     <input
@@ -349,6 +364,18 @@ const BasicDetails = ({
                       placeholder={`Enter Email`}
                     />
                   </span>
+                  {errors?.email && (
+                    <p
+                      className="error_message"
+                      style={{
+                        whiteSpace: "nowrap",
+                        marginBottom: "0px important",
+                      }}
+                    >
+                      {otherIcons.error_svg}
+                      Please Fill Email
+                    </p>
+                  )}
                 </div>
                 <div className="form_commonblock">
                   <label className="">Company Name</label>
@@ -388,13 +415,19 @@ const BasicDetails = ({
                         ref={dropdownRef1}
                       />
                     </span>
+                    {errors?.display_name && (
+                      <p
+                        className="error_message"
+                        style={{
+                          whiteSpace: "nowrap",
+                          marginBottom: "0px important",
+                        }}
+                      >
+                        {otherIcons.error_svg}
+                        Please Fill Display Name
+                      </p>
+                    )}
                   </div>
-                  {!customerDisplayName && (
-                    <p className="error-message">
-                      {otherIcons.error_svg}
-                      Please Fill Display Name
-                    </p>
-                  )}
                 </div>
               </div>
               <div className="height5"></div>
@@ -468,6 +501,11 @@ const BasicDetails = ({
                       placeholderText="Enter Date"
                       dateFormat="dd-MM-yyyy"
                       autoComplete="off"
+                      minDate={new Date(new Date().getFullYear() - 50, 0, 1)} // Start 50 years in the past
+                                maxDate={new Date(new Date().getFullYear() + 50, 11, 31)} // End 50 years in the future
+                                showYearDropdown // Enables the year dropdown
+                                scrollableYearDropdown // Allows scrolling in the year dropdown
+                                yearDropdownItemNumber={101}
                     />
                   </span>
                 </div>
@@ -515,6 +553,21 @@ const BasicDetails = ({
 
             <div id="fcx3s1parent">
               <div className="form_commonblock">
+                <label>Gender</label>
+                <span>
+                  {otherIcons.vendor_svg}
+                  <CustomDropdown04
+                    label="Gender"
+                    options={customerGender}
+                    value={basicDetails?.gender}
+                    onChange={handleChange}
+                    name="gender"
+                    defaultOption="Select Gender"
+                    type="masters"
+                  />
+                </span>
+              </div>
+              <div className="form_commonblock">
                 <label>Registration Type</label>
                 <div id="inputx1">
                   <span>
@@ -551,7 +604,6 @@ const BasicDetails = ({
             </div>
 
             <div id="fcx3s1parent">
-
               {showRegisterdFields && (
                 <>
                   <div className="form_commonblock">
