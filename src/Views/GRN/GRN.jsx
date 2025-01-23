@@ -19,7 +19,7 @@ import { GRNSortOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import { showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 const GRN = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import "./PassengerCard.scss";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const DSRSummary = ({ customerData }) => {
 

@@ -28,7 +28,7 @@ import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailT
 // import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
-import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreatePaymentRec = () => {
     const dispatch = useDispatch();

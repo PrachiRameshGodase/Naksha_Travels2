@@ -3,7 +3,7 @@ import './AddJournalListData.scss';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../../Configs/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 
 const UpdateJournal = () => {

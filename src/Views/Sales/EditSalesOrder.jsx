@@ -18,7 +18,7 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import CustomerProfilePopup from './CustomerProfilePopup';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../Configs/axiosInstance';
-import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const EditSalesOrder = () => {
     const [customers, setCustomers] = useState([]);

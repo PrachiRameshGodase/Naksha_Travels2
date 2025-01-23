@@ -14,7 +14,7 @@ import NumericInput from "../../Helper/NumericInput";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);

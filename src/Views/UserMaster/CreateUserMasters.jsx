@@ -11,7 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { purchasesDetails } from '../../Redux/Actions/purchasesActions';
 import { todayDate } from '../Helper/DateFormat';
 import "./CreateUserMasters.scss";
-import { getCurrencyValue } from '../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreateUserMasters = () => {
     const dispatch = useDispatch();

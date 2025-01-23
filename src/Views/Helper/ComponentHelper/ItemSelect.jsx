@@ -34,7 +34,7 @@ import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
 import ShowMastersValue from "../ShowMastersValue";
-import { getCurrencySymbol } from "./ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
 
 const ItemSelect = ({

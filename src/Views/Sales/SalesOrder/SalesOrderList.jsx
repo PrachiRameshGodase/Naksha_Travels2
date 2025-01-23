@@ -20,7 +20,7 @@ import { saleOrderFilterOptions } from "../../Helper/SortByFilterContent/filterC
 import { saleOrderSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const SalesOrderList = () => {
 

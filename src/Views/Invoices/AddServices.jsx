@@ -19,7 +19,7 @@ import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaCo
 import ExpenseCharges from "../Helper/ComponentHelper/ExpenseCharges";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { formatDate3 } from "../Helper/DateFormat";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const dispatch = useDispatch();

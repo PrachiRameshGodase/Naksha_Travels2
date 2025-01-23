@@ -22,7 +22,7 @@ import { quotationFilterOptions } from "../../Helper/SortByFilterContent/filterC
 import { quotationSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Quotations = () => {
   const Navigate = useNavigate();

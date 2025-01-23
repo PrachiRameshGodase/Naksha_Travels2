@@ -18,7 +18,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { GRNRecAreaSortOptions, } from "../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const GRNreceipt = () => {
   const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage

@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
-import { getCurrencySymbol, getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageLocalStorage/localStorageUtils";
+import { getCurrencySymbol, getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageStorage/localStorageUtils";
 import useFetchApiData from "./ComponentHelper/useFetchApiData";
 
 // const getLocalStorageData = localStorage?.getItem("UserData");
