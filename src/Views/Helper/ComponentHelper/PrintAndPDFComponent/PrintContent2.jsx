@@ -21,55 +21,56 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
         <p className="customer-title">Customer Details:</p>
         <div className="customer-grid">
           <div className="customer-card">
-            <span className="customer-label">DSR NO</span>
-            <span className="customer-label">:</span>
-            <span className="customer-value">{data?.dsr_no || ""}</span>
+            <p className="customer-label">DSR NO</p>
+            <p className="">:</p>
+            <p className="customer-value">{data?.dsr_no || ""}</p>
           </div>
 
           <div className="customer-card">
-            <span className="customer-label">Customer Name</span>
-            <span className="customer-label">:</span>
-            <span className="customer-value">
-              {" "}
+            <p className="customer-label">Customer Name</p>
+            <p className="">:</p>
+            <p className="customer-value">
+
               {data?.customer?.display_name || ""}
-            </span>
+            </p>
           </div>
 
           <div className="customer-card">
-            <span className="customer-label">Customer Type</span>
-            <span className="customer-label">:</span>
-            <span className="customer-value">
+            <p className="customer-label">Customer Type</p>
+            <p className="">:</p>
+            <p className="customer-value">
               {data?.customer?.customer_type || ""}
-            </span>
+            </p>
           </div>
         </div>
         <div className="customer-grid" style={{ marginTop: "20px" }}>
           <div className="customer-card">
-            <span className="customer-label">Email</span>
-            <span className="customer-label" style={{ marginLeft: "17px" }}>
+            <p className="customer-label">Email</p>
+            <p className="">
               :
-            </span>
-            <span className="customer-value">
+            </p>
+            <p className="customer-value">
               {data?.customer?.email || ""}
-            </span>
+            </p>
           </div>
           <div className="customer-card">
-            <span className="customer-label">Status</span>
-            <span className="customer-label" style={{marginLeft:"30px"}}>:</span>
+            <p className="customer-label">Status</p>
+            <p className="">:</p>
 
-            <span className="customer-value">
+            <p className="customer-value">
               Pending
               {data?.customer?.status === "0"
                 ? "Pending"
                 : data?.customer?.status === "1"
-                ? "Approved"
-                : ""}
-            </span>
+                  ? "Approved"
+                  : ""}
+            </p>
           </div>
+
           <div className="customer-card">
-            <span className="customer-label">Mobile No.</span>
-            <span className="customer-label" style={{marginLeft:"10px"}}>:</span>
-            <span>{data?.customer?.mobile_no || ""}</span>
+            <p className="customer-label">Mobile No.</p>
+            <p className="" >:</p>
+            <p>{data?.customer?.mobile_no || ""}</p>
           </div>
         </div>
       </div>
@@ -84,22 +85,25 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
               <p className="customer-title">Passenger ({index + 1}):</p>
               <div className="customer-grid">
                 <div className="customer-card">
-                  <span className="customer-label">Name:</span>
-                  <span className="customer-value">
+                  <p className="customer-label">Name</p>
+                  <p className="">:</p>
+                  <p className="customer-value">
                     {item?.passenger?.display_name || "-"}
-                  </span>
+                  </p>
                 </div>
                 <div className="customer-card">
-                  <span className="customer-label">Email:</span>{" "}
-                  <span className="customer-value">
+                  <p className="customer-label">Email</p>
+                  <p className="">:</p>
+                  <p className="customer-value">
                     {item?.passenger?.email || "-"}
-                  </span>
+                  </p>
                 </div>
                 <div className="customer-card">
-                  <span className="customer-label">Mobile No.:</span>{" "}
-                  <span className="customer-value">
+                  <p className="customer-label">Mobile No.</p>
+                  <p className="">:</p>
+                  <p className="customer-value">
                     {item?.passenger?.mobile_no || "-"}
-                  </span>{" "}
+                  </p>
                 </div>
               </div>
             </div>
@@ -111,7 +115,6 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                 marginTop: "20px",
               }}
             >
-              {" "}
               <h3 className="customer-title">Services:</h3>
             </div>
             <div style={{ marginTop: "20px" }}>
@@ -130,22 +133,25 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Booking Date:</span>
-                        <span className="customer-value">
+                        <p className="customer-label">Booking Date</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.booking_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Hotel Name:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Hotel Name</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {data?.hotel_name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Room No:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Room No</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {data?.room?.room_number || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -154,21 +160,24 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Occupany:</span>{" "}
-                        <span className="customer-value">Single Room</span>
+                        <p className="customer-label">Occupany</p>
+                        <p className="">:</p>
+                        <p className="customer-value">Single Room</p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Meal:</span>{" "}
-                        <span className="customer-value">Room Only</span>
+                        <p className="customer-label">Meal:</p>
+                        <p className="">:</p>
+                        <p className="customer-value">Room Only</p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Guest:</span>{" "}
-                        <span>
+                        <p className="customer-label">Guest</p>
+                        <p className="">:</p>
+                        <p>
                           {data?.guests
                             ?.map((item) => item?.display_name)
                             .filter(Boolean)
-                            .join(", ")}{" "}
-                        </span>
+                            .join(", ")}
+                        </p>
                       </div>
                     </div>
                     <div
@@ -176,21 +185,23 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Check In:</span>{" "}
-                        <span className="customer-value">
-                          {" "}
+                        <p className="customer-label">Check In</p> <p className="">:</p>
+                        <p className="customer-value">
+                          {/* <p className="">:</p> */}
                           {formatDate3(data?.check_in_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Check Out:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Check Out</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.check_out_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Bed:</span>{" "}
-                        <span>Single Bed</span>
+                        <p className="customer-label">Bed</p>
+                        <p className="">:</p>
+                        <p>Single Bed</p>
                       </div>
                     </div>
                     <div
@@ -198,10 +209,11 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -219,22 +231,25 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Booking Date:</span>
-                        <span className="customer-value">
+                        <p className="customer-label">Booking Date</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.booking_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label"> Travel Date:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label"> Travel Date</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.travel_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Airline Name:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Airline Name</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {data?.airline_name || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -243,18 +258,18 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Airline Code:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Airline Code</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.air_line_code || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Travel Type:</span>{" "}
-                        <span className="customer-value">Room Only</span>
+                        <p className="customer-label">Travel Type</p> <p className="">:</p>
+                        <p className="customer-value">Room Only</p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">GDS Portal:</span>{" "}
-                        <span>{data?.gds_portal || ""}</span>
+                        <p className="customer-label">GDS Portal</p> <p className="">:</p>
+                        <p>{data?.gds_portal || ""}</p>
                       </div>
                     </div>
                     <div
@@ -262,22 +277,22 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Ticket No:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Ticket No</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.ticket_no || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">PNR No.:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">PNR No.</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.prn_no || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">
+                        <p className="customer-label">
                           Destination Code:
-                        </span>{" "}
-                        <span>Single Bed</span>
+                        </p> <p className="">:</p>
+                        <p>Single Bed</p>
                       </div>
                     </div>
                     <div
@@ -285,25 +300,25 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Route:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Route</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.route || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Passenger:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Passenger</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.guests
                             ?.map((item) => item?.display_name)
                             .filter(Boolean)
                             .join(", ")}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -321,22 +336,24 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Passenger:</span>
-                        <span className="customer-value">
+                        <p className="customer-label">Passenger</p>
+                        <p className="">:</p>
+
+                        <p className="customer-value">
                           {data?.visa_passenger?.display_name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Passport No:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Passport No</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.passport_no || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Date Of Birth:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Date Of Birth</p> <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.dob) || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -345,20 +362,20 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Email:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Email</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.email || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Expiry Date:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Expiry Date</p> <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.expiry_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Issue Date:</span>{" "}
-                        <span>{formatDate3(data?.issue_date) || ""}</span>
+                        <p className="customer-label">Issue Date</p> <p className="">:</p>
+                        <p>{formatDate3(data?.issue_date) || ""}</p>
                       </div>
                     </div>
                     <div
@@ -366,20 +383,20 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Visa No:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Visa No</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.visa_no || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Visa Type:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Visa Type</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.prn_no || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Visa Entry Type:</span>{" "}
-                        <span>Single Bed</span>
+                        <p className="customer-label">Visa Entry Type</p> <p className="">:</p>
+                        <p>Single Bed</p>
                       </div>
                     </div>
                     <div
@@ -387,22 +404,22 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Days:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Days</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.days || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Country:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Country</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.country?.name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -420,20 +437,21 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Vehicle Type:</span>
-                        <span className="customer-value"></span>
+                        <p className="customer-label">Vehicle Type</p>
+                        <p className="">:</p>
+                        <p className="customer-value"></p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Days:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Days</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.days || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Pickup Location:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Pickup Location</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.pickup_location || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -442,16 +460,16 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Drop Location:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Drop Location</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.drop_location || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -469,23 +487,24 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Meeting Type:</span>
-                        <span className="customer-value">
-                          {" "}
+                        <p className="customer-label">Meeting Type:</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
+
                           {data?.meeting_type || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Airport:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Airport</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.airport_name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">No Of Persons:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">No Of Persons</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.no_of_persons || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -494,10 +513,10 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -515,22 +534,23 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                     </p>
                     <div className="customer-grid">
                       <div className="customer-card">
-                        <span className="customer-label">Passenger:</span>
-                        <span className="customer-value">
+                        <p className="customer-label">Passenger:</p>
+                        <p className="">:</p>
+                        <p className="customer-value">
                           {data?.passenger?.display_name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Company Name:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Company Name</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.company_name || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Policy No:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Policy No</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.policy_no || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -539,22 +559,22 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Insurance Plan:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Insurance Plan</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.insurance_plan || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Issue Date:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Issue Date</p> <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.issue_date) || ""}
-                        </span>
+                        </p>
                       </div>
                       <div className="customer-card">
-                        <span className="customer-label">Expiry Date:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Expiry Date</p> <p className="">:</p>
+                        <p className="customer-value">
                           {formatDate3(data?.expiry_date) || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                     <div
@@ -562,10 +582,10 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                       style={{ marginTop: "20px" }}
                     >
                       <div className="customer-card">
-                        <span className="customer-label">Amount:</span>{" "}
-                        <span className="customer-value">
+                        <p className="customer-label">Amount</p> <p className="">:</p>
+                        <p className="customer-value">
                           {data?.total_amount || ""}
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -586,22 +606,23 @@ const PrintContent2 = ({ data, cusVenData, masterData, moduleId, section }) => {
                   </p>
                   <div className="customer-grid">
                     <div className="customer-card">
-                      <span className="customer-label">Item Name:</span>
-                      <span className="customer-value">
+                      <p className="customer-label">Item Name:</p>
+                      <p className="">:</p>
+                      <p className="customer-value">
                         {data?.item_name || ""}
-                      </span>
+                      </p>
                     </div>
                     <div className="customer-card">
-                      <span className="customer-label">Quantity:</span>{" "}
-                      <span className="customer-value">
+                      <p className="customer-label">Quantity</p> <p className="">:</p>
+                      <p className="customer-value">
                         {data?.entry_type || ""}
-                      </span>
+                      </p>
                     </div>
                     <div className="customer-card">
-                      <span className="customer-label">Amount</span>{" "}
-                      <span className="customer-value">
+                      <p className="customer-label">Amount</p> <p className="">:</p>
+                      <p className="customer-value">
                         {data?.total_amount || ""}
-                      </span>
+                      </p>
                     </div>
                   </div>
                 </div>

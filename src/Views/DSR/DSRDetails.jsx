@@ -194,15 +194,15 @@ const DSRDetails = () => {
               onClick={() => {
                 handleChangeDSRStatus(DSRData);
               }}
-              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+            // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
               <p
                 className={
                   DSRData?.is_invoiced == "0"
                     ? "draft"
                     : DSRData?.is_invoiced == "1"
-                    ? "invoiced2"
-                    : ""
+                      ? "invoiced2"
+                      : ""
                 }
                 style={{
                   cursor: "pointer",

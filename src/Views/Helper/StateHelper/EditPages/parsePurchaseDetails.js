@@ -38,10 +38,10 @@ export const parsePurchaseDetails = (detailData, convert) => {
         unit_id: item?.unit_id,
     }));
 
-    const all_changes = JSON?.parse(detailData?.charges) || [];
+    const all_changes = JSON?.parse(detailData?.charges || "[]");
 
-    const total_charges = all_changes.reduce((acc, item) => {
-        const amount = item.amount && !isNaN(item.amount) ? parseFloat(item.amount) : 0;
+    const total_charges = all_changes?.reduce((acc, item) => {
+        const amount = item?.amount && !isNaN(item?.amount) ? parseFloat(item?.amount) : 0;
         return acc + amount;
     }, 0);
 

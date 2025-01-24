@@ -7,16 +7,11 @@ import {
   purchasesSendMail,
 } from "../../Redux/Actions/purchasesActions";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  MultiImageUpload,
-  MultiImageUploadEmail,
-} from "../../Views/Helper/ComponentHelper/ImageUpload";
 import MainScreenFreezeLoader from "../Loaders/MainScreenFreezeLoader";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BodyContent, SubjectContent } from "./ShowMailContent";
 import { Toaster } from "react-hot-toast";
 import { generatePDF1 } from "../../Views/Helper/DateFormat";
-import { FaFilePdf } from "react-icons/fa";
 import {
   quotationDetails,
   quotationSend,
@@ -27,12 +22,12 @@ import {
   saleOrderDetails,
   saleOrderSend,
 } from "../../Redux/Actions/saleOrderActions";
-import { orgnizationEmail } from "../../Views/Helper/HelperFunctions";
 import { creditNotesDetails, creditnoteSend } from "../../Redux/Actions/notesActions";
 import { paymentRecSend, paymentRecDetail } from "../../Redux/Actions/PaymentRecAction";
 import { invoiceSend } from "../../Redux/Actions/invoiceActions";
 import { billSend } from "../../Redux/Actions/billActions";
 import { TermsAndConditions } from "../../Views/Common/InsideSubModulesCommon/DetailInfo";
+import { activeOrg } from "../../Views/Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const modules = {
   toolbar: [
     [{ font: [] }],
@@ -62,8 +57,10 @@ const SendMail = () => {
   const data = location.state?.data || {};
   const [detail_api_data, setDetail_api_data] = useState(null);
 
+  const active_orgnization = activeOrg();//fetch active org. from localStorage
+
   const [formData, setFormData] = useState({
-    from: orgnizationEmail,
+    from: active_orgnization?.email,
     to: "",
     subject: "",
     body: "",
@@ -394,8 +391,8 @@ const SendMail = () => {
                     Cancel
                   </button>
                 </div>
-                
-                <TermsAndConditions/>
+
+                <TermsAndConditions />
               </>
             )}
             <Toaster />

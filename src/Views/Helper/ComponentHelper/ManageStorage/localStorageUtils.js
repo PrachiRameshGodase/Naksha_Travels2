@@ -21,17 +21,6 @@ export const getLocalStorage = (key) => {
     }
 };
 
-export const getCurrencySymbol = () => {
-    const UserData = getLocalStorage("UserData");
-    const activeOrg_details = UserData?.active_organisation;
-    return activeOrg_details?.symbol || "$";
-};
-
-export const getCurrencyValue = () => {
-    const UserData = getLocalStorage("UserData");
-    const activeOrg_details = UserData?.active_organisation;
-    return activeOrg_details?.currency || "USD";
-};
 
 // Remove item from localStorage
 export const removeLocalStorage = (key) => {
@@ -50,3 +39,26 @@ export const clearLocalStorage = () => {
         console.error("Error clearing localStorage:", error);
     }
 };
+
+//others get data form local Storage...
+
+// get currency symbol like($)
+export const getCurrencySymbol = () => {
+    const UserData = getLocalStorage("UserData");
+    const activeOrg_details = UserData?.active_organisation;
+    return activeOrg_details?.symbol || "$";
+};
+
+// get currency value like(USD)
+export const getCurrencyValue = () => {
+    const UserData = getLocalStorage("UserData");
+    const activeOrg_details = UserData?.active_organisation;
+    return activeOrg_details?.currency || "USD";
+};
+
+// get Active orgnization
+export const activeOrg = () => {
+    const UserData = getLocalStorage("UserData");
+    return UserData?.active_organisation;
+}
+

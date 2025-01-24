@@ -6,6 +6,7 @@ import {
   getDateStatus1,
 } from "../../Helper/HelperFunctions";
 import { formatDate } from "../../Helper/DateFormat";
+import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 export const ShowAllStatus = ({ quotation }) => {
@@ -265,7 +266,7 @@ export const MoreInformation = ({ sale, note, tc, section }) => {
 };
 
 export const FromToDetails = ({ quotation, section }) => {
-  const active_orgnization = activeOrg_details;
+  const active_orgnization = activeOrg();
 
   return (
     <div className="detailsbox4x15s2">
@@ -324,7 +325,7 @@ export const FromToDetails = ({ quotation, section }) => {
 };
 
 export const FromToDetailsPurchases = ({ quotation, section }) => {
-  const active_orgnization = activeOrg_details;
+  const active_orgnization = activeOrg();
 
   return (
     <div className="detailsbox4x15s2">

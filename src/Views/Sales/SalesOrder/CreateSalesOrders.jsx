@@ -244,7 +244,7 @@ const CreateSalesOrders = () => {
             phone: cusData?.mobile_no,
             address: cusData?.address?.length,
             address: addSelect,
-            payment_terms: cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
+            // payment_terms: cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
 
         }));
 
