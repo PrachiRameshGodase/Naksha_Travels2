@@ -10,6 +10,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
+  const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
   return (
     <>
@@ -134,6 +135,29 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Fare Price</span>
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Charges</span>
+                                  <h1>:</h1>
+                                  {charge?.length > 1 ? (
+                                    <p>
+                                      {charge
+                                        .map(
+                                          (item) =>
+                                            `${item?.account_name || ""} - ${
+                                              item?.amount || 0
+                                            }`
+                                        )
+                                        .join(", ")}
+                                    </p>
+                                  ) : (
+                                    charge?.map((item, index) => (
+                                      <p key={index}>
+                                        {item?.account_name || ""} -{" "}
+                                        {item?.amount || 0}
+                                      </p>
+                                    ))
+                                  )}
                                 </li>
                                
                                 <li>

@@ -11,6 +11,8 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
 
+  const charge = data?.charges ? JSON.parse(data?.charges) : [];
+ 
   return (
     <>
       {data?.loading ? (
@@ -20,7 +22,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>Hotel Name: {data?.hotel_name ||""}</h5>
+                <h5>Hotel Name: {data?.hotel_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -29,7 +31,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" >
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -117,11 +119,13 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                       .join(", ")}
                                   </p>
                                 </li>
-                               
-                                <li >
+
+                                <li>
                                   <span>Booking Date</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{formatDate3(data?.booking_date) || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.booking_date) || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>CheckIn Date</span>
@@ -140,23 +144,41 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.supplier_name || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.supplier_name || ""}
+                                  </p>
                                 </li>
                               </ul>
                               <ul>
-                               
-                                
                                 <li>
                                   <span>Hotel Price</span>
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
                                 </li>
-                                {/* <li>
-                                  <span>Supplier Service Charge</span>
+                                <li>
+                                  <span>Charges</span>
                                   <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
-                                 <li>
+                                  {charge?.length > 1 ? (
+                                    <p>
+                                      {charge
+                                        .map(
+                                          (item) =>
+                                            `${item?.account_name || ""} - ${
+                                              item?.amount || 0
+                                            }`
+                                        )
+                                        .join(", ")}
+                                    </p>
+                                  ) : (
+                                    charge?.map((item, index) => (
+                                      <p key={index}>
+                                        {item?.account_name || ""} -{" "}
+                                        {item?.amount || 0}
+                                      </p>
+                                    ))
+                                  )}
+                                </li>
+                                <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
                                   <p>{data?.tax_amount || ""}</p>
@@ -166,7 +188,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.supplier_tax || ""}</p>
                                 </li>
-                                 <li>
+                                <li>
                                   <span>Supplier Price</span>
                                   <h1>:</h1>
                                   <p>{data?.supplier_total || ""}</p>
@@ -181,13 +203,11 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.retain || ""}</p>
                                 </li>
-                               
+
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>
-                                  <p >
-                                    {data?.note || ""}
-                                  </p>
+                                  <p>{data?.note || ""}</p>
                                 </li>
                                 <li className="pendingfromfrontendx5">
                                   <span>Attachment</span>
