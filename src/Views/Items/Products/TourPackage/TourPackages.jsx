@@ -20,7 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { tourPackageListAction } from "../../../../Redux/Actions/tourPackageActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 
 const TourPackages = () => {
   const dispatch = useDispatch();
@@ -323,7 +323,7 @@ const TourPackages = () => {
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               {" "}
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="35"
                                 id={item?.hotel_type}
                               />

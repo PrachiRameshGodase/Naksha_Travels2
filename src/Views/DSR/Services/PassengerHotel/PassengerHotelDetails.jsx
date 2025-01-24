@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
 import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
@@ -82,7 +82,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Bed</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    <ShowMastersValue
+                                    <ShowUserMastersValue
                                       type="38"
                                       id={data?.bed || ""}
                                     />
@@ -92,7 +92,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Occupancy</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    <ShowMastersValue
+                                    <ShowUserMastersValue
                                       type="36"
                                       id={data?.occupancy_id}
                                     />
@@ -102,7 +102,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Meal</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    <ShowMastersValue
+                                    <ShowUserMastersValue
                                       type="37"
                                       id={data?.meal_id || ""}
                                     />{" "}

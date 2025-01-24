@@ -27,7 +27,7 @@ const Visas = () => {
   const visaListData = useSelector((state) => state?.visaList);
   const visaLists = visaListData?.data?.data || [];
   const totalItems = visaListData?.data?.count || 0;
-  console.log("visaList", visaListData);
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);

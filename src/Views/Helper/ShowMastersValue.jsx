@@ -15,6 +15,20 @@ const ShowMastersValue = ({ type, id }) => {
     )
 }
 
+export const ShowUserMastersValue = ({ type, id }) => {
+    const userMasterData = useSelector(state => state?.userMasterList?.data);
+
+    const allMasters = userMasterData?.filter(type_id => type_id?.type == type);
+
+    const findUnitNameById = () => {
+        const lable = allMasters?.find(unit => unit.labelid == id);
+        return lable ? lable.label : '';
+    };
+    return (
+        <span style={{ border: "none" }} >{findUnitNameById()} </span>
+    )
+}
+
 export default ShowMastersValue;
 
 export const PdfShowMastersValue = ({ type, id, masterData }) => {

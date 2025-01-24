@@ -74,6 +74,9 @@ const FamilyMember = ({
         {
           member_id: selectedCustomer.id,
           relationship: "",
+          email:selectedCustomer?.email,
+          display_name:selectedCustomer?.display_name,
+          mobile_no: selectedCustomer.mobile_no,
           food_type: "",
           photo: "",
         },
@@ -171,14 +174,14 @@ console.log("employeeDetails", employeeDetails)
             
             employeeDetails?.map((member, index) => {
               console.log("member", member)
-              const selectedMember = cusList?.data?.user.find(
-                (user) => user.id === member.member_id
-              );
-              console.log("selectedMember", selectedMember)
+              // const selectedMember = cusList?.data?.user.find(
+              //   (user) => user.id === member.member_id
+              // );
+              // console.log("selectedMember", selectedMember)
               const disabledRow =member?.member_id == customerDetails?.user?.id;
               console.log("member", customerDetails?.user?.id)
               return (
-                selectedMember && (
+                 (
                   <tr
                     key={index}
                     style={{backgroundColor: disabledRow ? "#f2f2f2" : "#fff",cursor: disabledRow ? "not-allowed" : "pointer",}}
@@ -187,11 +190,11 @@ console.log("employeeDetails", employeeDetails)
                     data-tooltip-place="bottom"
                   >
                     <td>{index + 1}</td>
-                    <td>{selectedMember.display_name}</td>
-                    <td>{selectedMember.email}</td>
+                    <td>{member?.display_name}</td>
+                    <td>{member?.email}</td>
                     {/* <td>{selectedMember.mobile_no}</td> */}
                     <td>
-                      <ShowMastersValue type="45" id={selectedMember.gender} />
+                      <ShowMastersValue type="45" id={member?.gender} />
                     </td>
 
                     <td>
@@ -209,7 +212,7 @@ console.log("employeeDetails", employeeDetails)
                       <CustomDropdown27
                         label="Relationship"
                         options={relationshipOptions}
-                        value={member.relationship}
+                        value={member?.relationship}
                         onChange={(e) =>
                           handleChange("relationship", index, e.target.value)
                         }

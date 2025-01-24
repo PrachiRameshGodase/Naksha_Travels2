@@ -19,7 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { hotelListAction } from "../../../../Redux/Actions/hotelActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 
 const Hotels = () => {
   const navigate = useNavigate();
@@ -315,7 +315,7 @@ const Hotels = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="35"
                                 id={item?.hotel_type}
                               />

@@ -31,7 +31,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const vendorList = useSelector((state) => state?.vendorList);
   const createFlight = useSelector((state) => state?.createPassengerFlight);
   const flightListData = useSelector((state) => state?.flightList);
-
+console.log("flightListData", flightListData)
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
@@ -89,12 +89,26 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "airline_name") {
+      const selectedRoom = flightListData?.data?.data?.find((flight) => flight?.flight_name == value);
+      updatedFields = {
+        ...updatedFields,
+        airline_name: selectedRoom?.flight_name || "",
+        air_line_code: selectedRoom?.occupancy_id || "",
+        destination_code: selectedRoom?.destination_code || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
     setErrors((prevData) => ({
       ...prevData,
+      ...(name === "airline_name" && {
+        airline_name: false, // Clear error for occupancy when room changes
+        air_line_code: false, // Clear error for meal when room changes
+        destination_code: false, // Clear error for bed
+      }),
       [name]: false,
     }));
   };

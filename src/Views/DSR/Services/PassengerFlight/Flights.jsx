@@ -9,7 +9,7 @@ import { PassengerFlightDeleteActions } from "../../../../Redux/Actions/passenge
 import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerFlightDetails from "./PassengerFlightDetails.";
 import { BsEye } from "react-icons/bs";
@@ -171,7 +171,7 @@ const Flights = ({ data, totalItems }) => {
                               {formatDate3(item?.travel_date) || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs1">
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="51"
                                 id={item?.travel_type_id}
                               />

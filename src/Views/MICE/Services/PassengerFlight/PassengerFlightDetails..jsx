@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
 import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
@@ -77,7 +77,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {" "}
-                                    <ShowMastersValue
+                                    <ShowUserMastersValue
                                       type="51"
                                       id={data?.travel_type_id || ""}
                                     />

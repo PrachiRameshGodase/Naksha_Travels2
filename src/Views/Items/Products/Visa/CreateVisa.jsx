@@ -9,7 +9,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import NumericInput from "../../../Helper/NumericInput";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchGetCities,
@@ -36,8 +36,8 @@ const CreateVisa = () => {
   const visaData = VisaDetails?.data?.data?.data || {};
   const countryList = useSelector((state) => state?.countries?.countries);
 
-  const visaentryType = ShowMasterData("39");
-  const visatype = ShowMasterData("40");
+  const visaentryType = ShowUserMasterData("39");
+  const visatype = ShowUserMasterData("40");
 
   const [formData, setFormData] = useState({
     visa_entry_type: "",

@@ -10,7 +10,7 @@ import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
 import { PassengerCarHireDeleteActions } from "../../../../Redux/Actions/passengerCarHireActions";
 import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerCarHireDetails from "./PassengerCarHireDetails";
 import Swal from "sweetalert2";
@@ -154,7 +154,7 @@ const CarHires = ({ data, totalItems }) => {
                             <div
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="41"
                                 id={item?.vehicle_type_id || ""}
                               />

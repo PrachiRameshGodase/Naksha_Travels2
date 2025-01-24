@@ -11,7 +11,7 @@ import {
 } from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import  { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
 import PassengerHotelDetails from "./PassengerHotelDetails";
@@ -202,7 +202,7 @@ const Hotels = ({ data }) => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="37"
                                 id={item?.meal_id || ""}
                               />
