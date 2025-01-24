@@ -31,12 +31,15 @@ const CreateFlight = ({ popupContent }) => {
   const [errors, setErrors] = useState({
     flight_name: false,
     air_line_code: false,
+    destination_code:false
   });
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     let newErrors = {
       flight_name: formData?.flight_name ? false : true,
       air_line_code: formData?.air_line_code ? false : true,
+      destination_code: formData?.destination_code ? false : true,
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -88,8 +91,8 @@ const CreateFlight = ({ popupContent }) => {
 
   return (
     <div id="formofcreateitems">
-      <div className="custom-modal">
-        <div className="modal-content" style={{width:"50%"}}>
+      <div className="custom-modal" >
+        <div className="modal-content" >
           <div className="modal-header">
             <h5>
               {isEditIndividual
@@ -104,11 +107,11 @@ const CreateFlight = ({ popupContent }) => {
             </button>
           </div>
 
-          <div className="modal-body">
+          <div className="modal-body" >
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "0px", minHeight:"100px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "120xpx", minHeight:"100px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -164,7 +167,7 @@ const CreateFlight = ({ popupContent }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Destination Code</label>
+                        <label>Destination Code<b className="color_red">*</b></label>
 
                         <span id="">
                           {otherIcons.name_svg}
@@ -178,6 +181,18 @@ const CreateFlight = ({ popupContent }) => {
                             type="masters2"
                           />
                         </span>
+                        {errors?.destination_code && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Destination Code
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>

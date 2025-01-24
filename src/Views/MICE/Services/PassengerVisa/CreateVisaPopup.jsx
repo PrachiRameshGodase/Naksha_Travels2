@@ -4,24 +4,23 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
+import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 import {
   customersList,
   customersView,
 } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
-import { CreatePassengerVisaAction } from "../../../../Redux/Actions/passengerVisaActions";
+import { CreatePassengerMVisaAction } from "../../../../Redux/Actions/passengerMVisaActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
-import { CreatePassengerMVisaAction } from "../../../../Redux/Actions/passengerMVisaActions";
-import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();

@@ -21,12 +21,15 @@ import CurrencySelect, {
   CurrencySelect2,
 } from "../../../Helper/ComponentHelper/CurrencySelect";
 import { CustomDropdown006 } from "../../../../Components/CustomDropdown/CustomDropdown06";
+import { getCurrencyValue } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateHotelService = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+  const currency = getCurrencyValue();
+  
   const hotelRoomCreates = useSelector((state) => state?.createHotelRoom);
   const hotelRoomDetails = useSelector((state) => state?.hotelRoomDetail);
   const hotelRoomData = hotelRoomDetails?.data?.data?.room || {};
@@ -53,7 +56,7 @@ const CreateHotelService = () => {
     description: null,
     price: null,
     upload_documents: "",
-    currency: "",
+    currency: currency,
   });
   const [errors, setErrors] = useState({
     room_number: false,

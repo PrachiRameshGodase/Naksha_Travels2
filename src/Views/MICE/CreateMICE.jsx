@@ -22,6 +22,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
+import { getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateMICE = () => {
   const Navigate = useNavigate();
@@ -30,6 +31,7 @@ const CreateMICE = () => {
 
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+  const currency = getCurrencyValue();
 
   const cusList = useSelector((state) => state?.customerList);
   const createMICE = useSelector((state) => state?.createMICE);
@@ -45,7 +47,7 @@ const CreateMICE = () => {
     mice_no: "",
     customer_id: "",
     customer_name: "",
-    currency: "",
+    currency: currency,
     destination: "",
     mice_name: "",
     description: null,

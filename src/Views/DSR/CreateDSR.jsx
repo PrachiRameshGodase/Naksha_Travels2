@@ -22,6 +22,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
+import { getCurrencySymbol, getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateDSR = () => {
   const Navigate = useNavigate();
@@ -31,6 +32,7 @@ const CreateDSR = () => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const currency = getCurrencyValue();
   const cusList = useSelector((state) => state?.customerList);
   const createDSR = useSelector((state) => state?.createDSR);
   const addPassenger = useSelector((state) => state?.addPassenger);
@@ -45,7 +47,7 @@ const CreateDSR = () => {
     dsr_no: "",
     customer_id: "",
     customer_name: "",
-    currency: "",
+    currency: currency,
   });
 
   const [isData, setIsData] = useState();

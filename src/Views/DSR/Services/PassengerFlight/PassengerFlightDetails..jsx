@@ -64,14 +64,20 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.airline_name || ""}
                                   </p>
                                 </li>
-                                {/* <li className="pendingfromfrontendx5">
-                                  <span>Entry type</span>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Airline Code</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.entry_type || ""}
+                                    {data?.air_line_code || ""}
                                   </p>
-                                </li> */}
-
+                                </li>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Destination Code</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                  {data?.destination_code ||""}
+                                  </p>
+                                </li>
                                 <li>
                                   <span>Travel Date</span>
                                   <h1>:</h1>
