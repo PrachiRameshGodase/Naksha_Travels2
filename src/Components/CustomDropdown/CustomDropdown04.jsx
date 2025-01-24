@@ -3,7 +3,7 @@ import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown04 = forwardRef((props, ref) => {
-  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, item_data, disabled } = props;
+  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, item_data, disabled, dropdownStyle } = props;
   const {
     isOpen,
     setIsOpen,
@@ -61,7 +61,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       </div>
 
       {isOpen && !disabled && (
-        <div className="dropdown-options"
+        <div className="dropdown-options" 
         >
           <RiSearch2Line id="newsvgsearchicox2" />
           <input

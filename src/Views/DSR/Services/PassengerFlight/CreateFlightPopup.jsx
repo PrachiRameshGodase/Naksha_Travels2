@@ -497,7 +497,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
