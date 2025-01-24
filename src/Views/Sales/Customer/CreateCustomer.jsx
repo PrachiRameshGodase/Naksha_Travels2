@@ -1032,7 +1032,7 @@ const [errors, setErrors]=useState({
                   />
                 </div>
               </div>
-              <SubmitButton2 isEdit={isEdit} itemId={cusId} cancel="customer" />
+              <SubmitButton2 isEdit={isEdit} itemId={cusId} cancel="customers" />
             </form>
           </div>
         </div>

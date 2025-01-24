@@ -11,7 +11,7 @@ import {
 } from "../../../../Redux/Actions/assistAction";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
@@ -24,7 +24,7 @@ const CreateAssit = () => {
   const assistDetails = useSelector((state) => state?.assistDetails);
   const assitData = assistDetails?.data?.data?.data || {};
 
-  const vehicleType = ShowMasterData("41");
+  const vehicleType = ShowUserMasterData("41");
 
   const [formData, setFormData] = useState({
     meeting_type: "",

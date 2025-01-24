@@ -54,6 +54,7 @@ export const ShowMasterData = (type) => {
     const masterData = useSelector(state => state?.masterData?.masterData);
     const filteredData = masterData?.filter(item => item.type == type);
     return filteredData || [];
+  
 };
 
 export const ShowUserMasterData = (type) => {

@@ -11,7 +11,7 @@ import {
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
@@ -78,7 +78,7 @@ const CreateInsurancePopup = ({
     // retain: false,
     total_amount: false,
   });
-  const entryType = ShowMasterData("50");
+  const entryType = ShowUserMasterData("50");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

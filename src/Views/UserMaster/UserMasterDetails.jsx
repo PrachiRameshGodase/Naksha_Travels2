@@ -32,17 +32,17 @@ const UserMasterDetails = ({ closePopup, list }) => {
     setIsEditIndividual(true)
   };
    const handleDeleteUserMaster = async (item) => {
-      console.log("item", item)
-      const result = await Swal.fire({
-        text: "Are you sure you want to delete this user master?",
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        customClass: {
-          container: 'my-swal-container', // Add a custom class for styling
-        },
-      });
-      if (result?.isConfirmed) {
+      // console.log("item", item)
+      // const result = await Swal.fire({
+      //   text: "Are you sure you want to delete this user master?",
+      //   showCancelButton: true,
+      //   confirmButtonText: "Yes",
+      //   cancelButtonText: "No",
+      //   customClass: {
+      //     container: 'my-swal-container', // Add a custom class for styling
+      //   },
+      // });
+      // if (result?.isConfirmed) {
         const sendData = {
           id:item?.id
         };
@@ -51,7 +51,7 @@ const UserMasterDetails = ({ closePopup, list }) => {
             dispatch(UserMasterListAction())
           })
           .catch((err) => console.log(err));
-      }
+      // }
     };
   return (
     <div id="formofcreateitems">
@@ -147,20 +147,20 @@ const UserMasterDetails = ({ closePopup, list }) => {
                                       onClick={() => handleRowClicked(master)}
                                       className="table-cellx12 quotiosalinvlisxs4 commentss"
                                       data-tooltip-content={
-                                        master?.value_string
+                                        master?.note
                                       }
                                       data-tooltip-place="bottom"
                                       data-tooltip-id="my-tooltip"
                                     >
                                       <p>
                                         {" "}
-                                        {master?.value_string
-                                          ? master.value_string.length > 10
-                                            ? master.value_string.substring(
+                                        {master?.note
+                                          ? master?.note.length > 10
+                                            ? master?.note.substring(
                                                 0,
                                                 30
                                               ) + "..."
-                                            : master.value_string
+                                            : master?.note
                                           : ""}
                                       </p>
                                     </div>

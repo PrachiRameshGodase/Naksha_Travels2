@@ -14,7 +14,7 @@ import {
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CurrencySelect, {
@@ -31,11 +31,11 @@ const CreateHotelService = () => {
   const hotelRoomDetails = useSelector((state) => state?.hotelRoomDetail);
   const hotelRoomData = hotelRoomDetails?.data?.data?.room || {};
 
-  const hotelType = ShowMasterData("35");
-  const occupancy = ShowMasterData("36");
-  const bed = ShowMasterData("38");
-  const meal = ShowMasterData("37");
-  const amenitiesType = ShowMasterData("49");
+  const hotelType = ShowUserMasterData("35");
+  const occupancy = ShowUserMasterData("36");
+  const bed = ShowUserMasterData("38");
+  const meal = ShowUserMasterData("37");
+  const amenitiesType = ShowUserMasterData("49");
 
   const [formData, setFormData] = useState({
     hotel_id: itemId,

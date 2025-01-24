@@ -3,7 +3,7 @@ import { BsEye } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { ShowMasterData } from "../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "./PassengerCard.scss";
 import CreateAssistPopup from "./Services/PassengerAssist/CreateAssistPopup";
@@ -20,7 +20,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const [activePopup, setActivePopup] = useState(null);
   const [formData, setFormData] = useState({ service: "" });
 
-  const servicesList = ShowMasterData("48");
+  const servicesList = ShowUserMasterData("48");
   const currencySymbol = getCurrencySymbol();
   
   const handleServiceChange = (e, passengerId) => {

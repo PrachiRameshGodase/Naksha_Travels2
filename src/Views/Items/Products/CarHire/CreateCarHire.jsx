@@ -12,7 +12,7 @@ import {
 } from "../../../../Redux/Actions/carHireActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
@@ -25,7 +25,7 @@ const CreateCarHires = () => {
   const careHirelDetails = useSelector((state) => state?.carHireDetails);
   const carHireData = careHirelDetails?.data?.data?.data || {};
 
-  const vehicleType = ShowMasterData("41");
+  const vehicleType = ShowUserMasterData("41");
 
   const [formData, setFormData] = useState({
     type_of_vehicle: "",

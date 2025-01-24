@@ -11,7 +11,7 @@ import {
   tourPackageDetailsAction,
   tourPackagestatusActions,
 } from "../../../../Redux/Actions/tourPackageActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import Itinerary from "./Itinerary";
 import { AttachmentPreviewMultipleDocument } from "../../../Helper/Attachment";
@@ -219,7 +219,7 @@ const TourPackageDetails = () => {
                           <span>Hotel Type</span>
                           <h1>:</h1>
                           <p>
-                            <ShowMastersValue
+                            <ShowUserMastersValue
                               type="35"
                               id={tourPackageData?.hotel_type}
                             />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Attachment, { AttachmentPreview4 } from "../../../Helper/Attachment";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import HotelServices from "./HotelServices";
 import AttachmentPreview from "../../../Helper/AttachmentPreview";
@@ -56,7 +56,7 @@ const HotelDetails = ({ data }) => {
                         <span>Hotel Type</span>
                         <h1>:</h1>
                         <p>
-                          <ShowMastersValue type="35" id={data?.hotel_type} />
+                          <ShowUserMastersValue type="35" id={data?.hotel_type} />
                         </p>
                       </li>
                       <li>

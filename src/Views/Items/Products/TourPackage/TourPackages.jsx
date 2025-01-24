@@ -13,13 +13,14 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
+  currencySymbol,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { tourPackageListAction } from "../../../../Redux/Actions/tourPackageActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 
 const TourPackages = () => {
   const dispatch = useDispatch();
@@ -265,9 +266,13 @@ const TourPackages = () => {
                     {otherIcons?.refrence_svg}
                     Days
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Price
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    {/* {otherIcons?.refrence_svg} */}
+                    <p>
+                      {/* {otherIcons?.doller_svg} */}
+                      {currencySymbol}{" "}
+                      Price
+                    </p>
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -318,7 +323,7 @@ const TourPackages = () => {
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               {" "}
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="35"
                                 id={item?.hotel_type}
                               />
@@ -326,14 +331,16 @@ const TourPackages = () => {
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
+                              style={{marginLeft:"10px"}}
                             >
                               {item?.days || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.price_per_person || ""}
+                              <p style={{width:"46%"}}>{item?.price_per_person || ""}</p>
+                              
                             </div>
 
                             <div

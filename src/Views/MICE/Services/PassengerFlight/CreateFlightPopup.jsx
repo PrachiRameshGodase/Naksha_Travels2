@@ -89,11 +89,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const entryType = ShowMasterData("50");
-  const travelType = ShowMasterData("51");
+  const entryType = ShowUserMasterData("50");
+  const travelType = ShowUserMasterData("51");
   const destinationCode = ShowUserMasterData("52");
-  const GDSPortal = ShowMasterData("53");
-  const flightRoute = ShowMasterData("54");
+  const GDSPortal = ShowUserMasterData("53");
+  const flightRoute = ShowUserMasterData("54");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

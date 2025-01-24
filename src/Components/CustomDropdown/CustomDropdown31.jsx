@@ -166,7 +166,7 @@ const CustomDropdown31 = forwardRef((props, ref) => {
                     </span>
                     {isSelected(option?.id) ? (
                       <span style={{ fontSize: "2px", marginRight: "20px" }}>
-                        {otherIcons.cross_icon}
+                        {otherIcons.cross_svg}
                       </span>
                     ) : (
                       ""

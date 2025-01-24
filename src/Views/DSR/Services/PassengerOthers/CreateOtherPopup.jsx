@@ -10,7 +10,7 @@ import {
 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
@@ -71,7 +71,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     // retain: false,
     total_amount: false,
   });
-  const entryType = ShowMasterData("50");
+  const entryType = ShowUserMasterData("50");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -20,6 +20,7 @@ import {
   preventZeroVal,
   sendData,
   ShowMasterData,
+  ShowUserMasterData,
 } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -100,10 +101,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const entryType = ShowMasterData("50");
-  const occupancy = ShowMasterData("36");
-  const meal = ShowMasterData("37");
-  const bed = ShowMasterData("38");
+  const entryType = ShowUserMasterData("50");
+  const occupancy = ShowUserMasterData("36");
+  const meal = ShowUserMasterData("37");
+  const bed = ShowUserMasterData("38");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

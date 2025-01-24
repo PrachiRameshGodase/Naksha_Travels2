@@ -17,7 +17,7 @@ import {
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
-import { ShowMasterData } from "../../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
@@ -36,7 +36,7 @@ const CreateHotel = () => {
   const cities = useSelector((state) => state?.cities?.city);
   const citiesLoader = useSelector((state) => state?.cities?.loading);
 
-  const hotelType = ShowMasterData("35");
+  const hotelType = ShowUserMasterData("35");
 
   const [formData, setFormData] = useState({
     hotel_type: "",

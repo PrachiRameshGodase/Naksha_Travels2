@@ -9,6 +9,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
+  const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
   return (
     <>
@@ -93,11 +94,29 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                {/* <li>
-                                  <span>Supplier Service Charge</span>
+                              <li>
+                                  <span>Charges</span>
                                   <h1>:</h1>
-                                  <p>{data?.charges || ""}</p>
-                                </li> */}
+                                  {charge?.length > 1 ? (
+                                    <p>
+                                      {charge
+                                        .map(
+                                          (item) =>
+                                            `${item?.account_name || ""} - ${
+                                              item?.amount || 0
+                                            }`
+                                        )
+                                        .join(", ")}
+                                    </p>
+                                  ) : (
+                                    charge?.map((item, index) => (
+                                      <p key={index}>
+                                        {item?.account_name || ""} -{" "}
+                                        {item?.amount || 0}
+                                      </p>
+                                    ))
+                                  )}
+                                </li>
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>

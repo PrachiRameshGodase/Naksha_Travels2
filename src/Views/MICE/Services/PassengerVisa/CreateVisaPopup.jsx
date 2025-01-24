@@ -15,7 +15,7 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
@@ -90,9 +90,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_amount: false,
   });
 
-  const entryType = ShowMasterData("50");
-  const visaentryType = ShowMasterData("39");
-  const visatype = ShowMasterData("40");
+  const entryType = ShowUserMasterData("50");
+  const visaentryType = ShowUserMasterData("39");
+  const visatype = ShowUserMasterData("40");
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -4,12 +4,13 @@ import { RxCross2 } from "react-icons/rx";
 import Loader02 from "../../../../Components/Loaders/Loader02";
 import { Attachment2 } from "../../../Helper/Attachment";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
   const attachments = data?.upload_image || "";
+  const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
   return (
     <>
@@ -83,7 +84,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {" "}
-                                    <ShowMastersValue
+                                    <ShowUserMastersValue
                                       type="51"
                                       id={data?.travel_type_id || ""}
                                     />
@@ -134,6 +135,29 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Fare Price</span>
                                   <h1>:</h1>
                                   <p>{data?.gross_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Charges</span>
+                                  <h1>:</h1>
+                                  {charge?.length > 1 ? (
+                                    <p>
+                                      {charge
+                                        .map(
+                                          (item) =>
+                                            `${item?.account_name || ""} - ${
+                                              item?.amount || 0
+                                            }`
+                                        )
+                                        .join(", ")}
+                                    </p>
+                                  ) : (
+                                    charge?.map((item, index) => (
+                                      <p key={index}>
+                                        {item?.account_name || ""} -{" "}
+                                        {item?.amount || 0}
+                                      </p>
+                                    ))
+                                  )}
                                 </li>
                                
                                 <li>
