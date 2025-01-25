@@ -2469,7 +2469,7 @@
   // height: 150px;
   border-collapse: collapse;
   text-align: left;
-  width: 100%;
+  width: fit-content;
 
   .table_head_item_02 {
 
@@ -2554,6 +2554,7 @@
 
         button {
           cursor: pointer;
+          margin-right: 12px;
         }
       }
     }
@@ -2562,6 +2563,7 @@
   .react_icn_items {
     color: red;
     font-weight: 900;
+    font-size: 15px;
   }
 }
 

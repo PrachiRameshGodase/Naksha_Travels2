@@ -28,7 +28,6 @@ export const ShowUserMastersValue = ({ type, id }) => {
         <span style={{ border: "none" }} >{findUnitNameById()} </span>
     )
 }
-
 export default ShowMastersValue;
 
 export const PdfShowMastersValue = ({ type, id, masterData }) => {

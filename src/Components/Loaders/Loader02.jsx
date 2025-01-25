@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Loader02 = () => {
+const Loader02 = ({ style }) => {
   return (
-    <div id='loader02'>
-        {/* <div className="darksoul-layout">
+    <div id='loader02' style={style}>
+      {/* <div className="darksoul-layout">
         <div className="darksoul-grid">
             <div className="item1"></div>
             <div className="item2"></div>

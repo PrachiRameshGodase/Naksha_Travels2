@@ -74,16 +74,10 @@ export const handleFormSubmit1 = async ({
     const errors = validateItems(formData?.items);
     // console.log("confirmedconfirmed", confirmed)
 
-    // Customer selection check
-    if (!isCustomerSelect) {
-        if (!isPartiallyInViewport(dropdownRef1.current)) {
-            dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        setTimeout(() => {
-            dropdownRef1.current.focus();
-        }, 500);
-        return;
-    }
+    // selection check
+    if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
+    if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+
     else if (errors.length > 0) { // Item validation check
         setItemErrors(errors);
         if (!isPartiallyInViewport(dropdownRef2.current)) {

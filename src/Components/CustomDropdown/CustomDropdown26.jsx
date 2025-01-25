@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 import { itemLists } from "../../Redux/Actions/listApisActions";
 import { } from "../../Views/Helper/HelperFunctions";
+import ShowMastersValue from "../../Views/Helper/ShowMastersValue";
 
 const CustomDropdown26 = forwardRef((props, ref) => {
   const {
@@ -19,6 +20,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     extracssclassforscjkls,
     className,
     itemData,
+    service_name
 
   } = props;
 
@@ -89,94 +91,153 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       onKeyDown={handleKeyDown}
       style={{ position: className ? "static" : "relative" }}
     >
-      <div
-        onClick={() => setIsOpen(!isOpen)}
-        className={"dropdown-select" + (value ? " filledcolorIn" : "")}
-      // style={{ width: "314px", top: "110%" }}
-      >
-        <textarea
-          type="text"
-          placeholder="Type To Add Or Search..."
-          value={searchTerm || itemData?.item_name}
-          onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          style={{
-            width: "100%",
-            // height: "30px",
-            // margin: "10px -13px",
-            // height: "60px",
-            border: "none",
-            resize: "none",
-          }}
-          className="dropdown-search customdropdownx12s86 custom-scrollbar"
-          autoFocus
-          ref={inputRef}
-        />
-      </div>
 
-      {isOpen && (
-        <div
-          className={`dropdown-options`}
-          id={className}
-          style={{ width: "101%", zIndex: "999" }}
-
-        >
-          {itemList?.loading || categoryLists?.loading ? (
-            <TableViewSkeletonDropdown />
-          ) : (
-            <>
-              <div className="dropdownoptoscroll">
-                {options?.map((option, index) => (
-                  <div
-                    key={option.id}
-                    onClick={() => handleOptionSelect(option)}
-                    ref={(el) => (optionRefs.current[index] = el)}
-                    className={
-                      "dropdown-option" +
-                      (option.id == value ? " selectedoption" : "") +
-                      (index === focusedOptionIndex ? " focusedoption" : "") +
-                      (option.active == 0 ? " inactive-category" : "")
-                    }
-                    {...(option.active == 0
-                      ? {
-                        "data-tooltip-content":
-                          "To select this option, activate it; it's currently inactive.",
-                        "data-tooltip-id": "my-tooltip",
-                        "data-tooltip-place": "right",
-                      }
-                      : {})}
-                  >
-                    {option?.name}
-                    {option?.category?.name ? ` / ${option.category.name}` : ""}
-                    {option?.sub_category?.name
-                      ? ` / ${option.sub_category.name}`
-                      : ""}
-                  </div>
-                ))}
-              </div>
-              {options?.length === 0 && (
-                <>
-                  <div className="notdatafound02">
-                    <iframe
-                      src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json"
-                      frameBorder="0"
-                    ></iframe>
-                  </div>
-                  <div className="dropdown-option centeraligntext">
-                    No options found
-                  </div>
-                </>
-              )}
-            </>
-          )}
-
-          <div className="lastbuttonsecofdropdown">
-            <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-              Add Item
-              <GoPlus />
-            </p>
+      {service_name?.service_name === "Hotel" ? (
+        <>
+          <div style={{ padding: "5px" }}
+          >
+            <div>
+              <b>Hotel Name:</b> {service_name?.hotel_name || "-"}
+            </div>
+            <div>
+              <b>Room:</b> {service_name?.room_no || "-"}
+            </div>
+            <div>
+              <b>Meal:</b>{" "}
+              <ShowMastersValue
+                type="37"
+                id={service_name?.meal_id || "-"}
+              />
+            </div>
           </div>
+        </>
+      ) : service_name?.service_name === "Assist" ? (
+        <>
+          <div>
+            <b>Airport:</b> {service_name?.airport_name || "-"}
+          </div>
+          <div>
+            <b>Meeting Type:</b> {service_name?.meeting_type || "-"}
+          </div>
+          <div>
+            <b>No Of Persons:</b> {service_name?.no_of_persons || "-"}
+          </div>
+        </>
+      ) : service_name?.service_name === "Flight" ? (
+        <>
+          <div>
+            <b>Airline Name:</b> {service_name?.airline_name || "-"}
+          </div>
+          <div>
+            <b>Ticket No:</b> {service_name?.ticket_no || "-"}
+          </div>
+          <div>
+            <b>PRN No:</b> {service_name?.prn_no || "-"}
+          </div>
+        </>
+      ) : service_name?.service_name === "Visa" ? (
+        <>
+          <div>
+            <b>Passport No:</b> {service_name?.passport_no || "-"}
+          </div>
+          <div>
+            <b>Visa No:</b> {service_name?.visa_no || "-"}
+          </div>
+          <div>
+            <b>Visa Type:</b>{" "}
+            <ShowMastersValue
+              type="40"
+              id={service_name?.visa_type_id || "-"}
+            />
+          </div>
+        </>
+      ) :
+
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className={"dropdown-select" + (value ? " filledcolorIn" : "")}
+        // style={{ width: "314px", top: "110%" }}
+        ><textarea
+            type="text"
+            placeholder="Type To Add Or Search..."
+            value={searchTerm || itemData?.item_name}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            style={{
+              width: "100%",
+              border: "none",
+              resize: "none",
+            }}
+            className="dropdown-search customdropdownx12s86 custom-scrollbar"
+            autoFocus
+            ref={inputRef}
+          />
+
         </div>
+      }
+
+      {isOpen && (<div
+        className={`dropdown-options`}
+        id={className}
+        style={{ width: "101%", zIndex: "999" }}
+
+      >
+        {itemList?.loading || categoryLists?.loading ? (
+          <TableViewSkeletonDropdown />
+        ) : (
+          <>
+            <div className="dropdownoptoscroll">
+              {options?.map((option, index) => (
+                <div
+                  key={option.id}
+                  onClick={() => handleOptionSelect(option)}
+                  ref={(el) => (optionRefs.current[index] = el)}
+                  className={
+                    "dropdown-option" +
+                    (option.id == value ? " selectedoption" : "") +
+                    (index === focusedOptionIndex ? " focusedoption" : "") +
+                    (option.active == 0 ? " inactive-category" : "")
+                  }
+                  {...(option.active == 0
+                    ? {
+                      "data-tooltip-content":
+                        "To select this option, activate it; it's currently inactive.",
+                      "data-tooltip-id": "my-tooltip",
+                      "data-tooltip-place": "right",
+                    }
+                    : {})}
+                >
+                  {option?.name}
+                  {option?.category?.name ? ` / ${option.category.name}` : ""}
+                  {option?.sub_category?.name
+                    ? ` / ${option.sub_category.name}`
+                    : ""}
+                </div>
+              ))}
+            </div>
+            {options?.length === 0 && (
+              <>
+                <div className="notdatafound02">
+                  <iframe
+                    src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json"
+                    frameBorder="0"
+                  ></iframe>
+                </div>
+                <div className="dropdown-option centeraligntext">
+                  No options found
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        <div className="lastbuttonsecofdropdown">
+          <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
+            Add Item
+            <GoPlus />
+          </p>
+        </div>
+      </div>
       )}
     </div>
   );

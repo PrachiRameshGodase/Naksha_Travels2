@@ -106,7 +106,7 @@ const CreateSalesOrders = () => {
     //this is the common handle select
     const {
         handleChange,
-    } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, null);
+    } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect);
 
     //set selected billing and shipping addresses inside formData
     useEffect(() => {

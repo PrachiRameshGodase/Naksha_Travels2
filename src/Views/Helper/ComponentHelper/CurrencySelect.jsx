@@ -3,6 +3,8 @@ import { CustomDropdown012 } from '../../../Components/CustomDropdown/CustomDrop
 import { otherIcons } from '../SVGIcons/ItemsIcons/Icons'
 import { useSelector } from 'react-redux';
 import CustomDropdown26 from '../../../Components/CustomDropdown/CustomDropdown26';
+import { CiMoneyBill } from "react-icons/ci";
+
 
 const CurrencySelect = ({ disable, style, ...rest }) => {
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
@@ -34,7 +36,7 @@ export const CurrencySelect2 = ({ disable, style, ...rest }) => {
         <>
             <label>Currency</label>
             <span >
-                {otherIcons.main_currency_icon}
+                <CiMoneyBill />
                 <CustomDropdown012
                     label="Currency Name"
                     name="currency"

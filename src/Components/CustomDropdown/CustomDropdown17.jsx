@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
+import { useSelector } from 'react-redux';
+import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 
 const CustomDropdown17 = forwardRef((props, ref) => {
 
-  const { options, value, onChange, name, defaultOption, sd154w78s877 } = props;
+  let { options, value, onChange, name, defaultOption, sd154w78s877, type } = props;
   const {
     isOpen,
     setIsOpen,
@@ -16,28 +18,13 @@ const CustomDropdown17 = forwardRef((props, ref) => {
     handleKeyDown,
     handleSelect,
     focusedOptionIndex,
-  } = DropDownHelper(options, onChange, name, "", "",);
+  } = DropDownHelper(options, onChange, name, type);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
+  const invoiceList = useSelector((state) => state?.invoiceList);
+  //for static search bill list
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
-  // const handleSelect = (option) => {
-  //   onChange({ target: { name, value: option.id } }); // Change here to pass option.id
-  //   setIsOpen(false);
-  //   setSearchTerm('');
-  // };
-
-  const filteredOptions = searchTerm?.length === 0 ? options : options?.filter(option =>
+  if (searchTerm) options = searchTerm?.length === 0 ? options : options?.filter(option =>
     option?.invoice_id?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
@@ -59,22 +46,33 @@ const CustomDropdown17 = forwardRef((props, ref) => {
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            ref={inputRef}
             className="dropdown-search"
           />
           <div className="dropdownoptoscroll">
-            {filteredOptions?.map(option => (
-              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id == value ? " selectedoption" : "")}>
-                {option.invoice_id}
-              </div>
-            ))}
-            {filteredOptions?.length == 0 &&
-              <>
-                <div className="notdatafound02">
-                  <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe>
+            {(invoiceList?.loading) ? <>
+              <TableViewSkeletonDropdown />
+            </> : <>
+              {options?.map((option, index) => (
+                <div key={option.id}
+                  ref={(el) => (optionRefs.current[index] = el)}
+                  onClick={() => handleSelect(option)}
+                  className={"dropdown-option" +
+                    (option.labelid == value ? " selectedoption" : "") +
+                    (index === focusedOptionIndex ? " focusedoption" : "")}>
+                  {option.invoice_id ? option?.invoice_id : ""}
                 </div>
-                <div className="dropdown-option centeraligntext">No Invoice found for this Customer</div>
-              </>
-            }
+              ))}
+
+              {options?.length == 0 &&
+                <>
+                  <div className="notdatafound02">
+                    <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe>
+                  </div>
+                  <div className="dropdown-option centeraligntext">No Invoice found for this Customer</div>
+                </>
+              }
+            </>}
           </div>
         </div>
       )}

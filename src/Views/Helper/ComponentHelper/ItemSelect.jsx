@@ -8,6 +8,7 @@ import { SlReload } from "react-icons/sl";
 import { handleKeyPress } from "../KeyPressInstance";
 import { GoPlus } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
+import { FiEdit } from "react-icons/fi";
 import { otherIcons } from "../SVGIcons/ItemsIcons/Icons";
 import { ImageUploadGRN } from "./ImageUpload";
 import CustomDropdown15 from "../../../Components/CustomDropdown/CustomDropdown15";
@@ -33,7 +34,6 @@ import AddVisaPopup from "../../Invoices/AddVisaPopup";
 import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
-import ShowMastersValue from "../ShowMastersValue";
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
 
@@ -57,7 +57,7 @@ const ItemSelect = ({
 
   const params = new URLSearchParams(location.search);
 
-  // const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+  const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const gstType = activeOrg_details?.tax_type;
   const currencySymbol = getCurrencySymbol();
@@ -458,6 +458,7 @@ const ItemSelect = ({
   const servicesList = ShowMasterData("48");
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
   const [activePopup, setActivePopup] = useState(null);
+  // console.log("activePopupactivePopup", activePopup)
 
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -469,14 +470,14 @@ const ItemSelect = ({
 
   // add services function
   const handleAddService = (name, data) => {
-
-    // if type is not selected or undedined then we can not add new row
-    const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name); // 
+    // Check if there's an empty type in the existing rows
+    const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name);
     if (isTypeNull) {
-      toast.error("Please select the type and valid item name of above row");
+      toast.error("Please select the type and valid item name of the above row");
       return;
     }
 
+    // Get the item name based on the service type
     const itemName =
       name === "Hotel"
         ? data?.hotel_name
@@ -493,7 +494,9 @@ const ItemSelect = ({
                   : name === "Other"
                     ? data?.item_name
                     : "";
-    const item_data = {
+
+    // Prepare the new or updated item
+    const newItem = {
       item_name: itemName,
       tax_name: "",
       quantity: 1,
@@ -504,15 +507,24 @@ const ItemSelect = ({
       gross_amount: parseFloat(data?.gross_amount) * 1,
       final_amount: parseFloat(data?.gross_amount).toFixed(2),
       discount_type: 1,
-      unit_id: 0,
-      item_id: "0",
+      item_id: 13,
       type: "Service",
       items_data: data,
       is_service: 1
     };
-    const newItems = (formData?.items[0]?.item_name !== "") ? [...formData.items, item_data] : [item_data];
-    setFormData({ ...formData, items: newItems });
+
+    // Check if we're editing an existing row or adding a new one
+    const updatedItems = activePopup?.index !== undefined
+      ? formData.items.map((item, idx) =>
+        idx === activePopup.index ? { ...item, ...newItem } : item
+      ) // Update the specific row
+      : [...formData.items, newItem]; // Add a new row
+
+    // Save the updated items to formData
+    setFormData({ ...formData, items: updatedItems });
   };
+
+
 
   const renderPopup = () => {
     if (!activePopup) return null;
@@ -520,11 +532,13 @@ const ItemSelect = ({
     const { popupType } = activePopup;
 
     switch (popupType) {
+
       case "Hotels":
         return (
           <AddHotelPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data}
           />
         );
 
@@ -580,7 +594,6 @@ const ItemSelect = ({
   };
 
 
-
   return (
     <>
       {renderPopup()}
@@ -612,7 +625,7 @@ const ItemSelect = ({
               {/* <th>Actions</th> */}
             </tr>
           </thead>
-
+          {/* {console.log("formData", formData?.items)} */}
           <tbody className="table_head_item_02">
             {formData?.items?.map((item, index) => (
               <React.Fragment key={index}>
@@ -621,89 +634,26 @@ const ItemSelect = ({
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
 
+                    <CustomDropdown26
+                      options={options2 || []}
+                      value={item?.item_id}
+                      onChange={(event) =>
+                        handleItemChange(
+                          index,
+                          event.target.name,
+                          event.target.value
+                        )
+                      }
+                      name="item_id"
+                      type="select_item"
+                      setItemData={setItemData}
+                      index={index}
+                      extracssclassforscjkls={extracssclassforscjkls}
+                      itemData={item}
+                      ref={dropdownRef2}
+                      service_name={item?.items_data}
+                    />
 
-                    {/* it is desplay when service select */}
-                    {item?.items_data?.service_name === "Hotel" ? (
-                      <>
-                        <div>
-                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
-                        </div>
-                        <div>
-                          <b>Room:</b> {item?.items_data?.room_no || "-"}
-                        </div>
-                        <div>
-                          <b>Meal:</b>{" "}
-                          <ShowMastersValue
-                            type="37"
-                            id={item?.items_data?.meal_id || "-"}
-                          />
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Assist" ? (
-                      <>
-                        <div>
-                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
-                        </div>
-                        <div>
-                          <b>Meeting Type:</b>{" "}
-                          {item?.items_data?.meeting_type || "-"}
-                        </div>
-                        <div>
-                          <b>No Of Persons:</b>{" "}
-                          {item?.items_data?.no_of_persons || "-"}
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Flight" ? (
-                      <>
-                        <div>
-                          <b>Airline Name:</b>{" "}
-                          {item?.items_data?.airline_name || "-"}
-                        </div>
-                        <div>
-                          <b>Ticket No:</b> {item?.items_data?.ticket_no || "-"}
-                        </div>
-                        <div>
-                          <b>PRN No:</b> {item?.items_data?.prn_no || "-"}
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Visa" ? (
-                      <>
-                        <div>
-                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
-                        </div>
-                        <div>
-                          <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
-                        </div>
-                        <div>
-                          <b>Visa Type:</b>{" "}
-                          <ShowMastersValue
-                            type="40"
-                            id={item?.items_data?.visa_type_id || "-"}
-                          />
-                        </div>
-                      </>
-                    ) :
-                      // display when item is selected. item id is found 
-                      (
-                        <CustomDropdown26
-                          options={options2 || []}
-                          value={item?.item_id}
-                          onChange={(event) =>
-                            handleItemChange(
-                              index,
-                              event.target.name,
-                              event.target.value
-                            )
-                          }
-                          name="item_id"
-                          type="select_item"
-                          setItemData={setItemData}
-                          index={index}
-                          extracssclassforscjkls={extracssclassforscjkls}
-                          itemData={item}
-                          ref={dropdownRef2}
-                        />
-                      )}
                   </td>
 
                   {/* Type Dropdown */}
@@ -767,9 +717,9 @@ const ItemSelect = ({
                           }
                         }
                       }}
-                      disabled={item?.type === "Service"}
+                      disabled={item?.is_service == 1}
                       style={{
-                        cursor: item?.type === "Service" ? "not-allowed" : "default",
+                        cursor: item?.is_service == 1 ? "not-allowed" : "default",
                       }}
                     />
                   </td>
@@ -909,33 +859,58 @@ const ItemSelect = ({
 
                   {/* reload and remove butttons */}
                   <td className="table_column_item refresh_remove_button_item">
-                    {formData?.items?.length > 1 ? (
-                      <button
 
-                        className="refresh_remove_button_item"
-                        type="button"
-                        onClick={() => handleItemRemove(index)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter") {
-                            handleItemRemove(index);
-                          }
-                        }}
-                      >
-                        <RxCross2 className="react_icn_items" />
-                      </button>
+                    {formData?.items?.length > 1 ? (
+                      <>
+                        <button
+
+                          className="refresh_remove_button_item"
+                          type="button"
+                          onClick={() => handleItemRemove(index)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              handleItemRemove(index);
+                            }
+                          }}
+                        >
+                          <RxCross2 className="react_icn_items" />
+                        </button>
+
+                        {item?.is_service == 1 && isEdit &&
+                          <button
+                            className="refresh_remove_button_item"
+                            type="button"
+                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
+                          >
+                            <FiEdit className="react_icn_items" />
+                          </button>
+                        }
+                      </>
                     ) : (
-                      <button
-                        className="refresh_remove_button_item"
-                        type="button"
-                        onClick={() => handleItemReset(index)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter") {
-                            handleItemReset(index);
-                          }
-                        }}
-                      >
-                        <SlReload />
-                      </button>
+                      <>
+                        <button
+                          className="refresh_remove_button_item"
+                          type="button"
+                          onClick={() => handleItemReset(index)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              handleItemReset(index);
+                            }
+                          }}
+                        >
+                          <SlReload />
+                        </button>
+
+                        {item?.is_service == 1 && isEdit &&
+                          <button
+                            className="refresh_remove_button_item"
+                            type="button"
+                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
+                          >
+                            <FiEdit className="react_icn_items" />
+                          </button>
+                        }
+                      </>
                     )}
                   </td>
                 </tr>

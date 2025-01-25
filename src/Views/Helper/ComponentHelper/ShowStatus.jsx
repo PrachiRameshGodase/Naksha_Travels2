@@ -42,14 +42,14 @@ export const ShowStatusInList1 = ({ quotation }) => {
                 :
                 <>
                     {
-                        quotation?.status == "1"quotation?.status == "1" && quotation?.approved_date && quotation?.due_date ?
-                    <>
-                        <>
-                            {getDateStatus1(formatDate(quotation?.approved_date), formatDate(quotation?.due_date))}
-                        </>
-                    </>
-                    :
-                    quotation?.status == "0" ? "Draft": quotation?.status == "1" ? "Approved" : quotation?.status == "2" ? "Declined" : quotation?.status == "3" ? "Send For Approval" : quotation?.status == "5" ? "Paid" : ""
+                        quotation?.status == "1" && quotation?.approved_date && quotation?.due_date ?
+                            <>
+                                <>
+                                    {getDateStatus1(formatDate(quotation?.approved_date), formatDate(quotation?.due_date))}
+                                </>
+                            </>
+                            :
+                            quotation?.status == "0" ? "Draft" : quotation?.status == "1" ? "Approved" : quotation?.status == "2" ? "Declined" : quotation?.status == "3" ? "Send For Approval" : quotation?.status == "5" ? "Paid" : ""
                     }
 
                 </>}

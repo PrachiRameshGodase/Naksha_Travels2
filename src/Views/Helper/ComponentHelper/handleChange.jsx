@@ -1,5 +1,6 @@
+import { parsePurchaseDetails } from "../StateHelper/EditPages/parsePurchaseDetails";
 
-export const useHandleFormChange = (formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect) => {
+export const useHandleFormChange = (formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, sendChageData,) => {
 
     const calculateExpiryDate = (transactionDate, terms) => {
         // console.log("transactionDate, terms", transactionDate, terms)
@@ -39,6 +40,7 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
             // when expiry_date or due_data is selected the payment terms selected custome which is 5
             ...((name === "expiry_date" || name === "due_date") && { payment_terms: 5 }),
 
+
         };
 
 
@@ -61,6 +63,48 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
                     updatedFormData.due_date = calculateExpiryDate(new Date(formData?.transaction_date), selectedItem?.payment_terms);
                 }
             }
+
+            // use in credit note
+            updatedFormData.invoice_id = ""
+        }
+
+        // use in credit note
+        if (name === "invoice_id" && value !== "") {
+            sendChageData?.setIsInvoiceSelect(true);
+            if (name === "invoice_id") {
+                const selectedInvoice = sendChageData?.invoiceList?.find(
+                    (val) => val?.id === value
+                );
+                if (selectedInvoice?.id) {
+                    sendChageData?.dispatch(sendChageData?.invoiceDetailes({ id: selectedInvoice.id })).then((data) => {
+                        if (data) {
+                            // Use the data to parse details
+                            const {
+                                calculateTotalTaxAmount,
+                                itemsFromApi,
+                                all_changes,
+                                total_charges,
+                            } = parsePurchaseDetails(data?.Invoice);
+
+                            console.log("itemsFromApi", itemsFromApi)
+                            // Update form data with parsed details
+                            console.log("data?.Invoice", data?.Invoice?.items)
+                            setFormData((prevInner) => ({
+                                ...prevInner,
+                                tax_amount: calculateTotalTaxAmount(),
+                                items: itemsFromApi,
+                                charges: all_changes,
+                                total_charges,
+                            }));
+
+                            // Update item selection status
+                            // setIsItemSelect(!!data?.Invoice.items);
+                        }
+                    });
+                }
+            }
+        } else if (name === "invoice_id" && value == "") {
+            sendChageData?.setIsInvoiceSelect(false);
         }
 
         setFormData(updatedFormData);

@@ -2,13 +2,8 @@
 import React, { useState } from 'react';
 // import './PdfTemplate.scss';
 import { activeOrg_details, showAmountWithCurrencySymbol, showRateWithPercent } from '../../../HelperFunctions';
-import { PdfShowMastersValue } from '../../../ShowMastersValue';
 import { otherIcons } from '../../../SVGIcons/ItemsIcons/Icons';
 import { currentTime, formatDate3, todayDate } from '../../../DateFormat';
-import LoadingText from '../../../../../Components/Loaders/LoadingText';
-import ResizeFL from '../../../../../Components/ExtraButtons/ResizeFL';
-import TableViewSkeleton from '../../../../../Components/SkeletonLoder/TableViewSkeleton';
-import DatePicker from '../../../../Common/DatePicker/DatePicker';
 import CommonItemReport from '../../../../Reports/ReportsData/SaleReport/CommonItemReport';
 import CommonPurchasesReport from '../../../../Reports/ReportsData/PurchasesReport/CommonPurchasesReport';
 import CommonCustomerBlance from '../../../../Reports/ReportsData/ReceivablesReport/CommonCustomerBlance';
@@ -17,8 +12,6 @@ import CommonExpense from '../../../../Reports/ReportsData/ExportReport/CommonEx
 import CommonAccountTransaction from '../../../../Reports/ReportsData/AccountantsReport/CommonAccountTransaction';
 
 const ReportsPrintContent = ({ reportData, cusVenData, masterData, moduleId, section }) => {
-    const [showCharges, setShowCharges] = useState(false);
-    const active_orgnization = activeOrg_details;
     const data = reportData?.data?.data;
 
     const calculateTotalTaxAmount = () => {
