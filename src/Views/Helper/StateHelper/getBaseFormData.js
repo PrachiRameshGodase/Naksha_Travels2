@@ -33,7 +33,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         expiry_date: formatDate(new Date()),
         transaction_date: formatDate(new Date()),
-
+        due_date: formatDate(new Date()),
 
         terms_and_condition: "",
         tcs: "",

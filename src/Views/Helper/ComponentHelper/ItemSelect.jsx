@@ -508,6 +508,7 @@ const ItemSelect = ({
       item_id: "0",
       type: "Service",
       items_data: data,
+      is_service: 1
     };
     const newItems = (formData?.items[0]?.item_name !== "") ? [...formData.items, item_data] : [item_data];
     setFormData({ ...formData, items: newItems });

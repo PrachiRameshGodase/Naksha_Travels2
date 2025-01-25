@@ -54,7 +54,7 @@ export const ShowMasterData = (type) => {
     const masterData = useSelector(state => state?.masterData?.masterData);
     const filteredData = masterData?.filter(item => item.type == type);
     return filteredData || [];
-  
+
 };
 
 export const ShowUserMasterData = (type) => {
@@ -166,14 +166,14 @@ export const showDeparmentLabels = (department, mainDeparmentVal) => {
     }
 };
 
-export function getDateStatus(createdDate, expiryDate) {
+export function getDateStatus(approvedDate, expiryDate) {
     const now = new Date();
-    const created = new Date(createdDate);
+    const approved = new Date(approvedDate);
     const expiry = new Date(expiryDate);
 
-    const totalDays = (expiry - created) / (1000 * 60 * 60 * 24);
+    const totalDays = (expiry - approved) / (1000 * 60 * 60 * 24);
 
-    const passedDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+    const passedDays = Math.floor((now - approved) / (1000 * 60 * 60 * 24));
 
     const leftDays = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
 
@@ -192,18 +192,24 @@ export function getDateStatus(createdDate, expiryDate) {
     }
 }
 
-export function getDateStatus1(createdDate, expiryDate) {
+export function getDateStatus1(approvedDate, expiryDate) {
+    console.log("approvedDate, expiryDate", approvedDate, expiryDate)
     const now = new Date();
-    const created = new Date(createdDate);
+    const approved = new Date(approvedDate);
     const expiry = new Date(expiryDate);
 
-    const totalDays = (expiry - created) / (1000 * 60 * 60 * 24);
+    const totalDays = (expiry - approved) / (1000 * 60 * 60 * 24);
+    console.log("totalDays", totalDays)
 
-    const passedDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+    const passedDays = Math.floor((now - approved) / (1000 * 60 * 60 * 24));
+    console.log("passedDays", passedDays)
 
     const leftDays = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
+    console.log("leftDays", leftDays)
 
     const thirtyPercentDays = Math.floor(totalDays * 0.3);
+    console.log("thirtyPercentDays", thirtyPercentDays)
+
     if (passedDays <= thirtyPercentDays) {
         return "Approved";
     } else if (leftDays > 1) {

@@ -9,16 +9,13 @@ import DatePicker from "react-datepicker";
 import Loader02 from '../../../Components/Loaders/Loader02';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
-import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
 import {
   activeOrg_details,
   preventZeroVal,
   ShowMasterData,
-  stringifyJSON,
-  validateItems,
 } from "../../Helper/HelperFunctions";
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import { SelectAddress } from "../../Common/SelectAddress";
@@ -31,13 +28,18 @@ import {
   productTypeItemAction,
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
-import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
+import { formatDate } from '../../Helper/DateFormat';
 
 
 const CreateQuotation = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const dropdownRef1 = useRef(null);
+  const dropdownRef2 = useRef(null);
+
   const cusList = useSelector((state) => state?.customerList);
   const quoteDetail = useSelector((state) => state?.quoteDetail);
   const quoteCreate = useSelector((state) => state?.quoteUpdate);
@@ -52,8 +54,6 @@ const CreateQuotation = () => {
 
   const paymentTerms = ShowMasterData("8");
 
-  const dropdownRef1 = useRef(null);
-  const dropdownRef2 = useRef(null);
 
   const {
     formData,
@@ -78,20 +78,18 @@ const CreateQuotation = () => {
     itemId,
     isEdit
   );
-  console.log("quoteDetailsquoteDetails", quoteDetails)
 
-  const calculateExpiryDate = (transactionDate, terms) => {
-    const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
-    return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
-  };
+  // const calculateExpiryDate = (transactionDate, terms) => {
+  //   const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
+  //   return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
+  // };
 
   //this is the common handle select
   const {
     handleChange,
-  } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, calculateExpiryDate);
+    calculateExpiryDate,
+  } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect);
 
-
-  const navigate = useNavigate();
 
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {
@@ -238,8 +236,16 @@ const CreateQuotation = () => {
                             <span >
                               {otherIcons.date_svg}
                               <DatePicker
+                                name='transaction_date'
                                 selected={formData?.transaction_date}
-                                onChange={(date) => handleDateChange(date, 'transaction_date')}
+                                onChange={(date) =>
+                                  handleChange({
+                                    target: {
+                                      name: 'transaction_date',
+                                      value: date,
+                                    },
+                                  })
+                                }
                                 placeholderText="Enter Quotation Date" dateFormat="dd-MM-yyy"
                                 autoComplete='off'
                               />
@@ -268,8 +274,16 @@ const CreateQuotation = () => {
                               {otherIcons.date_svg}
                               <DatePicker
                                 selected={formData.expiry_date}
-                                onChange={(date) => handleDateChange(date, 'expiry_date')}
+                                onChange={(date) =>
+                                  handleChange({
+                                    target: {
+                                      name: 'expiry_date',
+                                      value: date,
+                                    },
+                                  })
+                                }
                                 name='expiry_date'
+                                minDate={formData?.transaction_date}
                                 placeholderText="Enter Expiry Date"
                                 dateFormat="dd-MM-yyy"
                                 autoComplete='off'

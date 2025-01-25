@@ -108,44 +108,6 @@ const CreateSalesOrders = () => {
         handleChange,
     } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, null);
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-
-    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
-    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    //     }
-
-    //     if (name === "customer_id" && value !== "") {
-    //         setIsCustomerSelect(true);
-    //     } else if (name === "customer_id" && value == "") {
-    //         setIsCustomerSelect(false);
-    //     }
-
-    //     if (name === "customer_id") {
-    //         const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-
-    //         const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing == "1")
-    //         const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping == "1")
-    //         setAddSelect({
-    //             billing: findfirstbilling,
-    //             shipping: findfirstshipping,
-    //         })
-    //     }
-
-    //     setFormData(prev => ({
-    //         ...prev,
-    //         [name]: newValue,
-    //         total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
-    //         address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
-    //     }));
-    // };
-
-    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-
-    // for address select
-
-
     //set selected billing and shipping addresses inside formData
     useEffect(() => {
         setFormData({
@@ -200,59 +162,6 @@ const CreateSalesOrders = () => {
             sendData
         });
     };
-
-    // const handleFormSubmit = async (e) => {
-    //     e.preventDefault();
-    //     let confirmed = null;
-    //     const buttonName = e.nativeEvent.submitter.name;
-    //     const errors = validateItems(formData?.items);
-    //     // console.log("error", errors)
-
-    //     if (!isCustomerSelect) {
-    //         if (!isPartiallyInViewport(dropdownRef1.current)) {
-    //             dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //             setTimeout(() => {
-    //                 dropdownRef1.current.focus();
-    //             }, 500);
-    //         }
-    //         return;
-    //     }
-
-    //     else if (errors.length > 0) {
-
-    //         setItemErrors(errors);
-    //         if (!isPartiallyInViewport(dropdownRef2.current)) {
-    //             dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //         }
-
-    //         setTimeout(() => {
-    //             dropdownRef2.current.focus();
-    //         }, 500);
-    //         return
-    //     }
-
-    //     // if the amount is zero then show a confirm for proceed to create or not....
-    //     else if (parseInt(formData?.total) <= 0) {
-    //         confirmed = await confirmWithZeroAmount('sale-order');
-    //         // if (confirmed === false) return;
-    //     }
-
-    //     if (confirmed || confirmed == null) {
-    //         try {
-    //             // const { tax_name, ...formDataWithoutTaxName } = formData;
-    //             const updatedItems = formData?.items?.map((item) => {
-    //                 const { tax_name, ...itemWithoutTaxName } = item;
-    //                 return itemWithoutTaxName;
-    //             });
-    //             dispatch(updateQuotation({ ...formData, items: updatedItems, address: JSON.stringify(formData?.address), charges: stringifyJSON(formData?.charges), }, Navigate, "sale-order", isEdit, buttonName, itemId, convert));
-
-    //         } catch (error) {
-    //             toast.error('Error updating quotation:', error);
-    //         }
-
-    //     }
-    // };
-
 
     useEffect(() => {
         setFormData((prev) => ({

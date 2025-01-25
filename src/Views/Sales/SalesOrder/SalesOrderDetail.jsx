@@ -121,8 +121,9 @@ const SalesOrderDetail = () => {
             <div id="leftareax12">
               <h1 id="firstheading">{sale?.sale_order_id}</h1>
             </div>
+
             <div id="buttonsdata">
-              {sale?.status !== "1" && sale?.status !== "4" &&
+              {sale?.status == "0" &&
                 <div className="mainx1" onClick={() => handleEditThing("edit")}>
                   <img src="/Icons/pen-clip.svg" alt="" />
                   <p>Edit</p>
@@ -183,6 +184,7 @@ const SalesOrderDetail = () => {
                     <span><p>Sales-Order Date:</p> <h3>{formatDate3(sale?.transaction_date)}</h3></span>
                   </div>
                 </div>
+
                 <FromToDetails quotation={sale?.customer} section="Sales Orders" />
                 <ItemDetailTable itemsData={sale} />
 
