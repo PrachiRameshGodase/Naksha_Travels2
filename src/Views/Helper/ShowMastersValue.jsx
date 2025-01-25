@@ -44,4 +44,15 @@ export const PdfShowMastersValue = ({ type, id, masterData }) => {
     )
 }
 
+export const PdfShowUserMastersValue = ({ type, id, masterData }) => {
 
+    const allMasters = masterData?.filter(type_id => type_id?.type == type);
+
+    const findUnitNameById = () => {
+        const lable = allMasters?.find(unit => unit.labelid == id);
+        return lable ? lable.label : '';
+    };
+    return (
+        <>{findUnitNameById()}</>
+    )
+}

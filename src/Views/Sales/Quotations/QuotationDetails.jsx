@@ -26,7 +26,6 @@ const QuotationDetails = () => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
   const masterData = useSelector(state => state?.masterData?.masterData);
-
   const componentRef = useRef(null);
 
   const quoteDetail = useSelector(state => state?.quoteDetail);

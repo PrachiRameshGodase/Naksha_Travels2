@@ -27,6 +27,8 @@ const DSRDetails = () => {
   const Navigate = useNavigate();
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
+  
+  const userMasterData = useSelector(state => state?.userMasterList?.data);
   const cusList = useSelector((state) => state?.customerList);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
@@ -152,26 +154,24 @@ const DSRDetails = () => {
       dispatch(DSRDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
+ 
   const [loading, setLoading] = useState(false);
-
   const handleDownloadPDF = () => {
-    if (!DSRDetails) {
+    if (!DSRData || !userMasterData) {
       alert("Data is still loading, please try again.");
       return;
     }
-
     const contentComponent = (
       <PrintContent2
         data={DSRData}
+        userMasterData={userMasterData}
         cusVenData=""
-        masterData=""
-        moduleId=""
+        moduleId="DSR No"
         section="DSR"
       />
     );
     generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
   };
-
   const isDisabled = DSRData?.is_invoiced == "1";
   return (
     <>

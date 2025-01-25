@@ -14,7 +14,7 @@ import {
 import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import Itinerary from "./Itinerary";
-import { AttachmentPreviewMultipleDocument } from "../../../Helper/Attachment";
+import { Attachment2, AttachmentPreviewMultipleDocument } from "../../../Helper/Attachment";
 
 const TourPackageDetails = () => {
   const navigate = useNavigate();
@@ -272,7 +272,7 @@ const TourPackageDetails = () => {
                           <span>Attachment</span>
                           <h1>:</h1>
                           <p>
-                            <AttachmentPreviewMultipleDocument attachments={attachments} />
+                            <Attachment2 attachments={attachments} />
                           </p>
                         </li>
                       </ul>

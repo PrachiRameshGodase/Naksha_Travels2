@@ -105,7 +105,6 @@ const FamilyMember = ({
   }, []);
 
   const handleDeleteSelectedMember = async (indexToDelete) => {
-    console.log("indexToDelete", indexToDelete);
     const result = await Swal.fire({
       text: "Are you sure you want to delete this member from list?",
       showCancelButton: true,
@@ -122,11 +121,17 @@ const FamilyMember = ({
   useEffect(() => {
     if (customerDetails?.family_members && isEdit) {
       const familyDetails = customerDetails?.family_members || [];
+      console.log("familyDetails", familyDetails)
       const familyDetail = familyDetails?.map((item) => ({
         member_id: item.id || "",
         food_type: item.food_type || "",
         relationship: item.relationship || null,
         photo: item?.photo ? JSON.parse(item?.photo) : "",
+        email:item?.email ||"",
+        mobile_no:item?.mobile_no ||"",
+        display_name:item?.display_name ||"",
+
+        gender:item?.gender ||""
       }));
 
       setEmployeeDetails(familyDetail);
@@ -173,13 +178,8 @@ console.log("employeeDetails", employeeDetails)
           {employeeDetails?.length > 0 ? (
             
             employeeDetails?.map((member, index) => {
-              console.log("member", member)
-              // const selectedMember = cusList?.data?.user.find(
-              //   (user) => user.id === member.member_id
-              // );
-              // console.log("selectedMember", selectedMember)
+             
               const disabledRow =member?.member_id == customerDetails?.user?.id;
-              console.log("member", customerDetails?.user?.id)
               return (
                  (
                   <tr
@@ -205,7 +205,7 @@ console.log("employeeDetails", employeeDetails)
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}
                         index={index}
-                        // disabled={disabledRow}
+                        disabled={disabledRow}
                       />
                     </td>
                     <td style={{ width: "40px" }}>

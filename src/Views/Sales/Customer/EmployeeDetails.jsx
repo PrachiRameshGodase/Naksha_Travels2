@@ -121,6 +121,10 @@ const EmployeeDetails = ({
       const employeeDetail = employeeDetails?.map((item) => ({
         employee_id: item.id || "",
         food_type: item.food_type || "",
+        email:item?.email ||"",
+        mobile_no:item?.mobile_no ||"",
+        display_name:item?.display_name ||"",
+        gender:item?.gender ||""
       }));
 
       setEmployeeDetails(employeeDetail); // Update state with the transformed array

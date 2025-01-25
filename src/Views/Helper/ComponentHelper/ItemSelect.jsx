@@ -22,6 +22,7 @@ import {
   activeOrg_details,
   sendData,
   ShowMasterData,
+  ShowUserMasterData,
 } from "../HelperFunctions";
 import TextAreaComponentWithTextLimit from "./TextAreaComponentWithTextLimit";
 import ExpenseCharges from "./ExpenseCharges";
@@ -455,7 +456,7 @@ const ItemSelect = ({
   useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
 
   // for service select code..............................................
-  const servicesList = ShowMasterData("48");
+  const servicesList = ShowUserMasterData("48");
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
   const [activePopup, setActivePopup] = useState(null);
 

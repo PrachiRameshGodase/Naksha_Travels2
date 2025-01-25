@@ -17,6 +17,8 @@ import {
 import "./DSRDetails.scss";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
+import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
+import { generatePDF } from "../Helper/createPDF";
 
 const MICEDetails = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const MICEDetails = () => {
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
 
+  const userMasterData = useSelector(state => state?.userMasterList?.data);
   const cusList = useSelector((state) => state?.customerList);
   const MICEDetails = useSelector((state) => state?.MICEDetails);
   const MICEData = MICEDetails?.data?.data?.data || {};
@@ -150,6 +153,24 @@ const MICEDetails = () => {
       dispatch(MICEDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
+  
+  const [loading, setLoading] = useState(false);
+  const handleDownloadPDF = () => {
+    if (!MICEData || !userMasterData) {
+      alert("Data is still loading, please try again.");
+      return;
+    }
+    const contentComponent = (
+      <PrintContent2
+        data={MICEData}
+        userMasterData={userMasterData}
+        cusVenData=""
+        moduleId="MICE No"
+        section="MICE"
+      />
+    );
+    generatePDF(contentComponent, "MICE_Document.pdf", setLoading, 500);
+  };
   const isDisabled = MICEData?.is_invoiced == "1";
 
   return (
@@ -170,7 +191,7 @@ const MICEDetails = () => {
           <div id="buttonsdata">
             <div
               onClick={() => {
-                handleChangeDSRStatus(DSRData);
+                handleChangeDSRStatus(MICEData);
               }}
               // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
@@ -195,7 +216,7 @@ const MICEDetails = () => {
             </div>
             {MICEData?.is_invoiced == "1" && (
               <div className="mainx1">
-                <p style={{ cursor: "pointer" }}>PDF/Print</p>
+                <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>PDF/Print</p>
               </div>
             )}
 
