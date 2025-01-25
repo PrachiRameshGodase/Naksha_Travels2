@@ -2760,7 +2760,13 @@
     }
   }
 }
-
+.inputbox{
+  display: flex;
+    align-items: end;
+    text-align: end;
+    width: 120px;
+    border-radius: 5px;
+}
 .taxtypedropdownx {
   width: 100%;
   max-width: 1010px;

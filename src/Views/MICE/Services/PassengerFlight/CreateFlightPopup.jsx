@@ -79,6 +79,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     travel_date: false,
     booking_date: false,
     airline_name: false,
+    air_line_code: false,
+    destination_code: false,
     guest_ids: false,
     gross_amount: false,
     tax_amount: false,
@@ -97,12 +99,31 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let updatedFields = { [name]: value };
+    if (name === "airline_name") {
+      const selectedRoom = flightListData?.data?.data?.find(
+        (flight) => flight?.flight_name == value
+      );
+      updatedFields = {
+        ...updatedFields,
+        airline_name: selectedRoom?.flight_name || "",
+        air_line_code: selectedRoom?.air_line_code || "",
+        destination_code: selectedRoom?.destination_code || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
+      ...updatedFields,
       [name]: value,
     }));
     setErrors((prevData) => ({
       ...prevData,
+      ...updatedFields,
+      ...(name === "airline_name" && {
+        airline_name: false, // Clear error for occupancy when room changes
+        air_line_code: false, // Clear error for meal when room changes
+        destination_code: false, // Clear error for bed
+      }),
       [name]: false,
     }));
   };
@@ -145,6 +166,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
+      air_line_code: formData?.air_line_code ? false : true,
+      destination_code: formData?.destination_code ? false : true,
       booking_date: formData?.booking_date ? false : true,
       travel_date: formData?.travel_date ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
@@ -199,7 +222,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+  const isDisabled = formData?.airline_name;
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -352,8 +375,12 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
-                        <label>Airline Code</label>
+                      <div data-tooltip-content={
+                          isDisabled ? "According to airport it is getting" : ""
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom" className="form_commonblock">
+                        <label>Airline Code<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -362,11 +389,59 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
+                              disabled={isDisabled}
                             />
                           </span>
+                          {errors?.air_line_code && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Airline Code
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
+                        <label>
+                          Destination Code<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Destination Code"
+                            options={destinationCode}
+                            value={formData?.destination_code}
+                            onChange={handleChange}
+                            name="destination_code"
+                            defaultOption="Select Destination Code"
+                            type="masters2"
+                            disabled={isDisabled}
+                          />
+                        </span>
+                        {errors?.destination_code && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Destination
+                          </p>
+                        )}
+                      </div>
+                    
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
                         <label>
                           Family Member<b className="color_red">*</b>
                         </label>
@@ -405,9 +480,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>GDS Portal</label>
                         <span>
@@ -464,22 +536,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
-                        <label>Destination Code</label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Destination Code"
-                            options={destinationCode}
-                            value={formData?.destination_code}
-                            onChange={handleChange}
-                            name="destination_code"
-                            defaultOption="Select Destination Code"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
+                      
                       <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">

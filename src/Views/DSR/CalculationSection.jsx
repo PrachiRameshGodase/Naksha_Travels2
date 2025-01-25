@@ -296,7 +296,7 @@ export const CalculationSection2 = ({
   };
 
   return (
-    <div className="calctotalsection">
+    <div className="calctotalsection" style={{maxWidth:"310px"}}>
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
@@ -307,6 +307,8 @@ export const CalculationSection2 = ({
               onChange={(e) => handleChange(e)}
               placeholder="0.00"
               name="gross_amount"
+              className="inputbox"
+              style={{width:"120px"}}
             />
           </div>
         </div>
@@ -354,6 +356,7 @@ export const CalculationSection2 = ({
               placeholder="0.00"
               className="inputsfocalci465s"
               readOnly
+
             />
           </div>
         </div>
@@ -388,6 +391,8 @@ export const CalculationSection2 = ({
               placeholder="0.00"
               // onChange={(e) => handleChange(e)}
               name="total_amount"
+              className="inputbox"
+              style={{width:"120px"}}
             />
           </div>
         </div>

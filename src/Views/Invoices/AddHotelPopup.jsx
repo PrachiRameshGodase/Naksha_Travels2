@@ -8,7 +8,7 @@ import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown31 from "../../Components/CustomDropdown/CustomDropdown31";
 import { formatDate } from "../Helper/DateFormat";
-import { sendData, ShowMasterData } from "../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
@@ -77,10 +77,10 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     check_in_date: false,
   });
 
-  const entryType = ShowMasterData("50");
-  const occupancy = ShowMasterData("36");
-  const meal = ShowMasterData("37");
-  const bed = ShowMasterData("38");
+  const entryType = ShowUserMasterData("50");
+  const occupancy = ShowUserMasterData("36");
+  const meal = ShowUserMasterData("37");
+  const bed = ShowUserMasterData("38");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -131,7 +131,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     }));
   };
 
-  const handleChange1 = (selectedItems) => {
+  const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
       guest_ids: selectedItems, // Update selected items array
@@ -211,7 +211,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+  const isDisabled = formData.room_id;
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -289,7 +289,9 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock">
+                      <div className={`form_commonblock ${
+                          formData?.hotel_id ? "" : "disabledfield"
+                        }`}>
                         <label>
                           Room Number/Name<b className="color_red">*</b>
                         </label>
@@ -340,6 +342,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                             name="occupancy_id"
                             defaultOption="Select Occupancy"
                             type="masters"
+                            disabled={isDisabled}
                           />
                         </span>
                         {errors?.occupancy_id && (
@@ -372,6 +375,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                             name="meal_id"
                             defaultOption="Select Meal"
                             type="masters"
+                            disabled={isDisabled}
                           />
                         </span>
                         {errors?.meal_id && (
@@ -401,6 +405,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                             name="bed"
                             defaultOption="Select Bed"
                             type="masters"
+                            disabled={isDisabled}
                           />
                         </span>
                         {errors?.bed && (
@@ -430,7 +435,9 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                               label="Select Guest"
                               options={cusList?.data?.user}
                               value={formData.guest_ids}
-                              onChange={handleChange1}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
                               name="guest_ids"
                               defaultOption="Select Guest"
                               setcusData={setcusData}
@@ -516,7 +523,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
-                            selected={formData?.chec_out_date}
+                            selected={formData?.check_out_date}
                             onChange={(date) =>
                               handleDateChange(date, "check_out_date")
                             }

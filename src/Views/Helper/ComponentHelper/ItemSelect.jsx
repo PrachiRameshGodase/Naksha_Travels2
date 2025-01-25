@@ -33,7 +33,7 @@ import AddVisaPopup from "../../Invoices/AddVisaPopup";
 import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
-import ShowMastersValue from "../ShowMastersValue";
+import ShowMastersValue, { ShowUserMastersValue } from "../ShowMastersValue";
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
 
@@ -675,13 +675,53 @@ const ItemSelect = ({
                         </div>
                         <div>
                           <b>Visa Type:</b>{" "}
-                          <ShowMastersValue
+                          <ShowUserMastersValue
                             type="40"
                             id={item?.items_data?.visa_type_id || "-"}
                           />
                         </div>
                       </>
                     ) :
+                     item?.items_data?.service_name === "CarHire" ? (
+                      <>
+                        <div>
+                          <b>Vehicle Type:</b> <ShowUserMastersValue
+                            type="41"
+                            id={item?.items_data?.vehicle_type_id || "-"}
+                          />
+                        </div>
+                        <div>
+                          <b>Pickup Location:</b> {item?.items_data?.pickup_location || "-"}
+                        </div>
+                        <div>
+                          <b>Drop Location:</b>{" "}
+                          
+                            {item?.items_data?.drop_location || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                    
+                     item?.items_data?.service_name === "Insurance" ? (
+                      <>
+                        <div>
+                          <b>Company Name:</b> 
+                            {item?.items_data?.company_name || "-"}
+                          
+                        </div>
+                        <div>
+                          <b>Policy No:</b> {item?.items_data?.policy_no || "-"}
+                        </div>
+                        <div>
+                          <b>Insurance Plan:</b>{" "}
+                          
+                            {item?.items_data?.insurance_plan || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                      // display when item is selected. item id is found 
+                   
                       // display when item is selected. item id is found 
                       (
                         <CustomDropdown26
