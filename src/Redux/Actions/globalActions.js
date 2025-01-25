@@ -129,7 +129,6 @@ export const fetchCurrencies = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/get/currency`, data);
         dispatch({ type: GET_CURRENCY_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: GET_CURRENCY_ERROR, payload: error.message });
     }
@@ -175,10 +174,10 @@ export const autoGenerateId = (data, setSearchTrigger) => async dispatch => {
         // } else {
         //     toast.error(response?.data?.message)
         // }
-        if(response?.data?.success===true){
+        if (response?.data?.success === true) {
             toast.success(response?.data?.message)
             setSearchTrigger((prev) => prev + 1);
-        }else{
+        } else {
             toast.error(response?.data?.message)
         }
 

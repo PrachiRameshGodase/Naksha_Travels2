@@ -87,7 +87,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     }),
                 }),
 
-                ...(detailData?.reference && { reference_no: detailData?.reference, reference: detailData?.reference }),
+                ...(detailData?.reference && { reference_no: detailData?.reference, reference: detailData?.reference, reference_no: detailData?.reference_no }),
                 status: detailData?.status,
                 tax_amount: calculateTotalTaxAmount(),
                 items: itemsFromApi,
@@ -131,8 +131,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
         // console.log("formDataformDataformDataformData", formData)
 
     }, [detailData, itemId, isEdit, convert]);
-
-    console.log("formaaaaaaaaaaaaaaaa", formData)
 
     return {
         formData,

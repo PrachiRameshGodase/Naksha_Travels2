@@ -175,7 +175,7 @@ const DSRDetails = () => {
   const isDisabled = DSRData?.is_invoiced == "1";
   return (
     <>
-      <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" />
+      {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeDSR?.loading ||

@@ -124,7 +124,7 @@ const QuotationDetails = () => {
             </div>
             <div id="buttonsdata">
 
-              {quotation?.status !== "1" && quotation?.status !== "4" &&
+              {quotation?.status != "1" && quotation?.status != "4" &&
                 <div className="mainx1" onClick={() => handleEditThing("edit")}>
                   <img src="/Icons/pen-clip.svg" alt="" />
                   <p>Edit</p>
@@ -140,7 +140,7 @@ const QuotationDetails = () => {
 
               <div className="sepc15s63x63"></div>
 
-              {quotation?.status !== "1" &&
+              {quotation?.status != "1" &&
                 <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
                   <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-id="my-tooltip" data-tooltip-content="More Options" data-tooltip-place='bottom' />
                   {showDropdown && (

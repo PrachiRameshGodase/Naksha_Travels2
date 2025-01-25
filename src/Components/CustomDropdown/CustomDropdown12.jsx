@@ -143,11 +143,11 @@ export const CustomDropdown012 = ({
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type);
 
-  // if (type === "currency") {
-  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
-  //     option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  //   );
-  // }
+  if (searchTerm) {
+    options = searchTerm?.length === 0 ? options : options?.filter(option =>
+      option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
+  }
 
   return (
     <div
@@ -168,7 +168,7 @@ export const CustomDropdown012 = ({
         className={"dropdown-selected" + (value ? " filledcolorIn" : "")}
       >
 
-        {options ? `${options?.find((account) => account?.code == value)?.country || ""} (${(options?.find((account) => account?.code == value)?.code || "")})` : defaultOption}
+        {options?.find((account) => account?.code == value)?.code ? `${options?.find((account) => account?.code == value)?.country || ""} (${(options?.find((account) => account?.code == value)?.code || "")})` : defaultOption}
 
         {/* {value ? options?.find( (account) => `${account?.country} (${account?.code})` === value
           )

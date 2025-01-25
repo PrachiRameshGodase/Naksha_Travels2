@@ -32,6 +32,8 @@ import {
 } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
+import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
+import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
 
 
 const CreateQuotation = () => {
@@ -41,8 +43,6 @@ const CreateQuotation = () => {
   const quoteCreate = useSelector((state) => state?.quoteUpdate);
   const quoteDetails = quoteDetail?.data?.data?.quotation;
   const autoId = useSelector(state => state?.autoId);
-
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
   const params = new URLSearchParams(location.search);
@@ -78,119 +78,39 @@ const CreateQuotation = () => {
     itemId,
     isEdit
   );
-  console.log("formdaa", formData?.payment_terms)
+  console.log("quoteDetailsquoteDetails", quoteDetails)
+
   const calculateExpiryDate = (transactionDate, terms) => {
     const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
     return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-    if (name === 'shipping_charge' || name === 'adjustment_charge') {
-      newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    }
-    if (name === "customer_id" && value !== "") {
-      setIsCustomerSelect(true);
-    } else if (name === "customer_id" && value === "") {
-      setIsCustomerSelect(false);
-    }
+
+  //this is the common handle select
+  const {
+    handleChange,
+  } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, calculateExpiryDate);
 
 
-    if (name === "customer_id") {
-      const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-      const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === 1);
-      const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === 1);
-      setAddSelect({
-        billing: findfirstbilling,
-        shipping: findfirstshipping,
-      });
-    }
+  const navigate = useNavigate();
 
-    if (name === "terms_and_condition") {
-      // Remove spaces for counting purposes
-      const countableText = value.replace(/\s/g, '');
-      if (countableText.length > 300) {
-        return; // Exit without updating state if limit is exceeded
-      }
-    }
-    setFormData(prev => ({
-      ...prev,
-      [name]: newValue,
-      ...(name === "payment_terms" && value != 5 && {
-        expiry_date: calculateExpiryDate(new Date(prev.transaction_date), value)
-      }),
-
-    }));
-  };
-
-  // console.log("first", formData?.payment_terms)
-  const handleDateChange = (date, name) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: date,
-      ...(name === 'expiry_date' && { payment_terms: 5 }),
-      ...(name === 'transaction_date' && prev.payment_terms !== 5 && {
-        expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms)
-      }),
-
-    }));
-  };
-
-  const Navigate = useNavigate();
-
+  // this is the common handle submit 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    let confirmed = null;
-    const buttonName = e.nativeEvent.submitter.name;
-    const errors = validateItems(formData?.items);
-
-    if (!isCustomerSelect) {
-      if (!isPartiallyInViewport(dropdownRef1.current)) {
-        dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          dropdownRef1.current.focus();
-        }, 500);
-      }
-      return;
-    }
-
-    else if (errors.length > 0) {
-
-      setItemErrors(errors);
-      if (!isPartiallyInViewport(dropdownRef2.current)) {
-        dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      setTimeout(() => {
-        dropdownRef2.current.focus();
-      }, 500);
-      return
-    }
-
-    // if the amount is zero then show a confirm for proceed to create or not....
-    else if (parseInt(formData?.total) <= 0) {
-      confirmed = await confirmWithZeroAmount('quotation');
-      // if (confirmed === false) return;
-    }
-
-    if (confirmed || confirmed == null) {
-      try {
-        const updatedItems = formData?.items?.map((item) => {
-          const { tax_name, ...itemWithoutTaxName } = item;
-          return itemWithoutTaxName;
-        });
-
-        dispatch(updateQuotation({ ...formData, items: updatedItems, address: JSON.stringify(formData?.address), charges: stringifyJSON(formData?.charges) }, Navigate, "quotation", isEdit, buttonName, showAllSequenceId));
-
-      } catch (error) {
-        toast.error('Error updating quotation:', error);
-      }
-    }
-
+    await handleFormSubmit1({
+      e,
+      formData,
+      isCustomerSelect,
+      setItemErrors,
+      dropdownRef1,
+      dropdownRef2,
+      dispatch,
+      navigate,
+      editDub: isEdit,
+      section: "quotation",
+      updateDispatchAction: updateQuotation, // This is dynamic for the dispatch action
+      sendData: ""
+    });
   };
 
-
-  // set all customer data when customer is select
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -200,7 +120,6 @@ const CreateQuotation = () => {
       phone: cusData?.mobile_no,
       address: cusData?.address?.length,
       address: addSelect,
-      payment_terms: cusData?.payment_terms,
       expiry_date: calculateExpiryDate(new Date(prev.transaction_date), cusData?.payment_terms)
     }));
 
@@ -253,7 +172,6 @@ const CreateQuotation = () => {
                           <div id='sepcifixspanflex'>
                             <span id=''>
                               {otherIcons.name_svg}
-
                               <CustomDropdown10
                                 autoComplete='off'
                                 ref={dropdownRef1}
@@ -307,7 +225,7 @@ const CreateQuotation = () => {
                           <div className="form_commonblock">
                             <label >Quotation ID<b className='color_red'>*</b></label>
                             <GenerateAutoId
-                              formHandlers={{ setFormData, handleChange, setShowAllSequenceId }}
+                              formHandlers={{ setFormData, handleChange }}
                               nameVal="quotation_id"
                               value={formData?.quotation_id}
                               module="quotation"

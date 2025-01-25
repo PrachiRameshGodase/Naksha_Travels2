@@ -30,18 +30,18 @@ const CustomDropdown04 = forwardRef((props, ref) => {
 
   return (
     <div
-      data-tooltip-content={(item_data?.type === "Service" && name === "unit_id" && item_data?.item_id) ? "Unit is not changed for service type select" : (item_data?.type !== "" && name === "type" && item_data?.item_id) ? "Selected type is not changed" : disabled ? "According to room it is getting":""}
+      data-tooltip-content={(item_data?.type === "Service" && name === "unit_id" && item_data?.item_id) ? "Unit is not changed for service type select" : (item_data?.type !== "" && name === "type" && item_data?.item_id) ? "Selected type is not changed" : disabled ? "According to room it is getting" : ""}
       data-tooltip-id="my-tooltip"
       data-tooltip-place="bottom"
       // show tool tip of related message if any type is selected or unit is service selected in item select module
-    
+
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
         onClick={((item_data?.type === "Service" && name === "unit_id" && item_data?.item_id) || ((item_data?.type !== "" && name === "type" && item_data?.item_id))) ? undefined : () => setIsOpen(!isOpen)}
         //  disable onclick only when open dropdown. where type is selected or unit is service selected in item select module
 
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}
-        style={{ cursor: ((item_data?.type === "Service" && name === "unit_id" && item_data?.item_id) || ((item_data?.type !== "" && name === "type" && item_data?.item_id)) || (disabled))  ? "not-allowed" : "pointer" }}>
+        style={{ cursor: ((item_data?.type === "Service" && name === "unit_id" && item_data?.item_id) || ((item_data?.type !== "" && name === "type" && item_data?.item_id)) || (disabled)) ? "not-allowed" : "pointer" }}>
         {/* show cursor not allowed if any type is selected or unit is service selected in item select module*/}
 
         {(type === "masters_salutation" || type === "masters2" || type === "item_type") ?
@@ -61,7 +61,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       </div>
 
       {isOpen && !disabled && (
-        <div className="dropdown-options" 
+        <div className="dropdown-options"
         >
           <RiSearch2Line id="newsvgsearchicox2" />
           <input

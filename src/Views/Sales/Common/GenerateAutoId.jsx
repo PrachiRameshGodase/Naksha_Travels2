@@ -5,7 +5,7 @@ import GenerateIdPopup from '../../Home/GenerateIdPopup';
 import { ShowAutoGenerateId } from '../../Helper/HelperFunctions';
 import WaveLoader from '../../../Components/Loaders/WaveLoader';
 
-const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllSequenceId }, nameVal, value, module, showField }) => {
+const GenerateAutoId = ({ formHandlers: { setFormData, handleChange }, nameVal, value, module, showField }) => {
     const { loading } = useSelector(state => state?.autoIdList);
     const autoId = ShowAutoGenerateId(module, showField);
     const [generateId, setGenerateId] = useState(false);
@@ -24,9 +24,8 @@ const GenerateAutoId = ({ formHandlers: { setFormData, handleChange, setShowAllS
     useEffect(() => {
         if (!showField) {//use when we update the module sequence id is not fetched form sequence list..
             setFormData(prev => ({ ...prev, [nameVal]: `${autoData.prefix}${autoData.delimiter}${autoData.sequence_number}` }));
-            setShowAllSequenceId({ ...autoData });
         }
-    }, [autoData, nameVal, setFormData, setShowAllSequenceId, autoId, showField]);
+    }, [autoData, nameVal, setFormData, autoId, showField]);
     // console.log("autoDataautoData", autoData)
 
     return (
