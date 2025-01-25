@@ -1667,6 +1667,7 @@ table.employee-table {
   border-collapse: collapse;
   margin-top: 20px;
   border: 1px solid #ddd;
+  
 }
 
 /* Table Header Styling */
@@ -1677,11 +1678,13 @@ table.employee-table {
   text-align: left;
   font-weight: 450;
   color: #333;
+  border: 1px solid #ddd;
   border-bottom: 2px solid #ddd;
 }
 
 /* Table Cell Styling */
 .employee-table td {
+  border: 1px solid #ddd;
   padding: 10px;
   border-bottom: 1px solid #ddd;
   text-align: left;

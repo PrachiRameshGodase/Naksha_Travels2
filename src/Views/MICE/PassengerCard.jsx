@@ -177,7 +177,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
           ))
         ) : (
           <tr>
-            <td colSpan="6">
+            <td colSpan="8">
               <NoDataFound />
             </td>
           </tr>

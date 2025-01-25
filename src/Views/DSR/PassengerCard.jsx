@@ -24,6 +24,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
   });
 
   const servicesList = ShowUserMasterData("48");
+  
 
   const handleServiceChange = (e, passengerId) => {
     const { value } = e.target;
@@ -176,7 +177,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
           ))
         ) : (
           <tr>
-            <td colSpan="6">
+            <td colSpan="8">
               <NoDataFound />
             </td>
           </tr>

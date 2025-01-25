@@ -31,7 +31,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const vendorList = useSelector((state) => state?.vendorList);
   const createFlight = useSelector((state) => state?.createPassengerFlight);
   const flightListData = useSelector((state) => state?.flightList);
-console.log("flightListData", flightListData)
+
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
@@ -71,6 +71,8 @@ console.log("flightListData", flightListData)
     travel_date:false,
     booking_date:false,
     airline_name: false,
+    air_line_code:false,
+    destination_code:false,
     guest_ids: false,
     gross_amount: false,
 
@@ -81,33 +83,37 @@ console.log("flightListData", flightListData)
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const entryType = ShowMasterData("50");
-  const travelType = ShowMasterData("51");
+  const entryType = ShowUserMasterData("50");
+  const travelType = ShowUserMasterData("51");
   const destinationCode = ShowUserMasterData("52");
-  const GDSPortal = ShowMasterData("53");
-  const flightRoute = ShowMasterData("54");
+  const GDSPortal = ShowUserMasterData("53");
+  const flightRoute = ShowUserMasterData("54");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let updatedFields = { [name]: value };
     if (name === "airline_name") {
       const selectedRoom = flightListData?.data?.data?.find((flight) => flight?.flight_name == value);
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.occupancy_id || "",
+        air_line_code: selectedRoom?.air_line_code || "",
         destination_code: selectedRoom?.destination_code || "",
       };
     }
     setFormData((prev) => ({
       ...prev,
+      ...updatedFields,
       [name]: value,
     }));
     setErrors((prevData) => ({
       ...prevData,
+      ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
         air_line_code: false, // Clear error for meal when room changes
         destination_code: false, // Clear error for bed
+      
       }),
       [name]: false,
     }));
@@ -153,6 +159,8 @@ console.log("flightListData", flightListData)
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
+      air_line_code: formData?.air_line_code ? false : true,
+      destination_code: formData?.destination_code ? false : true,
       booking_date: formData?.booking_date ? false : true,
       travel_date: formData?.travel_date ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
@@ -199,7 +207,7 @@ console.log("flightListData", flightListData)
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+console.log("formData", formData)
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -352,7 +360,7 @@ console.log("flightListData", flightListData)
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Airline Code</label>
+                        <label>Airline Code<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -363,46 +371,49 @@ console.log("flightListData", flightListData)
                               placeholder="Enter Airline Code"
                             />
                           </span>
+                          {errors?.air_line_code && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Airline Code
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Passenger<b className="color_red">*</b>
+                          Destination Code<b className="color_red">*</b>
                         </label>
 
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown31
-                              ref={dropdownRef1}
-                              label="Select Guest"
-                              options={cusList?.data?.user}
-                              value={formData.guest_ids}
-                              onChange={(selectedItems) =>
-                                handleChange1(selectedItems, "guest_ids")
-                              }
-                              name="guest_ids"
-                              defaultOption="Select Guest"
-                              setcusData={setcusData}
-                              cusData={cusData}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                          {errors?.guest_ids && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Passenger
-                          </p>
-                        )}
-                        </div>
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Destination Code"
+                            options={destinationCode}
+                            value={formData?.destination_code}
+                            onChange={handleChange}
+                            name="destination_code"
+                            defaultOption="Select Destination Code"
+                            type="masters2"
+                          />
+                        </span>
+                        {errors?.destination_code && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Destination Code
+                            </p>
+                          )}
                       </div>
                     </div>
 
@@ -454,6 +465,45 @@ console.log("flightListData", flightListData)
                       </div>
                       <div className="form_commonblock">
                         <label>
+                          Passenger<b className="color_red">*</b>
+                        </label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown31
+                              ref={dropdownRef1}
+                              label="Select Guest"
+                              options={cusList?.data?.user}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Guest"
+                              setcusData={setcusData}
+                              cusData={cusData}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Passenger
+                          </p>
+                        )}
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
                           Route
                         </label>
                         <span>
@@ -469,24 +519,7 @@ console.log("flightListData", flightListData)
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Destination Code
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Destination Code"
-                            options={destinationCode}
-                            value={formData?.destination_code}
-                            onChange={handleChange}
-                            name="destination_code"
-                            defaultOption="Select Destination Code"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
+                     
                       <div className="form_commonblock">
                         <label>
                           Supplier
