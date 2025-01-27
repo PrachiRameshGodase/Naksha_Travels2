@@ -2469,7 +2469,7 @@
   // height: 150px;
   border-collapse: collapse;
   text-align: left;
-  width: fit-content;
+  width: 100%;
 
   .table_head_item_02 {
 
@@ -2762,13 +2762,15 @@
     }
   }
 }
-.inputbox{
+
+.inputbox {
   display: flex;
-    align-items: end;
-    text-align: end;
-    width: 120px;
-    border-radius: 5px;
+  align-items: end;
+  text-align: end;
+  width: 120px;
+  border-radius: 5px;
 }
+
 .taxtypedropdownx {
   width: 100%;
   max-width: 1010px;

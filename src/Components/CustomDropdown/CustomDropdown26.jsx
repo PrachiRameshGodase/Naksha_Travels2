@@ -5,7 +5,9 @@ import { useSelector } from "react-redux";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 import { itemLists } from "../../Redux/Actions/listApisActions";
 import { } from "../../Views/Helper/HelperFunctions";
-import ShowMastersValue from "../../Views/Helper/ShowMastersValue";
+import ShowMastersValue, { ShowUserMastersValue } from "../../Views/Helper/ShowMastersValue";
+// import { ShowUserMastersValue } from "../ShowMastersValue";
+
 
 const CustomDropdown26 = forwardRef((props, ref) => {
   const {
@@ -83,6 +85,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     }
   }, [itemData?.item_name]);
 
+  console.log("itemData", itemData)
   return (
     <div
       tabIndex="0"
@@ -92,88 +95,128 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       style={{ position: className ? "static" : "relative" }}
     >
 
-      {service_name?.service_name === "Hotel" ? (
-        <>
-          <div style={{ padding: "5px" }}
-          >
+      {
+        service_name === "Hotel" ? (
+          <>
             <div>
-              <b>Hotel Name:</b> {service_name?.hotel_name || "-"}
+              <b>Hotel Name:</b> {itemData?.hotel_name || "-"}
             </div>
             <div>
-              <b>Room:</b> {service_name?.room_no || "-"}
+              <b>Room:</b> {itemData?.room_no || "-"}
             </div>
             <div>
               <b>Meal:</b>{" "}
               <ShowMastersValue
                 type="37"
-                id={service_name?.meal_id || "-"}
+                id={itemData?.meal_id || "-"}
               />
             </div>
-          </div>
-        </>
-      ) : service_name?.service_name === "Assist" ? (
-        <>
-          <div>
-            <b>Airport:</b> {service_name?.airport_name || "-"}
-          </div>
-          <div>
-            <b>Meeting Type:</b> {service_name?.meeting_type || "-"}
-          </div>
-          <div>
-            <b>No Of Persons:</b> {service_name?.no_of_persons || "-"}
-          </div>
-        </>
-      ) : service_name?.service_name === "Flight" ? (
-        <>
-          <div>
-            <b>Airline Name:</b> {service_name?.airline_name || "-"}
-          </div>
-          <div>
-            <b>Ticket No:</b> {service_name?.ticket_no || "-"}
-          </div>
-          <div>
-            <b>PRN No:</b> {service_name?.prn_no || "-"}
-          </div>
-        </>
-      ) : service_name?.service_name === "Visa" ? (
-        <>
-          <div>
-            <b>Passport No:</b> {service_name?.passport_no || "-"}
-          </div>
-          <div>
-            <b>Visa No:</b> {service_name?.visa_no || "-"}
-          </div>
-          <div>
-            <b>Visa Type:</b>{" "}
-            <ShowMastersValue
-              type="40"
-              id={service_name?.visa_type_id || "-"}
-            />
-          </div>
-        </>
-      ) :
+          </>
+        ) : itemData?.service_name === "Assist" ? (
+          <>
+            <div>
+              <b>Airport:</b> {itemData?.airport_name || "-"}
+            </div>
+            <div>
+              <b>Meeting Type:</b>{" "}
+              {itemData?.meeting_type || "-"}
+            </div>
+            <div>
+              <b>No Of Persons:</b>{" "}
+              {itemData?.no_of_persons || "-"}
+            </div>
+          </>
+        ) : itemData?.service_name === "Flight" ? (
+          <>
+            <div>
+              <b>Airline Name:</b>{" "}
+              {itemData?.airline_name || "-"}
+            </div>
+            <div>
+              <b>Ticket No:</b> {itemData?.ticket_no || "-"}
+            </div>
+            <div>
+              <b>PRN No:</b> {itemData?.prn_no || "-"}
+            </div>
+          </>
+        ) : itemData?.service_name === "Visa" ? (
+          <>
+            <div>
+              <b>Passport No:</b> {itemData?.passport_no || "-"}
+            </div>
+            <div>
+              <b>Visa No:</b> {itemData?.visa_no || "-"}
+            </div>
+            <div>
+              <b>Visa Type:</b>{" "}
+              <ShowUserMastersValue
+                type="40"
+                id={itemData?.visa_type_id || "-"}
+              />
+            </div>
+          </>
+        ) :
+          itemData?.service_name === "CarHire" ? (
+            <>
+              <div>
+                <b>Vehicle Type:</b> <ShowUserMastersValue
+                  type="41"
+                  id={itemData?.vehicle_type_id || "-"}
+                />
+              </div>
+              <div>
+                <b>Pickup Location:</b> {itemData?.pickup_location || "-"}
+              </div>
+              <div>
+                <b>Drop Location:</b>{" "}
 
-        <div
-          onClick={() => setIsOpen(!isOpen)}
-          className={"dropdown-select" + (value ? " filledcolorIn" : "")}
-        // style={{ width: "314px", top: "110%" }}
-        ><textarea
-            type="text"
-            placeholder="Type To Add Or Search..."
-            value={searchTerm || itemData?.item_name}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            style={{
-              width: "100%",
-              border: "none",
-              resize: "none",
-            }}
-            className="dropdown-search customdropdownx12s86 custom-scrollbar"
-            autoFocus
-            ref={inputRef}
-          />
+                {itemData?.drop_location || "-"}
 
-        </div>
+              </div>
+            </>
+          ) :
+
+            itemData?.service_name === "Insurance" ? (
+              <>
+                <div>
+                  <b>Company Name:</b>
+                  {itemData?.company_name || "-"}
+
+                </div>
+                <div>
+                  <b>Policy No:</b> {itemData?.policy_no || "-"}
+                </div>
+                <div>
+                  <b>Insurance Plan:</b>{" "}
+
+                  {itemData?.insurance_plan || "-"}
+
+                </div>
+              </>
+            ) :
+
+              <div
+                onClick={() => setIsOpen(!isOpen)}
+                className={"dropdown-select" + (value ? " filledcolorIn" : "")}
+              // style={{ width: "314px", top: "110%" }}
+              >
+                <textarea
+                  type="text"
+                  placeholder="Type To Add Or Search..."
+                  value={searchTerm || itemData?.item_name}
+                  onChange={handleInputChange}
+                  onBlur={handleInputBlur}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    resize: "none",
+                  }}
+                  className="dropdown-search customdropdownx12s86 custom-scrollbar"
+                  autoFocus
+                  ref={inputRef}
+                />
+
+              </div>
       }
 
       {isOpen && (<div

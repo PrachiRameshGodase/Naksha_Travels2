@@ -14,13 +14,11 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import { invoiceDetailes } from '../../../Redux/Actions/invoiceActions';
 import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
 import { activeCustomerData, activeOrg_details, preventZeroVal, ShowMasterData, showRealatedText, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
-import { isPartiallyInViewport } from '../../Helper/is_scroll_focus';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SelectAddress } from '../../Common/SelectAddress';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
-import { formatDate } from '../../Helper/DateFormat';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { accountLists } from '../../../Redux/Actions/listApisActions';
@@ -47,13 +45,10 @@ const CreateSalesOrders = ({ section }) => {
     const saleDetail = useSelector((state) => state?.saleDetail);
 
     const saleDetails = saleDetail?.data?.data?.salesOrder;
-    // const [isCustomerSelect, setIsCustomerSelect] = useState(false);
 
-    // const [isItemSelect, setIsItemSelect] = useState(false);
     const quoteDetail = useSelector((state) => state?.quoteDetail);
     const quoteDetails = quoteDetail?.data?.data?.quotation;
     const [fetchDetails, setFetchDetails] = useState([]);
-    const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate } = Object.fromEntries(params.entries());
@@ -118,48 +113,6 @@ const CreateSalesOrders = ({ section }) => {
         handleChange,
     } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, calculateExpiryDate);
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-
-    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
-    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    //     }
-
-    //     if (name === "customer_id" && value !== "") {
-    //         setIsCustomerSelect(true);
-    //     } else if (name === "customer_id" && value == "") {
-    //         setIsCustomerSelect(false);
-    //     }
-
-    //     if (name === "customer_id") {
-    //         const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-
-    //         const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing == "1")
-    //         const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping == "1")
-    //         setAddSelect({
-    //             billing: findfirstbilling,
-    //             shipping: findfirstshipping,
-    //         });
-    //     }
-
-    //     setFormData(prev => ({
-    //         ...prev,
-    //         [name]: newValue,
-
-    //         ...(name === "payment_terms" && value !== "5" && {
-    //             due_date: calculateExpiryDate(new Date(prev.transaction_date), value),
-    //             payment_term_day: ["1", "2", "3", "4"].includes(value) ? [15, 30, 45, 60][value - 1] : null
-    //         }),
-
-    //     }));
-    // };
-
-    // const [addSelect, setAddSelect] = useState({
-    //     billing: "",
-    //     shipping: ""
-    // });
-
     //set selected billing and shipping addresses inside formData
     useEffect(() => {
 
@@ -206,6 +159,7 @@ const CreateSalesOrders = ({ section }) => {
     const sendData = {
         itemId, convert
     }
+
     const handleFormSubmit = async (e) => {
         await handleFormSubmit1({
             e,
@@ -272,8 +226,6 @@ const CreateSalesOrders = ({ section }) => {
 
 
     // image upload from firebase
-
-    // const [imgLoader, setImgLoader] = useState("");
 
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
