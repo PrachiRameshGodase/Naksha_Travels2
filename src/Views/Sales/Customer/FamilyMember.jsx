@@ -121,7 +121,7 @@ const FamilyMember = ({
   useEffect(() => {
     if (customerDetails?.family_members && isEdit) {
       const familyDetails = customerDetails?.family_members || [];
-      console.log("familyDetails", familyDetails)
+    
       const familyDetail = familyDetails?.map((item) => ({
         member_id: item.id || "",
         food_type: item.food_type || "",
@@ -155,7 +155,7 @@ const FamilyMember = ({
     }
   }, [employeeDetails]);
 
-console.log("employeeDetails", employeeDetails)
+
   const renderMemberTable = () => {
     return (
       <table className="employee-table" style={{ width: "100%" }}>
