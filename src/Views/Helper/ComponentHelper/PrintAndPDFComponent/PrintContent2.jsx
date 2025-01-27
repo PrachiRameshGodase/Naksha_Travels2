@@ -234,7 +234,7 @@ const PrintContent2 = ({
                       style={{ marginTop: "20px", display:"flex", justifyContent:"flex-end" }}
                     >
                       <div className="customer-card">
-                        <p className="customer-label">Amount</p>
+                        <p className="customer-label" style={{fontWeight:"bold"}}>Amount</p>
                         <p className="">:</p>
                         <p className="customer-value">
                           {data?.total_amount || ""}
@@ -353,7 +353,7 @@ const PrintContent2 = ({
                             .join(", ")}
                         </p>
                       </div>
-                      <div className="customer-card">
+                      <div className="customer-card" style={{fontWeight:"bold"}}>
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
@@ -465,7 +465,7 @@ const PrintContent2 = ({
                           {data?.country?.name || ""}
                         </p>
                       </div>
-                      <div className="customer-card">
+                      <div className="customer-card" style={{fontWeight:"bold"}}>
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
@@ -521,7 +521,7 @@ const PrintContent2 = ({
                           {data?.drop_location || ""}
                         </p>
                       </div>
-                      <div className="customer-card">
+                      <div className="customer-card" style={{fontWeight:"bold"}}>
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
@@ -570,7 +570,7 @@ const PrintContent2 = ({
                       className="customer-grid"
                       style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
                     >
-                      <div className="customer-card" >
+                      <div className="customer-card" style={{fontWeight:"bold"}}>
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value" >
@@ -645,7 +645,7 @@ const PrintContent2 = ({
                       className="customer-grid"
                       style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
                     >
-                      <div className="customer-card">
+                      <div className="customer-card" style={{fontWeight:"bold"}}>
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
@@ -681,7 +681,7 @@ const PrintContent2 = ({
                       <p className="">:</p>
                       <p className="customer-value">{data?.quantity || ""}</p>
                     </div>
-                    <div className="customer-card">
+                    <div className="customer-card" style={{fontWeight:"bold"}}>
                       <p className="customer-label">Amount</p>{" "}
                       <p className="">:</p>
                       <p className="customer-value">

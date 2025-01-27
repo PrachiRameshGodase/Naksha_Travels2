@@ -76,7 +76,7 @@ export const handleFormSubmit1 = async ({
 
     // selection check
     if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-    if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+    // if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
 
     else if (errors.length > 0) { // Item validation check
         setItemErrors(errors);

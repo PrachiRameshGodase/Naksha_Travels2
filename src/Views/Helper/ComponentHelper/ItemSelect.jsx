@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { accountLists, itemLists } from "../../../Redux/Actions/listApisActions";
+import {
+  accountLists,
+  itemLists,
+} from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import NumericInput from "../NumericInput";
 import toast from "react-hot-toast";
@@ -17,7 +20,7 @@ import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown1
 import CustomDropdown13 from "../../../Components/CustomDropdown/CustomDropdown13";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown26 from "../../../Components/CustomDropdown/CustomDropdown26";
-import useFetchApiData from './useFetchApiData';
+import useFetchApiData from "./useFetchApiData";
 
 import {
   activeOrg_details,
@@ -49,13 +52,12 @@ const ItemSelect = ({
   dropdownRef2,
   note,
   invoice_section,
-
 }) => {
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
-  const location = useLocation()
+  const location = useLocation();
 
   const params = new URLSearchParams(location.search);
 
@@ -205,7 +207,6 @@ const ItemSelect = ({
       tax_rate: tax_rate,
       total_gross_amount: gross_amount,
     }));
-
   }, [
     formData.items, // Re-calculate when items change
     formData.shipping_charge, // Re-calculate when shipping charges change
@@ -215,7 +216,6 @@ const ItemSelect = ({
   ]);
 
   const handleItemChange = (index, field, value) => {
-
     const newItems = [...formData.items];
     const newErrors = [...itemErrors];
 
@@ -224,7 +224,6 @@ const ItemSelect = ({
 
     let discountAmount = 0;
     let discountPercentage = 0;
-
 
     if (field === "item_name") {
       newItems[index].item_name = value;
@@ -256,7 +255,9 @@ const ItemSelect = ({
         (item) => item?.id == value
       );
       if (selectedItem) {
-        const showPrice = formData?.sale_type ? selectedItem?.price : selectedItem?.purchase_price;
+        const showPrice = formData?.sale_type
+          ? selectedItem?.price
+          : selectedItem?.purchase_price;
 
         newItems[index].unit_id = selectedItem?.unit;
         newItems[index].item_name = selectedItem?.name;
@@ -284,9 +285,7 @@ const ItemSelect = ({
           rate: "",
         };
       }
-
     }
-
 
     if (field === "quantity" || field === "rate") {
       newItems[index].gross_amount = +item?.rate * +item?.quantity;
@@ -372,7 +371,6 @@ const ItemSelect = ({
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   const handleItemAdd = () => {
-
     // if type is not selected or undedined then we can not add new row
 
     const isTypeNull =
@@ -406,7 +404,7 @@ const ItemSelect = ({
         discount_type: 1,
         item_remark: "",
         tax_name: "",
-        items_data: null
+        items_data: null,
       },
     ];
     const newErrors = [
@@ -449,12 +447,16 @@ const ItemSelect = ({
   }, [searchTrigger, productType]);
 
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-    ...sendData,
-    ...productType,
-  }), [productType]);
+  const payloadGenerator = useMemo(
+    () => () => ({
+      //useMemo because  we ensure that this function only changes when [dependency] changes
+      ...sendData,
+      ...productType,
+    }),
+    [productType]
+  );
 
-  useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
+  useFetchApiData(itemLists, payloadGenerator, [productType]); //call api common function
 
   // for service select code..............................................
   const servicesList = ShowUserMasterData("48");
@@ -469,13 +471,16 @@ const ItemSelect = ({
     setActivePopup({ popupType: value });
   };
 
-
   // add services function
   const handleAddService = (name, data) => {
     // Check if there's an empty type in the existing rows
-    const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name);
+    const isTypeNull = formData?.items?.find(
+      (val) => val?.type === "" && val?.item_name
+    );
     if (isTypeNull) {
-      toast.error("Please select the type and valid item name of the above row");
+      toast.error(
+        "Please select the type and valid item name of the above row"
+      );
       return;
     }
 
@@ -484,18 +489,18 @@ const ItemSelect = ({
       name === "Hotel"
         ? data?.hotel_name
         : name === "Flight"
-          ? data?.airline_name
-          : name === "Assist"
-            ? data?.airport_name
-            : name === "Insurance"
-              ? data?.company_name
-              : name === "Visa"
-                ? data?.passport_no
-                : name === "CarHire"
-                  ? data?.vehicle_type_id
-                  : name === "Other"
-                    ? data?.item_name
-                    : "";
+        ? data?.airline_name
+        : name === "Assist"
+        ? data?.airport_name
+        : name === "Insurance"
+        ? data?.company_name
+        : name === "Visa"
+        ? data?.passport_no
+        : name === "CarHire"
+        ? data?.vehicle_type_id
+        : name === "Other"
+        ? data?.item_name
+        : "";
 
     // Prepare the new or updated item
     const newItem = {
@@ -512,21 +517,20 @@ const ItemSelect = ({
       item_id: 13,
       type: "Service",
       items_data: data,
-      is_service: 1
+      is_service: 1,
     };
 
     // Check if we're editing an existing row or adding a new one
-    const updatedItems = activePopup?.index !== undefined
-      ? formData.items.map((item, idx) =>
-        idx === activePopup.index ? { ...item, ...newItem } : item
-      ) // Update the specific row
-      : [...formData.items, newItem]; // Add a new row
+    const updatedItems =
+      activePopup?.index !== undefined
+        ? formData.items.map((item, idx) =>
+            idx === activePopup.index ? { ...item, ...newItem } : item
+          ) // Update the specific row
+        : [...formData.items, newItem]; // Add a new row
 
     // Save the updated items to formData
     setFormData({ ...formData, items: updatedItems });
   };
-
-
 
   const renderPopup = () => {
     if (!activePopup) return null;
@@ -534,7 +538,6 @@ const ItemSelect = ({
     const { popupType } = activePopup;
 
     switch (popupType) {
-
       case "Hotels":
         return (
           <AddHotelPopup
@@ -595,7 +598,6 @@ const ItemSelect = ({
     }
   };
 
-
   return (
     <>
       {renderPopup()}
@@ -603,7 +605,6 @@ const ItemSelect = ({
       <div className="f1wrpofcreqsx2" id={invoice_section}>
         {/* Table Started */}
         <table className="itemTable_01">
-
           <thead className="table_head_item_02">
             <tr className="table_head_item_02_row">
               <th className="table_column_item item_table_width_01">
@@ -613,17 +614,25 @@ const ItemSelect = ({
                 Type <b className="color_red">*</b>
               </th>
 
-              <th className="table_column_item item_text_end_01 item_table_width_02">Sales Price</th>
+              <th className="table_column_item item_text_end_01 item_table_width_02">
+                Sales Price
+              </th>
 
-              <th className="table_column_item item_qty_01 item_table_width_02">Quantity</th>
+              <th className="table_column_item item_qty_01 item_table_width_02">
+                Quantity
+              </th>
               <th className="table_column_item item_table_width_02">
                 Unit <b className="color_red">*</b>
               </th>
-              <th className="table_column_item item_table_width_03">Discount</th>
+              <th className="table_column_item item_table_width_03">
+                Discount
+              </th>
               <th className="table_column_item item_table_width_02">
                 Tax (%) <b className="color_red">*</b>
               </th>
-              <th className="table_column_item item_table_width_02 item_text_end_01">Amount</th>
+              <th className="table_column_item item_table_width_02 item_text_end_01">
+                Amount
+              </th>
               {/* <th>Actions</th> */}
             </tr>
           </thead>
@@ -632,13 +641,13 @@ const ItemSelect = ({
             {formData?.items?.map((item, index) => (
               <React.Fragment key={index}>
                 <tr className="table_head_item_02_row">
-
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
-                  {item?.items_data?.service_name === "Hotel" ? (
+                    {item?.items_data?.service_name === "Hotel" ? (
                       <>
                         <div>
-                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
+                          <b>Hotel Name:</b>{" "}
+                          {item?.items_data?.hotel_name || "-"}
                         </div>
                         <div>
                           <b>Room:</b> {item?.items_data?.room_no || "-"}
@@ -654,7 +663,8 @@ const ItemSelect = ({
                     ) : item?.items_data?.service_name === "Assist" ? (
                       <>
                         <div>
-                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
+                          <b>Airport:</b>{" "}
+                          {item?.items_data?.airport_name || "-"}
                         </div>
                         <div>
                           <b>Meeting Type:</b>{" "}
@@ -681,7 +691,8 @@ const ItemSelect = ({
                     ) : item?.items_data?.service_name === "Visa" ? (
                       <>
                         <div>
-                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
+                          <b>Passport No:</b>{" "}
+                          {item?.items_data?.passport_no || "-"}
                         </div>
                         <div>
                           <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
@@ -694,69 +705,61 @@ const ItemSelect = ({
                           />
                         </div>
                       </>
-                    ) :
-                     item?.items_data?.service_name === "CarHire" ? (
+                    ) : item?.items_data?.service_name === "CarHire" ? (
                       <>
                         <div>
-                          <b>Vehicle Type:</b> <ShowUserMastersValue
+                          <b>Vehicle Type:</b>{" "}
+                          <ShowUserMastersValue
                             type="41"
                             id={item?.items_data?.vehicle_type_id || "-"}
                           />
                         </div>
                         <div>
-                          <b>Pickup Location:</b> {item?.items_data?.pickup_location || "-"}
+                          <b>Pickup Location:</b>{" "}
+                          {item?.items_data?.pickup_location || "-"}
                         </div>
                         <div>
                           <b>Drop Location:</b>{" "}
-                          
-                            {item?.items_data?.drop_location || "-"}
-                          
+                          {item?.items_data?.drop_location || "-"}
                         </div>
                       </>
-                    ) :
-                    
-                     item?.items_data?.service_name === "Insurance" ? (
+                    ) : item?.items_data?.service_name === "Insurance" ? (
                       <>
                         <div>
-                          <b>Company Name:</b> 
-                            {item?.items_data?.company_name || "-"}
-                          
+                          <b>Company Name:</b>
+                          {item?.items_data?.company_name || "-"}
                         </div>
                         <div>
                           <b>Policy No:</b> {item?.items_data?.policy_no || "-"}
                         </div>
                         <div>
                           <b>Insurance Plan:</b>{" "}
-                          
-                            {item?.items_data?.insurance_plan || "-"}
-                          
+                          {item?.items_data?.insurance_plan || "-"}
                         </div>
                       </>
-                    ) :
-                      // display when item is selected. item id is found 
+                    ) : (
+                      // display when item is selected. item id is found
 
-                    (<CustomDropdown26
-                      options={options2 || []}
-                      value={item?.item_id}
-                      onChange={(event) =>
-                        handleItemChange(
-                          index,
-                          event.target.name,
-                          event.target.value
-                        )
-                      }
-                      name="item_id"
-                      type="select_item"
-                      setItemData={setItemData}
-                      index={index}
-                      extracssclassforscjkls={extracssclassforscjkls}
-                      itemData={item}
-                      ref={dropdownRef2}
-                      service_name={item?.items_data}
-                    />)}
-                    
-                 
-
+                      <CustomDropdown26
+                        options={options2 || []}
+                        value={item?.item_id}
+                        onChange={(event) =>
+                          handleItemChange(
+                            index,
+                            event.target.name,
+                            event.target.value
+                          )
+                        }
+                        name="item_id"
+                        type="select_item"
+                        setItemData={setItemData}
+                        index={index}
+                        extracssclassforscjkls={extracssclassforscjkls}
+                        itemData={item}
+                        ref={dropdownRef2}
+                        service_name={item?.items_data}
+                      />
+                    )}
                   </td>
 
                   {/* Type Dropdown */}
@@ -766,7 +769,12 @@ const ItemSelect = ({
                         options={itemTypeList}
                         value={item?.type}
                         onChange={(e) =>
-                          handleItemChange(index, "type", e.target.value, e.target.option)
+                          handleItemChange(
+                            index,
+                            "type",
+                            e.target.value,
+                            e.target.option
+                          )
                         }
                         name="type"
                         defaultOption="Type"
@@ -822,11 +830,11 @@ const ItemSelect = ({
                       }}
                       disabled={item?.is_service == 1}
                       style={{
-                        cursor: item?.is_service == 1 ? "not-allowed" : "default",
+                        cursor:
+                          item?.is_service == 1 ? "not-allowed" : "default",
                       }}
                     />
                   </td>
-
 
                   {/* Unit Dropdown */}
                   <td className="table_column_item item_table_text_transform">
@@ -875,8 +883,8 @@ const ItemSelect = ({
                             newValue = Math.min(
                               newValue,
                               item?.rate * item?.quantity +
-                              (item?.rate * item?.tax_rate * item?.quantity) /
-                              100
+                                (item?.rate * item?.tax_rate * item?.quantity) /
+                                  100
                             );
                             if (newValue > item?.rate * item?.quantity) {
                               toast(
@@ -903,8 +911,8 @@ const ItemSelect = ({
                         {item?.discount_type == 1
                           ? currencySymbol
                           : item?.discount_type == 2
-                            ? "%"
-                            : ""}
+                          ? "%"
+                          : ""}
                         {openDropdownIndex === index && (
                           <div
                             className="dropdownmenucustomx1"
@@ -917,7 +925,6 @@ const ItemSelect = ({
                               }
                             >
                               {currencySymbol}
-
                             </div>
                             <div
                               className="dmncstomx1"
@@ -958,15 +965,15 @@ const ItemSelect = ({
                   </td>
 
                   {/* Amount */}
-                  <td className="table_column_item item_table_width_02 item_text_end_01 item_table_text_transform">{item?.final_amount}</td>
+                  <td className="table_column_item item_table_width_02 item_text_end_01 item_table_text_transform">
+                    {item?.final_amount}
+                  </td>
 
                   {/* reload and remove butttons */}
                   <td className="table_column_item refresh_remove_button_item">
-
                     {formData?.items?.length > 1 ? (
                       <>
                         <button
-
                           className="refresh_remove_button_item"
                           type="button"
                           onClick={() => handleItemRemove(index)}
@@ -979,15 +986,21 @@ const ItemSelect = ({
                           <RxCross2 className="react_icn_items" />
                         </button>
 
-                        {item?.is_service == 1 && isEdit &&
+                        {item?.is_service == 1 && isEdit && (
                           <button
                             className="refresh_remove_button_item"
                             type="button"
-                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
+                            onClick={() =>
+                              setActivePopup({
+                                popupType: "Hotels",
+                                index,
+                                data: item,
+                              })
+                            }
                           >
                             <FiEdit className="react_icn_items" />
                           </button>
-                        }
+                        )}
                       </>
                     ) : (
                       <>
@@ -1004,15 +1017,21 @@ const ItemSelect = ({
                           <SlReload />
                         </button>
 
-                        {item?.is_service == 1 && isEdit &&
+                        {item?.is_service == 1 && isEdit && (
                           <button
                             className="refresh_remove_button_item"
                             type="button"
-                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
+                            onClick={() =>
+                              setActivePopup({
+                                popupType: "Hotels",
+                                index,
+                                data: item,
+                              })
+                            }
                           >
                             <FiEdit className="react_icn_items" />
                           </button>
-                        }
+                        )}
                       </>
                     )}
                   </td>
@@ -1022,7 +1041,7 @@ const ItemSelect = ({
                 <tr className="error-row">
                   <td colSpan={9} style={{ textTransform: "capitalize" }}>
                     {itemErrors[index]?.item_name && (
-                      <span className="error-message" >
+                      <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].item_name}
                       </span>
                     )}
@@ -1081,8 +1100,6 @@ const ItemSelect = ({
             </span>
           </div>
         </div>
-
-
 
         {showAddModal && (
           <div className="mainxpopups1" ref={popupRef} tabIndex="0">
@@ -1150,16 +1167,15 @@ const ItemSelect = ({
               />
             </div>
             <div className="calcuparentc">
-              <div id='tax-details'>
-
-                <div className='clcsecx12s1'>
+              <div id="tax-details">
+                <div className="clcsecx12s1">
                   <label>Total Tax ({currencySymbol}):</label>
                   <input
                     type="text"
                     value={formData?.tax_amount}
                     readOnly
-                    placeholder='0.00'
-                    className='inputsfocalci465s'
+                    placeholder="0.00"
+                    className="inputsfocalci465s"
                   />
                 </div>
 
@@ -1209,12 +1225,19 @@ const ItemSelect = ({
         }
     </>
 } */}
-
               </div>
 
               {/* Add expense changes */}
-              <div className='clcsecx12s1'>
-                <label><p className='edit_changes_021' onClick={openExpenseCharges}> Edit and add charges {openCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg}</p></label>
+              <div className="clcsecx12s1">
+                <label>
+                  <p className="edit_changes_021" onClick={openExpenseCharges}>
+                    {" "}
+                    Edit and add charges{" "}
+                    {openCharges
+                      ? otherIcons?.down_arrow_svg
+                      : otherIcons?.up_arrow_svg}
+                  </p>
+                </label>
               </div>
               {openCharges && (
                 <ExpenseCharges
@@ -1237,7 +1260,7 @@ const ItemSelect = ({
 
         <div className="breakerci"></div>
         <div className="height5"></div>
-      </div >
+      </div>
     </>
   );
 };
@@ -1394,12 +1417,9 @@ export const ItemSelectGRM = ({
         };
       }
       setItemErrors(value !== "");
-    }
-
-    else if (field === "unit_id") {
+    } else if (field === "unit_id") {
       newItems[index].unit_id = value;
-    }
-    else if (["account_id", "remarks", "vendor_id"].includes(field)) {
+    } else if (["account_id", "remarks", "vendor_id"].includes(field)) {
       newCharges[index][field] = value;
     } else {
       newItems[index][field] = value;
@@ -1556,8 +1576,9 @@ export const ItemSelectGRM = ({
           <div className="itemsectionrows1" style={{ minWidth: "1225px" }}>
             <div className="tableheadertopsxs1" id="tableheadertopsxs1">
               <p
-                className={`tablsxs1a1x34 ${formData?.grn_type === "Import" ? "import_P" : "local_p"
-                  }`}
+                className={`tablsxs1a1x34 ${
+                  formData?.grn_type === "Import" ? "import_P" : "local_p"
+                }`}
               >
                 ITEM<b className="color_red">*</b>
               </p>
@@ -1573,7 +1594,7 @@ export const ItemSelectGRM = ({
               </p>
 
               {formData?.purchase_order_id &&
-                formData?.purchase_order_id !== 0 ? (
+              formData?.purchase_order_id !== 0 ? (
                 <p className="tablsxs1a3x3 tablsxs1a2x2">PO QTY</p>
               ) : (
                 ""
@@ -1620,7 +1641,11 @@ export const ItemSelectGRM = ({
             {/* {console.log("formdata", formData?.items)} */}
             {formData?.items?.map((item, index) => (
               <>
-                <div key={index} className="tablerowtopsxs1" style={{ padding: "16px 5px" }}>
+                <div
+                  key={index}
+                  className="tablerowtopsxs1"
+                  style={{ padding: "16px 5px" }}
+                >
                   <div className="tablsxs1a1x3">
                     <span id="ITEM_Selection">
                       <CustomDropdown26
@@ -1647,8 +1672,9 @@ export const ItemSelectGRM = ({
                   {/* ITEM PRICE */}
                   <div
                     id="ITEM_Selection2"
-                    className={`tablsxs1a2x3 ${formData?.grn_type === "Import" ? "incom_12312" : ""
-                      }`}
+                    className={`tablsxs1a2x3 ${
+                      formData?.grn_type === "Import" ? "incom_12312" : ""
+                    }`}
                     style={{ boder: "1px solid #e7d8d", marginRight: "20px" }}
                   >
                     <NumericInput
@@ -1677,7 +1703,7 @@ export const ItemSelectGRM = ({
 
                   {/* PO QUANTITY */}
                   {formData?.purchase_order_id &&
-                    formData?.purchase_order_id !== 0 ? (
+                  formData?.purchase_order_id !== 0 ? (
                     <div className="tablsxs1a3x3" id="ITEM_Selection3">
                       <NumericInput value={item?.po_qty} readOnly />
                     </div>
@@ -1854,8 +1880,9 @@ export const ItemSelectGRM = ({
                 <div className="tablerowtopsxs1">
                   <div
                     style={{ maxWidth: "318px" }}
-                    className={`form_commonblock ${formData?.grn_type === "Import" ? "Note_import" : ""
-                      }`}
+                    className={`form_commonblock ${
+                      formData?.grn_type === "Import" ? "Note_import" : ""
+                    }`}
                   >
                     <span>
                       <input
@@ -2074,9 +2101,12 @@ export const ItemSelectGRM = ({
               </>
             ))}
           </div>
-          {!itemErrors && <p className="error-message">
-            {otherIcons.error_svg}
-            Please Select An Item</p>}
+          {!itemErrors && (
+            <p className="error-message">
+              {otherIcons.error_svg}
+              Please Select An Item
+            </p>
+          )}
 
           <button
             id="additembtn45srow"

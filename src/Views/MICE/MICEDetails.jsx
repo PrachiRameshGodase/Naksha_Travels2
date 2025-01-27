@@ -175,13 +175,13 @@ const MICEDetails = () => {
 
   return (
     <>
-      <PrintContent2 data={MICEData} userMasterData={userMasterData} cusVenData="" moduleId="MICE No" section="MICE" />
+      {/* <PrintContent2 data={MICEData} userMasterData={userMasterData} cusVenData="" moduleId="MICE No" section="MICE" /> */}
     
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeMICE?.loading ||
         deleteMICE?.loading ||
-        MICEDetails?.loading) && <MainScreenFreezeLoader />}
+        MICEDetails?.loading || loading) && <MainScreenFreezeLoader />}
       {/* {MICEDetails?.loading ? (
         <Loader02 />
       ) : ( */}

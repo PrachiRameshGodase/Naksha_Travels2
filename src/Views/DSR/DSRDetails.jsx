@@ -175,19 +175,18 @@ const DSRDetails = () => {
   const isDisabled = DSRData?.is_invoiced == "1";
   return (
     <>
-    <PrintContent2
+    {/* <PrintContent2
         data={DSRData}
         userMasterData={userMasterData}
         cusVenData=""
         moduleId="DSR No"
         section="DSR"
-      />
-      {/* <PrintContent2 data={DSRData} cusVenData="" masterData="" moduleId="" section="DSR" /> */}
+      /> */}
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeDSR?.loading ||
         deleteDSR?.loading ||
-        DSRDetails?.loading) && <MainScreenFreezeLoader />}
+        DSRDetails?.loading ||loading) && <MainScreenFreezeLoader />}
       {/* {DSRDetails?.loading ? (
         <Loader02 />
       ) : ( */}

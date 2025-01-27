@@ -6,9 +6,10 @@ import {
   showAmountWithCurrencySymbol,
   showRateWithPercent,
 } from "../../HelperFunctions";
-import { PdfShowMastersValue } from "../../ShowMastersValue";
+import ShowMastersValue, { PdfShowMastersValue } from "../../ShowMastersValue";
 import { formatDate3 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
+import { otherIcons } from "../../SVGIcons/ItemsIcons/Icons";
 
 const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
   // console.log("masterData", masterData)
@@ -20,12 +21,15 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
     }, 0);
   };
 
-  const totalExpenseCharges = JSON?.parse(data?.charges);
+  const totalExpenseCharges = data?.charges ? JSON?.parse(data?.charges) : "";
   // const showModuleText = section==="Quotation"?
-
+  console.log("active_orgnization", active_orgnization);
   return (
     <div id="pdf_print_container">
-      <div className="top_section" style={{ marginLeft: "5px" }}>
+      <div
+        className="top_section"
+        style={{ marginLeft: "5px", justifyContent: "space-between" }}
+      >
         <div className="contacts_321">
           <h1>{section}</h1>
           <p style={{ color: "gray" }}>PIN: P051850633C</p>
@@ -106,105 +110,114 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
         </div>
       </div>
 
-      {/* /*Section 3 table print and pdf */}
-
       <>
-        <table id="tablex15s56s31s1" style={{ marginLeft: "13px" }}>
-          <thead className="thaedaksx433">
-            <tr>
-              <th className="sfdjklsd1xs2w1">#</th>
-              <th className="sfdjklsd1xs2w2" style={{ width: "12%" }}>
-                Item & Description
-              </th>
-              <th className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">Rate</th>
-              <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3qty">Qty</th>
-              {/* <th className="sfdjklsd1xs2w3">Unit</th> */}
-              <th className="sfdjklsd1xs2w3 sfdjklsd1xs2w3Width">Tax Rate</th>
-              <th className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount ">Amount</th>
+        <table
+          className="itemTable_01"
+          id="modidy_table_form_details"
+         
+        >
+          <thead className="table_head_item_02">
+            <tr className="table_head_item_02_row">
+              <th className="table_column_item item_table_width_01"style={{width: "30px",}}>#</th>
+              <th className="table_column_item item_table_width_02"style={{width: "150px",}}>Item & Description</th>
+              <th className="table_column_item">Type</th>
+              <th className="table_column_item item_text_end_01">Rate</th>
+              <th className="table_column_item">Qty</th>
+              <th className="table_column_item">Tax Rate</th>
+              <th className="table_column_item item_text_end_01">Amount</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.items?.map((val, index) => (
-              <tr key={index} className="rowsxs15aksx433">
-                <td className="sfdjklsd1xs2w1">{index + 1}</td>
-                <td className="sfdjklsd1xs2w2">{val?.item?.name || ""}</td>
-                <td className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate">
+          <tbody className="table_head_item_02" style={{background: "white", textTransform: "capitalize",}}>
+            {data?.items?.map((val, index) => ( <tr key={index} className="table_head_item_02_row">
+                <td className="table_column_item" style={{width: "30px"}}>{index + 1}</td>
+                <td className="table_column_item" style={{width: "150px",}}>{val?.item?.name || val?.item_name}</td>
+                <td className="table_column_item">
+                  {val?.item?.type || val?.type}
+                </td>
+                <td
+                  className="table_column_item item_text_end_01"
+                 
+                >
                   {showAmountWithCurrencySymbol(val?.rate)}
                 </td>
-                <td className="sfdjklsd1xs2w3 sfdjklsd1xs2w3qty">
-                  {val?.quantity || ""}
-                  {"  "}
-                  {val?.unit_id && (
+                <td
+                  className="table_column_item"
+                 
+                >
+                  {val?.quantity || ""} {(val?.unit_id || val?.unit_id != 0) && (
                     <>
-                      (
-                      <PdfShowMastersValue
-                        type="2"
-                        id={val?.unit_id}
-                        masterData={masterData}
-                      />
-                      )
+                      (<PdfShowMastersValue type="2" id={val?.unit_id}
+                            masterData={masterData} />)
                     </>
                   )}
                 </td>
-                {/* <td className="sfdjklsd1xs2w3"><ShowMastersValue type="2" id={val?.unit_id} /></td> */}
-                <td className="sfdjklsd1xs2w3">
+                <td
+                  className="table_column_item"
+                 
+                >
                   {showRateWithPercent(val?.tax_rate)}
                 </td>
-                <td className="sfdjklsd1xs2w5 sfdjklsd1xs2wamount">
+                <td
+                  className="table_column_item item_text_end_01"
+                  
+                >
                   {showAmountWithCurrencySymbol(val?.final_amount)}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div className="finalcalculateiosxl44s">
-          <span>
+
+        <div className="finalcalculateiosxl44s" style={{borderTop:"none"}}>
+          <p>
             <p>Subtotal</p>{" "}
             <h5>{showAmountWithCurrencySymbol(data?.subtotal)}</h5>
-          </span>
-          <span>
+          </p>
+          <p>
             <p>Total Tax</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount())}</h5>
-          </span>
-          <span>
-            <p>Shipping Charge</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(data?.shipping_charge)}</h5>
-          </span>
-          <span>
-            <p>Adjustment Charge</p>{" "}
-            <h5>{showAmountWithCurrencySymbol(data?.adjustment_charge)}</h5>
-          </span>
+            <h5>
+              {showAmountWithCurrencySymbol(
+                calculateTotalTaxAmount()?.toFixed(2)
+              )}
+            </h5>
+          </p>
 
-          {totalExpenseCharges?.length >= 1 && (
+         
+
             <>
-              <span
-                onClick={() => setShowCharges(!showCharges)}
-                style={{ cursor: "pointer", color: "#408dfb" }}
-              >
-                <p>Charges</p>{" "}
-              </span>
-              <>
-                {totalExpenseCharges?.map((val) => (
-                  <span>
-                    <p>{val?.account_name}</p>{" "}
-                    <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5>
-                  </span>
-                ))}
-              </>
+              {totalExpenseCharges?.map((val, index) => (
+                <p>
+                  <p className="" key={index}>
+                    {val?.account_name}
+                  </p>{" "}
+                  <h5>{showAmountWithCurrencySymbol(val?.amount.toFixed(2))}</h5>
+                </p>
+              ))}
             </>
-          )}
+          {/* <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol(((parseFloat(itemsData?.total)) + (parseFloat(calculateTotalTaxAmount() || 0)) + (parseFloat(calculateTotalCharges() || 0))))}</h5></p> */}
+          <p>
+            <p className="finalcalcuFs">Total</p>{" "}
+            <h5 className="finalcalcuFs">
+              {showAmountWithCurrencySymbol(parseFloat(data?.total))}
+            </h5>
+          </p>
 
-          <span>
-            <p>Total</p> <h5>{showAmountWithCurrencySymbol(data?.total)}</h5>
-          </span>
+          {/* {section === "bill" ?
+               <>
+                 <p><p>Payment Made</p> <h5>{showAmountWithCurrencySymbol(itemsData?.amount_paid)}</h5></p>
+                 <p><p>Amount In Excess</p> <h5>{showAmountWithCurrencySymbol(itemsData?.amt_excess)}</h5></p>
+               </> :
+               <>
+               </>
+     
+             } */}
         </div>
       </>
 
-      {/* /*Section 3 table print and pdf */}
-
-      {/* /*Section 4 copy stamp */}
-      <div className="copy_bottom_footer_98" style={{ marginTop: "50px", marginLeft: "16px" }}>
-        {/* <h3>Notes / Terms</h3> */}
+      <div
+        className="copy_bottom_footer_98"
+        style={{ marginTop: "50px", marginLeft: "16px" }}
+      >
         <div className="stamp_remark">
           <div className="remark">
             <p>Notes: {data?.customer?.remarks}</p>
@@ -219,19 +232,7 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
         <p>Bank Branch Code 052 </p>
         <p>Bank Swift Code : DTKEKENA </p>
       </div>
-      {/* /*Section 4 copy stamp */}
 
-      {/* /*Section 5 main footer boxes */}
-      {/* <div className="megamarket_boxes_343">
-        <p>Naksha Travels</p>
-        <p>AEF 53543564/AFQ 9244</p>
-      </div>
-      <div className="megamarket_boxes_343">
-        <p>PETROS K</p>
-        <p>86656</p>
-      </div> */}
-
-      {/* /*Section 5 main footer boxes */}
       <h4 style={{ color: "gray", fontSize: "13px" }}>
         Travel, Tours & Safaris
       </h4>
