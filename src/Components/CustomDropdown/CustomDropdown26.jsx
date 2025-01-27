@@ -3,7 +3,6 @@ import { GoPlus } from "react-icons/go";
 import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import { useSelector } from "react-redux";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
-import { itemLists } from "../../Redux/Actions/listApisActions";
 import { } from "../../Views/Helper/HelperFunctions";
 import ShowMastersValue, { ShowUserMastersValue } from "../../Views/Helper/ShowMastersValue";
 // import { ShowUserMastersValue } from "../ShowMastersValue";
@@ -85,7 +84,6 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     }
   }, [itemData?.item_name]);
 
-  console.log("itemData", itemData)
   return (
     <div
       tabIndex="0"

@@ -21,7 +21,7 @@ import { CalculationSection2, } from "../DSR/CalculationSection";
 
 const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   console.log("edit_data", edit_data)
-  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate } = edit_data
+  // const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate } = edit_data
 
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
@@ -46,7 +46,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     service_name: "Hotel",
     // entry_type: "",
     hotel_id: "",
-    hotel_name: item_name || "",
+    hotel_name: "",
     room_id: "",
     occupancy_id: "",
     meal_id: "",
@@ -123,6 +123,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...prev,
       ...updatedFields,
     }));
+
     setErrors((prevData) => ({
       ...prevData,
       ...updatedFields,
@@ -293,8 +294,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div>
-                      <div className={`form_commonblock ${
-                          formData?.hotel_id ? "" : "disabledfield"
+                      <div className={`form_commonblock ${formData?.hotel_id ? "" : "disabledfield"
                         }`}>
                         <label>
                           Room Number/Name<b className="color_red">*</b>

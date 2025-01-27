@@ -540,7 +540,7 @@ const ItemSelect = ({
           <AddHotelPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
-            edit_data={activePopup?.data}
+          // edit_data={activePopup?.data}
           />
         );
 
@@ -595,6 +595,7 @@ const ItemSelect = ({
     }
   };
 
+  console.log("formdataof item", formData?.items)
 
   return (
     <>

@@ -55,10 +55,14 @@ const CreateSalesOrders = ({ section }) => {
 
     //for convert 
     useEffect(() => {
+        console.log("itemId", itemId)
+        console.log("convert", convert)
+        console.log("quoteDetails", quoteDetails)
         if (!itemId) return; // Exit early if no itemId
         if (invoiceDetails && itemId) {
             setFetchDetails(invoiceDetails);
         } else if (itemId && (convert === "quotationToInvoice" && quoteDetails)) {
+            console.log("callllllllllllllllllllllllllll")
             setFetchDetails(quoteDetails);
 
         } else if (itemId && convert === "saleToInvoice" && saleDetails) {
@@ -69,6 +73,7 @@ const CreateSalesOrders = ({ section }) => {
         }
     }, [itemId, isEdit, convert, quoteDetails, saleDetails, invoiceDetails, isDuplicate])
 
+    // console.log("quoteDetails", fetchDetails?.items)
 
     const {
         formData,
@@ -101,7 +106,6 @@ const CreateSalesOrders = ({ section }) => {
         isEdit,
         convert
     );
-    { console.log("formData?.invoice_id", formData?.invoice_id) }
 
     const calculateExpiryDate = (transactionDate, terms) => {
         const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
