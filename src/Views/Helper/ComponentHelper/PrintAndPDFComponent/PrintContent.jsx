@@ -7,8 +7,7 @@ import {
   showRateWithPercent,
 } from "../../HelperFunctions";
 import { PdfShowMastersValue } from "../../ShowMastersValue";
-import { otherIcons } from "../../SVGIcons/ItemsIcons/Icons";
-import { currentTime, formatDate3, todayDate } from "../../DateFormat";
+import { formatDate3 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
 
 const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {

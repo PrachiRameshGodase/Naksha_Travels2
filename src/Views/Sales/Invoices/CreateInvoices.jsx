@@ -14,18 +14,18 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import { invoiceDetailes } from '../../../Redux/Actions/invoiceActions';
 import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
 import { activeCustomerData, activeOrg_details, preventZeroVal, ShowMasterData, showRealatedText, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
-import { isPartiallyInViewport } from '../../Helper/is_scroll_focus';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SelectAddress } from '../../Common/SelectAddress';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
-import { formatDate } from '../../Helper/DateFormat';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { accountLists } from '../../../Redux/Actions/listApisActions';
 import { isStateIdEqualAction, productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
+import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
+import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
 
 const CreateSalesOrders = ({ section }) => {
     const dispatch = useDispatch();
@@ -45,13 +45,10 @@ const CreateSalesOrders = ({ section }) => {
     const saleDetail = useSelector((state) => state?.saleDetail);
 
     const saleDetails = saleDetail?.data?.data?.salesOrder;
-    // const [isCustomerSelect, setIsCustomerSelect] = useState(false);
 
-    // const [isItemSelect, setIsItemSelect] = useState(false);
     const quoteDetail = useSelector((state) => state?.quoteDetail);
     const quoteDetails = quoteDetail?.data?.data?.quotation;
     const [fetchDetails, setFetchDetails] = useState([]);
-    const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate } = Object.fromEntries(params.entries());
@@ -80,8 +77,6 @@ const CreateSalesOrders = ({ section }) => {
         setAddSelect,
         isCustomerSelect,
         setIsCustomerSelect,
-        isItemSelect,
-        setIsItemSelect,
         itemErrors,
         setItemErrors,
         imgLoader,
@@ -94,67 +89,33 @@ const CreateSalesOrders = ({ section }) => {
             quotation_id: null,
             challan_type_id: null,
             is_invoice: section === "delivery_challan" ? 0 : 1,
-            sale_order_id: 0,
+            invoice_id: "",
             address: [
                 {}
             ],
             payment_term_day: null,
-            due_date: formatDate(new Date()),
         },//for set new key's and values
-        [], // Keys to remove
+        ["expiry_date"], // Keys to remove
         fetchDetails,
         itemId,
         isEdit,
         convert
     );
+    { console.log("formData?.invoice_id", formData?.invoice_id) }
 
-
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        let newValue = value;
-
-        if (name === 'shipping_charge' || name === 'adjustment_charge') {
-            newValue = parseFloat(value) || 0; // Convert to float or default to 0
-        }
-
-        if (name === "customer_id" && value !== "") {
-            setIsCustomerSelect(true);
-        } else if (name === "customer_id" && value == "") {
-            setIsCustomerSelect(false);
-        }
-
-        if (name === "customer_id") {
-            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-
-            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing == "1")
-            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping == "1")
-            setAddSelect({
-                billing: findfirstbilling,
-                shipping: findfirstshipping,
-            });
-        }
-
-        setFormData(prev => ({
-            ...prev,
-            [name]: newValue,
-            // total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
-            // address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
-            ...(name === "payment_terms" && value !== "5" && {
-                due_date: calculateExpiryDate(new Date(prev.transaction_date), value),
-                payment_term_day: ["1", "2", "3", "4"].includes(value) ? [15, 30, 45, 60][value - 1] : null
-            }),
-
-        }));
+    const calculateExpiryDate = (transactionDate, terms) => {
+        const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
+        return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
     };
 
-    // const [addSelect, setAddSelect] = useState({
-    //     billing: "",
-    //     shipping: ""
-    // });
+    //this is the common handle select
+    const {
+        handleChange,
+    } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, calculateExpiryDate);
 
     //set selected billing and shipping addresses inside formData
     useEffect(() => {
+
         setFormData({
             ...formData,
             address: addSelect
@@ -188,58 +149,32 @@ const CreateSalesOrders = ({ section }) => {
     }, [addUpdate])
     //trigger show updated address then it updated
 
-    const calculateExpiryDate = (transactionDate, terms) => {
-        const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
-        return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
-    };
 
-    const Navigate = useNavigate();
+
+    const navigate = useNavigate();
 
     const dropdownRef1 = useRef(null);
     const dropdownRef2 = useRef(null);
 
+    const sendData = {
+        itemId, convert
+    }
+
     const handleFormSubmit = async (e) => {
-        e.preventDefault();
-
-        const buttonName = e.nativeEvent.submitter.name;
-        const errors = validateItems(formData?.items);
-        if (!isCustomerSelect) {
-            if (!isPartiallyInViewport(dropdownRef1.current)) {
-                dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            setTimeout(() => {
-                dropdownRef1.current.focus();
-            }, 500);
-
-        } else if (errors.length > 0) {
-            setItemErrors(errors);
-            if (!isPartiallyInViewport(dropdownRef2.current)) {
-                dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            setTimeout(() => {
-                dropdownRef2.current.focus();
-            }, 500);
-        } else {
-            try {
-                // const { tax_name, ...formDataWithoutTaxName } = formData;
-                const updatedItems = formData?.items?.map((item) => {
-                    const { tax_name, ...itemWithoutTaxName } = item;
-                    return itemWithoutTaxName;
-                });
-
-                dispatch(updateQuotation({
-                    ...formData,
-                    items: updatedItems,
-                    transaction_date: formatDate(formData.transaction_date),
-                    due_date: formatDate(formData.due_date),
-                    address: JSON.stringify(formData?.address),
-                    charges: JSON.stringify(formData?.charges)
-                }, Navigate, section, isEdit, buttonName, showAllSequenceId, itemId, convert));
-            } catch (error) {
-                toast.error('Error updating quotation:', error);
-            }
-
-        }
+        await handleFormSubmit1({
+            e,
+            formData,
+            isCustomerSelect,
+            setItemErrors,
+            dropdownRef1,
+            dropdownRef2,
+            dispatch,
+            navigate,
+            editDub: isEdit,
+            section: section,
+            updateDispatchAction: updateQuotation, // This is dynamic for the dispatch action
+            sendData
+        });
     };
 
     useEffect(() => {
@@ -252,7 +187,7 @@ const CreateSalesOrders = ({ section }) => {
             address: cusData?.address?.length,
             address: addSelect,
             payment_terms: cusData?.payment_terms == "0" ? null : cusData?.payment_terms,
-            due_date: calculateExpiryDate(new Date(prev.transaction_date), cusData?.payment_terms)
+            // due_date: calculateExpiryDate(new Date(prev.transaction_date), cusData?.payment_terms)
         }));
 
         if (activeOrg_details?.state?.id === addSelect?.billing?.state?.id) {
@@ -291,8 +226,6 @@ const CreateSalesOrders = ({ section }) => {
 
 
     // image upload from firebase
-
-    // const [imgLoader, setImgLoader] = useState("");
 
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
@@ -387,10 +320,11 @@ const CreateSalesOrders = ({ section }) => {
                                         </div>
 
                                         <div className="f1wrapofcreqx1">
+
                                             <div className="form_commonblock">
                                                 <label >{section === "delivery_challan" ? "Challan" : "Invoice"}<b className='color_red'>*</b></label>
                                                 <GenerateAutoId
-                                                    formHandlers={{ setFormData, handleChange, setShowAllSequenceId }}
+                                                    formHandlers={{ setFormData, handleChange }}
                                                     nameVal="invoice_id"
                                                     value={formData?.invoice_id}
                                                     module={section === "delivery_challan" ? "delivery_challan" : "invoice"}
@@ -406,9 +340,11 @@ const CreateSalesOrders = ({ section }) => {
                                                     <DatePicker
                                                         selected={formData.transaction_date}
                                                         onChange={(date) =>
-                                                            setFormData({
-                                                                ...formData,
-                                                                transaction_date: formatDate(date),
+                                                            handleChange({
+                                                                target: {
+                                                                    name: 'transaction_date',
+                                                                    value: date,
+                                                                },
                                                             })
                                                         }
                                                         name='transaction_date'
@@ -441,9 +377,11 @@ const CreateSalesOrders = ({ section }) => {
                                                     <DatePicker
                                                         selected={formData.due_date}
                                                         onChange={(date) =>
-                                                            setFormData({
-                                                                ...formData,
-                                                                due_date: formatDate(date),
+                                                            handleChange({
+                                                                target: {
+                                                                    name: 'due_date',
+                                                                    value: date,
+                                                                },
                                                             })
                                                         }
                                                         name='due_date'
@@ -532,8 +470,8 @@ const CreateSalesOrders = ({ section }) => {
                                             extracssclassforscjkls={"extracssclassforscjkls"}
                                             dropdownRef2={dropdownRef2}
                                             note="customer"
-                                            shwoCharges={true}
-                                            invoice_section="invoice_section_style_001"
+                                            // shwoCharges={true}
+                                            // invoice_section="invoice_section_style_001"
                                             section="sales"
                                         />
 

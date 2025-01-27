@@ -239,17 +239,17 @@ export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
 
   // Handle arrow click to directly open previews for images or open non-image files in new tab
   const handleArrowClick = (url) => {
-    console.log("first", url[0]);
-    // if (attachments && attachments.length > 0) {
-    //   const firstAttachment = attachments[0];
-    //   const fileExtension = getFileExtension(firstAttachment.name);
+    // console.log("first", url[0]);
+    if (attachments && attachments.length > 0) {
+      const firstAttachment = attachments[0];
+      const fileExtension = getFileExtension(firstAttachment.name);
 
-    //   if (imageExtensions.includes(fileExtension)) {
-    //     showImagePopup(firstAttachment.url); // Show image preview if it's an image file
-    //   } else {
-    //     openFileInNewTab(firstAttachment.url); // Open non-image file in a new tab
-    //   }
-    // }
+      if (imageExtensions.includes(fileExtension)) {
+        showImagePopup(firstAttachment.url); // Show image preview if it's an image file
+      } else {
+        openFileInNewTab(firstAttachment.url); // Open non-image file in a new tab
+      }
+    }
   };
 
   // Function to extract the file extension from the file name
@@ -269,7 +269,7 @@ export const AttachmentPreviewMultipleDocument = ({ attachments }) => {
             // Directly show the preview or open the file
             >
               {JSON.parse(attachments).length >= 1 && <span><MdArrowOutward onClick={() => handleArrowClick(JSON.parse(attachments))} /></span>}
-              {console.log("attachments", JSON.parse(attachments))}
+              {/* {console.log("attachments", JSON.parse(attachments))} */}
               {/* <MdArrowOutward /> */}
             </span>
           </>

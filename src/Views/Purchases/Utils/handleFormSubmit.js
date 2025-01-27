@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { confirmWithZeroAmount } from "../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 import { handleDropdownError, validateItems } from "../../Helper/HelperFunctions";
 import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
+import { formatDate } from "../../Helper/DateFormat";
 
 export const handleFormSubmitCommon = async ({
     e,
@@ -73,16 +74,10 @@ export const handleFormSubmit1 = async ({
     const errors = validateItems(formData?.items);
     // console.log("confirmedconfirmed", confirmed)
 
-    // Customer selection check
-    if (!isCustomerSelect) {
-        if (!isPartiallyInViewport(dropdownRef1.current)) {
-            dropdownRef1.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        setTimeout(() => {
-            dropdownRef1.current.focus();
-        }, 500);
-        return;
-    }
+    // selection check
+    if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
+    if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+
     else if (errors.length > 0) { // Item validation check
         setItemErrors(errors);
         if (!isPartiallyInViewport(dropdownRef2.current)) {

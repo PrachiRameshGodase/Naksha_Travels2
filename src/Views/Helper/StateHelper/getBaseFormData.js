@@ -33,7 +33,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         expiry_date: formatDate(new Date()),
         transaction_date: formatDate(new Date()),
-
+        due_date: formatDate(new Date()),
 
         terms_and_condition: "",
         tcs: "",
@@ -74,6 +74,10 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
                 final_amount: 0,
                 discount_type: 1,
                 item_remark: "",
+
+                // for service select
+                is_service: null,
+                item_data: null,
             },
         ],
     };

@@ -123,7 +123,7 @@ const QuotationDetails = () => {
             </div>
             <div id="buttonsdata">
 
-              {quotation?.status != "1" && quotation?.status != "4" &&
+              {quotation?.status == "0" &&
                 <div className="mainx1" onClick={() => handleEditThing("edit")}>
                   <img src="/Icons/pen-clip.svg" alt="" />
                   <p>Edit</p>

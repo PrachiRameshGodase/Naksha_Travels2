@@ -41,50 +41,48 @@ import { convertStatus } from '../../Views/Helper/ReduxHelperFunctions/convertSt
 import { creditNoteLists, debitNoteLists } from './listApisActions';
 import { sendData } from '../../Views/Helper/HelperFunctions';
 
-export const createCreditNotes = (quotationData, navigate, section, editDub, buttonName, itemId, convert) => async (dispatch) => {
+export const createCreditNotes = ({
+    quotationData, navigate, section, editDub, buttonName, itemId, convert }) => async (dispatch) => {
 
-    // console.log("autoGenerateIdFunction", editDub, itemId);
-    // console.log("dispatch, section, navigate, itemId, convert, response, quotationData", section, itemId, convert, quotationData);
+        dispatch({ type: CREATE_CREDIT_NOTES_REQUEST });
+        try {
+            const response = await axiosInstance.post(`/credit-debit/create/update`, quotationData);
 
-    dispatch({ type: CREATE_CREDIT_NOTES_REQUEST });
-    try {
-        const response = await axiosInstance.post(`/credit-debit/create/update`, quotationData);
+            dispatch({ type: CREATE_CREDIT_NOTES_SUCCESS, payload: response.data });
 
-        dispatch({ type: CREATE_CREDIT_NOTES_SUCCESS, payload: response.data });
+            if (response?.data?.message === "Transaction Created Successfully") {
+                convertStatus(dispatch, section, navigate, itemId, convert, response, quotationData);
+                let confirmed = null;
+                if (buttonName === "saveAndSend" && confirmed === null) {
+                    const result = await Swal.fire({
+                        text: 'Do you want to send this Credit Notes via Email?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        customClass: {
+                            popup: 'swal-wide', // Add a custom class to the popup
+                        },
+                    });
 
-        if (response?.data?.message === "Transaction Created Successfully") {
-            convertStatus(dispatch, section, navigate, itemId, convert, response, quotationData);
-            let confirmed = null;
-            if (buttonName === "saveAndSend" && confirmed === null) {
-                const result = await Swal.fire({
-                    text: 'Do you want to send this Credit Notes via Email?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    customClass: {
-                        popup: 'swal-wide', // Add a custom class to the popup
-                    },
-                });
+                    confirmed = result.isConfirmed;
+                }
 
-                confirmed = result.isConfirmed;
+                if (section === "credit") {
+                    dispatch(creditNoteLists(sendData));//call list data when it is updated
+                    creditNoteHelper(editDub, buttonName, confirmed, navigate, response);
+                }
+                if (section === "debit_note") {
+                    dispatch(debitNoteLists(sendData));//call list data when it is updated
+                    debitNoteHelper(editDub, buttonName, confirmed, navigate, response);
+                }
             }
 
-            if (section === "credit") {
-                dispatch(creditNoteLists(sendData));//call list data when it is updated
-                creditNoteHelper(editDub, buttonName, confirmed, navigate, response);
-            }
-            if (section === "debit_note") {
-                dispatch(debitNoteLists(sendData));//call list data when it is updated
-                debitNoteHelper(editDub, buttonName, confirmed, navigate, response);
-            }
+
+        } catch (error) {
+            dispatch({ type: CREATE_CREDIT_NOTES_ERROR, payload: error.message });
+            toast.error(error.message);
         }
-
-
-    } catch (error) {
-        dispatch({ type: CREATE_CREDIT_NOTES_ERROR, payload: error.message });
-        toast.error(error.message);
-    }
-};
+    };
 
 export const CreditNotesStatus = (quotationData) => async (dispatch) => {
     try {

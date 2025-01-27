@@ -107,6 +107,7 @@ const ListComponent = ({
           ) : (
             <>
               {quotation?.invoice_id ? (
+                // sataus of invoice
                 <ShowStatusInList1 quotation={quotation} />
               ) : (
                 <ShowStatusInList quotation={quotation} />

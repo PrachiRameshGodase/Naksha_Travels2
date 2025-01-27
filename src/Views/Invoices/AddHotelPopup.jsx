@@ -19,7 +19,10 @@ import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { CalculationSection2, } from "../DSR/CalculationSection";
 
-const AddHotelPopup = ({ setShowModal, handleAddService }) => {
+const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
+  console.log("edit_data", edit_data)
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate } = edit_data
+
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
 
@@ -43,7 +46,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     service_name: "Hotel",
     // entry_type: "",
     hotel_id: "",
-    hotel_name: "",
+    hotel_name: item_name || "",
     room_id: "",
     occupancy_id: "",
     meal_id: "",
@@ -59,12 +62,13 @@ const AddHotelPopup = ({ setShowModal, handleAddService }) => {
     confirmation_no: "",
     //amount
     //charges: [],
-    gross_amount: 0,
+    gross_amount: gross_amount || 0,
     discount: 0.0,
-    tax_percent: null,
+    tax_percent: tax_rate || null,
     tax_amount: 0.0,
     total_amount: 0.0,
   });
+
   const [errors, setErrors] = useState({
     hotel_id: false,
     room_id: false,

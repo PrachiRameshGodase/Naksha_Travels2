@@ -9,34 +9,62 @@ export const parsePurchaseDetails = (detailData, convert) => {
         }, 0);
     };
 
-    const itemsFromApi = detailData?.items?.map((item) => ({
-        item_id: +item?.item_id,
-        quantity: convert === "grn_to_bill" ? +item?.gr_qty : +item?.quantity,
+    const itemsFromApi = detailData?.items?.length > 0
+        ? detailData?.items?.map((item) => ({
 
-        //when grn update
-        ...(convert === "purchase_to_grn" && detailData && {
-            po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
-            gr_qty: +item?.gr_qty,
-            charges_weight: +item?.charges_weight,
-            custom_duty: item?.custom_duty,
-            ...(convert === "purchase_to_grn" ? "" : { upload_image: JSON?.parse(item?.upload_image) }),
-        }),
+            item_id: +item?.item_id,
+            quantity: convert === "grn_to_bill" ? +item?.gr_qty : +item?.quantity,
 
-        unit_id: item?.unit_id,
-        item_name: item?.item_name,
-        gross_amount: +item?.gross_amount,
-        rate: +item?.rate,
-        hsn_code: +item?.item?.hsn_code,
-        type: item?.type,
-        final_amount: +item?.final_amount,
-        tax_rate: +item?.tax_rate,
-        tax_amount: +item?.tax_amount,
-        discount: +item?.discount,
-        discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
-        item_remark: item?.item_remark,
-        tax_name: item?.item?.tax_preference == "2" && "Non-Taxable",
-        unit_id: item?.unit_id,
-    }));
+            //when grn update
+            ...(convert === "purchase_to_grn" && detailData && {
+                po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
+                gr_qty: +item?.gr_qty,
+                charges_weight: +item?.charges_weight,
+                custom_duty: item?.custom_duty,
+                ...(convert === "purchase_to_grn" ? "" : { upload_image: JSON?.parse(item?.upload_image) }),
+            }),
+
+            unit_id: item?.unit_id,
+            item_name: item?.item_name,
+            gross_amount: +item?.gross_amount,
+            rate: +item?.rate,
+            hsn_code: +item?.item?.hsn_code,
+            type: item?.type,
+            final_amount: +item?.final_amount,
+            tax_rate: +item?.tax_rate,
+            tax_amount: +item?.tax_amount,
+            discount: +item?.discount,
+            discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
+            item_remark: item?.item_remark,
+            tax_name: item?.item?.tax_preference == "2" && "Non-Taxable",
+            unit_id: item?.unit_id,
+
+            // for service select
+            is_service: item?.is_service,
+            item_data: item?.item_data,
+        }))
+        : [
+            {
+                item_id: null,
+                unit_id: 0,
+                item_name: "",
+                tax_name: "",
+                hsn_code: "",
+                type: "",
+                quantity: 1,
+                tax_rate: 0,
+                tax_amount: 0,
+                discount: 0,
+                gross_amount: 0,
+                final_amount: 0,
+                discount_type: 1,
+                item_remark: "",
+
+                // for service select
+                is_service: null,
+                item_data: null,
+            },
+        ];
 
     const all_changes = JSON?.parse(detailData?.charges || "[]");
 

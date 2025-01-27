@@ -142,11 +142,11 @@ export const ShowAllStatus1 = ({ quotation, section }) => {
         "Pending"
       ) : (
         <>
-          {quotation?.status == "1" ? (
+          {quotation?.status == "1" && quotation?.approved_date && quotation?.due_date ? (
             <>
               <>
                 {getDateStatus1(
-                  formatDate(quotation?.transaction_date),
+                  formatDate("2024-01-25"),
                   formatDate(quotation?.due_date)
                 )}
               </>
@@ -214,7 +214,7 @@ export const ShowDropdownContent = ({ quotation, changeStatus }) => {
           )}
         </>
       )}
-      {!(quotation?.status == "1" || quotation?.status == "4") && (
+      {(quotation?.status == "0" || quotation?.status == "2") && (
         <div
           className="dmncstomx1"
           style={{ cursor: "pointer" }}
@@ -383,7 +383,7 @@ export const ShowDropdownContent1 = ({ quotation, changeStatus }) => {
       )
       }
 
-      {!(quotation?.status == "1" || quotation?.status == "4") && (
+      {(quotation?.status == "0" || quotation?.status == "2") && (
         <div
           className="dmncstomx1"
           style={{ cursor: "pointer" }}
