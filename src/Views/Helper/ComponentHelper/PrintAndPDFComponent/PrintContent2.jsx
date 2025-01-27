@@ -231,7 +231,7 @@ const PrintContent2 = ({
                     </div>
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "20px", display:"flex", justifyContent:"flex-end" }}
                     >
                       <div className="customer-card">
                         <p className="customer-label">Amount</p>
@@ -568,12 +568,12 @@ const PrintContent2 = ({
 
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
                     >
-                      <div className="customer-card">
+                      <div className="customer-card" >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
-                        <p className="customer-value">
+                        <p className="customer-value" >
                           {data?.total_amount || ""}
                         </p>
                       </div>
@@ -643,7 +643,7 @@ const PrintContent2 = ({
                     </div>
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
                     >
                       <div className="customer-card">
                         <p className="customer-label">Amount</p>{" "}
@@ -692,7 +692,7 @@ const PrintContent2 = ({
                 </div>
               ))}
             </div>
-             <hr style={{color:"#c8c6cb", marginBottom:"20px", marginTop:"20px",height:""}}></hr>
+             {/* <hr style={{color:"#c8c6cb", marginBottom:"20px", marginTop:"20px",height:""}}></hr> */}
           </div>
           
         ))}
