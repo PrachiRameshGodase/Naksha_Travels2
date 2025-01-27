@@ -636,8 +636,107 @@ const ItemSelect = ({
 
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
+                  {item?.items_data?.service_name === "Hotel" ? (
+                      <>
+                        <div>
+                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
+                        </div>
+                        <div>
+                          <b>Room:</b> {item?.items_data?.room_no || "-"}
+                        </div>
+                        <div>
+                          <b>Meal:</b>{" "}
+                          <ShowMastersValue
+                            type="37"
+                            id={item?.items_data?.meal_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Assist" ? (
+                      <>
+                        <div>
+                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
+                        </div>
+                        <div>
+                          <b>Meeting Type:</b>{" "}
+                          {item?.items_data?.meeting_type || "-"}
+                        </div>
+                        <div>
+                          <b>No Of Persons:</b>{" "}
+                          {item?.items_data?.no_of_persons || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Flight" ? (
+                      <>
+                        <div>
+                          <b>Airline Name:</b>{" "}
+                          {item?.items_data?.airline_name || "-"}
+                        </div>
+                        <div>
+                          <b>Ticket No:</b> {item?.items_data?.ticket_no || "-"}
+                        </div>
+                        <div>
+                          <b>PRN No:</b> {item?.items_data?.prn_no || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Visa" ? (
+                      <>
+                        <div>
+                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa Type:</b>{" "}
+                          <ShowUserMastersValue
+                            type="40"
+                            id={item?.items_data?.visa_type_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) :
+                     item?.items_data?.service_name === "CarHire" ? (
+                      <>
+                        <div>
+                          <b>Vehicle Type:</b> <ShowUserMastersValue
+                            type="41"
+                            id={item?.items_data?.vehicle_type_id || "-"}
+                          />
+                        </div>
+                        <div>
+                          <b>Pickup Location:</b> {item?.items_data?.pickup_location || "-"}
+                        </div>
+                        <div>
+                          <b>Drop Location:</b>{" "}
+                          
+                            {item?.items_data?.drop_location || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                    
+                     item?.items_data?.service_name === "Insurance" ? (
+                      <>
+                        <div>
+                          <b>Company Name:</b> 
+                            {item?.items_data?.company_name || "-"}
+                          
+                        </div>
+                        <div>
+                          <b>Policy No:</b> {item?.items_data?.policy_no || "-"}
+                        </div>
+                        <div>
+                          <b>Insurance Plan:</b>{" "}
+                          
+                            {item?.items_data?.insurance_plan || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                      // display when item is selected. item id is found 
 
-                    <CustomDropdown26
+                    (<CustomDropdown26
                       options={options2 || []}
                       value={item?.item_id}
                       onChange={(event) =>
@@ -655,9 +754,9 @@ const ItemSelect = ({
                       itemData={item}
                       ref={dropdownRef2}
                       service_name={item?.items_data}
-                    />
-
-                    {/* it is desplay when service select */}
+                    />)}
+                    
+                 
 
                   </td>
 
