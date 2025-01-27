@@ -310,9 +310,18 @@ const ItemSelect = ({
     newItems[index].final_amount = finalAmount?.toFixed(2); // Round to 2 decimal places
     newItems[index].tax_amount = taxAmount?.toFixed(2); // For calculate tax amount
 
+
+    // Check if all previous items have valid item_name
+    const firstEmptyRowIndex = formData?.items.findIndex(
+      (item) => !(item.item_name && item.item_name.trim()) && !(item?.service_data?.service_name && item?.service_data?.service_name.trim())
+    );
+
+    // add new empty at the end of row when item is selected 
+    const finalItems = firstEmptyRowIndex === -1 ? [...newItems, { item_name: "", service_name: "", discount_type: 1, quantity: 1, discount: 0, tax_rate: 0 }] : newItems;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      items: newItems,
+      items: finalItems,
     }));
     setItemErrors(newErrors);
   };
@@ -459,8 +468,9 @@ const ItemSelect = ({
   // for service select code..............................................
   const servicesList = ShowUserMasterData("48");
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
+
   const [activePopup, setActivePopup] = useState(null);
-  // console.log("activePopupactivePopup", activePopup)
+  console.log("activePopupactivePopup", activePopup)
 
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -469,64 +479,66 @@ const ItemSelect = ({
     setActivePopup({ popupType: value });
   };
 
-
-  // add services function
-  const handleAddService = (name, data) => {
+  const handleAddService = (data) => {
     // Check if there's an empty type in the existing rows
     const isTypeNull = formData?.items?.find((val) => val?.type === "" && val?.item_name);
     if (isTypeNull) {
       toast.error("Please select the type and valid item name of the above row");
       return;
     }
-
-    // Get the item name based on the service type
-    const itemName =
-      name === "Hotel"
-        ? data?.hotel_name
-        : name === "Flight"
-          ? data?.airline_name
-          : name === "Assist"
-            ? data?.airport_name
-            : name === "Insurance"
-              ? data?.company_name
-              : name === "Visa"
-                ? data?.passport_no
-                : name === "CarHire"
-                  ? data?.vehicle_type_id
-                  : name === "Other"
-                    ? data?.item_name
-                    : "";
-
-    // Prepare the new or updated item
     const newItem = {
-      item_name: itemName,
       tax_name: "",
       quantity: 1,
       rate: parseFloat(data?.gross_amount || 0),
-      tax_rate: data?.tax_percent,
+      tax_rate: data?.tax_percent || 0,
       tax_amount: parseFloat(data?.tax_amount),
       discount: 0,
       gross_amount: parseFloat(data?.gross_amount) * 1,
       final_amount: parseFloat(data?.gross_amount).toFixed(2),
       discount_type: 1,
-      item_id: 13,
       type: "Service",
-      items_data: data,
+      service_data: data,
       is_service: 1
     };
 
-    // Check if we're editing an existing row or adding a new one
-    const updatedItems = activePopup?.index !== undefined
-      ? formData.items.map((item, idx) =>
-        idx === activePopup.index ? { ...item, ...newItem } : item
-      ) // Update the specific row
-      : [...formData.items, newItem]; // Add a new row
 
-    // Save the updated items to formData
-    setFormData({ ...formData, items: updatedItems });
+
+    const firstEmptyRowIndex = formData?.items.findIndex(
+      (item) =>
+        !(item.item_name && item.item_name.trim()) &&
+        !(item?.service_data?.service_name && item?.service_data?.service_name.trim())
+    );
+
+    // Determine whether to add or update rows
+    const updatedItems =
+      activePopup?.index !== undefined
+        ? formData.items.map((item, idx) =>
+          idx === activePopup.index
+            ? { ...item, ...newItem } // Update the row being edited
+            : item
+        )
+        : firstEmptyRowIndex !== -1
+          ? formData.items.map((item, idx) =>
+            idx === firstEmptyRowIndex
+              ? { ...item, ...newItem } // Update the first empty row
+              : item
+          )
+          : [...formData.items, newItem]; // Add a new row if no empty rows exist
+
+    // Add an empty row only if you're not editing
+    const finalItems =
+      activePopup?.index === undefined
+        ? [...updatedItems, { item_name: "", service_name: "", discount_type: 1, discount: 0, quantity: 1, tax_rate: 0 }]
+        : updatedItems;
+
+    // Save the updated list back to formData
+    setFormData({ ...formData, items: finalItems });
+
+
   };
 
 
+  // console.log("iteererere", formData?.items)
 
   const renderPopup = () => {
     if (!activePopup) return null;
@@ -540,7 +552,7 @@ const ItemSelect = ({
           <AddHotelPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
-          // edit_data={activePopup?.data}
+            edit_data={activePopup?.data || []}
           />
         );
 
@@ -549,6 +561,7 @@ const ItemSelect = ({
           <AddFlightPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
 
@@ -595,7 +608,7 @@ const ItemSelect = ({
     }
   };
 
-  console.log("formdataof item", formData?.items)
+  // console.log("formdataof item", formData?.items)
 
   return (
     <>
@@ -636,107 +649,8 @@ const ItemSelect = ({
 
                   {/* Item Details */}
                   <td className="table_column_item item_table_width_01 item_table_text_transform">
-                  {item?.items_data?.service_name === "Hotel" ? (
-                      <>
-                        <div>
-                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
-                        </div>
-                        <div>
-                          <b>Room:</b> {item?.items_data?.room_no || "-"}
-                        </div>
-                        <div>
-                          <b>Meal:</b>{" "}
-                          <ShowMastersValue
-                            type="37"
-                            id={item?.items_data?.meal_id || "-"}
-                          />
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Assist" ? (
-                      <>
-                        <div>
-                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
-                        </div>
-                        <div>
-                          <b>Meeting Type:</b>{" "}
-                          {item?.items_data?.meeting_type || "-"}
-                        </div>
-                        <div>
-                          <b>No Of Persons:</b>{" "}
-                          {item?.items_data?.no_of_persons || "-"}
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Flight" ? (
-                      <>
-                        <div>
-                          <b>Airline Name:</b>{" "}
-                          {item?.items_data?.airline_name || "-"}
-                        </div>
-                        <div>
-                          <b>Ticket No:</b> {item?.items_data?.ticket_no || "-"}
-                        </div>
-                        <div>
-                          <b>PRN No:</b> {item?.items_data?.prn_no || "-"}
-                        </div>
-                      </>
-                    ) : item?.items_data?.service_name === "Visa" ? (
-                      <>
-                        <div>
-                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
-                        </div>
-                        <div>
-                          <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
-                        </div>
-                        <div>
-                          <b>Visa Type:</b>{" "}
-                          <ShowUserMastersValue
-                            type="40"
-                            id={item?.items_data?.visa_type_id || "-"}
-                          />
-                        </div>
-                      </>
-                    ) :
-                     item?.items_data?.service_name === "CarHire" ? (
-                      <>
-                        <div>
-                          <b>Vehicle Type:</b> <ShowUserMastersValue
-                            type="41"
-                            id={item?.items_data?.vehicle_type_id || "-"}
-                          />
-                        </div>
-                        <div>
-                          <b>Pickup Location:</b> {item?.items_data?.pickup_location || "-"}
-                        </div>
-                        <div>
-                          <b>Drop Location:</b>{" "}
-                          
-                            {item?.items_data?.drop_location || "-"}
-                          
-                        </div>
-                      </>
-                    ) :
-                    
-                     item?.items_data?.service_name === "Insurance" ? (
-                      <>
-                        <div>
-                          <b>Company Name:</b> 
-                            {item?.items_data?.company_name || "-"}
-                          
-                        </div>
-                        <div>
-                          <b>Policy No:</b> {item?.items_data?.policy_no || "-"}
-                        </div>
-                        <div>
-                          <b>Insurance Plan:</b>{" "}
-                          
-                            {item?.items_data?.insurance_plan || "-"}
-                          
-                        </div>
-                      </>
-                    ) :
-                      // display when item is selected. item id is found 
 
-                    (<CustomDropdown26
+                    <CustomDropdown26
                       options={options2 || []}
                       value={item?.item_id}
                       onChange={(event) =>
@@ -753,11 +667,8 @@ const ItemSelect = ({
                       extracssclassforscjkls={extracssclassforscjkls}
                       itemData={item}
                       ref={dropdownRef2}
-                      service_name={item?.items_data}
-                    />)}
-                    
-                 
-
+                      service_data={item?.service_data}
+                    />
                   </td>
 
                   {/* Type Dropdown */}
@@ -807,6 +718,7 @@ const ItemSelect = ({
 
                   {/* Quantity */}
                   <td className="table_column_item table_input_01">
+
                     <NumericInput
                       value={item?.quantity}
                       onChange={(e) => {
@@ -936,7 +848,7 @@ const ItemSelect = ({
 
                   {/* Tax Rate */}
                   <td className="table_column_item item_table_text_transform">
-                    {item?.item_id === "" || item?.item_name === "" ? (
+                    {item?.item_id === "" || item?.item_name === "" || item?.tax_rate == 0 ? (
                       <CustomDropdown13
                         options={tax_rate}
                         value={item?.tax_rate}
@@ -963,6 +875,15 @@ const ItemSelect = ({
 
                   {/* reload and remove butttons */}
                   <td className="table_column_item refresh_remove_button_item">
+                    {item?.is_service == 1 &&
+                      <button
+                        className="refresh_remove_button_item"
+                        type="button"
+                        onClick={() => setActivePopup({ popupType: item?.service_data?.service_name, index, data: item })}//set index and data in active popup
+                      >
+                        <FiEdit className="react_icn_items" />
+                      </button>
+                    }
 
                     {formData?.items?.length > 1 ? (
                       <>
@@ -980,15 +901,7 @@ const ItemSelect = ({
                           <RxCross2 className="react_icn_items" />
                         </button>
 
-                        {item?.is_service == 1 && isEdit &&
-                          <button
-                            className="refresh_remove_button_item"
-                            type="button"
-                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
-                          >
-                            <FiEdit className="react_icn_items" />
-                          </button>
-                        }
+
                       </>
                     ) : (
                       <>
@@ -1005,15 +918,7 @@ const ItemSelect = ({
                           <SlReload />
                         </button>
 
-                        {item?.is_service == 1 && isEdit &&
-                          <button
-                            className="refresh_remove_button_item"
-                            type="button"
-                            onClick={() => setActivePopup({ popupType: "Hotels", index, data: item })}
-                          >
-                            <FiEdit className="react_icn_items" />
-                          </button>
-                        }
+
                       </>
                     )}
                   </td>
@@ -1032,21 +937,7 @@ const ItemSelect = ({
                         {otherIcons.error_svg} {itemErrors[index].rate}
                       </span>
                     )}
-                    {/*  {itemErrors[index]?.type && (
-                      <span className="error-message">
-                        {otherIcons.error_svg} {itemErrors[index].type}
-                      </span>
-                    )}
-                    {itemErrors[index]?.unit_id && (
-                      <span className="error-message">
-                        {otherIcons.error_svg} {itemErrors[index].unit_id}
-                      </span>
-                    )}
-                    {itemErrors[index]?.tax_rate && (
-                      <span className="error-message">
-                        {otherIcons.error_svg} {itemErrors[index].tax_rate}
-                      </span>
-                    )} */}
+
                   </td>
                 </tr>
               </React.Fragment>

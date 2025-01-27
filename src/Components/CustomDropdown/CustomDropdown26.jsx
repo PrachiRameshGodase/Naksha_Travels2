@@ -9,6 +9,7 @@ import ShowMastersValue, { ShowUserMastersValue } from "../../Views/Helper/ShowM
 
 
 const CustomDropdown26 = forwardRef((props, ref) => {
+
   const {
     options,
     value,
@@ -21,8 +22,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     extracssclassforscjkls,
     className,
     itemData,
-    service_name
-
+    service_data
   } = props;
 
   const nextFocusRef = useRef(null);
@@ -39,6 +39,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     handleSelect,
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
+
+
 
   const itemList = useSelector((state) => state?.itemList);
   const categoryLists = useSelector((state) => state?.categoryList);
@@ -76,6 +78,8 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       setIsValueSelected(false);
     }
   };
+
+
   useEffect(() => {
     if (itemData?.item_name) {
       setSearchTerm(itemData.item_name);
@@ -83,6 +87,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
       setSearchTerm("");
     }
   }, [itemData?.item_name]);
+
+
+  console.log("service_data", service_data)
 
   return (
     <div
@@ -94,105 +101,104 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     >
 
       {
-        service_name === "Hotel" ? (
+        service_data?.service_name === "Hotel" ? (
           <>
             <div>
-              <b>Hotel Name:</b> {itemData?.hotel_name || "-"}
+              <b>Hotel Name:</b> {service_data?.hotel_name || "-"}
             </div>
             <div>
-              <b>Room:</b> {itemData?.room_no || "-"}
+              <b>Room:</b> {service_data?.room_no || "-"}
             </div>
             <div>
               <b>Meal:</b>{" "}
               <ShowMastersValue
                 type="37"
-                id={itemData?.meal_id || "-"}
+                id={service_data?.meal_id || "-"}
               />
             </div>
           </>
-        ) : itemData?.service_name === "Assist" ? (
+        ) : service_data?.service_name === "Assist" ? (
           <>
             <div>
-              <b>Airport:</b> {itemData?.airport_name || "-"}
+              <b>Airport:</b> {service_data?.airport_name || "-"}
             </div>
             <div>
               <b>Meeting Type:</b>{" "}
-              {itemData?.meeting_type || "-"}
+              {service_data?.meeting_type || "-"}
             </div>
             <div>
               <b>No Of Persons:</b>{" "}
-              {itemData?.no_of_persons || "-"}
+              {service_data?.no_of_persons || "-"}
             </div>
           </>
-        ) : itemData?.service_name === "Flight" ? (
+        ) : service_data?.service_name === "Flights" ? (
           <>
             <div>
               <b>Airline Name:</b>{" "}
-              {itemData?.airline_name || "-"}
+              {service_data?.airline_name || "-"}
             </div>
             <div>
-              <b>Ticket No:</b> {itemData?.ticket_no || "-"}
+              <b>Ticket No:</b> {service_data?.ticket_no || "-"}
             </div>
             <div>
-              <b>PRN No:</b> {itemData?.prn_no || "-"}
+              <b>PRN No:</b> {service_data?.prn_no || "-"}
             </div>
           </>
-        ) : itemData?.service_name === "Visa" ? (
+        ) : service_data?.service_name === "Visa" ? (
           <>
             <div>
-              <b>Passport No:</b> {itemData?.passport_no || "-"}
+              <b>Passport No:</b> {service_data?.passport_no || "-"}
             </div>
             <div>
-              <b>Visa No:</b> {itemData?.visa_no || "-"}
+              <b>Visa No:</b> {service_data?.visa_no || "-"}
             </div>
             <div>
               <b>Visa Type:</b>{" "}
               <ShowUserMastersValue
                 type="40"
-                id={itemData?.visa_type_id || "-"}
+                id={service_data?.visa_type_id || "-"}
               />
             </div>
           </>
         ) :
-          itemData?.service_name === "CarHire" ? (
+          service_data?.service_name === "CarHire" ? (
             <>
               <div>
                 <b>Vehicle Type:</b> <ShowUserMastersValue
                   type="41"
-                  id={itemData?.vehicle_type_id || "-"}
+                  id={service_data?.vehicle_type_id || "-"}
                 />
               </div>
               <div>
-                <b>Pickup Location:</b> {itemData?.pickup_location || "-"}
+                <b>Pickup Location:</b> {service_data?.pickup_location || "-"}
               </div>
               <div>
                 <b>Drop Location:</b>{" "}
 
-                {itemData?.drop_location || "-"}
+                {service_data?.drop_location || "-"}
 
               </div>
             </>
           ) :
 
-            itemData?.service_name === "Insurance" ? (
+            service_data?.service_name === "Insurance" ? (
               <>
                 <div>
                   <b>Company Name:</b>
-                  {itemData?.company_name || "-"}
+                  {service_data?.company_name || "-"}
 
                 </div>
                 <div>
-                  <b>Policy No:</b> {itemData?.policy_no || "-"}
+                  <b>Policy No:</b> {service_data?.policy_no || "-"}
                 </div>
                 <div>
                   <b>Insurance Plan:</b>{" "}
 
-                  {itemData?.insurance_plan || "-"}
+                  {service_data?.insurance_plan || "-"}
 
                 </div>
               </>
             ) :
-
               <div
                 onClick={() => setIsOpen(!isOpen)}
                 className={"dropdown-select" + (value ? " filledcolorIn" : "")}
@@ -200,7 +206,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
               >
                 <textarea
                   type="text"
-                  placeholder="Type To Add Or Search..."
+                  placeholder="Type or Select the Item"
                   value={searchTerm || itemData?.item_name}
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
@@ -256,6 +262,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                 </div>
               ))}
             </div>
+
             {options?.length === 0 && (
               <>
                 <div className="notdatafound02">

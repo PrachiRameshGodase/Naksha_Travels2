@@ -21,9 +21,10 @@ import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../Redux/Actions/flightActions";
 
-const AddFlightPopup = ({ setShowModal, handleAddService }) => {
+const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
@@ -33,30 +34,29 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
+
   const [formData, setFormData] = useState({
-    service_name: "Flight",
-    // entry_type: "",
-    travel_date: "",
-    booking_date: formatDate(new Date()),
-    travel_type_id: "",
-    airline_name: "",
-    air_line_code: "",
-    guest_ids: "",
-    gds_portal: "",
-    destination_code: "",
-    ticket_no: "",
-    prn_no: "",
-    route: "",
-    supplier_id: "",
-    supplier_name: "",
-    //amount
-    // charges: null,
-    gross_amount: 0,
-    discount: 0.0,
-    tax_percent: null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    service_name: "Flights",
+    travel_date: service_data?.travel_date || "",  // Example for travel_date
+    booking_date: formatDate(new Date()),  // Current date
+    travel_type_id: service_data?.travel_type_id || "",  // Example for travel_type_id
+    airline_name: service_data?.airline_name || "",  // Example for airline_name
+    air_line_code: service_data?.air_line_code || "",  // Example for air_line_code
+    guest_ids: "",  // Example for guest_ids
+    gds_portal: service_data?.gds_portal || "",  // Example for gds_portal
+    destination_code: service_data?.destination_code || "",  // Example for destination_code
+    ticket_no: service_data?.ticket_no || "",  // Example for ticket_no
+    prn_no: service_data?.prn_no || "",  // Example for prn_no
+    route: service_data?.route || "",  // Example for route
+    supplier_id: service_data?.supplier_id || "",  // Example for supplier_id
+    supplier_name: service_data?.supplier_name || "",  // Example for supplier_name
+    gross_amount: gross_amount || 0,  // Use `gross_amount` if passed or default to 0
+    discount: discount || 0.0,  // Default value for discount
+    tax_percent: tax_rate || null,  // Use `tax_rate` or default to null
+    tax_amount: 0.0,  // Default value for tax_amount
+    total_amount: 0.0,  // Default value for total_amount
   });
+
   const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
@@ -163,7 +163,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Flight", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -266,6 +266,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={formData.booking_date}
+
                           />
                         </span>
                         {errors?.travel_date && (

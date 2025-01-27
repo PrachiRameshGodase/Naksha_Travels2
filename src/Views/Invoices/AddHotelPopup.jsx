@@ -20,8 +20,10 @@ import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { CalculationSection2, } from "../DSR/CalculationSection";
 
 const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
-  console.log("edit_data", edit_data)
-  // const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate } = edit_data
+  // console.log("edit_data", edit_data)
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
+  // console.log("edit_data", service_data)
 
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
@@ -44,31 +46,30 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const [formData, setFormData] = useState({
     service_name: "Hotel",
-    // entry_type: "",
-    hotel_id: "",
-    hotel_name: "",
-    room_id: "",
-    occupancy_id: "",
-    meal_id: "",
-    room_no: "",
-    bed: "",
-    guest_ids: "",
-    booking_date: formatDate(new Date()),
-    check_in_date: "",
-    check_out_date: "",
-    supplier_id: "",
-    supplier_name: "",
-    total_nights: "",
-    confirmation_no: "",
-    //amount
-    //charges: [],
-    gross_amount: gross_amount || 0,
-    discount: 0.0,
-    tax_percent: tax_rate || null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    hotel_id: service_data?.hotel_id || "",  // Example for hotel_id
+    hotel_name: service_data?.hotel_name || "",  // Example for hotel_name
+    room_id: service_data?.room_id || "",  // Example for room_id
+    occupancy_id: service_data?.occupancy_id || "",  // Example for occupancy_id
+    meal_id: service_data?.meal_id || "",  // Example for meal_id
+    room_no: service_data?.room_no || "",  // Example for room_no
+    bed: service_data?.bed || "",  // Example for bed
+    guest_ids: "",  // Example for guest_ids
+    booking_date: formatDate(new Date()),  // Current date
+    check_in_date: service_data?.check_in_date || "",  // Example for check_in_date
+    check_out_date: service_data?.check_out_date || "",  // Example for check_out_date
+    supplier_id: service_data?.supplier_id || "",  // Example for supplier_id
+    supplier_name: service_data?.supplier_name || "",  // Example for supplier_name
+    total_nights: service_data?.total_nights || "",  // Example for total_nights
+    confirmation_no: service_data?.confirmation_no || "",  // Example for confirmation_no
+    total_days: service_data?.total_days || null,  // Default to tax_rate or null
+    gross_amount: gross_amount || 0,  // If gross_amount is passed as a prop or variable
+    discount: 0.0,  // Default value
+    tax_percent: tax_rate || null,  // Default to tax_rate or null
+    tax_amount: 0.0,  // Default value
+    total_amount: 0.0,  // Default value
   });
 
+  // console.log("formdataaaaaaaaaa", formData)
   const [errors, setErrors] = useState({
     hotel_id: false,
     room_id: false,
@@ -101,9 +102,11 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
     if (name === "room_id") {
       const selectedRoom = hotelRoomListData?.find((room) => room?.id == value);
+      console.log("selectedRoom", selectedRoom)
       updatedFields = {
         ...updatedFields,
         room_name: selectedRoom?.room_name || "",
+        room_no: selectedRoom?.room_number || "",
         occupancy_id: selectedRoom?.occupancy_id || "",
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
@@ -206,7 +209,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Hotel", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -507,6 +510,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={formData.booking_date}
                           />
                         </span>
                         {errors?.check_in_date && (

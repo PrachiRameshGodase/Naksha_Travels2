@@ -20,9 +20,11 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
 
   return (
     <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "item3" ? { minWidth: "120px", background: "white" } : {}}
->
-      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } :className2 === "item4" ? {minWidth:"88px", background:"white",height:"29px"} :className2 === "item3" ? {marginRight:"8px"} : {}}>
+    >
+      <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : className2 === "item4" ? { minWidth: "88px", background: "white", height: "29px" } : className2 === "item3" ? { marginRight: "8px" } : {}}>
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
+
+        {/* {console.log("options?.find(account => account?.tax_percentge == value)?.tax_percentge", options?.find(account => account?.tax_percentge == value)?.tax_percentge)} */}
         <svg
           width="13"
           height="7"

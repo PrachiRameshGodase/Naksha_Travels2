@@ -41,7 +41,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
 
             // for service select
             is_service: item?.is_service,
-            item_data: item?.item_data,
+            service_data: JSON?.parse(item?.service_data || "{}"),
         }))
         : [
             {

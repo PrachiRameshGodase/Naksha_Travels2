@@ -117,11 +117,11 @@ export const useDebounceSearch = (callback, delay) => {
 
 export const handleDropdownError = (isSelected, dropdownRef) => {
     if (!isSelected) {
-        if (!isPartiallyInViewport(dropdownRef.current)) {
-            dropdownRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!isPartiallyInViewport(dropdownRef?.current)) {
+            dropdownRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         setTimeout(() => {
-            dropdownRef.current.focus();
+            dropdownRef?.current?.focus();
         }, 500);
         return true;
     }
@@ -229,20 +229,44 @@ export const validateItems = (items) => {
 
     items.forEach((item, index) => {
         const itemErrors = {};
-        if (!item?.item_name) itemErrors.item_name = "Please Select/type An Item or select Services";
-        // if (!item?.type) itemErrors.type = "Please Select Type";
-        if (!item?.rate || item.rate <= 0) itemErrors.rate = "Please Fill the Price";
+
+        // Exclude the last row from validation if it's empty and there are more rows
+        if (
+            index === items?.length - 1 && // Last row
+            items?.length > 1 && // More than one row
+            !(item?.item_name && item?.item_name.trim()) &&
+            !(item?.service_data?.service_name && item?.service_data?.service_name?.trim()) &&
+            !item?.rate // Assuming a completely empty row
+        ) {
+            return; // Skip validation for the last row
+        }
+
+        // Validate item_name or service_name
+        if (
+            !(item?.item_name && item?.item_name.trim()) &&
+            !(item?.service_data?.service_name && item?.service_data?.service_name?.trim())
+        ) {
+            itemErrors.item_name = "Please Select/type An Item or select Services";
+        }
+
+        // Validate rate
+        if (!item?.rate || item?.rate <= 0) {
+            itemErrors.rate = "Please Fill the Price";
+        }
+
+        // Validate other fields as needed
         // if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
         // if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
 
-        if (Object.keys(itemErrors).length > 0) {
+        // Add errors for this item if there are any
+        if (Object.keys(itemErrors)?.length > 0) {
             errors[index] = itemErrors;
         }
-
     });
 
     return errors;
 };
+
 
 
 
