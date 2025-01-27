@@ -23,6 +23,7 @@ import {
   activeOrg_details,
   sendData,
   ShowMasterData,
+  ShowUserMasterData,
 } from "../HelperFunctions";
 import TextAreaComponentWithTextLimit from "./TextAreaComponentWithTextLimit";
 import ExpenseCharges from "./ExpenseCharges";
@@ -34,6 +35,10 @@ import AddVisaPopup from "../../Invoices/AddVisaPopup";
 import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
+<<<<<<< HEAD
+=======
+import ShowMastersValue, { ShowUserMastersValue } from "../ShowMastersValue";
+>>>>>>> 3233be6189c6317e20bfcaa378b459dd517ec46c
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
 
@@ -455,7 +460,7 @@ const ItemSelect = ({
   useFetchApiData(itemLists, payloadGenerator, [productType]);//call api common function
 
   // for service select code..............................................
-  const servicesList = ShowMasterData("48");
+  const servicesList = ShowUserMasterData("48");
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
   const [activePopup, setActivePopup] = useState(null);
   // console.log("activePopupactivePopup", activePopup)
@@ -654,6 +659,131 @@ const ItemSelect = ({
                       service_name={item?.items_data}
                     />
 
+<<<<<<< HEAD
+=======
+                    {/* it is desplay when service select */}
+                    {item?.items_data?.service_name === "Hotel" ? (
+                      <>
+                        <div>
+                          <b>Hotel Name:</b> {item?.items_data?.hotel_name || "-"}
+                        </div>
+                        <div>
+                          <b>Room:</b> {item?.items_data?.room_no || "-"}
+                        </div>
+                        <div>
+                          <b>Meal:</b>{" "}
+                          <ShowMastersValue
+                            type="37"
+                            id={item?.items_data?.meal_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Assist" ? (
+                      <>
+                        <div>
+                          <b>Airport:</b> {item?.items_data?.airport_name || "-"}
+                        </div>
+                        <div>
+                          <b>Meeting Type:</b>{" "}
+                          {item?.items_data?.meeting_type || "-"}
+                        </div>
+                        <div>
+                          <b>No Of Persons:</b>{" "}
+                          {item?.items_data?.no_of_persons || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Flight" ? (
+                      <>
+                        <div>
+                          <b>Airline Name:</b>{" "}
+                          {item?.items_data?.airline_name || "-"}
+                        </div>
+                        <div>
+                          <b>Ticket No:</b> {item?.items_data?.ticket_no || "-"}
+                        </div>
+                        <div>
+                          <b>PRN No:</b> {item?.items_data?.prn_no || "-"}
+                        </div>
+                      </>
+                    ) : item?.items_data?.service_name === "Visa" ? (
+                      <>
+                        <div>
+                          <b>Passport No:</b> {item?.items_data?.passport_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa No:</b> {item?.items_data?.visa_no || "-"}
+                        </div>
+                        <div>
+                          <b>Visa Type:</b>{" "}
+                          <ShowUserMastersValue
+                            type="40"
+                            id={item?.items_data?.visa_type_id || "-"}
+                          />
+                        </div>
+                      </>
+                    ) :
+                     item?.items_data?.service_name === "CarHire" ? (
+                      <>
+                        <div>
+                          <b>Vehicle Type:</b> <ShowUserMastersValue
+                            type="41"
+                            id={item?.items_data?.vehicle_type_id || "-"}
+                          />
+                        </div>
+                        <div>
+                          <b>Pickup Location:</b> {item?.items_data?.pickup_location || "-"}
+                        </div>
+                        <div>
+                          <b>Drop Location:</b>{" "}
+                          
+                            {item?.items_data?.drop_location || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                    
+                     item?.items_data?.service_name === "Insurance" ? (
+                      <>
+                        <div>
+                          <b>Company Name:</b> 
+                            {item?.items_data?.company_name || "-"}
+                          
+                        </div>
+                        <div>
+                          <b>Policy No:</b> {item?.items_data?.policy_no || "-"}
+                        </div>
+                        <div>
+                          <b>Insurance Plan:</b>{" "}
+                          
+                            {item?.items_data?.insurance_plan || "-"}
+                          
+                        </div>
+                      </>
+                    ) :
+                      // display when item is selected. item id is found 
+                   
+                      // display when item is selected. item id is found 
+                      (
+                        <CustomDropdown26
+                          options={options2 || []}
+                          value={item?.item_id}
+                          onChange={(event) =>
+                            handleItemChange(
+                              index,
+                              event.target.name,
+                              event.target.value
+                            )
+                          }
+                          name="item_id"
+                          type="select_item"
+                          setItemData={setItemData}
+                          index={index}
+                          extracssclassforscjkls={extracssclassforscjkls}
+                          itemData={item}
+                          ref={dropdownRef2}
+                        />
+                      )}
+>>>>>>> 3233be6189c6317e20bfcaa378b459dd517ec46c
                   </td>
 
                   {/* Type Dropdown */}

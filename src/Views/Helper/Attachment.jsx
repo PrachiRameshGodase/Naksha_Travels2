@@ -344,7 +344,7 @@ export const AttachmentPreview4 = ({ document }) => {
 
   // Handle arrow click to preview the attachment
   const handleArrowClick = (url) => {
-    console.log("rullllll", url)
+    
     if (document) {
       const fileExtension = getFileExtension(document.name); // Extract file extension
 

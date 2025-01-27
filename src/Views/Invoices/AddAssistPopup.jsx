@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
-import { sendData, ShowMasterData } from "../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
@@ -41,8 +41,9 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
   });
   const [errors, setErrors] = useState({
     airport_name: false,
+    no_of_persons:false,
   });
-  const entryType = ShowMasterData("50");
+  const entryType = ShowUserMasterData("50");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,6 +65,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
     e.preventDefault();
     let newErrors = {
       airport_name: formData?.airport_name ? false : true,
+      no_of_persons: formData?.no_of_persons ? false : true,
+      
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -157,7 +160,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
-                          Meeting Type<b className="color_red">*</b>
+                          Meeting Type
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -169,11 +172,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>No Of Persons</label>
+                        <label>No Of Persons<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -184,11 +184,27 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
+                          {errors?.no_of_persons && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill No Of Persons
+                          </p>
+                        )}
                         </div>
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                      
                       <div className="form_commonblock">
                         <label>
-                          Supplier<b className="color_red">*</b>
+                          Supplier
                         </label>
                         <div id="sepcifixspanflex">
                           <span id="">

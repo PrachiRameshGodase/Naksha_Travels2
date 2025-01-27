@@ -11,9 +11,9 @@ import { formatDate3 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
 
 const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
+  // console.log("masterData", masterData)
   const [showCharges, setShowCharges] = useState(false);
   const active_orgnization = activeOrg_details;
-
   const calculateTotalTaxAmount = () => {
     return data?.items?.reduce((total, entry) => {
       return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);
@@ -21,10 +21,8 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
   };
 
   const totalExpenseCharges = JSON?.parse(data?.charges);
-  console.log("active_orgnization", active_orgnization);
   // const showModuleText = section==="Quotation"?
-  console.log("cusVenData", cusVenData);
-  console.log("moduleId", moduleId)
+
   return (
     <div id="pdf_print_container">
       <div className="top_section" style={{ marginLeft: "5px" }}>

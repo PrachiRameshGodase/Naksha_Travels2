@@ -6,7 +6,9 @@ import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
 import {
+  Attachment2,
   AttachmentPreview3,
+  AttachmentPreview4,
   AttachmentPreview5,
   AttachmentPreviewMultipleDocument,
 } from "../../Helper/Attachment";
@@ -1259,7 +1261,7 @@ const InsideCusDetails = ({
                                 <h1>:</h1>
 
                                 <p>
-                                  <AttachmentPreviewMultipleDocument
+                                  <Attachment2
                                     attachments={
                                       val?.upload_documents
                                         ? JSON?.parse(val?.upload_documents)

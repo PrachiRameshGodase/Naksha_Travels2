@@ -140,7 +140,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   
       const bookingDate = new Date(formData?.booking_date);
       const travelDate = new Date(formData?.travel_date);
-     
       const selectedDate = new Date(date);
   
       if (name === "booking_date") {
@@ -207,7 +206,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-console.log("formData", formData)
+  const isDisabled = formData?.airline_name;
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -359,7 +358,11 @@ console.log("formData", formData)
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      <div data-tooltip-content={
+                          isDisabled ? "According to airport it is getting" : ""
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom" className="form_commonblock">
                         <label>Airline Code<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
@@ -369,6 +372,7 @@ console.log("formData", formData)
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
+                              disabled={isDisabled}
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -400,6 +404,7 @@ console.log("formData", formData)
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
+                            disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (

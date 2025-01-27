@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import CustomDropdown28 from "../../Components/CustomDropdown/CustomDropdown28";
-import { ShowMasterData } from "../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 // import "./PassengerCard.scss";
 import { RxCross2 } from "react-icons/rx";
 import CustomDropdown13 from "../../Components/CustomDropdown/CustomDropdown13";
@@ -27,7 +27,7 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const buttonRef = useRef(null);
     const popupRef = useRef(null);
     const tax_rate = useSelector((state) => state?.getTaxRate?.data?.data);
-    const servicesList = ShowMasterData("48");
+    const servicesList = ShowUserMasterData("48");
 
     // get currency symbol from active orgnization form localStorage
     const currencySymbol = getCurrencySymbol();

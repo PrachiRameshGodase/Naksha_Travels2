@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,13 +7,19 @@ import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown31 from "../../Components/CustomDropdown/CustomDropdown31";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { formatDate } from "../Helper/DateFormat";
-import { sendData, ShowMasterData } from "../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
 import { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
+import { flightListAction } from "../../Redux/Actions/flightActions";
 
 const AddFlightPopup = ({ setShowModal, handleAddService }) => {
   const dispatch = useDispatch();
@@ -22,15 +28,19 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const createFlight = useSelector((state) => state?.createPassengerFlight);
+  const flightListData = useSelector((state) => state?.flightList);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
   const [formData, setFormData] = useState({
     service_name: "Flight",
     // entry_type: "",
     travel_date: "",
+    booking_date: formatDate(new Date()),
     travel_type_id: "",
     airline_name: "",
+    air_line_code: "",
     guest_ids: "",
     gds_portal: "",
     destination_code: "",
@@ -48,38 +58,96 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
     total_amount: 0.0,
   });
   const [errors, setErrors] = useState({
+    travel_date: false,
+    booking_date: false,
     airline_name: false,
+    air_line_code: false,
+    destination_code: false,
+    ticket_no: false,
+    prn_no: false,
+    guest_ids: false,
   });
-  const entryType = ShowMasterData("50");
-  const travelType = ShowMasterData("51");
-  const destinationCode = ShowMasterData("52");
-  const GDSPortal = ShowMasterData("53");
-  const flightRoute = ShowMasterData("54");
-
+  const entryType = ShowUserMasterData("50");
+  const travelType = ShowUserMasterData("51");
+  const destinationCode = ShowUserMasterData("52");
+  const GDSPortal = ShowUserMasterData("53");
+  const flightRoute = ShowUserMasterData("54");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let updatedFields = { [name]: value };
+    if (name === "airline_name") {
+      const selectedRoom = flightListData?.data?.data?.find(
+        (flight) => flight?.flight_name == value
+      );
+      updatedFields = {
+        ...updatedFields,
+        airline_name: selectedRoom?.flight_name || "",
+        air_line_code: selectedRoom?.air_line_code || "",
+        destination_code: selectedRoom?.destination_code || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
+      ...updatedFields,
       [name]: value,
     }));
+    setErrors((prevData) => ({
+      ...prevData,
+      ...updatedFields,
+      ...(name === "airline_name" && {
+        airline_name: false, // Clear error for occupancy when room changes
+        air_line_code: false, // Clear error for meal when room changes
+        destination_code: false, // Clear error for bed
+      }),
+      [name]: false,
+    }));
+  };
+  const handleDateChange = (date, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formatDate(date),
+    }));
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+
+      const bookingDate = new Date(formData?.booking_date);
+      const travelDate = new Date(formData?.travel_date);
+      const selectedDate = new Date(date);
+
+      if (name === "booking_date") {
+        updatedErrors.booking_date =
+          formData?.travel_date && selectedDate > travelDate;
+      }
+
+      if (name === "travel_date") {
+        updatedErrors.travel_date = selectedDate < bookingDate;
+      }
+      return updatedErrors;
+    });
+  };
+  const handleChange1 = (selectedItems, name) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems, // Update selected items array
+    });
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
     }));
   };
 
-  const handleChange1 = (selectedItems) => {
-    setFormData({
-      ...formData,
-      guest_ids: selectedItems, // Update selected items array
-    });
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
+      air_line_code: formData?.air_line_code ? false : true,
+      destination_code: formData?.destination_code ? false : true,
+      booking_date: formData?.booking_date ? false : true,
+      travel_date: formData?.travel_date ? false : true,
+      ticket_no: formData?.ticket_no ? false : true,
+      prn_no: formData?.prn_no ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -99,13 +167,19 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
       setShowModal(false);
     }
   };
+  useEffect(() => {
+    // if (flightListData?.data) {
+    const queryParams = {};
+    dispatch(flightListAction(queryParams));
+    // }
+  }, [dispatch]);
 
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
-
+  const isDisabled = formData?.airline_name;
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -148,16 +222,45 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                     </div> */}
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Travel Date</label>
+                        <label>
+                          Booking Date<b className="color_red">*</b>
+                        </label>
+                        <span>
+                          {otherIcons.date_svg}
+                          <DatePicker
+                            selected={formData?.booking_date}
+                            onChange={(date) =>
+                              handleDateChange(date, "booking_date")
+                            }
+                            name="booking_date"
+                            placeholderText="Enter Date"
+                            dateFormat="dd-MM-yyyy"
+                            autoComplete="off"
+                          />
+                        </span>
+                        {errors?.booking_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Booking Date
+                          </p>
+                        )}
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Travel Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.travel_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                travel_date: formatDate(date),
-                              })
+                              handleDateChange(date, "travel_date")
                             }
                             name="travel_date"
                             placeholderText="Enter Date"
@@ -165,11 +268,21 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                             autoComplete="off"
                           />
                         </span>
+                        {errors?.travel_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Travel Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Travel Type<b className="color_red">*</b>
-                        </label>
+                        <label>Travel Type</label>
                         <span id="">
                           {otherIcons.name_svg}
                           <CustomDropdown04
@@ -189,11 +302,18 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.airline_name}
-                            onChange={handleChange}
+                          <CustomDropdown003
+                            options={flightListData?.data?.data}
+                            value={formData?.airline_name}
                             name="airline_name"
-                            placeholder="Enter Airline Name"
+                            onChange={handleChange}
+                            type="select_item2"
+                            setItemData={setcusData2}
+                            defaultOption="Select Airline Name"
+                            index="0"
+                            extracssclassforscjkls=""
+                            itemData={cusData2}
+                            ref={dropdownRef1}
                           />
                         </span>
                         {errors?.airline_name && (
@@ -206,6 +326,73 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                           >
                             {otherIcons.error_svg}
                             Please Fill Airline Name
+                          </p>
+                        )}
+                      </div>
+                      <div
+                        data-tooltip-content={
+                          isDisabled ? "According to airport it is getting" : ""
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom"
+                        className="form_commonblock"
+                      >
+                        <label>
+                          Airline Code<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <input
+                              value={formData.air_line_code}
+                              onChange={handleChange}
+                              name="air_line_code"
+                              placeholder="Enter Airline Code"
+                              disabled={isDisabled}
+                            />
+                          </span>
+                          {errors?.air_line_code && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Airline Code
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Destination Code<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown04
+                            label="Destination Code"
+                            options={destinationCode}
+                            value={formData?.destination_code}
+                            onChange={handleChange}
+                            name="destination_code"
+                            defaultOption="Select Destination Code"
+                            type="masters2"
+                            disabled={isDisabled}
+                          />
+                        </span>
+                        {errors?.destination_code && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Destination
                           </p>
                         )}
                       </div>
@@ -223,7 +410,9 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                               label="Select Guest"
                               options={cusList?.data?.user}
                               value={formData.guest_ids}
-                              onChange={handleChange1}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
                               name="guest_ids"
                               defaultOption="Select Guest"
                               setcusData={setcusData}
@@ -232,12 +421,22 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                               required
                             />
                           </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Passenger
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          GDS Portal<b className="color_red">*</b>
-                        </label>
+                        <label>GDS Portal</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown04
@@ -252,7 +451,10 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                         </span>
                       </div>
                       <div className="form_commonblock">
-                        <label> Ticket No</label>
+                        <label>
+                          {" "}
+                          Ticket No<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -263,6 +465,18 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                               placeholder="Enter Ticket Number"
                             />
                           </span>
+                          {errors?.ticket_no && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Ticket No
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -280,11 +494,21 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                             placeholder="Enter PRN No"
                           />
                         </span>
+                        {errors?.prn_no && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill PRN No
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Route<b className="color_red">*</b>
-                        </label>
+                        <label>Route</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown04
@@ -298,28 +522,9 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Destination Code<b className="color_red">*</b>
-                        </label>
 
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Destination Code"
-                            options={destinationCode}
-                            value={formData?.destination_code}
-                            onChange={handleChange}
-                            name="destination_code"
-                            defaultOption="Select Destination Code"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier<b className="color_red">*</b>
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -340,7 +545,10 @@ const AddFlightPopup = ({ setShowModal, handleAddService }) => {
                         </div>
                       </div>
 
-                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}
