@@ -68,11 +68,9 @@ export const createCreditNotes = ({
                 }
 
                 if (section === "credit") {
-                    dispatch(creditNoteLists(sendData));//call list data when it is updated
                     creditNoteHelper(editDub, buttonName, confirmed, navigate, response);
                 }
                 if (section === "debit_note") {
-                    dispatch(debitNoteLists(sendData));//call list data when it is updated
                     debitNoteHelper(editDub, buttonName, confirmed, navigate, response);
                 }
             }
@@ -91,7 +89,6 @@ export const CreditNotesStatus = (quotationData) => async (dispatch) => {
         const response = await axiosInstance.post(`/credit-note/status`,
             quotationData,
         );
-        dispatch(creditNoteLists(sendData));//call list data when it is updated
         dispatch({
             type: CREDIT_NOTE_STATUS_SUCCESS,
             payload: (response?.data?.message)
@@ -134,7 +131,6 @@ export const creditNotesDelete = (queryParams, Navigate) => async (dispatch) => 
         const { data } = await axiosInstance.post(`/credit-note/delete`,
             queryParams,
         );
-        dispatch(creditNoteLists(sendData));//call list data when it is updated
         if (data?.message === "Credit Note deleted Successfully") {
             toast.success(data?.message);
             Navigate("/dashboard/credit-notes");
@@ -162,7 +158,6 @@ export const debitNotesDelete = (queryParams, Navigate) => async (dispatch) => {
         const { data } = await axiosInstance.post(`/debit-note/delete`,
             queryParams,
         );
-        dispatch(debitNoteLists(sendData));//call list data when it is updated
         if (data?.message === "Debit Note deleted Successfully") {
             toast.success(data?.message);
             Navigate("/dashboard/debit-notes");
@@ -215,7 +210,6 @@ export const debitNotesStatus = (queryParams, setCallApi) => async (dispatch) =>
         const { data } = await axiosInstance.post(`/debit-note/status`,
             queryParams,
         );
-        dispatch(debitNoteLists(sendData));//call list data when it is updated
 
         if (setCallApi) {
             if (data?.message === "Debit Note Approved Updated Successfully") {
@@ -249,7 +243,6 @@ export const creditnoteSend = (quotationData, Navigate) => async (dispatch) => {
             quotationData
         );
 
-        dispatch(creditNoteLists(sendData));//call list data when it is updated
         dispatch({
             type: CREDIT_NOTE_SEND_SUCCESS,
             payload: {

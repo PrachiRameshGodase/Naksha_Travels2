@@ -41,6 +41,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
         onClick={(item_data?.type === "Service" && name === "unit_id") || ((item_data?.type !== "" && name == "type" && (item_data?.item_id || item_data?.is_service == 1))) ? undefined : () => setIsOpen(!isOpen)}
+
         //  disable onclick only when open dropdown. where type is selected or unit is service selected in item select module
 
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}

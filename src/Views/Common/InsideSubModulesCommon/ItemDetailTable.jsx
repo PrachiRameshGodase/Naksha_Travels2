@@ -49,7 +49,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
             const parsedServiceData = val?.service_data
               ? JSON.parse(val.service_data)
               : {};
-
+            console.log("parsedServiceData", itemsData?.items)
             return (
               <tr key={index} className="table_head_item_02_row">
                 <td className="table_column_item">{index + 1}</td>
@@ -178,23 +178,11 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
                             )
                               :
                               <div>
-                                {val?.item_name || "-"}
+                                {val?.item_name || val?.item?.name}
                               </div>
                     }
 
                   </>
-
-
-
-
-
-
-
-
-
-
-
-
                 </td>
                 <td className="table_column_item">{val?.item?.type || val?.type}</td>
                 <td className="table_column_item item_text_end_01">
@@ -236,7 +224,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
             <p><p className='' key={index}>{val?.account_name}</p> <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5></p>
           ))}
         </>}
-        {/* <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol(((parseFloat(itemsData?.total)) + (parseFloat(calculateTotalTaxAmount() || 0)) + (parseFloat(calculateTotalCharges() || 0))))}</h5></p> */}
+
         <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol((parseFloat(itemsData?.total)))}</h5></p>
 
         {section === "bill" ?
@@ -524,59 +512,41 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
   return (
     <>
       {payment?.entries?.length >= 1 ? (
-        <table id="tablex15s56s31s1">
-          <thead className="thaedaksx433">
-            <tr>
-              <th className="sfdjklsd1xs2w1" style={{ width: "7%" }}>
-                #
-              </th>
-              <th className="sfdjklsd1xs2w2" style={{ width: "15%" }}>
+        <table className="itemTable_01" id="modidy_table_form_details">
+          <thead className="table_head_item_02">
+            <tr className="table_head_item_02_row">
+              <th className="table_column_item item_table_width_01" >#</th>
+              <th className="table_column_item item_table_width_02">
                 Date
               </th>
-              <th className="sfdjklsd1xs2w3" style={{ width: "22%" }}>
-                Invoice Number
-              </th>
-              <th className="sfdjklsd1xs2w4"> Invoice Amount</th>
-              <th className="sfdjklsd1xs2w4">Amount Due</th>
-              <th
-                className="sfdjklsd1xs2w4"
-                style={{ textAlign: "right", paddingRight: "16px" }}
-              >
-                Payment
-              </th>
+              <th className="table_column_item">Invoice Number</th>
+              <th className="table_column_item item_text_end_01">Invoice Amount</th>
+              <th className="table_column_item item_text_end_01">Amount Due</th>
+              <th className="table_column_item item_text_end_01">Payment</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
+
             {payment?.entries?.map((val, index) => (
-              <tr className="rowsxs15aksx433" key={index}>
-                <td className="sfdjklsd1xs2w1">{index + 1}</td>
-                <td className="sfdjklsd1xs2w2">
-                  {formatDate4(val?.invoice?.transaction_date) || ""}
-                </td>
-                <td className="sfdjklsd1xs2w3">
+
+              <tr key={index} className="table_head_item_02_row">
+                <td className="table_column_item">{index + 1}</td>
+                <td className="table_column_item">{formatDate4(val?.invoice?.transaction_date) || ""}</td>
+                <td className="table_column_item">
                   {val?.invoice?.invoice_id || ""}
                 </td>
-                <td
-                  className="sfdjklsd1xs2w4 sfdjklsd1xs2wrate"
-                  style={{ width: "250px" }}
-                >
+                <td className="table_column_item item_text_end_01">
                   {showAmountWithCurrencySymbol(val?.invoice?.total)}
                 </td>
-                <td className="sfdjklsd1xs2w4">
-                  <p style={{ width: "41%", textAlign: "right" }}>
-                    {showAmountWithCurrencySymbol(
-                      +val?.invoice?.total - +val?.invoice?.amount_paid
-                    )}
-                  </p>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol((+val?.invoice?.total) - (+val?.invoice?.amount_paid))}
                 </td>
-                <td
-                  className="sfdjklsd1xs2w4 sfdjklsd1xs2wamount sfdjklsd1xs2wrate"
-                  style={{ width: "11%" }}
-                >
+                <td className="table_column_item item_text_end_01">
                   {showAmountWithCurrencySymbol(val?.amount)}
                 </td>
               </tr>
             ))}
+
           </tbody>
         </table>
       ) : (
@@ -584,202 +554,160 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
           There are no unpaid invoices associated with this customer.
         </p>
       )}
+      {/*  */}
 
       <div className="finalcalculateiosxl44s">
-        <span>
-          <p>Amount Received: ({currencySymbol})</p> <h5>{payment?.debit}</h5>
-        </span>
-        <span>
-          <p>Amount In Blance: ({currencySymbol})</p>
-          <h5>
-            {+payment?.amt_excess < 0 ? (
-              <span style={{ color: "rgb(255, 46, 18)" }}>
-                {+payment?.amt_excess}
-              </span>
-            ) : (
-              +payment?.amt_excess
-            )}
-          </h5>
-        </span>
-        <span>
-          <p>Amount Used For Payment: ({currencySymbol})</p>{" "}
-          <h5>{calculateTotalAmount()}</h5>
-        </span>
-      </div>
+        <p><p>Amount Received: </p> <h5>{showAmountWithCurrencySymbol(payment?.debit)}</h5></p>
+        <p><p>Amount In Blance:</p> <h5>
+          ({currencySymbol}) {+payment?.amt_excess < 0 ? (
+            <span style={{ color: "rgb(255, 46, 18)" }}>
+              {+payment?.amt_excess}
+            </span>
+          ) : (
+            +payment?.amt_excess
+          )}
+        </h5></p>
+
+
+        <p><p className='finalcalcuFs'>Amount Used For Payment:</p> <h5>{calculateTotalAmount()}</h5></p>
+
+
+      </div >
+      {/*  */}
+
+
     </>
   );
 };
 
 export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
+  const currencySymbol = getCurrencySymbol();
   return (
+
     <>
-      <table id="tablex15s56s31s1">
-        <thead className="thaedaksx433">
-          <tr>
-            <div style={{ marginLeft: "10px" }}>
-              {" "}
-              <th className="sfdjklsd1xs2w1" style={{ width: "9%" }}>
-                #
-              </th>
-            </div>
-            <th
-              className="sfdjklsd1xs2w4"
-              style={{ width: "16%", paddingLeft: "40px" }}
-            >
+      <table className="itemTable_01" id="modidy_table_form_payment_rec_">
+
+        <thead className="table_head_item_02">
+          <tr className="table_head_item_02_row">
+            <th className="table_column_item item_table_width_01" >#</th>
+            <th className="table_column_item item_table_width_02">
               Date
             </th>
-            <div style={{ marginLeft: "80px", width: "100%" }}>
-              <th className="sfdjklsd1xs2w4" style={{ width: "100%" }}>
-                Invoice Number
-              </th>{" "}
-            </div>
-            <th
-              className="sfdjklsd1xs2w4"
-              style={{ width: "20%", textAlign: "right", paddingLeft: "100px" }}
-            >
-              Invoice Amount
-            </th>
-            <div style={{ marginLeft: "150px", width: "50%" }}>
-              {" "}
-              <th
-                className="sfdjklsd1xs2w4 "
-                style={{ width: "100%", textAlign: "right" }}
-              >
-                Amount Due
-              </th>
-            </div>
-            <th
-              className="sfdjklsd1xs2w4"
-              style={{ textAlign: "right", padding: "15px 40px" }}
-            >
-              Payment
-            </th>
+            <th className="table_column_item item_table_width_02">Invoice Number</th>
+            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Invoice Amount</th>
+            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Amount Due</th>
+            <th className="table_column_item item_text_end_01">({currencySymbol}) Payment</th>
           </tr>
         </thead>
-        {formData?.customer_id ? (
+
+        {formData?.customer_id ?
           <>
-            <tbody>
+            <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
               {formData?.entries?.map((val, index) => (
-                <tr key={index} className="rowsxs15aksx433">
-                  <div style={{ marginLeft: "10px" }}>
-                    <td className="sfdjklsd1xs2w1">{index + 1}</td>
-                  </div>
-                  <td
-                    className="sfdjklsd1xs2w2"
-                    style={{ paddingLeft: "40px" }}
-                  >
-                    {val?.date}
-                  </td>
-                  <div style={{ marginLeft: "80px" }}>
-                    <td className="sfdjklsd1xs2w2">{val?.invoice_no}</td>
-                  </div>
-                  <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                    {showAmountWithCurrencySymbol(
-                      val?.invoice_amount?.toFixed(2)
-                    )}
-                  </td>
-                  <td className="sfdjklsd1xs2w3" style={{ textAlign: "right" }}>
-                    {showAmountWithCurrencySymbol(
-                      val?.balance_amount?.toFixed(2)
-                    )}
-                  </td>
-                  <td className="sfdjklsd1xs2w3">
-                    <div
-                      className="tablsxs1a4"
-                      style={{ textAlign: "right", marginRight: "0px" }}
-                    >
-                      <div className="tablsxs1a2">
-                        <input
-                          style={{ width: "40%", textAlign: "center" }}
-                          type="number"
-                          value={val.amount !== null ? val.amount : ""}
-                          placeholder="0.00"
-                          onChange={(e) => {
-                            const inputValue = e.target.value;
-                            const newValue =
-                              inputValue === "" ? null : parseFloat(inputValue);
 
-                            // Convert debit and balance_amount to numbers for comparison
-                            const formDebit = Number(formData?.debit) || 0;
-                            const balanceAmount =
-                              Number(val?.balance_amount) || 0;
+                <tr key={index} className="table_head_item_02_row itemsectionrows">
+                  <td className="table_column_item">{index + 1}</td>
 
-                            // Condition 1: formData.debit is empty
-                            if (formData?.debit === "") {
-                              toast("Please set the amount", {
-                                icon: "👏",
-                                style: {
-                                  borderRadius: "10px",
-                                  background: "#333",
-                                  color: "#fff",
-                                  fontSize: "14px",
-                                },
-                              });
-                              setFormData((prevFormData) => ({
-                                ...prevFormData,
-                                entries: prevFormData?.entries?.map(
-                                  (entry, i) =>
-                                    i === index
-                                      ? { ...entry, amount: 0 }
-                                      : entry
-                                ),
-                              }));
-                            }
-                            // Condition 2: inputValue exceeds balance amount
-                            else if (newValue > balanceAmount) {
-                              toast(
-                                "The amount entered here is more than the amount due",
-                                {
-                                  icon: "👏",
-                                  style: {
-                                    borderRadius: "10px",
-                                    background: "#333",
-                                    color: "#fff",
-                                    fontSize: "14px",
-                                  },
-                                }
-                              );
-                            }
-                            // Condition 3: inputValue exceeds formData.debit
-                            else if (newValue > formDebit) {
-                              toast(
-                                "The amount entered here is more than the amount paid by the customer",
-                                {
-                                  icon: "👏",
-                                  style: {
-                                    borderRadius: "10px",
-                                    background: "#333",
-                                    color: "#fff",
-                                    fontSize: "14px",
-                                  },
-                                }
-                              );
-                            }
-
-                            // Condition 4: inputValue is valid
-                            else {
-                              setFormData((prevFormData) => ({
-                                ...prevFormData,
-                                entries: prevFormData?.entries?.map(
-                                  (entry, i) =>
-                                    i === index
-                                      ? { ...entry, amount: newValue }
-                                      : entry
-                                ),
-                              }));
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
+                  <td className="table_column_item">{val?.date}</td>
+                  <td className="table_column_item">{val?.invoice_no}</td>
+                  <td className="table_column_item item_text_end_01">
+                    {(val?.invoice_amount?.toFixed(2))}
                   </td>
+                  <td className="table_column_item item_text_end_01">
+                    {(val?.balance_amount?.toFixed(2))}
+                  </td>
+                  <td className="table_column_item item_text_end_01 tablsxs1a2">
+                    <input
+                      style={{ width: "50%", textAlign: "right" }}
+                      type="number"
+                      value={val.amount !== null ? val.amount : ""}
+                      placeholder="0.00"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        const newValue =
+                          inputValue === "" ? null : parseFloat(inputValue);
+
+                        // Convert debit and balance_amount to numbers for comparison
+                        const formDebit = Number(formData?.debit) || 0;
+                        const balanceAmount =
+                          Number(val?.balance_amount) || 0;
+
+                        // Condition 1: formData.debit is empty
+                        if (formData?.debit === "") {
+                          toast("Please set the amount", {
+                            icon: "👏",
+                            style: {
+                              borderRadius: "10px",
+                              background: "#333",
+                              color: "#fff",
+                              fontSize: "14px",
+                            },
+                          });
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            entries: prevFormData?.entries?.map(
+                              (entry, i) =>
+                                i === index
+                                  ? { ...entry, amount: 0 }
+                                  : entry
+                            ),
+                          }));
+                        }
+
+                        // Condition 2: inputValue exceeds balance amount
+                        else if (newValue > balanceAmount) {
+                          toast(
+                            "The amount entered here is more than the amount due",
+                            {
+                              icon: "👏",
+                              style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#fff",
+                                fontSize: "14px",
+                              },
+                            }
+                          );
+                        }
+
+                        // Condition 3: inputValue exceeds formData.debit
+                        else if (newValue > formDebit) {
+                          toast(
+                            "The amount entered here is more than the amount paid by the customer",
+                            {
+                              icon: "👏",
+                              style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#fff",
+                                fontSize: "14px",
+                              },
+                            }
+                          );
+                        }
+
+                        // Condition 4: inputValue is valid
+                        else {
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            entries: prevFormData?.entries?.map(
+                              (entry, i) =>
+                                i === index
+                                  ? { ...entry, amount: newValue }
+                                  : entry
+                            ),
+                          }));
+                        }
+                      }}
+                    />
+                  </td>
+
                 </tr>
               ))}
             </tbody>
-          </>
-        ) : (
-          <p style={{ textAlign: "center" }}>Please Select Vendor</p>
-        )}
+          </> :
+          <p style={{ textAlign: "center" }}>Please Select Customer</p>}
+
       </table>
     </>
   );

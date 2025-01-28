@@ -240,11 +240,11 @@ const InvoicesDetails = ({ section }) => {
                       }
                       <>
 
-                        {section !== "delivery_challan" &&
+                        {/* {section !== "delivery_challan" &&
                           <div className='dmncstomx1' onClick={() => handleEditThing("dublicate")}>
                             {otherIcons?.duplicate_svg}
                             Duplicate</div>
-                        }
+                        } */}
 
                         {!(invoice?.status == "1" || invoice?.status == "2" || invoice?.status == "4" || invoice?.status == "5") && (
                           <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>

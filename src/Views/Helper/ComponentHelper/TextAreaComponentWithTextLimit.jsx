@@ -34,7 +34,7 @@ const TextAreaComponentWithTextLimit = ({
     const inputWithoutSpaces = inputValue.replace(/\s/g, "");
 
     // Allow changes only if character count excluding spaces is <= 300
-    if (inputWithoutSpaces.length <= 300) {
+    if (inputWithoutSpaces.length <= 250) {
       handleChange(e); // Call the parent-provided handleChange function
     }
   };
@@ -47,7 +47,7 @@ const TextAreaComponentWithTextLimit = ({
         onChange={handleTextChange}
         name={name}
       />
-      <p>{charCount}/300</p>
+      <p>{charCount}/250</p>
     </>
   );
 };

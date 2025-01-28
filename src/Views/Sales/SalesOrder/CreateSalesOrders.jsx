@@ -103,6 +103,7 @@ const CreateSalesOrders = () => {
         convert
     );
 
+    console.log("fetchDetailsfetchDetails", fetchDetails)
     //this is the common handle select
     const {
         handleChange,
@@ -308,6 +309,7 @@ const CreateSalesOrders = () => {
                                             </div>
 
                                             <div className="form_commonblock">
+                                                {console.log("formData.shipment_date", formData.shipment_date)}
                                                 <label>Expected Shipment Date</label>
                                                 <span>
                                                     {otherIcons.date_svg}
@@ -372,13 +374,14 @@ const CreateSalesOrders = () => {
                                             </div>
 
                                             <div className="form_commonblock">
+
                                                 <label>Delivery Method</label>
                                                 <span >
                                                     {otherIcons.vendor_svg}
                                                     <input
                                                         autoComplete='off'
                                                         type="text"
-                                                        value={formData.delivery_method}
+                                                        value={preventZeroVal(formData.delivery_method)}
                                                         name='delivery_method'
                                                         onChange={handleChange}
                                                         placeholder='Enter Delivery Method'

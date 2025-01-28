@@ -108,6 +108,7 @@ const CreateCreditNotes = () => {
     {
       tran_type: "credit_note",
       credit_note_id: null,
+      invoice_id: null,
       reason_type: "",
     }, //for set new key's and values
     [""], // Keys to remove
@@ -180,51 +181,7 @@ const CreateCreditNotes = () => {
     });
   };
 
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const buttonName = e.nativeEvent.submitter.name;
-  //   const errors = validateItems(formData?.items);
-
-  //   if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-  //   if (handleDropdownError(isInvoiceSelect, dropdownRef3)) return;
-  //   // if (handleDropdownError(isItemSelect, dropdownRef2)) return;
-  //   if (errors.length > 0) {
-  //     setItemErrors(errors);
-  //     if (!isPartiallyInViewport(dropdownRef2.current)) {
-  //       dropdownRef2.current.scrollIntoView({
-  //         behavior: "smooth",
-  //         block: "center",
-  //       });
-  //     }
-  //     setTimeout(() => {
-  //       dropdownRef2.current.focus();
-  //     }, 500);
-  //   }
-  //   try {
-  //     const updatedItems = formData?.items.map((item) => {
-  //       const { tax_name, ...itemWithoutTaxName } = item;
-  //       return itemWithoutTaxName;
-  //     });
-  //     dispatch(
-  //       createCreditNotes(
-  //         {
-  //           ...formData,
-  //           items: updatedItems,
-  //           address: JSON.stringify(formData?.address),
-  //           charges: stringifyJSON(formData?.charges),
-  //         },
-  //         Navigate,
-  //         "credit",
-  //         isEdit,
-  //         buttonName,
-  //         itemId,
-  //         convert
-  //       )
-  //     );
-  //   } catch (error) {
-  //     toast.error("Error updating quotation:", error);
-  //   }
-  // };
+  // console.log("formdata", formData)
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -389,7 +346,7 @@ const CreateCreditNotes = () => {
 
                           <div className="form_commonblock">
                             <label>Invoice</label>
-                            {console.log("invoiceList", invoiceList)}
+                            {/* {console.log("invoiceList", invoiceList)} */}
                             <span id="">
                               {otherIcons.name_svg}
                               <CustomDropdown17

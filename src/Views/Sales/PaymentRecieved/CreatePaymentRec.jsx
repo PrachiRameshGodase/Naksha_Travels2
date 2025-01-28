@@ -23,7 +23,7 @@ import { invoiceDetailes, pendingInvoices } from '../../../Redux/Actions/invoice
 import NumericInput from '../../Helper/NumericInput';
 import SubmitButton, { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { handleDropdownError, preventZeroVal, ShowMasterData } from '../../Helper/HelperFunctions';
+import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbol, showAmountWithCurrencySymbolWithPoints, ShowMasterData } from '../../Helper/HelperFunctions';
 import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
@@ -442,7 +442,8 @@ const CreatePaymentRec = () => {
 
                                             {invoiceDatas?.unpaid_amount ?
                                                 <>
-                                                    <label htmlFor="" className="xkls5663" style={{ display: "flex" }} id='xxfefe'>Receive Full Amount (₹{(+invoiceDatas?.unpaid_amount)})
+                                                    <label htmlFor="" className="xkls5663" style={{ display: "flex" }} id='xxfefe'>Receive Full Amount{" "}
+                                                        {showAmountWithCurrencySymbolWithPoints(parseInt((invoiceDatas?.unpaid_amount)?.toFixed(2)))}
 
                                                         <IoCheckbox
                                                             className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
@@ -555,22 +556,18 @@ const CreatePaymentRec = () => {
 
 
                                 <div className={`${formData?.customer_id ? "f1wrpofcreqsx2" : "disabledfield f1wrpofcreqsx2"}`}>
-                                    <div className='itemsectionrows'>
 
-                                        {formData?.entries?.length >= 1 ?
+                                    {
+                                        formData?.entries?.length >= 1 ?
                                             <>
                                                 <PaymentRecTable formData={formData} setFormData={setFormData} fetchDetails={fetchDetails} />
                                             </>
                                             :
-                                            <p style={{ textAlign: "center", padding: "20px 0" }}>There are no unpaid invoices associated with this customer.</p>
-                                        }
-                                    </div>
-
-
-                                    {/* <button id='additembtn45srow' type="button" onClick={handleItemAdd}>Add New Row<GoPlus /></button> */}
-
+                                            <p style={{ textAlign: "center", padding: "20px 0" }}> There are no unpaid invoices associated with this customer. </p>
+                                    }
 
                                     <div className="height5"></div>
+
                                     <div className='secondtotalsections485s'>
                                         <div className='textareaofcreatqsiform'>
                                             <label>Customer Note</label>
@@ -591,7 +588,7 @@ const CreatePaymentRec = () => {
                                                     <label>Amount received: ({currencySymbol})</label>
                                                     <input
                                                         type="text"
-                                                        value={formData.debit}
+                                                        value={formData?.debit?.toFixed(2)}
                                                         readOnly
                                                         placeholder='0.00'
                                                         className='inputsfocalci465s'

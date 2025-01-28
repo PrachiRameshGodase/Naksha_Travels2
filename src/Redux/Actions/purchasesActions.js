@@ -65,7 +65,6 @@ export const createPurchases = (queryParams, Navigate, section, editDub, buttonN
 
             if (section === "purchase order") {
                 handlePurchaseOrderNavigation(editDub, buttonName, confirmed, Navigate, response);
-                dispatch(purchseOrdersLists(sendData))//show all list data when It is updated..
             } else if (section === "bills") {
                 handleBillsNavigation(editDub, buttonName, confirmed, Navigate, response, convert);
             }
@@ -115,7 +114,6 @@ export const purchasesStatus = (queryParams, setCallApi) => async (dispatch) => 
         dispatch({ type: PURCHASES_STATUS_REQUEST });
         const response = await axiosInstance.post(`/purchase-order/status`, queryParams);
 
-        dispatch(purchseOrdersLists(sendData))//show all list data when It is updated...
 
         if (setCallApi) {
             if (response?.data?.message === "Purchase Order Declined Updated Successfully") {
@@ -170,7 +168,6 @@ export const purchasesDelete = (queryParams, Navigate) => async (dispatch) => {
         dispatch({ type: PURCHASES_DELETE_SUCCESS, payload: response.data });
 
         if (response?.data?.message === "Purchase Order deleted Successfully") {
-            dispatch(purchseOrdersLists(sendData))//show all list data when It is updated..
             toast.success(response?.data?.message);
             Navigate("/dashboard/purchase")
 
@@ -195,7 +192,6 @@ export const purchasesSendMail = (queryParams, Navigate) => async (dispatch) => 
         dispatch({ type: PURCHASES_SEND_SUCCESS, payload: response.data });
 
         if (response?.data?.message === "Purchase Order sent Successfully") {
-            dispatch(purchseOrdersLists(sendData))//show all list data when It is updated..
             const sendData = {
                 id: queryParams?.id,
                 status: 6,

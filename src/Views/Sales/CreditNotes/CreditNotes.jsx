@@ -217,6 +217,7 @@ const CreditNotes = () => {
             </Link>
             <ResizeFL />
           </div>
+
         </div>
 
         <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
