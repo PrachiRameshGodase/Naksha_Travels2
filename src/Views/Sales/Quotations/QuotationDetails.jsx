@@ -114,6 +114,8 @@ const QuotationDetails = () => {
 
   return (
     <>
+      {/* <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" /> */}
+
       {(quoteStatus?.loading || quoteDelete?.loading || loading) && <MainScreenFreezeLoader />}
       {quoteDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >

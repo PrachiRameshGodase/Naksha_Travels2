@@ -100,7 +100,17 @@
         .finalcalculateiosxl44s {
             border-bottom: none;
             font-size: 12px;
-
+            margin: 20px 13px 30px auto;
+            padding: 10px 0;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+            // border-top: 1px solid $stroke;
+            // border-bottom: 1px solid $stroke;
+            line-height: 20px;
+          
 
             .total h5 {
                 font-weight: 800;

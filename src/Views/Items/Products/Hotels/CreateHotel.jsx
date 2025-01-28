@@ -47,7 +47,7 @@ const CreateHotel = () => {
     state_id: 0,
     city_id: 0,
     pincode: "",
-    status: 0,
+    status: 1,
     ratings: 0,
     upload_documents: "",
   });

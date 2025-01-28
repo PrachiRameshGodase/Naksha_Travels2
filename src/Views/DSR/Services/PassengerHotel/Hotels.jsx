@@ -11,11 +11,12 @@ import {
 } from "../../../../Redux/Actions/passengerHotelActions";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { formatDate3 } from "../../../Helper/DateFormat";
-import  { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
+import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useNavigate } from "react-router-dom";
 import PassengerHotelDetails from "./PassengerHotelDetails";
 import { BsEye } from "react-icons/bs";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Hotels = ({ data }) => {
   const dispatch = useDispatch();
@@ -123,10 +124,10 @@ const Hotels = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Occupancy
                   </div> */}
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Meal Plan
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Checkin Date
@@ -135,9 +136,8 @@ const Hotels = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Checkout Date
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -198,7 +198,7 @@ const Hotels = ({ data }) => {
                                 id={item?.occupancy_id}
                               />
                             </div> */}
-                            <div
+                            {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
@@ -206,7 +206,7 @@ const Hotels = ({ data }) => {
                                 type="37"
                                 id={item?.meal_id || ""}
                               />
-                            </div>
+                            </div> */}
 
                             <div
                               onClick={() => handleRowClicked(item)}
@@ -220,9 +220,12 @@ const Hotels = ({ data }) => {
                             >
                               {formatDate3(item?.check_out_date) || ""}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs4">
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "91%" }}>
+                                {" "}
                                 {item?.total_amount || ""}
-                              </div>
+                              </p>
+                            </div>
                             <div
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
@@ -233,7 +236,7 @@ const Hotels = ({ data }) => {
                               >
                                 {otherIcons.delete_svg}
                               </span>
-                             
+
                               <span
                                 style={{
                                   cursor: "pointer",

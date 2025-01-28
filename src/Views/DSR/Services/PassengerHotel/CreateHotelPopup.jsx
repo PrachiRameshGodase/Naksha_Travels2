@@ -168,33 +168,40 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       [name]: formatDate(date),
     }));
-    setErrors((prevErrors) => {
-      const updatedErrors = { ...prevErrors };
+    // setErrors((prevErrors) => {
 
-      const bookingDate = new Date(formData?.booking_date);
-      const checkInDate = new Date(formData?.check_in_date);
-      const checkOutDate = new Date(formData?.check_out_date);
-      const selectedDate = new Date(date);
+    //   const updatedErrors = { ...prevErrors };
 
-      if (name === "booking_date") {
-        updatedErrors.booking_date =
-          (formData?.check_in_date && selectedDate > checkInDate) ||
-          (formData?.check_out_date && selectedDate > checkOutDate);
-      }
+    //   const bookingDate = new Date(formData?.booking_date);
+    //   // console.log("bookingDate", bookingDate)
+    //   const checkInDate = new Date(formData?.check_in_date);
+    //   const checkOutDate = new Date(formData?.check_out_date);
+    //   const selectedDate = new Date(date);
 
-      if (name === "check_in_date") {
-        updatedErrors.check_in_date = selectedDate < bookingDate;
-        updatedErrors.check_out_date =
-          formData?.check_out_date && selectedDate >= checkOutDate;
-      }
+    //   if (name === "booking_date") {
+    //     updatedErrors.booking_date =
+    //       (formData?.check_in_date && selectedDate <= checkInDate) ||
+    //       (formData?.check_out_date && selectedDate <= checkOutDate);
+    //   }
 
-      if (name === "check_out_date") {
-        updatedErrors.check_out_date =
-          selectedDate < bookingDate || selectedDate < checkInDate;
-      }
+    //   if (name === "check_in_date") {
+    //     updatedErrors.check_in_date = selectedDate >= bookingDate;
 
-      return updatedErrors;
-    });
+    //     updatedErrors.check_out_date =
+    //       formData?.check_out_date && selectedDate <= checkOutDate;
+    //   }
+
+    //   if (name === "check_out_date") {
+    //     updatedErrors.check_out_date =
+    //       selectedDate >= bookingDate || selectedDate >= checkInDate;
+    //   }
+
+    //   return updatedErrors;
+    // });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
 
   const handleFormSubmit = async (e) => {
@@ -515,6 +522,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.check_in_date ? new Date(formData.check_in_date) : null
+                            }
+                            maxDate={
+                              formData?.check_out_date ? new Date(formData.check_out_date) : null
+                          }
                           />
                         </span>
                         {errors?.booking_date && (
@@ -545,6 +558,16 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.booking_date
+                                ? new Date(formData.booking_date)
+                                : null
+                            } 
+                            maxDate={
+                              formData?.check_out_date
+                                ? new Date(formData.check_out_date)
+                                : null
+                            }
                           />
                         </span>
                         {errors?.check_in_date && (
@@ -575,6 +598,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.check_in_date
+                                ? new Date(formData.check_in_date)
+                                : formData?.booking_date
+                                ? new Date(formData.booking_date)
+                                : null
+                            }
                           />
                         </span>
                         {errors?.check_out_date && (

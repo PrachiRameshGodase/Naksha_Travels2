@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { PassengerOthersDeleteActions } from "../../../../Redux/Actions/passengerOthersActions";
 import { PassengerMOtherDeleteActions } from "../../../../Redux/Actions/passengerMOtherActions";
 import { PassengerMHotelDetailsAction } from "../../../../Redux/Actions/passengerMHotelActions";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Others = ({ data, totalItems }) => {
   const dispatch = useDispatch();
@@ -114,13 +115,12 @@ const Others = ({ data, totalItems }) => {
                     {otherIcons?.quotation_icon}
                     Quantity
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Price
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                  <p>{currencySymbol} {" "}Price</p>
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} {" "}Total Amount</p>
+                    
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -175,15 +175,17 @@ const Others = ({ data, totalItems }) => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.price || ""}
+                              <p style={{width:"41%"}}> {item?.price || ""}</p>
+                             
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.total_amount || ""}
+                              <p style={{width:"67%"}}>{item?.total_amount || ""}</p>
+                              
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}

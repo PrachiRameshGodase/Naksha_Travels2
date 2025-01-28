@@ -49,23 +49,37 @@ const BasicDetails = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBasicDetails((prevDetails) => ({
-      ...prevDetails,
-      ...(name === "country_id" && { citizenship: value }),
-      [name]: value,
-    }));
-
-    if (name === "registration_type" && value === "Registered") {
-      setShowRegisterdFields(true);
-    } else if (name === "registration_type" && value === "Un-Registered") {
-      setShowRegisterdFields(false);
+    setBasicDetails((prevDetails) => {
+      const updatedDetails = {
+        ...prevDetails,
+        [name]: value,
+      };
+  
+      // Automatically set display_name to first_name if first_name is updated and display_name is empty
+      if (name === "first_name" && !prevDetails.display_name) {
+        updatedDetails.display_name = value;
+      }
+ 
+      // Update citizenship when country_id changes
+      if (name === "country_id") {
+        updatedDetails.citizenship = value;
+      }
+  
+      return updatedDetails;
+    });
+  
+    // Handle registration_type specific logic
+    if (name === "registration_type") {
+      setShowRegisterdFields(value === "Registered");
     }
+  
+    // Clear errors for the field being updated
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: false,
     }));
   };
-
+  
   useEffect(() => {
     dispatch(fetchGetCountries());
   }, [dispatch]);
@@ -76,49 +90,49 @@ const BasicDetails = ({
       department: selectedItems, // Update selected items array
     });
   };
-
+console.log("basicDetails", basicDetails)
   // Function to update displayNames based on basicDetails
   const [displayNames, setDisplayNames] = useState([]);
 
-  useEffect(() => {
-    const names = new Set(); // Create a new Set to avoid duplicates
+  // useEffect(() => {
+  //   const names = new Set(); // Create a new Set to avoid duplicates
 
-    // Handle combined names with and without salutation
-    const showSalutationValue =
-      basicDetails?.salutation == 1
-        ? "Mr."
-        : basicDetails?.salutation == 2
-        ? "Mrs."
-        : basicDetails?.salutation == 3
-        ? "Ms."
-        : basicDetails?.salutation == 4
-        ? "Miss."
-        : basicDetails?.salutation == 5
-        ? "Dr"
-        : "";
-    if (basicDetails.first_name) {
-      names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
-      if (basicDetails.salutation) {
-        names.add(
-          `${showSalutationValue} ${basicDetails.first_name} ${basicDetails.last_name}`
-        );
-      }
-    } else {
-      // Handle individual names with salutation
-      if (basicDetails.salutation && basicDetails.first_name) {
-        names.add(`${showSalutationValue} ${basicDetails.first_name}`);
-      }
-      if (basicDetails.salutation && basicDetails.last_name) {
-        names.add(`${showSalutationValue} ${basicDetails.last_name}`);
-      }
-    }
+  //   // Handle combined names with and without salutation
+  //   const showSalutationValue =
+  //     basicDetails?.salutation == 1
+  //       ? "Mr."
+  //       : basicDetails?.salutation == 2
+  //       ? "Mrs."
+  //       : basicDetails?.salutation == 3
+  //       ? "Ms."
+  //       : basicDetails?.salutation == 4
+  //       ? "Miss."
+  //       : basicDetails?.salutation == 5
+  //       ? "Dr"
+  //       : "";
+  //   if (basicDetails.first_name) {
+  //     names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
+  //     if (basicDetails.salutation) {
+  //       names.add(
+  //         `${showSalutationValue} ${basicDetails.first_name} ${basicDetails.last_name}`
+  //       );
+  //     }
+  //   } else {
+  //     // Handle individual names with salutation
+  //     if (basicDetails.salutation && basicDetails.first_name) {
+  //       names.add(`${showSalutationValue} ${basicDetails.first_name}`);
+  //     }
+  //     if (basicDetails.salutation && basicDetails.last_name) {
+  //       names.add(`${showSalutationValue} ${basicDetails.last_name}`);
+  //     }
+  //   }
 
-    setDisplayNames(Array.from(names)); // Convert Set back to Array
-  }, [
-    basicDetails.salutation,
-    basicDetails.first_name,
-    basicDetails.last_name,
-  ]);
+  //   setDisplayNames(Array.from(names)); // Convert Set back to Array
+  // }, [
+  //   basicDetails.salutation,
+  //   basicDetails.first_name,
+  //   basicDetails.last_name,
+  // ]);
   // Function to update displayNames based on basicDetails
 
   // for set Company name value in display name when I click outside
@@ -407,7 +421,7 @@ const BasicDetails = ({
                         label="Display Name"
                         options={displayNames}
                         value={basicDetails.display_name}
-                        setBasicDetailsDisplayName={setBasicDetails}
+                        // setBasicDetailsDisplayName={setBasicDetails}
                         onChange={handleChange}
                         name="display_name"
                         defaultOption="Select or Type Display Name"

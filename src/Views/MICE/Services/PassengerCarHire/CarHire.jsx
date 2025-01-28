@@ -13,6 +13,7 @@ import PaginationComponent from "../../../Common/Pagination/PaginationComponent"
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerCarHireDetails from "./PassengerCarHireDetails";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const CarHires = ({ data, totalItems }) => {
   const dispatch = useDispatch();
@@ -121,9 +122,11 @@ const CarHires = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     Family Member
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>
+                      {/* {otherIcons?.doller_svg} */}
+                      {currencySymbol} Total Amount
+                    </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -185,8 +188,10 @@ const CarHires = ({ data, totalItems }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs4">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "92%" }}>
+                                {item?.total_amount || ""}
+                              </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span

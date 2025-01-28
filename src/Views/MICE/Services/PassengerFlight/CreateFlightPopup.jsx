@@ -143,24 +143,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       [name]: formatDate(date),
     }));
-    setErrors((prevErrors) => {
-      const updatedErrors = { ...prevErrors };
-
-      const bookingDate = new Date(formData?.booking_date);
-      const travelDate = new Date(formData?.travel_date);
-
-      const selectedDate = new Date(date);
-
-      if (name === "booking_date") {
-        updatedErrors.booking_date =
-          formData?.travel_date && selectedDate > travelDate;
-      }
-
-      if (name === "travel_date") {
-        updatedErrors.travel_date = selectedDate < bookingDate;
-      }
-      return updatedErrors;
-    });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
+   
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -280,6 +267,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.travel_date
+                                ? new Date(formData.travel_date)
+                                : null
+                            }
                           />
                         </span>
                         {errors?.booking_date && (
@@ -310,6 +302,11 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.booking_date
+                                ? new Date(formData.booking_date)
+                                : null
+                            }
                           />
                         </span>
                         {errors?.travel_date && (

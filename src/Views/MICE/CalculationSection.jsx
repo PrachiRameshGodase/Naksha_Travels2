@@ -97,6 +97,7 @@ const CalculationSection = ({
               placeholder="0.00"
               name="gross_amount"
               autoComplete="off"
+              className="inputbox"
             />
           </div>
           {errors?.gross_amount && (
@@ -120,12 +121,15 @@ const CalculationSection = ({
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
                 Edit and add charges
-                <span
+                 {openCharges
+                                                      ? otherIcons?.down_arrow_svg
+                                                      : otherIcons?.up_arrow_svg}
+                {/* <span
                   title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total."
                   style={{ marginTop: "10px" }}
                 >
                   {otherIcons.question_svg}
-                </span>
+                </span> */}
               </p>
             </label>
           </div>
@@ -230,6 +234,7 @@ const CalculationSection = ({
               onChange={handleChange}
               name="retain"
               autoComplete="off"
+              className="inputbox"
             />
           </div>
         </div>

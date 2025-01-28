@@ -265,7 +265,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
   };
   const totalExpenseCharges = GRNdetail?.charges;
 
-  console.log("GRNdetail", GRNdetail);
+  // console.log("GRNdetail", GRNdetail);
 
   return (
     <>

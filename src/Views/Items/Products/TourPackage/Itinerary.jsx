@@ -12,15 +12,12 @@ import SortBy from "../../../Common/SortBy/SortBy";
 import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import {
-  useDebounceSearch,
-} from "../../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 
-import {
-} from "../../../../Redux/Actions/flightActions";
+import {} from "../../../../Redux/Actions/flightActions";
 import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
 import CreateItinerary from "./CreateItinerary";
@@ -41,8 +38,6 @@ const Itinerary = ({ data }) => {
   const totalItems = itinaeraryListData?.data?.count || 0;
   const itineraryStatusUpdate = useSelector((state) => state?.itineraryStatus);
   const itineryDelete = useSelector((state) => state?.itineraryDelete);
-
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -147,7 +142,7 @@ const Itinerary = ({ data }) => {
       };
       const sendData2 = {
         tour_package_id: data?.id,
-      }
+      };
       dispatch(itinerarydeleteActions(sendData, sendData2));
     }
   };
@@ -176,7 +171,7 @@ const Itinerary = ({ data }) => {
       };
       const sendData2 = {
         tour_package_id: data?.id,
-      }
+      };
       dispatch(itinerarystatusActions(sendData, sendData2))
         .then(() => {
           // navigate(`/dashboard/tour-package-details?id=${item?.id}`);
@@ -196,9 +191,9 @@ const Itinerary = ({ data }) => {
   return (
     <>
       <TopLoadbar />
-      {(itineraryStatusUpdate?.loading || itinaeraryListData?.loading || itineryDelete?.loading) && (
-        <MainScreenFreezeLoader />
-      )}
+      {(itineraryStatusUpdate?.loading ||
+        itinaeraryListData?.loading ||
+        itineryDelete?.loading) && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -206,7 +201,17 @@ const Itinerary = ({ data }) => {
               {otherIcons?.warehouse_icon}
               All Itinerary
             </h1>
-            <p id="firsttagp">{totalItems} Records</p>
+            <p id="firsttagp">
+              <span
+                className={`${itinaeraryListData?.loading && "rotate_01"}`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger((prev) => prev + 1)}
+              >
+                {otherIcons?.refresh_svg}
+              </span>
+            </p>
             <SearchBox
               placeholder="Search In Itinerary"
               onSearch={onSearch}
@@ -302,10 +307,11 @@ const Itinerary = ({ data }) => {
                       <>
                         {itineraryLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(item?.id)
-                              ? "selectedresult"
-                              : ""
-                              }`}
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
+                                ? "selectedresult"
+                                : ""
+                            }`}
                             key={index}
                           >
                             <div
@@ -343,7 +349,6 @@ const Itinerary = ({ data }) => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
-
                               <AttachmentPreview4
                                 document={JSON?.parse(
                                   item?.upload_documents || ""
@@ -359,15 +364,15 @@ const Itinerary = ({ data }) => {
                                   item?.status == "1"
                                     ? "approved"
                                     : item?.status == "0"
-                                      ? "draft"
-                                      : ""
+                                    ? "draft"
+                                    : ""
                                 }
                               >
                                 {item?.status == "0"
                                   ? "Inactive"
                                   : item?.status == "1"
-                                    ? "Active"
-                                    : ""}
+                                  ? "Active"
+                                  : ""}
                                 <span
                                   onClick={() => {
                                     handleStatusChange(item);

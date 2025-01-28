@@ -1,30 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
-import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
-import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
-import DatePicker from "../../../Common/DatePicker/DatePicker";
-import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
-import SearchBox from "../../../Common/SearchBox/SearchBox";
-import {
-  currencySymbol,
-  useDebounceSearch,
-} from "../../../Helper/HelperFunctions";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
+import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
+import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
+import DatePicker from "../Common/DatePicker/DatePicker";
+import PaginationComponent from "../Common/Pagination/PaginationComponent";
+import SearchBox from "../Common/SearchBox/SearchBox";
+import { useDebounceSearch } from "../Helper/HelperFunctions";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import { stockTransactionAction } from "../../Redux/Actions/itemsActions";
+import { formatDate, formatDate3 } from "../Helper/DateFormat";
+import ShowMastersValue from "../Helper/ShowMastersValue";
+import { RxCross2 } from "react-icons/rx";
 
-const HotelServices = ({ data }) => {
+const StockTransaction = ({ itemDetails }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemPayloads = localStorage.getItem("salePayload");
-  const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
-  const hotelRoomLists = hotelRoomListData?.data?.hotels || [];
-  const totalItems = hotelRoomListData?.data?.count || 0;
+  const itemStockeducer = useSelector((state) => state?.itemStock);
+  const stockDetails = itemStockeducer?.data?.stock_details;
+  const totalItems = stockDetails?.count || 0;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -79,16 +78,17 @@ const HotelServices = ({ data }) => {
 
   // serch,filterS and sortby////////////////////////////////////
 
-  const fetchHotels = useCallback(async () => {
+  const fetchStockTransaction = useCallback(async () => {
     try {
       const fy = localStorage.getItem("FinancialYear");
       const currentpage = currentPage;
 
       const sendData = {
-        hotel_id: data?.id,
-        // fy,
-        // noofrec: itemsPerPage,
-        // currentpage,
+        item_id: itemDetails?.id,
+
+        fy,
+        noofrec: itemsPerPage,
+        currentpage,
         // ...(selectedSortBy !== "Normal" && {
         //   sort_by: selectedSortBy,
         //   sort_order: sortOrder,
@@ -97,43 +97,43 @@ const HotelServices = ({ data }) => {
         //   status: status == "expiry_date" ? 6 : status,
         //   ...(status == "expiry_date" && { expiry_date: 1 }),
         // }),
-        // ...(searchTermFromChild && { search: searchTermFromChild }),
-        // ...(clearFilter === false && {
-        //   ...(specificDate
-        //     ? { custom_date: formatDate(new Date(specificDate)) }
-        //     : dateRange[0]?.startDate &&
-        //       dateRange[0]?.endDate && {
-        //         from_date: formatDate(new Date(dateRange[0].startDate)),
-        //         to_date: formatDate(new Date(dateRange[0].endDate)),
-        //       }),
-        // }),
+        ...(searchTermFromChild && { search: searchTermFromChild }),
+        ...(clearFilter === false && {
+          ...(specificDate
+            ? { custom_date: formatDate(new Date(specificDate)) }
+            : dateRange[0]?.startDate &&
+              dateRange[0]?.endDate && {
+                from_date: formatDate(new Date(dateRange[0].startDate)),
+                to_date: formatDate(new Date(dateRange[0].endDate)),
+              }),
+        }),
       };
 
-      dispatch(hotelRoomListAction(sendData));
+      dispatch(stockTransactionAction(sendData));
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      console.error("Error fetching stock transaction:", error);
     }
   }, [searchTrigger]);
 
   useEffect(() => {
     const parshPayload = JSON?.parse(itemPayloads);
-    // if (
-    //   searchTrigger ||
-    //   parshPayload?.search ||
-    //   parshPayload?.name ||
-    //   parshPayload?.sort_by ||
-    //   parshPayload?.status ||
-    //   parshPayload?.custom_date ||
-    //   parshPayload?.from_date ||
-    //   parshPayload?.currentpage > 1
-    // ) {
-    fetchHotels();
-    // }
+    if (
+      searchTrigger ||
+      parshPayload?.search ||
+      parshPayload?.name ||
+      parshPayload?.sort_by ||
+      parshPayload?.status ||
+      parshPayload?.custom_date ||
+      parshPayload?.from_date ||
+      parshPayload?.currentpage > 1
+    ) {
+      fetchStockTransaction();
+    }
   }, [searchTrigger]);
 
-  const handleRowClicked = (room) => {
-    navigate(`/dashboard/hotel-service-details?id=${room.id}`);
-  };
+  //   const handleRowClicked = (room) => {
+  //     navigate(`/dashboard/hotel-service-details?id=${room.id}`);
+  //   };
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -147,35 +147,35 @@ const HotelServices = ({ data }) => {
   };
 
   useEffect(() => {
-    const areAllRowsSelected = hotelRoomListData?.data?.hotels?.every((row) =>
+    const areAllRowsSelected = stockDetails?.every((row) =>
       selectedRows.includes(row.id)
     );
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, hotelRoomListData?.data?.hotels]);
+  }, [selectedRows, stockDetails]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(
-      selectAll ? [] : hotelRoomListData?.data?.hotels?.map((row) => row.id)
-    );
+    setSelectedRows(selectAll ? [] : stockDetails?.map((row) => row.id));
   };
   //logic for checkBox...
-
+  const [popupImageUrl, setPopupImageUrl] = useState(""); // State to store the image URL
+  const [showPopup, setShowPopup] = useState(""); // State to store the image URL
+  const popupRef = useRef();
   return (
     <>
       <TopLoadbar />
-      {hotelRoomListData?.loading && <MainScreenFreezeLoader />}
+      {itemStockeducer?.loading && <MainScreenFreezeLoader />}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              All Room Services
+              All Stock Transaction
             </h1>
             <p id="firsttagp">
-              {totalItems} Records{" "}
+              {" "}
               <span
-                className={`${hotelRoomListData?.loading && "rotate_01"}`}
+                className={`${itemStockeducer?.loading && "rotate_01"}`}
                 data-tooltip-content="Reload"
                 data-tooltip-place="bottom"
                 data-tooltip-id="my-tooltip"
@@ -185,7 +185,7 @@ const HotelServices = ({ data }) => {
               </span>
             </p>
             <SearchBox
-              placeholder="Search In Hotels"
+              placeholder="Search In Stock Transaction"
               onSearch={onSearch}
               section={searchTrigger}
             />
@@ -221,13 +221,10 @@ const HotelServices = ({ data }) => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link
-              className="linkx1"
-              to={`/dashboard/create-hotelservices?id=${data?.id}`}
-            >
+            {/* <Link className="linkx1" to={`/dashboard/create-hotelservices?id=${data?.id}`}>
               New Room <GoPlus />
-            </Link>
-            <ResizeFL />
+            </Link> */}
+            {/* <ResizeFL /> */}
           </div>
         </div>
 
@@ -250,44 +247,48 @@ const HotelServices = ({ data }) => {
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
-                    Room Name
+                    Date
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.customer_svg}
-                    Occupancy
+                    TRANSACTION TYPE
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.customer_svg}
-                    Max Occupancy
+                    IN/OUT
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
-                    Bed
+                    QTY
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
-                    Meal
+                    REASON
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>
-                      {currencySymbol}{" "}
-                      Price
-                    </p>
+                  <div className="table-cellx12 quotiosalinvlisxs4">
+                    {/* <p> */}
+                    {otherIcons?.status_svg}
+                    DESCRIPTION
+                    {/* </p> */}
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                     {otherIcons?.status_svg}
-                    Availability Status
+                    WAREHOUSE
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
+                    {otherIcons?.status_svg}
+                    ATTACHMENT
                   </div>
                 </div>
 
-                {hotelRoomListData?.loading ? (
+                {itemStockeducer?.loading ? (
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {hotelRoomLists.length >= 1 ? (
+                    {stockDetails?.length >= 1 ? (
                       <>
-                        {hotelRoomLists.map((item, index) => (
+                        {stockDetails?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${
                               selectedRows.includes(item?.id)
@@ -307,66 +308,78 @@ const HotelServices = ({ data }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
-                              {item?.room_number || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs1">
+                              {item?.transaction_date
+                                ? formatDate3(item?.transaction_date)
+                                : "" || ""}
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
-                              {item?.occupancy_name || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs1">
+                              <ShowMastersValue
+                                type="11"
+                                id={item?.entity_type}
+                              />
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
-                              {item?.max_occupancy || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs1">
+                              {item?.inout == "1" ? "IN" : "Out" || ""}
                             </div>
-
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
-                              {item?.bed_name || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {item?.meal_name || ""}
-                            </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs5_item"
-                            >
-                              <p style={{ width: "54%" }}>
-                                {" "}
-                                {item?.price || ""}
-                              </p>
+                            <div className="table-cellx12 quotiosalinvlisxs2">
+                              {item?.quantity || ""}
                             </div>
 
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-                            >
-                              <p
-                                className={
-                                  item?.availability_status == "1"
-                                    ? "open"
-                                    : item?.availability_status == "0"
-                                    ? "declined"
-                                    : ""
+                            <div className="table-cellx12 quotiosalinvlisxs3">
+                              <ShowMastersValue
+                                type="7"
+                                id={
+                                  item?.reason_type == "0"
+                                    ? ""
+                                    : item?.reason_type
                                 }
-                              >
-                                {item?.availability_status == "1"
-                                  ? "Available"
-                                  : item?.availability_status == "0"
-                                  ? "Unavailable"
-                                  : ""}
-                              </p>
+                              />
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs4"
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={item?.description}
+                            >
+                              {item?.description
+                                ? item.description.split(" ").length > 15
+                                  ? `${item.description
+                                      .split(" ")
+                                      .slice(0, 15)
+                                      .join(" ")}...`
+                                  : item.description
+                                : ""}
+                            </div>
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs4"
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content={item?.warehouse?.name}
+                            >
+                              {item?.warehouse ? (
+                                <>
+                                  {`${item?.warehouse?.name?.slice(
+                                    0,
+                                    10
+                                  )}...` || ""}
+                                </>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
+                              {item?.image_url ? (
+                                <div
+                                  onClick={() => {
+                                    setShowPopup(true);
+                                    setPopupImageUrl(item?.image_url); // Set the image URL for the popup
+                                  }}
+                                >
+                                  {otherIcons?.file_svg} File Attached
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             </div>
                           </div>
                         ))}
@@ -374,15 +387,33 @@ const HotelServices = ({ data }) => {
                     ) : (
                       <NoDataFound />
                     )}
-
-                    <PaginationComponent
+                    {showPopup && (
+                      <div className="mainxpopups2" ref={popupRef}>
+                        <div className="popup-content02">
+                          <span
+                            className="close-button02"
+                            onClick={() => setShowPopup(false)}
+                          >
+                            <RxCross2 />
+                          </span>
+                          <img
+                            src={popupImageUrl}
+                            name="popup_image"
+                            alt="Popup Image"
+                            height={500}
+                            width={500}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {/* <PaginationComponent
                       itemList={totalItems}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}
                       itemsPerPage={itemsPerPage}
                       setItemsPerPage={setItemsPerPage}
                       setSearchCall={setSearchTrigger}
-                    />
+                    /> */}
                   </>
                 )}
               </div>
@@ -396,4 +427,4 @@ const HotelServices = ({ data }) => {
   );
 };
 
-export default HotelServices;
+export default StockTransaction;

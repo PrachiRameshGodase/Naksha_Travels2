@@ -13,10 +13,11 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerAssistDetails from "./PassengerAssistDetails";
 import Swal from "sweetalert2";
 import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Assit = ({ data, totalItems }) => {
   const dispatch = useDispatch();
- 
+
   const itemId = new URLSearchParams(location.search).get("id");
   const passengerData = useSelector(
     (state) => state?.passengerDetail?.data?.data || {}
@@ -78,7 +79,6 @@ const Assit = ({ data, totalItems }) => {
     setShowPopup((prev) => !prev);
   };
 
-  
   return (
     <>
       <TopLoadbar />
@@ -114,9 +114,8 @@ const Assit = ({ data, totalItems }) => {
                     No Of Persons
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} Total Amount</p>
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -151,31 +150,24 @@ const Assit = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.meeting_type || ""}
                             </div>
 
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.airport_name || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.no_of_persons || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "67%" }}>
+                                {" "}
+                                {item?.total_amount || ""}
+                              </p>
                             </div>
 
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span
                                 style={{ cursor: "pointer", color: "red" }}
                                 onClick={() => handleDeleteAssist(item)}

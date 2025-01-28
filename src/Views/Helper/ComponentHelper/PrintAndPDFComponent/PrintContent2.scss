@@ -14,22 +14,28 @@
   }
 
   table {
-    width: 100%;
+   
     border-collapse: collapse;
     margin-top: 20px;
+    width: 97%;
+    margin-left: 10px;
+    border: 1px solid #dcdcdc;
 
     th,
     td {
-      width: 250px;
+      // width: 250px;
+      width:100px;
       padding: 8px;
       text-align: left;
-      border: 1px solid #9e9c9c;
-      font-size: 14px;
+      border: 1px solid #dcdcdc;
+      font-size: 11px;
     }
 
     th {
       // background-color: #f4f4f4;
       // font-weight: bold;
+      width:100px;
+      border: 1px solid #dcdcdc
     }
 
     td {
