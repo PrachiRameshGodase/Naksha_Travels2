@@ -19,6 +19,7 @@ import { customersList } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import Swal from "sweetalert2";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -100,7 +101,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       vehicle_type_id: formData?.vehicle_type_id ? false : true,
@@ -117,6 +118,10 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
       try {

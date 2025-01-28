@@ -15,11 +15,16 @@ import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import Swal from "sweetalert2";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -114,7 +119,7 @@ const CreateInsurancePopup = ({
       [name]: false,
     }));
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
@@ -131,6 +136,10 @@ const CreateInsurancePopup = ({
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {

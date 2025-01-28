@@ -9,16 +9,30 @@ import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../Helper/DateFormat";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
 import CalculationSection, {
   CalculationSection2,
 } from "../DSR/CalculationSection";
+import Swal from "sweetalert2";
 
 const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
-  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+  const {
+    discount,
+    discount_type,
+    gross_amount,
+    item_id,
+    item_name,
+    rate,
+    tax_rate,
+    service_data,
+  } = edit_data;
 
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
@@ -33,27 +47,27 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const [formData, setFormData] = useState({
     service_name: "Visa",
-    passenger_visa_id: service_data?.passenger_visa_id || "",  // Example for passenger_visa_id
-    passport_no: service_data?.passport_no || "",             // Example for passport_no
-    dob: service_data?.dob || "",                             // Example for date of birth
-    guest_ids: "",                 // Example for guest_ids
-    email: service_data?.email || "",                         // Example for email
-    visa_no: service_data?.visa_no || "",                     // Example for visa_no
-    visa_type_id: service_data?.visa_type_id || "",           // Example for visa_type_id
-    visa_entry_type: service_data?.visa_entry_type || "",     // Example for visa_entry_type
-    country_id: service_data?.country_id || "",               // Example for country_id
-    issue_date: service_data?.issue_date || "",               // Example for issue_date
-    expiry_date: service_data?.expiry_date || "",             // Example for expiry_date
-    days: service_data?.days || "",                           // Example for days
-    supplier_id: service_data?.supplier_id || "",             // Example for supplier_id
-    supplier_name: service_data?.supplier_name || "",         // Example for supplier_name
+    passenger_visa_id: service_data?.passenger_visa_id || "", // Example for passenger_visa_id
+    passport_no: service_data?.passport_no || "", // Example for passport_no
+    dob: service_data?.dob || "", // Example for date of birth
+    guest_ids: "", // Example for guest_ids
+    email: service_data?.email || "", // Example for email
+    visa_no: service_data?.visa_no || "", // Example for visa_no
+    visa_type_id: service_data?.visa_type_id || "", // Example for visa_type_id
+    visa_entry_type: service_data?.visa_entry_type || "", // Example for visa_entry_type
+    country_id: service_data?.country_id || "", // Example for country_id
+    issue_date: service_data?.issue_date || "", // Example for issue_date
+    expiry_date: service_data?.expiry_date || "", // Example for expiry_date
+    days: service_data?.days || "", // Example for days
+    supplier_id: service_data?.supplier_id || "", // Example for supplier_id
+    supplier_name: service_data?.supplier_name || "", // Example for supplier_name
 
     // Amount fields
-    gross_amount: gross_amount || 0,                          // Gross amount if provided
-    discount: 0.0,                                // Discount default to 0.0
-    tax_percent: tax_rate || null,                            // Tax rate if provided or null
-    tax_amount: 0.0,                                          // Default tax amount
-    total_amount: 0.0,                                        // Default total amount
+    gross_amount: gross_amount || 0, // Gross amount if provided
+    discount: 0.0, // Discount default to 0.0
+    tax_percent: tax_rate || null, // Tax rate if provided or null
+    tax_amount: 0.0, // Default tax amount
+    total_amount: 0.0, // Default total amount
   });
 
   const [errors, setErrors] = useState({
@@ -69,7 +83,6 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     visa_no: false,
     expiry_date: false,
     days: false,
-
   });
 
   const entryType = ShowUserMasterData("50");
@@ -107,12 +120,10 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       if (name === "issue_date") {
         updatedErrors.issue_date = selectedDate < expiryDate;
         updatedErrors.issue_date =
-          (formData?.issue_date && selectedDate > expiryDate)
-
+          formData?.issue_date && selectedDate > expiryDate;
       }
       if (name === "expiry_date") {
-        updatedErrors.expiry_date =
-          selectedDate > issueDate
+        updatedErrors.expiry_date = selectedDate > issueDate;
       }
       return updatedErrors;
     });
@@ -120,7 +131,6 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...prevData,
       [name]: false,
     }));
-
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -136,18 +146,24 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
       days: formData?.days ? false : true,
-
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       const sendData = {
         ...formData,
-        guest_ids: formData?.guest_ids?.length === 0 ? null : formData?.guest_ids?.join(", ")
+        guest_ids:
+          formData?.guest_ids?.length === 0
+            ? null
+            : formData?.guest_ids?.join(", "),
       };
       handleAddService(sendData);
       setShowModal(false);
@@ -264,20 +280,24 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div className="form_commonblock ">
-                        <label>Date Of Birth<b className="color_red">*</b></label>
+                        <label>
+                          Date Of Birth<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.dob}
-                            onChange={(date) =>
-                              handleDateChange(date, "dob")
-                            }
+                            onChange={(date) => handleDateChange(date, "dob")}
                             name="dob"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
-                            minDate={new Date(new Date().getFullYear() - 50, 0, 1)} // Start 50 years in the past
-                            maxDate={new Date(new Date().getFullYear() + 50, 11, 31)} // End 50 years in the future
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Start 50 years in the past
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // End 50 years in the future
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown
                             yearDropdownItemNumber={101}
@@ -414,7 +434,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Days<b className="color_red">*</b></label>
+                        <label>
+                          Days<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -441,7 +463,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Country / Region<b className="color_red">*</b></label>
+                        <label>
+                          Country / Region<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.country_svg}
@@ -477,7 +501,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                                                             Please select the country name</p>} */}
                       </div>
                       <div className="form_commonblock ">
-                        <label>Issue Date<b className="color_red">*</b></label>
+                        <label>
+                          Issue Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
@@ -505,7 +531,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div className="form_commonblock ">
-                        <label>Expiry Date<b className="color_red">*</b></label>
+                        <label>
+                          Expiry Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
@@ -533,9 +561,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -560,7 +586,10 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}

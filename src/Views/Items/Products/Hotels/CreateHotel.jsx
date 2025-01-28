@@ -20,6 +20,7 @@ import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/Compone
 import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import Swal from "sweetalert2";
 
 const CreateHotel = () => {
   const Navigate = useNavigate();
@@ -168,6 +169,11 @@ const CreateHotel = () => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

@@ -23,6 +23,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -145,7 +146,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
@@ -164,6 +165,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -256,7 +261,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
-                            
                             maxDate={
                               formData?.travel_date
                                 ? new Date(formData.travel_date)

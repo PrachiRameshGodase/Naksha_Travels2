@@ -22,6 +22,7 @@ import CurrencySelect, {
 } from "../../../Helper/ComponentHelper/CurrencySelect";
 import { CustomDropdown006 } from "../../../../Components/CustomDropdown/CustomDropdown06";
 import { getCurrencyValue } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import Swal from "sweetalert2";
 
 const CreateHotelService = () => {
   const Navigate = useNavigate();
@@ -173,6 +174,11 @@ const CreateHotelService = () => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

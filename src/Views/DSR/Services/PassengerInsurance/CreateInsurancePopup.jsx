@@ -19,6 +19,7 @@ import CalculationSection from "../../CalculationSection";
 import { customersList } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import Swal from "sweetalert2";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -97,7 +98,7 @@ const CreateInsurancePopup = ({
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
@@ -113,6 +114,10 @@ const CreateInsurancePopup = ({
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
     try {

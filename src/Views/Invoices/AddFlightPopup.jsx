@@ -20,6 +20,7 @@ import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dispatch = useDispatch();
@@ -154,6 +155,11 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {

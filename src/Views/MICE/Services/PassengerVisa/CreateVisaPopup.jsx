@@ -21,6 +21,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import Swal from "sweetalert2";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -120,7 +121,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_visa_id: formData?.passenger_visa_id ? false : true,
@@ -136,6 +137,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -524,7 +529,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

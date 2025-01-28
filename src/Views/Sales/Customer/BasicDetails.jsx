@@ -49,6 +49,7 @@ const BasicDetails = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log("value", value)
     setBasicDetails((prevDetails) => {
       const updatedDetails = {
         ...prevDetails,
@@ -56,7 +57,7 @@ const BasicDetails = ({
       };
   
       // Automatically set display_name to first_name if first_name is updated and display_name is empty
-      if (name === "first_name" && !prevDetails.display_name) {
+      if (name === "first_name") {
         updatedDetails.display_name = value;
       }
  
@@ -138,16 +139,16 @@ console.log("basicDetails", basicDetails)
   // for set Company name value in display name when I click outside
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    if (name === "company_name" && !basicDetails.display_name) {
+    if (name === "first_name" && !basicDetails.display_name) {
       setBasicDetails((prevDetails) => ({
         ...prevDetails,
         display_name: value,
       }));
     }
     const names = new Set(displayNames);
-    if (basicDetails.company_name) names.add(basicDetails.company_name);
-    if (basicDetails.company_name) {
-      names.add(`${basicDetails.company_name}`);
+    if (basicDetails.first_name) names.add(basicDetails.first_name);
+    if (basicDetails.first_name) {
+      names.add(`${basicDetails.first_name}`);
     }
     setDisplayNames(Array.from(names));
   };

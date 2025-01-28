@@ -26,6 +26,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import Swal from "sweetalert2";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -125,6 +126,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         occupancy_id: selectedRoom?.occupancy_id || "",
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
+        gross_amount:selectedRoom?.price ||"",
       };
     }
     if (name === "supplier_id") {
@@ -145,9 +147,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prevData,
       ...updatedFields,
       ...(name === "room_id" && {
-        occupancy_id: false, // Clear error for occupancy when room changes
-        meal_id: false, // Clear error for meal when room changes
-        bed: false, // Clear error for bed
+        occupancy_id: false, 
+        meal_id: false, 
+        bed: false, 
+        gross_amount:false
       }),
       [name]: false,
     }));
@@ -226,7 +229,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
-      return;
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+       confirmButtonText: "OK",
+       
+      });
+      return; 
     } else {
       try {
         const sendData = {

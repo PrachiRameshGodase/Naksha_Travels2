@@ -10,7 +10,11 @@ import {
 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
@@ -22,6 +26,7 @@ import {
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { CreatePassengerMOtherAction } from "../../../../Redux/Actions/passengerMOtherActions";
 import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
+import Swal from "sweetalert2";
 
 const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -99,7 +104,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
@@ -115,6 +120,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {

@@ -98,7 +98,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
@@ -114,6 +114,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
       try {

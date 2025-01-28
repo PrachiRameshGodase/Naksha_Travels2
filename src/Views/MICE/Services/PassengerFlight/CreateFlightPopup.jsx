@@ -26,6 +26,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -147,9 +148,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prevData,
       [name]: false,
     }));
-   
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
@@ -168,6 +168,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -372,12 +376,17 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div data-tooltip-content={
+                      <div
+                        data-tooltip-content={
                           isDisabled ? "According to airport it is getting" : ""
                         }
                         data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom" className="form_commonblock">
-                        <label>Airline Code<b className="color_red">*</b></label>
+                        data-tooltip-place="bottom"
+                        className="form_commonblock"
+                      >
+                        <label>
+                          Airline Code<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -434,11 +443,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                    
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Family Member<b className="color_red">*</b>
                         </label>
@@ -533,7 +541,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                      
+
                       <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">

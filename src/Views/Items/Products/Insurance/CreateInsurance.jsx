@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { CreateInsuranceAction } from "../../../../Redux/Actions/InsuranceActions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import Swal from "sweetalert2";
 
 const CreateInsurance = ({ popupContent }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,11 @@ const CreateInsurance = ({ popupContent }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

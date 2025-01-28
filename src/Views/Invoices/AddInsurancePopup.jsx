@@ -12,6 +12,7 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import Swal from "sweetalert2";
 
 const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -105,6 +106,11 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {
