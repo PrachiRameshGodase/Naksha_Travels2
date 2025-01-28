@@ -19,6 +19,7 @@ import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
 import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
 import { generatePDF } from "../Helper/createPDF";
+import { customersList } from "../../Redux/Actions/customerActions";
 
 const MICEDetails = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const MICEDetails = () => {
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
 
-  const userMasterData = useSelector(state => state?.userMasterList?.data);
+  const userMasterData = useSelector((state) => state?.userMasterList?.data);
   const cusList = useSelector((state) => state?.customerList);
   const MICEDetails = useSelector((state) => state?.MICEDetails);
   const MICEData = MICEDetails?.data?.data?.data || {};
@@ -153,7 +154,7 @@ const MICEDetails = () => {
       dispatch(MICEDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
-  
+
   const [loading, setLoading] = useState(false);
   const handleDownloadPDF = () => {
     if (!MICEData || !userMasterData) {
@@ -172,16 +173,20 @@ const MICEDetails = () => {
     generatePDF(contentComponent, "MICE_Document.pdf", setLoading, 500);
   };
   const isDisabled = MICEData?.is_invoiced == "1";
-
+  useEffect(() => {
+    const sendData = { customer_type: "Individual", status: 1, active: 1 };
+    dispatch(customersList(sendData));
+  }, [dispatch]);
   return (
     <>
       {/* <PrintContent2 data={MICEData} userMasterData={userMasterData} cusVenData="" moduleId="MICE No" section="MICE" /> */}
-    
+
       {(addPassenger?.loading ||
         deletePassenger?.loading ||
         statusChangeMICE?.loading ||
         deleteMICE?.loading ||
-        MICEDetails?.loading || loading) && <MainScreenFreezeLoader />}
+        MICEDetails?.loading ||
+        loading) && <MainScreenFreezeLoader />}
       {/* {MICEDetails?.loading ? (
         <Loader02 />
       ) : ( */}
@@ -218,7 +223,9 @@ const MICEDetails = () => {
             </div>
             {MICEData?.is_invoiced == "1" && (
               <div className="mainx1">
-                <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>PDF/Print</p>
+                <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>
+                  PDF/Print
+                </p>
               </div>
             )}
 

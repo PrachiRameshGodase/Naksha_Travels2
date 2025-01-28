@@ -13,13 +13,14 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
+  currencySymbol,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { carHireListAction } from "../../../../Redux/Actions/carHireActions";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import ShowMastersValue, { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 
 const CarHires = () => {
   const dispatch = useDispatch();
@@ -253,9 +254,11 @@ const CarHires = () => {
                     Days
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Price
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p> 
+                      {currencySymbol}{" "}
+                      Price</p>
+                   
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -293,7 +296,7 @@ const CarHires = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
-                              <ShowMastersValue
+                              <ShowUserMastersValue
                                 type="41"
                                 id={item?.type_of_vehicle}
                               />
@@ -306,9 +309,10 @@ const CarHires = () => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.price || ""}
+                              <p style={{width:"36%"}}> {item?.price || ""}</p>
+                             
                             </div>
 
                             <div

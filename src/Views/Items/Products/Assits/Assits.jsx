@@ -13,6 +13,7 @@ import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import {
+  currencySymbol,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
@@ -257,9 +258,9 @@ const Assit = () => {
                     No Of Persons
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Price
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                   <p>{currencySymbol} {" "}  Price</p>
+                  
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -314,9 +315,10 @@ const Assit = () => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.price || ""}
+                              <p style={{width:"40%"}}> {item?.price || ""}</p>
+                             
                             </div>
 
                             <div

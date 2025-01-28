@@ -21,14 +21,15 @@ import Swal from "sweetalert2";
 import DSRSummary from "./DSRSummary";
 import { generatePDF } from "../Helper/createPDF";
 import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
+import { customersList } from "../../Redux/Actions/customerActions";
 
 const DSRDetails = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const dropdownRef1 = useRef(null);
   const UrlId = new URLSearchParams(location.search).get("id");
-  
-  const userMasterData = useSelector(state => state?.userMasterList?.data);
+
+  const userMasterData = useSelector((state) => state?.userMasterList?.data);
   const cusList = useSelector((state) => state?.customerList);
   const DSRDetails = useSelector((state) => state?.DSRDetails);
   const DSRData = DSRDetails?.data?.data?.data || {};
@@ -154,7 +155,7 @@ const DSRDetails = () => {
       dispatch(DSRDetailsAction(queryParams));
     }
   }, [dispatch, UrlId]);
- 
+
   const [loading, setLoading] = useState(false);
   const handleDownloadPDF = () => {
     if (!DSRData || !userMasterData) {
@@ -173,9 +174,13 @@ const DSRDetails = () => {
     generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
   };
   const isDisabled = DSRData?.is_invoiced == "1";
+  useEffect(() => {
+    const sendData = { customer_type: "Individual", status: 1, active: 1 };
+    dispatch(customersList(sendData));
+  }, [dispatch]);
   return (
     <>
-    {/* <PrintContent2
+      {/* <PrintContent2
         data={DSRData}
         userMasterData={userMasterData}
         cusVenData=""
@@ -186,7 +191,8 @@ const DSRDetails = () => {
         deletePassenger?.loading ||
         statusChangeDSR?.loading ||
         deleteDSR?.loading ||
-        DSRDetails?.loading ||loading) && <MainScreenFreezeLoader />}
+        DSRDetails?.loading ||
+        loading) && <MainScreenFreezeLoader />}
       {/* {DSRDetails?.loading ? (
         <Loader02 />
       ) : ( */}
@@ -200,15 +206,15 @@ const DSRDetails = () => {
               onClick={() => {
                 handleChangeDSRStatus(DSRData);
               }}
-            // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
               <p
                 className={
                   DSRData?.is_invoiced == "0"
                     ? "draft"
                     : DSRData?.is_invoiced == "1"
-                      ? "invoiced2"
-                      : ""
+                    ? "invoiced2"
+                    : ""
                 }
                 style={{
                   cursor: "pointer",

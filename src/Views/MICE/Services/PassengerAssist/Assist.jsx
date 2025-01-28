@@ -12,6 +12,7 @@ import { PassengerMHotelDetailsAction } from "../../../../Redux/Actions/passenge
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerAssistDetails from "./PassengerAssistDetails";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Assit = ({ data, totalItems }) => {
   const dispatch = useDispatch();
@@ -111,13 +112,13 @@ const Assit = ({ data, totalItems }) => {
                     {otherIcons?.refrence_svg}
                     No Of Persons
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.status_svg}
                     Family Member
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.status_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} {" "}Total Amount</p>
+                    
                   </div>
                   {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
@@ -168,7 +169,7 @@ const Assit = ({ data, totalItems }) => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs2"
+                              className="table-cellx12 quotiosalinvlisxs4"
                               title={item?.guests?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
@@ -178,8 +179,9 @@ const Assit = ({ data, totalItems }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs3">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{width:"78%"}}> {item?.total_amount || ""}</p>
+                             
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span

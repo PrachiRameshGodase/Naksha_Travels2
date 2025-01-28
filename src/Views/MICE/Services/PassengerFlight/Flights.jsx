@@ -13,14 +13,17 @@ import { formatDate3 } from "../../../Helper/DateFormat";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerFlightDetails from "./PassengerFlightDetails.";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Flights = ({ data, totalItems }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const itemId = new URLSearchParams(location.search).get("id");
-  const passengerData = useSelector((state) => state?.passengerDetail?.data?.data || {});
- 
+  const passengerData = useSelector(
+    (state) => state?.passengerDetail?.data?.data || {}
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -125,17 +128,16 @@ const Flights = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Ticket No
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.status_svg}
                     PRN No
-                  </div>
+                  </div> */}
                   {/* <div className="table-cellx12 quotiosalinvlisxs5">
                     {otherIcons?.status_svg}
                     Route
                   </div> */}
-                  <div className="table-cellx12 quotiosalinvlisxs5">
-                    {otherIcons?.status_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p> {currencySymbol} Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -169,9 +171,7 @@ const Flights = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {formatDate3(item?.travel_date) || ""}
                             </div>
                             {/* <div
@@ -182,15 +182,14 @@ const Flights = ({ data, totalItems }) => {
                                 id={item?.travel_type_id}
                               />
                             </div> */}
-                             <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.airline_name || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
-                              title={item?.guests?.map((data) => data?.display_name)
+                              title={item?.guests
+                                ?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
                             >
@@ -199,35 +198,28 @@ const Flights = ({ data, totalItems }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             </div>
-                           
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs2"
-                            >
+
+                            <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.gds_portal || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.ticket_no || ""}
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
+                            {/* <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.prn_no || ""}
-                            </div>
+                            </div> */}
                             {/* <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.route || ""}
                             </div> */}
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs4"
-                            >
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "91%" }}>
+                                {" "}
+                                {item?.total_amount || ""}
+                              </p>
                             </div>
-                            <div
-                              className="table-cellx12 quotiosalinvlisxs6"
-                            >
+                            <div className="table-cellx12 quotiosalinvlisxs6">
                               <span
                                 onClick={() => {
                                   handleDeleteFlight(item);

@@ -14,6 +14,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 import PassengerVisaDetails from "./PassengerVisaDetails";
 import { BsEye } from "react-icons/bs";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Visas = ({ data }) => {
   const dispatch = useDispatch();
@@ -123,9 +124,8 @@ const Visas = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Country
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} {" "} Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -187,8 +187,10 @@ const Visas = ({ data }) => {
                             <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.country?.name || ""}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs4">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "91%" }}>
+                                {item?.total_amount || ""}
+                              </p>
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}

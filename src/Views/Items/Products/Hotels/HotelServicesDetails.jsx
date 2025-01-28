@@ -99,7 +99,7 @@ const HotelServicesDetails = () => {
     }
   };
 
-  const attachments = JSON?.parse(hotelRoomData?.upload_documents || "");
+  const attachments =hotelRoomData?.upload_documents ? JSON?.parse(hotelRoomData?.upload_documents || ""):"";
   return (
     <>
       {hotelRoomStatusUpdate?.loading && <MainScreenFreezeLoader />}

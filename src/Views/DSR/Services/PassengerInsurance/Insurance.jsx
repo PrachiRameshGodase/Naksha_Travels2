@@ -13,6 +13,7 @@ import { formatDate3 } from "../../../Helper/DateFormat";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerInsuranceDetails from "./PassengerInsuranceDetails";
 import { PassengerHotelDetailsAction } from "../../../../Redux/Actions/passengerHotelActions";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Insurances = ({ data, totalItems }) => {
   const dispatch = useDispatch();
@@ -123,10 +124,9 @@ const Insurances = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Expiry Date
                   </div>
-                    <div className="table-cellx12 quotiosalinvlisxs3">
-                                      {otherIcons?.refrence_svg}
-                                     Total Amount
-                                    </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol} Total Amount</p>
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Action
@@ -174,8 +174,9 @@ const Insurances = ({ data, totalItems }) => {
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               {formatDate3(item?.expiry_date) || ""}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{width:"91%"}}>{item?.total_amount || ""}</p>
+                           
                             </div>
                             <div
                               // onClick={() => handleRowClicked(quotation)}

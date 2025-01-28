@@ -13,6 +13,7 @@ import { BsEye } from "react-icons/bs";
 import { PassengerMHotelDetailsAction } from "../../../../Redux/Actions/passengerMHotelActions";
 import { PassengerMVisaDeleteActions } from "../../../../Redux/Actions/passengerMVisaActions";
 import PassengerVisaDetails from "./PassengerVisaDetails";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Visas = ({ data }) => {
   const dispatch = useDispatch();
@@ -110,10 +111,10 @@ const Visas = ({ data }) => {
                     Passport No
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs3">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     Email
-                  </div>
+                  </div> */}
                   {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Visa Type
@@ -126,9 +127,9 @@ const Visas = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Country
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                 <p >{currencySymbol}{" "} Total Amount</p>
+                   
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -181,9 +182,9 @@ const Visas = ({ data }) => {
                               {item?.passport_no || ""}
                             </div>
 
-                            <div className="table-cellx12 quotiosalinvlisxs2">
+                            {/* <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.email || ""}
-                            </div>
+                            </div> */}
                             {/* <div
                             
                               className="table-cellx12 quotiosalinvlisxs3"
@@ -199,8 +200,9 @@ const Visas = ({ data }) => {
                             <div className="table-cellx12 quotiosalinvlisxs4">
                               {item?.country?.name || ""}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs4">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{width:"91%"}}>{item?.total_amount || ""}</p>
+                              
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}

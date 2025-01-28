@@ -20,6 +20,7 @@ import {
   PassengerMHotelDeleteActions,
   PassengerMHotelDetailsAction,
 } from "../../../../Redux/Actions/passengerMHotelActions";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Hotels = ({ data }) => {
   const dispatch = useDispatch();
@@ -142,9 +143,9 @@ const Hotels = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Checkout Date
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
-                    {otherIcons?.refrence_svg}
-                    Total Amount
+                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                    <p>{currencySymbol}{" "} Total Amount</p>
+                   
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -234,9 +235,10 @@ const Hotels = ({ data }) => {
                               {formatDate3(item?.check_out_date) || ""}
                             </div>
                             <div
-                              className="table-cellx12 quotiosalinvlisxs4"
+                              className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              {item?.total_amount || ""}
+                              <p style={{width:"53%"}}> {item?.total_amount || ""}</p>
+                             
                             </div>
                             <div
                               // onClick={() => handleRowClicked(item)}

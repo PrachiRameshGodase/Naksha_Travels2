@@ -13,6 +13,7 @@ import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import PassengerFlightDetails from "./PassengerFlightDetails.";
 import { BsEye } from "react-icons/bs";
+import { currencySymbol } from "../../../Helper/HelperFunctions";
 
 const Flights = ({ data, totalItems }) => {
   const dispatch = useDispatch();
@@ -123,18 +124,17 @@ const Flights = ({ data, totalItems }) => {
                     {otherIcons?.status_svg}
                     Ticket No
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.status_svg}
                     PRN No
-                  </div>
+                  </div> */}
                   {/* <div className="table-cellx12 quotiosalinvlisxs5">
                     {otherIcons?.status_svg}
                     Route
                   </div> */}
-                  <div className="table-cellx12 quotiosalinvlisxs5">
-                    {otherIcons?.status_svg}
-                    Total Amount
-                  </div>
+                 <div className="table-cellx12 quotiosalinvlisxs6_item">
+                                     <p> {currencySymbol} Total Amount</p>
+                                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Actions
@@ -185,16 +185,19 @@ const Flights = ({ data, totalItems }) => {
                             <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.ticket_no || ""}
                             </div>
-                            <div className="table-cellx12 quotiosalinvlisxs3">
+                            {/* <div className="table-cellx12 quotiosalinvlisxs3">
                               {item?.prn_no || ""}
-                            </div>
+                            </div> */}
                             {/* <div
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.route || ""}
                             </div> */}
-                            <div className="table-cellx12 quotiosalinvlisxs4">
-                              {item?.total_amount || ""}
+                            <div className="table-cellx12 quotiosalinvlisxs5_item">
+                              <p style={{ width: "91%" }}>
+                                {" "}
+                                {item?.total_amount || ""}
+                              </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6">
                               <span
