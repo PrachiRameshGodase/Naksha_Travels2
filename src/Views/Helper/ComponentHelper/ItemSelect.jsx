@@ -625,9 +625,11 @@ const ItemSelect = ({
 
           <thead className="table_head_item_02">
             <tr className="table_head_item_02_row">
+
               <th className="table_column_item item_table_width_01">
-                Item <b className="color_red">*</b>
+                Item / Service<b className="color_red">*</b>
               </th>
+
               <th className="table_column_item item_table_width_03">
                 Type <b className="color_red">*</b>
               </th>
@@ -636,13 +638,13 @@ const ItemSelect = ({
 
               <th className="table_column_item item_qty_01 item_table_width_02">Quantity</th>
               <th className="table_column_item item_table_width_02">
-                Unit <b className="color_red">*</b>
+                Unit
               </th>
               <th className="table_column_item item_table_width_03">Discount</th>
               <th className="table_column_item item_table_width_02">
-                Tax (%) <b className="color_red">*</b>
+                Tax (%)
               </th>
-              <th className="table_column_item item_table_width_02 item_text_end_01">Amount</th>
+              <th className="table_column_item item_table_width_02 item_text_end_01">Amount {currencySymbol} </th>
               {/* <th>Actions</th> */}
             </tr>
           </thead>
