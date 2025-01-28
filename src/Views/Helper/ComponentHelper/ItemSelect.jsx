@@ -472,7 +472,7 @@ const ItemSelect = ({
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
 
   const [activePopup, setActivePopup] = useState(null);
-  console.log("activePopupactivePopup", activePopup)
+  // console.log("activePopupactivePopup", activePopup)
 
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -575,6 +575,7 @@ const ItemSelect = ({
           <AddVisaPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
 
@@ -583,6 +584,7 @@ const ItemSelect = ({
           <AddInsurancePopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
       case "Car Hire":
@@ -590,6 +592,7 @@ const ItemSelect = ({
           <AddCarHirePopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
 
@@ -598,6 +601,7 @@ const ItemSelect = ({
           <AddAssistPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
 
@@ -606,6 +610,7 @@ const ItemSelect = ({
           <AddOtherPopup
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
           />
         );
       default:

@@ -63,7 +63,7 @@ export const updateQuotation = ({
     itemId,
     convert
 }) => async (dispatch) => {
-    console.log("quotationData, section, editDub, buttonName, itemId, convert", quotationData, section, editDub, buttonName, itemId, convert)
+    // console.log("quotationData, section, editDub, buttonName, itemId, convert", quotationData, section, editDub, buttonName, itemId, convert)
     dispatch({ type: QUOTATION_UPDATE_REQUEST });
     try {
         const response = await axiosInstance.post(`/sales/create/update`, quotationData);

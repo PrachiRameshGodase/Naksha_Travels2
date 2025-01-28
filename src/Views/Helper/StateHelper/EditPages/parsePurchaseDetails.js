@@ -43,7 +43,9 @@ export const parsePurchaseDetails = (detailData, convert) => {
             is_service: item?.is_service,
             service_data: JSON?.parse(item?.service_data || "{}"),
         }))
-        : [
+        :
+        // if the item details data have no items then by default set an Item.
+        [
             {
                 item_id: null,
                 unit_id: 0,
@@ -65,6 +67,11 @@ export const parsePurchaseDetails = (detailData, convert) => {
                 item_data: null,
             },
         ];
+
+    // Always add an empty row at the end of the items array
+    itemsFromApi?.push({
+        item_name: "", service_name: "", discount_type: 1, discount: 0, quantity: 1, tax_rate: 0
+    });
 
     const all_changes = JSON?.parse(detailData?.charges || "[]");
 

@@ -17,7 +17,9 @@ import CalculationSection, {
   CalculationSection2,
 } from "../DSR/CalculationSection";
 
-const AddVisaPopup = ({ setShowModal, handleAddService }) => {
+const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
 
@@ -28,31 +30,30 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+
   const [formData, setFormData] = useState({
     service_name: "Visa",
-    // entry_type: "",
-    passenger_visa_id: "",
-    passport_no: "",
-    dob: "",
-    guest_ids: "",
-    email: "",
-    visa_no: "",
-    visa_type_id: "",
-    visa_entry_type: "",
-    country_id: "",
-    issue_date: "",
-    expiry_date: "",
-    days: "",
-    supplier_id: "",
-    supplier_name: null,
+    passenger_visa_id: service_data?.passenger_visa_id || "",  // Example for passenger_visa_id
+    passport_no: service_data?.passport_no || "",             // Example for passport_no
+    dob: service_data?.dob || "",                             // Example for date of birth
+    guest_ids: "",                 // Example for guest_ids
+    email: service_data?.email || "",                         // Example for email
+    visa_no: service_data?.visa_no || "",                     // Example for visa_no
+    visa_type_id: service_data?.visa_type_id || "",           // Example for visa_type_id
+    visa_entry_type: service_data?.visa_entry_type || "",     // Example for visa_entry_type
+    country_id: service_data?.country_id || "",               // Example for country_id
+    issue_date: service_data?.issue_date || "",               // Example for issue_date
+    expiry_date: service_data?.expiry_date || "",             // Example for expiry_date
+    days: service_data?.days || "",                           // Example for days
+    supplier_id: service_data?.supplier_id || "",             // Example for supplier_id
+    supplier_name: service_data?.supplier_name || "",         // Example for supplier_name
 
-    //amount
-    // charges: null,
-    gross_amount: 0,
-    discount: 0.0,
-    tax_percent: null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    // Amount fields
+    gross_amount: gross_amount || 0,                          // Gross amount if provided
+    discount: 0.0,                                // Discount default to 0.0
+    tax_percent: tax_rate || null,                            // Tax rate if provided or null
+    tax_amount: 0.0,                                          // Default tax amount
+    total_amount: 0.0,                                        // Default total amount
   });
 
   const [errors, setErrors] = useState({
@@ -62,12 +63,12 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
     email: false,
     guest_ids: false,
     visa_type_id: false,
-    visa_entry_type:false,
-    country_id:false,
-    issue_date:false,
+    visa_entry_type: false,
+    country_id: false,
+    issue_date: false,
     visa_no: false,
     expiry_date: false,
-    days:false,
+    days: false,
 
   });
 
@@ -102,12 +103,12 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
       const issueDate = new Date(formData?.issue_date);
       const expiryDate = new Date(formData?.expiry_date);
       const selectedDate = new Date(date);
-      
+
       if (name === "issue_date") {
         updatedErrors.issue_date = selectedDate < expiryDate;
         updatedErrors.issue_date =
-          (formData?.issue_date && selectedDate > expiryDate) 
-         
+          (formData?.issue_date && selectedDate > expiryDate)
+
       }
       if (name === "expiry_date") {
         updatedErrors.expiry_date =
@@ -118,8 +119,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
-    }));  
-   
+    }));
+
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -135,7 +136,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
       days: formData?.days ? false : true,
-   
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -146,8 +147,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
     } else {
       const sendData = {
         ...formData,
-        guest_ids: formData?.guest_ids?.length === 0 ? null : formData?.guest_ids?.join(", ")};
-      handleAddService("Visa", sendData);
+        guest_ids: formData?.guest_ids?.length === 0 ? null : formData?.guest_ids?.join(", ")
+      };
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -311,17 +313,17 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.email && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Email
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Email
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -367,17 +369,17 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.visa_type_id && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Visa Type
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Type
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
@@ -399,17 +401,17 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.visa_entry_type && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Visa Entry Type
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Entry Type
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>Days<b className="color_red">*</b></label>
@@ -420,7 +422,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                               type="number"
                               name="days"
                               placeholder="Enter Days"
-                              value={formData.total_days}
+                              value={formData.days}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>
@@ -490,17 +492,17 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.issue_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Issue Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Issue Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock ">
                         <label>Expiry Date<b className="color_red">*</b></label>
@@ -518,17 +520,17 @@ const AddVisaPopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.expiry_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Expiry Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Expiry Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>

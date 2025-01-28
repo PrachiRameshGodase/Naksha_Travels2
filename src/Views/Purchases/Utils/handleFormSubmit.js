@@ -94,11 +94,15 @@ export const handleFormSubmit1 = async ({
     // Proceed with dispatch if confirmed or null
     else {
         try {
-            // Remove 'tax_name' from each item
-            const updatedItems = formData?.items?.map(({ tax_name, service_data, ...rest }) => ({
+
+            // Filter out items where rate is not available or equals 0
+            const filteredItems = formData?.items?.filter(item => item?.rate && item?.rate > 0);
+
+            // Remove 'tax_name' from each item and convert 'service_data' to JSON string
+            const updatedItems = filteredItems?.map(({ tax_name, service_data, ...rest }) => ({
                 ...rest,
                 service_data: JSON.stringify(service_data), // Convert service_data to JSON string
-            }))
+            }));
 
             // If total is <= 0, confirm with zero amount
             if (parseInt(formData?.total) <= 0) {

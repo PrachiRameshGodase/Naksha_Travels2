@@ -30,10 +30,9 @@ import {
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
-import { formatDate } from '../../Helper/DateFormat';
-
 
 const CreateQuotation = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -120,9 +119,11 @@ const CreateQuotation = () => {
 
     if (activeOrg_details?.state?.id === addSelect?.billing?.state?.id) {
       dispatch(isStateIdEqualAction(true));
+
     } else {
       dispatch(isStateIdEqualAction(false));
     }
+
   }, [cusData]);
 
 

@@ -13,7 +13,9 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
-const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
+const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
@@ -21,24 +23,26 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
   const createCarHire = useSelector((state) => state?.createPassengerCarHire);
 
   const [cusData1, setcusData1] = useState(null);
+
   const [formData, setFormData] = useState({
     service_name: "Car Hire",
-    // entry_type: "",
-    vehicle_type_id: "",
-    days: "",
-    pickup_location: null,
-    drop_location: null,
-    guest_ids: "",
-    supplier_id: "",
-    supplier_name: null,
-    // Amount
-    // charges: null,
-    gross_amount: 0,
-    discount: 0.0,
-    tax_percent: null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    vehicle_type_id: service_data?.vehicle_type_id || "",        // Example for vehicle type ID
+    days: service_data?.days || "",                             // Example for number of days
+    pickup_location: service_data?.pickup_location || null,     // Example for pickup location
+    drop_location: service_data?.drop_location || null,         // Example for drop-off location
+    guest_ids: service_data?.guest_ids || "",                   // Example for guest IDs
+    supplier_id: service_data?.supplier_id || "",               // Example for supplier ID
+    supplier_name: service_data?.supplier_name || null,         // Example for supplier name
+
+    // Amount fields
+    gross_amount: gross_amount || 0,                            // Gross amount if provided
+    discount: 0.0,                                  // Default discount value
+    tax_percent: tax_rate || null,                              // Tax percent if provided
+    tax_amount: 0.0,                                            // Default tax amount
+    total_amount: 0.0,                                          // Default total amount
   });
+
+
   const [errors, setErrors] = useState({
     vehicle_type_id: false,
     pickup_location: false,
@@ -87,7 +91,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Car Hire", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };

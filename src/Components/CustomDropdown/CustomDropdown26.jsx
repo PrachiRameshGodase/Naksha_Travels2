@@ -89,7 +89,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
   }, [itemData?.item_name]);
 
 
-  console.log("service_data", service_data)
+  // console.log("service_data in dropdown", service_data)
 
   return (
     <div
@@ -161,7 +161,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
             </div>
           </>
         ) :
-          service_data?.service_name === "CarHire" ? (
+          service_data?.service_name === "Car Hire" ? (
             <>
               <div>
                 <b>Vehicle Type:</b> <ShowUserMastersValue
@@ -199,28 +199,48 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                 </div>
               </>
             ) :
-              <div
-                onClick={() => setIsOpen(!isOpen)}
-                className={"dropdown-select" + (value ? " filledcolorIn" : "")}
-              // style={{ width: "314px", top: "110%" }}
-              >
-                <textarea
-                  type="text"
-                  placeholder="Type or Select the Item"
-                  value={searchTerm || itemData?.item_name}
-                  onChange={handleInputChange}
-                  onBlur={handleInputBlur}
-                  style={{
-                    width: "100%",
-                    border: "none",
-                    resize: "none",
-                  }}
-                  className="dropdown-search customdropdownx12s86 custom-scrollbar"
-                  autoFocus
-                  ref={inputRef}
-                />
 
-              </div>
+              service_data?.service_name === "Others" ? (
+                <>
+                  <div>
+                    <b>Service Name:</b> {service_data?.service_name || "-"}
+                  </div>
+
+                  <div>
+                    <b>Item Name:</b>
+                    {service_data?.item_name || "-"}
+                  </div>
+
+                  <div>
+                    <b>Supplier Name:</b>{" "}
+
+                    {service_data?.supplier_name || "-"}
+
+                  </div>
+                </>
+              ) :
+                <div
+                  onClick={() => setIsOpen(!isOpen)}
+                  className={"dropdown-select" + (value ? " filledcolorIn" : "")}
+                // style={{ width: "314px", top: "110%" }}
+                >
+                  <textarea
+                    type="text"
+                    placeholder="Type or Select the Item"
+                    value={searchTerm || itemData?.item_name}
+                    onChange={handleInputChange}
+                    onBlur={handleInputBlur}
+                    style={{
+                      width: "100%",
+                      border: "none",
+                      resize: "none",
+                    }}
+                    className="dropdown-search customdropdownx12s86 custom-scrollbar"
+                    autoFocus
+                    ref={inputRef}
+                  />
+
+                </div>
       }
 
       {isOpen && (<div

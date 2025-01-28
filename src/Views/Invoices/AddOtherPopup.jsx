@@ -13,7 +13,9 @@ import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown03 from "../../Components/CustomDropdown/CustomDropdown03";
 
-const AddOtherPopup = ({ setShowModal, handleAddService }) => {
+const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
   const dropdownRef1 = useRef(null);
   const vendorList = useSelector((state) => state?.vendorList);
   const itemList = useSelector((state) => state?.itemList);
@@ -23,21 +25,23 @@ const AddOtherPopup = ({ setShowModal, handleAddService }) => {
   const [cusData2, setcusData2] = useState(null);
 
   const [formData, setFormData] = useState({
-    service_name: "Other",
-    item_id: 0,
-    item_name: "",
-    quantity: null,
-    price: null,
-    supplier_id: "",
-    supplier_name: "",
-    //amount
-    // charges: null,
-    gross_amount: 0,
-    discount: 0.0,
-    tax_percent: null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    service_name: "Others",
+    item_id: service_data?.item_id || 0,                   // Example for item ID
+    item_name: service_data?.item_name || "",              // Example for item name
+    quantity: service_data?.quantity || null,             // Example for quantity
+    price: service_data?.price || null,                   // Example for price
+    supplier_id: service_data?.supplier_id || "",         // Example for supplier ID
+    supplier_name: service_data?.supplier_name || "",     // Example for supplier name
+
+    // Amount fields
+    gross_amount: gross_amount || 0,                      // Gross amount if provided
+    discount: 0.0,                            // Default discount value
+    tax_percent: tax_rate || null,                        // Tax percent if provided
+    tax_amount: 0.0,                                      // Default tax amount
+    total_amount: 0.0,                                    // Default total amount
   });
+
+
   const [errors, setErrors] = useState({
     item_id: false,
     quantity: false,
@@ -93,7 +97,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Other", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -233,7 +237,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                     
+
                       <div className="form_commonblock">
                         <label>
                           Supplier
@@ -261,7 +265,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         {" "}
                         <CalculationSection2
                           formData={formData}
