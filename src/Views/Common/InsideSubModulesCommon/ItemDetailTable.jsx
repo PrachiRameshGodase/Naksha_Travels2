@@ -58,7 +58,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
 
                   <>
                     {
-                      parsedServiceData?.service_name === "Hotel" ? (
+                      parsedServiceData?.service_name === "Hotels" ? (
                         <>
                           <div>
                             <b>Hotel Name:</b> {parsedServiceData?.hotel_name || "-"}

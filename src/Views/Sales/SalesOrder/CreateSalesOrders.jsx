@@ -403,6 +403,7 @@ const CreateSalesOrders = () => {
                                             extracssclassforscjkls={"extracssclassforscjkls"}
                                             dropdownRef2={dropdownRef2}
                                             note="customer"
+                                            section="sales"
                                         />
 
                                         <div className='secondtotalsections485s sxfc546sdfr85234e'>

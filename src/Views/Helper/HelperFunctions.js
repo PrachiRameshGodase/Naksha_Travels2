@@ -226,7 +226,7 @@ export function getDateStatus1(approvedDate, expiryDate) {
 
 export const validateItems = (items) => {
     const errors = [];
-
+    console.log("errorserrorserrorserrors", errors)
     console.log("items", items)
     items.forEach((item, index) => {
         const itemErrors = {};

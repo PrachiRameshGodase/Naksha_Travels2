@@ -45,7 +45,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData4, setcusData4] = useState(null);
 
   const [formData, setFormData] = useState({
-    service_name: "Hotel",
+    service_name: "Hotels",
     hotel_id: service_data?.hotel_id || "",  // Example for hotel_id
     hotel_name: service_data?.hotel_name || "",  // Example for hotel_name
     room_id: service_data?.room_id || "",  // Example for room_id

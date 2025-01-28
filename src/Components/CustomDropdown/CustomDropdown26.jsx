@@ -101,7 +101,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     >
       <>
         {
-          service_data?.service_name === "Hotel" ? (
+          service_data?.service_name === "Hotels" ? (
             <>
               <div>
                 <b>Hotel Name:</b> {service_data?.hotel_name || "-"}

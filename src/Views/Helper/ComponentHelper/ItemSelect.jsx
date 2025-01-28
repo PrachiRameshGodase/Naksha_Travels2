@@ -533,8 +533,6 @@ const ItemSelect = ({
 
     // Save the updated list back to formData
     setFormData({ ...formData, items: finalItems });
-
-
   };
 
 
@@ -625,11 +623,9 @@ const ItemSelect = ({
 
           <thead className="table_head_item_02">
             <tr className="table_head_item_02_row">
-
               <th className="table_column_item item_table_width_01">
                 Item / Service<b className="color_red">*</b>
               </th>
-
               <th className="table_column_item item_table_width_03">
                 Type <b className="color_red">*</b>
               </th>

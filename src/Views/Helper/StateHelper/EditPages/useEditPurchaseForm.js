@@ -123,6 +123,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
             // setIsItemSelect(!!detailData?.items);//remove items error if item is selected
             // for showing items select errors..
+            console.log("itemsFromApi", itemsFromApi)
             const errors = validateItems(itemsFromApi || []);
             if (errors.length > 0) {
                 setItemErrors(errors);
