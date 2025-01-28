@@ -21,7 +21,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
     // use only When the form is edit/dublicate/convert
     useEffect(() => {
         if (itemId && isEdit && detailData || (itemId && (convert === "toInvoice" || convert === "quotationToInvoice" || convert === "invoiceToCredit" || convert === "quotationToSale" || convert === "saleToInvoice" || convert === "purchase_to_bill" || convert === "bill_to_payment" || convert === "purchase_to_grn" || convert === "grn_to_bill" || convert === "bill_to_debit"))) {
-            console.log("detailData", detailData)
+            // console.log("detailData", detailData)
             const {
                 calculateTotalTaxAmount,
                 itemsFromApi,

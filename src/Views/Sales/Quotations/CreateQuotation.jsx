@@ -79,11 +79,6 @@ const CreateQuotation = () => {
     isEdit
   );
 
-  // const calculateExpiryDate = (transactionDate, terms) => {
-  //   const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
-  //   return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
-  // };
-
   //this is the common handle select
   const {
     handleChange,
@@ -93,6 +88,7 @@ const CreateQuotation = () => {
 
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {
+
     await handleFormSubmit1({
       e,
       formData,
@@ -107,6 +103,7 @@ const CreateQuotation = () => {
       updateDispatchAction: updateQuotation, // This is dynamic for the dispatch action
       sendData: ""
     });
+
   };
 
   useEffect(() => {
@@ -135,6 +132,7 @@ const CreateQuotation = () => {
     }
     dispatch(productTypeItemAction("Product"));
   }, [dispatch]);
+
 
 
   return (

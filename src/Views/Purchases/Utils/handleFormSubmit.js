@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { confirmWithZeroAmount } from "../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 import { handleDropdownError, validateItems } from "../../Helper/HelperFunctions";
 import { isPartiallyInViewport } from "../../Helper/is_scroll_focus";
-import { formatDate } from "../../Helper/DateFormat";
 
 export const handleFormSubmitCommon = async ({
     e,
@@ -72,16 +71,19 @@ export const handleFormSubmit1 = async ({
     let confirmed = null;
     const buttonName = e.nativeEvent.submitter.name;
     const errors = validateItems(formData?.items);
-    // console.log("confirmedconfirmed", confirmed)
+    // console.log("errors", errors)
 
     // selection check
     if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-    // if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
 
-    else if (errors.length > 0) { // Item validation check
+    if ((section === "invoice" || section === "delivery_challan")) {
+        if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+    }
+
+    if (errors?.length > 0) {
         setItemErrors(errors);
-        if (!isPartiallyInViewport(dropdownRef2.current)) {
-            dropdownRef2.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!isPartiallyInViewport(dropdownRef2?.current)) {
+            dropdownRef2.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         setTimeout(() => {
             dropdownRef2.current.focus();
@@ -93,7 +95,10 @@ export const handleFormSubmit1 = async ({
     else {
         try {
             // Remove 'tax_name' from each item
-            const updatedItems = formData?.items?.map(({ tax_name, ...itemWithoutTaxName }) => itemWithoutTaxName);
+            const updatedItems = formData?.items?.map(({ tax_name, service_data, ...rest }) => ({
+                ...rest,
+                service_data: JSON.stringify(service_data), // Convert service_data to JSON string
+            }))
 
             // If total is <= 0, confirm with zero amount
             if (parseInt(formData?.total) <= 0) {

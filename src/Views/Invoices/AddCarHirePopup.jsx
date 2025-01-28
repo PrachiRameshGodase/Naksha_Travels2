@@ -22,7 +22,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
 
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
-    service_name: "CarHire",
+    service_name: "Car Hire",
     // entry_type: "",
     vehicle_type_id: "",
     days: "",
@@ -87,7 +87,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("CarHire", sendData);
+      handleAddService("Car Hire", sendData);
       setShowModal(false);
     }
   };
@@ -263,7 +263,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}
@@ -275,11 +275,13 @@ const AddCarHirePopup = ({ setShowModal, handleAddService }) => {
                   </div>
                 </div>
               </div>
+
               <SubmitButton6
                 onClick={handleFormSubmit}
                 createUpdate=""
                 setShowModal={setShowModal}
               />
+
             </form>
           </div>
         </div>
