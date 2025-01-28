@@ -3,9 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoCheckbox } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchTexRates,
-} from "../../Redux/Actions/globalActions";
+import { fetchTexRates } from "../../Redux/Actions/globalActions";
 import { addItems, itemDetails } from "../../Redux/Actions/itemsActions";
 import {
   accountLists,
@@ -36,9 +34,14 @@ import { getAccountTypes } from "../../Redux/Actions/accountsActions.js";
 import NumericInput from "../Helper/NumericInput.jsx";
 import Loader02 from "../../Components/Loaders/Loader02.jsx";
 import ImageUpload from "../Helper/ComponentHelper/ImageUpload.jsx";
-import { handleDropdownError, ShowMasterData } from "../Helper/HelperFunctions";
+import {
+  handleDropdownError,
+  preventZeroVal,
+  ShowMasterData,
+} from "../Helper/HelperFunctions";
 import { SubmitButton2 } from "../Common/Pagination/SubmitButton.jsx";
 import ShowMastersValue from "../Helper/ShowMastersValue.jsx";
+import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit.jsx";
 
 const CreateAndUpdateItem = () => {
   const Navigate = useNavigate();
@@ -62,13 +65,14 @@ const CreateAndUpdateItem = () => {
   const catList = useSelector((state) => state?.categoryList);
   const itemListState = useSelector((state) => state?.accountList);
   const accountList = itemListState?.data?.accounts || [];
-  const customLists = useSelector((state) => state?.customList?.data?.custom_field) || [];
+  const customLists =
+    useSelector((state) => state?.customList?.data?.custom_field) || [];
   const item_detail = useSelector((state) => state?.itemDetail);
   const item_details = item_detail?.itemsDetail?.data?.item_details;
   const tax_rates = useSelector((state) => state?.getTaxRate?.data?.data);
   const [customFieldValues, setCustomFieldValues] = useState({});
 
-  const allUnit = ShowMasterData("2")
+  const allUnit = ShowMasterData("2");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -107,13 +111,11 @@ const CreateAndUpdateItem = () => {
 
   const [clickTrigger, setClickTrigger] = useState(false);
 
-
   const refreshCategoryListData = () => {
     dispatch(categoryList()).then(() => {
       setClickTrigger((prevTrigger) => !prevTrigger);
     });
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -176,7 +178,6 @@ const CreateAndUpdateItem = () => {
   };
 
   useEffect(() => {
-
     if (formData?.type === "Service") {
       setIsSKUFilled(true);
     } else if (formData?.type === "Product" && formData?.sku?.trim() === "") {
@@ -451,7 +452,6 @@ const CreateAndUpdateItem = () => {
     }
   }, [formData.category_id, clickTrigger]);
 
-
   useEffect(() => {
     if (
       (item_details && itemId && isEdit) ||
@@ -555,10 +555,11 @@ const CreateAndUpdateItem = () => {
                                     <button
                                       type="button"
                                       key={type?.labelid}
-                                      className={`type-button ${formData.type == type?.label
-                                        ? "selectedbtn"
-                                        : ""
-                                        }`}
+                                      className={`type-button ${
+                                        formData.type == type?.label
+                                          ? "selectedbtn"
+                                          : ""
+                                      }`}
                                       onClick={() =>
                                         setFormData({
                                           ...formData,
@@ -586,7 +587,9 @@ const CreateAndUpdateItem = () => {
                       <div className="secondx2">
                         <div className="secondx2">
                           <div className="form-group">
-                            <label>Name <b className="color_red">*</b></label>
+                            <label>
+                              Name <b className="color_red">*</b>
+                            </label>
                             <span>
                               {otherIcons.name_svg}
                               <input
@@ -646,8 +649,9 @@ const CreateAndUpdateItem = () => {
                           <div className={`form-group`}>
                             <label>Sub Category</label>
                             <span
-                              className={`${selectedCategory ? "" : "disabledfield"
-                                }`}
+                              className={`${
+                                selectedCategory ? "" : "disabledfield"
+                              }`}
                             >
                               {otherIcons.category_svg}
                               <CustomDropdown03
@@ -672,7 +676,9 @@ const CreateAndUpdateItem = () => {
                           )}
 
                           <div className="form-group">
-                            <label>SKU <b className="color_red">*</b></label>
+                            <label>
+                              SKU <b className="color_red">*</b>
+                            </label>
                             <span>
                               {otherIcons.sku_svg}
                               <input
@@ -698,7 +704,9 @@ const CreateAndUpdateItem = () => {
                           </div>
 
                           <div className="form-group">
-                            <label>Unit <b className="color_red">*</b></label>
+                            <label>
+                              Unit <b className="color_red">*</b>
+                            </label>
                             <span>
                               {otherIcons.unit_svg}
                               <CustomDropdown04
@@ -891,8 +899,9 @@ const CreateAndUpdateItem = () => {
                         <div className="x1inssalx5">
                           <p className="xkls5663">
                             <IoCheckbox
-                              className={`checkboxeffecgtparent ${isChecked.checkbox1 ? "checkboxeffects" : ""
-                                }`}
+                              className={`checkboxeffecgtparent ${
+                                isChecked.checkbox1 ? "checkboxeffects" : ""
+                              }`}
                               onClick={() => handleCheckboxClick("checkbox1")}
                               tabIndex="0"
                               onKeyDown={(e) => handleKeyDown(e, "checkbox1")}
@@ -900,8 +909,9 @@ const CreateAndUpdateItem = () => {
                             Sales Information
                           </p>
                           <span
-                            className={`newspanx21s ${isChecked?.checkbox1 && "disabledfield"
-                              }`}
+                            className={`newspanx21s ${
+                              isChecked?.checkbox1 && "disabledfield"
+                            }`}
                           >
                             <div className="form-group">
                               <label>Sales Price</label>
@@ -935,23 +945,25 @@ const CreateAndUpdateItem = () => {
                               </span>
                             </div>
                           </span>
+
                           <div
-                            className={`form-group ${isChecked?.checkbox1 && "disabledfield"
-                              }`}
+                            className={`secondtotalsections485s ${
+                              isChecked?.checkbox1 && "disabledfield"
+                            }`}
                           >
-                            <label>Sale Description</label>
-                            <textarea
-                              className={
-                                formData.sale_description
-                                  ? "filledcolorIn"
-                                  : null
-                              }
-                              name="sale_description"
-                              placeholder="Enter Sale Description"
-                              value={formData.sale_description}
-                              onChange={handleChange}
-                              rows="4"
-                            />
+                            <div className="textareaofcreatqsiform">
+                              <label>Sale Description</label>
+                              <div className="show_no_of_text_limit_0121">
+                                <TextAreaComponentWithTextLimit
+                                  formsValues={{ handleChange, formData }}
+                                  placeholder="Sale Description..."
+                                  name="sale_description"
+                                  value={preventZeroVal(
+                                    formData?.sale_description
+                                  )}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
 
@@ -960,8 +972,9 @@ const CreateAndUpdateItem = () => {
                         <div className="x2inssalx5">
                           <p className="xkls5663">
                             <IoCheckbox
-                              className={`checkboxeffecgtparent ${isChecked.checkbox2 ? "checkboxeffects" : ""
-                                }`}
+                              className={`checkboxeffecgtparent ${
+                                isChecked.checkbox2 ? "checkboxeffects" : ""
+                              }`}
                               onClick={() => handleCheckboxClick("checkbox2")}
                               tabIndex="0"
                               onKeyDown={(e) => handleKeyDown(e, "checkbox2")}
@@ -969,11 +982,13 @@ const CreateAndUpdateItem = () => {
                             Purchase Information
                           </p>
                           <span
-                            className={`newspanx21s ${isChecked?.checkbox2 && "disabledfield"
-                              }`}
+                            className={`newspanx21s ${
+                              isChecked?.checkbox2 && "disabledfield"
+                            }`}
                           >
                             <div className="form-group">
-                              <label>Purchase Price
+                              <label>
+                                Purchase Price
                                 {/* (Excluded Tax) */}
                               </label>
                               <span>
@@ -1026,45 +1041,45 @@ const CreateAndUpdateItem = () => {
                               </span>
                             </div>
                           </span>
+
                           <div
-                            className={`form-group ${isChecked?.checkbox2 && "disabledfield"
-                              }`}
+                            className={`secondtotalsections485s ${
+                              isChecked?.checkbox2 && "disabledfield"
+                            }`}
                           >
-                            <label>Purchase Description</label>
-                            <textarea
-                              className={
-                                formData.purchase_description
-                                  ? "filledcolorIn"
-                                  : null
-                              }
-                              name="purchase_description"
-                              placeholder="Enter Purchase Description"
-                              value={formData.purchase_description}
-                              onChange={handleChange}
-                              rows="4"
-                            />
+                            <div className="textareaofcreatqsiform">
+                              <label>Purchase Description</label>
+                              <div className="show_no_of_text_limit_0121">
+                                <TextAreaComponentWithTextLimit
+                                  formsValues={{ handleChange, formData }}
+                                  placeholder="Purchase Description..."
+                                  name="purchase_description"
+                                  value={preventZeroVal(
+                                    formData?.purchase_description
+                                  )}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div id="thirdsec123s">
-                      <div className={`form_commonblock`}>
-                        <label>Remarks</label>
-                        <textarea
-                          className={
-                            "textareacustomcbs" +
-                            (formData.description ? " filledcolorIn" : "")
-                          }
-                          name="description"
-                          placeholder="Enter Remarks"
-                          value={formData.description}
-                          onChange={handleChange}
-                          rows="4"
-                        />
+                      <div className={`secondtotalsections485s`}>
+                        <div className="textareaofcreatqsiform">
+                          <label>Remarks</label>
+                          <div className="show_no_of_text_limit_0121">
+                            <TextAreaComponentWithTextLimit
+                              formsValues={{ handleChange, formData }}
+                              placeholder="Remarks..."
+                              name="description"
+                              value={preventZeroVal(formData?.description)}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-
                     {/* <div id="thirdsec123s">
                       <div className="customfieldsegment">
                         <p className="xkls5666">
@@ -1225,7 +1240,11 @@ const CreateAndUpdateItem = () => {
                     </div> */}
                   </div>
                   {/* itemId, edit: isEdit */}
-                  <SubmitButton2 isEdit={isEdit} itemId={itemId} cancel="manage-items" />
+                  <SubmitButton2
+                    isEdit={isEdit}
+                    itemId={itemId}
+                    cancel="manage-items"
+                  />
                 </form>
               </div>
             </div>

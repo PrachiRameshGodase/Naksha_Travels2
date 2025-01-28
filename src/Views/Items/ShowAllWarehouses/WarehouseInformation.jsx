@@ -67,11 +67,11 @@ const WarehouseInformation = ({ warehouseData, itemDetails }) => {
 
                 {/* zone */}
                 <>
-                    <div className="warehouseitemx2w2">
+                    {/* <div className="warehouseitemx2w2">
                         <div id="Anotherbox" className='Anotherbox4'>
                             <div id="leftareax12">
                                 <h1 id="firstheading">
-                                    {/* <span><FaMapSigns /></span> */}
+                                   
                                     Zone
                                 </h1>
                                 <p id="firsttagp">{warehouseData?.total_quantity_by_zone?.length} Records</p>
@@ -104,7 +104,7 @@ const WarehouseInformation = ({ warehouseData, itemDetails }) => {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
+                    </div> */}
                 </>
 
 
@@ -113,11 +113,11 @@ const WarehouseInformation = ({ warehouseData, itemDetails }) => {
                 {/* racks */}
 
                 <>
-                    <div className="warehouseitemx2w2">
+                    {/* <div className="warehouseitemx2w2">
                         <div id="Anotherbox" className='Anotherbox4'>
                             <div id="leftareax12">
                                 <h1 id="firstheading">
-                                    {/* <span><FaMapSigns /></span> */}
+                                    
                                     Rack
                                 </h1>
                                 <p id="firsttagp">{warehouseData?.total_quantity_by_rack?.length} Records</p>
@@ -153,13 +153,13 @@ const WarehouseInformation = ({ warehouseData, itemDetails }) => {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
+                    </div> */}
                 </>
 
 
 
                 <>
-                    <div className="warehouseitemx2w2">
+                    {/* <div className="warehouseitemx2w2">
                         <div id="Anotherbox" className='Anotherbox4'>
                             <div id="leftareax12">
                                 <h1 id="firstheading">
@@ -200,7 +200,7 @@ const WarehouseInformation = ({ warehouseData, itemDetails }) => {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
+                    </div> */}
                 </>
             </div >
 
