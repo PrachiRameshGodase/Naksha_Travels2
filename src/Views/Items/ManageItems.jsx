@@ -1031,6 +1031,7 @@ const Quotations = () => {
                                 ? "selectedresult"
                                 : ""
                             }`}
+                            style={{marginRight:"19px"}}
                             key={index}
                           >
                             <div
@@ -1051,12 +1052,16 @@ const Quotations = () => {
                               data-tooltip-content={quotation?.name}
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs1"
+                            style={{marginLeft:"19px"}}
+
                             >
                               {quotation.name}
                             </div>
 
                             <div
                               onClick={() => handleRowClicked(quotation)}
+                            style={{marginLeft:"19px"}}
+
                               className="table-cellx12 quotiosalinvlisxs2_item"
                               data-tooltip-id="my-tooltip"
                               data-tooltip-content={`${
@@ -1066,6 +1071,7 @@ const Quotations = () => {
                                   ? ` / ${quotation?.sub_category?.name}`
                                   : ""
                               }`}
+                              
                             >
                               {`${quotation?.category?.name || ""}${
                                 quotation?.sub_category?.name
@@ -1074,16 +1080,21 @@ const Quotations = () => {
                               }`}
                             </div>
                             <div
+                            
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs3"
                               data-tooltip-id="my-tooltip"
                               data-tooltip-content={quotation?.sku}
+                            style={{marginLeft:"19px"}}
+
                             >
                               {quotation?.sku || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs4"
+                            style={{marginLeft:"19px"}}
+
                             >
                               {quotation?.type === "Raw"
                                 ? "Raw Material"
@@ -1092,6 +1103,8 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5"
+                            style={{marginLeft:"19px"}}
+
                             >
                               <span
                                 style={{
@@ -1105,6 +1118,8 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5"
+                            style={{marginLeft:"19px"}}
+
                             >
                               {quotation?.tax_rate
                                 ? `${parseInt(quotation.tax_rate, 10)} %`
@@ -1113,8 +1128,10 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
+                            style={{marginLeft:"19px"}}
+
                             >
-                              <p>
+                              <p style={{marginRight:"19px"}}>
                                 {" "}
                                 {showAmountWithCurrencySymbol(quotation?.price)}
                               </p>

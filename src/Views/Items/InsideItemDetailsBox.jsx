@@ -442,7 +442,7 @@ const InsideItemDetailsBox = ({
                           </p>
                         </li>
 
-                        <li><p style={{ marginRight: "3px" }}>Preferred Vendors</p><h1>:</h1>
+                        <li><p style={{ marginRight: "3px",width:"172px" }}>Preferred Vendors</p><h1>:</h1>
                           {preferred_vendor?.length >= 1
                             ?
                             <p style={{ width: "68%" }}>
