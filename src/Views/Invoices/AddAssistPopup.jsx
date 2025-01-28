@@ -11,9 +11,11 @@ import "../DSR/Services/CreateHotelPopup.scss";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
-import { CalculationSection2} from "../DSR/CalculationSection";
+import { CalculationSection2 } from "../DSR/CalculationSection";
 
-const AddAssistPopup = ({ setShowModal, handleAddService }) => {
+const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
@@ -23,25 +25,25 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
   const [cusData1, setcusData1] = useState(null);
   const [formData, setFormData] = useState({
     service_name: "Assist",
-    // entry_type: "",
-    airport_id: null,
-    airport_name: "",
-    meeting_type: null,
-    no_of_persons: "",
-    guest_ids: "",
-    supplier_id: "",
-    supplier_name: null,
-    // Amount
-    gross_amount: 0,
-    // charges: [],
-    discount: 0.00,
-    tax_percent: null,
-    tax_amount: 0.00,
-    total_amount: 0.00,
+    airport_id: service_data?.airport_id || null,           // Example for airport ID
+    airport_name: service_data?.airport_name || "",         // Example for airport name
+    meeting_type: service_data?.meeting_type || null,       // Example for meeting type
+    no_of_persons: service_data?.no_of_persons || "",       // Example for the number of persons
+    guest_ids: service_data?.guest_ids || "",               // Example for guest IDs
+    supplier_id: service_data?.supplier_id || "",           // Example for supplier ID
+    supplier_name: service_data?.supplier_name || null,     // Example for supplier name
+
+    // Amount fields
+    gross_amount: gross_amount || 0,                        // Gross amount if provided
+    discount: 0.0,                              // Default discount value
+    tax_percent: tax_rate || null,                          // Tax percent if provided
+    tax_amount: 0.0,                                        // Default tax amount
+    total_amount: 0.0,                                      // Default total amount
   });
+
   const [errors, setErrors] = useState({
     airport_name: false,
-    no_of_persons:false,
+    no_of_persons: false,
   });
   const entryType = ShowUserMasterData("50");
 
@@ -66,7 +68,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
     let newErrors = {
       airport_name: formData?.airport_name ? false : true,
       no_of_persons: formData?.no_of_persons ? false : true,
-      
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -82,7 +84,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Assist", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -185,23 +187,23 @@ const AddAssistPopup = ({ setShowModal, handleAddService }) => {
                             />
                           </span>
                           {errors?.no_of_persons && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Fill No Of Persons
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill No Of Persons
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      
+
                       <div className="form_commonblock">
                         <label>
                           Supplier

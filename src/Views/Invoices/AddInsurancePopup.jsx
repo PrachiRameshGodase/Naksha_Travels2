@@ -13,7 +13,9 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
-const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
+const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
@@ -25,33 +27,37 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+
+
   const [formData, setFormData] = useState({
-    // entry_type: "",
     service_name: "Insurance",
-    passenger_insurance_id: "",
-    company_name: "",
-    policy_no: null,
-    insurance_plan: null,
-    expiry_date: "",
-    guest_ids: "",
-    issue_date: "",
-    supplier_id: "",
-    supplier_name: "",
-    //amount
-    // charges: null,
-    gross_amount: 0,
-    discount: 0.0,
-    tax_percent: null,
-    tax_amount: 0.0,
-    total_amount: 0.0,
+    passenger_insurance_id: service_data?.passenger_insurance_id || "",  // Example for passenger insurance ID
+    company_name: service_data?.company_name || "",                     // Example for insurance company name
+    policy_no: service_data?.policy_no || null,                         // Example for policy number
+    insurance_plan: service_data?.insurance_plan || null,               // Example for insurance plan
+    expiry_date: service_data?.expiry_date || "",                       // Example for expiry date
+    guest_ids: service_data?.guest_ids || "",                           // Example for guest IDs
+    issue_date: service_data?.issue_date || "",                         // Example for issue date
+    supplier_id: service_data?.supplier_id || "",                       // Example for supplier ID
+    supplier_name: service_data?.supplier_name || "",                   // Example for supplier name
+
+    // Amount fields
+    gross_amount: gross_amount || 0,                                    // Gross amount if provided
+    discount: 0.0,                                          // Default discount value
+    tax_percent: tax_rate || null,                                      // Tax percent if provided
+    tax_amount: 0.0,                                                    // Default tax amount
+    total_amount: 0.0,                                                  // Default total amount
   });
+
+
+
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
     company_name: false,
     policy_no: false,
     insurance_plan: false,
-    issue_date:false,
-    expiry_date:false,
+    issue_date: false,
+    expiry_date: false,
 
   });
   const entryType = ShowUserMasterData("50");
@@ -77,10 +83,10 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
       ...prev,
       [name]: formatDate(date),
     }));
-   setErrors((prevData) => ({
-    ...prevData,
-    [name]: false,
-   }));
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +114,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
             ? null
             : formData?.guest_ids?.join(", "),
       };
-      handleAddService("Insurance", sendData);
+      handleAddService(sendData);
       setShowModal(false);
     }
   };
@@ -260,8 +266,8 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                           <DatePicker
                             selected={formData?.issue_date}
                             onChange={(date) =>
-                                handleDateChange(date, "issue_date")
-                              }
+                              handleDateChange(date, "issue_date")
+                            }
                             name="issue_date"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
@@ -269,17 +275,17 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.issue_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Issue Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Issue Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock ">
                         <label>Expiry Date<b className="color_red">*</b></label>
@@ -288,8 +294,8 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                           <DatePicker
                             selected={formData?.expiry_date}
                             onChange={(date) =>
-                                handleDateChange(date, "expiry_date")
-                              }
+                              handleDateChange(date, "expiry_date")
+                            }
                             name="expiry_date"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
@@ -297,17 +303,17 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
                           />
                         </span>
                         {errors?.expiry_date && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Expiry Date
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Expiry Date
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -361,7 +367,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService }) => {
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
                       </div>
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}
                           setFormData={setFormData}

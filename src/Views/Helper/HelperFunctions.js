@@ -193,22 +193,22 @@ export function getDateStatus(approvedDate, expiryDate) {
 }
 
 export function getDateStatus1(approvedDate, expiryDate) {
-    console.log("approvedDate, expiryDate", approvedDate, expiryDate)
+    // console.log("approvedDate, expiryDate", approvedDate, expiryDate)
     const now = new Date();
     const approved = new Date(approvedDate);
     const expiry = new Date(expiryDate);
 
     const totalDays = (expiry - approved) / (1000 * 60 * 60 * 24);
-    console.log("totalDays", totalDays)
+    // console.log("totalDays", totalDays)
 
     const passedDays = Math.floor((now - approved) / (1000 * 60 * 60 * 24));
-    console.log("passedDays", passedDays)
+    // console.log("passedDays", passedDays)
 
     const leftDays = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
-    console.log("leftDays", leftDays)
+    // console.log("leftDays", leftDays)
 
     const thirtyPercentDays = Math.floor(totalDays * 0.3);
-    console.log("thirtyPercentDays", thirtyPercentDays)
+    // console.log("thirtyPercentDays", thirtyPercentDays)
 
     if (passedDays <= thirtyPercentDays) {
         return "Approved";
@@ -227,6 +227,7 @@ export function getDateStatus1(approvedDate, expiryDate) {
 export const validateItems = (items) => {
     const errors = [];
 
+    console.log("items", items)
     items.forEach((item, index) => {
         const itemErrors = {};
 
