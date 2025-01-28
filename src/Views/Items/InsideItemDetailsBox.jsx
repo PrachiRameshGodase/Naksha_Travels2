@@ -24,6 +24,7 @@ import WarehouseInformation from "./ShowAllWarehouses/WarehouseInformation";
 import { RxCross2 } from "react-icons/rx";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import {
+  parseJSONofString,
   showAmountWithCurrencySymbol,
   showDeparmentLabels,
   showRateWithPercent,
@@ -234,7 +235,7 @@ const InsideItemDetailsBox = ({
 
 
   useEffect(() => {
-    const parshPayload = JSON.stringify(itemPayloads);
+    const parshPayload = parseJSONofString(itemPayloads);
     if (accList || parshPayload?.search || parshPayload?.sort_by) {
       // dispatch(accountLists());
     }
