@@ -3,7 +3,7 @@ import {
   showAmountWithCurrencySymbol,
   showRateWithPercent,
 } from "../../Helper/HelperFunctions";
-import ShowMastersValue from "../../Helper/ShowMastersValue";
+import ShowMastersValue, { ShowUserMastersValue } from "../../Helper/ShowMastersValue";
 import { MdArrowOutward } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
@@ -44,32 +44,181 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
           </tr>
         </thead>
         <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
-          {itemsData?.items?.map((val, index) => (
-            <tr key={index} className="table_head_item_02_row">
-              <td className="table_column_item">{index + 1}</td>
-              <td className="table_column_item ">{val?.item?.name || val?.item_name}</td>
-              <td className="table_column_item">{val?.item?.type || val?.type}</td>
-              <td className="table_column_item item_text_end_01">
-                {showAmountWithCurrencySymbol(val?.rate)}
-              </td>
-              <td className="table_column_item">
-                {val?.quantity || ""}
-                {"  "}
+          {itemsData?.items?.map((val, index) => {
+            // Safely parse the parsedServiceData field
+            const parsedServiceData = val?.service_data
+              ? JSON.parse(val.service_data)
+              : {};
 
-                {(val?.unit_id || val?.unit_id != 0) && (
+            return (
+              <tr key={index} className="table_head_item_02_row">
+                <td className="table_column_item">{index + 1}</td>
+                <td className="table_column_item ">
+
+
                   <>
-                    (<ShowMastersValue type="2" id={val?.unit_id} />)
+                    {
+                      parsedServiceData?.service_name === "Hotel" ? (
+                        <>
+                          <div>
+                            <b>Hotel Name:</b> {parsedServiceData?.hotel_name || "-"}
+                          </div>
+                          <div>
+                            <b>Room:</b> {parsedServiceData?.room_no || "-"}
+                          </div>
+                          <div>
+                            <b>Meal:</b>{" "}
+                            <ShowMastersValue
+                              type="37"
+                              id={parsedServiceData?.meal_id || "-"}
+                            />
+                          </div>
+                        </>
+                      ) : parsedServiceData?.service_name === "Assist" ? (
+                        <>
+                          <div>
+                            <b>Airport:</b> {parsedServiceData?.airport_name || "-"}
+                          </div>
+                          <div>
+                            <b>Meeting Type:</b>{" "}
+                            {parsedServiceData?.meeting_type || "-"}
+                          </div>
+                          <div>
+                            <b>No Of Persons:</b>{" "}
+                            {parsedServiceData?.no_of_persons || "-"}
+                          </div>
+                        </>
+                      ) : parsedServiceData?.service_name === "Flights" ? (
+                        <>
+                          <div>
+                            <b>Airline Name:</b>{" "}
+                            {parsedServiceData?.airline_name || "-"}
+                          </div>
+                          <div>
+                            <b>Ticket No:</b> {parsedServiceData?.ticket_no || "-"}
+                          </div>
+                          <div>
+                            <b>PRN No:</b> {parsedServiceData?.prn_no || "-"}
+                          </div>
+                        </>
+                      ) : parsedServiceData?.service_name === "Visa" ? (
+                        <>
+                          <div>
+                            <b>Passport No:</b> {parsedServiceData?.passport_no || "-"}
+                          </div>
+                          <div>
+                            <b>Visa No:</b> {parsedServiceData?.visa_no || "-"}
+                          </div>
+                          <div>
+                            <b>Visa Type:</b>{" "}
+                            <ShowUserMastersValue
+                              type="40"
+                              id={parsedServiceData?.visa_type_id || "-"}
+                            />
+                          </div>
+                        </>
+                      ) :
+                        parsedServiceData?.service_name === "Car Hire" ? (
+                          <>
+                            <div>
+                              <b>Vehicle Type:</b> <ShowUserMastersValue
+                                type="41"
+                                id={parsedServiceData?.vehicle_type_id || "-"}
+                              />
+                            </div>
+                            <div>
+                              <b>Pickup Location:</b> {parsedServiceData?.pickup_location || "-"}
+                            </div>
+                            <div>
+                              <b>Drop Location:</b>{" "}
+
+                              {parsedServiceData?.drop_location || "-"}
+
+                            </div>
+                          </>
+                        ) :
+
+                          parsedServiceData?.service_name === "Insurance" ? (
+                            <>
+                              <div>
+                                <b>Company Name:</b>
+                                {parsedServiceData?.company_name || "-"}
+
+                              </div>
+                              <div>
+                                <b>Policy No:</b> {parsedServiceData?.policy_no || "-"}
+                              </div>
+                              <div>
+                                <b>Insurance Plan:</b>{" "}
+
+                                {parsedServiceData?.insurance_plan || "-"}
+
+                              </div>
+                            </>
+                          ) :
+
+                            parsedServiceData?.service_name === "Others" ? (
+                              <>
+                                <div>
+                                  <b>Service Name:</b> {parsedServiceData?.service_name || "-"}
+                                </div>
+
+                                <div>
+                                  <b>Item Name:</b>
+                                  {parsedServiceData?.item_name || "-"}
+                                </div>
+
+                                <div>
+                                  <b>Supplier Name:</b>{" "}
+
+                                  {parsedServiceData?.supplier_name || "-"}
+
+                                </div>
+                              </>
+                            )
+                              :
+                              <div>
+                                {val?.item_name || "-"}
+                              </div>
+                    }
+
                   </>
-                )}
-              </td>
-              <td className="table_column_item">
-                {showRateWithPercent(val?.tax_rate)}
-              </td>
-              <td className="table_column_item item_text_end_01">
-                {showAmountWithCurrencySymbol(val?.final_amount)}
-              </td>
-            </tr>
-          ))}
+
+
+
+
+
+
+
+
+
+
+
+
+                </td>
+                <td className="table_column_item">{val?.item?.type || val?.type}</td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.rate)}
+                </td>
+                <td className="table_column_item">
+                  {val?.quantity || ""}
+                  {"  "}
+
+                  {(val?.unit_id || val?.unit_id != 0) && (
+                    <>
+                      (<ShowMastersValue type="2" id={val?.unit_id} />)
+                    </>
+                  )}
+                </td>
+                <td className="table_column_item">
+                  {showRateWithPercent(val?.tax_rate)}
+                </td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.final_amount)}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
