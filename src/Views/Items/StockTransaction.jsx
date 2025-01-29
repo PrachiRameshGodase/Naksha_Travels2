@@ -295,6 +295,11 @@ const StockTransaction = ({ itemDetails }) => {
                                 ? "selectedresult"
                                 : ""
                             }`}
+                            style={{    display: "flex"
+                              ,
+                                  borderBottom: "1px dashed #d0d7de",
+                                  background: "#ffffff",
+                                  cursor: "pointer"}}
                             key={index}
                           >
                             <div

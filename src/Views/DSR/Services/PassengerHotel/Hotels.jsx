@@ -158,6 +158,7 @@ const Hotels = ({ data }) => {
                                 ? "selectedresult"
                                 : ""
                             }`}
+                            
                             key={index}
                           >
                             <div

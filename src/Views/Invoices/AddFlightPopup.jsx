@@ -84,8 +84,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.air_line_code || "",
-        destination_code: selectedRoom?.destination_code || "",
+        // air_line_code: selectedRoom?.air_line_code || "",
+        // destination_code: selectedRoom?.destination_code || "",
       };
     }
     setFormData((prev) => ({
@@ -98,8 +98,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
-        air_line_code: false, // Clear error for meal when room changes
-        destination_code: false, // Clear error for bed
+        // air_line_code: false, // Clear error for meal when room changes
+        // destination_code: false, // Clear error for bed
       }),
       [name]: false,
     }));
@@ -356,7 +356,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              disabled={isDisabled}
+                              // disabled={isDisabled}
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -388,7 +388,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            disabled={isDisabled}
+                            // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
