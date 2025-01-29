@@ -16,8 +16,14 @@ import {
   hotelDetailsAction,
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
-import { MultiImageUploadHelp, SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
-import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  MultiImageUploadHelp,
+  SingleImageUpload,
+} from "../../../Helper/ComponentHelper/ImageUpload";
+import {
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import Swal from "sweetalert2";
@@ -64,7 +70,7 @@ const CreateHotel = () => {
     pincode: false,
   });
 
-  console.log(imgLoader)
+  console.log(imgLoader);
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -148,7 +154,7 @@ const CreateHotel = () => {
         dispatch(fetchGetStates({ country_id: hotelData?.country_id }));
       }
       if (hotelData?.upload_documents) {
-        setImgeLoader("success")
+        setImgeLoader("success");
       }
     }
   }, [itemId, isEdit, hotelData]);
@@ -169,11 +175,10 @@ const CreateHotel = () => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -313,8 +318,9 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
-                            }`}
+                          className={`form_commonblock ${
+                            formData?.country_id ? "" : "disabledfield"
+                          }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""
@@ -362,8 +368,9 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
-                            }`}
+                          className={`form_commonblock ${
+                            formData.state_id ? "" : "disabledfield"
+                          }`}
                         >
                           <label>
                             City<b className="color_red">*</b>

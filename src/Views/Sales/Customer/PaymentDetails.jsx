@@ -18,7 +18,7 @@ const PaymentDetails = ({
   const [paymentDetails, setPaymentDetails] = useState({
     payment_method: "",
     payment_terms: "",
-    credit_limit: null,
+    credit_limit: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,7 +111,7 @@ const PaymentDetails = ({
                       <NumericInput
                         name="credit_limit"
                         placeholder="Enter Credit Limit"
-                        value={paymentDetails.credit_limit || 0}
+                        value={paymentDetails.credit_limit}
                         onChange={handleChange}
                       />
                     </span>

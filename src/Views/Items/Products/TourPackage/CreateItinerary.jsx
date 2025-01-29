@@ -108,7 +108,7 @@ const CreateItinerary = ({ popupContent }) => {
       }
     }
   }, [selectedItem, isEditIndividual]);
-  console.log("formData", formData)
+
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -223,6 +223,7 @@ const CreateItinerary = ({ popupContent }) => {
                 onClick={handleSubmitForm}
                 createUpdate={itineraryCreates}
                 setShowModal={setshowAddPopup}
+                isEdit={isEditIndividual}
               />
             </form>
           </div>

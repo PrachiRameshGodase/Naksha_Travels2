@@ -300,7 +300,7 @@ export const CalculationSection2 = ({
   };
 
   return (
-    <div className="calctotalsection" style={{maxWidth:"310px"}}>
+    <div className="calctotalsection">
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
@@ -336,7 +336,7 @@ export const CalculationSection2 = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label>Tax %:</label>
+            <label style={{marginTop:"10px"}}>Tax %:</label>
             <CustomDropdown13
               options={tax_rate}
               value={formData?.tax_percent || ""}
@@ -346,11 +346,20 @@ export const CalculationSection2 = ({
               defaultOption="Taxes"
               className2="item3"
             />
+             <input
+              type="text"
+              value={formData?.tax_amount || ""}
+              placeholder="0.00"
+             name="total_amount"
+              className="inputbox"
+              style={{width:"120px"}}
+
+            />
           </div>
         </div>
       </div>
 
-      <div className="calcuparentc">
+      {/* <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>Tax:</label>
@@ -364,7 +373,7 @@ export const CalculationSection2 = ({
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">

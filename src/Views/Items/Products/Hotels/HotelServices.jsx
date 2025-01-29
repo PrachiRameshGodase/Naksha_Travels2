@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +8,11 @@ import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFre
 import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
+import {
+  hotelRoomDeleteActions,
+  hotelRoomListAction,
+  hotelRoomStatusActions,
+} from "../../../../Redux/Actions/hotelActions";
 import DatePicker from "../../../Common/DatePicker/DatePicker";
 import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import SearchBox from "../../../Common/SearchBox/SearchBox";
@@ -17,6 +21,11 @@ import {
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { BsEye } from "react-icons/bs";
+import Swal from "sweetalert2";
+import { MdArrowOutward } from "react-icons/md";
+import HotelServicesDetails from "./HotelServicesDetails";
+import CreateHotelService from "./CreateHotelService";
 
 const HotelServices = ({ data }) => {
   const dispatch = useDispatch();
@@ -25,6 +34,7 @@ const HotelServices = ({ data }) => {
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
   const hotelRoomLists = hotelRoomListData?.data?.hotels || [];
   const totalItems = hotelRoomListData?.data?.count || 0;
+  const hotelRoomStatusUpdate = useSelector((state) => state?.hotelRoomStatus);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -161,10 +171,73 @@ const HotelServices = ({ data }) => {
   };
   //logic for checkBox...
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [passHotelData, setPassengerHotelData] = useState("");
+  const handleShowDetails = (item) => {
+    setPassengerHotelData(item);
+    setShowPopup((prev) => !prev);
+  };
+
+  const handleStatusChange = async (item) => {
+    const newValue = item?.availability_status == "1" ? "0" : "1"; // Toggle status
+    const actionText = newValue == "0" ? "Unavialable" : "Avialable";
+
+    // Confirmation modal
+    const result = await Swal.fire({
+      text: `Do you want to make this room ${actionText}?`,
+
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed && item?.id) {
+      const sendData = {
+        room_id: item?.id,
+        availability_status: newValue,
+      };
+      const sendData2 = {
+        hotel_id: item?.hotel_id,
+      };
+      dispatch(hotelRoomStatusActions(sendData, sendData2))
+        .then(() => {})
+        .catch((error) => {
+          toast.error("Failed to update room status");
+          console.error("Error updating room status:", error);
+        });
+    }
+  };
+  const handleDeleteRoom = async (item) => {
+    const result = await Swal.fire({
+      text: "Are you sure you want to delete this room?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+    if (result.isConfirmed) {
+      const sendData = {
+        room_id: item?.id,
+        hotel_id: item?.hotel_id,
+      };
+      const sendData2 = {
+        hotel_id: item?.hotel_id,
+      };
+      dispatch(hotelRoomDeleteActions(sendData, sendData2));
+    }
+  };
+
+  const [showAddPopup, setShowAddPopup] = useState(false);
+  const [passRoomData, setPassRoomData] = useState("");
+
+  const handleEditRoom = (item) => {
+    setPassRoomData(item);
+    setShowAddPopup((prev) => !prev);
+  };
   return (
     <>
       <TopLoadbar />
-      {hotelRoomListData?.loading && <MainScreenFreezeLoader />}
+      {hotelRoomListData?.loading ||
+        (hotelRoomStatusUpdate?.loading && <MainScreenFreezeLoader />)}
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
@@ -202,7 +275,7 @@ const HotelServices = ({ data }) => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <DatePicker
+            {/* <DatePicker
               dateRange={dateRange}
               setDateRange={setDateRange}
               setSpecificDate={setSpecificDate}
@@ -210,7 +283,7 @@ const HotelServices = ({ data }) => {
               setSearchTrigger={setSearchTrigger}
               searchTrigger={searchTrigger}
               resetPageIfNeeded={resetPageIfNeeded}
-            />
+            /> */}
 
             {/* <FilterBy
               setStatus={setStatus}
@@ -221,10 +294,7 @@ const HotelServices = ({ data }) => {
               resetPageIfNeeded={resetPageIfNeeded}
             /> */}
 
-            <Link
-              className="linkx1"
-              to={`/dashboard/create-hotelservices?id=${data?.id}`}
-            >
+            <Link className="linkx1" onClick={() => setShowAddPopup(true)}>
               New Room <GoPlus />
             </Link>
             <ResizeFL />
@@ -265,19 +335,20 @@ const HotelServices = ({ data }) => {
                     {otherIcons?.refrence_svg}
                     Bed
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Meal
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>
-                      {currencySymbol}{" "}
-                      Price
-                    </p>
+                    <p>{currencySymbol} Price</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                     {otherIcons?.status_svg}
                     Availability Status
+                  </div>
+                  <div className="table-cellx12 quotiosalinvlisxs6">
+                    {otherIcons?.status_svg}
+                    Actions
                   </div>
                 </div>
 
@@ -308,38 +379,38 @@ const HotelServices = ({ data }) => {
                               <div className="checkmark"></div>
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.room_number || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.occupancy_name || ""}
                             </div>
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.max_occupancy || ""}
                             </div>
 
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
                             >
                               {item?.bed_name || ""}
                             </div>
-                            <div
+                            {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
                             >
                               {item?.meal_name || ""}
-                            </div>
+                            </div> */}
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
                               <p style={{ width: "54%" }}>
@@ -349,15 +420,18 @@ const HotelServices = ({ data }) => {
                             </div>
 
                             <div
-                              onClick={() => handleRowClicked(item)}
+                              onClick={() => {
+                                handleStatusChange(item);
+                              }}
+                              // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                             >
                               <p
                                 className={
                                   item?.availability_status == "1"
-                                    ? "open"
+                                    ? "active1"
                                     : item?.availability_status == "0"
-                                    ? "declined"
+                                    ? "inactive1"
                                     : ""
                                 }
                               >
@@ -366,7 +440,32 @@ const HotelServices = ({ data }) => {
                                   : item?.availability_status == "0"
                                   ? "Unavailable"
                                   : ""}
+                                <span>
+                                  <MdArrowOutward />
+                                </span>
                               </p>
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs6">
+                              <span
+                                onClick={() => {
+                                  handleEditRoom(item);
+                                }}
+                              >
+                                {otherIcons.edit_svg}
+                              </span>
+                              <span
+                                style={{
+                                  cursor: "pointer",
+                                  color: "gray",
+                                  fontSize: "20px",
+                                  marginLeft: "10px",
+                                }}
+                                onClick={() => {
+                                  handleShowDetails(item);
+                                }}
+                              >
+                                <BsEye />
+                              </span>
                             </div>
                           </div>
                         ))}
@@ -389,7 +488,20 @@ const HotelServices = ({ data }) => {
             </div>
           </div>
         </div>
-
+        {showPopup && (
+          <HotelServicesDetails
+            data={passHotelData}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+          />
+        )}
+        {showAddPopup && (
+          <CreateHotelService
+            data={passRoomData}
+            showPopup={showAddPopup}
+            setShowPopup={setShowAddPopup}
+          />
+        )}
         <Toaster />
       </div>
     </>
