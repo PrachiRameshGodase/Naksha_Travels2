@@ -24,6 +24,7 @@ import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown0
 import { JournalDetails } from '../../../Redux/Actions/JournalAndAccount';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import { getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { formatDate } from '../../Helper/DateFormat';
 
 const CreateNewJournal = () => {
     const dispatch = useDispatch();
@@ -379,7 +380,7 @@ const CreateNewJournal = () => {
                                                     {otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.transaction_date}
-                                                        onChange={(date) => setFormData({ ...formData, transaction_date: date })}
+                                                        onChange={(date) => setFormData({ ...formData, transaction_date: formatDate(date) })}
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Select date"

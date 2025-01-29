@@ -30,6 +30,7 @@ import {
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
+import { formatDate } from '../../Helper/DateFormat';
 
 const CreateQuotation = () => {
 
@@ -84,7 +85,6 @@ const CreateQuotation = () => {
     calculateExpiryDate,
   } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect);
 
-
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {
 
@@ -134,7 +134,7 @@ const CreateQuotation = () => {
     dispatch(productTypeItemAction("Product"));
   }, [dispatch]);
 
-
+  // console.log("daaaaaaaaaaaaaaaa", formData?.transaction_date)
 
   return (
     <>
@@ -241,7 +241,7 @@ const CreateQuotation = () => {
                                   handleChange({
                                     target: {
                                       name: 'transaction_date',
-                                      value: date,
+                                      value: formatDate(date),
                                     },
                                   })
                                 }

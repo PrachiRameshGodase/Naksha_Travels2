@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import DatePicker from "react-datepicker";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 import { ManageCurrencyTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
 import { formatDate } from '../Helper/DateFormat';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { currencyRateListAction } from '../../Redux/Actions/manageCurrencyActions';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
+import useFetchApiData from '../Helper/ComponentHelper/useFetchApiData';
 
 const CurrencyList = () => {
 
   const currencyRateList = useSelector((state) => state?.currencyRateList);
   const currencyList = currencyRateList?.data?.data || []
-  // console.log("currencyListcurrencyListcurrencyList", currencyList)
 
-  const [selectedDate, setSelectedDate] = useState(); // Simplified state
-  const dispatch = useDispatch(); // Initialize dispatch
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date())); // Simplified state
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date); // Update the selected date state
-    const payload = {
-      date: formatDate(date),
-    }
-    // Dispatch the action with the selected date
-    dispatch(currencyRateListAction(payload));
-  };
+  // for fetch the today's currencies list on page load
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    date: selectedDate,
+  }), [selectedDate]);
+  useFetchApiData(currencyRateListAction, payloadGenerator, [selectedDate]);
 
   return (
     <>
@@ -63,9 +59,9 @@ const CurrencyList = () => {
                       {otherIcons.date_svg}
                       <DatePicker
                         selected={selectedDate}
-                        onChange={handleDateChange} // Call handleDateChange when a date is selected
+                        onChange={(date) => setSelectedDate(date)} // Call handleDateChange when a date is selected
                         name="date"
-                        dateFormat="dd-MM-yyyy"
+                        dateFormat="yyyy-MM-dd"
                         autoComplete="off"
                         maxDate={new Date()}
                         placeholderText="Select Date to Display Currencies"
