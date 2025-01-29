@@ -1,18 +1,15 @@
 import { billStatus } from "../../../Redux/Actions/billActions";
-import { GRNstatusActions } from "../../../Redux/Actions/grnActions";
 import { invoicesStatus } from "../../../Redux/Actions/invoiceActions";
-import { quotationLists } from "../../../Redux/Actions/listApisActions";
 import { CreditNotesStatus, debitNotesStatus } from "../../../Redux/Actions/notesActions";
 import { purchasesStatus } from "../../../Redux/Actions/purchasesActions";
 import { quotationStatus } from "../../../Redux/Actions/quotationActions";
 import { saleOrderStatus } from "../../../Redux/Actions/saleOrderActions";
-import { sendData } from "../HelperFunctions";
+
 
 export const convertStatus = (dispatch, section, navigate, itemId, convert, response, quotationData) => {
     // quotation to sale-order show sale-ordered status
     if (section === "sale-order" && convert === "quotationToSale") {
         dispatch(quotationStatus({ id: itemId, status: "7" }, null));
-        dispatch(quotationLists(sendData))//call list api when data is updated
     }
 
     // sent and approve quotation to invoice approval show Invoiced status

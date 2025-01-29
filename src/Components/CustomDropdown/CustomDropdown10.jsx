@@ -63,7 +63,8 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     setSearchTerm("");
   }, [isOpen, dispatch]);
 
-
+  // console.log("cusData", cusData)
+  // console.log("options", options)
   return (
     <div data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
       data-tooltip-id="my-tooltip"

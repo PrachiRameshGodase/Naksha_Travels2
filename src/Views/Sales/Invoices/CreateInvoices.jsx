@@ -55,14 +55,11 @@ const CreateSalesOrders = ({ section }) => {
 
     //for convert 
     useEffect(() => {
-        console.log("itemId", itemId)
-        console.log("convert", convert)
-        console.log("quoteDetails", quoteDetails)
+
         if (!itemId) return; // Exit early if no itemId
         if (invoiceDetails && itemId) {
             setFetchDetails(invoiceDetails);
         } else if (itemId && (convert === "quotationToInvoice" && quoteDetails)) {
-            console.log("callllllllllllllllllllllllllll")
             setFetchDetails(quoteDetails);
 
         } else if (itemId && convert === "saleToInvoice" && saleDetails) {
