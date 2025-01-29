@@ -53,7 +53,7 @@ const CreateInsurancePopup = ({
     mice_id: data?.id,
     passenger_id: passengerId,
     entry_type: "",
-    passenger_insurance_id: "",
+    passenger_insurance_id: 0,
     company_name: "",
     policy_no: null,
     insurance_plan: null,
@@ -80,7 +80,7 @@ const CreateInsurancePopup = ({
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
-    passenger_insurance_id: false,
+    // passenger_insurance_id: false,
     guest_ids: false,
     policy_no: false,
     insurance_plan: false,
@@ -122,13 +122,12 @@ const CreateInsurancePopup = ({
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
-      passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
+      // passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -222,7 +221,7 @@ const CreateInsurancePopup = ({
                     </div> */}
 
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Passenger<b className="color_red">*</b>
                         </label>
@@ -258,7 +257,7 @@ const CreateInsurancePopup = ({
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>Company Name</label>
                         <span>
@@ -297,9 +296,6 @@ const CreateInsurancePopup = ({
                           </p>
                         )}
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock ">
                         <label>Issue Date</label>
                         <span>
@@ -316,9 +312,16 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                      
                       <div className="form_commonblock ">
                         <label>Expiry Date</label>
                         <span>
@@ -335,6 +338,9 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                       </div>
@@ -378,8 +384,6 @@ const CreateInsurancePopup = ({
                           )}
                         </div>
                       </div>
-                    </div>
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Insurance Plan<b className="color_red">*</b>
@@ -406,7 +410,10 @@ const CreateInsurancePopup = ({
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                    </div>
+                    <div className="f1wrapofcreqx1">
+                     
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -428,8 +435,7 @@ const CreateInsurancePopup = ({
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

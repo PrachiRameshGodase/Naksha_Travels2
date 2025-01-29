@@ -278,6 +278,9 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                         {errors?.issue_date && (
@@ -306,6 +309,9 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                         {errors?.expiry_date && (
@@ -349,7 +355,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -371,8 +377,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}

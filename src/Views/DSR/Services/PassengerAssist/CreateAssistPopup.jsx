@@ -186,6 +186,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="airport_name"
                             placeholder="Enter Airport Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.airport_name && (
@@ -210,12 +211,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="meeting_type"
                             placeholder="Enter Meeting Type"
+                            autoComplete="off"
                           />
                         </span>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           No Of Persons<b className="color_red">*</b>
@@ -244,7 +243,11 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock">
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                     
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -266,8 +269,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

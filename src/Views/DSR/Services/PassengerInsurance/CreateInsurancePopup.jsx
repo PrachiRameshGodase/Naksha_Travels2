@@ -344,7 +344,7 @@ const CreateInsurancePopup = ({
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -368,8 +368,7 @@ const CreateInsurancePopup = ({
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

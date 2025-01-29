@@ -108,7 +108,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.air_line_code || "",
+        // air_line_code: selectedRoom?.air_line_code || "",
         // destination_code: selectedRoom?.destination_code || "",
       };
     }
@@ -122,7 +122,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
-        air_line_code: false, // Clear error for meal when room changes
+        // air_line_code: false, // Clear error for meal when room changes
         // destination_code: false, // Clear error for bed
       }),
       [name]: false,
@@ -160,7 +160,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -377,11 +376,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        data-tooltip-content={
-                          isDisabled ? "According to airport it is getting" : ""
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom"
+                       
                         className="form_commonblock"
                       >
                         <label>
@@ -395,7 +390,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              disabled={isDisabled}
+                              autoComplete="off"
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -542,7 +537,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -565,7 +560,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      {/* </div>  */}
 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload

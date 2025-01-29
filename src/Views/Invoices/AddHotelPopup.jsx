@@ -205,6 +205,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
   const isDisabled = formData.room_id;
+  const isDisabled2 = formData.hotel_id;
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
@@ -283,7 +284,9 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div className={`form_commonblock ${formData?.hotel_id ? "" : "disabledfield"
-                        }`}>
+                        }`}  data-tooltip-content={formData?.hotel_id ? "" : "Please Select Hotel First"}
+                        data-tooltip-id="my-tooltip"
+                         data-tooltip-place="bottom">
                         <label>
                           Room Number/Name<b className="color_red">*</b>
                         </label>
@@ -303,7 +306,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             cusData={cusData4}
                             type="vendor"
                             hotelID={formData.hotel_id}
-                            required
+                            disabled={isDisabled2}
                           />
                         </span>
                         {errors?.room_id && (
@@ -563,7 +566,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -585,7 +588,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>Total Days</label>
                         <div id="inputx1">

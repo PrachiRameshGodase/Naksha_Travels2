@@ -191,9 +191,6 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </span>
                         </div>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
                           Pickup Location<b className="color_red">*</b>
@@ -220,6 +217,10 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </p>
                         )}
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                     
                       <div className="form_commonblock">
                         <label>
                           Drop Location<b className="color_red">*</b>
@@ -246,7 +247,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -269,7 +270,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="f1wrapofcreqx1">

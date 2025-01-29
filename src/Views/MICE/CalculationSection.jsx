@@ -125,10 +125,9 @@ const CalculationSection = ({
                                                       ? otherIcons?.down_arrow_svg
                                                       : otherIcons?.up_arrow_svg}
                 {/* <span
-                  title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total."
                   style={{ marginTop: "10px" }}
                 >
-                  {otherIcons.question_svg}
+                  Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total.
                 </span> */}
               </p>
             </label>

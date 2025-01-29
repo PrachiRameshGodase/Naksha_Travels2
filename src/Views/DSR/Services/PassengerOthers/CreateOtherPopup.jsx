@@ -246,7 +246,17 @@ console.log("options2", options2)
                         </div>
                         
                       </div>
-                      <div className="form_commonblock">
+                      <div id="imgurlanddesc" className="calctotalsectionx2">
+                        <ImageUpload
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgeLoader}
+                          component="purchase"
+                        />
+                      </div>
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -268,7 +278,7 @@ console.log("options2", options2)
                           </span>
                         </div>
 
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="f1wrapofcreqx1">
@@ -302,16 +312,7 @@ console.log("options2", options2)
                         </div>
                       </div> */}
                      
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <ImageUpload
-                          formData={formData}
-                          setFormData={setFormData}
-                          setFreezLoadingImg={setFreezLoadingImg}
-                          imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
-                          component="purchase"
-                        />
-                      </div>
+                     
                     </div>
 
                     <div className="f1wrapofcreqx1">

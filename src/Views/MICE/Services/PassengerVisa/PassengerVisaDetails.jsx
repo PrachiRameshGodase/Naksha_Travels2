@@ -22,7 +22,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.visa_passenger?.display_name || ""}</h5>
+                <h5>Passenger Name : {data?.visa_passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -112,7 +112,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                     />
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Family Members</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
@@ -121,7 +121,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                       .filter(Boolean)
                                       .join(", ")}
                                   </p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Days</span>
                                   <h1>:</h1>
@@ -153,11 +153,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p>{data?.supplier_name || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Visa Price</span>
                                   <h1>:</h1>

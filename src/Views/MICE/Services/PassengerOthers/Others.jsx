@@ -115,9 +115,9 @@ const Others = ({ data, totalItems }) => {
                     {otherIcons?.quotation_icon}
                     Quantity
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs6_item">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs6_item">
                   <p>{currencySymbol} {" "}Price</p>
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>{currencySymbol} {" "}Total Amount</p>
                     
@@ -173,18 +173,18 @@ const Others = ({ data, totalItems }) => {
                             >
                               {item?.quantity || ""}
                             </div>
-                            <div
+                            {/* <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
                               <p style={{width:"41%"}}> {item?.price || ""}</p>
                              
-                            </div>
+                            </div> */}
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"67%"}}>{item?.total_amount || ""}</p>
+                              <p style={{width:"55%"}}>{item?.total_amount || ""}</p>
                               
                             </div>
                             <div

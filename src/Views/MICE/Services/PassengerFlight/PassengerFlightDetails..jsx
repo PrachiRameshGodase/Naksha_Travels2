@@ -21,7 +21,7 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.airline_name || ""}</h5>
+                <h5>Airline Name : {data?.airline_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -122,13 +122,13 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.route || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                               </ul>
                               <ul>
                                 <li>

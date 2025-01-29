@@ -170,7 +170,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                     marginLeft: "10px",
                   }}
                   onClick={() => {
-                    navigate(`/dashboard/serviceslist?id=${passenger?.id}`);
+                    navigate(`/dashboard/mice-serviceslist?id=${passenger?.id}`);
                   }}
                 >
                   <BsEye />

@@ -21,7 +21,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.hotel_name}</h5>
+                <h5>Hotel Name : {data?.hotel_name}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -144,13 +144,13 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                     {formatDate3(data?.check_out_date) || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                               </ul>
                               <ul>
                                 <li>

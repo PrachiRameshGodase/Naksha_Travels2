@@ -20,7 +20,7 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>
+                <h5>Vehicle Type : 
                   <ShowUserMastersValue
                     type="41"
                     id={data?.vehicle_type_id || ""}
@@ -102,13 +102,13 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
 
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                                 <li className="pendingfromfrontendx5">
                                   <span>Carhire Price</span>
                                   <h1>:</h1>

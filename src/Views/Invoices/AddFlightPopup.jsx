@@ -338,11 +338,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        data-tooltip-content={
-                          isDisabled ? "According to airport it is getting" : ""
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom"
+                        
                         className="form_commonblock"
                       >
                         <label>
@@ -415,14 +411,14 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             {otherIcons.name_svg}
                             <CustomDropdown31
                               ref={dropdownRef1}
-                              label="Select Guest"
+                              label="Select Passenger"
                               options={cusList?.data?.user}
                               value={formData.guest_ids}
                               onChange={(selectedItems) =>
                                 handleChange1(selectedItems, "guest_ids")
                               }
                               name="guest_ids"
-                              defaultOption="Select Guest"
+                              defaultOption="Select Passenger"
                               setcusData={setcusData}
                               cusData={cusData}
                               type="vendor"
@@ -531,7 +527,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -551,7 +547,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div
                         className="secondtotalsections485s"
