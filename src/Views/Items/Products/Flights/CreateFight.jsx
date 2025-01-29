@@ -30,15 +30,15 @@ const CreateFlight = ({ popupContent }) => {
   });
   const [errors, setErrors] = useState({
     flight_name: false,
-    air_line_code: false,
-    destination_code:false
+    // air_line_code: false,
+    // destination_code:false
   });
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     let newErrors = {
       flight_name: formData?.flight_name ? false : true,
-      air_line_code: formData?.air_line_code ? false : true,
-      destination_code: formData?.destination_code ? false : true,
+      // air_line_code: formData?.air_line_code ? false : true,
+      // destination_code: formData?.destination_code ? false : true,
 
     };
     setErrors(newErrors);
@@ -92,7 +92,7 @@ const CreateFlight = ({ popupContent }) => {
   return (
     <div id="formofcreateitems">
       <div className="custom-modal" >
-        <div className="modal-content" >
+        <div className="modal-content"  style={{ width: "50%" }}>
           <div className="modal-header">
             <h5>
               {isEditIndividual
@@ -111,7 +111,7 @@ const CreateFlight = ({ popupContent }) => {
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "120xpx", minHeight:"100px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "0px", minHeight:"100px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -125,6 +125,7 @@ const CreateFlight = ({ popupContent }) => {
                             onChange={handleChange}
                             name="flight_name"
                             placeholder="Enter Airline Name"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.flight_name && (
@@ -140,7 +141,7 @@ const CreateFlight = ({ popupContent }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Airline Code<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
@@ -165,8 +166,8 @@ const CreateFlight = ({ popupContent }) => {
                           </p>
                         )}
                         </div>
-                      </div>
-                      <div className="form_commonblock">
+                      </div> */}
+                      {/* <div className="form_commonblock">
                         <label>Destination Code<b className="color_red">*</b></label>
 
                         <span id="">
@@ -193,7 +194,7 @@ const CreateFlight = ({ popupContent }) => {
                             Please Select Destination Code
                           </p>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

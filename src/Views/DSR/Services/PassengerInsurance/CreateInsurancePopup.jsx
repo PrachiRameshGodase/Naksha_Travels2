@@ -11,7 +11,7 @@ import {
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
@@ -140,7 +140,7 @@ const CreateInsurancePopup = ({
   }
   };
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
+  const payloadGenerator = useMemo(() => () => ({ ...sendData}), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
@@ -237,6 +237,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="company_name"
                             placeholder="Enter Company Name"
+                            autoComplete="off"
                           />
                         </span>
                       </div>
@@ -251,6 +252,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="policy_no"
                             placeholder="Enter Policy No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.policy_no && (
@@ -285,6 +287,9 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                       </div>
@@ -304,6 +309,9 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                       </div>
@@ -318,6 +326,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="insurance_plan"
                             placeholder="Enter Insurance Plan"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.insurance_plan && (

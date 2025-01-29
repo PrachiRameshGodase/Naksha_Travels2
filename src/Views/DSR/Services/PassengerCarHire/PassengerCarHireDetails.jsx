@@ -20,7 +20,7 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>
+                <h5> Vehicle Type : {" "}
                   <ShowUserMastersValue
                     type="41"
                     id={data?.vehicle_type_id || ""}

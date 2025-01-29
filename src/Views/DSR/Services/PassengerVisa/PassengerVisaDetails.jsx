@@ -22,7 +22,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.visa_passenger?.display_name || ""}</h5>
+                <h5> Passenger Name : {data?.visa_passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -140,11 +140,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p>{data?.supplier_name || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Visa Price</span>
                                   <h1>:</h1>

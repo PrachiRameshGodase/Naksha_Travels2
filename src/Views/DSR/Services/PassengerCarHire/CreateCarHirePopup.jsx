@@ -232,6 +232,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                               placeholder="Enter Days"
                               value={formData.days}
                               onChange={(e) => handleChange(e)}
+                              
                             />
                           </span>
                         </div>
@@ -247,6 +248,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="pickup_location"
                             placeholder="Enter Pickup Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.pickup_location && (
@@ -276,6 +278,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="drop_location"
                             placeholder="Enter Drop Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.drop_location && (

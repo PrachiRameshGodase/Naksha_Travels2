@@ -86,8 +86,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     visa_no: false,
     expiry_date: false,
     days:false,
-    guest_ids: false,
-    supplier_id: false,
+    // guest_ids: false,
     gross_amount: false,
 
     // retain: false,
@@ -168,8 +167,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
       days: formData?.days ? false : true,
-      supplier_id: formData?.supplier_id ? false : true,
-      guest_ids: formData?.guest_ids ? false : true,
+      // guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -299,6 +297,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="passport_no"
                             placeholder="Enter Passport No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.passport_no && (
@@ -385,6 +384,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="visa_no"
                             placeholder="Enter Visa No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.visa_no && (
@@ -536,6 +536,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                         {errors?.issue_date && (
@@ -564,6 +567,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                         {errors?.expiry_date && (
@@ -579,7 +585,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Guest Name<b className="color_red">*</b>
                         </label>
@@ -652,8 +658,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

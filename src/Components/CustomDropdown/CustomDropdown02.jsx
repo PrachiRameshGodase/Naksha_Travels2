@@ -7,7 +7,7 @@ import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 
 
 const CustomDropdown02 = forwardRef((props, ref) => {
-  const { hotelID, options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877 } = props;
+  const { hotelID, options, value, onChange, name, type, setcusData, cusData, defaultOption, style, sd154w78s877,disabled } = props;
   const {
     isOpen,
     setIsOpen,
@@ -57,7 +57,7 @@ const CustomDropdown02 = forwardRef((props, ref) => {
           <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      {isOpen && (
+      {disabled && isOpen && (
         <div className="dropdown-options">
           <RiSearch2Line id="newsvgsearchicox2" />
           <input

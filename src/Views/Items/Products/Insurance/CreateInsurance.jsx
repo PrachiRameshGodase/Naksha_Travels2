@@ -125,6 +125,7 @@ const CreateInsurance = ({ popupContent }) => {
                               onChange={handleChange}
                               name="company_name"
                               placeholder="Enter Company Name"
+                              autoComplete="off"
                             />
                           </span>
                           {errors?.company_name && (
