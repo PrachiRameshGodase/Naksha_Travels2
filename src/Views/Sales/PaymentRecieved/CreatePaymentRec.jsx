@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -29,6 +29,7 @@ import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailT
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const CreatePaymentRec = () => {
     const dispatch = useDispatch();
@@ -106,7 +107,7 @@ const CreatePaymentRec = () => {
 
     });
 
-    console.log("formdata of payment receive", formData)
+    console.log("fetchDetailsfetchDetailsfetchDetailsve", fetchDetails)
 
     useEffect(() => {
         if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && invoice) {
@@ -129,7 +130,7 @@ const CreatePaymentRec = () => {
                 bank_charges: fetchDetails?.bank_charges,
                 transaction_date: formatDate(fetchDetails?.transaction_date), // payment date
                 fy: fetchDetails?.fy,
-                display_name: fetchDetails.display_name,
+                display_name: fetchDetails?.display_name,
                 payment_mode: (+fetchDetails?.payment_mode || 0),
                 to_acc: (+fetchDetails?.to_acc?.id || 0), // deposit to
                 tax_deducted: (+fetchDetails?.tax_deducted || 0),
@@ -152,6 +153,10 @@ const CreatePaymentRec = () => {
                 setIsCustomerSelect(true);
             }
 
+            if (fetchDetails?.customer) {
+                setcusData(fetchDetails?.customer);//if vendor data found in detail api
+
+            }
             if (fetchDetails?.debit || fetchDetails?.total) {
                 setIsAmoutSelect(true)
             }
@@ -193,7 +198,7 @@ const CreatePaymentRec = () => {
         if (isChecked?.checkbox1) {
             setFormData({
                 ...formData,
-                debit: (+invoiceDatas?.unpaid_amount),
+                debit: (parseInt(invoiceDatas?.unpaid_amount).toFixed(2)),
             });
             setIsAmoutSelect(true);
         } else {
@@ -343,14 +348,13 @@ const CreatePaymentRec = () => {
         }));
     }, [cusData]);
 
-
     useEffect(() => {
         if (itemId && !paymentDetail) {
             dispatch(paymentRecDetail({ id: itemId }));
         }
-        dispatch(accountLists());
     }, [dispatch]);
 
+    useFetchApiData(accountLists, useMemo(() => () => ({}), []), []);//call account list api one at page load
 
     // image upload from firebase
     const [imgLoader, setImgeLoader] = useState("");
@@ -386,7 +390,7 @@ const CreatePaymentRec = () => {
                                     <div className="form_commonblock">
                                         <label >Customer Name<b className='color_red'>*</b></label>
                                         <div id='sepcifixspanflex'>
-
+                                            {console.log("formdaaaaaa", formData)}
                                             <span id=''>
                                                 {otherIcons.name_svg}
                                                 <CustomDropdown10
@@ -418,7 +422,8 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock">
                                             <label className='clcsecx12s1'>Amount Received<b className='color_red'>*</b></label>
-                                            <span >
+
+                                            <span>
                                                 {otherIcons.vendor_svg}
                                                 <input
                                                     autoComplete='off'
@@ -429,7 +434,7 @@ const CreatePaymentRec = () => {
                                                     onChange={handleChange}
                                                     placeholder='Enter Received Amount'
                                                     className={`${!isChecked?.checkbox1 ? "disabledfield" : ""}`}
-
+                                                    disabled={!isChecked?.checkbox1}
                                                 />
                                             </span>
                                             {
@@ -576,7 +581,7 @@ const CreatePaymentRec = () => {
                                                     formsValues={{ handleChange, formData }}
                                                     placeholder='Will be displayed on the estimate'
                                                     name="customer_note"
-                                                    value={formData?.customer_note}
+                                                    value={preventZeroVal(formData?.customer_note)}
                                                 />
                                             </div>
 
@@ -588,7 +593,7 @@ const CreatePaymentRec = () => {
                                                     <label>Amount received: ({currencySymbol})</label>
                                                     <input
                                                         type="text"
-                                                        value={formData?.debit?.toFixed(2)}
+                                                        value={parseInt(formData?.debit)?.toFixed(2)}
                                                         readOnly
                                                         placeholder='0.00'
                                                         className='inputsfocalci465s'

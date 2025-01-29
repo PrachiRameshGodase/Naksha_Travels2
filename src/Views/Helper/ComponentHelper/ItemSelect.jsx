@@ -511,7 +511,6 @@ const ItemSelect = ({
     };
 
 
-
     const firstEmptyRowIndex = formData?.items.findIndex(
       (item) =>
         !(item.item_name && item.item_name.trim()) &&
@@ -619,7 +618,7 @@ const ItemSelect = ({
     }
   };
 
-  // console.log("formdataof item", formData?.items)
+  console.log("formdataof item", formData?.items)
 
   return (
     <>
@@ -867,7 +866,7 @@ const ItemSelect = ({
 
                   {/* Tax Rate */}
                   <td className="table_column_item item_table_text_transform">
-                    {item?.item_id == 0 || item?.item_name === "" || item?.tax_rate == 0 ? (
+                    {item?.item_name === "" || item?.tax_rate == 0 ? (//it the selected row have no item name and no tax rate only we given the option of tax rate selection.
                       <CustomDropdown13
                         options={tax_rate}
                         value={item?.tax_rate}

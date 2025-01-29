@@ -28,6 +28,7 @@ import { invoiceSend } from "../../Redux/Actions/invoiceActions";
 import { billSend } from "../../Redux/Actions/billActions";
 import { TermsAndConditions } from "../../Views/Common/InsideSubModulesCommon/DetailInfo";
 import { activeOrg } from "../../Views/Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { MultiImageUploadEmail } from "../../Views/Helper/ComponentHelper/ImageUpload";
 const modules = {
   toolbar: [
     [{ font: [] }],

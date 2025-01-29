@@ -59,7 +59,6 @@ export const updatePaymentRec = (quotationData, navigate, section, editDub, butt
                 paymentMadeNavigation(editDub, navigate);
             }
             else if (section === "payment_rec") {
-                dispatch(paymentRecList({ ...sendData, inout: 1 }));
                 paymentReceiveNavigation(editDub, navigate);
             }
         } else {
@@ -143,8 +142,6 @@ export const paymentRecDelete = (quotationData, Navigate, val) => async (dispatc
         });
 
         if (data?.message === "Payment Deleted Successfully" && val) {
-            dispatch(paymentRecList({ ...sendData, inout: 1 }));
-            dispatch
             toast.success(data?.message);
             Navigate(`/dashboard/${val}`);
         }
@@ -165,7 +162,6 @@ export const paymentRecStatus = (quotationData, Navigate, setCallApi) => async (
             `/payments/status`,
             quotationData
         );
-        dispatch(paymentRecList({ ...sendData, inout: 1 }));
         if (setCallApi) {
             if (data?.message === "Sales Order Declined Updated Successfully") {
                 toast.success(data?.message);
@@ -213,7 +209,6 @@ export const paymentRecSend = (quotationData, Navigate) => async (dispatch) => {
         // console.log("quotaion send data", quotationData)
 
         if (data?.message === "PaymentRec sent Successfully") {
-            dispatch(paymentRecList({ ...sendData, inout: 1 }));
             const sendData = {
                 id: quotationData?.id,
                 status: 6,

@@ -49,7 +49,6 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
             const parsedServiceData = val?.service_data
               ? JSON.parse(val.service_data)
               : {};
-            console.log("parsedServiceData", itemsData?.items)
             return (
               <tr key={index} className="table_head_item_02_row">
                 <td className="table_column_item">{index + 1}</td>
@@ -554,6 +553,7 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
           There are no unpaid invoices associated with this customer.
         </p>
       )}
+
       {/*  */}
 
       <div className="finalcalculateiosxl44s">
@@ -567,12 +567,9 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
             +payment?.amt_excess
           )}
         </h5></p>
-
-
         <p><p className='finalcalcuFs'>Amount Used For Payment:</p> <h5>{calculateTotalAmount()}</h5></p>
-
-
       </div >
+
       {/*  */}
 
 
