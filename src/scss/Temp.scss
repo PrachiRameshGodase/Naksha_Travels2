@@ -72,10 +72,8 @@
 .approvedClassNameInvoice {
   background: #44b678;
   position: absolute;
-  // left: -12%;
-  // top: -13%;
-  left: -14%;
-  top: -12%;
+  left: -11%;
+  top: -9%;
   color: #ffffff;
   transform: rotate(309deg);
   transform-origin: right bottom;
@@ -202,6 +200,7 @@
   font-size: 14px;
   border: 4px double $primary09;
 }
+
 .convertedClassName2 {
   background: #dfac21;
   position: absolute;
