@@ -547,17 +547,17 @@ export const SubmitButton5 = ({ isEdit, itemId, onClick, cancel }) => {
   );
 };
 
-export const SubmitButton6 = ({ onClick, createUpdate, setShowModal }) => {
+export const SubmitButton6 = ({ onClick, createUpdate, setShowModal,isEdit }) => {
   return (
     <div className="actionbarcommon">
-      {/* {isEdit && itemId ? (
+      {isEdit  ? (
         <>
-          <button className={`firstbtnc1`} type="submit">
-            Update
+          <button className={`firstbtnc1 ${createUpdate?.loading ? "disabledbtn" : ""} `} onClick={onClick}>
+          {createUpdate?.loading ? "Update" : "Update"}
           </button>
         </>
       ) : (
-        <> */}
+        <>
       <button
         // className={`firstbtnc1`}
         className={`firstbtnc1 ${createUpdate?.loading ? "disabledbtn" : ""} `}
@@ -566,8 +566,8 @@ export const SubmitButton6 = ({ onClick, createUpdate, setShowModal }) => {
       >
         {createUpdate?.loading ? "Save" : "Save"}
       </button>
-      {/* </>
-      )} */}
+      </>
+      )}
 
       <button
         className={`firstbtnc2 ${createUpdate?.loading ? "disabledbtn" : ""} `}

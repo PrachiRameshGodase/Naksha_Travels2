@@ -108,6 +108,8 @@
 .overdue,
 .close,
 .open,
+.active1,
+.inactive1,
 .invoiced2 {
   padding: 12px 0px 12px 10px !important;
   max-width: 143px;
@@ -171,7 +173,22 @@
     background: $primary;
   }
 }
+.active1 {
+  background: #c2f3d2;
+  color: $btext;
 
+  &:before {
+    background: #c2f3d2;
+  }
+}
+.inactive1 {
+  background: #f5baba;;
+  color: $btext;
+
+  &:before {
+    background: #f5baba;;
+  }
+}
 .open,
 .invoiced {
   background: #edf2fe;

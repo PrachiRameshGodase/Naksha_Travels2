@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
-import { ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import NumericInput from "../Helper/NumericInput";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
@@ -13,6 +13,7 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import Swal from "sweetalert2";
+import CustomDropdown31 from "../../Components/CustomDropdown/CustomDropdown31";
 
 const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -20,10 +21,12 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
+  const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
   const createCarHire = useSelector((state) => state?.createPassengerCarHire);
 
   const [cusData1, setcusData1] = useState(null);
+  const [cusData, setcusData] = useState(null);
 
   const [formData, setFormData] = useState({
     service_name: "Car Hire",
@@ -48,7 +51,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
     vehicle_type_id: false,
     pickup_location: false,
     drop_location: false,
-
+    guest_ids:false
     // retain: false,
   });
   const entryType = ShowUserMasterData("50");
@@ -70,6 +73,16 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
       [name]: false,
     }));
   };
+  const handleChange1 = (selectedItems, name) => {
+    setFormData({
+      ...formData,
+      guest_ids: selectedItems, // Update selected items array
+    });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -77,6 +90,8 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
       vehicle_type_id: formData?.vehicle_type_id ? false : true,
       pickup_location: formData?.pickup_location ? false : true,
       drop_location: formData?.drop_location ? false : true,
+      guest_ids: formData?.guest_ids ? false : true,
+      
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -247,6 +262,46 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </p>
                         )}
                       </div>
+                        <div className="form_commonblock">
+                        <label>
+                          Guest Name<b className="color_red">*</b>
+                        </label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown31
+                              ref={dropdownRef1}
+                              label="Select Guest"
+                              options={cusList?.data?.user}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Guest"
+                              setcusData={setcusData}
+                              cusData={cusData}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    
                       {/* <div className="form_commonblock">
                         <label>
                           Supplier

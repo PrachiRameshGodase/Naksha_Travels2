@@ -6,7 +6,9 @@ import CustomDropdown02 from "../../../../Components/CustomDropdown/CustomDropdo
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import CustomDropdown31, {
+  CustomDropdown031,
+} from "../../../../Components/CustomDropdown/CustomDropdown31";
 import { customersView } from "../../../../Redux/Actions/customerActions";
 import { hotelRoomListAction } from "../../../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
@@ -60,6 +62,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     occupancy_id: "",
     meal_id: "",
     bed: "",
+    max_occupancy: null,
     guest_ids: "",
     booking_date: formatDate(new Date()),
     check_in_date: "",
@@ -94,7 +97,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     check_out_date: false,
     check_in_date: false,
     gross_amount: false,
-
+    max_occupancy: false,
     // retain: false,
     total_amount: false,
   });
@@ -109,27 +112,49 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     let updatedFields = { [name]: value };
 
     if (name === "hotel_id") {
       const selectedHotel = hotelList?.find((item) => item?.id == value);
       dispatch(hotelRoomListAction({ hotel_id: selectedHotel?.id }));
+
       updatedFields = {
         ...updatedFields,
         hotel_name: selectedHotel?.hotel_name || "",
+        room_id: "",
+        room_number: "",
+        occupancy_id: "",
+        meal_id: "",
+        bed: "",
+        max_occupancy: "",
+        gross_amount: "",
+        guest_ids: "",
       };
     }
+
     if (name === "room_id") {
       const selectedRoom = hotelRoomListData?.find((room) => room?.id == value);
       updatedFields = {
         ...updatedFields,
-        room_name: selectedRoom?.room_name || "",
+        room_id: selectedRoom?.id,
+        room_number: selectedRoom?.room_number || "",
         occupancy_id: selectedRoom?.occupancy_id || "",
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
-        gross_amount:selectedRoom?.price
+        max_occupancy: selectedRoom?.max_occupancy,
+        gross_amount: selectedRoom?.price,
       };
+
+      // If the new max_occupancy is smaller than selected guests, trim guest_ids
+      if (formData.guest_ids.length > selectedRoom?.max_occupancy) {
+        updatedFields.guest_ids = formData.guest_ids.slice(
+          0,
+          selectedRoom?.max_occupancy
+        );
+      }
     }
+
     if (name === "supplier_id") {
       const selectedHotel = vendorList?.data?.user?.find(
         (item) => item?.id == value
@@ -144,25 +169,33 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prev,
       ...updatedFields,
     }));
+
     setErrors((prevData) => ({
       ...prevData,
       ...updatedFields,
       ...(name === "room_id" && {
         occupancy_id: false,
-        meal_id: false, 
-        bed: false, 
-        gross_amount:false
+        meal_id: false,
+        bed: false,
+        gross_amount: false,
+        max_occupancy: false,
       }),
       [name]: false,
     }));
   };
 
   const handleChange1 = (selectedItems, name) => {
-    setFormData({
-      ...formData,
-      guest_ids: selectedItems,
-    });
-    
+    if (selectedItems.length > formData.max_occupancy) {
+      toast.error(
+        `You cannot select more than ${formData.max_occupancy} guests.`
+      );
+      return;
+    } else {
+      setFormData({
+        ...formData,
+        guest_ids: selectedItems,
+      });
+    }
   };
   const handleDateChange = (date, name) => {
     setFormData((prev) => ({
@@ -187,8 +220,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       check_out_date: formData?.check_out_date ? false : true,
       check_in_date: formData?.check_in_date ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-
-      // retain: formData?.retain ? false : true,
+      max_occupancy: formData?.max_occupancy ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -196,11 +228,10 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -240,6 +271,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   // call item api on page load...
   const isDisabled = formData.room_id;
   const isDisabled2 = formData.hotel_id;
+
   return (
     <>
       <div id="formofcreateitems">
@@ -326,9 +358,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           className={`form_commonblock ${
                             formData?.hotel_id ? "" : "disabledfield"
                           }`}
-                          data-tooltip-content={formData?.hotel_id ? "" : "Please Select Hotel First"}
+                          data-tooltip-content={
+                            formData?.hotel_id
+                              ? ""
+                              : "Please Select Hotel First"
+                          }
                           data-tooltip-id="my-tooltip"
-                           data-tooltip-place="bottom"
+                          data-tooltip-place="bottom"
                         >
                           <label>
                             Room Number/Name<b className="color_red">*</b>
@@ -340,7 +376,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               ref={dropdownRef1}
                               label="Room Name"
                               options={hotelRoomListData}
-                              value={formData.room_id}
+                              value={formData.room_id || ""}
                               onChange={handleChange}
                               name="room_id"
                               defaultOption="Select Room Number/Name"
@@ -457,6 +493,45 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
+                        <div
+                          data-tooltip-content={
+                            isDisabled ? "According to room it is getting" : ""
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom"
+                          className="form_commonblock"
+                        >
+                          <label>
+                            Max Occupancy Of Persons
+                            <b className="color_red">*</b>
+                          </label>
+                          <div id="inputx1">
+                            <span>
+                              {otherIcons.name_svg}
+                              <NumericInput
+                                name="max_occupancy"
+                                placeholder="Enter Max Occupancy"
+                                value={formData.max_occupancy}
+                                onChange={(e) => handleChange(e)}
+                                disabled={isDisabled}
+                              />
+                            </span>
+                            {errors?.max_occupancy && (
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Fill Max Occupancy Of Persons
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
                           <label>
                             Family Member<b className="color_red">*</b>
@@ -466,7 +541,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             <span id="">
                               {otherIcons.name_svg}
 
-                              <CustomDropdown31
+                              <CustomDropdown031
                                 ref={dropdownRef1}
                                 label="Select Family Member"
                                 options={customerData?.family_members}
@@ -479,13 +554,11 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 setcusData={setcusData}
                                 cusData={cusData}
                                 type="vendor"
-                                required
+                                formData={formData}
                               />
                             </span>
                           </div>
                         </div>
-                      </div>
-                      <div className="f1wrapofcreqx1">
                         <div className="form_commonblock ">
                           <label>
                             Booking Date<b className="color_red">*</b>
@@ -502,11 +575,15 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               dateFormat="dd-MM-yyyy"
                               autoComplete="off"
                               minDate={
-                                formData?.check_in_date ? new Date(formData.check_in_date) : null
+                                formData?.check_in_date
+                                  ? new Date(formData.check_in_date)
+                                  : null
                               }
                               maxDate={
-                                formData?.check_out_date ? new Date(formData.check_out_date) : null
-                            }
+                                formData?.check_out_date
+                                  ? new Date(formData.check_out_date)
+                                  : null
+                              }
                             />
                           </span>
                           {errors?.booking_date && (
@@ -541,7 +618,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 formData?.booking_date
                                   ? new Date(formData.booking_date)
                                   : null
-                              } 
+                              }
                               maxDate={
                                 formData?.check_out_date
                                   ? new Date(formData.check_out_date)
@@ -562,6 +639,31 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
+                      </div>
+                      <div className="f1wrapofcreqx1">
+                        {/* <div className="form_commonblock">
+                          <label>Supplier</label>
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+                              <CustomDropdown10
+                                ref={dropdownRef1}
+                                label="Select Supplier"
+                                options={vendorList?.data?.user}
+                                value={formData.supplier_id}
+                                onChange={handleChange}
+                                name="supplier_id"
+                                defaultOption="Select Supplier"
+                                setcusData={setcusData1}
+                                cusData={cusData1}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                          </div>
+
+                          {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
+                        {/* </div>  */}
                         <div className="form_commonblock ">
                           <label>
                             Checkout Date<b className="color_red">*</b>
@@ -599,31 +701,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                      </div>
-                      <div className="f1wrapofcreqx1">
-                        {/* <div className="form_commonblock">
-                          <label>Supplier</label>
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
-                              <CustomDropdown10
-                                ref={dropdownRef1}
-                                label="Select Supplier"
-                                options={vendorList?.data?.user}
-                                value={formData.supplier_id}
-                                onChange={handleChange}
-                                name="supplier_id"
-                                defaultOption="Select Supplier"
-                                setcusData={setcusData1}
-                                cusData={cusData1}
-                                type="vendor"
-                                required
-                              />
-                            </span>
-                          </div>
-
-                          {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                        {/* </div>  */}
                         <div className="form_commonblock">
                           <label>Total Days</label>
                           <div id="inputx1">

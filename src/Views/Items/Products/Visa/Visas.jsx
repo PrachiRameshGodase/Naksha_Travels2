@@ -343,9 +343,9 @@ const Visas = () => {
                                 <p
                                   className={
                                     item?.status == "1"
-                                      ? "approved"
+                                      ? "active1"
                                       : item?.status == "0"
-                                        ? "draft"
+                                        ? "inactive1"
                                         : ""
                                   }
                                 >

@@ -112,28 +112,22 @@ export const hotelDeleteActions = (queryParams, Navigate) => async (dispatch) =>
         toast.error(error?.message);
     }
 };
-export const CreateHotelRoomAction = (queryParams, Navigate,itemId) => async (dispatch) => {
+export const CreateHotelRoomAction = (queryParams, setShowPopup,refreshData) => async (dispatch) => {
     dispatch({ type: CREATE_HOTEL_ROOM_REQUEST });
+    console.log("refreshData", refreshData)
     try {
         const response = await axiosInstance.post(`/service/hotelroom/create/update`, queryParams);
-        dispatch({ type:CREATE_HOTEL_ROOM_REQUEST , payload: response.data });
-
-        if (response?.data?.message === "Hotel Room Added Successfully") {
+        if (response?.data?.success === true) {
+            dispatch({ type: CREATE_HOTEL_ROOM_SUCCESS, payload: response.data });
+            setShowPopup(false);
+            dispatch(hotelRoomListAction(refreshData))
             toast?.success(response?.data?.message);
-            Navigate(`/dashboard/hotel-details?id=${itemId}`)
-            
-        } else if (response?.data?.message === "Hotel Room Updated Successfully") {
-            toast?.success(response?.data?.message);
-            Navigate(`/dashboard/hotel-details?id=${itemId}`)
-            
-        } 
-        else {
+        } else {
+            dispatch({ type: CREATE_HOTEL_ROOM_ERROR, payload: response.data?.message });
             toast?.error(response?.data?.message);
+
         }
-
-        dispatch({ type: CREATE_HOTEL_ROOM_SUCCESS, payload: response.data });
-
-    } catch (error) {
+       } catch (error) {
         dispatch({ type: CREATE_HOTEL_ROOM_ERROR, payload: error.message });
         toast.error(error?.message);
     }
@@ -181,11 +175,11 @@ export const hotelRoomDetailsAction = (queryParams, setDetail_api_data) => async
     }
 };
 
-export const hotelRoomStatusActions = (queryParams, setCallApi, billData, autoId, tracking_details, Navigate) => async (dispatch) => {
+export const hotelRoomStatusActions = (queryParams, sendData2, billData, autoId, tracking_details, Navigate) => async (dispatch) => {
     dispatch({ type: HOTEL_ROOM_STATUS_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/hotelroom/status`, queryParams);
-        dispatch(hotelRoomListAction(queryParams));//update list then data is change
+        dispatch(hotelRoomListAction(sendData2));//update list then data is change
         if (response?.data?.message === "Rooom Status Updated Successfully") {
             toast.success(response?.data?.message);
             // setCallApi((preState) => !preState);
@@ -199,15 +193,15 @@ export const hotelRoomStatusActions = (queryParams, setCallApi, billData, autoId
     }
 };
 
-export const hotelRoomDeleteActions = (queryParams, Navigate) => async (dispatch) => {
+export const hotelRoomDeleteActions = (queryParams, sendData2) => async (dispatch) => {
     dispatch({ type: HOTEL_ROOM_DELETE_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/hotel/delete`, queryParams);
 
         if (response?.data?.message === "Room Deleted Successfully") {
-            dispatch(hotelListAction(queryParams));//update list then data is change
+            dispatch(hotelListAction(sendData2));//update list then data is change
             toast.success(response?.data?.message);
-            Navigate("/dashboard/hotels-services");
+            // Navigate("/dashboard/hotels-services");
         } else {
             toast.error(response?.data?.message);
         }

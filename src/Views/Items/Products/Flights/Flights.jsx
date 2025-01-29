@@ -382,15 +382,17 @@ const Flights = () => {
                               {item?.destination_code || ""}
                             </div> */}
                             <div
-                              // onClick={() => handleRowClicked(item)}
+                               onClick={() => {
+                                handleStatusChange(item);
+                              }}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
                               <p
                                 className={
                                   item?.status == "1"
-                                    ? "approved"
+                                    ? "active1"
                                     : item?.status == "0"
-                                      ? "draft"
+                                      ? "inactive1"
                                       : ""
                                 }
                               >
@@ -400,9 +402,7 @@ const Flights = () => {
                                     ? "Active"
                                     : ""}
                                 <span
-                                  onClick={() => {
-                                    handleStatusChange(item);
-                                  }}
+                                 
                                 >
                                   <MdArrowOutward />
                                 </span>

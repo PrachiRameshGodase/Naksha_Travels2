@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NumericInput = ({ value, onChange, name, placeholder, ...rest }) => {
+const NumericInput = ({ value, onChange, name, placeholder,disabled, ...rest }) => {
     return (
         <input
             autoComplete="off"
@@ -8,6 +8,7 @@ const NumericInput = ({ value, onChange, name, placeholder, ...rest }) => {
             value={value}
             onChange={onChange}
             name={name}
+            disabled={disabled}
             placeholder={placeholder}
             inputMode="decimal" // Suggests a numeric keypad on mobile devices
             pattern="^-?\d*\.?\d*$" // Allows negative numbers and decimal points
@@ -22,7 +23,7 @@ const NumericInput = ({ value, onChange, name, placeholder, ...rest }) => {
                 }
             }}
             {...rest}
-            style={{ width: "100%" }}
+            style={{ width: "100%", cursor:disabled? "not-allowed" :"pointer"}}
         />
 
 

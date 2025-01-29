@@ -360,9 +360,9 @@ const Hotels = () => {
                               <p
                                 className={
                                   item?.status == "1"
-                                    ? "open"
+                                    ? "active1"
                                     : item?.status == "0"
-                                      ? "declined"
+                                      ? "inactive1"
                                       : ""
                                 }
                               >

@@ -12,9 +12,7 @@ import SortBy from "../../../Common/SortBy/SortBy";
 import DatePicker from "../../../Common/DatePicker/DatePicker";
 import FilterBy from "../../../Common/FilterBy/FilterBy";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
-import {
-  useDebounceSearch,
-} from "../../../Helper/HelperFunctions";
+import { useDebounceSearch } from "../../../Helper/HelperFunctions";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
@@ -113,10 +111,10 @@ const Insurances = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-            dateRange[0]?.endDate && {
-              from_date: formatDate(new Date(dateRange[0].startDate)),
-              to_date: formatDate(new Date(dateRange[0].endDate)),
-            }),
+              dateRange[0]?.endDate && {
+                from_date: formatDate(new Date(dateRange[0].startDate)),
+                to_date: formatDate(new Date(dateRange[0].endDate)),
+              }),
         }),
       };
 
@@ -336,10 +334,11 @@ const Insurances = () => {
                       <>
                         {insuranceLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(item?.id)
-                              ? "selectedresult"
-                              : ""
-                              }`}
+                            className={`table-rowx12 ${
+                              selectedRows.includes(item?.id)
+                                ? "selectedresult"
+                                : ""
+                            }`}
                             key={index}
                           >
                             <div
@@ -361,7 +360,9 @@ const Insurances = () => {
                             </div>
 
                             <div
-                              // onClick={() => handleRowClicked(quotation)}
+                              onClick={() => {
+                                handleStatusChange(item);
+                              }}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
                               <div>
@@ -369,22 +370,18 @@ const Insurances = () => {
                                 <p
                                   className={
                                     item?.status == "1"
-                                      ? "approved"
+                                      ? "active1"
                                       : item?.status == "0"
-                                        ? "draft"
-                                        : ""
+                                      ? "inactive1"
+                                      : ""
                                   }
                                 >
                                   {item?.status == "0"
                                     ? "Inactive"
                                     : item?.status == "1"
-                                      ? "Active"
-                                      : ""}
-                                  <span
-                                    onClick={() => {
-                                      handleStatusChange(item);
-                                    }}
-                                  >
+                                    ? "Active"
+                                    : ""}
+                                  <span>
                                     <MdArrowOutward />
                                   </span>
                                 </p>
