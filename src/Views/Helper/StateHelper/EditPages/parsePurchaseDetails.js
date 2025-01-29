@@ -47,7 +47,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
         // if the item details data have no items then by default set an Item.
         [
             {
-                item_id: null,
+                item_id: 0,
                 unit_id: 0,
                 item_name: "",
                 tax_name: "",

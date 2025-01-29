@@ -76,7 +76,8 @@ export const handleFormSubmit1 = async ({
     // selection check
     if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
 
-    if ((section === "invoice" || section === "delivery_challan")) {
+    // it is worked when create credit note is opened....
+    if ((formData?.credit_note_id)) {
         if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
     }
 

@@ -17,9 +17,7 @@ import bellAnimationData from '../../LottieAnimations/bellAnimation.json';
 import Lottie from "lottie-react";
 import helpIco from '../../assets/outlineIcons/othericons/helpIco.svg';
 import LogoutxkIco from '../../assets/outlineIcons/othericons/LogoutxkIco.svg';
-import accountmanageIco from '../../assets/outlineIcons/othericons/accountmanageIco.svg';
-import inviteUserIco from '../../assets/outlineIcons/othericons/inviteUserIco.svg';
-import feedbacksendIco from '../../assets/outlineIcons/othericons/feedbacksendIco.svg';
+
 import appsIcon from '../../assets/outlineIcons/othericons/appsIcon.svg';
 import { orgListAction } from "../../Redux/Actions/OrgnizationActions";
 import { useDispatch, useSelector } from "react-redux";

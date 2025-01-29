@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -22,6 +22,7 @@ import { FromToDetails, MoreInformation } from '../../Common/InsideSubModulesCom
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import { generatePDF } from "../../Helper/createPDF";
+import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 
 const CreditNotesDetails = () => {
   const Navigate = useNavigate();
@@ -90,14 +91,22 @@ const CreditNotesDetails = () => {
     }
   };
 
-  useEffect(() => {
-    if (UrlId) {
-      const queryParams = {
-        id: UrlId,
-      };
-      dispatch(creditNotesDetails(queryParams));
-    }
-  }, [dispatch, UrlId, callApi]);
+  // useEffect(() => {
+  //   if (UrlId) {
+  //     const queryParams = {
+  //       id: UrlId,
+  //     };
+  //     dispatch(creditNotesDetails(queryParams));
+  //   }
+  // }, [dispatch, UrlId, callApi]);
+
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    id: UrlId,
+    fy: localStorage.getItem('FinancialYear'),
+    // warehouse_id: localStorage.getItem('selectedWarehouseId'),
+  }), [callApi]);
+
+  useFetchApiData(creditNotesDetails, payloadGenerator, [callApi]);
 
 
   // pdf & print
@@ -184,16 +193,18 @@ const CreditNotesDetails = () => {
                         </div>
                       </>
                     )}
-                    <div
+
+                    {/* <div
                       className="dmncstomx1"
                       onClick={() => handleEditThing("duplicate")}
                     >
                       {otherIcons?.duplicate_svg}
                       Duplicate
-                    </div>
+                    </div> */}
                     {/* <div className='dmncstomx1' >
                       {otherIcons?.convert_svg}
                       Convert</div> */}
+
                     <div
                       className="dmncstomx1"
                       style={{ cursor: "pointer" }}

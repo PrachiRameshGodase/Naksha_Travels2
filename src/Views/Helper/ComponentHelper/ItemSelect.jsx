@@ -57,6 +57,8 @@ const ItemSelect = ({
   const productType = useSelector((state) => state?.type);
   const [itemData, setItemData] = useState(false);
 
+  // console.log("itemErrors")
+
   const location = useLocation();
 
   const params = new URLSearchParams(location.search);
@@ -227,9 +229,9 @@ const ItemSelect = ({
 
     if (field === "item_name") {
       newItems[index].item_name = value;
-      newItems[index].item_id = "";
+      newItems[index].item_id = 0;
       newItems[index].hsn_code = "";
-      newErrors[index].item_id = "";
+      newErrors[index].item_id = 0;
       newErrors[index].item_name = "";
     }
 
@@ -278,7 +280,7 @@ const ItemSelect = ({
 
         newErrors[index] = {
           ...newErrors[index],
-          item_id: "",
+          item_id: 0,
           item_name: "",
           tax_rate: "",
           unit_id: 0,
@@ -334,7 +336,7 @@ const ItemSelect = ({
     setSearchTrigger((prev) => prev + 1);
     const newItems = [...formData?.items];
     newItems[index] = {
-      item_id: "",
+      item_id: 0,
       item_name: "",
       quantity: 1,
       hsn_code: "",
@@ -397,7 +399,7 @@ const ItemSelect = ({
     const newItems = [
       ...formData.items,
       {
-        item_id: "",
+        item_id: 0,
         item_name: "",
         quantity: 1,
         unit_id: 0,
@@ -494,6 +496,7 @@ const ItemSelect = ({
     }
     const newItem = {
       tax_name: "",
+      item_name: data?.service_name,
       quantity: 1,
       rate: parseFloat(data?.gross_amount || 0),
       tax_rate: data?.tax_percent || 0,
@@ -539,8 +542,6 @@ const ItemSelect = ({
 
     // Save the updated list back to formData
     setFormData({ ...formData, items: finalItems });
-
-
   };
 
 
@@ -629,11 +630,9 @@ const ItemSelect = ({
         <table className="itemTable_01">
           <thead className="table_head_item_02">
             <tr className="table_head_item_02_row">
-
               <th className="table_column_item item_table_width_01">
                 Item / Service<b className="color_red">*</b>
               </th>
-
               <th className="table_column_item item_table_width_03">
                 Type <b className="color_red">*</b>
               </th>
@@ -809,8 +808,8 @@ const ItemSelect = ({
                             newValue = Math.min(
                               newValue,
                               item?.rate * item?.quantity +
-                                (item?.rate * item?.tax_rate * item?.quantity) /
-                                  100
+                              (item?.rate * item?.tax_rate * item?.quantity) /
+                              100
                             );
                             if (newValue > item?.rate * item?.quantity) {
                               toast(
@@ -837,8 +836,8 @@ const ItemSelect = ({
                         {item?.discount_type == 1
                           ? currencySymbol
                           : item?.discount_type == 2
-                          ? "%"
-                          : ""}
+                            ? "%"
+                            : ""}
                         {openDropdownIndex === index && (
                           <div
                             className="dropdownmenucustomx1"
@@ -868,7 +867,7 @@ const ItemSelect = ({
 
                   {/* Tax Rate */}
                   <td className="table_column_item item_table_text_transform">
-                    {item?.item_id === "" || item?.item_name === "" || item?.tax_rate == 0 ? (
+                    {item?.item_id == 0 || item?.item_name === "" || item?.tax_rate == 0 ? (
                       <CustomDropdown13
                         options={tax_rate}
                         value={item?.tax_rate}
@@ -1282,7 +1281,7 @@ export const ItemSelectGRM = ({
 
     if (field === "item_name") {
       newItems[index].item_name = value;
-      newItems[index].item_id = "";
+      newItems[index].item_id = 0;
       newItems[index].hsn_code = "";
     }
 
@@ -1393,7 +1392,7 @@ export const ItemSelectGRM = ({
     setIsGrnQntySelect(false);
     const newItems = [...formData?.items];
     newItems[index] = {
-      item_id: "",
+      item_id: 0,
       item_name: "",
       tax_amount: 0,
       gr_qty: 0,
@@ -1411,7 +1410,7 @@ export const ItemSelectGRM = ({
     const newItems = [
       ...formData?.items,
       {
-        item_id: "",
+        item_id: 0,
         item_name: "",
         gr_qty: 0,
         po_qty: 0,
@@ -1468,9 +1467,8 @@ export const ItemSelectGRM = ({
           <div className="itemsectionrows1" style={{ minWidth: "1225px" }}>
             <div className="tableheadertopsxs1" id="tableheadertopsxs1">
               <p
-                className={`tablsxs1a1x34 ${
-                  formData?.grn_type === "Import" ? "import_P" : "local_p"
-                }`}
+                className={`tablsxs1a1x34 ${formData?.grn_type === "Import" ? "import_P" : "local_p"
+                  }`}
               >
                 ITEM<b className="color_red">*</b>
               </p>
@@ -1486,7 +1484,7 @@ export const ItemSelectGRM = ({
               </p>
 
               {formData?.purchase_order_id &&
-              formData?.purchase_order_id !== 0 ? (
+                formData?.purchase_order_id !== 0 ? (
                 <p className="tablsxs1a3x3 tablsxs1a2x2">PO QTY</p>
               ) : (
                 ""
@@ -1564,9 +1562,8 @@ export const ItemSelectGRM = ({
                   {/* ITEM PRICE */}
                   <div
                     id="ITEM_Selection2"
-                    className={`tablsxs1a2x3 ${
-                      formData?.grn_type === "Import" ? "incom_12312" : ""
-                    }`}
+                    className={`tablsxs1a2x3 ${formData?.grn_type === "Import" ? "incom_12312" : ""
+                      }`}
                     style={{ boder: "1px solid #e7d8d", marginRight: "20px" }}
                   >
                     <NumericInput
@@ -1595,7 +1592,7 @@ export const ItemSelectGRM = ({
 
                   {/* PO QUANTITY */}
                   {formData?.purchase_order_id &&
-                  formData?.purchase_order_id !== 0 ? (
+                    formData?.purchase_order_id !== 0 ? (
                     <div className="tablsxs1a3x3" id="ITEM_Selection3">
                       <NumericInput value={item?.po_qty} readOnly />
                     </div>
@@ -1772,9 +1769,8 @@ export const ItemSelectGRM = ({
                 <div className="tablerowtopsxs1">
                   <div
                     style={{ maxWidth: "318px" }}
-                    className={`form_commonblock ${
-                      formData?.grn_type === "Import" ? "Note_import" : ""
-                    }`}
+                    className={`form_commonblock ${formData?.grn_type === "Import" ? "Note_import" : ""
+                      }`}
                   >
                     <span>
                       <input

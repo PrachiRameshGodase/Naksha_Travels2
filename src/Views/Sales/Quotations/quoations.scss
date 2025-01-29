@@ -491,6 +491,22 @@
   }
 }
 
+#modidy_table_form_payment_rec_ {
+  width: 81%;
+
+  .item_table_width_01 {
+    width: 63px;
+  }
+
+  .table_head_item_02 {
+    font-size: 13px;
+  }
+
+  .item_table_width_02 {
+    width: 192px;
+  }
+}
+
 #tablex15s56s31s1_currency {
   width: 100%;
   border-collapse: collapse;
@@ -597,6 +613,117 @@
       &:active {
         transform: scale(1);
       }
+    }
+  }
+}
+
+#tablex15s56s31s1 {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0px;
+
+  thead.thaedaksx433 {
+    background: $primary09;
+    text-align: left;
+
+    th,
+    td {
+      padding: 15px 5px; // Reduced padding
+    }
+  }
+
+  .sfdjklsd1xs2wrate {
+    width: 19%;
+    text-align: right;
+    padding-right: 11% !important;
+  }
+
+  .sfdjklsd1xs2wgrate {
+    width: 10%;
+    text-align: right;
+    padding-right: 2% !important;
+  }
+
+  .sfdjklsd1xs2wfrate {
+    width: 10%;
+    text-align: right;
+    padding-right: 2% !important;
+  }
+
+  .sfdjklsd1xs2wamount {
+    text-align: right;
+    width: 8%;
+    padding: 15px !important;
+  }
+
+  tbody {
+    tr.rowsxs15aksx433 {
+      border-bottom: 1px dashed $stroke;
+
+      td {
+        padding: 15px 5px; // Reduced padding
+        vertical-align: middle;
+      }
+
+      .sfdjklsd1xs2w2 {
+        white-space: nowrap; // Prevent line breaks in item description
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .sfdjklsd1xs2w1 {
+    width: 5%;
+  }
+
+  .sfdjklsd1xs2w2,
+  .sfdjklsd1xs2w3Width {
+    width: 8%; // Reduced width for less gap
+  }
+
+  .sfdjklsd1xs2w3qty {
+    width: 12%;
+  }
+
+  .sfdjklsd1xs2w3 {
+    .nodatainrow {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      padding: 4px 10px;
+      padding-right: 15px;
+      height: 27px;
+      border-radius: 250px;
+      font-size: 13px;
+      // transition: 0.3s all !important;
+      background: $ultralightprimary;
+      width: fit-content;
+      margin: auto;
+      cursor: pointer;
+
+      &:hover {
+        // transform: scale(1.05);
+
+        background: $primary;
+        color: $white;
+        width: fit-content;
+        margin: auto;
+        cursor: pointer;
+
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+
     }
   }
 }

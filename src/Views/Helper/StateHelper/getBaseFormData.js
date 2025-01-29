@@ -60,7 +60,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         items: [
             {
-                item_id: null,
+                item_id: 0,
                 unit_id: 0,
                 item_name: "",
                 tax_name: "",

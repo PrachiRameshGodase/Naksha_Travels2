@@ -93,7 +93,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
 
   return (
     <div
-      tabIndex="0"
+      // tabIndex="0"
       ref={combinedRef}
       className={`customdropdownx12s86 ${extracssclassforscjkls}`}
       onKeyDown={handleKeyDown}
@@ -101,7 +101,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     >
       <>
         {
-          service_data?.service_name === "Hotel" ? (
+          service_data?.service_name === "Hotels" ? (
             <>
               <div>
                 <b>Hotel Name:</b> {service_data?.hotel_name || "-"}

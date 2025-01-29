@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -14,8 +14,10 @@ import useOutsideClick from '../../Helper/PopupData';
 import { Payment_Receive_DetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { generatePDF } from '../../Helper/createPDF';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const PaymentRevievedDetail = () => {
+
     const Navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -35,24 +37,9 @@ const PaymentRevievedDetail = () => {
 
     const UrlId = new URLSearchParams(location.search).get("id");
 
-    const handleEditThing = (val) => {
-        const queryParams = new URLSearchParams();
-        queryParams.set("id", UrlId);
-
-        if (val === "edit") {
-            queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
-        } else if (val == "duplicate") {
-            queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
-        }
-
-    };
-
     const [callApi, setCallApi] = useState(0);
 
     const changeStatus = (statusVal) => {
-        // console.log("statusVal", statusVal);
         try {
             const sendData = {
                 id: UrlId
@@ -89,14 +76,13 @@ const PaymentRevievedDetail = () => {
     }
 
 
-    useEffect(() => {
-        if (UrlId) {
-            const queryParams = {
-                id: UrlId,
-            };
-            dispatch(paymentRecDetail(queryParams));
-        }
-    }, [dispatch, UrlId, callApi]);
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: UrlId,
+        fy: localStorage.getItem('FinancialYear'),
+    }), [callApi]);
+
+    useFetchApiData(paymentRecDetail, payloadGenerator, [callApi]);
+
 
     // pdf & print
     const componentRef = useRef(null);
@@ -131,13 +117,6 @@ const PaymentRevievedDetail = () => {
                         </div>
                         <div id="buttonsdata">
 
-                            {/* {payment?.status == "1" ? "" :
-                                <div className="mainx1" onClick={() => handleEditThing("edit")}>
-                                    <img src="/Icons/pen-clip.svg" alt="" />
-                                    <p>Edit</p>
-                                </div>
-                            } */}
-
                             <div className="mainx1">
                                 <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
                                     PDF/Print
@@ -146,7 +125,8 @@ const PaymentRevievedDetail = () => {
 
                             <div className="sepc15s63x63"></div>
 
-                            {payment?.status != "1" &&
+                            {
+                                payment?.status != "1" &&
                                 <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
                                     <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-id="my-tooltip" data-tooltip-content="More Options" data-tooltip-place='bottom' />
                                     {showDropdown && (

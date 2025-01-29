@@ -202,6 +202,7 @@ const QuotationDetails = () => {
                 </div>
 
                 <FromToDetails quotation={quotation?.customer} section="Quotation" />
+
                 <ItemDetailTable itemsData={quotation} />
 
               </div>
