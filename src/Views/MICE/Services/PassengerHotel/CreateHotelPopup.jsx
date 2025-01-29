@@ -26,6 +26,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import Swal from "sweetalert2";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -126,6 +127,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         occupancy_id: selectedRoom?.occupancy_id || "",
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
+        gross_amount:selectedRoom?.price
       };
     }
     if (name === "supplier_id") {
@@ -149,6 +151,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         occupancy_id: false,
         meal_id: false, 
         bed: false, 
+        gross_amount:false
       }),
       [name]: false,
     }));
@@ -193,6 +196,11 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {
@@ -231,6 +239,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
   const isDisabled = formData.room_id;
+  const isDisabled2 = formData.hotel_id;
   return (
     <>
       <div id="formofcreateitems">
@@ -317,6 +326,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           className={`form_commonblock ${
                             formData?.hotel_id ? "" : "disabledfield"
                           }`}
+                          data-tooltip-content={formData?.hotel_id ? "" : "Please Select Hotel First"}
+                          data-tooltip-id="my-tooltip"
+                           data-tooltip-place="bottom"
                         >
                           <label>
                             Room Number/Name<b className="color_red">*</b>
@@ -336,7 +348,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               cusData={cusData4}
                               type="vendor"
                               hotelID={formData.hotel_id}
-                              required
+                              disabled={isDisabled2}
                             />
                           </span>
                           {errors?.room_id && (
@@ -589,7 +601,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className="form_commonblock">
+                        {/* <div className="form_commonblock">
                           <label>Supplier</label>
                           <div id="sepcifixspanflex">
                             <span id="">
@@ -611,7 +623,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </div>
 
                           {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                        </div>
+                        {/* </div>  */}
                         <div className="form_commonblock">
                           <label>Total Days</label>
                           <div id="inputx1">

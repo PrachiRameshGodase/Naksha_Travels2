@@ -11,7 +11,7 @@ import {
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
@@ -19,6 +19,7 @@ import CalculationSection from "../../CalculationSection";
 import { customersList } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import Swal from "sweetalert2";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -97,7 +98,7 @@ const CreateInsurancePopup = ({
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
@@ -113,6 +114,10 @@ const CreateInsurancePopup = ({
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
     try {
@@ -135,7 +140,7 @@ const CreateInsurancePopup = ({
   }
   };
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
+  const payloadGenerator = useMemo(() => () => ({ ...sendData}), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   // call item api on page load...
@@ -232,6 +237,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="company_name"
                             placeholder="Enter Company Name"
+                            autoComplete="off"
                           />
                         </span>
                       </div>
@@ -246,6 +252,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="policy_no"
                             placeholder="Enter Policy No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.policy_no && (
@@ -280,6 +287,9 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                       </div>
@@ -299,6 +309,9 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                       </div>
@@ -313,6 +326,7 @@ const CreateInsurancePopup = ({
                             onChange={handleChange}
                             name="insurance_plan"
                             placeholder="Enter Insurance Plan"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.insurance_plan && (
@@ -330,7 +344,7 @@ const CreateInsurancePopup = ({
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -354,8 +368,7 @@ const CreateInsurancePopup = ({
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

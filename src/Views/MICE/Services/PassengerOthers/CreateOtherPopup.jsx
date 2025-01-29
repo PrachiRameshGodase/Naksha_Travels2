@@ -10,7 +10,11 @@ import {
 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
@@ -22,6 +26,7 @@ import {
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { CreatePassengerMOtherAction } from "../../../../Redux/Actions/passengerMOtherActions";
 import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
+import Swal from "sweetalert2";
 
 const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -43,7 +48,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     item_id: "",
     item_name: "",
     quantity: null,
-    price: null,
+    price: 0,
     supplier_id: "",
     supplier_name: "",
     //amount
@@ -66,7 +71,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     item_id: false,
     quantity: false,
-    price: false,
+    
     gross_amount: false,
 
     // retain: false,
@@ -88,6 +93,8 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (name === "item_id") {
       const selectedItemName = options2?.find((item) => item?.id == value);
       updatedFields.item_name = selectedItemName?.name || "";
+      updatedFields.gross_amount=selectedItemName?.price
+
     }
     setFormData((prev) => ({
       ...prev,
@@ -96,15 +103,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
+      ...(name === "item_id" && {
+       gross_amount:false
+      }),
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
-      quantity: formData?.price ? false : true,
-      price: formData?.item_id ? false : true,
+      quantity: formData?.quantity ? false : true,
+      // price: formData?.item_id ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
       // retain: formData?.retain ? false : true,
@@ -115,6 +125,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -241,10 +255,20 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
+                      <div id="imgurlanddesc" className="calctotalsectionx2">
+                        <ImageUpload
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgeLoader}
+                          component="purchase"
+                        />
+                      </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Price<b className="color_red">*</b>
                         </label>
@@ -295,18 +319,8 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <ImageUpload
-                          formData={formData}
-                          setFormData={setFormData}
-                          setFreezLoadingImg={setFreezLoadingImg}
-                          imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
-                          component="purchase"
-                        />
-                      </div>
+                      </div> */}
+                      
                     </div>
 
                     <div className="f1wrapofcreqx1">

@@ -320,14 +320,14 @@ const Flights = () => {
                     {otherIcons?.quotation_icon}
                     Airline Name
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Airline Code
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Destination Code
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
                     Status
@@ -369,7 +369,7 @@ const Flights = () => {
                             >
                               {item?.flight_name || ""}
                             </div>
-                            <div
+                            {/* <div
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 x125cd01"
                             >
@@ -380,7 +380,7 @@ const Flights = () => {
                               className="table-cellx12 x125cd01"
                             >
                               {item?.destination_code || ""}
-                            </div>
+                            </div> */}
                             <div
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"

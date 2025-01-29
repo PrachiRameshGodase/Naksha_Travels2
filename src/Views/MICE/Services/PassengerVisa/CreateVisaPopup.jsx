@@ -21,6 +21,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import Swal from "sweetalert2";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     passenger_visa_id: false,
     passport_no: false,
-    guest_ids: false,
+    // guest_ids: false,
     visa_no: false,
     guest_ids: false,
     gross_amount: false,
@@ -120,15 +121,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_visa_id: formData?.passenger_visa_id ? false : true,
       passport_no: formData?.passport_no ? false : true,
       visa_no: formData?.visa_no ? false : true,
-      guest_ids: formData?.guest_ids ? false : true,
+      // guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -136,6 +136,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -425,6 +429,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
+                      
                           />
                         </span>
                       </div>
@@ -445,10 +453,13 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Family Member<b className="color_red">*</b>
                         </label>
@@ -474,8 +485,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                         </div>
-                      </div>
-                      <div className="form_commonblock">
+                      </div> */}
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -497,8 +508,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
@@ -524,7 +534,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

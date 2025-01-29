@@ -21,6 +21,7 @@ import {
 } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown03 from "../../../../Components/CustomDropdown/CustomDropdown03";
+import Swal from "sweetalert2";
 
 const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -32,7 +33,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createOther = useSelector((state) => state?.createPassengerOthers);
   const itemList = useSelector((state) => state?.itemList);
   const options2 = itemList?.data?.item;
-
+console.log("options2", options2)
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
 
@@ -42,7 +43,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     item_id: 0,
     item_name: "",
     quantity: null,
-    price: null,
+    price: 0,
     supplier_id: "",
     supplier_name: "",
     //amount
@@ -65,11 +66,10 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     item_id: false,
     quantity: false,
-    price: false,
+    // price: false,
     gross_amount: false,
 
-    // retain: false,
-    total_amount: false,
+  
   });
   const entryType = ShowUserMasterData("50");
 
@@ -87,6 +87,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (name === "item_id") {
       const selectedItemName = options2?.find((item) => item?.id == value);
       updatedFields.item_name = selectedItemName?.name || "";
+      updatedFields.gross_amount=selectedItemName?.price
     }
     setFormData((prev) => ({
       ...prev,
@@ -95,25 +96,29 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
+      ...(name === "item_id" && {
+       
+        gross_amount:false
+      }),
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
-      quantity: formData?.price ? false : true,
-      price: formData?.item_id ? false : true,
+      quantity: formData?.quantity ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-
-      // retain: formData?.retain ? false : true,
-      total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
       try {
@@ -239,11 +244,45 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
+                        
                       </div>
+                      <div id="imgurlanddesc" className="calctotalsectionx2">
+                        <ImageUpload
+                          formData={formData}
+                          setFormData={setFormData}
+                          setFreezLoadingImg={setFreezLoadingImg}
+                          imgLoader={imgLoader}
+                          setImgeLoader={setImgeLoader}
+                          component="purchase"
+                        />
+                      </div>
+                      {/* <div className="form_commonblock">
+                        <label>Supplier</label>
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown10
+                              ref={dropdownRef1}
+                              label="Select Supplier"
+                              options={vendorList?.data?.user}
+                              value={formData.supplier_id}
+                              onChange={handleChange}
+                              name="supplier_id"
+                              defaultOption="Select Supplier"
+                              setcusData={setcusData1}
+                              cusData={cusData1}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                        </div>
+
+                      </div> */}
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Price<b className="color_red">*</b>
                         </label>
@@ -271,41 +310,9 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>Supplier</label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown10
-                              ref={dropdownRef1}
-                              label="Select Supplier"
-                              options={vendorList?.data?.user}
-                              value={formData.supplier_id}
-                              onChange={handleChange}
-                              name="supplier_id"
-                              defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
-                      <div id="imgurlanddesc" className="calctotalsectionx2">
-                        <ImageUpload
-                          formData={formData}
-                          setFormData={setFormData}
-                          setFreezLoadingImg={setFreezLoadingImg}
-                          imgLoader={imgLoader}
-                          setImgeLoader={setImgeLoader}
-                          component="purchase"
-                        />
-                      </div>
+                      </div> */}
+                     
+                     
                     </div>
 
                     <div className="f1wrapofcreqx1">

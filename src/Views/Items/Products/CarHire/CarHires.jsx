@@ -311,7 +311,7 @@ const CarHires = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"36%"}}> {item?.price || ""}</p>
+                              <p style={{width:"35%"}}> {item?.price || ""}</p>
                              
                             </div>
 

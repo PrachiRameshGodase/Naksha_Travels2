@@ -12,6 +12,7 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import Swal from "sweetalert2";
 
 const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -105,6 +106,11 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {
@@ -272,6 +278,9 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            maxDate={
+                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                            }
                           />
                         </span>
                         {errors?.issue_date && (
@@ -300,6 +309,9 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              formData?.issue_date ? new Date(formData.issue_date) : null
+                            }
                           />
                         </span>
                         {errors?.expiry_date && (
@@ -343,7 +355,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -365,8 +377,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      </div> */}
                       <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}

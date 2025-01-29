@@ -10,6 +10,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { CreateItineraryAction } from "../../../../Redux/Actions/tourPackageActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
+import Swal from "sweetalert2";
 
 const CreateItinerary = ({ popupContent }) => {
   const dispatch = useDispatch();
@@ -50,6 +51,11 @@ const CreateItinerary = ({ popupContent }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

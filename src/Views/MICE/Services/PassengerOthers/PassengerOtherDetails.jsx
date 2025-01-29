@@ -67,21 +67,21 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.quantity || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Price</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.price || ""}
                                   </p>
-                                </li>
+                                </li> */}
 
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                                 <li className="pendingfromfrontendx5">
                                   <span>Other Price</span>
                                   <h1>:</h1>
@@ -89,41 +89,25 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.gross_amount || ""}
                                   </p>
                                 </li>
-                              </ul>
-                              <ul>
-                              <li>
+                                <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  {charge?.length > 1 ? (
-                                    <p>
-                                      {charge
-                                        .map(
-                                          (item) =>
-                                            `${item?.account_name || ""} - ${
-                                              item?.amount || 0
-                                            }`
-                                        )
-                                        .join(", ")}
-                                    </p>
-                                  ) : (
-                                    charge?.map((item, index) => (
-                                      <p key={index}>
-                                        {item?.account_name || ""} -{" "}
-                                        {item?.amount || 0}
-                                      </p>
-                                    ))
-                                  )}
+                                  <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                 
                                 </li>
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
+                                  <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>
-                                  <p>{data?.supplier_tax || ""}</p>
+                                  <p style={{ width: "212px" }}>{data?.supplier_tax || ""}</p>
                                 </li>
+                              </ul>
+                              <ul>
+                             
                                 <li>
                                   <span>Supplier Price</span>
                                   <h1>:</h1>

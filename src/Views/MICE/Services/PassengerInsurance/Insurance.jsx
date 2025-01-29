@@ -103,10 +103,10 @@ const Insurances = ({ data, totalItems }) => {
                     <div className="checkmark"></div>
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs2">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Passenger Name
-                  </div>
+                  </div> */}
 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
@@ -165,9 +165,9 @@ const Insurances = ({ data, totalItems }) => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div className="table-cellx12 x125cd01">
+                            {/* <div className="table-cellx12 x125cd01">
                               {item?.passenger?.display_name || ""}
-                            </div>
+                            </div> */}
 
                             <div className="table-cellx12 x125cd01">
                               {item?.company_name || ""}
@@ -194,7 +194,7 @@ const Insurances = ({ data, totalItems }) => {
                                 .join(",  ")}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{width:"51%"}}>{item?.total_amount || ""}</p>
+                              <p style={{width:"91%"}}>{item?.total_amount || ""}</p>
                            
                             </div>
                             <div

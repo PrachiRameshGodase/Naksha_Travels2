@@ -24,6 +24,7 @@ import {
   visaDetailsAction,
 } from "../../../../Redux/Actions/visaAction";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import Swal from "sweetalert2";
 
 const CreateVisa = () => {
   const dispatch = useDispatch();
@@ -127,6 +128,11 @@ const CreateVisa = () => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

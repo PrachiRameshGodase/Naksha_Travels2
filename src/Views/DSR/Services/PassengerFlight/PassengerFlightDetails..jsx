@@ -145,25 +145,8 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  {charge?.length > 1 ? (
-                                    <p>
-                                      {charge
-                                        .map(
-                                          (item) =>
-                                            `${item?.account_name || ""} - ${
-                                              item?.amount || 0
-                                            }`
-                                        )
-                                        .join(", ")}
-                                    </p>
-                                  ) : (
-                                    charge?.map((item, index) => (
-                                      <p key={index}>
-                                        {item?.account_name || ""} -{" "}
-                                        {item?.amount || 0}
-                                      </p>
-                                    ))
-                                  )}
+                                  <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                 
                                 </li>
                                
                                 <li>

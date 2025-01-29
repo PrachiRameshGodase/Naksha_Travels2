@@ -22,7 +22,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.visa_passenger?.display_name || ""}</h5>
+                <h5> Passenger Name : {data?.visa_passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -140,11 +140,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p>{data?.supplier_name || ""}</p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Visa Price</span>
                                   <h1>:</h1>
@@ -153,25 +153,8 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  {charge?.length > 1 ? (
-                                    <p>
-                                      {charge
-                                        .map(
-                                          (item) =>
-                                            `${item?.account_name || ""} - ${
-                                              item?.amount || 0
-                                            }`
-                                        )
-                                        .join(", ")}
-                                    </p>
-                                  ) : (
-                                    charge?.map((item, index) => (
-                                      <p key={index}>
-                                        {item?.account_name || ""} -{" "}
-                                        {item?.amount || 0}
-                                      </p>
-                                    ))
-                                  )}
+                                 <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                  
                                 </li>
                                 <li>
                                   <span>Customer tax</span>

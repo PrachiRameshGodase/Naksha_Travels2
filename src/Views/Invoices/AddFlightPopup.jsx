@@ -20,6 +20,7 @@ import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dispatch = useDispatch();
@@ -83,8 +84,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.air_line_code || "",
-        destination_code: selectedRoom?.destination_code || "",
+        // air_line_code: selectedRoom?.air_line_code || "",
+        // destination_code: selectedRoom?.destination_code || "",
       };
     }
     setFormData((prev) => ({
@@ -97,8 +98,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
-        air_line_code: false, // Clear error for meal when room changes
-        destination_code: false, // Clear error for bed
+        // air_line_code: false, // Clear error for meal when room changes
+        // destination_code: false, // Clear error for bed
       }),
       [name]: false,
     }));
@@ -154,6 +155,11 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {
@@ -332,11 +338,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        data-tooltip-content={
-                          isDisabled ? "According to airport it is getting" : ""
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom"
+                        
                         className="form_commonblock"
                       >
                         <label>
@@ -350,7 +352,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              disabled={isDisabled}
+                              // disabled={isDisabled}
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -382,7 +384,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            disabled={isDisabled}
+                            // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
@@ -409,14 +411,14 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             {otherIcons.name_svg}
                             <CustomDropdown31
                               ref={dropdownRef1}
-                              label="Select Guest"
+                              label="Select Passenger"
                               options={cusList?.data?.user}
                               value={formData.guest_ids}
                               onChange={(selectedItems) =>
                                 handleChange1(selectedItems, "guest_ids")
                               }
                               name="guest_ids"
-                              defaultOption="Select Guest"
+                              defaultOption="Select Passenger"
                               setcusData={setcusData}
                               cusData={cusData}
                               type="vendor"
@@ -525,7 +527,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -545,7 +547,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div
                         className="secondtotalsections485s"

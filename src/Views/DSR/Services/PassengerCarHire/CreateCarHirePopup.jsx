@@ -19,6 +19,7 @@ import { customersList } from "../../../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import Swal from "sweetalert2";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -100,7 +101,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     let newErrors = {
       vehicle_type_id: formData?.vehicle_type_id ? false : true,
@@ -117,6 +118,10 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+              confirmButtonText: "OK",
+            });
       return;
     } else {
       try {
@@ -227,6 +232,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                               placeholder="Enter Days"
                               value={formData.days}
                               onChange={(e) => handleChange(e)}
+                              
                             />
                           </span>
                         </div>
@@ -242,6 +248,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="pickup_location"
                             placeholder="Enter Pickup Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.pickup_location && (
@@ -271,6 +278,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="drop_location"
                             placeholder="Enter Drop Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.drop_location && (
@@ -325,7 +333,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -348,7 +356,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      {/* </div> */} 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

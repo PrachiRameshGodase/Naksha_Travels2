@@ -26,6 +26,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -107,8 +108,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.air_line_code || "",
-        destination_code: selectedRoom?.destination_code || "",
+        // air_line_code: selectedRoom?.air_line_code || "",
+        // destination_code: selectedRoom?.destination_code || "",
       };
     }
     setFormData((prev) => ({
@@ -121,8 +122,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
-        air_line_code: false, // Clear error for meal when room changes
-        destination_code: false, // Clear error for bed
+        // air_line_code: false, // Clear error for meal when room changes
+        // destination_code: false, // Clear error for bed
       }),
       [name]: false,
     }));
@@ -147,9 +148,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...prevData,
       [name]: false,
     }));
-   
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
@@ -160,7 +160,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -168,6 +167,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -372,12 +375,13 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div data-tooltip-content={
-                          isDisabled ? "According to airport it is getting" : ""
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom" className="form_commonblock">
-                        <label>Airline Code<b className="color_red">*</b></label>
+                      <div
+                       
+                        className="form_commonblock"
+                      >
+                        <label>
+                          Airline Code<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -386,7 +390,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              disabled={isDisabled}
+                              autoComplete="off"
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -418,7 +422,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            disabled={isDisabled}
+                            // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
@@ -434,11 +438,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                    
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Family Member<b className="color_red">*</b>
                         </label>
@@ -533,8 +536,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                      
-                      <div className="form_commonblock">
+
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -557,7 +560,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
+                      {/* </div>  */}
 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload

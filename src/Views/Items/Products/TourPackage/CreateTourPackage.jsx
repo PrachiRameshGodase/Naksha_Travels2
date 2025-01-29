@@ -24,6 +24,7 @@ import {
 } from "../../../../Redux/Actions/tourPackageActions";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
+import Swal from "sweetalert2";
 
 const CreateTourPackage = () => {
   const Navigate = useNavigate();
@@ -138,6 +139,11 @@ const CreateTourPackage = () => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       try {

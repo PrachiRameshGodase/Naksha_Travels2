@@ -102,10 +102,10 @@ const Visas = ({ data }) => {
                     {otherIcons?.date_svg}
                     Passenger Name
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.refrence_svg}
                     Family Member
-                  </div>
+                  </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Passport No
@@ -166,7 +166,7 @@ const Visas = ({ data }) => {
                             <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.visa_passenger?.display_name || ""}
                             </div>
-                            <div
+                            {/* <div
                               className="table-cellx12 quotiosalinvlisxs1"
                               title={item?.guests
                                 ?.map((data) => data?.display_name)
@@ -177,7 +177,7 @@ const Visas = ({ data }) => {
                                 ?.map((data) => data?.display_name)
                                 .filter(Boolean)
                                 .join(",  ")}
-                            </div>
+                            </div> */}
                             <div className="table-cellx12 quotiosalinvlisxs2">
                               {item?.passport_no || ""}
                             </div>
@@ -201,7 +201,7 @@ const Visas = ({ data }) => {
                               {item?.country?.name || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{width:"91%"}}>{item?.total_amount || ""}</p>
+                              <p style={{width:"79%"}}>{item?.total_amount || ""}</p>
                               
                             </div>
                             <div

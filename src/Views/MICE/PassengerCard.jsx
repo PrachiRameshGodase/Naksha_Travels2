@@ -17,17 +17,19 @@ import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/local
 
 const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const navigate = useNavigate();
+  const currencySymbol = getCurrencySymbol();
   const [activePopup, setActivePopup] = useState(null);
-  const [formData, setFormData] = useState({ service: "" });
+  const [formData, setFormData] = useState({}); // Updated: Individual state for each passenger
 
   const servicesList = ShowUserMasterData("48");
-  const currencySymbol = getCurrencySymbol();
-  
+
   const handleServiceChange = (e, passengerId) => {
     const { value } = e.target;
+
+    // Update the service for the specific passengerId
     setFormData((prev) => ({
       ...prev,
-      service: value,
+      [passengerId]: value, // Maintain a mapping of passengerId to service
     }));
 
     setActivePopup({ popupType: value, passengerId });
@@ -115,12 +117,12 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
           <th>Name</th>
           <th>Email</th>
           <th>Mobile</th>
-          <th>Services</th>
-          <th style={{textAlign:"right"}}>Service Total</th>
-
+          <th style={{ width: "120px" }}>Services</th>
+          <th style={{ textAlign: "right" }}>Service Total</th>
           <th>Action</th>
         </tr>
       </thead>
+
       <tbody>
         {passengers?.passengers?.length > 0 ? (
           passengers?.passengers?.map((passenger, index) => (
@@ -129,11 +131,11 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
               <td>{passenger?.passenger?.mobile_no || ""}</td>
-              <td style={{ width: "120px" }}>
+              <td>
                 <CustomDropdown28
                   label="Services"
                   options={servicesList}
-                  value={formData?.service}
+                  value={formData[passenger?.id] || ""} // Use individual service value for each passenger
                   onChange={(e) => handleServiceChange(e, passenger?.id)}
                   name="service"
                   defaultOption="Select Service"
@@ -142,18 +144,21 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                   disabled={disabled}
                 />
               </td>
-              <td style={{textAlign:"right"}}>({currencySymbol}) {passenger?.service_total || ""}</td>
-
+              <td style={{ textAlign: "right" }}>
+                ({currencySymbol}) {passenger?.service_total || ""}
+              </td>
               <td>
                 <span
-              data-tooltip-content={disabled ? "Not able to click It is invoiced" : ""}
-              data-tooltip-id="my-tooltip"
-              data-tooltip-place="bottom"
-              style={{
-                cursor: disabled ? "not-allowed" : "pointer",
-                color: "red",
-              }}
-              onClick={!disabled ? () => onDelete(passenger?.id) : ""}
+                  data-tooltip-content={
+                    disabled ? "Not able to click It is invoiced" : ""
+                  }
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-place="bottom"
+                  style={{
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    color: "red",
+                  }}
+                  onClick={!disabled ? () => onDelete(passenger?.id) : ""}
                 >
                   {otherIcons.delete_svg}
                 </span>
@@ -165,9 +170,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                     marginLeft: "10px",
                   }}
                   onClick={() => {
-                    navigate(
-                      `/dashboard/mice-serviceslist?id=${passenger?.id}`
-                    );
+                    navigate(`/dashboard/mice-serviceslist?id=${passenger?.id}`);
                   }}
                 >
                   <BsEye />
@@ -189,3 +192,6 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
 };
 
 export default PassengerCard;
+
+
+

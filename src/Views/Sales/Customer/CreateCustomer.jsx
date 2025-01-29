@@ -24,10 +24,9 @@ import InsuranceDetails from "./InsuranceDetails";
 import PaymentDetails from "./PaymentDetails";
 import EmployeeDetails from "./EmployeeDetails";
 import FamilyMember from "./FamilyMember";
-import {
-  SubmitButton2,
-} from "../../Common/Pagination/SubmitButton";
+import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
 import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import Swal from "sweetalert2";
 const CreateCustomer = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -106,11 +105,11 @@ const CreateCustomer = () => {
     blood_group: "",
     citizenship: "",
   });
-const [errors, setErrors]=useState({
-  first_name:false,
-  last_name:false,
-  display_name:false
-})
+  const [errors, setErrors] = useState({
+    first_name: false,
+    last_name: false,
+    display_name: false,
+  });
   useEffect(() => {
     if ((cusId && isEdit) || (cusId && isEdit && isDuplicate)) {
       setUserData((prevUserData) => ({
@@ -192,21 +191,24 @@ const [errors, setErrors]=useState({
 
   const dropdownRef1 = useRef();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     let newErrors = {
       first_name: basicDetails?.first_name ? false : true,
       email: basicDetails?.email ? false : true,
       display_name: basicDetails?.display_name ? false : true,
-     
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
-    }  else {
+    } else {
       if (cusId && isEdit) {
         dispatch(
           createCustomers(
@@ -327,10 +329,11 @@ const [errors, setErrors]=useState({
                     <button
                       type="button"
                       key={type?.labelid}
-                      className={`type-button ${basicDetails.customer_type === type?.label
-                        ? "selectedbtn"
-                        : ""
-                        }`}
+                      className={`type-button ${
+                        basicDetails.customer_type === type?.label
+                          ? "selectedbtn"
+                          : ""
+                      }`}
                       onClick={() =>
                         setBasicDetails({
                           ...basicDetails,
@@ -365,8 +368,9 @@ const [errors, setErrors]=useState({
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
               <button
-                className={`type-button ${switchCusData === "Basic" && "selectedbtnx2"
-                  }`}
+                className={`type-button ${
+                  switchCusData === "Basic" && "selectedbtnx2"
+                }`}
                 style={{ width: "200px" }}
                 onClick={() => setSwitchCusData("Basic")}
               >
@@ -375,8 +379,9 @@ const [errors, setErrors]=useState({
               </button>
 
               <button
-                className={`type-button ${tick?.basicTick ? "" : ""}  ${switchCusData === "Address" && "selectedbtnx2"
-                  }`}
+                className={`type-button ${tick?.basicTick ? "" : ""}  ${
+                  switchCusData === "Address" && "selectedbtnx2"
+                }`}
                 style={{ width: "200px" }}
                 onClick={() => setSwitchCusData("Address")}
               >
@@ -385,8 +390,9 @@ const [errors, setErrors]=useState({
               {userData?.customer_type == "Individual" && (
                 <button
                   style={{ width: "200px" }}
-                  className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
-                    } ${switchCusData === "Contact" && "selectedbtnx2"}`}
+                  className={`type-button ${
+                    tick?.basicTick && tick?.addressTick ? "" : ""
+                  } ${switchCusData === "Contact" && "selectedbtnx2"}`}
                   onClick={() => setSwitchCusData("Contact")}
                 >
                   Family Member
@@ -396,8 +402,9 @@ const [errors, setErrors]=useState({
               {userData?.customer_type == "Business" && (
                 <button
                   style={{ width: "200px" }}
-                  className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
-                    } ${switchCusData === "Employee Details" && "selectedbtnx2"}`}
+                  className={`type-button ${
+                    tick?.basicTick && tick?.addressTick ? "" : ""
+                  } ${switchCusData === "Employee Details" && "selectedbtnx2"}`}
                   onClick={() => setSwitchCusData("Employee Details")}
                 >
                   Employee Details
@@ -407,13 +414,14 @@ const [errors, setErrors]=useState({
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${tick?.basicTick &&
+                className={`type-button ${
+                  tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.addressTick
-                  ? ""
-                  : ""
-                  } ${switchCusData === "Bank" && "selectedbtnx2"}`}
+                    ? ""
+                    : ""
+                } ${switchCusData === "Bank" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Bank")}
               >
                 Bank Details
@@ -422,14 +430,15 @@ const [errors, setErrors]=useState({
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${tick?.basicTick &&
+                className={`type-button ${
+                  tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.addressTick &&
                   tick?.bankTick
-                  ? ""
-                  : ""
-                  } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
+                    ? ""
+                    : ""
+                } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Payment Details")}
               >
                 Payment Details
@@ -439,14 +448,15 @@ const [errors, setErrors]=useState({
               {/* remark button */}
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${tick?.basicTick &&
+                className={`type-button ${
+                  tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick
-                  ? ""
-                  : ""
-                  } ${switchCusData === "Remark" && "selectedbtnx2"}`}
+                    ? ""
+                    : ""
+                } ${switchCusData === "Remark" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Remark")}
               >
                 Remarks {tick?.remarkTick && <> {otherIcons.backtick_svg}</>}
@@ -454,16 +464,18 @@ const [errors, setErrors]=useState({
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${tick?.basicTick &&
+                className={`type-button ${
+                  tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick &&
                   tick.remarkTick
-                  ? ""
-                  : ""
-                  } ${switchCusData === "Upload Image/Document" && "selectedbtnx2"
-                  }`}
+                    ? ""
+                    : ""
+                } ${
+                  switchCusData === "Upload Image/Document" && "selectedbtnx2"
+                }`}
                 onClick={() => setSwitchCusData("Upload Image/Document")}
               >
                 Upload Image/Document{" "}
@@ -472,16 +484,17 @@ const [errors, setErrors]=useState({
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${tick?.basicTick &&
+                className={`type-button ${
+                  tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick &&
                   tick.remarkTick &&
                   uploadTick
-                  ? ""
-                  : ""
-                  } ${switchCusData === "Documents" && "selectedbtnx2"}`}
+                    ? ""
+                    : ""
+                } ${switchCusData === "Documents" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Documents")}
               >
                 Documents
@@ -491,7 +504,8 @@ const [errors, setErrors]=useState({
                 <>
                   <button
                     style={{ width: "200px" }}
-                    className={`type-button ${tick?.basicTick &&
+                    className={`type-button ${
+                      tick?.basicTick &&
                       tick?.addressTick &&
                       contactTick &&
                       tick?.bankTick &&
@@ -499,10 +513,11 @@ const [errors, setErrors]=useState({
                       tick.remarkTick &&
                       uploadTick &&
                       tick?.documentsTick
-                      ? ""
-                      : ""
-                      } ${switchCusData === "Vaccination Details" && "selectedbtnx2"
-                      }`}
+                        ? ""
+                        : ""
+                    } ${
+                      switchCusData === "Vaccination Details" && "selectedbtnx2"
+                    }`}
                     onClick={() => setSwitchCusData("Vaccination Details")}
                   >
                     Vaccination Details
@@ -513,7 +528,8 @@ const [errors, setErrors]=useState({
 
                   <button
                     style={{ width: "200px" }}
-                    className={`type-button ${tick?.basicTick &&
+                    className={`type-button ${
+                      tick?.basicTick &&
                       tick?.addressTick &&
                       contactTick &&
                       tick?.bankTick &&
@@ -522,10 +538,11 @@ const [errors, setErrors]=useState({
                       uploadTick &&
                       tick?.documentsTick &&
                       tick?.vaccinationDetailTick
-                      ? ""
-                      : ""
-                      } ${switchCusData === "Insurance Details" && "selectedbtnx2"
-                      }`}
+                        ? ""
+                        : ""
+                    } ${
+                      switchCusData === "Insurance Details" && "selectedbtnx2"
+                    }`}
                     onClick={() => setSwitchCusData("Insurance Details")}
                   >
                     Insurance Details
@@ -1032,7 +1049,11 @@ const [errors, setErrors]=useState({
                   />
                 </div>
               </div>
-              <SubmitButton2 isEdit={isEdit} itemId={cusId} cancel="customers" />
+              <SubmitButton2
+                isEdit={isEdit}
+                itemId={cusId}
+                cancel="customers"
+              />
             </form>
           </div>
         </div>

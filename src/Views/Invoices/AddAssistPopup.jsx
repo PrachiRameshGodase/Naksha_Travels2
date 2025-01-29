@@ -12,6 +12,7 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { CalculationSection2 } from "../DSR/CalculationSection";
+import Swal from "sweetalert2";
 
 const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -75,6 +76,11 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {
@@ -204,7 +210,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
                     <div className="f1wrapofcreqx1">
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -226,7 +232,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div

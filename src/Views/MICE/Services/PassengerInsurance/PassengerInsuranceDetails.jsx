@@ -21,7 +21,7 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.passenger?.display_name || ""}</h5>
+                <h5> Company Name : {data?.company_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -54,13 +54,13 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                             </div>
                             <div style={{ display: "flex", gap: "20px" }}>
                               <ul>
-                                <li className="pendingfromfrontendx5">
+                                {/* <li className="pendingfromfrontendx5">
                                   <span>Passenger Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.passenger?.display_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                                 {/* <li className="pendingfromfrontendx5">
                                   <span>Entry type</span>
                                   <h1>:</h1>
@@ -104,43 +104,27 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                                     {formatDate3(data?.expiry_date) || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li className="pendingfromfrontendx5">
+                                </li> */}
+                                 <li className="pendingfromfrontendx5">
                                   <span>Insurance Price</span>
                                   <h1>:</h1>
-                                  <p>{data?.gross_amount || ""}</p>
+                                  <p  style={{ width: "212px" }}>{data?.gross_amount || ""}</p>
                                 </li>
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  {charge?.length > 1 ? (
-                                    <p>
-                                      {charge
-                                        .map(
-                                          (item) =>
-                                            `${item?.account_name || ""} - ${
-                                              item?.amount || 0
-                                            }`
-                                        )
-                                        .join(", ")}
-                                    </p>
-                                  ) : (
-                                    charge?.map((item, index) => (
-                                      <p key={index}>
-                                        {item?.account_name || ""} -{" "}
-                                        {item?.amount || 0}
-                                      </p>
-                                    ))
-                                  )}
+                                 <p  style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                  
                                 </li>
+                              </ul>
+                              <ul>
+                               
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>

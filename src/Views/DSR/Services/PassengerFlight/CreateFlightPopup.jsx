@@ -23,6 +23,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../../../Redux/Actions/flightActions";
+import Swal from "sweetalert2";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -102,8 +103,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        air_line_code: selectedRoom?.air_line_code || "",
-        destination_code: selectedRoom?.destination_code || "",
+        // air_line_code: selectedRoom?.air_line_code || "",
+        // destination_code: selectedRoom?.destination_code || "",
       };
     }
     setFormData((prev) => ({
@@ -116,8 +117,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...updatedFields,
       ...(name === "airline_name" && {
         airline_name: false, // Clear error for occupancy when room changes
-        air_line_code: false, // Clear error for meal when room changes
-        destination_code: false, // Clear error for bed
+        // air_line_code: false, // Clear error for meal when room changes
+        // destination_code: false, // Clear error for bed
       }),
       [name]: false,
     }));
@@ -145,7 +146,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       airline_name: formData?.airline_name ? false : true,
@@ -164,6 +165,10 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -256,7 +261,6 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
-                            
                             maxDate={
                               formData?.travel_date
                                 ? new Date(formData.travel_date)
@@ -363,11 +367,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        data-tooltip-content={
-                          isDisabled ? "According to airport it is getting" : ""
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom"
+                       
                         className="form_commonblock"
                       >
                         <label>
@@ -381,7 +381,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              disabled={isDisabled}
+                              autoComplete="off"
+                            
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -413,7 +414,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            disabled={isDisabled}
+                            // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
@@ -528,7 +529,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -549,7 +550,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

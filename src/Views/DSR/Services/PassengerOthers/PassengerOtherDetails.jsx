@@ -19,7 +19,7 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>{data?.item_name || ""}</h5>
+                <h5>Item Name : {data?.item_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -74,13 +74,13 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.quantity || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Price</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.price || ""}
                                   </p>
-                                </li>
+                                </li> */}
 
                                 <li>
                                   <span>Supplier Name</span>
@@ -90,42 +90,26 @@ const PassengerOtherDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li className="pendingfromfrontendx5">
-                                  <span>Other Charges</span>
+                                  <span>Other Price</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.gross_amount || ""}
                                   </p>
                                 </li>
-                              </ul>
-                              <ul>
-                              <li>
-                                  <span>Charges</span>
+                                <li>
+                                  <span >Charges</span>
                                   <h1>:</h1>
-                                  {charge?.length > 1 ? (
-                                    <p>
-                                      {charge
-                                        .map(
-                                          (item) =>
-                                            `${item?.account_name || ""} - ${
-                                              item?.amount || 0
-                                            }`
-                                        )
-                                        .join(", ")}
-                                    </p>
-                                  ) : (
-                                    charge?.map((item, index) => (
-                                      <p key={index}>
-                                        {item?.account_name || ""} -{" "}
-                                        {item?.amount || 0}
-                                      </p>
-                                    ))
-                                  )}
+                                  <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                 
                                 </li>
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
+                                  <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
                                 </li>
+                              </ul>
+                              <ul>
+                            
                                 <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>

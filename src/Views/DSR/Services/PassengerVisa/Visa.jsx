@@ -169,6 +169,9 @@ const Visas = ({ data }) => {
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
+                              data-tooltip-cotent={item?.email}
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-place="bottom"
                             >
                               {item?.email || ""}
                             </div>

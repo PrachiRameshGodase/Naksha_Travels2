@@ -10,13 +10,18 @@ import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
-import {customersView} from "../../../../Redux/Actions/customerActions";
+import { customersView } from "../../../../Redux/Actions/customerActions";
+import Swal from "sweetalert2";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -58,12 +63,12 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   });
   const [errors, setErrors] = useState({
     vehicle_type_id: false,
-     pickup_location:false,
-    drop_location:false,
+    pickup_location: false,
+    drop_location: false,
     guest_ids: false,
     gross_amount: false,
-    
-    // retain: false,
+
+ 
     total_amount: false,
   });
   const [imgLoader, setImgeLoader] = useState("");
@@ -100,7 +105,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       vehicle_type_id: formData?.vehicle_type_id ? false : true,
@@ -108,8 +113,6 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       drop_location: formData?.drop_location ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-    
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -117,25 +120,30 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-            charges: JSON.stringify(formData?.charges)
-      };
-      const refreshData = {
-        mice_id: data?.id,
-      };
-      dispatch(CreatePassengerMCarHireAction(sendData,setShowModal, refreshData))
-        
-    } catch (error) {
-      console.error("Error updating car hire:", error);
-    }
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          mice_id: data?.id,
+        };
+        dispatch(
+          CreatePassengerMCarHireAction(sendData, setShowModal, refreshData)
+        );
+      } catch (error) {
+        console.error("Error updating car hire:", error);
+      }
     }
   };
 
@@ -253,22 +261,21 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.pickup_location && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Pickup Location
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Pickup Location
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                     
                       <div className="form_commonblock">
                         <label>
                           Drop Location<b className="color_red">*</b>
@@ -283,44 +290,44 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                         {errors?.drop_location && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Drop Location
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Drop Location
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
-                          <label>
-                            Family Member<b className="color_red">*</b>
-                          </label>
+                        <label>
+                          Family Member<b className="color_red">*</b>
+                        </label>
 
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
 
-                              <CustomDropdown31
-                                ref={dropdownRef1}
-                                label="Select Family Member"
-                                options={customerData?.family_members}
-                                value={formData.guest_ids}
-                                onChange={(selectedItems) =>
-                                  handleChange1(selectedItems, "guest_ids")
-                                }
-                                name="guest_ids"
-                                defaultOption="Select Family Member"
-                                setcusData={setcusData}
-                                cusData={cusData}
-                                type="vendor"
-                                required
-                              />
-                            </span>
-                            {errors?.guest_ids && (
+                            <CustomDropdown31
+                              ref={dropdownRef1}
+                              label="Select Family Member"
+                              options={customerData?.family_members}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Family Member"
+                              setcusData={setcusData}
+                              cusData={cusData}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                          {errors?.guest_ids && (
                             <p
                               className="error_message"
                               style={{
@@ -332,12 +339,10 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                               Please Select Guest
                             </p>
                           )}
-                          </div>
                         </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                      </div>
+                      {/* <div className="form_commonblock">
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -358,9 +363,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                        {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      </div>
-                      
+                      </div> */}
+
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}
@@ -374,7 +378,6 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                     
                       <div className="secondtotalsections485s">
                         <div className="textareaofcreatqsiform">
                           <label>Note</label>
@@ -387,9 +390,11 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </div>
                         </div>
-                        </div>
-                      <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
-                        
+                      </div>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

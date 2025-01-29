@@ -12,6 +12,7 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown03 from "../../Components/CustomDropdown/CustomDropdown03";
+import Swal from "sweetalert2";
 
 const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -29,7 +30,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
     item_id: service_data?.item_id || 0,                   // Example for item ID
     item_name: service_data?.item_name || "",              // Example for item name
     quantity: service_data?.quantity || null,             // Example for quantity
-    price: service_data?.price || null,                   // Example for price
+    price: service_data?.price || 0,                   // Example for price
     supplier_id: service_data?.supplier_id || "",         // Example for supplier ID
     supplier_name: service_data?.supplier_name || "",     // Example for supplier name
 
@@ -45,7 +46,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [errors, setErrors] = useState({
     item_id: false,
     quantity: false,
-    price: false,
+    // price: false,
   });
 
   const entryType = ShowUserMasterData("50");
@@ -64,6 +65,8 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
     if (name === "item_id") {
       const selectedItemName = options2?.find((item) => item?.id == value);
       updatedFields.item_name = selectedItemName?.name || "";
+      updatedFields.gross_amount=selectedItemName?.price
+      
     }
     setFormData((prev) => ({
       ...prev,
@@ -72,6 +75,10 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
+      ...(name === "item_id" && {
+       
+        gross_amount:false
+      }),
     }));
   };
 
@@ -79,8 +86,8 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
     e.preventDefault();
     let newErrors = {
       item_id: formData?.item_id ? false : true,
-      quantity: formData?.price ? false : true,
-      price: formData?.item_id ? false : true,
+      quantity: formData?.quantity ? false : true,
+      // price: formData?.item_id ? false : true,
 
     };
     setErrors(newErrors);
@@ -88,6 +95,11 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
+       await Swal.fire({
+              text: "Please fill all the required fields.",
+             confirmButtonText: "OK",
+             
+            });
       return;
     } else {
       const sendData = {
@@ -207,7 +219,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>Price<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
@@ -233,12 +245,12 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="f1wrapofcreqx1">
 
-                      <div className="form_commonblock">
+                      {/* <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -261,7 +273,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="f1wrapofcreqx1">
