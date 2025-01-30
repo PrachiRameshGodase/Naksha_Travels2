@@ -177,6 +177,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     defaultOption,
     style,
     sd154w78s877,
+    disabled
   } = props;
   const {
     isOpen,
@@ -309,7 +310,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
           />
         </svg>
       </div>
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className="dropdown-options">
           <RiSearch2Line id="newsvgsearchicox2" />
           <input
@@ -320,7 +321,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
             className="dropdown-search"
             autoFocus
             ref={inputRef}
-            required
+            disabled={disabled}
           />
 
           <div className="dropdownoptoscroll">

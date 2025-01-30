@@ -249,7 +249,7 @@ const Assit = () => {
                     {otherIcons?.quotation_icon}
                     Airport
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
+                 <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.date_svg}
                     Meeting Type
                   </div>
@@ -294,8 +294,6 @@ const Assit = () => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            
-
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
@@ -308,6 +306,8 @@ const Assit = () => {
                             >
                               {item?.meeting_type || ""}
                             </div>
+
+                           
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"

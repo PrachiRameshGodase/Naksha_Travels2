@@ -70,11 +70,10 @@ const CreateHotel = () => {
     pincode: false,
   });
 
-  console.log(imgLoader);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
-
     if (name === "country_id") {
       const countryId = value;
 

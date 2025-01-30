@@ -5,10 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {
-  assistDetailsAction,
-  CreateAssistAction,
-} from "../../../../Redux/Actions/assistAction";
+import {assistDetailsAction,CreateAssistAction} from "../../../../Redux/Actions/assistAction";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
@@ -24,7 +21,7 @@ const CreateAssit = () => {
   const assistDetails = useSelector((state) => state?.assistDetails);
   const assitData = assistDetails?.data?.data?.data || {};
 
-  const vehicleType = ShowUserMasterData("41");
+
 
   const [formData, setFormData] = useState({
     meeting_type: "",
@@ -63,6 +60,7 @@ const CreateAssit = () => {
       dispatch(assistDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
+  
   useEffect(() => {
     if (itemId && isEdit && assitData) {
       setFormData({
