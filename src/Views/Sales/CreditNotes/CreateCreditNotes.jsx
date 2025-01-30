@@ -164,6 +164,8 @@ const CreateCreditNotes = () => {
     dropdownRef3,
     isInvoiceSelect
   }
+
+  console.log("formdata", formData)
   const handleFormSubmit = async (e) => {
     await handleFormSubmit1({
       e,

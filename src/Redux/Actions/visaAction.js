@@ -3,28 +3,28 @@ import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_VISA_ERROR, CREATE_VISA_REQUEST, CREATE_VISA_SUCCESS, GET_VISA_ERROR, GET_VISA_REQUEST, GET_VISA_SUCCESS, VISA_DELETE_ERROR, VISA_DELETE_REQUEST, VISA_DELETE_SUCCESS, VISA_DETAIL_ERROR, VISA_DETAIL_REQUEST, VISA_DETAIL_SUCCESS, VISA_STATUS_ERROR, VISA_STATUS_REQUEST, VISA_STATUS_SUCCESS } from "../Constants/visaConstant";
 
- export const CreateVisaAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
+export const CreateVisaAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
     dispatch({ type: CREATE_VISA_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/visa/create/update`, queryParams);
-        dispatch({ type:CREATE_VISA_REQUEST , payload: response.data });
+        dispatch({ type: CREATE_VISA_REQUEST, payload: response.data });
 
         if (response?.data?.message === "Visa Details Added Successfully") {
             toast?.success(response?.data?.message);
             Navigate('/dashboard/visas-services')
-            
-        } 
-        else  if (response?.data?.message === "Visa Details Updated Successfully") {
+
+        }
+        else if (response?.data?.message === "Visa Details Updated Successfully") {
             toast?.success(response?.data?.message);
             Navigate('/dashboard/visas-services')
-            
-        } 
+
+        }
         else {
             toast?.error(response?.data?.message);
         }
 
         dispatch({ type: CREATE_VISA_SUCCESS, payload: response.data });
-
+        return response?.data;
     } catch (error) {
         dispatch({ type: CREATE_VISA_ERROR, payload: error.message });
         toast.error(error?.message);
@@ -42,6 +42,8 @@ export const visaListAction = (queryParams, setAllListValue) => async (dispatch)
             setAllListValue(response?.data)
         }
 
+        console.log("response?.data?.data", response?.data?.data)
+        return response?.data?.data;
     } catch (error) {
         dispatch({ type: GET_VISA_ERROR, payload: error.message });
         toast.error(error?.message);
@@ -82,8 +84,8 @@ export const visastatusActions = (queryParams, setCallApi, billData, autoId, tra
             toast.success(response?.data?.message);
             setCallApi((preState) => !preState);
 
-        } 
-      
+        }
+
         dispatch({ type: VISA_STATUS_SUCCESS, payload: response.data });
 
     } catch (error) {

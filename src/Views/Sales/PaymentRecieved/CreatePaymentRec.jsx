@@ -60,7 +60,7 @@ const CreatePaymentRec = () => {
 
 
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert, invoice_no } = Object.fromEntries(params.entries());
 
 
     useEffect(() => {
@@ -168,6 +168,7 @@ const CreatePaymentRec = () => {
                 const sendData = {
                     fy: localStorage.getItem('FinancialYear'),
                     customer_id: fetchDetails?.customer_id,
+                    invoice_no: invoice_no
                 }
                 dispatch(pendingInvoices(sendData, setInoiceData));
             }
@@ -234,6 +235,7 @@ const CreatePaymentRec = () => {
 
         if (name === "customer_id") {
             const selectedCustomer = cusList?.data?.user?.find(cus => cus.id == value);
+            console.log("selectedCustomerselectedCustomer", selectedCustomer)
             const sendData = {
                 fy: localStorage.getItem('FinancialYear'),
                 customer_id: selectedCustomer?.id,
@@ -329,6 +331,11 @@ const CreatePaymentRec = () => {
                 entries: entriesWithAmount,
             };
 
+            // console.log("entriesWithAmount", entriesWithAmount)
+            if (entriesWithAmount?.length <= 0) {
+                toast?.error("Please Fill the Payments")
+                return;
+            }
 
             dispatch(updatePaymentRec({ ...sendData }, Navigate, "payment_rec", isEdit, buttonName, itemId, convert, showAllSequenceId));
         } catch (error) {
@@ -507,7 +514,7 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label>Payment Mode<b className='color_red'>*</b></label>
+                                            <label>Payment Mode</label>
                                             <span >
                                                 {otherIcons.currency_icon}
                                                 <CustomDropdown04
@@ -525,7 +532,7 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label className=''>Deposit To<b className='color_red'>*</b></label>
+                                            <label className=''>Deposit To</label>
                                             <span >
                                                 {otherIcons.tag_svg}
                                                 <CustomDropdown15

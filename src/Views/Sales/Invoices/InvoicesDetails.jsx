@@ -65,6 +65,7 @@ const InvoicesDetails = ({ section }) => {
 
     } else if (val === "toPayment") {
       queryParams.set("convert", val);
+      queryParams.set("invoice_no", invoice?.invoice_id);
       Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
 
     } else if (val === "challanToInvoice") {

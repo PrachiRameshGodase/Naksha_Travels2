@@ -105,6 +105,9 @@ const CreateSalesOrders = ({ section }) => {
         convert
     );
 
+    // console.log("saleDetailssaleDetails", saleDetails)
+    // console.log("formdaaaaaaaaaaaaaa", formData)
+
     const calculateExpiryDate = (transactionDate, terms) => {
         const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
         return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
@@ -222,9 +225,10 @@ const CreateSalesOrders = ({ section }) => {
         }
 
         // Dispatch account lists and product type actions (these seem independent of the specific details)
-        dispatch(accountLists());
         dispatch(productTypeItemAction("Product"));
     }, [dispatch, itemId, section, convert, invoiceDetails, quoteDetails, saleDetails]);
+
+    // useFetchApiData(accountLists, useMemo(() => () => ({}), []), []);//call account list api one at page load
 
 
     // image upload from firebase

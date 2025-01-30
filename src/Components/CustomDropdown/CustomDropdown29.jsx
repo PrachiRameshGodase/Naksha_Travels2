@@ -87,8 +87,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
         {cusData
           ? cusData?.hotel_name
           : value
-          ? fullName?.hotel_name
-          : defaultOption}
+            ? fullName?.hotel_name
+            : defaultOption}
 
         <svg
           width="13"
@@ -207,7 +207,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
   //prevent for again and again loding api when we are open dropdown
   useEffect(() => {
     if (isOpen) {
-      
+
       if (type === "countryList") {
         dispatch(visaListAction({ ...sendData }));
       }
@@ -232,18 +232,19 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     }),
     []
   );
+
   // useFetchApiData(visaListAction, payloadGenerator, []);//call api common function
   const uniqueOptions = options?.reduce((acc, option) => {
     const key =
       type === "visa_entry_type"
         ? option?.visa_entry_name
         : type === "countryList"
-        ? option?.country_name
-        : type==="visa_type_id"
-        ? option?.visa_type_id
-        :type==="days"? option?.days
-        : ""; 
-  
+          ? option?.country_name
+          : type === "visa_type_id"
+            ? option?.visa_type_id
+            : type === "days" ? option?.days
+              : "";
+
     if (
       key &&
       !acc.some(
@@ -251,15 +252,15 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
           (type === "visa_entry_type"
             ? item?.visa_entry_name
             : type === "countryList"
-            ? item?.country_name
-            : item?.visa_type_name) === key
+              ? item?.country_name
+              : item?.visa_type_name) === key
       )
     ) {
       acc.push(option);
     }
     return acc;
   }, []);
-  console.log("options",options)
+  // console.log("options", options)
   return (
     <div
       ref={combinedRef}
@@ -278,19 +279,19 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
             : defaultOption
           : type === "visa_entry_type"
             ? cusData
-            ? cusData?.visa_entry_name
-            : defaultOption
-          : type === "visa_type_id"
-          ?
-            cusData
-            ? cusData?.visa_type_name
-            : defaultOption
-          :type === "days"
-          ? cusData
-          ? cusData?.days
-          : defaultOption
-          :
-           ""}
+              ? cusData?.visa_entry_name
+              : defaultOption
+            : type === "visa_type_id"
+              ?
+              cusData
+                ? cusData?.visa_type_name
+                : defaultOption
+              : type === "days"
+                ? cusData
+                  ? cusData?.days
+                  : defaultOption
+                :
+                ""}
 
         <svg
           width="13"
@@ -337,31 +338,31 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                     className={
                       "dropdown-option" +
                       (type === "visa_entry_type" &&
-                      option.visa_entry_type == value
+                        option.visa_entry_type == value
                         ? " selectedoption"
                         : "") +
                       (type === "countryList" && option.country_name == value
                         ? " selectedoption"
                         : "") +
-                        (type === "visa_type_id" && option.visa_type_name == value
-                          ? " selectedoption"
-                          : "")+
-                          (type === "days" && option.days == value
-                            ? " selectedoption"
-                            : "")+
+                      (type === "visa_type_id" && option.visa_type_name == value
+                        ? " selectedoption"
+                        : "") +
+                      (type === "days" && option.days == value
+                        ? " selectedoption"
+                        : "") +
                       (index === focusedOptionIndex ? " focusedoption" : "")
                     }
                   >
                     {type === "countryList"
                       ? `${option?.country_name || ""}`
                       : type === "visa_entry_type"
-                      ? `${option?.visa_entry_name || ""}`
-                      : type === "visa_type_id"
-                      ? `${option?.visa_type_name || ""}`
-                      :
-                      type === "days"
-                      ? `${option?.days || ""}`
-                      : ""}
+                        ? `${option?.visa_entry_name || ""}`
+                        : type === "visa_type_id"
+                          ? `${option?.visa_type_name || ""}`
+                          :
+                          type === "days"
+                            ? `${option?.days || ""}`
+                            : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
