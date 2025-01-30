@@ -1,12 +1,44 @@
+import { useSelector } from "react-redux";
 import { parsePurchaseDetails } from "../StateHelper/EditPages/parsePurchaseDetails";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { useEffect, useRef } from "react";
+import { confirIsCurrencyCreate } from "../ConfirmHelperFunction/ConfirmWithZeroAmount";
+import { useNavigate } from "react-router-dom";
 
 export const useHandleFormChange = (formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, sendChageData,) => {
 
+    // fetch the currency list based on date change 
+    const currencyRateList = useSelector((state) => state?.currencyRateList);
+    const currencyList = currencyRateList?.data?.data || []
+    const Navigate = useNavigate();
+
     const calculateExpiryDate = (transactionDate, terms) => {
-        // console.log("transactionDate, terms", transactionDate, terms)
         const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
         return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
     };
+
+    const checkIsCurrencyCreated = async () => {
+        let confirmed = null;
+
+        const checkIsCurrencyCreated = currencyList?.find(val => val?.code === formData?.currency);
+        // console.log("checkIsCurrencyCreated", checkIsCurrencyCreated)
+        // console.log("formData?.currency", formData?.currency)
+        // console.log("currencyList", currencyList)
+        if (checkIsCurrencyCreated) {
+            toast.success(`Current Rate is ${checkIsCurrencyCreated?.current_rate} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.exchange_rate}`)
+        } else {
+            confirmed = await confirIsCurrencyCreate();
+            if (confirmed) {
+                const queryParams = new URLSearchParams();
+                queryParams.set("date", formData?.transaction_date);
+                queryParams.set("currency", formData?.currency);
+                Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+            }
+
+
+        }
+    }
 
     const handleChange = ({ target: { name, value } }) => {
 
@@ -110,16 +142,20 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
         setFormData(updatedFormData);
     };
 
-    const handleDateChange = (date, name) => {
-        setFormData((prev) => ({
-            ...prev,
-            [name]: date,
-            ...(name === "expiry_date" && { payment_terms: 5 }),
-            ...(name === "transaction_date" && prev.payment_terms !== 5 && {
-                expiry_date: calculateExpiryDate(new Date(date), prev.payment_terms),
-            }),
-        }));
-    };
+
+
+    // Using useRef to store the previous value of formData.currency because this useEffect not call on load
+    const prevCurrency = useRef(formData?.currency);
+
+    useEffect(() => {
+        // Only call checkIsCurrencyCreated when formData?.currency changes and is different from the previous value
+        if (formData?.currency !== prevCurrency.current) {
+            checkIsCurrencyCreated();
+
+            // Update the ref to the new currency
+            prevCurrency.current = formData?.currency;
+        }
+    }, [formData?.currency]); // Dependency on formData.currency
 
     return {
         handleChange,

@@ -5,7 +5,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { quotationDelete, quotationDetails, quotationStatus } from '../../../Redux/Actions/quotationActions';
 import Loader02 from "../../../Components/Loaders/Loader02";
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatDate3 } from '../../Helper/DateFormat';
 import useOutsideClick from '../../Helper/PopupData';
@@ -15,6 +15,10 @@ import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent } fr
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { convertObjectCurrency } from '../../Helper/CurrencyHelper/convertKESToUSD';
+import { confirIsCurrencyCreate, confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const QuotationDetails = () => {
   const dispatch = useDispatch();
@@ -98,19 +102,97 @@ const QuotationDetails = () => {
   useFetchApiData(quotationDetails, payloadGenerator, [callApi]);
 
   const [loading, setLoading] = useState(false);
+  // console.log("quotationquotation", quotation)
 
-  const handleDownloadPDF = () => {
-    if (!quotation || !masterData) {
-      alert("Data is still loading, please try again.");
-      return;
+
+  // currency convert and download pdf
+  const [exchangeRate, setExchangeRate] = useState(1);
+
+  //fields to convert in quotation pdf
+  const fieldsToConvert = [
+    'currency_value',
+    'subtotal',
+    'total_tax',
+    'shipping_charge',
+    'total',
+    'gross_amount',
+    'final_amount',
+    'rate'
+  ];
+
+  const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
+
+  // console.log("convertedQuotation", convertedQuotation);
+
+  const getCurrency = getCurrencyValue();
+
+  const handleDownloadPDF = async () => {
+    try {
+      if (quotation?.transaction_date) {
+
+
+        //////////// check if the org currency have exchange rate or not ///////////////////
+
+        // Fetch currency rates with date
+        const res = await dispatch(currencyRateListAction({ date: quotation?.transaction_date }));
+        console.log("resssssssssssssss", res);
+
+        if (res?.success === true) {
+          // Find the exchange rate of active organization currency
+          const fetchExchangeRate = res?.data?.find(val => val?.code === getCurrency)?.exchange_rate;
+          setExchangeRate(parseFloat(fetchExchangeRate));
+        } else {
+          // Ask user if they want to create currency exchange rate
+          const confirmed = await confirIsCurrencyPDF(getCurrency);
+
+          if (confirmed) {
+            const queryParams = new URLSearchParams();
+            queryParams.set("date", quotation?.transaction_date);
+            queryParams.set("currency", getCurrency);//send active org currency 
+            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+          } else {
+            return;
+          }
+          //////////// check if the org currency have exchange rate or not ///////////////////
+
+        }
+      }
+
+      // if (!quotation || !masterData) {
+      //   alert("Data is still loading, please try again.");
+      //   return;
+      // }
+
+      if (!convertedQuotation || !masterData) {
+        alert("Data is still loading, please try again.");
+        return;
+      }
+      const contentComponent = (
+        <PrintContent data={convertedQuotation} cusVenData={convertedQuotation?.customer} masterData={masterData} moduleId={convertedQuotation?.quotation_id} section="Quotation" />
+      );
+      generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
+
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
     }
+  }
 
-    const contentComponent = (
-      <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" />
-    );
-    generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
 
-  };
+
+
+
+
+  // if (!quotation || !masterData) {
+  //   alert("Data is still loading, please try again.");
+  //   return;
+  // }
+
+  // const contentComponent = (
+  //   <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" />
+  // );
+  // generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
+
+  // };
 
   return (
     <>

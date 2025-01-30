@@ -19,12 +19,9 @@ export const currencyRateListAction = (queryParams) => async (dispatch) => {
         );
 
         dispatch({ type: CURRENCY_RATE_SUCCESS, payload: response.data });
-        console.log("resssssssssss", response)
-        if (response?.data?.success === false) {
-            toast?.error(response?.data?.message);
-        } else {
-            toast?.success(response?.data?.message)
-        }
+        // console.log("resssssssssss", response)
+
+        return response?.data;
     } catch (error) {
         dispatch({ type: CURRENCY_RATE_ERROR, payload: error.message });
     }

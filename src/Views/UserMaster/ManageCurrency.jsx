@@ -62,9 +62,6 @@ const ManageCurrency = () => {
         e.preventDefault();
 
         try {
-
-            // Update balance_amount in each entry
-            // console.log("formdataaaaaaaaaa", formData)
             const filteredEntries = formData.filter(
                 (entry) => entry.current_rate != 0 || entry.exchange_rate != 0
             );
@@ -72,9 +69,7 @@ const ManageCurrency = () => {
                 currencies: filteredEntries,
             };
             dispatch(currencyRateCreateAction(payload)).then((response) => {
-                // console.log("resssssssssssss", response)
             })
-            // console.log("Filtered Entries:", filteredEntries);
 
         } catch (error) {
             toast.error('Error updating quotation:', error);

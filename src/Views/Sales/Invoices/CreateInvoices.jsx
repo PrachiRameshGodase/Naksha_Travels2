@@ -26,6 +26,7 @@ import { isStateIdEqualAction, productTypeItemAction } from '../../../Redux/Acti
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
+import { formatDate } from '../../Helper/DateFormat';
 
 const CreateSalesOrders = ({ section }) => {
     const dispatch = useDispatch();
@@ -344,7 +345,7 @@ const CreateSalesOrders = ({ section }) => {
                                                             handleChange({
                                                                 target: {
                                                                     name: 'transaction_date',
-                                                                    value: date,
+                                                                    value: formatDate(date)
                                                                 },
                                                             })
                                                         }

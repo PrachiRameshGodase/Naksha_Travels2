@@ -155,7 +155,6 @@ const CreatePaymentRec = () => {
 
             if (fetchDetails?.customer) {
                 setcusData(fetchDetails?.customer);//if vendor data found in detail api
-
             }
             if (fetchDetails?.debit || fetchDetails?.total) {
                 setIsAmoutSelect(true)
@@ -228,6 +227,7 @@ const CreatePaymentRec = () => {
         } else if (name === "customer_id" && value == "") {
             setIsCustomerSelect(false);
         }
+
         else if (name === "debit" && value !== "") {
             setIsAmoutSelect(true);
         }

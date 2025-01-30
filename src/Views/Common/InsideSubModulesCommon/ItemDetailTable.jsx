@@ -745,7 +745,8 @@ export const ManageCurrencyTable = ({ formData, setFormData, section }) => {
               <tr key={index} className="rowsxs15aksx433">
                 <td className="sfdjklsd1xs2w4 text-right"></td>
                 <td className="sfdjklsd1xs2w4 text-right">
-                  {todayDate(val?.date)}
+                  {/* {todayDate(val?.date)} */}
+                  {val?.date instanceof Date ? val?.date.toLocaleDateString('en-CA') : val?.date}
                 </td>
 
                 <td className="sfdjklsd1xs2w4 text-right">{val?.currency_name}</td>

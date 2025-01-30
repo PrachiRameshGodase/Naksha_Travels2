@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { parsePurchaseDetails } from "./parsePurchaseDetails";
 import { getBaseFormData } from "../getBaseFormData";
 import { stringifyJSON, validateItems } from "../../HelperFunctions";
+import useFetchApiData from "../../ComponentHelper/useFetchApiData";
+import { currencyRateListAction } from "../../../../Redux/Actions/manageCurrencyActions";
 
 //Common component for state management
 export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], detailData, itemId, isEdit, convert) => {
@@ -135,6 +137,18 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
         // console.log("formDataformDataformDataformData", formData)
 
     }, [detailData, itemId, isEdit, convert]);
+
+
+    // for fetch the currencies list of selected date
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        date: formData?.transaction_date,
+    }), [formData?.transaction_date]);
+
+    useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
+
+
+
+
 
     return {
         formData,

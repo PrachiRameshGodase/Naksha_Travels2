@@ -618,7 +618,6 @@ const ItemSelect = ({
     }
   };
 
-  console.log("formdataof item", formData?.items)
 
   return (
     <>
