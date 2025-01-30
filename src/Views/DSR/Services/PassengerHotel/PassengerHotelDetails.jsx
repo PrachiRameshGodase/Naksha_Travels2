@@ -99,6 +99,13 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li className="pendingfrombackendx5">
+                                  <span>Total Days</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.total_nights}
+                                  </p>
+                                </li>
+                                <li className="pendingfrombackendx5">
                                   <span>Meal</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>

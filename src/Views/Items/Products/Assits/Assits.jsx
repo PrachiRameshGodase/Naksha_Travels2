@@ -244,15 +244,15 @@ const Assit = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
-                    {otherIcons?.date_svg}
-                    Meeting Type
-                  </div>
+                 
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Airport
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.date_svg}
+                    Meeting Type
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs3">
                     {otherIcons?.refrence_svg}
                     No Of Persons
@@ -294,18 +294,19 @@ const Assit = () => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs1"
-                            >
-                              {item?.meeting_type || ""}
-                            </div>
+                            
 
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
                             >
                               {item?.airport || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs1"
+                            >
+                              {item?.meeting_type || ""}
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}

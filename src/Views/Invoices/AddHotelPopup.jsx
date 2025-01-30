@@ -118,7 +118,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
         ...updatedFields,
         hotel_name: selectedHotel?.hotel_name || "",
         room_id: "",
-        room_number: "",
+        room_no: "",
         occupancy_id: "",
         meal_id: "",
         bed: "",
@@ -133,7 +133,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       updatedFields = {
         ...updatedFields,
         room_id: selectedRoom?.id,
-        room_number: selectedRoom?.room_number || "",
+        room_no: selectedRoom?.room_number || "",
         occupancy_id: selectedRoom?.occupancy_id || "",
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
@@ -267,7 +267,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "50px" }}>
                   <div className="f1wrapofcreq">
                     {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -693,9 +693,9 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             {otherIcons.name_svg}
                             <NumericInput
                               type="number"
-                              name="total_days"
+                              name="total_nights"
                               placeholder="Enter Total Days"
-                              value={formData.total_days}
+                              value={formData.total_nights}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>

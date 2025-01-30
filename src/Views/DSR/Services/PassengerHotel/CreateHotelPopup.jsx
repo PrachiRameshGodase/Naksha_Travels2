@@ -1,12 +1,13 @@
 import { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import CustomDropdown02 from "../../../../Components/CustomDropdown/CustomDropdown02";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown31, {
+import {
   CustomDropdown031,
 } from "../../../../Components/CustomDropdown/CustomDropdown31";
 import { customersList } from "../../../../Redux/Actions/customerActions";
@@ -21,15 +22,12 @@ import { formatDate } from "../../../Helper/DateFormat";
 import {
   preventZeroVal,
   sendData,
-  ShowMasterData,
-  ShowUserMasterData,
+  ShowUserMasterData
 } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -49,7 +47,6 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createHotel = useSelector((state) => state?.createPassengerHotel);
 
   const [cusData, setcusData] = useState(null);
-  const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
 
@@ -142,6 +139,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         bed: selectedRoom?.bed_id || "",
         max_occupancy: selectedRoom?.max_occupancy,
         gross_amount: selectedRoom?.price,
+        total_nights:1
       };
   
       // If the new max_occupancy is smaller than selected guests, trim guest_ids
@@ -261,6 +259,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   // call item api on page load...
   const isDisabled = formData.room_id;
   const isDisabled2 = formData.hotel_id;
+  // const gross_amount=formData.total_nights * formData.gross_amount
+  
 
   return (
     <div id="formofcreateitems">
@@ -703,9 +703,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             {otherIcons.name_svg}
                             <NumericInput
                               type="number"
-                              name="total_days"
+                              name="total_nights"
                               placeholder="Enter Total Days"
-                              value={formData.total_days}
+                              value={formData.total_nights}
                               onChange={(e) => handleChange(e)}
                             />
                           </span>

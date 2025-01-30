@@ -708,9 +708,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               {otherIcons.name_svg}
                               <NumericInput
                                 type="number"
-                                name="total_days"
+                                name="total_nights"
                                 placeholder="Enter Total Days"
-                                value={formData.total_days}
+                                value={formData.total_nights}
                                 onChange={(e) => handleChange(e)}
                               />
                             </span>

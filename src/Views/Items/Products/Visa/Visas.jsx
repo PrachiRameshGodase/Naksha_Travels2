@@ -244,6 +244,10 @@ const Visas = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
+                  <div className="table-cellx12 quotiosalinvlisxs3">
+                    {otherIcons?.refrence_svg}
+                    Country
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.date_svg}
                     Visa Entry Type
@@ -253,10 +257,7 @@ const Visas = () => {
                     Visa Type
                   </div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs3">
-                    {otherIcons?.refrence_svg}
-                    Country
-                  </div>
+                  
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Days
@@ -302,6 +303,12 @@ const Visas = () => {
                             </div>
                             <div
                               onClick={() => handleRowClicked(item)}
+                              className="table-cellx12 quotiosalinvlisxs3"
+                            >
+                              {item?.country_name || ""}
+                            </div>
+                            <div
+                              onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.visa_entry_name || ""}
@@ -313,12 +320,7 @@ const Visas = () => {
                             >
                               {item?.visa_type_name || ""}
                             </div>
-                            <div
-                              onClick={() => handleRowClicked(item)}
-                              className="table-cellx12 quotiosalinvlisxs3"
-                            >
-                              {item?.country_name || ""}
-                            </div>
+                            
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"

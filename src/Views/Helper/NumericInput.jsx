@@ -23,7 +23,7 @@ const NumericInput = ({ value, onChange, name, placeholder,disabled, ...rest }) 
                 }
             }}
             {...rest}
-            style={{ width: "100%", cursor:disabled? "not-allowed" :"pointer"}}
+            style={{ width: "100%", cursor:disabled? "not-allowed" :""}}
         />
 
 

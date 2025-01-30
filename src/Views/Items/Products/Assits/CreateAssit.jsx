@@ -130,6 +130,32 @@ const CreateAssit = () => {
                 <div className="itemsformwrap">
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                        <label>
+                          Airport<b className="color_red">*</b>
+                        </label>
+                         <span id="">
+                          {otherIcons.placeofsupply_svg}
+                          <input
+                            value={formData?.airport}
+                            onChange={handleChange}
+                            name="airport"
+                            placeholder="Enter Airport"
+                          />
+                        </span>
+                        {errors?.airport && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Airport
+                          </p>
+                        )}
+                      </div>
                       <div className="form_commonblock">
                         <label>
                           Meeting Type<b className="color_red">*</b>
@@ -157,33 +183,7 @@ const CreateAssit = () => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Airport<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData?.airport}
-                            onChange={handleChange}
-                            name="airport"
-                            placeholder="Enter Airport"
-                          />
-                        </span>
-                        {errors?.airport && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Fill Airport
-                          </p>
-                        )}
-                      </div>
+                    
                       <div className="form_commonblock">
                         <label>
                           No Of Persons<b className="color_red">*</b>

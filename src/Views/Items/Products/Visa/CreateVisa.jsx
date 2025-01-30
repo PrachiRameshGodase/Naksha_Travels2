@@ -1,30 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import SubmitButton, {
-  SubmitButton2,
-} from "../../../Common/Pagination/SubmitButton";
-import { RxCross2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import NumericInput from "../../../Helper/NumericInput";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
-import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchGetCities,
-  fetchGetCountries,
-  fetchGetStates,
-} from "../../../../Redux/Actions/globalActions";
-import { transport } from "../../../Helper/ComponentHelper/DropdownData";
-import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
-import {
-  CreateVisaAction,
-  visaDetailsAction,
-} from "../../../../Redux/Actions/visaAction";
-import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import {fetchGetCountries} from "../../../../Redux/Actions/globalActions";
+import {CreateVisaAction,visaDetailsAction,} from "../../../../Redux/Actions/visaAction";
+import {SubmitButton2,} from "../../../Common/Pagination/SubmitButton";
+import { ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import NumericInput from "../../../Helper/NumericInput";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const CreateVisa = () => {
   const dispatch = useDispatch();
@@ -43,7 +31,7 @@ const CreateVisa = () => {
   const [formData, setFormData] = useState({
     visa_entry_type: "",
     visa_entry_name: "",
-    country_id: "",
+    country_id: 0,
     country_name: "",
     visa_type_id: "",
     visa_type_name: "",
@@ -173,6 +161,41 @@ const CreateVisa = () => {
                 <div className="itemsformwrap">
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                        <label>
+                          Country / Region<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.country_svg}
+
+                            <select
+                              name="country_name"
+                              value={formData?.country_name}
+                              onChange={(e) => handleChange(e, "country_name")}
+                            >
+                              <option value="">Select Country</option>
+                              {countryList?.country?.map((country) => (
+                                <option key={country.id} value={country.name}>
+                                  {country.name}
+                                </option>
+                              ))}
+                            </select>
+                          </span>
+                          {errors?.country_name && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Country
+                            </p>
+                          )}
+                        </div>
+                      </div>
                       <div className="form_commonblock">
                         <label>
                           Visa Entry Type<b className="color_red">*</b>
@@ -234,41 +257,7 @@ const CreateVisa = () => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Country / Region<b className="color_red">*</b>
-                        </label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.country_svg}
-
-                            <select
-                              name="country_name"
-                              value={formData?.country_name}
-                              onChange={(e) => handleChange(e, "country_name")}
-                            >
-                              <option value="">Select Country</option>
-                              {countryList?.country?.map((country) => (
-                                <option key={country.id} value={country.name}>
-                                  {country.name}
-                                </option>
-                              ))}
-                            </select>
-                          </span>
-                          {errors?.country_name && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Country
-                            </p>
-                          )}
-                        </div>
-                      </div>
+                     
 
                       <div className="form_commonblock">
                         <label>

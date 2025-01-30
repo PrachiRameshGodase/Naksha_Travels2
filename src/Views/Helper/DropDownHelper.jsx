@@ -13,19 +13,18 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     const dispatch = useDispatch();
     const debounceTimeoutRef = useRef(null); // Store debounce timeout reference
     const productType = useSelector((state) => state?.type);
-
+    
     const handleSelect = (option) => {
         if (option.active !== "0") {
 
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label :type==='countryList'? option?.country_name:type=="visa_entry_type" ? option?.visa_entry_type: type==="visa_type_id"? option.visa_type_name: type==="days"?option.days: type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
                 }
             });
 
-
-            if (type === "vendor" || type == "purchase") {
+            if (type === "vendor" || type == "purchase" || type == "countryList" || type== "visa_entry_type" || type=='visa_type_id' || type=="days") {
                 setcusData(option);
             } else if (type === "select_item") {
                 setItemData(option)
