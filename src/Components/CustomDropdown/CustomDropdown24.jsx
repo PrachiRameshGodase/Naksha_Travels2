@@ -3,7 +3,7 @@ import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
-const CustomDropdown10 = forwardRef((props, ref) => {
+const CustomDropdown24 = forwardRef((props, ref) => {
   let { options, value, onChange, name, type, setcusData, defaultOption, style, sd154w78s877 } = props;
 
   const {
@@ -29,7 +29,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
 
 
 
-  if (type === "countries") {
+  if (searchTerm) {
     options = searchTerm?.length === 0 ? options : options?.filter(option =>
       option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
@@ -87,4 +87,4 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   );
 });
 
-export default CustomDropdown10;
+export default CustomDropdown24;
