@@ -105,6 +105,8 @@ const CreateQuotation = () => {
 
   };
 
+  console.log("formddata", formData?.total_tax)
+
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,

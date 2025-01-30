@@ -18,6 +18,7 @@ import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/lo
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);
+
   const calculateTotalTaxAmount = () => {
     return itemsData?.items?.reduce((total, entry) => {
       return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);

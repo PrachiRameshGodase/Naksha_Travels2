@@ -122,7 +122,8 @@ const QuotationDetails = () => {
 
   const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
 
-  // console.log("convertedQuotation", convertedQuotation);
+  console.log("quotation", quotation);
+  console.log("convertedQuotation", convertedQuotation);
 
   const getCurrency = getCurrencyValue();
 
