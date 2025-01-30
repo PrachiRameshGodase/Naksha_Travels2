@@ -141,13 +141,13 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                     {formatDate3(data?.check_out_date) || ""}
                                   </p>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li>
+                                </li> */}
                               </ul>
                               <ul>
                                 <li>
