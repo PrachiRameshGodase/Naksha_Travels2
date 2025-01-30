@@ -47,6 +47,9 @@ import {
     AUTO_GENERATE_ID_LIST_REQUEST,
     AUTO_GENERATE_ID_LIST_SUCCESS,
     AUTO_GENERATE_ID_LIST_ERROR,
+    GET_AIRPORT_REQUEST,
+    GET_AIRPORT_SUCCESS,
+    GET_AIRPORT_ERROR,
 
 } from "../Constants/globalConstants";
 
@@ -90,6 +93,31 @@ export const masterDataReducer = (state = initialState, action) => {
                 error: null,
             };
         case FETCH_MASTER_DATA_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const airportDataReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case GET_AIRPORT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_AIRPORT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                countries: action.payload,
+                error: null,
+            };
+        case GET_AIRPORT_ERROR:
             return {
                 ...state,
                 loading: false,

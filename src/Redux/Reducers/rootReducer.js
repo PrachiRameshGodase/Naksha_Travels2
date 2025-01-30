@@ -36,6 +36,7 @@ import {
   expenseHeadListReducer,
   autoGenerateIdReducer,
   autoGenerateIdListReducer,
+  airportDataReducer,
 } from "./globalReducers";
 import {
   categoryStatusReducer,
@@ -466,6 +467,7 @@ const reducer = combineReducers({
   debitNoteDelete: debitNoteDeleteReducer,
   debitNoteStatus: debitNoteStatusReducer,
 
+  airPort:airportDataReducer,
   countries: countriesDataReducer,
   states: stateDataReducer,
   cities: citiesDataReducer,
