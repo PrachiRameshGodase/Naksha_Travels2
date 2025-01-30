@@ -104,6 +104,7 @@ const ItemSelect = ({
       (acc, item) => acc + parseFloat(item?.tax_amount || 0),
       0
     );
+
     const gross_amount = newItems?.reduce(
       (acc, item) => acc + parseFloat(item?.gross_amount || 0),
       0
@@ -202,7 +203,7 @@ const ItemSelect = ({
       ...prevFormData,
       discount: totalDiscount,
       subtotal: subtotal?.toFixed(2),
-      tax_amount: tax_amount?.toFixed(2),
+      total_tax: tax_amount?.toFixed(2),
       total_charges: total_charges?.toFixed(2),
       total: total?.toFixed(2),
       taxes: taxes,

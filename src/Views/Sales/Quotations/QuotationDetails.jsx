@@ -17,7 +17,7 @@ import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
 import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
-import { convertObjectCurrency } from '../../Helper/CurrencyHelper/convertKESToUSD';
+// import { convertObjectCurrency } from '../../Helper/CurrencyHelper/convertKESToUSD';
 import { confirIsCurrencyCreate, confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const QuotationDetails = () => {
@@ -29,7 +29,12 @@ const QuotationDetails = () => {
   const dropdownRef = useRef(null);
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
+
   const masterData = useSelector(state => state?.masterData?.masterData);
+  const currencyList1 = useSelector((state) => state?.getCurrency);
+  const currencyList = currencyList1?.data?.currency || []
+  // console.log("currencyList", currencyList)
+
   const componentRef = useRef(null);
 
   const quoteDetail = useSelector(state => state?.quoteDetail);
@@ -106,42 +111,52 @@ const QuotationDetails = () => {
 
 
   // currency convert and download pdf
-  const [exchangeRate, setExchangeRate] = useState(1);
+  // const [exchangeRate, setExchangeRate] = useState(null);
 
   //fields to convert in quotation pdf
-  const fieldsToConvert = [
-    'currency_value',
-    'subtotal',
-    'total_tax',
-    'shipping_charge',
-    'total',
-    'gross_amount',
-    'final_amount',
-    'rate'
-  ];
+  // const fieldsToConvert = [
+  //   'currency_value',
+  //   'subtotal',
+  //   'total_tax',
+  //   'shipping_charge',
+  //   'total',
+  //   'gross_amount',
+  //   'final_amount',
+  //   'rate'
+  // ];
 
-  const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
-
-  console.log("quotation", quotation);
-  console.log("convertedQuotation", convertedQuotation);
+  // const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
 
   const getCurrency = getCurrencyValue();
 
   const handleDownloadPDF = async () => {
-    try {
-      if (quotation?.transaction_date) {
 
+    try {
+
+      if (quotation?.transaction_date) {
 
         //////////// check if the org currency have exchange rate or not ///////////////////
 
         // Fetch currency rates with date
         const res = await dispatch(currencyRateListAction({ date: quotation?.transaction_date }));
-        console.log("resssssssssssssss", res);
 
         if (res?.success === true) {
-          // Find the exchange rate of active organization currency
-          const fetchExchangeRate = res?.data?.find(val => val?.code === getCurrency)?.exchange_rate;
-          setExchangeRate(parseFloat(fetchExchangeRate));
+          // Find the fetchCurrencyData of active organization currency with specific date
+          const fetchCurrencyData = res?.data?.find(val => val?.code === getCurrency);
+          // console.log("fetchCurrencyData", fetchCurrencyData)
+
+          // create and show the pdf of converted currency on the exchange rate....
+          if (!quotation || !masterData) {
+            alert("Data is still loading, please try again.");
+            return;
+          }
+
+          const contentComponent = (
+            <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} currencyList={currencyList} />
+          );
+
+          generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
+
         } else {
           // Ask user if they want to create currency exchange rate
           const confirmed = await confirIsCurrencyPDF(getCurrency);
@@ -158,20 +173,6 @@ const QuotationDetails = () => {
 
         }
       }
-
-      // if (!quotation || !masterData) {
-      //   alert("Data is still loading, please try again.");
-      //   return;
-      // }
-
-      if (!convertedQuotation || !masterData) {
-        alert("Data is still loading, please try again.");
-        return;
-      }
-      const contentComponent = (
-        <PrintContent data={convertedQuotation} cusVenData={convertedQuotation?.customer} masterData={masterData} moduleId={convertedQuotation?.quotation_id} section="Quotation" />
-      );
-      generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
 
     } catch (error) {
       console.error("Error fetching currency rates:", error);
