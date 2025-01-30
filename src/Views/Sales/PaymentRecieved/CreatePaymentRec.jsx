@@ -273,7 +273,8 @@ const CreatePaymentRec = () => {
                     invoice_id: invoice?.id,
                     invoice_amount: +invoice?.total,
                     balance_amount: (+invoice?.total) - (+invoice?.amount_paid),
-                    date: formatDate(invoice?.transaction_date)
+                    date: formatDate(invoice?.transaction_date),
+                    ...(invoice_no && { amount: (+invoice?.total) - (+invoice?.amount_paid) })
                 }))
             })
         }
@@ -333,7 +334,7 @@ const CreatePaymentRec = () => {
 
             // console.log("entriesWithAmount", entriesWithAmount)
             if (entriesWithAmount?.length <= 0) {
-                toast?.error("Please Fill the Payments")
+                toast?.error("Please Fill a Payments")
                 return;
             }
 
@@ -411,6 +412,7 @@ const CreatePaymentRec = () => {
                                                     setcusData={setcusData}
                                                     cusData={cusData}
                                                     type="vendor"
+                                                    disabled={invoice_no}
                                                 />
                                             </span>
 

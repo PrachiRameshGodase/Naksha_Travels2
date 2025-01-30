@@ -97,7 +97,7 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
             }
 
             // use in credit note
-            updatedFormData.invoice_id = ""
+            // updatedFormData.invoice_id = ""
         }
 
         // use in credit note

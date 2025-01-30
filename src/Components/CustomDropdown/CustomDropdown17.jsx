@@ -33,6 +33,8 @@ const CustomDropdown17 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
+  console.log(options)
+
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown}  >
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

@@ -66,7 +66,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   // console.log("cusData", cusData)
   // console.log("options", options)
   return (
-    <div data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}
+    <div data-tooltip-content={disabled ? "Not able select Drop down at this movement" : ""}
       data-tooltip-id="my-tooltip"
       data-tooltip-place="bottom" ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={!disabled ? () => setIsOpen(!isOpen) : ""} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>

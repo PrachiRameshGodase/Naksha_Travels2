@@ -29,11 +29,11 @@ const CustomDropdown24 = forwardRef((props, ref) => {
 
 
 
-  // if (type === "countries") {
-  //   options = searchTerm?.length === 0 ? options : options?.filter(option =>
-  //     option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  //   );
-  // }
+  if (searchTerm) {
+    options = searchTerm?.length === 0 ? options : options?.filter(option =>
+      option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
+  }
   const fullName = options?.find(account => account?.id == value);
 
   return (
