@@ -215,12 +215,13 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
       // if (type === "visa_entry_type") {
       //   const sendData2={country_name:cusData?.country_name}
       //   dispatch(visaListAction({sendData2, ...sendData }));
-      // } else if(type === "visa_type_id") {
+      // } 
+      // else if(type === "visa_type_id") {
       //   const sendData2={country_name:cusData?.country_name, visa_entry_type:cusData?.visa_entry_type}
       //   dispatch(visaListAction({sendData2, ...sendData }));
       // }
     }
-    setSearchTerm("");
+    // setSearchTerm("");
   }, [isOpen]);
 
   // call item api on page load...
@@ -239,7 +240,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
         : type === "countryList"
         ? option?.country_name
         : type==="visa_type_id"
-        ? option?.visa_type_name
+        ? option?.visa_type_id
         :type==="days"? option?.days
         : ""; 
   
@@ -258,7 +259,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     }
     return acc;
   }, []);
-  
+  console.log("options",options)
   return (
     <div
       ref={combinedRef}
@@ -342,7 +343,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                       (type === "countryList" && option.country_name == value
                         ? " selectedoption"
                         : "") +
-                        (type === "visa_type_id" && option.visa_type_id == value
+                        (type === "visa_type_id" && option.visa_type_name == value
                           ? " selectedoption"
                           : "")+
                           (type === "days" && option.days == value

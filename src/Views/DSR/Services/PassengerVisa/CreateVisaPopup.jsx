@@ -102,9 +102,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value);
-    console.log("name", name);
+   
   
+    let updatedFields = { [name]: value };
     let selectedVisaData = null;
   
     // Ensure country is selected before allowing other selections
@@ -119,10 +119,11 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           country_name: value,
           visa_entry_type: "",
           visa_type_id: "",
+          days: "",  // Reset days and gross_amount when country changes
+          gross_amount: "",
         }));
       }
-    } 
-    else if (name === "visa_entry_type") {
+    } else if (name === "visa_entry_type") {
       if (!formData?.country_name) {
         toast.error("Please select a country first.");
         return;
@@ -140,15 +141,16 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           })
         );
   
-        // Reset visa_type_id when visa_entry_type changes
+        // Reset visa_type_id and days when visa_entry_type changes
         setFormData((prev) => ({
           ...prev,
           visa_entry_type: value,
           visa_type_id: "",
+          days: "",
+          gross_amount: "",  // Reset gross_amount when visa_entry_type changes
         }));
       }
-    } 
-    else if (name === "visa_type_id") {
+    } else if (name === "visa_type_id") {
       if (!formData?.country_name) {
         toast.error("Please select a country first.");
         return;
@@ -160,12 +162,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   
       selectedVisaData = visaListData?.find(
         (item) =>
-          item?.visa_type_id == value
-        //  &&
-        //   item?.visa_entry_type == formData?.visa_entry_type &&
-        //   item?.country_name === formData?.country_name
+          item?.visa_type_id == value &&
+          item?.visa_entry_type == formData?.visa_entry_type &&
+          item?.country_name === formData?.country_name
       );
-      console.log("selectedVisaData",selectedVisaData)
   
       if (selectedVisaData) {
         dispatch(
@@ -175,13 +175,54 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
             visa_type_id: selectedVisaData?.visa_type_id,
           })
         );
+  
+        // Reset days and gross_amount when visa_type_id changes
+        setFormData((prev) => ({
+          ...prev,
+          visa_type_id: value,
+          days: "",
+          gross_amount: "", // Reset gross_amount when visa_type_id changes
+        }));
       }
+    } else if (name === "days") {
+      if (!formData?.country_name) {
+        toast.error("Please select a country first.");
+        return;
+      }
+      if (!formData?.visa_entry_type) {
+        toast.error("Please select a visa entry type first.");
+        return;
+      }
+      if (!formData?.visa_type_id) {
+        toast.error("Please select a visa type first.");
+        return;
+      }
+  
+      selectedVisaData = visaListData?.find(
+        (item) =>
+          item?.days == value &&
+          item?.visa_type_id == formData?.visa_type_id &&
+          item?.visa_entry_type == formData?.visa_entry_type &&
+          item?.country_name === formData?.country_name
+      );
+  
+  
+      // Update the fields with selected data including gross_amount
+      updatedFields = {
+        ...updatedFields,
+        country_name: selectedVisaData?.country_name || "",
+        visa_entry_type: selectedVisaData?.visa_entry_type || "",
+        visa_type_id: selectedVisaData?.visa_type_id || "",
+        days: selectedVisaData?.days || "",
+        gross_amount: selectedVisaData?.price || "",  // Set the gross_amount based on selected data
+      };
     }
   
-    // Update form state
+    // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...updatedFields,  // Include the updated fields with gross_amount
     }));
   
     // Clear errors for the field
@@ -191,6 +232,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     }));
   };
   
+  
+ 
 
   const handleDateChange = (date, name) => {
     setFormData((prev) => ({
@@ -353,7 +396,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       
                       </div>
-                      <div className="form_commonblock">
+                      <div  className={`form_commonblock ${
+                          formData?.country_name ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.country_name ? "" : "Please Select Country First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>
                           Visa Entry Type<b className="color_red">*</b>
                         </label>
@@ -389,7 +439,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      <div  className={`form_commonblock ${
+                          formData?.visa_entry_type ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.visa_entry_type ? "" : "Please Select Visa Entry Type First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>
                           Visa Type<b className="color_red">*</b>
                         </label>
@@ -424,7 +481,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      <div  className={`form_commonblock ${
+                          formData?.visa_type_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.visa_type_id ? "" : "Please Select Visa Type First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>
                           Days<b className="color_red">*</b>
                         </label>
