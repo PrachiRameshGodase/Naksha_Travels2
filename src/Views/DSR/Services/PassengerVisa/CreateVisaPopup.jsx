@@ -108,7 +108,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       );
       if (selectedVisaData) {
         dispatch(
-          visaListAction({ country_name: selectedVisaData?.country_id })
+          visaListAction({ country_id: selectedVisaData?.country_id })
         ).then((res) => {
           setStoreEntry(res);
         });
@@ -384,10 +384,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div
                         className={`form_commonblock ${
-                          formData?.country_name ? "" : "disabledfield"
+                          formData?.country_id ? "" : "disabledfield"
                         }`}
                         data-tooltip-content={
-                          formData?.country_name
+                          formData?.country_id
                             ? ""
                             : "Please Select Country First"
                         }
@@ -413,7 +413,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             setcusData={setcusData2}
                             cusData={cusData2}
                             type="visa_entry_type"
-                            disabled={!formData?.country_name}
+                            disabled={!formData?.country_id}
                           />
                         </span>
                         {errors?.visa_entry_type && (

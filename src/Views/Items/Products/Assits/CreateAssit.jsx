@@ -14,6 +14,7 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import { fetchAirport } from "../../../../Redux/Actions/globalActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 
 const CreateAssit = () => {
   const navigate = useNavigate();
@@ -24,10 +25,11 @@ const CreateAssit = () => {
   const assitCreates = useSelector((state) => state?.createAssist);
   const assistDetails = useSelector((state) => state?.assistDetails);
   const assitData = assistDetails?.data?.data?.data || {};
+  const airportList=useSelector((state) => state?.airPort?.countries?.data);
 
-const airportList=useSelector((state) => state?.airPort?.countries?.data);
-console.log("airportList",airportList)
-const [cusData3, setcusData3]=useState(null)
+  const meetingType = ShowUserMasterData("55");
+   
+  const [cusData3, setcusData3]=useState(null)
   const [formData, setFormData] = useState({
     meeting_type: "",
     airport: "",
@@ -179,11 +181,14 @@ const [cusData3, setcusData3]=useState(null)
 
                         <span id="">
                           {otherIcons.placeofsupply_svg}
-                          <input
+                          <CustomDropdown04
+                            label="Visa Meeting Type"
+                            options={meetingType}
                             value={formData?.meeting_type}
                             onChange={handleChange}
                             name="meeting_type"
-                            placeholder="Enter Meeting Type"
+                            defaultOption="Select Meeting"
+                            type="masters2"
                           />
                         </span>
                         {errors?.meeting_type && (

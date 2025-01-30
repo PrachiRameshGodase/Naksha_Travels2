@@ -3,6 +3,7 @@ import { customersList } from '../../Redux/Actions/customerActions';
 import { flightListAction } from '../../Redux/Actions/flightActions';
 import { hotelListAction } from '../../Redux/Actions/hotelActions';
 import { categoryList, itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
+import { visaListAction } from '../../Redux/Actions/visaAction';
 import { sendData } from './HelperFunctions';
 
 
@@ -21,6 +22,9 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
         } else if (name === "vendor_id") {
             dispatch(vendorsLists({ ...sendData, search: searchTerm }));
         }
+    }
+    else if (type === "countryList") {
+        dispatch(visaListAction({ search: searchTerm, status: "1", fy: localStorage.getItem("FinancialYear"), }));
     }
 
     else if (type === "categories") {

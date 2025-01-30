@@ -2,14 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import Swal from "sweetalert2";
 import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
-import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
+import { CustomDropdown029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
 import {
   customersList,
   customersView,
 } from "../../../../Redux/Actions/customerActions";
-import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
 import { CreatePassengerMVisaAction } from "../../../../Redux/Actions/passengerMVisaActions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
@@ -17,11 +16,10 @@ import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/Text
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../../../Helper/DateFormat";
 import { sendData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
-import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
-import Swal from "sweetalert2";
+import { visaListAction } from "../../../../Redux/Actions/visaAction";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -33,13 +31,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const customerDetail = useSelector((state) => state?.viewCustomer);
   const customerData = customerDetail?.data || {};
   const cusList = useSelector((state) => state?.customerList);
-  const vendorList = useSelector((state) => state?.vendorList);
-  const countryList = useSelector((state) => state?.countries?.countries);
+  const visaListData = useSelector((state) => state?.visaList?.data?.data);
   const createVisa = useSelector((state) => state?.createPassengerMVisa);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+
 
   const [formData, setFormData] = useState({
     mice_id: data?.id,
@@ -81,55 +81,179 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     passenger_visa_id: false,
     passport_no: false,
-    // guest_ids: false,
-    visa_no: false,
+    dob: false,
+    email: false,
     guest_ids: false,
+    visa_type_id: false,
+    visa_entry_type: false,
+    country_id: false,
+    issue_date: false,
+    visa_no: false,
+    expiry_date: false,
+    days: false,
     gross_amount: false,
-
-    // retain: false,
     total_amount: false,
   });
 
-  const entryType = ShowUserMasterData("50");
-  const visaentryType = ShowUserMasterData("39");
-  const visatype = ShowUserMasterData("40");
-
+  const [storeEntry, setStoreEntry] = useState([]);
+  const [storeVisaType, setStoreVisaType] = useState([]);
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const selectedSupplierName = vendorList?.data?.user?.find(
-      (item) => item?.id == formData?.supplier_id
-    );
+    let updatedFields = { [name]: value };
+    let selectedVisaData = null;
+    if (name === "country_id") {
+      selectedVisaData = visaListData?.find(
+        (item) => item?.country_id === value
+      );
+      if (selectedVisaData) {
+        dispatch(
+          visaListAction({ country_id: selectedVisaData?.country_id })
+        ).then((res) => {
+          setStoreEntry(res);
+        });
+        // Reset dependent fields when country changes
+        setFormData((prev) => ({
+          ...prev,
+          country_id: value,
+          visa_entry_type: "",
+          visa_type_id: "",
+          days: "",
+          gross_amount: "",
+        }));
+      }
+    } else if (name === "visa_entry_type") {
+      if (!formData?.country_id) {
+        toast.error("Please select a country first.");
+        return;
+      }
+      selectedVisaData = visaListData?.find(
+        (item) =>
+          item?.visa_entry_type == value &&
+          item?.country_id === formData?.country_id
+      );
+      if (selectedVisaData) {
+        dispatch(
+          visaListAction({
+            country_id: selectedVisaData?.country_id,
+            visa_entry_type: selectedVisaData?.visa_entry_type,
+          })
+        ).then((res) => {
+          setStoreVisaType(res);
+        });
+        setFormData((prev) => ({
+          ...prev,
+          visa_entry_type: value,
+          visa_type_id: "",
+          days: "",
+          gross_amount: "",
+        }));
+      }
+    } else if (name === "visa_type_id") {
+      if (!formData?.country_id) {
+        toast.error("Please select a country first.");
+        return;
+      }
+      if (!formData?.visa_entry_type) {
+        toast.error("Please select a visa entry type first.");
+        return;
+      }
+      selectedVisaData = visaListData?.find(
+        (item) =>
+          item?.visa_type_id == value &&
+          item?.visa_entry_type == formData?.visa_entry_type &&
+          item?.country_id === formData?.country_id
+      );
+      if (selectedVisaData) {
+        dispatch(
+          visaListAction({
+            country_id: selectedVisaData?.country_id,
+            visa_entry_type: selectedVisaData?.visa_entry_type,
+            visa_type_id: selectedVisaData?.visa_type_id,
+          })
+        );
+        setFormData((prev) => ({
+          ...prev,
+          visa_type_id: value,
+          days: "",
+          gross_amount: "",
+        }));
+      }
+    } else if (name === "days") {
+      if (!formData?.country_id) {
+        toast.error("Please select a country first.");
+        return;
+      }
+      if (!formData?.visa_entry_type) {
+        toast.error("Please select a visa entry type first.");
+        return;
+      }
+      if (!formData?.visa_type_id) {
+        toast.error("Please select a visa type first.");
+        return;
+      }
+
+      selectedVisaData = visaListData?.find(
+        (item) =>
+          item?.days == value &&
+          item?.visa_type_id == formData?.visa_type_id &&
+          item?.visa_entry_type == formData?.visa_entry_type &&
+          item?.country_id === formData?.country_id
+      );
+
+      updatedFields = {
+        ...updatedFields,
+        country_id: selectedVisaData?.country_id || "",
+        visa_entry_type: selectedVisaData?.visa_entry_type || "",
+        visa_type_id: selectedVisaData?.visa_type_id || "",
+        days: selectedVisaData?.days || "",
+        gross_amount: selectedVisaData?.price || "",
+      };
+    }
+
+    // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
-      supplier_name: selectedSupplierName?.display_name,
       [name]: value,
+      ...updatedFields,
     }));
+
+    // Clear errors for the field
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
     }));
   };
 
-  const handleChange1 = (selectedItems, name) => {
-    setFormData({
-      ...formData,
-      guest_ids: selectedItems,
-    });
+  const handleDateChange = (date, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: formatDate(date),
+    }));
+
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
     }));
   };
-
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_visa_id: formData?.passenger_visa_id ? false : true,
       passport_no: formData?.passport_no ? false : true,
+      dob: formData?.dob ? false : true,
+      email: formData?.email ? false : true,
+      visa_type_id: formData?.visa_type_id ? false : true,
+      visa_entry_type: formData?.visa_entry_type ? false : true,
+      country_id: formData?.country_id ? false : true,
+      issue_date: formData?.issue_date ? false : true,
+      expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
-      // guest_ids: formData?.guest_ids ? false : true,
+      days: formData?.days ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
       total_amount: formData?.total_amount ? false : true,
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -174,7 +298,6 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
-  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
 
   return (
     <div id="formofcreateitems">
@@ -193,29 +316,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           <div className="modal-body">
             <form>
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
+              <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    {/* <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Entry Type<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Entry Type"
-                            options={entryType}
-                            value={formData?.entry_type}
-                            onChange={handleChange}
-                            name="entry_type"
-                            defaultOption="Select Entry Type"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
-                    </div> */}
-
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -256,6 +358,183 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                       <div className="form_commonblock">
                         <label>
+                          Country / Region<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.country_svg}
+                            <CustomDropdown029
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Country"
+                              options={visaListData}
+                              value={formData.country_id}
+                              onChange={handleChange}
+                              name="country_id"
+                              defaultOption="Select Country"
+                              setcusData={setcusData1}
+                              cusData={cusData1}
+                              type="countryList"
+                              required
+                            />
+                          </span>
+                          {errors?.country_id && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Country
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={`form_commonblock ${
+                          formData?.country_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.country_id
+                            ? ""
+                            : "Please Select Country First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom"
+                      >
+                        <label>
+                          Visa Entry Type<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+
+                          <CustomDropdown029
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Select Visa Entry Type"
+                            options={storeEntry}
+                            value={formData.visa_entry_type}
+                            onChange={handleChange}
+                            name="visa_entry_type"
+                            defaultOption="Select Visa Entry Type"
+                            setcusData={setcusData2}
+                            cusData={cusData2}
+                            type="visa_entry_type"
+                            disabled={!formData?.country_id}
+                          />
+                        </span>
+                        {errors?.visa_entry_type && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Entry Type
+                          </p>
+                        )}
+                      </div>
+                      <div
+                        className={`form_commonblock ${
+                          formData?.visa_entry_type ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.visa_entry_type
+                            ? ""
+                            : "Please Select Visa Entry Type First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom"
+                      >
+                        <label>
+                          Visa Type<b className="color_red">*</b>
+                        </label>
+
+                        <span id="">
+                          {otherIcons.name_svg}
+                          <CustomDropdown029
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Select Visa Type"
+                            options={storeVisaType}
+                            value={formData?.visa_type_id}
+                            onChange={handleChange}
+                            name="visa_type_id"
+                            defaultOption="Select Visa Type"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="visa_type_id"
+                            disabled={!formData?.visa_entry_type}
+                          />
+                        </span>
+                        {errors?.visa_type_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Visa Type
+                          </p>
+                        )}
+                      </div>
+                      <div
+                        className={`form_commonblock ${
+                          formData?.visa_type_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.visa_type_id
+                            ? ""
+                            : "Please Select Visa Type First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom"
+                      >
+                        <label>
+                          Days<b className="color_red">*</b>
+                        </label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <CustomDropdown029
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Days"
+                              options={visaListData}
+                              value={formData?.days}
+                              onChange={handleChange}
+                              name="days"
+                              defaultOption="Select Days"
+                              setcusData={setcusData4}
+                              cusData={cusData4}
+                              type="days"
+                              disabled={!formData?.visa_type_id}
+                            />
+                          </span>
+                          {errors?.days && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill Days
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="form_commonblock">
+                        <label>
                           Passport No<b className="color_red">*</b>
                         </label>
                         <span>
@@ -265,6 +544,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="passport_no"
                             placeholder="Enter Passport No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.passport_no && (
@@ -280,30 +560,50 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock ">
-                        <label>Date Of Birth</label>
+                        <label>
+                          Date Of Birth<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.dob}
-                            onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                dob: formatDate(date),
-                              })
-                            }
+                            onChange={(date) => handleDateChange(date, "dob")}
                             name="dob"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Start 50 years in the past
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // End 50 years in the future
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
+                        {errors?.dob && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Date
+                          </p>
+                        )}
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>Email</label>
+                        <label>
+                          Email<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
@@ -313,6 +613,18 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholder="Enter Email"
                           />
                         </span>
+                        {errors?.email && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Email
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>
@@ -325,6 +637,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             onChange={handleChange}
                             name="visa_no"
                             placeholder="Enter Visa No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.visa_no && (
@@ -340,128 +653,81 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
-                        <label>Visa Type</label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Visa Type"
-                            options={visatype}
-                            value={formData?.visa_type_id}
-                            onChange={handleChange}
-                            name="visa_type_id"
-                            defaultOption="Select Visa Type"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>Visa Entry Type</label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Visa Entry Type"
-                            options={visaentryType}
-                            value={formData?.visa_entry_type}
-                            onChange={handleChange}
-                            name="visa_entry_type"
-                            defaultOption="Select Visa Entry Type"
-                            type="masters"
-                          />
-                        </span>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>Days</label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.name_svg}
-                            <NumericInput
-                              type="number"
-                              name="days"
-                              placeholder="Enter Days"
-                              value={formData.total_days}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="form_commonblock">
-                        <label>Country / Region</label>
-                        <div id="inputx1">
-                          <span>
-                            {otherIcons.country_svg}
-
-                            <select
-                              name="country_id"
-                              value={formData.country_id}
-                              onChange={(e) => handleChange(e, "country_id")}
-                            >
-                              <option value="">Select Country</option>
-                              {countryList?.country?.map((country) => (
-                                <option key={country.id} value={country.id}>
-                                  {country.name}
-                                </option>
-                              ))}
-                            </select>
-                          </span>
-                        </div>
-                        {/* {countryErr && <p className="error-message">
-                                                            {otherIcons.error_svg}
-                                                            Please select the country name</p>} */}
-                      </div>
                       <div className="form_commonblock ">
-                        <label>Issue Date</label>
+                        <label>
+                          Issue Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.issue_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                issue_date: formatDate(date),
-                              })
+                              handleDateChange(date, "issue_date")
                             }
                             name="issue_date"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                             maxDate={
-                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                              formData?.expiry_date
+                                ? new Date(formData.expiry_date)
+                                : null
                             }
-                      
                           />
                         </span>
+                        {errors?.issue_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Issue Date
+                          </p>
+                        )}
                       </div>
-
                       <div className="form_commonblock ">
-                        <label>Expiry Date</label>
+                        <label>
+                          Expiry Date<b className="color_red">*</b>
+                        </label>
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
                             selected={formData?.expiry_date}
                             onChange={(date) =>
-                              setFormData({
-                                ...formData,
-                                expiry_date: formatDate(date),
-                              })
+                              handleDateChange(date, "expiry_date")
                             }
                             name="expiry_date"
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                             minDate={
-                              formData?.issue_date ? new Date(formData.issue_date) : null
+                              formData?.issue_date
+                                ? new Date(formData.issue_date)
+                                : null
                             }
                           />
                         </span>
+                        {errors?.expiry_date && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Expiry Date
+                          </p>
+                        )}
                       </div>
                       {/* <div className="form_commonblock">
                         <label>
-                          Family Member<b className="color_red">*</b>
+                          Guest Name<b className="color_red">*</b>
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -470,24 +736,36 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
                             <CustomDropdown31
                               ref={dropdownRef1}
-                              label="Select Family Member"
-                              options={customerData?.family_members}
+                              label="Select Guest"
+                              options={cusList?.data?.user}
                               value={formData.guest_ids}
                               onChange={(selectedItems) =>
                                 handleChange1(selectedItems, "guest_ids")
                               }
                               name="guest_ids"
-                              defaultOption="Select Family Member"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
+                              defaultOption="Select Guest"
+                              setcusData={setcusData2}
+                              cusData={cusData2}
                               type="vendor"
                               required
                             />
                           </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
                         </div>
-                      </div> */}
-                      {/* <div className="form_commonblock">
-                        <label>Supplier</label>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -506,6 +784,18 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                       </div> */}

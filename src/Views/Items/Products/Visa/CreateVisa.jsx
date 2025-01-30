@@ -27,9 +27,9 @@ const CreateVisa = () => {
   const VisaCreates = useSelector((state) => state?.createVisa);
   const VisaDetails = useSelector((state) => state?.visaDetails);
   const visaData = VisaDetails?.data?.data?.data || {};
-  const countryList = useSelector((state) => state?.countries?.countries);
-  console.log("countryList?.country", countryList?.country);
-
+  const countries = useSelector(state => state?.countries);
+  const countryList = countries?.countries?.country
+     
   const visaentryType = ShowUserMasterData("39");
   const visatype = ShowUserMasterData("40");
 
@@ -55,14 +55,19 @@ const CreateVisa = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value);
-    const selectedCountry = countryList?.country?.find(
-      (item) => item?.id == formData?.country_id
-    );
-    console.log("selectedCountry", selectedCountry);
+    let updatedFields = { [name]: value };
+    
     const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
     const visaType = visatype?.find((val) => val?.labelid == value);
-
+    if (name === "country_id") {
+      const selectedCountry = countryList?.find(
+        (item) => item?.id == value
+      );
+      updatedFields = {
+        ...updatedFields,
+        country_name: selectedCountry?.name || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
       ...(name === "visa_entry_type" && {
@@ -71,9 +76,7 @@ const CreateVisa = () => {
       ...(name === "visa_type_id" && {
         visa_type_name: visaType?.label,
       }),
-      ...(name === "country_id" && {
-        country_name: selectedCountry?.name,
-      }),
+      ...updatedFields,
       [name]: value,
     }));
     setErrors((prevData) => ({
@@ -81,7 +84,7 @@ const CreateVisa = () => {
       [name]: false,
     }));
   };
-  console.log("formData", formData);
+
   useEffect(() => {
     dispatch(fetchGetCountries());
   }, [dispatch]);
