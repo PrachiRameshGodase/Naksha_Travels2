@@ -203,6 +203,7 @@ const CreateFlight = ({ popupContent }) => {
                 onClick={handleSubmitForm}
                 createUpdate={flightCreates}
                 setShowModal={setshowAddPopup}
+                isEdit={selectedItem?.id}
               />
             </form>
           </div>

@@ -258,7 +258,7 @@ const HotelServices = ({ data }) => {
               </span>
             </p>
             <SearchBox
-              placeholder="Search In Hotels"
+              placeholder="Search In Rooms"
               onSearch={onSearch}
               section={searchTrigger}
             />

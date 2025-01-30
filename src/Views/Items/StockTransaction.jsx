@@ -24,7 +24,7 @@ const StockTransaction = ({ itemDetails }) => {
   const itemStockeducer = useSelector((state) => state?.itemStock);
   const stockDetails = itemStockeducer?.data?.stock_details;
   const totalItems = stockDetails?.count || 0;
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);

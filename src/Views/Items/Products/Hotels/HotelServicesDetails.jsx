@@ -23,7 +23,7 @@ const HotelServicesDetails = ({ data, setShowPopup }) => {
     <div className="custom-modal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5>Room Name: {data?.room_number || ""}</h5>
+          <h5>Room Name/Number: {data?.room_number || ""}</h5>
           <button className="close-button" onClick={() => setShowPopup(false)}>
             <RxCross2 />
           </button>
@@ -53,7 +53,7 @@ const HotelServicesDetails = ({ data, setShowPopup }) => {
                       <div style={{ display: "flex", gap: "20px" }}>
                         <ul>
                           <li className="pendingfromfrontendx5 ">
-                            <span>Room Name</span>
+                            <span>Room Name/Number</span>
                             <h1>:</h1>
                             <p style={{ width: "212px" }}>
                               {data?.room_number || ""}

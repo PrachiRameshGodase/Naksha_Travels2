@@ -78,7 +78,7 @@ const PassengerHotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <span>Room Name/No</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.room_id || "-"}
+                                    {data?.room?.room_number || "-"}
                                   </p>
                                 </li>
                                 <li>
