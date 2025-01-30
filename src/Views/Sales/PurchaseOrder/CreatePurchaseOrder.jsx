@@ -17,7 +17,7 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 import useOutsideClick from "../../Helper/PopupData";
 import { formatDate } from "../../Helper/DateFormat";
 import { preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
-import CurrencySelect, { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
+import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { SelectAddress } from "../../Common/SelectAddress";
@@ -27,14 +27,15 @@ import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAre
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 
-import { handleFormSubmitCommon } from "../../Purchases/Utils/handleFormSubmit"
+import { handleFormSubmit1 } from "../../Purchases/Utils/handleFormSubmit"
 import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import { Toaster } from "react-hot-toast";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
+import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
 
 const CreatePurchaseOrder = () => {
   const dispatch = useDispatch();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
@@ -42,7 +43,7 @@ const CreatePurchaseOrder = () => {
   // const [cusData, setCusData] = useState(null);
   const [cusData2, setCusData2] = useState(null);
 
-  const paymentTerms = ShowMasterData("8");
+  const paymentTerms = ShowMasterData("8");//purchase terms
 
 
   const { city, country, state, zipcode, name, email, street1, street2, mobile_no } = activeOrg_details;
@@ -100,7 +101,7 @@ const CreatePurchaseOrder = () => {
     isDuplicate
   );
 
-  // console.log("formData in purchases", formData)
+  // console.log("formData in purchases", formData?.vendor_note)
 
   // set billing/shipping when customer select
   const [addSelectCus, setAddSelectCus] = useState({
@@ -108,55 +109,7 @@ const CreatePurchaseOrder = () => {
     shipping: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value; ``
 
-    if (name === "shipping_charge" || name === "adjustment_charge") {
-      newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    }
-
-    if (name === "vendor_id" && value !== "") {
-      setIsVendorSelect(true);
-    } else if (name === "vendor_id" && value == "") {
-      setIsVendorSelect(false);
-    }
-
-    if (name === "vendor_id") {
-      const selectedItem = vendorList?.data?.user?.find(
-        (cus) => cus.id == value
-      );
-      const findfirstbilling = selectedItem?.address?.find(
-        (val) => val?.is_billing == "1"
-      );
-      const findfirstshipping = selectedItem?.address?.find(
-        (val) => val?.is_shipping == "1"
-      );
-      setAddSelect({
-        billing: findfirstbilling,
-        shipping: findfirstshipping,
-      });
-    }
-
-    if (name === "customer_id") {
-      const selectedItem = cusList?.data?.user?.find((cus) => cus.id == value);
-      const findfirstbilling = selectedItem?.delivery_address?.find(
-        (val) => val?.is_billing == "1"
-      );
-      const findfirstshipping = selectedItem?.delivery_address?.find(
-        (val) => val?.is_shipping == "1"
-      );
-
-      setAddSelectCus({
-        billing: findfirstbilling,
-        shipping: findfirstshipping,
-      });
-    }
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
-  };
 
 
   useEffect(() => {
@@ -176,29 +129,33 @@ const CreatePurchaseOrder = () => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
 
-  const handleFormSubmit = (e) => {
-    handleFormSubmitCommon({
+  // this is the common handle submit 
+  const handleFormSubmit = async (e) => {
+    await handleFormSubmit1({
       e,
       formData,
-      isVendorSelect,
-      dropdownRef1,
-      // isItemSelect,
       setItemErrors,
+      dropdownRef1,
       dropdownRef2,
       dispatch,
-      createPurchases,
-      Navigate,
-      isEdit,
-      showAllSequenceId,
-      itemId,
-      type: "purchase order",
-      additionalData: {
-        delivery_address: stringifyJSON(formData?.delivery_address),
-        charges: stringifyJSON(formData?.charges),
+      navigate,
+      editDub: isEdit,
+      section: "purchase order",
+      updateDispatchAction: createPurchases, // This is dynamic for the dispatch action
+      sendData: {
+        isVendorSelect
       },
-
     });
+
   };
+
+
+  //this is the common handle select
+  const {
+    handleChange,
+  } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, setIsVendorSelect, vendorList });
+
+
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -464,6 +421,7 @@ const CreatePurchaseOrder = () => {
                       setItemErrors={setItemErrors}
                       extracssclassforscjkls={"extracssclassforscjkls"}
                       dropdownRef2={dropdownRef2}
+                      note=""//empty note is refer to the vendor note
                     />
 
                     <div className="secondtotalsections485s sxfc546sdfr85234e">

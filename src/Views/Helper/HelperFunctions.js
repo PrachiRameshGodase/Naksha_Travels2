@@ -17,7 +17,8 @@ export const showRateWithPercent = (val) => {
 export const sendData = {
     fy: 2024,
     noofrec: 10,
-    active: 1, status: 1
+    active: 1,
+    status: 1
 }
 export const sendData2 = {
     fy: 2024,

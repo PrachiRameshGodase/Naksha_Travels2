@@ -52,7 +52,7 @@ const CreateQuotation = () => {
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const paymentTerms = ShowMasterData("8");
+  const paymentTerms = ShowMasterData("8");//quotation terms
 
 
   const {
@@ -83,7 +83,8 @@ const CreateQuotation = () => {
   const {
     handleChange,
     calculateExpiryDate,
-  } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect);
+  } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, });
+
 
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {

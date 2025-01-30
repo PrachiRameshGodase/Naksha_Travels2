@@ -103,11 +103,10 @@ const CreateSalesOrders = () => {
         convert
     );
 
-    console.log("fetchDetailsfetchDetails", fetchDetails)
     //this is the common handle select
     const {
         handleChange,
-    } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect);
+    } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, });
 
     //set selected billing and shipping addresses inside formData
     useEffect(() => {
@@ -309,7 +308,6 @@ const CreateSalesOrders = () => {
                                             </div>
 
                                             <div className="form_commonblock">
-                                                {console.log("formData.shipment_date", formData.shipment_date)}
                                                 <label>Expected Shipment Date</label>
                                                 <span>
                                                     {otherIcons.date_svg}

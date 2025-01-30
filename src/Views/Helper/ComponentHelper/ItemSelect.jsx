@@ -204,6 +204,7 @@ const ItemSelect = ({
       discount: totalDiscount,
       subtotal: subtotal?.toFixed(2),
       total_tax: tax_amount?.toFixed(2),
+      tax_amount: tax_amount?.toFixed(2),
       total_charges: total_charges?.toFixed(2),
       total: total?.toFixed(2),
       taxes: taxes,

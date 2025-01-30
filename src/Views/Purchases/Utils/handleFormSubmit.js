@@ -74,11 +74,17 @@ export const handleFormSubmit1 = async ({
     // console.log("errors", errors)
 
     // selection check
-    if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-
+    // if (dropdownRef1) {
+    //     if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
+    // }
     // it is worked when create credit note is opened....
     if ((formData?.credit_note_id)) {
         if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+    }
+
+    if ((sendData?.dropdownRef1)) {
+        if (handleDropdownError(sendData?.isVendorSelect, dropdownRef1)) return;
+
     }
 
     if (errors?.length > 0) {
@@ -118,6 +124,9 @@ export const handleFormSubmit1 = async ({
                     items: updatedItems,
                     address: JSON.stringify(formData?.address),
                     charges: JSON.stringify(formData?.charges),
+
+                    // use in purchases
+                    ...(formData?.delivery_address && { delivery_address: JSON.stringify(formData?.delivery_address) })
                 },
                 navigate,
                 section,

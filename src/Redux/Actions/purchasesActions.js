@@ -21,19 +21,18 @@ import {
     PURCHASES_STATUS_SUCCESS,
     PURCHASES_STATUS_ERROR,
 } from '../Constants/purchasesConstants.js';
-import SendMail from '../../Components/SendMail/SendMail.jsx';
 import Swal from 'sweetalert2';
 import { billLists, billStatus } from './billActions.js';
 import { GRNstatusActions } from './grnActions.js';
-import { autoGenerateIdFunction } from '../../Views/Helper/ReduxHelperFunctions/autoGenerateIdFunction.js';
-import { Nav } from 'react-bootstrap';
 import { handlePurchaseOrderNavigation } from '../../Views/Helper/ReduxHelperFunctions/purchasesNavigation.js';
 import { handleBillsNavigation } from '../../Views/Helper/ReduxHelperFunctions/billsNavigation.js';
 import { convertStatus } from '../../Views/Helper/ReduxHelperFunctions/convertStatus.js';
-import { purchseOrdersLists } from './listApisActions.js';
 import { sendData } from '../../Views/Helper/HelperFunctions.js';
 
-export const createPurchases = (queryParams, Navigate, section, editDub, buttonName, showAllSequenceId, itemId, convert) => async (dispatch) => {
+export const createPurchases = ({ quotationData: queryParams, navigate: Navigate, section, editDub, buttonName, itemId, convert }) => async (dispatch) => {
+
+    console.log("queryParams, Navigate, section, editDub, buttonName, showAllSequenceId, itemId, convert", queryParams, Navigate, section, editDub, buttonName, itemId, convert)
+
 
     dispatch({ type: PURCHASES_CREATE_REQUEST });
 

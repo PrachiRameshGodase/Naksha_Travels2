@@ -47,7 +47,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     if (
       isOpen && // Ensure modal or component is open
       name === "customer_id" &&
-      (parsedPayload?.search || !customList?.data)
+      (parsedPayload?.search || !parsedPayload?.status == 1 || !customList?.data)
     ) {
       dispatch(customersList({ ...sendData }));
     }
@@ -55,7 +55,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     if (
       isOpen && // Ensure modal or component is open
       name === "vendor_id" &&
-      (parsedPayload1?.search || !vendorList?.data)
+      (parsedPayload1?.search || !parsedPayload1?.status == 1 || !vendorList?.data)
     ) {
       dispatch(vendorsLists({ ...sendData }));
     }

@@ -107,7 +107,6 @@ const CreatePaymentRec = () => {
 
     });
 
-    console.log("fetchDetailsfetchDetailsfetchDetailsve", fetchDetails)
 
     useEffect(() => {
         if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && invoice) {
