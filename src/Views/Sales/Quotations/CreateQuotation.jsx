@@ -87,7 +87,6 @@ const CreateQuotation = () => {
 
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {
-
     await handleFormSubmit1({
       e,
       formData,

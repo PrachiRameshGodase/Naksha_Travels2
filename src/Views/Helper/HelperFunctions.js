@@ -30,6 +30,7 @@ export const sendData3 = {
     // noofrec: 10,
     active: 1, status: 1
 }
+
 export const activeOrg_details = UserData?.active_organisation;
 export const currencySymbol = activeOrg_details?.symbol ? activeOrg_details?.symbol : "$";
 export const orgnizationEmail = activeOrg_details?.email ? activeOrg_details?.email : "";

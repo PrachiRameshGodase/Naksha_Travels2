@@ -3,21 +3,19 @@ import React, { useState } from "react";
 import "./PdfTemplate.scss";
 import {
   activeOrg_details,
-  showAmountWithCurrencySymbol,
-  showRateWithPercent,
 } from "../../HelperFunctions";
-import ShowMastersValue, { PdfShowMastersValue } from "../../ShowMastersValue";
+import { PdfShowMastersValue } from "../../ShowMastersValue";
 import { formatDate3, formatDate4 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
-import { otherIcons } from "../../SVGIcons/ItemsIcons/Icons";
-import { getCurrencySymbol } from "../ManageStorage/localStorageUtils";
+import { convertCurrencyWithPercent, convertCurrencyWithSymbol } from "../../CurrencyHelper/convertKESToUSD";
+// import { useSelector } from "react-redux";
 
-const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
-  // console.log("masterData", masterData)
-  const currencySymbol = getCurrencySymbol();
+const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, currencyList }) => {
 
   const [showCharges, setShowCharges] = useState(false);
+
   const active_orgnization = activeOrg_details;
+
   const calculateTotalTaxAmount = () => {
     return data?.items?.reduce((total, entry) => {
       return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);
@@ -157,13 +155,13 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
                               {val?.invoice?.invoice_id || ""}
                             </td>
                             <td className="table_column_item item_text_end_01">
-                              {showAmountWithCurrencySymbol(val?.invoice?.total)}
+                              {convertCurrencyWithSymbol(val?.invoice?.total, fetchCurrencyData, data?.currency, currencyList)}
                             </td>
                             <td className="table_column_item item_text_end_01">
-                              {showAmountWithCurrencySymbol((+val?.invoice?.total) - (+val?.invoice?.amount_paid))}
+                              {convertCurrencyWithSymbol(((+val?.invoice?.total) - (+val?.invoice?.amount_paid)), fetchCurrencyData, data?.currency, currencyList)}
                             </td>
                             <td className="table_column_item item_text_end_01">
-                              {showAmountWithCurrencySymbol(val?.amount)}
+                              {convertCurrencyWithSymbol(val?.amount, fetchCurrencyData, data?.currency, currencyList)}
                             </td>
                           </tr>
                         ))}
@@ -185,15 +183,16 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
                     <td className="table_column_item">
                       {val?.item?.type || val?.type}
                     </td>
+
                     <td
                       className="table_column_item item_text_end_01"
-
                     >
-                      {showAmountWithCurrencySymbol(val?.rate)}
+                      {/* {showAmountWithCurrencySymbol(val?.rate)} */}
+                      {convertCurrencyWithSymbol(val?.rate, fetchCurrencyData, data?.currency, currencyList)}
+
                     </td>
                     <td
                       className="table_column_item"
-
                     >
                       {val?.quantity || ""} {(val?.unit_id || val?.unit_id != 0) && (
                         <>
@@ -206,13 +205,13 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
                       className="table_column_item"
 
                     >
-                      {showRateWithPercent(val?.tax_rate)}
+                      {convertCurrencyWithPercent(val?.tax_rate, fetchCurrencyData, data?.currency, currencyList)}
                     </td>
                     <td
                       className="table_column_item item_text_end_01"
 
                     >
-                      {showAmountWithCurrencySymbol(val?.final_amount)}
+                      {convertCurrencyWithSymbol(val?.final_amount, fetchCurrencyData, data?.currency, currencyList)}
                     </td>
                   </tr>
                   ))}
@@ -225,9 +224,9 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
         {section === "Payment Receive" ?
           <>
             <div className="finalcalculateiosxl44s">
-              <p><p>Amount Received: </p> <h5>{showAmountWithCurrencySymbol(data?.debit)}</h5></p>
+              <p><p>Amount Received: </p> <h5>{convertCurrencyWithSymbol(data?.debit, fetchCurrencyData, data?.currency, currencyList)}</h5></p>
               <p><p>Amount In Blance:</p> <h5>
-                ({currencySymbol}) {+data?.amt_excess < 0 ? (
+                ({fetchCurrencyData}) {+data?.amt_excess < 0 ? (
                   <span style={{ color: "rgb(255, 46, 18)" }}>
                     {+data?.amt_excess}
                   </span>
@@ -243,14 +242,20 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
             <div className="finalcalculateiosxl44s" style={{ borderTop: "none" }}>
               <p>
                 <p>Subtotal</p>{" "}
-                <h5>{showAmountWithCurrencySymbol(data?.subtotal)}</h5>
+                <h5>{convertCurrencyWithSymbol(data?.subtotal, fetchCurrencyData, data?.currency, currencyList)}</h5>
               </p>
               <p>
+
                 <p>Total Tax</p>{" "}
+
                 <h5>
-                  {showAmountWithCurrencySymbol(
-                    calculateTotalTaxAmount()?.toFixed(2)
+
+                  {convertCurrencyWithSymbol(
+                    calculateTotalTaxAmount()?.toFixed(2), fetchCurrencyData, data?.currency, currencyList
                   )}
+
+                  {/* {showAmountWithCurrencySymbol(data?.total_tax)} */}
+
                 </h5>
               </p>
 
@@ -260,14 +265,14 @@ const PrintContent = ({ data, cusVenData, masterData, moduleId, section }) => {
                     <p className="" key={index}>
                       {val?.account_name}
                     </p>{" "}
-                    <h5>{showAmountWithCurrencySymbol(val?.amount.toFixed(2))}</h5>
+                    <h5>{convertCurrencyWithSymbol(val?.amount.toFixed(2), fetchCurrencyData, data?.currency, currencyList)}</h5>
                   </p>
                 ))}
               </>
               <p>
                 <p className="finalcalcuFs">Total</p>{" "}
                 <h5 className="finalcalcuFs">
-                  {showAmountWithCurrencySymbol(parseFloat(data?.total))}
+                  {convertCurrencyWithSymbol(parseFloat(data?.total).toFixed(2), fetchCurrencyData, data?.currency, currencyList)}
                 </h5>
               </p>
             </div>

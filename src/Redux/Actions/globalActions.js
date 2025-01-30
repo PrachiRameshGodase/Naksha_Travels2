@@ -128,6 +128,7 @@ export const fetchCurrencies = (data) => async dispatch => {
     dispatch({ type: GET_CURRENCY_REQUEST });
     try {
         const response = await axiosInstance.post(`/get/currency`, data);
+        console.log("Ressssssssssssssssssssssssssssssssssssssssssss", response)
         dispatch({ type: GET_CURRENCY_SUCCESS, payload: response?.data });
     } catch (error) {
         dispatch({ type: GET_CURRENCY_ERROR, payload: error.message });
