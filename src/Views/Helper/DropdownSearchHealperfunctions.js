@@ -20,9 +20,9 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     }
 
     else if (type === "vendor" || type === "vendor_charges") {
-        if (name === "customer_id" || name === "guest_ids") {
+        if (name === "customer_id" || name === "guest_ids"  || name === "passenger_visa_id" || name === "passenger_insurance_id") {
             dispatch(customersList({ ...sendData, search: searchTerm }));
-        } else if (name === "vendor_id" || name === "passenger_visa_id") {
+        } else if (name === "vendor_id") {
             dispatch(vendorsLists({ ...sendData, search: searchTerm }));
         }
         else if (name === "room_id") {
@@ -31,7 +31,7 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
         
     }
     else if (type === "countryList" || type==="visa_entry_type" || type==="visa_type_id" || type === "days") {
-        dispatch(visaListAction({ search: searchTerm, fy: localStorage.getItem("FinancialYear"), status:1 }));
+        dispatch(visaListAction({ search: searchTerm, ...sendData }));
     }
 
     else if (type === "categories") {
@@ -52,7 +52,7 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
         dispatch(InsuranceListAction({ search: searchTerm, ...sendData }));
     }
     else if (type === "airportList") {
-        dispatch(fetchAirport({ search: searchTerm, }));
+        dispatch(fetchAirport({ search: searchTerm, ...sendData}));
     }
 };
 

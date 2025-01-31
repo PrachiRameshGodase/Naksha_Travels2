@@ -62,9 +62,16 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     if (
       isOpen && // Ensure modal or component is open
       name === "passenger_visa_id" &&
-      (parsedPayload1?.search || !parsedPayload1?.status == 1 || !vendorList?.data)
+      (parsedPayload?.search || !parsedPayload?.status == 1 || !customList?.data)
     ) {
-      dispatch(vendorsLists({ ...sendData }));
+      dispatch(customersList({ ...sendData }));
+    }
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "passenger_insurance_id" &&
+      (parsedPayload?.search || !parsedPayload?.status == 1 || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData }));
     }
 
     setSearchTerm("");

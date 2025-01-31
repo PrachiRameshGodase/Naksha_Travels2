@@ -13,7 +13,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     const dispatch = useDispatch();
     const debounceTimeoutRef = useRef(null); // Store debounce timeout reference
     const productType = useSelector((state) => state?.type);
-   
+    
     const handleSelect = (option) => {
         if (option.active !== "0") {
 
@@ -44,7 +44,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             dropdownRef.current.focus();
         }
     };
-   
+  
     const handleSearch = () => {
         if (debounceTimeoutRef.current) {
             clearTimeout(debounceTimeoutRef.current); // Clear previous timeout

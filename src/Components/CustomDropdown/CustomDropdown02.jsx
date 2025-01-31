@@ -22,7 +22,7 @@ const CustomDropdown02 = forwardRef((props, ref) => {
     handleKeyDown,
     handleSelect,
     focusedOptionIndex,
-  } = DropDownHelper(options, onChange, name, type, "", setcusData,hotelID);
+  } = DropDownHelper(options, onChange, name, type, "", setcusData,"", hotelID);
 
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
   const itemPayloads = localStorage.getItem(("hotelRoomPayload"));
