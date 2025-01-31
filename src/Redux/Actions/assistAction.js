@@ -36,12 +36,11 @@ export const assistListAction = (queryParams, setAllListValue) => async (dispatc
     dispatch({ type: GET_ASSIST_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/assist/list`, queryParams);
-
         dispatch({ type: GET_ASSIST_SUCCESS, payload: response.data });
         if (setAllListValue) {
             setAllListValue(response?.data)
         }
-
+        return response?.data?.data;
     } catch (error) {
         dispatch({ type: GET_ASSIST_ERROR, payload: error.message });
         toast.error(error?.message);

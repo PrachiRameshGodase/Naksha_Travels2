@@ -13,6 +13,8 @@ import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import Swal from "sweetalert2";
+import CustomDropdown29 from "../../Components/CustomDropdown/CustomDropdown29";
+import { InsuranceListAction } from "../../Redux/Actions/InsuranceActions";
 
 const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -20,14 +22,13 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
+  const insuranceListData = useSelector((state) => state?.insuranceList);
+  const insuranceLists = insuranceListData?.data?.data || [];
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
-  const createInsurance = useSelector(
-    (state) => state?.createPassengerInsurance
-  );
-
+ 
   const [cusData, setcusData] = useState(null);
-  const [cusData1, setcusData1] = useState(null);
+  const [cusData3, setcusData3] = useState(null);
 
 
   const [formData, setFormData] = useState({
@@ -129,6 +130,8 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+  useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
+
   // call item api on page load...
 
   return (
@@ -216,12 +219,20 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.company_name}
-                            onChange={handleChange}
-                            name="company_name"
-                            placeholder="Enter Company Name"
-                          />
+                          <CustomDropdown29
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Company Name"
+                              options={insuranceLists}
+                              value={formData.company_name}
+                              onChange={handleChange}
+                              name="company_name"
+                              defaultOption="Select Comapnay Name"
+                              setcusData={setcusData3}
+                              cusData={cusData3}
+                              type="companyList"
+                              required
+                            />
                         </span>
                         {errors?.company_name && (
                           <p

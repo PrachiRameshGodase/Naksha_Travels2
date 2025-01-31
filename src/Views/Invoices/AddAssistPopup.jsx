@@ -72,19 +72,17 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value);
-    console.log("name", name);
-
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
-      selectedAssistData = assistLists?.find((item) => item?.airport === value);
-      console.log("selectedAssistData", selectedAssistData);
+      selectedAssistData = assistLists?.find(
+        (item) => item?.airport === value
+      );
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-          console.log("res", res);
+     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -101,16 +99,18 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a airport first.");
         return;
       }
+     
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
-          item?.no_of_person === formData?.no_of_persons
+          item?.airport === formData?.airport_name
       );
+
       if (selectedAssistData) {
         dispatch(
           assistListAction({
-            airport_name: selectedAssistData?.airport,
-            no_of_persons: selectedAssistData?.no_of_person,
+            airport: selectedAssistData?.airport,
+            no_of_person: selectedAssistData?.no_of_person,
           })
         ).then((res) => {
           setStoreVisaType(res);
@@ -119,11 +119,10 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           ...prev,
           meeting_type: value,
           no_of_persons: "",
-
           gross_amount: "",
         }));
       }
-    } else if (name === "no_of_persons") {
+    }  else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -132,6 +131,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
+      
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -142,7 +142,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
       updatedFields = {
         ...updatedFields,
-        airport_name: selectedAssistData?.airport_name || "",
+        airport_name: selectedAssistData?.airport || "",
         no_of_persons: selectedAssistData?.no_of_person || "",
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
@@ -251,7 +251,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             value={formData.airport_name}
                             onChange={handleChange}
                             name="airport_name"
-                            defaultOption="Select Country"
+                            defaultOption="Select Airport"
                             setcusData={setcusData1}
                             cusData={cusData1}
                             type="airportList2"

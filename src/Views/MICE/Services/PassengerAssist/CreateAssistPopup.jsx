@@ -30,6 +30,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const customerDetail = useSelector((state) => state?.viewCustomer);
+  const customerData = customerDetail?.data || {};
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
@@ -83,19 +85,17 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value);
-    console.log("name", name);
-
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
-      selectedAssistData = assistLists?.find((item) => item?.airport === value);
-      console.log("selectedAssistData", selectedAssistData);
+      selectedAssistData = assistLists?.find(
+        (item) => item?.airport === value
+      );
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-          console.log("res", res);
+     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -112,16 +112,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a airport first.");
         return;
       }
+     
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
-          item?.no_of_person === formData?.no_of_persons
+          item?.airport === formData?.airport_name
       );
+
       if (selectedAssistData) {
         dispatch(
           assistListAction({
-            airport_name: selectedAssistData?.airport,
-            no_of_persons: selectedAssistData?.no_of_person,
+            airport: selectedAssistData?.airport,
+            no_of_person: selectedAssistData?.no_of_person,
           })
         ).then((res) => {
           setStoreVisaType(res);
@@ -130,11 +132,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           ...prev,
           meeting_type: value,
           no_of_persons: "",
-
           gross_amount: "",
         }));
       }
-    } else if (name === "no_of_persons") {
+    }  else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -143,6 +144,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
+      
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -153,7 +155,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
       updatedFields = {
         ...updatedFields,
-        airport_name: selectedAssistData?.airport_name || "",
+        airport_name: selectedAssistData?.airport || "",
         no_of_persons: selectedAssistData?.no_of_person || "",
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
@@ -173,10 +175,11 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
+  
   const handleChange1 = (selectedItems, name) => {
     if (selectedItems.length > formData.no_of_persons) {
       toast.error(
-        `You cannot select more than ${formData.max_occupancy} guests.`
+        `You cannot select more than ${formData.no_of_persons} guests.`
       );
       return;
     } else {
@@ -283,7 +286,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             value={formData.airport_name}
                             onChange={handleChange}
                             name="airport_name"
-                            defaultOption="Select Country"
+                            defaultOption="Select Airport"
                             setcusData={setcusData1}
                             cusData={cusData1}
                             type="airportList2"
@@ -334,48 +337,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
-                        <label>
-                          Family Member<b className="color_red">*</b>
-                        </label>
-
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-
-                            <CustomDropdown031
-                              ref={dropdownRef1}
-                              label="Select Family Member"
-                              options={customerData?.family_members}
-                              value={formData.guest_ids}
-                              onChange={(selectedItems) =>
-                                handleChange1(selectedItems, "guest_ids")
-                              }
-                              name="guest_ids"
-                              defaultOption="Select Family Member"
-                              setcusData={setcusData}
-                              cusData={cusData}
-                              type="vendor"
-                              formData={formData}
-                            />
-                          </span>
-                          {errors?.guest_ids && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Family Members
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
                       <div
                         className={`form_commonblock ${
                           formData?.meeting_type ? "" : "disabledfield"
@@ -423,31 +384,49 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                      {/* <div className="form_commonblock">
-                      <label>
-                        Supplier
-                      </label>
-                      <div id="sepcifixspanflex">
-                        <span id="">
-                          {otherIcons.name_svg}
+                    </div>
 
-                          <CustomDropdown10
-                            ref={dropdownRef1}
-                            label="Select Supplier"
-                            options={vendorList?.data?.user}
-                            value={formData.supplier_id}
-                            onChange={handleChange}
-                            name="supplier_id"
-                            defaultOption="Select Supplier"
-                            setcusData={setcusData1}
-                            cusData={cusData1}
-                            type="vendor"
-                            required
-                          />
-                        </span>
+                    <div className="f1wrapofcreqx1">
+                    <div className="form_commonblock">
+                        <label>
+                          Family Member<b className="color_red">*</b>
+                        </label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown031
+                              ref={dropdownRef1}
+                              label="Select Family Member"
+                              options={customerData?.family_members}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Family Member"
+                              setcusData={setcusData}
+                              cusData={cusData}
+                              type="vendor"
+                              formData={formData}
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Family Members
+                            </p>
+                          )}
+                        </div>
                       </div>
-
-                    </div> */}
+                     
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

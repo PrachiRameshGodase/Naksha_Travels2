@@ -25,6 +25,8 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 import Swal from "sweetalert2";
+import { InsuranceListAction } from "../../../../Redux/Actions/InsuranceActions";
+import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -37,6 +39,8 @@ const CreateInsurancePopup = ({
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
+  const insuranceListData = useSelector((state) => state?.insuranceList);
+  const insuranceLists = insuranceListData?.data?.data || [];
   const customerDetail = useSelector((state) => state?.viewCustomer);
   const customerData = customerDetail?.data || {};
   const cusList = useSelector((state) => state?.customerList);
@@ -46,7 +50,7 @@ const CreateInsurancePopup = ({
   );
 
   const [cusData, setcusData] = useState(null);
-  const [cusData1, setcusData1] = useState(null);
+  const [cusData3, setcusData3] = useState(null);
   const [cusData2, setcusData2] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -87,7 +91,7 @@ const CreateInsurancePopup = ({
     gross_amount: false,
     tax_amount: false,
     tax_percent: false,
-    // retain: false,
+    company_name:false,
     total_amount: false,
   });
 
@@ -127,7 +131,7 @@ const CreateInsurancePopup = ({
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-
+      company_name: formData?.company_name ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -175,6 +179,8 @@ const CreateInsurancePopup = ({
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+  useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
+
   // call item api on page load...
 
   return (
@@ -259,16 +265,36 @@ const CreateInsurancePopup = ({
                         </div>
                       </div> */}
                       <div className="form_commonblock">
-                        <label>Company Name</label>
+                        <label>Company Name<b className="color_red">*</b></label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData.company_name}
-                            onChange={handleChange}
-                            name="company_name"
-                            placeholder="Enter Company Name"
-                          />
+                          <CustomDropdown29
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Company Name"
+                              options={insuranceLists}
+                              value={formData.company_name}
+                              onChange={handleChange}
+                              name="company_name"
+                              defaultOption="Select Comapnay Name"
+                              setcusData={setcusData3}
+                              cusData={cusData3}
+                              type="companyList"
+                              required
+                            />
                         </span>
+                        {errors?.company_name && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Company
+                          </p>
+                        )}
                       </div>
                       <div className="form_commonblock">
                         <label>

@@ -72,7 +72,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
     []
   );
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
-
+  
   return (
     <div
       ref={combinedRef}
@@ -89,7 +89,11 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           ? cusData
             ? cusData?.name
             : defaultOption
-          : cusData
+            :
+            type === "companyList"
+            ? cusData
+              ? cusData?.company_name
+              : defaultOption : cusData
           ? cusData?.hotel_name
           : value
           ? fullName?.hotel_name
@@ -145,6 +149,9 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                       (type === "hotalList" && option.hotel_name == value
                         ? " selectedoption"
                         : "") +
+                        (type === "companyList" && option.company_name == value
+                          ? " selectedoption"
+                          : "") +
                       (index === focusedOptionIndex ? " focusedoption" : "")
                     }
                   >
@@ -152,7 +159,11 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                       ? `${option?.hotel_name || ""}`
                       : type === "airportList"
                       ? `${option?.name || ""}`
-                      : ""}
+                      :
+                      type === "companyList"
+                      ? `${option?.company_name || ""}`
+                      :
+                       ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
