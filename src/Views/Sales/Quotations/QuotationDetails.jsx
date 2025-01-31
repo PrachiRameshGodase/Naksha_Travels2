@@ -127,10 +127,11 @@ const QuotationDetails = () => {
 
   // const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
 
+
+
   const getCurrency = getCurrencyValue();
 
   const handleDownloadPDF = async () => {
-
     try {
 
       if (quotation?.transaction_date) {

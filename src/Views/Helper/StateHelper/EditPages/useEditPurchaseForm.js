@@ -150,10 +150,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
     useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
 
-
-
-
-
     return {
         formData,
         setFormData,

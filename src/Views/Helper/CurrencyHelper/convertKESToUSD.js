@@ -2,18 +2,9 @@ import { getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageU
 
 // currencyConversionUtils.js
 export const convertCurrencyWithSymbol = (amount, fetchCurrencyData, moduleCurrency, currencyList) => {
-    const activeOrgCurrencyValue = getCurrencyValue();
+    // const activeOrgCurrencyValue = getCurrencyValue();
 
     const symbol = currencyList?.find(val => val?.code === moduleCurrency)?.symbol
-
-    console.log("moduleCurrency", moduleCurrency)
-    console.log("currencyList", currencyList)
-    console.log("symboldddddddddddddddd", symbol)
-
-    // If the active organization currency matches the target currency, return the original amount with its symbol
-    // if (activeOrgCurrencyValue === moduleCurrency) {
-    //     return amount == "0" ? `${symbol} 0.00` : amount ? `${symbol} ${amount}` : "";;
-    // }
 
     // Convert KES to USD or any other currency using exchange rate
     const rate = (amount / fetchCurrencyData?.exchange_rate).toFixed(2);

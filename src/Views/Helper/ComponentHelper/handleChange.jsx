@@ -161,12 +161,6 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
             }
         }
 
-
-
-
-
-
-
         setFormData(updatedFormData);
     };
 

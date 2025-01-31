@@ -154,9 +154,11 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
                             <td className="table_column_item">
                               {val?.invoice?.invoice_id || ""}
                             </td>
+
                             <td className="table_column_item item_text_end_01">
                               {convertCurrencyWithSymbol(val?.invoice?.total, fetchCurrencyData, data?.currency, currencyList)}
                             </td>
+
                             <td className="table_column_item item_text_end_01">
                               {convertCurrencyWithSymbol(((+val?.invoice?.total) - (+val?.invoice?.amount_paid)), fetchCurrencyData, data?.currency, currencyList)}
                             </td>

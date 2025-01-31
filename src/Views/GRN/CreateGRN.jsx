@@ -17,9 +17,7 @@ import {
 } from "../../Redux/Actions/purchasesActions";
 import useOutsideClick from "../Helper/PopupData";
 import { formatDate } from "../Helper/DateFormat";
-import {
-  ItemSelectGRM,
-} from "../Helper/ComponentHelper/ItemSelect";
+
 import ImageUpload from "../Helper/ComponentHelper/ImageUpload";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown22 from "../../Components/CustomDropdown/CustomDropdown22";
@@ -38,6 +36,7 @@ import { useEditPurchaseForm } from "../Helper/StateHelper/EditPages/useEditPurc
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import Loader02 from "../../Components/Loaders/Loader02";
 import { isStateIdEqualAction, productTypeItemAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
+import { ItemSelectGRN } from "../Helper/ComponentHelper/ItemSelectGRN";
 
 const CreateGRN = () => {
   const dispatch = useDispatch();
@@ -362,14 +361,14 @@ const CreateGRN = () => {
         items: itemsFromApi || []
       }));
 
-      if (!purchseDetail?.items) {
-        setIsItemSelect(false);
-      } else {
-        setIsItemSelect(true);
-      }
+      // if (!purchseDetail?.items) {
+      //   setIsItemSelect(false);
+      // } else {
+      //   setIsItemSelect(true);
+      // }
     }
-
   }, [formData?.purchase_order_id, purchseDetail]);
+
 
   return (
     <>
@@ -550,7 +549,7 @@ const CreateGRN = () => {
 
                   <div id="select_item_in_grn_0101">
                     {fetchDetails && formData?.charges && formData?.items &&
-                      <ItemSelectGRM
+                      <ItemSelectGRN
                         formData={formData}
                         setFormData={setFormData}
                         handleChange={handleChange}

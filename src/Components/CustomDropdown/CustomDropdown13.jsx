@@ -25,6 +25,7 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
         {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
 
         {/* {console.log("options?.find(account => account?.tax_percentge == value)?.tax_percentge", options?.find(account => account?.tax_percentge == value)?.tax_percentge)} */}
+
         <svg
           width="13"
           height="7"
