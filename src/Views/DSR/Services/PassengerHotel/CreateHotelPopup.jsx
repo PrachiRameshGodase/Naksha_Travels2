@@ -155,7 +155,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         supplier_name: selectedHotel?.display_name || "",
       };
     }
-  
+   
     setFormData((prev) => ({
       ...prev,
       ...updatedFields,

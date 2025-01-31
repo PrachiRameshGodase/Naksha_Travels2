@@ -315,7 +315,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                   name="service"
                   defaultOption="Select Service"
                   extracssclassforscjkls="extracssclassforscjklsitem"
-                  type="service"
+                  type="service2"
                   disabled={disabled}
                 />
               </td>

@@ -59,12 +59,18 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     ) {
       dispatch(vendorsLists({ ...sendData }));
     }
+    if (
+      isOpen && // Ensure modal or component is open
+      name === "passenger_visa_id" &&
+      (parsedPayload1?.search || !parsedPayload1?.status == 1 || !vendorList?.data)
+    ) {
+      dispatch(vendorsLists({ ...sendData }));
+    }
 
     setSearchTerm("");
   }, [isOpen, dispatch]);
 
-  // console.log("cusData", cusData)
-  // console.log("options", options)
+
   return (
     <div data-tooltip-content={disabled ? "Unable to select the dropdown at the moment." : ""}
       data-tooltip-id="my-tooltip"

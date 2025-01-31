@@ -105,7 +105,7 @@ const CalculationSection = ({
               className="error_message"
               style={{
                 whiteSpace: "nowrap",
-                marginBottom: "0px important",
+                // marginBottom: "0px important",
               }}
             >
               {otherIcons.error_svg}

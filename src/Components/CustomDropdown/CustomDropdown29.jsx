@@ -1,15 +1,14 @@
-import React, { useState, useRef, forwardRef, useEffect, useMemo } from "react";
-import "./customdropdown.scss";
-import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import React, { forwardRef, useEffect, useMemo } from "react";
 import { RiSearch2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
-import { customersList } from "../../Redux/Actions/customerActions";
-import { sendData } from "../../Views/Helper/HelperFunctions";
-import { hotelListAction } from "../../Redux/Actions/hotelActions";
-import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
-import { visaListAction } from "../../Redux/Actions/visaAction";
 import { assistListAction } from "../../Redux/Actions/assistAction";
+import { hotelListAction } from "../../Redux/Actions/hotelActions";
+import { visaListAction } from "../../Redux/Actions/visaAction";
+import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
+import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import { sendData } from "../../Views/Helper/HelperFunctions";
+import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
+import "./customdropdown.scss";
 
 const CustomDropdown29 = forwardRef((props, ref) => {
   const {
@@ -39,6 +38,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   const hotelList = useSelector((state) => state?.hotelList);
   const hotelPayloads = localStorage.getItem("hotelPayload");
+
+  
 
   const dispatch = useDispatch();
 

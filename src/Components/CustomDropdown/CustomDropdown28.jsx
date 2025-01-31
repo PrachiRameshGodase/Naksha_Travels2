@@ -32,16 +32,11 @@ const CustomDropdown28 = forwardRef((props, ref) => {
     dropdownRef.current = node;
     if (ref) ref.current = node;
   };
-
-  if (type === "masters") {
-    options =
-      searchTerm?.length === 0
-        ? options
-        : options?.filter((option) =>
-            option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-          );
+  if (searchTerm) {
+    options = searchTerm?.length === 0 ? options : options?.filter(option =>
+      option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    );
   }
-
   return (
     <div
       data-tooltip-content={disabled ? "Not able select It is invoiced" : ""}

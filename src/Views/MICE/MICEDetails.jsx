@@ -20,6 +20,9 @@ import PassengerCard from "./PassengerCard";
 import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
 import { generatePDF } from "../Helper/createPDF";
 import { customersList } from "../../Redux/Actions/customerActions";
+import { getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { currencyRateListAction } from "../../Redux/Actions/manageCurrencyActions";
+import { confirIsCurrencyPDF } from "../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 
 const MICEDetails = () => {
   const dispatch = useDispatch();
@@ -35,6 +38,9 @@ const MICEDetails = () => {
   const deletePassenger = useSelector((state) => state?.deletePassenger);
   const deleteMICE = useSelector((state) => state?.MICEDelete);
   const statusChangeMICE = useSelector((state) => state?.MICEStatus);
+  const currencyList1 = useSelector((state) => state?.getCurrency);
+    const currencyList = currencyList1?.data?.currency || []
+    
 
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
@@ -156,21 +162,61 @@ const MICEDetails = () => {
   }, [dispatch, UrlId]);
 
   const [loading, setLoading] = useState(false);
-  const handleDownloadPDF = () => {
-    if (!MICEData || !userMasterData) {
-      alert("Data is still loading, please try again.");
-      return;
+  const getCurrency = getCurrencyValue();
+  
+  const handleDownloadPDF =async () => {
+      try {
+
+      if (MICEData?.transaction_date) {
+
+        //////////// check if the org currency have exchange rate or not ///////////////////
+
+        // Fetch currency rates with date
+        const res = await dispatch(currencyRateListAction({ date: MICEData?.transaction_date }));
+
+        if (res?.success === true) {
+          // Find the fetchCurrencyData of active organization currency with specific date
+          const fetchCurrencyData = res?.data?.find(val => val?.code === getCurrency);
+          // console.log("fetchCurrencyData", fetchCurrencyData)
+
+          // create and show the pdf of converted currency on the exchange rate....
+          if (!MICEData || !userMasterData) {
+            alert("Data is still loading, please try again.");
+            return;
+          }
+          const contentComponent = (
+              <PrintContent2
+                data={MICEData}
+                userMasterData={userMasterData}
+                cusVenData=""
+                moduleId="MICE No"
+                section="MICE"
+                fetchCurrencyData={fetchCurrencyData} currencyList={currencyList}
+              />
+            );
+            generatePDF(contentComponent, "MICE_Document.pdf", setLoading, 500);
+           
+          
+        } else {
+          // Ask user if they want to create currency exchange rate
+          const confirmed = await confirIsCurrencyPDF(getCurrency);
+
+          if (confirmed) {
+            const queryParams = new URLSearchParams();
+            queryParams.set("date", MICEData?.transaction_date);
+            queryParams.set("currency", getCurrency);//send active org currency 
+            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+          } else {
+            return;
+          }
+          //////////// check if the org currency have exchange rate or not ///////////////////
+
+        }
+      }
+
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
     }
-    const contentComponent = (
-      <PrintContent2
-        data={MICEData}
-        userMasterData={userMasterData}
-        cusVenData=""
-        moduleId="MICE No"
-        section="MICE"
-      />
-    );
-    generatePDF(contentComponent, "MICE_Document.pdf", setLoading, 500);
   };
   const isDisabled = MICEData?.is_invoiced == "1";
   useEffect(() => {

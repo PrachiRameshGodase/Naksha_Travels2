@@ -5,6 +5,7 @@ import { formatDate3 } from "../../DateFormat";
 import "./PdfTemplate.scss";
 import "./PrintContent2.scss";
 import { PdfShowUserMastersValue } from "../../ShowMastersValue";
+import { convertCurrencyWithSymbol } from "../../CurrencyHelper/convertKESToUSD";
 
 const PrintContent2 = ({
   data,
@@ -12,6 +13,8 @@ const PrintContent2 = ({
   cusVenData,
   moduleId,
   section,
+  fetchCurrencyData,
+  currencyList,
 }) => {
   // console.log("userMasterData", userMasterData);
   return (
@@ -30,8 +33,11 @@ const PrintContent2 = ({
           <div className="customer-card">
             <p className="customer-label">{moduleId}</p>
             <p className="">:</p>
-            {section=="DSR" ?  <p className="customer-value">{data?.dsr_no || ""}</p> : <p className="customer-value">{data?.mice_no || ""}</p>}
-           
+            {section == "DSR" ? (
+              <p className="customer-value">{data?.dsr_no || ""}</p>
+            ) : (
+              <p className="customer-value">{data?.mice_no || ""}</p>
+            )}
           </div>
 
           <div className="customer-card">
@@ -231,13 +237,27 @@ const PrintContent2 = ({
                     </div>
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px", display:"flex", justifyContent:"flex-end" }}
+                      style={{
+                        marginTop: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
                     >
                       <div className="customer-card">
-                        <p className="customer-label" style={{fontWeight:"bold"}}>Amount</p>
+                        <p
+                          className="customer-label"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Amount
+                        </p>
                         <p className="">:</p>
                         <p className="customer-value">
-                          {data?.total_amount || ""}
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -292,20 +312,24 @@ const PrintContent2 = ({
                       <div className="customer-card">
                         <p className="customer-label">Travel Type</p>{" "}
                         <p className="">:</p>
-                        <p className="customer-value"><PdfShowUserMastersValue
+                        <p className="customer-value">
+                          <PdfShowUserMastersValue
                             type="51"
                             id={data?.travel_type_id}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                       <div className="customer-card">
                         <p className="customer-label">GDS Portal</p>{" "}
                         <p className="">:</p>
-                        <p><PdfShowUserMastersValue
+                        <p>
+                          <PdfShowUserMastersValue
                             type="53"
                             id={data?.gds_portal}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                     </div>
                     <div
@@ -327,11 +351,13 @@ const PrintContent2 = ({
                       <div className="customer-card">
                         <p className="customer-label">Destination Code:</p>{" "}
                         <p className="">:</p>
-                        <p><PdfShowUserMastersValue
+                        <p>
+                          <PdfShowUserMastersValue
                             type="52"
                             id={data?.destination_code}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                     </div>
                     <div
@@ -353,11 +379,19 @@ const PrintContent2 = ({
                             .join(", ")}
                         </p>
                       </div>
-                      <div className="customer-card" style={{fontWeight:"bold"}}>
+                      <div
+                        className="customer-card"
+                        style={{ fontWeight: "bold" }}
+                      >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
-                          {data?.total_amount || ""}
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -366,7 +400,10 @@ const PrintContent2 = ({
               ))}
 
               {item?.visas?.map((data, index) => (
-                <div key={index} style={{ marginTop: "20px", marginBottom:"20px" }}>
+                <div
+                  key={index}
+                  style={{ marginTop: "20px", marginBottom: "20px" }}
+                >
                   <div
                     className="customer-details"
                     style={{ marginLeft: "20px", marginRight: "10px" }}
@@ -433,20 +470,24 @@ const PrintContent2 = ({
                       <div className="customer-card">
                         <p className="customer-label">Visa Type</p>{" "}
                         <p className="">:</p>
-                        <p className="customer-value"><PdfShowUserMastersValue
+                        <p className="customer-value">
+                          <PdfShowUserMastersValue
                             type="40"
                             id={data?.visa_type_id}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                       <div className="customer-card">
                         <p className="customer-label">Visa Entry Type</p>{" "}
                         <p className="">:</p>
-                        <p><PdfShowUserMastersValue
+                        <p>
+                          <PdfShowUserMastersValue
                             type="39"
                             id={data?.visa_entry_type}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                     </div>
                     <div
@@ -465,11 +506,19 @@ const PrintContent2 = ({
                           {data?.country?.name || ""}
                         </p>
                       </div>
-                      <div className="customer-card" style={{fontWeight:"bold"}}>
+                      <div
+                        className="customer-card"
+                        style={{ fontWeight: "bold" }}
+                      >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
-                          {data?.total_amount || ""}
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -478,7 +527,10 @@ const PrintContent2 = ({
               ))}
 
               {item?.car_hires?.map((data, index) => (
-                <div key={index} style={{ marginTop: "20px", marginBottom:"20px" }}>
+                <div
+                  key={index}
+                  style={{ marginTop: "20px", marginBottom: "20px" }}
+                >
                   <div
                     className="customer-details"
                     style={{ marginLeft: "20px", marginRight: "10px" }}
@@ -490,11 +542,13 @@ const PrintContent2 = ({
                       <div className="customer-card">
                         <p className="customer-label">Vehicle Type</p>
                         <p className="">:</p>
-                        <p className="customer-value"><PdfShowUserMastersValue
+                        <p className="customer-value">
+                          <PdfShowUserMastersValue
                             type="41"
                             id={data?.vehicle_type_id}
                             masterData={userMasterData}
-                          /></p>
+                          />
+                        </p>
                       </div>
                       <div className="customer-card">
                         <p className="customer-label">Days</p>{" "}
@@ -521,11 +575,19 @@ const PrintContent2 = ({
                           {data?.drop_location || ""}
                         </p>
                       </div>
-                      <div className="customer-card" style={{fontWeight:"bold"}}>
+                      <div
+                        className="customer-card"
+                        style={{ fontWeight: "bold" }}
+                      >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
-                          {data?.total_amount || ""}
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -534,7 +596,10 @@ const PrintContent2 = ({
               ))}
 
               {item?.assists?.map((data, index) => (
-                <div key={index} style={{ marginTop: "20px", marginBottom:"20px" }}>
+                <div
+                  key={index}
+                  style={{ marginTop: "20px", marginBottom: "20px" }}
+                >
                   <div
                     className="customer-details"
                     style={{ marginLeft: "20px", marginRight: "10px" }}
@@ -568,13 +633,25 @@ const PrintContent2 = ({
 
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
+                      style={{
+                        marginTop: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
                     >
-                      <div className="customer-card" style={{fontWeight:"bold"}}>
+                      <div
+                        className="customer-card"
+                        style={{ fontWeight: "bold" }}
+                      >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
-                        <p className="customer-value" >
-                          {data?.total_amount || ""}
+                        <p className="customer-value">
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -586,7 +663,11 @@ const PrintContent2 = ({
                 <div key={index} style={{ marginTop: "20px" }}>
                   <div
                     className="customer-details"
-                    style={{ marginLeft: "20px", marginRight: "10px", marginBottom:"20px" }}
+                    style={{
+                      marginLeft: "20px",
+                      marginRight: "10px",
+                      marginBottom: "20px",
+                    }}
                   >
                     <p className="customer-title" style={{ fontSize: "15px" }}>
                       Insurance ({index + 1}):
@@ -617,7 +698,7 @@ const PrintContent2 = ({
 
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px", marginBottom:"20px" }}
+                      style={{ marginTop: "20px", marginBottom: "20px" }}
                     >
                       <div className="customer-card">
                         <p className="customer-label">Insurance Plan</p>{" "}
@@ -643,13 +724,25 @@ const PrintContent2 = ({
                     </div>
                     <div
                       className="customer-grid"
-                      style={{ marginTop: "20px",display:"flex", justifyContent:"flex-end" }}
+                      style={{
+                        marginTop: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
                     >
-                      <div className="customer-card" style={{fontWeight:"bold"}}>
+                      <div
+                        className="customer-card"
+                        style={{ fontWeight: "bold" }}
+                      >
                         <p className="customer-label">Amount</p>{" "}
                         <p className="">:</p>
                         <p className="customer-value">
-                          {data?.total_amount || ""}
+                          {convertCurrencyWithSymbol(
+                            data?.total_amount,
+                            fetchCurrencyData,
+                            data?.currency,
+                            currencyList
+                          )}
                         </p>
                       </div>
                     </div>
@@ -664,7 +757,7 @@ const PrintContent2 = ({
                     marginLeft: "20px",
                     marginRight: "10px",
                     marginTop: "20px",
-                    marginBottom:"20px"
+                    marginBottom: "20px",
                   }}
                 >
                   <p className="customer-title" style={{ fontSize: "15px" }}>
@@ -681,23 +774,29 @@ const PrintContent2 = ({
                       <p className="">:</p>
                       <p className="customer-value">{data?.quantity || ""}</p>
                     </div>
-                    <div className="customer-card" style={{fontWeight:"bold"}}>
+                    <div
+                      className="customer-card"
+                      style={{ fontWeight: "bold" }}
+                    >
                       <p className="customer-label">Amount</p>{" "}
                       <p className="">:</p>
                       <p className="customer-value">
-                        {data?.total_amount || ""}
+                        {convertCurrencyWithSymbol(
+                          data?.total_amount,
+                          fetchCurrencyData,
+                          data?.currency,
+                          currencyList
+                        )}
                       </p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-             {/* <hr style={{color:"#c8c6cb", marginBottom:"20px", marginTop:"20px",height:""}}></hr> */}
+            {/* <hr style={{color:"#c8c6cb", marginBottom:"20px", marginTop:"20px",height:""}}></hr> */}
           </div>
-          
         ))}
       </div>
-     
 
       {/* /*Section 5 main footer boxes */}
       <h4 style={{ color: "gray", fontSize: "13px" }}>
