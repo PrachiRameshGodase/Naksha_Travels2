@@ -494,7 +494,7 @@ const Topbar = ({ loggedInUserData }) => {
               {loggedInUserData && (
                 <div id="topsecondxks2">
                   <div className="d5w6s54chat4c">
-                    <div className="xklwicoflts5">{loggedInUserData?.name?.charAt(0)}</div>
+                    <div className="xklwicoflts5">{loggedInUserData?.display_name?.charAt(0)}</div>
                     <span>
                       <h3>{loggedInUserData?.name}</h3>
                       <p>{loggedInUserData?.email}</p>
