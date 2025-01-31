@@ -333,7 +333,7 @@ const CreatePaymentRec = () => {
 
             // console.log("entriesWithAmount", entriesWithAmount)
             if (entriesWithAmount?.length <= 0) {
-                toast?.error("Please Fill a Payments")
+                toast?.error("Please Fill a Payment.")
                 return;
             }
 

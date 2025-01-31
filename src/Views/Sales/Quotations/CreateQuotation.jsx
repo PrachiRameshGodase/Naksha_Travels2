@@ -100,7 +100,7 @@ const CreateQuotation = () => {
       editDub: isEdit,
       section: "quotation",
       updateDispatchAction: updateQuotation, // This is dynamic for the dispatch action
-      sendData: ""
+      toSelect: "customer"
     });
 
   };

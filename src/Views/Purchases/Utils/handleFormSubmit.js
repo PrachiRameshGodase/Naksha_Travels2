@@ -57,6 +57,7 @@ export const handleFormSubmit1 = async ({
     e,
     formData,
     isCustomerSelect,
+    isVendorSelect,
     setItemErrors,
     dropdownRef1,
     dropdownRef2,
@@ -65,6 +66,7 @@ export const handleFormSubmit1 = async ({
     editDub,
     section, // This will be dynamic, like "quotation"
     updateDispatchAction, // This is dynamic for dispatching
+    toSelect,
     sendData
 }) => {
     e.preventDefault();
@@ -74,16 +76,17 @@ export const handleFormSubmit1 = async ({
     // console.log("errors", errors)
 
     // selection check
-    // if (dropdownRef1) {
-    //     if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
-    // }
+    if (toSelect === "customer") {
+        if (handleDropdownError(isCustomerSelect, dropdownRef1)) return;
+    }
+
     // it is worked when create credit note is opened....
     if ((formData?.credit_note_id)) {
         if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
     }
 
-    if ((sendData?.dropdownRef1)) {
-        if (handleDropdownError(sendData?.isVendorSelect, dropdownRef1)) return;
+    if (toSelect === "vendor") {
+        if (handleDropdownError(isVendorSelect, dropdownRef1)) return;
 
     }
 

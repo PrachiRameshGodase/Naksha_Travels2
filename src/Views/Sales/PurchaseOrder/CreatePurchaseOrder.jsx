@@ -142,9 +142,10 @@ const CreatePurchaseOrder = () => {
       editDub: isEdit,
       section: "purchase order",
       updateDispatchAction: createPurchases, // This is dynamic for the dispatch action
-      sendData: {
-        isVendorSelect
-      },
+
+      isVendorSelect,
+
+      toSelect: "vendor"
     });
 
   };
