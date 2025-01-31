@@ -46,6 +46,9 @@ import {
     AUTO_GENERATE_ID_LIST_REQUEST,
     AUTO_GENERATE_ID_LIST_SUCCESS,
     AUTO_GENERATE_ID_LIST_ERROR,
+    GET_AIRPORT_REQUEST,
+    GET_AIRPORT_SUCCESS,
+    GET_AIRPORT_ERROR,
 
 } from "../Constants/globalConstants";
 
@@ -70,6 +73,18 @@ export const fetchMasterData = () => {
             dispatch({ type: FETCH_MASTER_DATA_SUCCESS, payload: response.data });
         } catch (error) {
             dispatch({ type: FETCH_MASTER_DATA_FAILURE, payload: error.message });
+        }
+    };
+};
+export const fetchAirport = () => {
+
+    return async (dispatch) => {
+        dispatch({ type: GET_AIRPORT_REQUEST });
+        try {
+            const response = await axiosInstance.post(`${apiUrl}/service/airport/list`);
+            dispatch({ type: GET_AIRPORT_SUCCESS, payload: response.data });
+        } catch (error) {
+            dispatch({ type: GET_AIRPORT_ERROR, payload: error.message });
         }
     };
 };

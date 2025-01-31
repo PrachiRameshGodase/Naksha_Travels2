@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {
-  assistDetailsAction,
-  CreateAssistAction,
-} from "../../../../Redux/Actions/assistAction";
+import {assistDetailsAction,CreateAssistAction} from "../../../../Redux/Actions/assistAction";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
-import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { fetchAirport } from "../../../../Redux/Actions/globalActions";
+import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
+import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
+import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 
 const CreateAssit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const dropdownRef1=useRef()
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
   const assitCreates = useSelector((state) => state?.createAssist);
   const assistDetails = useSelector((state) => state?.assistDetails);
   const assitData = assistDetails?.data?.data?.data || {};
+  const airportList=useSelector((state) => state?.airPort?.countries?.data);
 
-  const vehicleType = ShowUserMasterData("41");
-
+  const meetingType = ShowUserMasterData("55");
+   
+  const [cusData3, setcusData3]=useState(null)
   const [formData, setFormData] = useState({
     meeting_type: "",
     airport: "",
@@ -63,6 +67,7 @@ const CreateAssit = () => {
       dispatch(assistDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
+  
   useEffect(() => {
     if (itemId && isEdit && assitData) {
       setFormData({
@@ -102,6 +107,11 @@ const CreateAssit = () => {
       }
     }
   };
+
+   // call item api on page load...
+   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
+   useFetchApiData(fetchAirport, payloadGenerator, []); //call api common function
+   // call item api on page load...
   return (
     <div>
       <>
@@ -136,12 +146,20 @@ const CreateAssit = () => {
                         </label>
                          <span id="">
                           {otherIcons.placeofsupply_svg}
-                          <input
-                            value={formData?.airport}
-                            onChange={handleChange}
-                            name="airport"
-                            placeholder="Enter Airport"
-                          />
+                          <CustomDropdown29
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Airport"
+                              options={airportList}
+                              value={formData.airport}
+                              onChange={handleChange}
+                              name="airport"
+                              defaultOption="Select Airport"
+                              setcusData={setcusData3}
+                              cusData={cusData3}
+                              type="airportList"
+                              required
+                            />
                         </span>
                         {errors?.airport && (
                           <p
@@ -163,11 +181,14 @@ const CreateAssit = () => {
 
                         <span id="">
                           {otherIcons.placeofsupply_svg}
-                          <input
+                          <CustomDropdown04
+                            label="Visa Meeting Type"
+                            options={meetingType}
                             value={formData?.meeting_type}
                             onChange={handleChange}
                             name="meeting_type"
-                            placeholder="Enter Meeting Type"
+                            defaultOption="Select Meeting"
+                            type="masters2"
                           />
                         </span>
                         {errors?.meeting_type && (

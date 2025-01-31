@@ -7,12 +7,16 @@ import Swal from "sweetalert2";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {fetchGetCountries} from "../../../../Redux/Actions/globalActions";
-import {CreateVisaAction,visaDetailsAction,} from "../../../../Redux/Actions/visaAction";
-import {SubmitButton2,} from "../../../Common/Pagination/SubmitButton";
+import { fetchGetCountries } from "../../../../Redux/Actions/globalActions";
+import {
+  CreateVisaAction,
+  visaDetailsAction,
+} from "../../../../Redux/Actions/visaAction";
+import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import { ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown24 from "../../../../Components/CustomDropdown/CustomDropdown24";
 
 const CreateVisa = () => {
   const dispatch = useDispatch();
@@ -23,15 +27,16 @@ const CreateVisa = () => {
   const VisaCreates = useSelector((state) => state?.createVisa);
   const VisaDetails = useSelector((state) => state?.visaDetails);
   const visaData = VisaDetails?.data?.data?.data || {};
-  const countryList = useSelector((state) => state?.countries?.countries);
-
+  const countries = useSelector(state => state?.countries);
+  const countryList = countries?.countries?.country
+     
   const visaentryType = ShowUserMasterData("39");
   const visatype = ShowUserMasterData("40");
 
   const [formData, setFormData] = useState({
     visa_entry_type: "",
     visa_entry_name: "",
-    country_id: 0,
+    country_id: "",
     country_name: "",
     visa_type_id: "",
     visa_type_name: "",
@@ -40,7 +45,7 @@ const CreateVisa = () => {
   });
   const [errors, setErrors] = useState({
     visa_entry_type: false,
-    country_name: false,
+    country_id: false,
     visa_type_id: false,
     days: false,
     price: false,
@@ -50,10 +55,19 @@ const CreateVisa = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    let updatedFields = { [name]: value };
+    
     const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
     const visaType = visatype?.find((val) => val?.labelid == value);
-
+    if (name === "country_id") {
+      const selectedCountry = countryList?.find(
+        (item) => item?.id == value
+      );
+      updatedFields = {
+        ...updatedFields,
+        country_name: selectedCountry?.name || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
       ...(name === "visa_entry_type" && {
@@ -62,6 +76,7 @@ const CreateVisa = () => {
       ...(name === "visa_type_id" && {
         visa_type_name: visaType?.label,
       }),
+      ...updatedFields,
       [name]: value,
     }));
     setErrors((prevData) => ({
@@ -106,7 +121,7 @@ const CreateVisa = () => {
     e.preventDefault();
     let newErrors = {
       visa_entry_type: formData?.visa_entry_type ? false : true,
-      country_name: formData?.country_name ? false : true,
+      country_id: formData?.country_id ? false : true,
       visa_type_id: formData?.visa_type_id ? false : true,
       days: formData?.days ? false : true,
       price: formData?.price ? false : true,
@@ -116,11 +131,10 @@ const CreateVisa = () => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       try {
@@ -161,7 +175,7 @@ const CreateVisa = () => {
                 <div className="itemsformwrap">
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Country / Region<b className="color_red">*</b>
                         </label>
@@ -169,20 +183,29 @@ const CreateVisa = () => {
                           <span>
                             {otherIcons.country_svg}
 
-                            <select
-                              name="country_name"
-                              value={formData?.country_name}
-                              onChange={(e) => handleChange(e, "country_name")}
+                            {/* <select
+                              name="country_id"
+                              value={formData?.country_id}
+                              onChange={(e) => handleChange(e, "country_id")}
                             >
                               <option value="">Select Country</option>
                               {countryList?.country?.map((country) => (
-                                <option key={country.id} value={country.name}>
+                                <option key={country.id} value={country.id}>
                                   {country.name}
                                 </option>
                               ))}
-                            </select>
+                            </select> */}
+                            <CustomDropdown24
+                              label="Select vendor"
+                              options={countryList}
+                              value={formData?.country_id}
+                              onChange={handleChange}
+                              name="country_id"
+                              defaultOption="Select Country Name"
+                              type="countries"
+                            />
                           </span>
-                          {errors?.country_name && (
+                          {errors?.country_id && (
                             <p
                               className="error_message"
                               style={{
@@ -257,7 +280,6 @@ const CreateVisa = () => {
                           </p>
                         )}
                       </div>
-                     
 
                       <div className="form_commonblock">
                         <label>

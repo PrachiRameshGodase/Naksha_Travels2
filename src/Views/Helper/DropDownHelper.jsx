@@ -20,11 +20,11 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label :type==='countryList'? option?.country_name:type=="visa_entry_type" ? option?.visa_entry_type: type==="visa_type_id"? option.visa_type_id: type==="days"?option.days: type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label :type==='countryList'? option?.country_id:type=="visa_entry_type" ? option?.visa_entry_type: type==="visa_type_id"? option.visa_type_id: type==="days"?option.days: type==="airportList"? option?.name :type==="airportList2" ? option?.airport:  type==="meetingType" ? option?.meeting_type: type==="noOfPersons" ? option?.no_of_person:type === "select_item2" ? option?.flight_name : type === "account" ? option?.account_type : option.id,
                 }
             });
 
-            if (type === "vendor" || type == "purchase" || type == "countryList" || type== "visa_entry_type" || type=='visa_type_id' || type=="days") {
+            if (type === "vendor" || type == "purchase" || type == "countryList" || type== "visa_entry_type" || type=='visa_type_id' || type=="days" || type=="airportList" || type=="hotelList" || type=="meetingType" || type=="noOfPersons"|| type == "airportList2") {
                 setcusData(option);
             } else if (type === "select_item") {
                 setItemData(option)
@@ -113,11 +113,11 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     }
 
 
-    if (type === "countries") {
-        options = searchTerm?.length === 0 ? options : options?.filter(option =>
-            option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-        );
-    }
+    // if (type === "countries") {
+    //     options = searchTerm?.length === 0 ? options : options?.filter(option =>
+    //         option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    //     );
+    // }
 
     // else if (type === "masters") {
     //     filteredOptions = searchTerm?.length === 0 ? options : options?.filter(option =>

@@ -1,25 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
-import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
 import { Toaster } from "react-hot-toast";
-import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
+import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../../Helper/DateFormat";
-import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import { Link, useNavigate } from "react-router-dom";
+import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import SearchBox from "../../../Common/SearchBox/SearchBox";
-import SortBy from "../../../Common/SortBy/SortBy";
-import DatePicker from "../../../Common/DatePicker/DatePicker";
-import FilterBy from "../../../Common/FilterBy/FilterBy";
+import NoDataFound from "../../../../Components/NoDataFound/NoDataFound";
 import TableViewSkeleton from "../../../../Components/SkeletonLoder/TableViewSkeleton";
+import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
+import { assistListAction } from "../../../../Redux/Actions/assistAction";
+import PaginationComponent from "../../../Common/Pagination/PaginationComponent";
+import SearchBox from "../../../Common/SearchBox/SearchBox";
+import { formatDate } from "../../../Helper/DateFormat";
 import {
   currencySymbol,
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
-import { Link, useNavigate } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
-import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
-import { assistListAction } from "../../../../Redux/Actions/assistAction";
+import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const Assit = () => {
   const dispatch = useDispatch();
@@ -28,7 +25,7 @@ const Assit = () => {
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
   const totalItems = assistData?.data?.count || 0;
-  console.log("assistData", assistData);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -249,7 +246,7 @@ const Assit = () => {
                     {otherIcons?.quotation_icon}
                     Airport
                   </div>
-                  <div className="table-cellx12 quotiosalinvlisxs1">
+                 <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.date_svg}
                     Meeting Type
                   </div>
@@ -294,8 +291,6 @@ const Assit = () => {
                               />
                               <div className="checkmark"></div>
                             </div>
-                            
-
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs2"
@@ -308,6 +303,8 @@ const Assit = () => {
                             >
                               {item?.meeting_type || ""}
                             </div>
+
+                           
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"

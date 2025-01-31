@@ -42,7 +42,7 @@ export const visaListAction = (queryParams, setAllListValue) => async (dispatch)
             setAllListValue(response?.data)
         }
 
-        console.log("response?.data?.data", response?.data?.data)
+        // console.log("response?.data?.data", response?.data?.data)
         return response?.data?.data;
     } catch (error) {
         dispatch({ type: GET_VISA_ERROR, payload: error.message });

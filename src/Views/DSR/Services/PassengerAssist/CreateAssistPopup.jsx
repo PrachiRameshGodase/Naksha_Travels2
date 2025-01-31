@@ -19,6 +19,8 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import Swal from "sweetalert2";
+import { CustomDropdown0029, CustomDropdown029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
+import { assistListAction } from "../../../../Redux/Actions/assistAction";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -26,10 +28,15 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
-  const vendorList = useSelector((state) => state?.vendorList);
   const createAssist = useSelector((state) => state?.createPassengerAssist);
+  const assistData = useSelector((state) => state?.assistList);
+    const assistLists = assistData?.data?.data || [];
+  
 
   const [cusData1, setcusData1] = useState(null);
+  const [cusData2, setcusData2] = useState(null);
+  const [cusData3, setcusData3] = useState(null);
+
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
     passenger_id: passengerId,
@@ -60,32 +67,109 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     airport_name: false,
     no_of_persons: false,
     gross_amount: false,
-
-    // retain: false,
     total_amount: false,
   });
 
   const [imgLoader, setImgeLoader] = useState("");
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
-
-  const entryType = ShowUserMasterData("50");
+  const [storeEntry, setStoreEntry] = useState([]);
+  const [storeVisaType, setStoreVisaType] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const selectedSupplierName = vendorList?.data?.user?.find(
-      (item) => item?.id == formData?.supplier_id
-    );
+    console.log("value", value)
+    console.log("name", name)
+
+    let updatedFields = { [name]: value };
+    let selectedAssistData = null;
+    if (name === "airport_name") {
+      selectedAssistData = assistLists?.find(
+        (item) => item?.airport === value
+      );
+      console.log("selectedAssistData",selectedAssistData)
+      if (selectedAssistData) {
+        dispatch(
+          assistListAction({ airport: selectedAssistData?.airport })
+        ).then((res) => {
+          console.log("res", res)
+          setStoreEntry(res);
+        });
+        // Reset dependent fields when country changes
+        setFormData((prev) => ({
+          ...prev,
+          airport_name: value,
+          meeting_type: "",
+          no_of_persons: "",
+          gross_amount: "",
+        }));
+      }
+    } else if (name === "meeting_type") {
+      if (!formData?.airport_name) {
+        toast.error("Please select a airport first.");
+        return;
+      }
+      selectedAssistData = assistLists?.find(
+        (item) =>
+          item?.meeting_type == value &&
+          item?.no_of_person === formData?.no_of_persons
+      );
+      if (selectedAssistData) {
+        dispatch(
+          assistListAction({
+            airport_name: selectedAssistData?.airport,
+            no_of_persons: selectedAssistData?.no_of_person,
+          })
+        ).then((res) => {
+          setStoreVisaType(res);
+        });
+        setFormData((prev) => ({
+          ...prev,
+          meeting_type: value,
+          no_of_persons: "",
+        
+          gross_amount: "",
+        }));
+      }
+    }  else if (name === "no_of_persons") {
+      if (!formData?.airport_name) {
+        toast.error("Please select a airport  first.");
+        return;
+      }
+      if (!formData?.meeting_type) {
+        toast.error("Please select a meeting type first.");
+        return;
+      }
+      
+
+      selectedAssistData = assistLists?.find(
+        (item) =>
+          item?.no_of_person == value &&
+          item?.meeting_type == formData?.meeting_type &&
+          item?.airport == formData?.airport_name
+      );
+
+      updatedFields = {
+        ...updatedFields,
+        airport_name: selectedAssistData?.airport_name || "",
+        no_of_persons: selectedAssistData?.no_of_person || "",
+        meeting_type: selectedAssistData?.meeting_type || "",
+        gross_amount: selectedAssistData?.price || "",
+      };
+    }
+
+    // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      supplier_name: selectedSupplierName?.display_name,
+      ...updatedFields,
     }));
+
+    // Clear errors for the field
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
     }));
   };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -157,36 +241,25 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
-                      <label>
-                        Entry Type<b className="color_red">*</b>
-                      </label>
-
-                      <span id="">
-                        {otherIcons.name_svg}
-                        <CustomDropdown04
-                          label="Entry Type"
-                          options={entryType}
-                          value={formData?.entry_type}
-                          onChange={handleChange}
-                          name="entry_type"
-                          defaultOption="Select Entry Type"
-                          type="masters2"
-                        />
-                      </span>
-                    </div> */}
                       <div className="form_commonblock">
                         <label>
                           Airport<b className="color_red">*</b>
                         </label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
+                          <CustomDropdown0029
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Airport"
+                            options={assistLists}
                             value={formData.airport_name}
                             onChange={handleChange}
                             name="airport_name"
-                            placeholder="Enter Airport Location"
-                            autoComplete="off"
+                            defaultOption="Select Country"
+                            setcusData={setcusData1}
+                            cusData={cusData1}
+                            type="airportList2"
+                            required
                           />
                         </span>
                         {errors?.airport_name && (
@@ -202,32 +275,65 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className="form_commonblock">
+                      <div className={`form_commonblock ${
+                          formData?.airport_name ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.airport_name
+                            ? ""
+                            : "Please Select Airport First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>Meeting Type</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
-                          <input
+                          <CustomDropdown0029
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Select Meeting type"
+                            options={storeEntry}
                             value={formData.meeting_type}
                             onChange={handleChange}
                             name="meeting_type"
-                            placeholder="Enter Meeting Type"
-                            autoComplete="off"
+                            defaultOption="Select Meeting Type"
+                            setcusData={setcusData2}
+                            cusData={cusData2}
+                            type="meetingType"
+                            disabled={!formData?.airport_name}
                           />
                         </span>
                       </div>
-                      <div className="form_commonblock">
+                      <div  className={`form_commonblock ${
+                          formData?.meeting_type ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.meeting_type
+                            ? ""
+                            : "Please Select Meeting type First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>
                           No Of Persons<b className="color_red">*</b>
                         </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
-                            <NumericInput
-                              name="no_of_persons"
-                              placeholder="Enter No Of Persons"
-                              value={formData.no_of_persons}
-                              onChange={(e) => handleChange(e)}
-                            />
+                            <CustomDropdown0029
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Select Persons"
+                            options={storeVisaType}
+                            value={formData?.no_of_persons}
+                            onChange={handleChange}
+                            name="no_of_persons"
+                            defaultOption="Select Persons"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="noOfPersons"
+                            disabled={!formData?.meeting_type}
+                          />
                           </span>
                           {errors?.no_of_persons && (
                             <p
@@ -246,7 +352,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                     
                       {/* <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
