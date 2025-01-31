@@ -1,12 +1,11 @@
 import { useSelector } from "react-redux";
 import { parsePurchaseDetails } from "../StateHelper/EditPages/parsePurchaseDetails";
-import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useEffect, useRef } from "react";
 import { confirIsCurrencyCreate } from "../ConfirmHelperFunction/ConfirmWithZeroAmount";
 import { useNavigate } from "react-router-dom";
 
-export const useHandleFormChange = (formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, sendChageData,) => {
+export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList, setAddSelect, setIsCustomerSelect, setIsVendorSelect, sendChageData }) => {
 
     // fetch the currency list based on date change 
     const currencyRateList = useSelector((state) => state?.currencyRateList);
@@ -48,6 +47,8 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
             ...formData,
             [name]: value,
 
+
+
             // When payment terms is selected the expiry data and due data is show calculated acc to payment terms date
             ...(name === "payment_terms" && value !== 5 && {
                 expiry_date: calculateExpiryDate(new Date(formData?.transaction_date), value),
@@ -81,8 +82,8 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
             setIsCustomerSelect(value !== "");
             const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
             setAddSelect({
-                billing: selectedItem?.address?.find(addr => addr?.is_billing === 1),
-                shipping: selectedItem?.address?.find(addr => addr?.is_shipping === 1),
+                billing: selectedItem?.address?.find(addr => addr?.is_billing == 1),
+                shipping: selectedItem?.address?.find(addr => addr?.is_shipping == 1),
             });
 
             // auto when customer selected its payment terms is calculated in payment terms dorpdown automatically also calculated due and expiry date
@@ -95,9 +96,6 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
                     updatedFormData.due_date = calculateExpiryDate(new Date(formData?.transaction_date), selectedItem?.payment_terms);
                 }
             }
-
-            // use in credit note
-            // updatedFormData.invoice_id = ""
         }
 
         // use in credit note
@@ -138,6 +136,36 @@ export const useHandleFormChange = (formData, setFormData, cusList, addSelect, s
         } else if (name === "invoice_id" && value == "") {
             sendChageData?.setIsInvoiceSelect(false);
         }
+
+
+        // for vendor 
+        if (name === "vendor_id") {
+
+            setIsVendorSelect(value !== "");
+
+            const selectedItem = vendorList?.data?.user?.find((cus) => cus.id == value);
+            setAddSelect({
+                billing: selectedItem?.address?.find(addr => addr?.is_billing == 1),
+                shipping: selectedItem?.address?.find(addr => addr?.is_shipping == 1),
+            });
+
+            // auto when customer selected its payment terms is calculated in payment terms dorpdown automatically also calculated due and expiry date
+            if (selectedItem) {
+                updatedFormData.payment_terms = selectedItem?.payment_terms;
+                if (formData?.transaction_date) {
+
+                    // this is when I select the customer the payment terms is calculated then also to be calculated expiry data and due date from transaction_date
+                    updatedFormData.expiry_date = calculateExpiryDate(new Date(formData?.transaction_date), selectedItem?.payment_terms);
+                    updatedFormData.due_date = calculateExpiryDate(new Date(formData?.transaction_date), selectedItem?.payment_terms);
+                }
+            }
+        }
+
+
+
+
+
+
 
         setFormData(updatedFormData);
     };

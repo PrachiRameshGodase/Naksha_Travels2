@@ -18,10 +18,12 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 
 import {
   activeOrg_details,
+  handleDropdownError,
   preventZeroVal,
   ShowMasterData,
+  stringifyJSON,
+  validateItems,
 } from "../../Helper/HelperFunctions";
-
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import { SelectAddress } from "../../Common/SelectAddress";
@@ -32,9 +34,11 @@ import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAre
 import { invoiceDetailes } from "../../../Redux/Actions/invoiceActions";
 import { formatDate } from "../../Helper/DateFormat";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
+import { parsePurchaseDetails } from "../../Helper/StateHelper/EditPages/parsePurchaseDetails";
 import { isStateIdEqualAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import { handleFormSubmit1 } from "../../Purchases/Utils/handleFormSubmit";
 
 const CreateCreditNotes = () => {
@@ -115,7 +119,7 @@ const CreateCreditNotes = () => {
   );
 
   // console.log("fetchdetails credit", fetchDetails);
-  // console.log("fordaaaaaaa credit", formData);
+  console.log("fordaaaaaaa credit", formData);
 
   const sendChageData = {
     dispatch: dispatch,
@@ -126,8 +130,7 @@ const CreateCreditNotes = () => {
 
   const {
     handleChange,
-  } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, sendChageData);
-
+  } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, sendChageData });
 
 
 
@@ -345,6 +348,7 @@ const CreateCreditNotes = () => {
 
                           <div className="form_commonblock">
                             <label>Invoice</label>
+                            {/* {console.log("invoiceList", invoiceList)} */}
                             <span id="">
                               {otherIcons.name_svg}
                               <CustomDropdown17
@@ -355,6 +359,7 @@ const CreateCreditNotes = () => {
                                 name="invoice_id"
                                 defaultOption="Select Inoivce"
                                 type="invoice_no"
+                                invoice_id={convert && invoiceDetails?.invoice_id}
                               />
                             </span>
                             {!isInvoiceSelect && (

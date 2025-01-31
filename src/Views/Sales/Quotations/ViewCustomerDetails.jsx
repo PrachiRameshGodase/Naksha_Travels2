@@ -29,7 +29,7 @@ const ViewCustomerDetails = ({ setSwitchCusDatax1, setViewAllCusDetails, cusData
                 <>
                     <div className="cus_moreDetails">
                         <div className="cust_dex1s1">
-                            <Link to={`/dashboard/customer-details?id=${cusData?.id}`} target='_blank' className="childcusdexs12">
+                            <Link to={`/dashboard/${cusData?.is_vendor == 1 ? "vendor-details" : customer - details}?id=${cusData?.id}`} target='_blank' className="childcusdexs12">
                                 <p>{(cusData?.first_name || "") + " " + (cusData?.last_name || "")}</p>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#0d54b8"} fill={"none"}>
                                     <path d="M11.1193 2.99756C6.55993 3.45035 2.99902 7.29809 2.99902 11.9777C2.99902 16.9619 7.03855 21.0024 12.0216 21.0024C16.7 21.0024 20.5468 17.4407 20.9996 12.8802" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

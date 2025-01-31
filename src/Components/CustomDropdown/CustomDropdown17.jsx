@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
 
 const CustomDropdown17 = forwardRef((props, ref) => {
 
-  let { options, value, onChange, name, defaultOption, sd154w78s877, type } = props;
+  let { options, value, onChange, name, defaultOption, sd154w78s877, type, invoice_id } = props;
   const {
     isOpen,
     setIsOpen,
@@ -33,12 +33,14 @@ const CustomDropdown17 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  console.log(options)
+  // console.log("value", value)
+  // console.log("options", invoice_id)
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown}  >
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {value ? options?.find(account => account?.id == value)?.invoice_id : defaultOption}
+
+        {invoice_id ? invoice_id : value ? options?.find(account => account?.id == value)?.invoice_id : defaultOption}
       </div>
       {isOpen && (
         <div className="dropdown-options">

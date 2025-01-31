@@ -108,15 +108,10 @@ const CreateSalesOrders = ({ section }) => {
     // console.log("saleDetailssaleDetails", saleDetails)
     // console.log("formdaaaaaaaaaaaaaa", formData)
 
-    const calculateExpiryDate = (transactionDate, terms) => {
-        const daysMap = { "1": 15, "2": 30, "3": 45, "4": 60 };
-        return new Date(transactionDate.setDate(transactionDate.getDate() + (daysMap[terms] || 0)));
-    };
-
     //this is the common handle select
     const {
         handleChange,
-    } = useHandleFormChange(formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, calculateExpiryDate);
+    } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, });
 
     //set selected billing and shipping addresses inside formData
     useEffect(() => {
@@ -213,13 +208,13 @@ const CreateSalesOrders = ({ section }) => {
         // Check for invoiceDetails, quoteDetails, and saleDetails, and dispatch accordingly
         if (itemId) {
             if (convert === "quotationToInvoice" && (!quoteDetails)) {
-                console.log("Fetching quotation details for item:", itemId);
+                // console.log("Fetching quotation details for item:", itemId);
                 dispatch(quotationDetails(sendData)); // Dispatch only if quoteDetails is not available
             } else if (convert === "saleToInvoice" && (!saleDetails)) {
-                console.log("Fetching sale details for item:", itemId);
+                // console.log("Fetching sale details for item:", itemId);
                 dispatch(saleOrderDetails(sendData)); // Dispatch only if saleDetails is not available
             } else if (!invoiceDetails && isEdit) {
-                console.log("Fetching invoice details for item:", itemId);
+                // console.log("Fetching invoice details for item:", itemId);
                 dispatch(invoiceDetailes(sendData)); // Dispatch only if invoiceDetails is not available
             }
         }

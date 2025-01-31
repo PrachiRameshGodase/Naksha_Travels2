@@ -351,10 +351,10 @@ const InsideCusDetails = ({
                           </thead>
                           <tbody>
                             {family_members?.map((item, index) => {
-                              
+
                               const disabledRow = item?.id === customerDetails?.relation_id;
-                              const hideDetails=customerDetails?.id===customerDetails?.relation_id;
-                              
+                              const hideDetails = customerDetails?.id === customerDetails?.relation_id;
+
                               return (
                                 <tr
                                   key={index}

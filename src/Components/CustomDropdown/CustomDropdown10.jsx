@@ -47,7 +47,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     if (
       isOpen && // Ensure modal or component is open
       name === "customer_id" &&
-      (parsedPayload?.search || !customList?.data)
+      (parsedPayload?.search || !parsedPayload?.status == 1 || !customList?.data)
     ) {
       dispatch(customersList({ ...sendData }));
     }
@@ -55,7 +55,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     if (
       isOpen && // Ensure modal or component is open
       name === "vendor_id" &&
-      (parsedPayload1?.search || !vendorList?.data)
+      (parsedPayload1?.search || !parsedPayload1?.status == 1 || !vendorList?.data)
     ) {
       dispatch(vendorsLists({ ...sendData }));
     }
@@ -66,7 +66,7 @@ const CustomDropdown10 = forwardRef((props, ref) => {
   // console.log("cusData", cusData)
   // console.log("options", options)
   return (
-    <div data-tooltip-content={disabled ? "Not able select Drop down at this movement" : ""}
+    <div data-tooltip-content={disabled ? "Unable to select the dropdown at the moment." : ""}
       data-tooltip-id="my-tooltip"
       data-tooltip-place="bottom" ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={!disabled ? () => setIsOpen(!isOpen) : ""} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>

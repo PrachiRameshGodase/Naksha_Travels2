@@ -16,9 +16,9 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
         display_name: "",
         vendor_id: '',
         vendor_name: '',
-        vendor_note: null,
+        vendor_note: "",
 
-        upload_image: "null",
+        upload_image: "",
         phone: null,
         email: "",
         sale_person: '',

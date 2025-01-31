@@ -22,14 +22,15 @@ import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAre
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import { SelectAddress } from "../../Common/SelectAddress";
-import { handleFormSubmitCommon } from "../Utils/handleFormSubmit";
+import { handleFormSubmit1, handleFormSubmitCommon } from "../Utils/handleFormSubmit";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
 import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
+import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
 
 const CreateBills = () => {
   const dispatch = useDispatch();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const vendorList = useSelector((state) => state?.vendorList);
   const getCurrency = useSelector((state) => state?.getCurrency?.data);
   const billDetailss = useSelector((state) => state?.billDetail);
@@ -42,7 +43,6 @@ const CreateBills = () => {
   const paymentTerms = ShowMasterData("8");
 
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
-  // const [cusData, setCusData] = useState(null);
   const [fetchDetails, setFetchDetails] = useState([]);
   // const [isVendorSelect, setIsVendorSelect] = useState(false);
   // const [isItemSelect, setIsItemSelect] = useState(false);
@@ -92,39 +92,10 @@ const CreateBills = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-
-    if (name === "shipping_charge" || name === "adjustment_charge") {
-      newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    }
-
-    if (name === "vendor_id" && value !== "") {
-      setIsVendorSelect(true);
-    } else if (name === "vendor_id" && value == "") {
-      setIsVendorSelect(false);
-    }
-
-    const selectedItem = vendorList?.data?.user?.find((cus) => cus.id == value);
-    if (name === "vendor_id") {
-
-      const findfirstbilling = selectedItem?.address?.find(
-        (val) => val?.is_billing == "1"
-      );
-      const findfirstshipping = selectedItem?.address?.find(
-        (val) => val?.is_shipping == "1"
-      );
-      setAddSelect({
-        billing: findfirstbilling,
-        shipping: findfirstshipping,
-      });
-    }
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
-  };
+  //this is the common handle select
+  const {
+    handleChange,
+  } = useHandleFormChange({ formData, setFormData, addSelect, setAddSelect, setIsVendorSelect, vendorList });
 
 
 
@@ -132,27 +103,24 @@ const CreateBills = () => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
 
-  const handleFormSubmit = (e) => {
-    handleFormSubmitCommon({
+  // this is the common handle submit 
+  const handleFormSubmit = async (e) => {
+    await handleFormSubmit1({
       e,
       formData,
-      isVendorSelect,
-      dropdownRef1,
-      itemErrors,
       setItemErrors,
+      dropdownRef1,
       dropdownRef2,
       dispatch,
-      createPurchases,
-      Navigate,
-      isEdit,
-      showAllSequenceId,
-      itemId,
-      convert,
-      type: "bills",
-      additionalData: {
-        charges: stringifyJSON(formData?.charges),
+      navigate,
+      editDub: isEdit,
+      section: "bills",
+      updateDispatchAction: createPurchases, // This is dynamic for the dispatch action
+      sendData: {
+        isVendorSelect
       },
     });
+
   };
 
   //set the customer/vendor data in formData form state when customer/vendor select
@@ -430,7 +398,7 @@ const CreateBills = () => {
                             {otherIcons.placeofsupply_svg}
                             <input
                               type="text"
-                              value={formData.order_no}
+                              value={preventZeroVal(formData.order_no)}
                               onChange={handleChange}
                               // disabled
                               name="order_no"
