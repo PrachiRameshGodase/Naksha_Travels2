@@ -32,7 +32,6 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
         }
 
     }
-<<<<<<< HEAD
 
     else if (type === "countryList" || type === "visa_entry_type" || type === "visa_type_id") {
 
@@ -46,10 +45,6 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
                 }
             })
 
-=======
-    else if (type === "countryList" || type==="visa_entry_type" || type==="visa_type_id" || type === "days") {
-        dispatch(visaListAction({ search: searchTerm, ...sendData }));
->>>>>>> c3fd261152c6f8d9653f6f18cd3f2627c8ccf149
     }
 
     else if (type === "categories") {
