@@ -366,7 +366,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -388,7 +388,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}

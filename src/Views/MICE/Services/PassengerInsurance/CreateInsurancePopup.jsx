@@ -49,7 +49,7 @@ const CreateInsurancePopup = ({
     (state) => state?.createPassengerMInsurance
   );
 
-  const [cusData, setcusData] = useState(null);
+  const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData2, setcusData2] = useState(null);
 
@@ -439,7 +439,7 @@ const CreateInsurancePopup = ({
                     </div>
                     <div className="f1wrapofcreqx1">
                      
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -461,7 +461,7 @@ const CreateInsurancePopup = ({
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

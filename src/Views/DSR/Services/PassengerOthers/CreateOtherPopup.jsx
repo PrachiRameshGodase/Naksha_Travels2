@@ -33,7 +33,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createOther = useSelector((state) => state?.createPassengerOthers);
   const itemList = useSelector((state) => state?.itemList);
   const options2 = itemList?.data?.item;
-console.log("options2", options2)
+
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
 
@@ -256,7 +256,7 @@ console.log("options2", options2)
                           component="purchase"
                         />
                       </div>
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -278,7 +278,7 @@ console.log("options2", options2)
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">

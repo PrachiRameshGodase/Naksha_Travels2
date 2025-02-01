@@ -28,6 +28,7 @@ import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
+import CustomDropdown10 from "../../../../Components/CustomDropdown/CustomDropdown10";
 
 const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createHotel = useSelector((state) => state?.createPassengerHotel);
 
   const [cusData, setcusData] = useState(null);
+  const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
 
@@ -637,29 +639,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
-                        <label>Supplier</label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-                            <CustomDropdown10
-                              ref={dropdownRef1}
-                              label="Select Supplier"
-                              options={vendorList?.data?.user}
-                              value={formData.supplier_id}
-                              onChange={handleChange}
-                              name="supplier_id"
-                              defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-
-                      </div> */}
-                      <div className="form_commonblock ">
+                    <div className="form_commonblock ">
                         <label>
                           Checkout Date<b className="color_red">*</b>
                         </label>
@@ -696,6 +676,29 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
+                     <div className="form_commonblock">
+                        <label>Supplier</label>
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+                            <CustomDropdown10
+                              ref={dropdownRef1}
+                              label="Select Supplier"
+                              options={vendorList?.data?.user}
+                              value={formData.supplier_id}
+                              onChange={handleChange}
+                              name="supplier_id"
+                              defaultOption="Select Supplier"
+                              setcusData={setcusData1}
+                              cusData={cusData1}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                        </div>
+
+                      </div>
+                    
                       <div className="form_commonblock">
                         <label>Total Days</label>
                         <div id="inputx1">

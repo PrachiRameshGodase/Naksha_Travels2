@@ -107,6 +107,13 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
         // destination_code: selectedRoom?.destination_code || "",
       };
     }
+    if (name === "supplier_id") {
+      const selectedVendor = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedVendor?.display_name || "",
+      };
+    }
     setFormData((prev) => ({
       ...prev,
       ...updatedFields,
@@ -529,7 +536,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                      {/* <div className="form_commonblock">
+                    <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -550,7 +557,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                         </div>
-                      </div> */}
+                      </div> 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

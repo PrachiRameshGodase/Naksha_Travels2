@@ -296,7 +296,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
@@ -319,7 +319,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       
                     </div>
 

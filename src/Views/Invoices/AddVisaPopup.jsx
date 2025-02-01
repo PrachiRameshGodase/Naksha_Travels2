@@ -42,6 +42,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const cusList = useSelector((state) => state?.customerList);
   const visaListData = useSelector((state) => state?.visaList?.data?.data);
   const createVisa = useSelector((state) => state?.createPassengerVisa);
+  const vendorList = useSelector((state) => state?.vendorList);
+
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -86,6 +88,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     issue_date: false,
     visa_no: false,
     expiry_date: false,
+    supplier_id:false,
     days: false,
   });
 
@@ -205,7 +208,13 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
         gross_amount: selectedVisaData?.price || "",
       };
     }
-
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
@@ -241,6 +250,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       visa_type_id: formData?.visa_type_id ? false : true,
       visa_entry_type: formData?.visa_entry_type ? false : true,
       country_id: formData?.country_id ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
       issue_date: formData?.issue_date ? false : true,
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
@@ -737,7 +747,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
@@ -772,7 +782,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
 
-                      </div> */}
+                      </div> 
                      
                     </div>
                     <div

@@ -31,6 +31,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
+  const vendorList = useSelector((state) => state?.vendorList);
+
   
 
   const [cusData1, setcusData1] = useState(null);
@@ -153,7 +155,13 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         gross_amount: selectedAssistData?.price || "",
       };
     }
-
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
@@ -350,7 +358,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -372,7 +380,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

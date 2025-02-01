@@ -153,11 +153,11 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
                               </ul>
                               <ul>
-                                {/* <li>
+                                <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p>{data?.supplier_name || ""}</p>
-                                </li> */}
+                                </li>
                                 <li>
                                   <span>Visa Price</span>
                                   <h1>:</h1>

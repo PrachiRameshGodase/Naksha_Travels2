@@ -43,6 +43,7 @@ const CreateInsurancePopup = ({
   );
 
   const [cusData, setcusData] = useState(null);
+  const [cusData1, setcusData1] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
@@ -368,7 +369,7 @@ const CreateInsurancePopup = ({
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -392,7 +393,7 @@ const CreateInsurancePopup = ({
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

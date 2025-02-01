@@ -102,13 +102,13 @@ const PassengerCarHireDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
 
-                                {/* <li>
+                                <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li> */}
+                                </li>
                                 <li className="pendingfromfrontendx5">
                                   <span>Carhire Price</span>
                                   <h1>:</h1>

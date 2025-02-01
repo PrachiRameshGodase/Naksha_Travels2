@@ -35,6 +35,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
+  const vendorList = useSelector((state) => state?.vendorList);
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -426,7 +427,29 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                     
+                      <div className="form_commonblock">
+                        <label>Supplier</label>
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown10
+                              ref={dropdownRef1}
+                              label="Select Supplier"
+                              options={vendorList?.data?.user}
+                              value={formData.supplier_id}
+                              onChange={handleChange}
+                              name="supplier_id"
+                              defaultOption="Select Supplier"
+                              setcusData={setcusData1}
+                              cusData={cusData1}
+                              type="vendor"
+                              required
+                            />
+                          </span>
+                        </div>
+
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

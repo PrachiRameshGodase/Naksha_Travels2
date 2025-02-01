@@ -108,8 +108,13 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-        // air_line_code: selectedRoom?.air_line_code || "",
-        // destination_code: selectedRoom?.destination_code || "",
+            };
+    }
+    if (name === "supplier_id") {
+      const selectedVendor = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedVendor?.display_name || "",
       };
     }
     setFormData((prev) => ({
@@ -211,6 +216,8 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+
   // call item api on page load...
   const isDisabled = formData?.airline_name;
   return (
@@ -537,7 +544,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                      {/* <div className="form_commonblock">
+                     <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -560,7 +567,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                      {/* </div>  */}
+                       </div> 
 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload

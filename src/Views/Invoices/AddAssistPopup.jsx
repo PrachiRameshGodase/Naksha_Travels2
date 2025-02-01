@@ -38,6 +38,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
+  const vendorList = useSelector((state) => state?.vendorList);
+
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
@@ -148,7 +150,13 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         gross_amount: selectedAssistData?.price || "",
       };
     }
-
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,

@@ -34,6 +34,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const cusList = useSelector((state) => state?.customerList);
   const visaListData = useSelector((state) => state?.visaList?.data?.data);
   const createVisa = useSelector((state) => state?.createPassengerVisa);
+  const vendorList = useSelector((state) => state?.vendorList);
+  
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -93,6 +95,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     days: false,
     gross_amount: false,
     total_amount: false,
+    supplier_id:false
   });
 
   const [storeEntry, setStoreEntry] = useState([]);
@@ -211,6 +214,14 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       };
     }
 
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
+
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
@@ -247,6 +258,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       visa_entry_type: formData?.visa_entry_type ? false : true,
       country_id: formData?.country_id ? false : true,
       issue_date: formData?.issue_date ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
       days: formData?.days ? false : true,
@@ -288,6 +300,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+  
 
   return (
     <div id="formofcreateitems">
@@ -753,7 +767,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form_commonblock">
                         <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
@@ -788,7 +802,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
 
-                      </div> */}
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

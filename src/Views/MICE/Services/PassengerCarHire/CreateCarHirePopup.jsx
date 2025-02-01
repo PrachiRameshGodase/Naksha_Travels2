@@ -341,7 +341,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           )}
                         </div>
                       </div>
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -363,7 +363,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
