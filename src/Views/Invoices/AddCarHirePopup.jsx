@@ -302,7 +302,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                     
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -325,7 +325,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div> */}
+                      </div>
                     </div>
 
                     <div className="f1wrapofcreqx1">

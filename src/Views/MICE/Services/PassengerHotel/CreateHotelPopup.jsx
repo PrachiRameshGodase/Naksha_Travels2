@@ -641,7 +641,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        {/* <div className="form_commonblock">
+                        <div className="form_commonblock">
                           <label>Supplier</label>
                           <div id="sepcifixspanflex">
                             <span id="">
@@ -662,8 +662,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </span>
                           </div>
 
-                          {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                        {/* </div>  */}
+                         </div> 
                         <div className="form_commonblock ">
                           <label>
                             Checkout Date<b className="color_red">*</b>

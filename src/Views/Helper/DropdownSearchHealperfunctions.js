@@ -1,7 +1,10 @@
 import { getAccountTypes } from '../../Redux/Actions/accountsActions';
+import { assistListAction } from '../../Redux/Actions/assistAction';
 import { customersList } from '../../Redux/Actions/customerActions';
 import { flightListAction } from '../../Redux/Actions/flightActions';
-import { hotelListAction } from '../../Redux/Actions/hotelActions';
+import { fetchAirport } from '../../Redux/Actions/globalActions';
+import { hotelListAction, hotelRoomListAction } from '../../Redux/Actions/hotelActions';
+import { InsuranceListAction } from '../../Redux/Actions/InsuranceActions';
 import { categoryList, itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
 import { manageStateAction } from '../../Redux/Actions/ManageStateActions/manageStateData';
 import { visaListAction } from '../../Redux/Actions/visaAction';
@@ -9,7 +12,7 @@ import { sendData } from './HelperFunctions';
 
 
 export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch, productType) => {
-    console.log("type", type)
+    // console.log("type", type)
 
     if (type === "select_item") {
         dispatch(itemLists({ search: searchTerm, ...sendData, ...productType }));
@@ -19,12 +22,17 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     }
 
     else if (type === "vendor" || type === "vendor_charges") {
-        if (name === "customer_id" || name === "guest_ids") {
+        if (name === "customer_id" || name === "guest_ids" || name === "passenger_visa_id" || name === "passenger_insurance_id") {
             dispatch(customersList({ ...sendData, search: searchTerm }));
         } else if (name === "vendor_id") {
             dispatch(vendorsLists({ ...sendData, search: searchTerm }));
         }
+        else if (name === "room_id") {
+            dispatch(hotelRoomListAction({ search: searchTerm, hotel_id: hotelID, ...sendData, }));
+        }
+
     }
+<<<<<<< HEAD
 
     else if (type === "countryList" || type === "visa_entry_type" || type === "visa_type_id") {
 
@@ -38,6 +46,10 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
                 }
             })
 
+=======
+    else if (type === "countryList" || type==="visa_entry_type" || type==="visa_type_id" || type === "days") {
+        dispatch(visaListAction({ search: searchTerm, ...sendData }));
+>>>>>>> c3fd261152c6f8d9653f6f18cd3f2627c8ccf149
     }
 
     else if (type === "categories") {
@@ -50,6 +62,15 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
 
     else if (type === "hotalList") {
         dispatch(hotelListAction({ search: searchTerm, ...sendData, }));
+    }
+    else if (type === "airportList2" || type === "meetingType" || type === "noOfPersons") {
+        dispatch(assistListAction({ search: searchTerm, ...sendData, }));
+    }
+    else if (type === "companyList") {
+        dispatch(InsuranceListAction({ search: searchTerm, ...sendData }));
+    }
+    else if (type === "airportList") {
+        dispatch(fetchAirport({ search: searchTerm, ...sendData }));
     }
 };
 

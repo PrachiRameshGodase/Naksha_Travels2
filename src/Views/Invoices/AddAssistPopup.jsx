@@ -38,10 +38,14 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
+  const vendorList = useSelector((state) => state?.vendorList);
+
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+
 
   const [formData, setFormData] = useState({
     service_name: "Assist",
@@ -72,19 +76,17 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value);
-    console.log("name", name);
-
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
-      selectedAssistData = assistLists?.find((item) => item?.airport === value);
-      console.log("selectedAssistData", selectedAssistData);
+      selectedAssistData = assistLists?.find(
+        (item) => item?.airport === value
+      );
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-          console.log("res", res);
+     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -101,16 +103,18 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a airport first.");
         return;
       }
+     
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
-          item?.no_of_person === formData?.no_of_persons
+          item?.airport === formData?.airport_name
       );
+
       if (selectedAssistData) {
         dispatch(
           assistListAction({
-            airport_name: selectedAssistData?.airport,
-            no_of_persons: selectedAssistData?.no_of_person,
+            airport: selectedAssistData?.airport,
+            no_of_person: selectedAssistData?.no_of_person,
           })
         ).then((res) => {
           setStoreVisaType(res);
@@ -119,11 +123,10 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           ...prev,
           meeting_type: value,
           no_of_persons: "",
-
           gross_amount: "",
         }));
       }
-    } else if (name === "no_of_persons") {
+    }  else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -132,6 +135,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
+      
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -142,13 +146,19 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
       updatedFields = {
         ...updatedFields,
-        airport_name: selectedAssistData?.airport_name || "",
+        airport_name: selectedAssistData?.airport || "",
         no_of_persons: selectedAssistData?.no_of_person || "",
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
       };
     }
-
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
@@ -251,7 +261,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             value={formData.airport_name}
                             onChange={handleChange}
                             name="airport_name"
-                            defaultOption="Select Country"
+                            defaultOption="Select Airport"
                             setcusData={setcusData1}
                             cusData={cusData1}
                             type="airportList2"
@@ -329,8 +339,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="no_of_persons"
                               defaultOption="Select Persons"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
+                              setcusData={setcusData4}
+                              cusData={cusData4}
                               type="noOfPersons"
                               disabled={!formData?.meeting_type}
                             />

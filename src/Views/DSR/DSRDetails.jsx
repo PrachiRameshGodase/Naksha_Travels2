@@ -22,6 +22,9 @@ import DSRSummary from "./DSRSummary";
 import { generatePDF } from "../Helper/createPDF";
 import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
 import { customersList } from "../../Redux/Actions/customerActions";
+import { getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { currencyRateListAction } from "../../Redux/Actions/manageCurrencyActions";
+import { confirIsCurrencyPDF } from "../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 
 const DSRDetails = () => {
   const dispatch = useDispatch();
@@ -37,7 +40,9 @@ const DSRDetails = () => {
   const deletePassenger = useSelector((state) => state?.deletePassenger);
   const deleteDSR = useSelector((state) => state?.DSRDelete);
   const statusChangeDSR = useSelector((state) => state?.DSRStatus);
-
+  const currencyList1 = useSelector((state) => state?.getCurrency);
+  const currencyList = currencyList1?.data?.currency || []
+  
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
     dsr_id: UrlId,
@@ -157,21 +162,61 @@ const DSRDetails = () => {
   }, [dispatch, UrlId]);
 
   const [loading, setLoading] = useState(false);
-  const handleDownloadPDF = () => {
-    if (!DSRData || !userMasterData) {
-      alert("Data is still loading, please try again.");
-      return;
+    const getCurrency = getCurrencyValue();
+  
+  const handleDownloadPDF =async () => {
+      try {
+
+      if (DSRData?.transaction_date) {
+
+        //////////// check if the org currency have exchange rate or not ///////////////////
+
+        // Fetch currency rates with date
+        const res = await dispatch(currencyRateListAction({ date: DSRData?.transaction_date }));
+
+        if (res?.success === true) {
+          // Find the fetchCurrencyData of active organization currency with specific date
+          const fetchCurrencyData = res?.data?.find(val => val?.code === getCurrency);
+          // console.log("fetchCurrencyData", fetchCurrencyData)
+
+          // create and show the pdf of converted currency on the exchange rate....
+          if (!DSRData || !userMasterData) {
+            alert("Data is still loading, please try again.");
+            return;
+          }
+          const contentComponent = (
+              <PrintContent2
+                data={DSRData}
+                userMasterData={userMasterData}
+                cusVenData=""
+                moduleId="DSR No"
+                section="DSR"
+                fetchCurrencyData={fetchCurrencyData} currencyList={currencyList}
+              />
+            );
+            generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
+           
+          
+        } else {
+          // Ask user if they want to create currency exchange rate
+          const confirmed = await confirIsCurrencyPDF(getCurrency);
+
+          if (confirmed) {
+            const queryParams = new URLSearchParams();
+            queryParams.set("date", DSRData?.transaction_date);
+            queryParams.set("currency", getCurrency);//send active org currency 
+            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+          } else {
+            return;
+          }
+          //////////// check if the org currency have exchange rate or not ///////////////////
+
+        }
+      }
+
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
     }
-    const contentComponent = (
-      <PrintContent2
-        data={DSRData}
-        userMasterData={userMasterData}
-        cusVenData=""
-        moduleId="DSR No"
-        section="DSR"
-      />
-    );
-    generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
   };
   const isDisabled = DSRData?.is_invoiced == "1";
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,10 @@ import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
 import { getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import { currencyRateListAction } from "../../Redux/Actions/manageCurrencyActions";
+import { formatDate } from "../Helper/DateFormat";
+import { confirIsCurrencyCreate } from "../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 
 const CreateMICE = () => {
   const Navigate = useNavigate();
@@ -31,7 +35,10 @@ const CreateMICE = () => {
 
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+
   const currency = getCurrencyValue();
+  const currencyRateList = useSelector((state) => state?.currencyRateList);
+  const currencyList = currencyRateList?.data?.data || []
 
   const cusList = useSelector((state) => state?.customerList);
   const createMICE = useSelector((state) => state?.createMICE);
@@ -51,6 +58,8 @@ const CreateMICE = () => {
     destination: "",
     mice_name: "",
     description: null,
+    transaction_date: formatDate(new Date())
+    
   });
 
   const [isData, setIsData] = useState();
@@ -131,9 +140,12 @@ const CreateMICE = () => {
 
         dispatch(MICECreateAction(sendData))
           .then((response) => {
-            console.log("response?.data?.data", response?.data?.data);
-            setIsData(response?.data?.data);
-            setDSRDisabled(true);
+            if (response?.data?.data?.id) {
+              // Store the ID in localStorage
+              localStorage.setItem("miceId", response.data.data.id);
+              setIsData(response.data.data);
+              setDSRDisabled(true);
+            }
           })
           .catch((err) => {
             console.error("Error creating MICE:", err);
@@ -221,6 +233,55 @@ const CreateMICE = () => {
     Navigate("/dashboard/mice");
   };
 
+  // for fetch the currencies list of selected date
+const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+  date: formData?.transaction_date,
+}), [formData?.transaction_date]);
+
+useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
+
+const checkIsCurrencyCreated = async () => {
+    let confirmed = null;
+
+    const checkIsCurrencyCreated = currencyList?.find(val => val?.code === formData?.currency);
+ 
+    if (checkIsCurrencyCreated) {
+        toast.success(`Current Rate is ${checkIsCurrencyCreated?.current_rate} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.exchange_rate}`)
+    } else {
+        confirmed = await confirIsCurrencyCreate();
+        if (confirmed) {
+            const queryParams = new URLSearchParams();
+            queryParams.set("date", formData?.transaction_date);
+            queryParams.set("currency", formData?.currency);
+            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+        }
+
+
+    }
+}
+
+// Using useRef to store the previous value of formData.currency because this useEffect not call on load
+const prevCurrency = useRef(formData?.currency);
+
+useEffect(() => {
+    // Only call checkIsCurrencyCreated when formData?.currency changes and is different from the previous value
+    if (formData?.currency !== prevCurrency.current) {
+        checkIsCurrencyCreated();
+
+        // Update the ref to the new currency
+        prevCurrency.current = formData?.currency;
+    }
+}, [formData?.currency]); // Dependency on formData.currency
+
+useEffect(() => {
+  const miceId = localStorage.getItem("miceId");
+  if (miceId) {
+    const refreshData = {
+      mice_id: miceId,
+    };
+    dispatch(MICEDetailsAction(refreshData));
+  }
+}, [dispatch]);
   return (
     <div>
       <>

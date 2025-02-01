@@ -527,7 +527,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
 
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -547,7 +547,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div> */}
+                      </div>
 
                       <div
                         className="secondtotalsections485s"

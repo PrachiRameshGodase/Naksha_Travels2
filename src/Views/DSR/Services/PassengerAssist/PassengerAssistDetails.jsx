@@ -96,19 +96,20 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.gross_amount || ""}
                                   </p>
                                 </li>
-                              </ul>
-                              <ul>
-                              <li>
+                                <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                 <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                 <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
                                   
                                 </li>
                                <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
+                                  <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
                                 </li>
+                              </ul>
+                              <ul>
+                             
                                 <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>

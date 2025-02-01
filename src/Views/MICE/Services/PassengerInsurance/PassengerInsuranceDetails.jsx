@@ -104,13 +104,13 @@ const PassengerInsuranceDetails = ({ data, showPopup, setShowPopup }) => {
                                     {formatDate3(data?.expiry_date) || ""}
                                   </p>
                                 </li>
-                                {/* <li>
+                                <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li> */}
+                                </li>
                                  <li className="pendingfromfrontendx5">
                                   <span>Insurance Price</span>
                                   <h1>:</h1>

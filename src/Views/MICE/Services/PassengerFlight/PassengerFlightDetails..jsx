@@ -122,13 +122,13 @@ const PassengerFlightDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.route || ""}
                                   </p>
                                 </li>
-                                {/* <li>
+                                <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.supplier_name || ""}
                                   </p>
-                                </li> */}
+                                </li>
                               </ul>
                               <ul>
                                 <li>

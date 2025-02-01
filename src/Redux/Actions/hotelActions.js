@@ -135,6 +135,8 @@ export const CreateHotelRoomAction = (queryParams, setShowPopup,refreshData) => 
 
 
 export const hotelRoomListAction = (queryParams, setAllListValue) => async (dispatch) => {
+    localStorage.setItem("hotelRoomPayload", JSON.stringify(queryParams));
+
     dispatch({ type: GET_HOTEL_ROOM_REQUEST });
     try {
         const response = await axiosInstance.post(`/service/hotelroom/list`, queryParams);

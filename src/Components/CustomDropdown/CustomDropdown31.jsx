@@ -241,11 +241,11 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
 
     // Find if the account.id is already in the list
     const index = selectedItems.findIndex((item) => item === account?.id);
-
+    const maxGuests = formData.max_occupancy || formData.no_of_persons;
     if (index === -1) {
-      if (selectedItems.length >= formData.max_occupancy || formData?.no_of_persons) {
+      if (selectedItems.length >= maxGuests) {
         toast.error(
-          `You cannot select more than ${formData.max_occupancy || formData.no_of_persons} guests.`
+          `You cannot select more than ${maxGuests} guests.`
         );
         return;
       } else {

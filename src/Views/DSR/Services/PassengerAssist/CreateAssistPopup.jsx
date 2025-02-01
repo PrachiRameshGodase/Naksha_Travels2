@@ -30,12 +30,16 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const createAssist = useSelector((state) => state?.createPassengerAssist);
   const assistData = useSelector((state) => state?.assistList);
-    const assistLists = assistData?.data?.data || [];
+  const assistLists = assistData?.data?.data || [];
+  const vendorList = useSelector((state) => state?.vendorList);
+
   
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+  
 
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
@@ -77,21 +81,17 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value)
-    console.log("name", name)
-
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
       selectedAssistData = assistLists?.find(
         (item) => item?.airport === value
       );
-      console.log("selectedAssistData",selectedAssistData)
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-          console.log("res", res)
+     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -101,6 +101,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           meeting_type: "",
           no_of_persons: "",
           gross_amount: "",
+          supplier_id:"",
         }));
       }
     } else if (name === "meeting_type") {
@@ -108,16 +109,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a airport first.");
         return;
       }
+     
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
-          item?.no_of_person === formData?.no_of_persons
+          item?.airport === formData?.airport_name
       );
+
       if (selectedAssistData) {
         dispatch(
           assistListAction({
-            airport_name: selectedAssistData?.airport,
-            no_of_persons: selectedAssistData?.no_of_person,
+            airport: selectedAssistData?.airport,
+            no_of_person: selectedAssistData?.no_of_person,
           })
         ).then((res) => {
           setStoreVisaType(res);
@@ -126,8 +129,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           ...prev,
           meeting_type: value,
           no_of_persons: "",
-        
           gross_amount: "",
+          supplier_id:""
         }));
       }
     }  else if (name === "no_of_persons") {
@@ -150,13 +153,19 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
       updatedFields = {
         ...updatedFields,
-        airport_name: selectedAssistData?.airport_name || "",
+        airport_name: selectedAssistData?.airport || "",
         no_of_persons: selectedAssistData?.no_of_person || "",
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
       };
     }
-
+    if (name === "supplier_id") {
+      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      updatedFields = {
+        ...updatedFields,
+        supplier_name: selectedHotel?.display_name || "",
+      };
+    }
     // Update form state with the new data
     setFormData((prev) => ({
       ...prev,
@@ -176,8 +185,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       airport_name: formData?.airport_name ? false : true,
       no_of_persons: formData?.no_of_persons ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -255,7 +262,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             value={formData.airport_name}
                             onChange={handleChange}
                             name="airport_name"
-                            defaultOption="Select Country"
+                            defaultOption="Select Airport"
                             setcusData={setcusData1}
                             cusData={cusData1}
                             type="airportList2"
@@ -304,6 +311,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           />
                         </span>
                       </div>
+
                       <div  className={`form_commonblock ${
                           formData?.meeting_type ? "" : "disabledfield"
                         }`}
@@ -352,7 +360,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -366,15 +374,15 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
+                              setcusData={setcusData4}
+                              cusData={cusData4}
                               type="vendor"
                               required
                             />
                           </span>
                         </div>
 
-                      </div> */}
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

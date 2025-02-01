@@ -1,15 +1,14 @@
-import React, { useState, useRef, forwardRef, useEffect, useMemo } from "react";
-import "./customdropdown.scss";
-import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import React, { forwardRef, useEffect, useMemo } from "react";
 import { RiSearch2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
-import { customersList } from "../../Redux/Actions/customerActions";
-import { sendData } from "../../Views/Helper/HelperFunctions";
-import { hotelListAction } from "../../Redux/Actions/hotelActions";
-import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
-import { visaListAction } from "../../Redux/Actions/visaAction";
 import { assistListAction } from "../../Redux/Actions/assistAction";
+import { hotelListAction } from "../../Redux/Actions/hotelActions";
+import { visaListAction } from "../../Redux/Actions/visaAction";
+import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
+import DropDownHelper from "../../Views/Helper/DropDownHelper";
+import { sendData } from "../../Views/Helper/HelperFunctions";
+import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
+import "./customdropdown.scss";
 
 const CustomDropdown29 = forwardRef((props, ref) => {
   const {
@@ -39,6 +38,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   const hotelList = useSelector((state) => state?.hotelList);
   const hotelPayloads = localStorage.getItem("hotelPayload");
+
+  
 
   const dispatch = useDispatch();
 
@@ -72,7 +73,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
     []
   );
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
-
+  
   return (
     <div
       ref={combinedRef}
@@ -89,7 +90,11 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           ? cusData
             ? cusData?.name
             : defaultOption
-          : cusData
+            :
+            type === "companyList"
+            ? cusData
+              ? cusData?.company_name
+              : defaultOption : cusData
           ? cusData?.hotel_name
           : value
           ? fullName?.hotel_name
@@ -145,6 +150,9 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                       (type === "hotalList" && option.hotel_name == value
                         ? " selectedoption"
                         : "") +
+                        (type === "companyList" && option.company_name == value
+                          ? " selectedoption"
+                          : "") +
                       (index === focusedOptionIndex ? " focusedoption" : "")
                     }
                   >
@@ -152,7 +160,11 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                       ? `${option?.hotel_name || ""}`
                       : type === "airportList"
                       ? `${option?.name || ""}`
-                      : ""}
+                      :
+                      type === "companyList"
+                      ? `${option?.company_name || ""}`
+                      :
+                       ""}
                   </div>
                 ))}
                 {options?.length === 0 && (

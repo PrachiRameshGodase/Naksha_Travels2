@@ -1,9 +1,12 @@
-import React, { useState, useRef, forwardRef, useEffect } from 'react';
+import React, { useState, useRef, forwardRef, useEffect, useMemo } from 'react';
 import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableViewSkeletonDropdown } from '../SkeletonLoder/TableViewSkeleton';
+import { hotelRoomListAction } from '../../Redux/Actions/hotelActions';
+import useFetchApiData from '../../Views/Helper/ComponentHelper/useFetchApiData';
+import { sendData } from '../../Views/Helper/HelperFunctions';
 
 
 const CustomDropdown02 = forwardRef((props, ref) => {
@@ -19,12 +22,10 @@ const CustomDropdown02 = forwardRef((props, ref) => {
     handleKeyDown,
     handleSelect,
     focusedOptionIndex,
-  } = DropDownHelper(options, onChange, name, type, "", setcusData);
+  } = DropDownHelper(options, onChange, name, type, "", setcusData,"", hotelID);
 
   const hotelRoomListData = useSelector((state) => state?.hotelRoomList);
-
-  const itemPayloads = localStorage.getItem(("customerPayload"));
-
+  const itemPayloads = localStorage.getItem(("hotelRoomPayload"));
   const dispatch = useDispatch();
 
   // Merge refs to handle both internal and external refs
@@ -36,17 +37,24 @@ const CustomDropdown02 = forwardRef((props, ref) => {
   const fullName = options?.find(account => account?.id == value);
 
 
-  //prevent for again and again loding api when we are open dropdown
-  // useEffect(() => {
-  //   // const parshPayload = JSON?.parse(itemPayloads);
-  //   // if (parshPayload?.search) {
-  //   const sendData={
-  //       hotel_id:hotelID
-  //   }
-  //     dispatch(hotelRoomListAction(sendData));
-  //   // }
-  //   // setSearchTerm("");
-  // }, [isOpen]);
+  // prevent for again and again loding api when we are open dropdown
+  useEffect(() => {
+    const parshPayload = JSON?.parse(itemPayloads);
+    if (parshPayload?.search) {
+    const sendData={
+        hotel_id:hotelID
+    }
+      dispatch(hotelRoomListAction(sendData));
+    }
+    setSearchTerm("");
+  }, [isOpen]);
+
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({ //useMemo because  we ensure that this function only changes when [dependency] changes
+      ...sendData,}),[]);
+  useFetchApiData(hotelRoomListAction, payloadGenerator, []); //call api common function
+
+
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

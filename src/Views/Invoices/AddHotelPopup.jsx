@@ -626,7 +626,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                    
                     </div>
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -648,7 +648,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div> */}
+                      </div>
                          <div className="form_commonblock ">
                         <label>
                           Checkout Date<b className="color_red">*</b>

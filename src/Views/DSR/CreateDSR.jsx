@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,10 @@ import GenerateAutoId from "../Sales/Common/GenerateAutoId";
 import DSRSummary from "./DSRSummary";
 import PassengerCard from "./PassengerCard";
 import { getCurrencySymbol, getCurrencyValue } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { currencyRateListAction } from "../../Redux/Actions/manageCurrencyActions";
+import { confirIsCurrencyCreate } from "../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
+import { formatDate } from "../Helper/DateFormat";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 
 const CreateDSR = () => {
   const Navigate = useNavigate();
@@ -33,6 +37,9 @@ const CreateDSR = () => {
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
   const currency = getCurrencyValue();
+  const currencyRateList = useSelector((state) => state?.currencyRateList);
+  const currencyList = currencyRateList?.data?.data || []
+  
   const cusList = useSelector((state) => state?.customerList);
   const createDSR = useSelector((state) => state?.createDSR);
   const addPassenger = useSelector((state) => state?.addPassenger);
@@ -48,9 +55,11 @@ const CreateDSR = () => {
     customer_id: "",
     customer_name: "",
     currency: currency,
+    transaction_date: formatDate(new Date())
   });
 
   const [isData, setIsData] = useState();
+  console.log("isData",isData)
   const [passengerData, setPassengerData] = useState({
     dsr_id: itemId,
     customer_id: "",
@@ -126,9 +135,12 @@ const CreateDSR = () => {
         dispatch(DSRCreateAction(sendData, showAllSequenceId))
           .then(
             (response) => {
-              // if(response?.success===true){
-              setIsData(response?.data?.data);
-              setDSRDisabled(true);
+              if (response?.data?.data?.id) {
+                // Store the ID in localStorage
+                localStorage.setItem("dsrId", response.data.data.id);
+                setIsData(response.data.data);
+                setDSRDisabled(true);
+              }
             }
             // }
           )
@@ -173,6 +185,7 @@ const CreateDSR = () => {
       }
     }
   };
+  
   useEffect(() => {
     if (DSRData?.id || isData?.id) {
       const sendData = {
@@ -206,7 +219,55 @@ const CreateDSR = () => {
         .catch((err) => console.log(err));
     }
   };
+// for fetch the currencies list of selected date
+const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+  date: formData?.transaction_date,
+}), [formData?.transaction_date]);
 
+useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
+
+const checkIsCurrencyCreated = async () => {
+    let confirmed = null;
+
+    const checkIsCurrencyCreated = currencyList?.find(val => val?.code === formData?.currency);
+ 
+    if (checkIsCurrencyCreated) {
+        toast.success(`Current Rate is ${checkIsCurrencyCreated?.current_rate} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.exchange_rate}`)
+    } else {
+        confirmed = await confirIsCurrencyCreate();
+        if (confirmed) {
+            const queryParams = new URLSearchParams();
+            queryParams.set("date", formData?.transaction_date);
+            queryParams.set("currency", formData?.currency);
+            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+        }
+
+
+    }
+}
+
+// Using useRef to store the previous value of formData.currency because this useEffect not call on load
+const prevCurrency = useRef(formData?.currency);
+
+useEffect(() => {
+    // Only call checkIsCurrencyCreated when formData?.currency changes and is different from the previous value
+    if (formData?.currency !== prevCurrency.current) {
+        checkIsCurrencyCreated();
+
+        // Update the ref to the new currency
+        prevCurrency.current = formData?.currency;
+    }
+}, [formData?.currency]); // Dependency on formData.currency
+
+useEffect(() => {
+  const dsrId = localStorage.getItem("dsrId");
+  if (dsrId) {
+    const refreshData = {
+      dsr_id: dsrId,
+    };
+    dispatch(DSRDetailsAction(refreshData));
+  }
+}, [dispatch]);
   return (
     <div>
       <>
