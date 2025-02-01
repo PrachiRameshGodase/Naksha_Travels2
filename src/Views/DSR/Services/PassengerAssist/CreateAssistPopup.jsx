@@ -21,6 +21,7 @@ import "../CreateHotelPopup.scss";
 import Swal from "sweetalert2";
 import { CustomDropdown0029, CustomDropdown029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
 import { assistListAction } from "../../../../Redux/Actions/assistAction";
+import { CustomDropdown031 } from "../../../../Components/CustomDropdown/CustomDropdown31";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -32,13 +33,13 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
   const vendorList = useSelector((state) => state?.vendorList);
-
-  
+  const cusList = useSelector((state) => state?.customerList);
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
+  const [cusData5, setcusData5] = useState(null);
   
 
   const [formData, setFormData] = useState({
@@ -72,6 +73,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     no_of_persons: false,
     gross_amount: false,
     total_amount: false,
+    supplier_id:false
   });
 
   const [imgLoader, setImgeLoader] = useState("");
@@ -157,6 +159,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         no_of_persons: selectedAssistData?.no_of_person || "",
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
+        supplier_id: selectedAssistData?.supplier_id || "",
+
       };
     }
     if (name === "supplier_id") {
@@ -176,8 +180,28 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     // Clear errors for the field
     setErrors((prevData) => ({
       ...prevData,
+      ...(name === "no_of_persons" && {
+        gross_amount:false
+      }),
       [name]: false,
     }));
+  };
+  const handleChange1 = (selectedItems, name) => {
+    if (selectedItems.length > formData.no_of_persons) {
+      toast.error(
+        `You cannot select more than ${formData.no_of_persons} guests.`
+      );
+      return;
+    } else {
+      setFormData({
+        ...formData,
+        guest_ids: selectedItems,
+      });
+      setErrors((prevData) => ({
+        ...prevData,
+        [name]: false,
+      }));
+    }
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -186,6 +210,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       no_of_persons: formData?.no_of_persons ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
       total_amount: formData?.total_amount ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
+
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -360,8 +386,47 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
+                        <div className="form_commonblock">
+                                              <label>
+                                              Guest 
+                                              </label>
+                      
+                                              <div id="sepcifixspanflex">
+                                                <span id="">
+                                                  {otherIcons.name_svg}
+                      
+                                                  <CustomDropdown031
+                                                    ref={dropdownRef1}
+                                                    label="Select Guest"
+                                                    options={cusList?.data?.user}
+                                                    value={formData.guest_ids}
+                                                    onChange={(selectedItems) =>
+                                                      handleChange1(selectedItems, "guest_ids")
+                                                    }
+                                                    name="guest_ids"
+                                                    defaultOption="Select Guest "
+                                                    setcusData={setcusData5}
+                                                    cusData={cusData5}
+                                                    type="vendor"
+                                                    formData={formData}
+                                                  />
+                                                </span>
+                                                {errors?.guest_ids && (
+                                                  <p
+                                                    className="error_message"
+                                                    style={{
+                                                      whiteSpace: "nowrap",
+                                                      marginBottom: "0px important",
+                                                    }}
+                                                  >
+                                                    {otherIcons.error_svg}
+                                                    Please Select Guest 
+                                                  </p>
+                                                )}
+                                              </div>
+                                            </div>
                       <div className="form_commonblock">
-                        <label>Supplier</label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -380,6 +445,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Supplier
+                          </p>
+                        )}
                         </div>
 
                       </div>

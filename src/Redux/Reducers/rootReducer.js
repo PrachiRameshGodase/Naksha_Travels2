@@ -238,6 +238,7 @@ import {
   DSRDetailReducer,
   DSRStatusReducer,
   listDSRreducer,
+  listDSRSupplierSummaryreducer,
 } from "./DSRReducers";
 import {
   createPassengerHotelReducer,
@@ -257,7 +258,7 @@ import { createPassengerAssistReducer, passengerAssistDeleteReducer } from "./pa
 import { createPassengerInsuranceReducer, passengerInsuranceDeleteReducer } from "./passengerInsuranceReducers";
 import { createPassengerOthersReducer, passengerOthersDeleteReducer } from "./passengerOthersReducers";
 import { createUpdateOrgnizationReducer, orgnizationListReducer } from "./orgnizationReducers";
-import { AddMPassengerReducer, createMICEreducer, DeleteMICEReducer, DeleteMPassengerReducer, listMICEreducer, MICEDetailReducer, MICEStatusReducer } from "./MICEReducers";
+import { AddMPassengerReducer, createMICEreducer, DeleteMICEReducer, DeleteMPassengerReducer, listMICEreducer, listMICESupplierSummaryreducer, MICEDetailReducer, MICEStatusReducer } from "./MICEReducers";
 import { createPassengerMHotelReducer, passengerHotelMDetailReducer, passengerMHoteltDeleteReducer } from "./passengerMHotelReducers";
 import { createPassengerMAssistReducer, passengerMAssistDeleteReducer } from "./passengerMAssistsReducers";
 import { createPassengerMCarHireReducer, passengerMCarHireDeleteReducer } from "./passengerMCarHireReducers";
@@ -369,6 +370,7 @@ const reducer = combineReducers({
   DSRStatus: DSRStatusReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
+  dsrSupplierSummary:listDSRSupplierSummaryreducer,
 
   createMICE: createMICEreducer,
   MICEList: listMICEreducer,
@@ -377,6 +379,8 @@ const reducer = combineReducers({
   MICEStatus: MICEStatusReducer,
   addPassenger: AddMPassengerReducer,
   deletePassenger: DeleteMPassengerReducer,
+  miceSupplierSummary:listMICESupplierSummaryreducer,
+  
 
   //mice-passenger-services
   createPassengerMHotel: createPassengerMHotelReducer,

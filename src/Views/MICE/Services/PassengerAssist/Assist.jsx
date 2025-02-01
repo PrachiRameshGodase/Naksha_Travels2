@@ -174,7 +174,6 @@ const Assit = ({ data, totalItems }) => {
                                 .filter(Boolean)
                                 .join(",  ")}
                             >
-                              {console.log("item?.guests", item?.guests)}
                               {item?.guests
                                 ?.map((data) => data?.display_name)
                                 .filter(Boolean)

@@ -84,6 +84,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     destination_code: false,
     guest_ids: false,
     gross_amount: false,
+    supplier_id:false,
     tax_amount: false,
     tax_percent: false,
     // retain: false,
@@ -164,6 +165,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       travel_date: formData?.travel_date ? false : true,
       guest_ids: formData?.guest_ids ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
 
       total_amount: formData?.total_amount ? false : true,
     };
@@ -545,7 +547,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       </div>
 
                      <div className="form_commonblock">
-                        <label>Supplier</label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -564,6 +566,18 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Supplier
+                          </p>
+                        )}
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}

@@ -89,20 +89,24 @@ const MainLinks = ({
     "create-mice",
     "mice",
     "mice-details",
-    "mice-serviceslist"
+    "mice-serviceslist",
+    "dsr-supplier-summary",
+    "mice-supplier-summary",
   ]
   const dsrMenuItems = [
     "create-dsr",
     "dsr",
     "dsr-details",
-    "serviceslist"
+    "serviceslist",
+    "dsr-supplier-summary"
   ]
 
   const miceMenuItems = [
     "create-mice",
     "mice",
     "mice-details",
-    "mice-serviceslist"
+    "mice-serviceslist",
+    "mice-supplier-summary"
   ]
   const categoryMenuItems = [
     "items-categories",

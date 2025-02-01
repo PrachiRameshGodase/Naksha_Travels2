@@ -267,6 +267,11 @@ const MICEDetails = () => {
                   : "Invoiced"}
               </p>
             </div>
+            <div className="mainx1">
+                <p onClick={()=>Navigate(`/dashboard/mice-supplier-summary?id=${MICEData?.id}`)} style={{ cursor: "pointer" }}>
+                  Supplier Summary
+                </p>
+              </div>
             {MICEData?.is_invoiced == "1" && (
               <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>

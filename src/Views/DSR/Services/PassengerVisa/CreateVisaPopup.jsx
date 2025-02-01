@@ -234,6 +234,9 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     // Clear errors for the field
     setErrors((prevData) => ({
       ...prevData,
+      ...(name === "days" && {
+        gross_amount:false
+      }),
       [name]: false,
     }));
   };
@@ -581,10 +584,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                             minDate={
                               new Date(new Date().getFullYear() - 50, 0, 1)
-                            } // Start 50 years in the past
+                            } 
                             maxDate={
                               new Date(new Date().getFullYear() + 50, 11, 31)
-                            } // End 50 years in the future
+                            } 
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown
                             yearDropdownItemNumber={101}
@@ -673,11 +676,21 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Minimum date: 50 years ago
                             maxDate={
                               formData?.expiry_date
-                                ? new Date(formData.expiry_date)
-                                : null
+                                ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
+                                : new Date(
+                                    new Date().getFullYear() + 50,
+                                    11,
+                                    31
+                                  ) // Default max date: 50 years in the future
                             }
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                         {errors?.issue_date && (
@@ -710,9 +723,15 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                             minDate={
                               formData?.issue_date
-                                ? new Date(formData.issue_date)
-                                : null
+                                ? new Date(formData.issue_date) // Min date: Issue Date (if set)
+                                : new Date(new Date().getFullYear() - 50, 0, 1) // Default min date: 50 years ago
                             }
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // Max date: 50 years in the future
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                         {errors?.expiry_date && (

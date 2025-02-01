@@ -81,7 +81,16 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.no_of_persons || ""}
                                   </p>
                                 </li>
-
+                                <li>
+                                  <span>Guest</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.guests
+                                      ?.map((item) => item?.display_name)
+                                      .filter(Boolean)
+                                      .join(", ")}
+                                  </p>
+                                </li>
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
@@ -89,6 +98,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.supplier_name || ""}
                                   </p>
                                 </li>
+                               
                                 <li>
                                   <span>Assist Price</span>
                                   <h1>:</h1>

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
-import Loader02 from "../../../../Components/Loaders/Loader02";
-import { Attachment2 } from "../../../Helper/Attachment";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import Loader02 from "../../../Components/Loaders/Loader02";
+import { Attachment2 } from "../../Helper/Attachment";
+import { formatDate3 } from "../../Helper/DateFormat";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+// import "../CreateHotelPopup.scss";
+import { ShowUserMastersValue } from "../../Helper/ShowMastersValue";
 
-const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
+const VisaDetails = ({ serviceData, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
+  const data=serviceData?.service_data ? JSON.parse(serviceData?.service_data):""
+
   const attachments = data?.upload_image || "";
   const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
@@ -20,9 +24,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>
-                 Airport Name: {data?.airport_name || ""}
-                </h5>
+                <h5> Passenger Name : {data?.visa_passenger?.display_name || ""}</h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -34,7 +36,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                 <div
                   id="itemsdetailsrowskl"
                   className="secondinsidedatax15s"
-              
+                  
                 >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
@@ -51,79 +53,125 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                               }}
                             >
                               {otherIcons?.information_svg}
-                              Assist Details
+                              Visa Details
                             </div>
                             <div style={{ display: "flex", gap: "20px" }}>
                               <ul>
                                 <li className="pendingfromfrontendx5">
-                                  <span>Meeting Type</span>
+                                  <span>Passenger Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.meeting_type || ""}
+                                    {data?.visa_passenger?.display_name || ""}
+                                  </p>
+                                </li>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Passport Number</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.passport_no || ""}
                                   </p>
                                 </li>
 
                                 <li>
-                                  <span>Airport</span>
+                                  <span>Date Of Birth</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.airport_name || ""}
+                                    {data?.dob || ""}
                                   </p>
                                 </li>
                                 <li>
-                                  <span> No Of Persons</span>
+                                  <span>Email</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.no_of_persons || ""}
+                                    {data?.email || ""}
+                                  </p>
+                                </li>
+                                <li className="pendingfrombackendx5">
+                                  <span>Visa Number</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.visa_no || ""}
+                                  </p>
+                                </li>
+                                <li className="pendingfrombackendx5">
+                                  <span>Visa Type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    <ShowUserMastersValue
+                                      type="40"
+                                      id={data?.visa_type_id || ""}
+                                    />
+                                  </p>
+                                </li>
+
+                                <li>
+                                  <span>Visa Entry Type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    <ShowUserMastersValue
+                                      type="39"
+                                      id={data?.visa_entry_type || ""}
+                                    />
                                   </p>
                                 </li>
                                 <li>
-                                  <span>Family Members</span>
+                                  <span>Days</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.guests
-                                      ?.map((item) => item?.display_name)
-                                      .filter(Boolean)
-                                      .join(", ")}
+                                    {data?.days || ""}
                                   </p>
+                                </li>
+                                <li>
+                                  <span>Country</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.country?.name || ""}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span>Issue Date</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {formatDate3(data?.issue_date) || ""}
+                                  </p>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li>
+                                  <span>Expiry Date</span>
+                                  <h1>:</h1>
+                                  <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.supplier_name || ""}
-                                  </p>
+                                  <p>{data?.supplier_name || ""}</p>
                                 </li>
                                 <li>
-                                  <span>Assist Price</span>
+                                  <span>Visa Price</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.gross_amount || ""}
-                                  </p>
+                                  <p>{data?.gross_amount || ""}</p>
                                 </li>
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
-                                 
+                                 <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                  
                                 </li>
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
+                                  <p>{data?.tax_amount || ""}</p>
                                 </li>
-                               
-                              </ul>
-                              <ul>
-                              <li>
+                                <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_tax || ""}</p>
+                                  <p>{data?.supplier_tax || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Price</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_total || ""}</p>
+                                  <p>{data?.supplier_total || ""}</p>
                                 </li>
                                 <li>
                                   <span>Customer Price</span>
@@ -135,6 +183,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.retain || ""}</p>
                                 </li>
+
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>
@@ -165,4 +214,4 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
     </>
   );
 };
-export default PassengerAssistDetails;
+export default VisaDetails;

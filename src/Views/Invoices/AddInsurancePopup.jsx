@@ -289,9 +289,21 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Minimum date: 50 years ago
                             maxDate={
-                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                              formData?.expiry_date
+                                ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
+                                : new Date(
+                                    new Date().getFullYear() + 50,
+                                    11,
+                                    31
+                                  ) // Default max date: 50 years in the future
                             }
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                         {errors?.issue_date && (
@@ -321,8 +333,16 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                             minDate={
-                              formData?.issue_date ? new Date(formData.issue_date) : null
+                              formData?.issue_date
+                                ? new Date(formData.issue_date) // Min date: Issue Date (if set)
+                                : new Date(new Date().getFullYear() - 50, 0, 1) // Default min date: 50 years ago
                             }
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // Max date: 50 years in the future
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                         {errors?.expiry_date && (

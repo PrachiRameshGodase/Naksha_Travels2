@@ -71,7 +71,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [errors, setErrors] = useState({
     item_id: false,
     quantity: false,
-    
+    supplier_id:false,
     gross_amount: false,
 
     // retain: false,
@@ -114,7 +114,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
     let newErrors = {
       item_id: formData?.item_id ? false : true,
       quantity: formData?.quantity ? false : true,
-      // price: formData?.item_id ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
 
       // retain: formData?.retain ? false : true,
@@ -298,7 +298,7 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div> */}
                       <div className="form_commonblock">
-                        <label>Supplier</label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -317,6 +317,18 @@ const CreateOtherPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                       </div>

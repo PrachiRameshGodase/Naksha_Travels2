@@ -70,7 +70,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     meal_id: service_data?.meal_id || "", // Example for meal_id
     room_no: service_data?.room_no || "", // Example for room_no
     bed: service_data?.bed || "", // Example for bed
-    guest_ids: "", // Example for guest_ids
+    guest_ids: service_data?.guest_ids || "", // Example for guest_ids
     booking_date: formatDate(new Date()), // Current date
     check_in_date: service_data?.check_in_date || "", // Example for check_in_date
     check_out_date: service_data?.check_out_date || "", // Example for check_out_date
@@ -85,6 +85,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_percent: tax_rate || null, // Default to tax_rate or null
     tax_amount: 0.0, // Default value
     total_amount: 0.0, // Default value
+    price: service_data?.price || "", 
   });
 
   // console.log("formdataaaaaaaaaa", formData)
@@ -99,6 +100,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     booking_date: false,
     check_out_date: false,
     check_in_date: false,
+    
   });
 
   const entryType = ShowUserMasterData("50");
@@ -196,15 +198,48 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     }
   };
   const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: formatDate(date),
-    }));
-    setErrors((prevData) => ({
-      ...prevData,
-      [name]: false,
-    }));
-  };
+     // Update the form data with the new date
+     const updatedFormData = {
+       ...formData,
+       [name]: formatDate(date),
+     };
+   
+     // If both check_in_date and check_out_date are set, calculate the difference
+     if (updatedFormData.check_in_date && updatedFormData.check_out_date) {
+       const checkInDate = new Date(updatedFormData.check_in_date);
+       const checkOutDate = new Date(updatedFormData.check_out_date);
+   
+       // Ensure both dates start at midnight to avoid time differences affecting the result
+       checkInDate.setHours(0, 0, 0, 0);
+       checkOutDate.setHours(0, 0, 0, 0);
+   
+      
+       if (checkOutDate < checkInDate) {
+         toast.error("Check-out date must be on or after check-in date.");
+         return; // Exit the function if the dates are invalid
+       }
+   
+       const timeDiff = checkOutDate - checkInDate;
+       let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
+   
+       updatedFormData.total_nights = totalNights;
+       console.log("totalNights", updatedFormData.total_nights);
+     }
+   
+     setFormData(updatedFormData);
+   
+     setErrors((prevData) => ({
+       ...prevData,
+       [name]: false,
+     }));
+   };
+   useEffect(() => {
+     const gross_amount = formData.price * formData.total_nights;
+     setFormData((prev) => ({
+       ...prev,
+       gross_amount:gross_amount ,
+     }));
+ }, [formData.total_nights, formData.price]);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -626,29 +661,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                    
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
-                        <div id="sepcifixspanflex">
-                          <span id="">
-                            {otherIcons.name_svg}
-                            <CustomDropdown10
-                              ref={dropdownRef1}
-                              label="Select Supplier"
-                              options={vendorList?.data?.user}
-                              value={formData.supplier_id}
-                              onChange={handleChange}
-                              name="supplier_id"
-                              defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
-                              type="vendor"
-                              required
-                            />
-                          </span>
-                        </div>
-                      </div>
+                     
                          <div className="form_commonblock ">
                         <label>
                           Checkout Date<b className="color_red">*</b>
@@ -697,6 +710,29 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               placeholder="Enter Total Days"
                               value={formData.total_nights}
                               onChange={(e) => handleChange(e)}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Supplier
+                        </label>
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+                            <CustomDropdown10
+                              ref={dropdownRef1}
+                              label="Select Supplier"
+                              options={vendorList?.data?.user}
+                              value={formData.supplier_id}
+                              onChange={handleChange}
+                              name="supplier_id"
+                              defaultOption="Select Supplier"
+                              setcusData={setcusData1}
+                              cusData={cusData1}
+                              type="vendor"
+                              required
                             />
                           </span>
                         </div>

@@ -1,4 +1,4 @@
-import { ADD_PASSENGER_ERROR, ADD_PASSENGER_REQUEST, ADD_PASSENGER_SUCCESS, CLEAR_MICE_STATE, CREATE_MICE_ERROR, CREATE_MICE_REQUEST, CREATE_MICE_SUCCESS, GET_MICE_ERROR, GET_MICE_REQUEST, GET_MICE_SUCCESS, MICE_DELETE_ERROR, MICE_DELETE_REQUEST, MICE_DELETE_SUCCESS, MICE_DETAIL_ERROR, MICE_DETAIL_REQUEST, MICE_DETAIL_SUCCESS, MICE_STATUS_ERROR, MICE_STATUS_REQUEST, MICE_STATUS_SUCCESS, PASSENGER_DELETE_ERROR, PASSENGER_DELETE_REQUEST, PASSENGER_DELETE_SUCCESS } from "../Constants/MICEConstants";
+import { ADD_PASSENGER_ERROR, ADD_PASSENGER_REQUEST, ADD_PASSENGER_SUCCESS, CLEAR_MICE_STATE, CREATE_MICE_ERROR, CREATE_MICE_REQUEST, CREATE_MICE_SUCCESS, GET_MICE_ERROR, GET_MICE_REQUEST, GET_MICE_SUCCESS, GET_MICE_SUPPLIER_SUMMARY_ERROR, GET_MICE_SUPPLIER_SUMMARY_REQUEST, GET_MICE_SUPPLIER_SUMMARY_SUCCESS, MICE_DELETE_ERROR, MICE_DELETE_REQUEST, MICE_DELETE_SUCCESS, MICE_DETAIL_ERROR, MICE_DETAIL_REQUEST, MICE_DETAIL_SUCCESS, MICE_STATUS_ERROR, MICE_STATUS_REQUEST, MICE_STATUS_SUCCESS, PASSENGER_DELETE_ERROR, PASSENGER_DELETE_REQUEST, PASSENGER_DELETE_SUCCESS } from "../Constants/MICEConstants";
 
 const initialState = {
     loading: false,
@@ -183,3 +183,28 @@ export const DeleteMPassengerReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export const listMICESupplierSummaryreducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case  GET_MICE_SUPPLIER_SUMMARY_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_MICE_SUPPLIER_SUMMARY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case GET_MICE_SUPPLIER_SUMMARY_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+}

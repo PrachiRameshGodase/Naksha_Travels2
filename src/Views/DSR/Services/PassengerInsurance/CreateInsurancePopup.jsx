@@ -11,7 +11,11 @@ import {
 import ImageUpload from "../../../Helper/ComponentHelper/ImageUpload";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { formatDate } from "../../../Helper/DateFormat";
-import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
+import {
+  sendData,
+  ShowMasterData,
+  ShowUserMasterData,
+} from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import "../CreateHotelPopup.scss";
 import { CreatePassengerInsuranceAction } from "../../../../Redux/Actions/passengerInsuranceActions";
@@ -77,11 +81,11 @@ const CreateInsurancePopup = ({
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
-    policy_no:false,
-    insurance_plan:false,
+    policy_no: false,
+    insurance_plan: false,
     gross_amount: false,
-  company_name:false,
-    // retain: false,
+    company_name: false,
+   supplier_id:false,
     total_amount: false,
   });
   const entryType = ShowUserMasterData("50");
@@ -103,7 +107,7 @@ const CreateInsurancePopup = ({
     }));
   };
 
-  const handleFormSubmit = async(e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
@@ -111,6 +115,7 @@ const CreateInsurancePopup = ({
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
       company_name: formData?.company_name ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -119,32 +124,33 @@ const CreateInsurancePopup = ({
     );
     if (hasAnyError) {
       await Swal.fire({
-              text: "Please fill all the required fields.",
-              confirmButtonText: "OK",
-            });
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
-    try {
-      const sendData = {
-        ...formData,
-        guest_ids:
-          formData?.guest_ids?.length === 0
-            ? null
-            : formData?.guest_ids?.join(", "),
-        charges: JSON.stringify(formData?.charges),
-      };
-      const refreshData = {
-        dsr_id: data?.id,
-      };
-      dispatch(CreatePassengerInsuranceAction(sendData, setShowModal, refreshData))
-       
-    } catch (error) {
-      console.error("Error updating insurance:", error);
+      try {
+        const sendData = {
+          ...formData,
+          guest_ids:
+            formData?.guest_ids?.length === 0
+              ? null
+              : formData?.guest_ids?.join(", "),
+          charges: JSON.stringify(formData?.charges),
+        };
+        const refreshData = {
+          dsr_id: data?.id,
+        };
+        dispatch(
+          CreatePassengerInsuranceAction(sendData, setShowModal, refreshData)
+        );
+      } catch (error) {
+        console.error("Error updating insurance:", error);
+      }
     }
-  }
   };
   // call item api on page load...
-  const payloadGenerator = useMemo(() => () => ({ ...sendData}), []);
+  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
   useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
@@ -219,17 +225,17 @@ const CreateInsurancePopup = ({
                             />
                           </span>
                           {errors?.passenger_insurance_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Passenger
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Passenger
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="form_commonblock">
@@ -239,19 +245,19 @@ const CreateInsurancePopup = ({
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown29
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Company Name"
-                              options={insuranceLists}
-                              value={formData.company_name}
-                              onChange={handleChange}
-                              name="company_name"
-                              defaultOption="Select Comapnay Name"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
-                              type="companyList"
-                              required
-                            />
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Company Name"
+                            options={insuranceLists}
+                            value={formData.company_name}
+                            onChange={handleChange}
+                            name="company_name"
+                            defaultOption="Select Comapnay Name"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="companyList"
+                            required
+                          />
                         </span>
                         {errors?.company_name && (
                           <p
@@ -281,17 +287,17 @@ const CreateInsurancePopup = ({
                           />
                         </span>
                         {errors?.policy_no && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Policy No
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Policy No
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -312,9 +318,21 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Minimum date: 50 years ago
                             maxDate={
-                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                              formData?.expiry_date
+                                ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
+                                : new Date(
+                                    new Date().getFullYear() + 50,
+                                    11,
+                                    31
+                                  ) // Default max date: 50 years in the future
                             }
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                       </div>
@@ -335,8 +353,16 @@ const CreateInsurancePopup = ({
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                             minDate={
-                              formData?.issue_date ? new Date(formData.issue_date) : null
+                              formData?.issue_date
+                                ? new Date(formData.issue_date) // Min date: Issue Date (if set)
+                                : new Date(new Date().getFullYear() - 50, 0, 1) // Default min date: 50 years ago
                             }
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // Max date: 50 years in the future
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                       </div>
@@ -355,24 +381,22 @@ const CreateInsurancePopup = ({
                           />
                         </span>
                         {errors?.insurance_plan && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Fill Insurance Plan
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Fill Insurance Plan
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -391,8 +415,19 @@ const CreateInsurancePopup = ({
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Supplier
+                          </p>
+                        )}
                         </div>
-
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
@@ -416,8 +451,11 @@ const CreateInsurancePopup = ({
                             />
                           </div>
                         </div>
-                        </div>
-                        <div className="secondtotalsections485s" style={{justifyContent:"flex-end"}}>
+                      </div>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         <CalculationSection
                           formData={formData}
                           setFormData={setFormData}

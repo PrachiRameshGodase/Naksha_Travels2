@@ -71,6 +71,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_name: "",
     total_nights: "",
     confirmation_no: "",
+    price:null,
     //amount
     charges: [{ amount: null, account_id: null }],
     gross_amount: 0,
@@ -93,6 +94,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     meal_id: false,
     bed: false,
     guest_ids: false,
+    supplier_id:false,
     booking_date: false,
     check_out_date: false,
     check_in_date: false,
@@ -128,7 +130,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         meal_id: "",
         bed: "",
         max_occupancy: "",
-        gross_amount: "",
+       
         guest_ids: "",
       };
     }
@@ -143,7 +145,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
         max_occupancy: selectedRoom?.max_occupancy,
-        gross_amount: selectedRoom?.price,
+        price: selectedRoom?.price,
       };
 
       // If the new max_occupancy is smaller than selected guests, trim guest_ids
@@ -177,7 +179,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         occupancy_id: false,
         meal_id: false,
         bed: false,
-        gross_amount: false,
+        gross_amount:false,
         max_occupancy: false,
       }),
       [name]: false,
@@ -196,17 +198,55 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         guest_ids: selectedItems,
       });
     }
-  };
-  const handleDateChange = (date, name) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: formatDate(date),
-    }));
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
     }));
   };
+  const handleDateChange = (date, name) => {
+    // Update the form data with the new date
+    const updatedFormData = {
+      ...formData,
+      [name]: formatDate(date),
+    };
+  
+    // If both check_in_date and check_out_date are set, calculate the difference
+    if (updatedFormData.check_in_date && updatedFormData.check_out_date) {
+      const checkInDate = new Date(updatedFormData.check_in_date);
+      const checkOutDate = new Date(updatedFormData.check_out_date);
+  
+      // Ensure both dates start at midnight to avoid time differences affecting the result
+      checkInDate.setHours(0, 0, 0, 0);
+      checkOutDate.setHours(0, 0, 0, 0);
+  
+     
+      if (checkOutDate < checkInDate) {
+        toast.error("Check-out date must be on or after check-in date.");
+        return; // Exit the function if the dates are invalid
+      }
+  
+      const timeDiff = checkOutDate - checkInDate;
+      let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
+  
+      updatedFormData.total_nights = totalNights;
+      console.log("totalNights", updatedFormData.total_nights);
+    }
+  
+    setFormData(updatedFormData);
+  
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
+  };
+  useEffect(() => {
+    const gross_amount = formData.price * formData.total_nights;
+    setFormData((prev) => ({
+      ...prev,
+      gross_amount:gross_amount ,
+    }));
+}, [formData.total_nights, formData.price]);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -221,6 +261,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       check_in_date: formData?.check_in_date ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
       max_occupancy: formData?.max_occupancy ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -534,7 +575,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                       <div className="f1wrapofcreqx1">
                         <div className="form_commonblock">
                           <label>
-                            Family Member<b className="color_red">*</b>
+                            Family Member
                           </label>
 
                           <div id="sepcifixspanflex">
@@ -557,6 +598,18 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 formData={formData}
                               />
                             </span>
+                            {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Family Member
+                            </p>
+                          )}
                           </div>
                         </div>
                         <div className="form_commonblock ">
@@ -641,29 +694,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className="form_commonblock">
-                          <label>Supplier</label>
-                          <div id="sepcifixspanflex">
-                            <span id="">
-                              {otherIcons.name_svg}
-                              <CustomDropdown10
-                                ref={dropdownRef1}
-                                label="Select Supplier"
-                                options={vendorList?.data?.user}
-                                value={formData.supplier_id}
-                                onChange={handleChange}
-                                name="supplier_id"
-                                defaultOption="Select Supplier"
-                                setcusData={setcusData1}
-                                cusData={cusData1}
-                                type="vendor"
-                                required
-                              />
-                            </span>
-                          </div>
-
-                         </div> 
-                        <div className="form_commonblock ">
+                      <div className="form_commonblock ">
                           <label>
                             Checkout Date<b className="color_red">*</b>
                           </label>
@@ -710,11 +741,46 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 name="total_nights"
                                 placeholder="Enter Total Days"
                                 value={formData.total_nights}
-                                onChange={(e) => handleChange(e)}
+                                // onChange={(e) => handleChange(e)}
                               />
                             </span>
                           </div>
                         </div>
+                        <div className="form_commonblock">
+                          <label>Supplier<b className="color_red">*</b></label>
+                          <div id="sepcifixspanflex">
+                            <span id="">
+                              {otherIcons.name_svg}
+                              <CustomDropdown10
+                                ref={dropdownRef1}
+                                label="Select Supplier"
+                                options={vendorList?.data?.user}
+                                value={formData.supplier_id}
+                                onChange={handleChange}
+                                name="supplier_id"
+                                defaultOption="Select Supplier"
+                                setcusData={setcusData1}
+                                cusData={cusData1}
+                                type="vendor"
+                                required
+                              />
+                            </span>
+                            {errors?.supplier_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Supplier
+                          </p>
+                        )}
+                          </div>
+
+                         </div> 
+                       
                         <div id="imgurlanddesc" className="calctotalsectionx2">
                           <ImageUpload
                             formData={formData}

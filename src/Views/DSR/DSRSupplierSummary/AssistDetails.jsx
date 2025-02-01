@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
-import Loader02 from "../../../../Components/Loaders/Loader02";
-import { Attachment2 } from "../../../Helper/Attachment";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import Loader02 from "../../../Components/Loaders/Loader02";
+import { Attachment2 } from "../../Helper/Attachment";
+import ShowMastersValue from "../../Helper/ShowMastersValue";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
-const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
+const AssistDetails = ({ serviceData, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
+  const data=serviceData?.service_data ? JSON.parse(serviceData?.service_data):""
+
   const attachments = data?.upload_image || "";
+
   const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
   return (
@@ -21,7 +24,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5>
-                 Airport Name: {data?.airport_name || ""}
+                  Airport Name: {data?.airport_name || ""}
                 </h5>
                 <button
                   className="close-button"
@@ -31,11 +34,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div
-                  id="itemsdetailsrowskl"
-                  className="secondinsidedatax15s"
-              
-                >
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s" >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -62,6 +61,13 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.meeting_type || ""}
                                   </p>
                                 </li>
+                                {/* <li className="pendingfromfrontendx5">
+                                  <span>Entry type</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.entry_type || ""}
+                                  </p>
+                                </li> */}
 
                                 <li>
                                   <span>Airport</span>
@@ -78,7 +84,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li>
-                                  <span>Family Members</span>
+                                  <span>Guest</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.guests
@@ -94,6 +100,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.supplier_name || ""}
                                   </p>
                                 </li>
+                               
                                 <li>
                                   <span>Assist Price</span>
                                   <h1>:</h1>
@@ -104,26 +111,26 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
-                                 
+                                 <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                  
                                 </li>
-                                <li>
+                               <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
                                 </li>
-                               
                               </ul>
                               <ul>
-                              <li>
+                             
+                                <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_tax || ""}</p>
+                                  <p>{data?.supplier_tax || ""}</p>
                                 </li>
-                                <li>
+                                 <li>
                                   <span>Supplier Price</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_total || ""}</p>
+                                  <p>{data?.supplier_total || ""}</p>
                                 </li>
                                 <li>
                                   <span>Customer Price</span>
@@ -165,4 +172,4 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
     </>
   );
 };
-export default PassengerAssistDetails;
+export default AssistDetails;

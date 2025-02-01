@@ -251,6 +251,7 @@ const DSRDetails = () => {
               onClick={() => {
                 handleChangeDSRStatus(DSRData);
               }}
+              // className="mainx1"
               // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
               <p
@@ -272,6 +273,12 @@ const DSRDetails = () => {
                   : "Invoiced"}
               </p>
             </div>
+            <div className="mainx1">
+                <p onClick={()=>Navigate(`/dashboard/dsr-supplier-summary?id=${DSRData?.id}`)} style={{ cursor: "pointer" }}>
+                  Supplier Summary
+                </p>
+              </div>
+            
             {DSRData?.is_invoiced == "1" && (
               <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>

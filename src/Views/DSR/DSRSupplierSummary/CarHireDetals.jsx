@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
-import Loader02 from "../../../../Components/Loaders/Loader02";
-import { Attachment2 } from "../../../Helper/Attachment";
-import ShowMastersValue from "../../../Helper/ShowMastersValue";
-import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import Loader02 from "../../../Components/Loaders/Loader02";
+import { Attachment2 } from "../../Helper/Attachment";
+import { ShowUserMastersValue } from "../../Helper/ShowMastersValue";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
-const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
+const CarHireDetails = ({ serviceData, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
+  const data=serviceData?.service_data ? JSON.parse(serviceData?.service_data):""
+
   const attachments = data?.upload_image || "";
   const charge = data?.charges ? JSON.parse(data?.charges) : [];
 
@@ -20,8 +22,11 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5>
-                 Airport Name: {data?.airport_name || ""}
+                <h5> Vehicle Type : {" "}
+                  <ShowUserMastersValue
+                    type="41"
+                    id={data?.vehicle_type_id || ""}
+                  />
                 </h5>
                 <button
                   className="close-button"
@@ -34,7 +39,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                 <div
                   id="itemsdetailsrowskl"
                   className="secondinsidedatax15s"
-              
+                  style={{ height: "400px" }}
                 >
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
@@ -51,42 +56,49 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                               }}
                             >
                               {otherIcons?.information_svg}
-                              Assist Details
+                              Car Hire Details
                             </div>
                             <div style={{ display: "flex", gap: "20px" }}>
                               <ul>
                                 <li className="pendingfromfrontendx5">
-                                  <span>Meeting Type</span>
+                                  <span>Vechile Type</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.meeting_type || ""}
+                                    <ShowUserMastersValue
+                                      type="41"
+                                      id={data?.vehicle_type_id || ""}
+                                    />
+                                  </p>
+                                </li>
+                                {/* <li className="pendingfromfrontendx5">
+                                <span>Entry type</span>
+                                <h1>:</h1>
+                                <p style={{width:"212px"}}>{data?.entry_type || ""}</p>
+                              </li> */}
+
+                                <li>
+                                  <span>Days</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.days || ""}
+                                  </p>
+                                </li>
+                                <li>
+                                  <span> Pickup Location</span>
+                                  <h1>:</h1>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.pickup_location || ""}
                                   </p>
                                 </li>
 
-                                <li>
-                                  <span>Airport</span>
+                                <li className="pendingfrombackendx5">
+                                  <span>Dropdown Location</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                    {data?.airport_name || ""}
+                                    {data?.drop_location || ""}
                                   </p>
                                 </li>
-                                <li>
-                                  <span> No Of Persons</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.no_of_persons || ""}
-                                  </p>
-                                </li>
-                                <li>
-                                  <span>Family Members</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.guests
-                                      ?.map((item) => item?.display_name)
-                                      .filter(Boolean)
-                                      .join(", ")}
-                                  </p>
-                                </li>
+
                                 <li>
                                   <span>Supplier Name</span>
                                   <h1>:</h1>
@@ -94,8 +106,8 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.supplier_name || ""}
                                   </p>
                                 </li>
-                                <li>
-                                  <span>Assist Price</span>
+                                <li className="pendingfromfrontendx5">
+                                  <span>Carhire Price</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {data?.gross_amount || ""}
@@ -104,26 +116,28 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
+                                  <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
                                  
                                 </li>
+
                                 <li>
                                   <span>Customer tax</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.tax_amount || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.tax_amount || ""}
+                                  </p>
                                 </li>
-                               
                               </ul>
                               <ul>
-                              <li>
+                                <li>
                                   <span>Supplier Tax</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_tax || ""}</p>
+                                  <p>{data?.supplier_tax || ""}</p>
                                 </li>
                                 <li>
                                   <span>Supplier Price</span>
                                   <h1>:</h1>
-                                  <p >{data?.supplier_total || ""}</p>
+                                  <p>{data?.supplier_total || ""}</p>
                                 </li>
                                 <li>
                                   <span>Customer Price</span>
@@ -135,6 +149,7 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
                                   <h1>:</h1>
                                   <p>{data?.retain || ""}</p>
                                 </li>
+
                                 <li>
                                   <span>Notes</span>
                                   <h1>:</h1>
@@ -165,4 +180,4 @@ const PassengerAssistDetails = ({ data, showPopup, setShowPopup }) => {
     </>
   );
 };
-export default PassengerAssistDetails;
+export default CarHireDetails;

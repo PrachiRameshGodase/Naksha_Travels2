@@ -164,6 +164,8 @@ import DebitNoteDetailsReport from "../../Views/Reports/ReportsData/DebitNoteRep
 import ExpenseDetailReport from "../../Views/Reports/ReportsData/ExportReport/ExpenseDetailReport";
 import GerneralLedgerReport from "../../Views/Reports/ReportsData/AccountantsReport/GerneralLedgerReport";
 import CurrencyList from "../../Views/ManageCurrency/CurrencyList";
+import SupplierSummary from "../../Views/DSR/DSRSupplierSummary/SupplierSummary";
+import MICESupplierSummary from "../../Views/MICE/SupplierSummary/SupplierSummary";
 // import CurrencyList from "../../Views/ManageCurrency/CurrencyList";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(240); // Initial width
@@ -401,6 +403,8 @@ const Sidebar = ({ loggedInUserData }) => {
         return <PassengerFlightDetails />
       case "dsr-visa-details":
         return <PassengerVisaDetails />
+      case "dsr-supplier-summary":
+        return <SupplierSummary/>
 
       //mice
       case "create-mice":
@@ -409,6 +413,8 @@ const Sidebar = ({ loggedInUserData }) => {
         return <MICES />;
       case "mice-details":
         return <MICEDetails />;
+      case "mice-supplier-summary":
+      return <MICESupplierSummary/>
       //mice-services
       case "mice-serviceslist":
         return <FamilyServicesList />

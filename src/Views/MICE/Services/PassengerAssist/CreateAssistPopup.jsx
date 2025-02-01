@@ -23,6 +23,7 @@ import CustomDropdown31, { CustomDropdown031 } from "../../../../Components/Cust
 import toast from "react-hot-toast";
 import { CustomDropdown0029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
 import { assistListAction } from "../../../../Redux/Actions/assistAction";
+import Swal from "sweetalert2";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -75,7 +76,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     no_of_persons: false,
     guest_ids: false,
     gross_amount: false,
-
+    supplier_id:false,
     // retain: false,
     total_amount: false,
   });
@@ -175,6 +176,9 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     // Clear errors for the field
     setErrors((prevData) => ({
       ...prevData,
+      ...(name === "no_of_persons" && {
+        gross_amount:false,
+      }),
       [name]: false,
     }));
   };
@@ -203,6 +207,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       airport_name: formData?.airport_name ? false : true,
       no_of_persons: formData?.no_of_persons ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
 
       // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
@@ -392,7 +397,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     <div className="f1wrapofcreqx1">
                     <div className="form_commonblock">
                         <label>
-                          Family Member<b className="color_red">*</b>
+                          Family Member
                         </label>
 
                         <div id="sepcifixspanflex">
@@ -430,7 +435,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="form_commonblock">
-                        <label>Supplier</label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -449,6 +454,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Supplier
+                          </p>
+                        )}
                         </div>
 
                       </div>

@@ -92,6 +92,7 @@ const CreateInsurancePopup = ({
     tax_amount: false,
     tax_percent: false,
     company_name:false,
+    supplier_id:false,
     total_amount: false,
   });
 
@@ -131,6 +132,8 @@ const CreateInsurancePopup = ({
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
+      supplier_id: formData?.supplier_id ? false : true,
+
       company_name: formData?.company_name ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
@@ -338,9 +341,21 @@ const CreateInsurancePopup = ({
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
+                            minDate={
+                              new Date(new Date().getFullYear() - 50, 0, 1)
+                            } // Minimum date: 50 years ago
                             maxDate={
-                              formData?.expiry_date ? new Date(formData.expiry_date) : null
+                              formData?.expiry_date
+                                ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
+                                : new Date(
+                                    new Date().getFullYear() + 50,
+                                    11,
+                                    31
+                                  ) // Default max date: 50 years in the future
                             }
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                       </div>
@@ -365,8 +380,16 @@ const CreateInsurancePopup = ({
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
                             minDate={
-                              formData?.issue_date ? new Date(formData.issue_date) : null
+                              formData?.issue_date
+                                ? new Date(formData.issue_date) // Min date: Issue Date (if set)
+                                : new Date(new Date().getFullYear() - 50, 0, 1) // Default min date: 50 years ago
                             }
+                            maxDate={
+                              new Date(new Date().getFullYear() + 50, 11, 31)
+                            } // Max date: 50 years in the future
+                            showYearDropdown // Enables the year dropdown
+                            scrollableYearDropdown // Allows scrolling in the year dropdown
+                            yearDropdownItemNumber={101}
                           />
                         </span>
                       </div>
@@ -440,7 +463,7 @@ const CreateInsurancePopup = ({
                     <div className="f1wrapofcreqx1">
                      
                       <div className="form_commonblock">
-                        <label>Supplier</label>
+                        <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -459,6 +482,18 @@ const CreateInsurancePopup = ({
                               required
                             />
                           </span>
+                          {errors?.supplier_id && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                       </div>
