@@ -86,7 +86,7 @@ const CreateAndUpdateItem = () => {
     sub_category_id: "",
     price: "",
     unit: "",
-    tax_rate: "",
+    tax_rate: 0,
     hsn_code: "",
     opening_stock: 0,
     purchase_price: "",
@@ -102,6 +102,8 @@ const CreateAndUpdateItem = () => {
     is_sale: "1",
     custom_fields: [],
   });
+
+  console.log("formdata of items", formData)
 
   useEffect(() => {
     dispatch(accountLists({ fy: localStorage.getItem("FinancialYear") }));
@@ -153,7 +155,7 @@ const CreateAndUpdateItem = () => {
       if (name === "tax_preference" && value !== "") {
         setIsTaxPreferenceFilled(true);
         if (value == "2") {
-          updatedFormData.tax_rate = ""; // Reset tax_rate
+          updatedFormData.tax_rate = 0; // Reset tax_rate
         }
       }
 
@@ -408,7 +410,7 @@ const CreateAndUpdateItem = () => {
         price: item_details?.price,
         unit: item_details?.unit,
         tax_rate: !item_details?.tax_rate
-          ? "0"
+          ? 0
           : parseInt(item_details?.tax_rate, 10).toString(),
         hsn_code: item_details?.hsn_code,
         opening_stock: +item_details?.opening_stock,
@@ -555,11 +557,10 @@ const CreateAndUpdateItem = () => {
                                     <button
                                       type="button"
                                       key={type?.labelid}
-                                      className={`type-button ${
-                                        formData.type == type?.label
-                                          ? "selectedbtn"
-                                          : ""
-                                      }`}
+                                      className={`type-button ${formData.type == type?.label
+                                        ? "selectedbtn"
+                                        : ""
+                                        }`}
                                       onClick={() =>
                                         setFormData({
                                           ...formData,
@@ -649,9 +650,8 @@ const CreateAndUpdateItem = () => {
                           <div className={`form-group`}>
                             <label>Sub Category</label>
                             <span
-                              className={`${
-                                selectedCategory ? "" : "disabledfield"
-                              }`}
+                              className={`${selectedCategory ? "" : "disabledfield"
+                                }`}
                             >
                               {otherIcons.category_svg}
                               <CustomDropdown03
@@ -856,6 +856,7 @@ const CreateAndUpdateItem = () => {
                                       name="tax_rate"
                                       defaultOption="Select Tax Rate"
                                       type="taxRate"
+                                      tax_rate={formData?.tax_rate}
                                     />
                                   </span>
                                 </div>
@@ -899,9 +900,8 @@ const CreateAndUpdateItem = () => {
                         <div className="x1inssalx5">
                           <p className="xkls5663">
                             <IoCheckbox
-                              className={`checkboxeffecgtparent ${
-                                isChecked.checkbox1 ? "checkboxeffects" : ""
-                              }`}
+                              className={`checkboxeffecgtparent ${isChecked.checkbox1 ? "checkboxeffects" : ""
+                                }`}
                               onClick={() => handleCheckboxClick("checkbox1")}
                               tabIndex="0"
                               onKeyDown={(e) => handleKeyDown(e, "checkbox1")}
@@ -909,9 +909,8 @@ const CreateAndUpdateItem = () => {
                             Sales Information
                           </p>
                           <span
-                            className={`newspanx21s ${
-                              isChecked?.checkbox1 && "disabledfield"
-                            }`}
+                            className={`newspanx21s ${isChecked?.checkbox1 && "disabledfield"
+                              }`}
                           >
                             <div className="form-group">
                               <label>Sales Price</label>
@@ -947,9 +946,8 @@ const CreateAndUpdateItem = () => {
                           </span>
 
                           <div
-                            className={`secondtotalsections485s ${
-                              isChecked?.checkbox1 && "disabledfield"
-                            }`}
+                            className={`secondtotalsections485s ${isChecked?.checkbox1 && "disabledfield"
+                              }`}
                           >
                             <div className="textareaofcreatqsiform">
                               <label>Sale Description</label>
@@ -972,9 +970,8 @@ const CreateAndUpdateItem = () => {
                         <div className="x2inssalx5">
                           <p className="xkls5663">
                             <IoCheckbox
-                              className={`checkboxeffecgtparent ${
-                                isChecked.checkbox2 ? "checkboxeffects" : ""
-                              }`}
+                              className={`checkboxeffecgtparent ${isChecked.checkbox2 ? "checkboxeffects" : ""
+                                }`}
                               onClick={() => handleCheckboxClick("checkbox2")}
                               tabIndex="0"
                               onKeyDown={(e) => handleKeyDown(e, "checkbox2")}
@@ -982,9 +979,8 @@ const CreateAndUpdateItem = () => {
                             Purchase Information
                           </p>
                           <span
-                            className={`newspanx21s ${
-                              isChecked?.checkbox2 && "disabledfield"
-                            }`}
+                            className={`newspanx21s ${isChecked?.checkbox2 && "disabledfield"
+                              }`}
                           >
                             <div className="form-group">
                               <label>
@@ -1043,9 +1039,8 @@ const CreateAndUpdateItem = () => {
                           </span>
 
                           <div
-                            className={`secondtotalsections485s ${
-                              isChecked?.checkbox2 && "disabledfield"
-                            }`}
+                            className={`secondtotalsections485s ${isChecked?.checkbox2 && "disabledfield"
+                              }`}
                           >
                             <div className="textareaofcreatqsiform">
                               <label>Purchase Description</label>

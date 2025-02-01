@@ -89,8 +89,8 @@ const CreatePurchaseOrder = () => {
       delivery_address: [
         {
           address_type: "1",
-          address: null,
-          customer_id: null
+          address: "",
+          customer_id: 0
         }
       ],
     },//for set new key's and values
@@ -101,7 +101,7 @@ const CreatePurchaseOrder = () => {
     isDuplicate
   );
 
-  // console.log("formData in purchases", formData?.vendor_note)
+  console.log("formData in purchases", formData?.items)
 
   // set billing/shipping when customer select
   const [addSelectCus, setAddSelectCus] = useState({

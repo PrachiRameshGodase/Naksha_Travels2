@@ -113,7 +113,7 @@ export default CustomDropdown04;
 
 
 export const CustomDropdown004 = forwardRef((props, ref) => {
-  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, item_data, disabled, dropdownStyle } = props;
+  let { options, value, onChange, name, type, defaultOption, extracssclassforscjkls, item_data, disabled, tax_rate } = props;
   const {
     isOpen,
     setIsOpen,
@@ -138,30 +138,31 @@ export const CustomDropdown004 = forwardRef((props, ref) => {
     );
   }
 
-  console.log("item_data", item_data);
+  // console.log("item_data", item_data);
   // console.log("type", name)
 
   return (
     <div
 
 
-      data-tooltip-content={(item_data == "1" && "Unit is not selected") ? "Unit is not changed for service type select" : ((item_data?.type !== "" && name == "type" && (item_data?.item_id || item_data?.is_service == 1))) ? "Selected type is not changed" : disabled ? "According to room it is getting" : ""}
-
+      data-tooltip-content={(item_data == "1" ? "Tax has already been applied to purchases." : "")}
       data-tooltip-id="my-tooltip"
       data-tooltip-place="bottom"
       // show tool tip of related message if any type is selected or unit is service selected in item select module
 
       ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${extracssclassforscjkls}`} onKeyDown={handleKeyDown}>
       <div
-        onClick={(item_data?.type === "Service" && name === "unit_id") || ((item_data?.type !== "" && name == "type" && (item_data?.item_id || item_data?.is_service == 1))) ? undefined : () => setIsOpen(!isOpen)}
+        onClick={item_data == "1" ? undefined : () => setIsOpen(!isOpen)}
 
         //  disable onclick only when open dropdown. where type is selected or unit is service selected in item select module
 
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}
-        style={{ cursor: ((item_data?.type === "Service" && name === "unit_id") || ((item_data?.type !== "" && name === "type" && item_data?.item_id)) || (disabled)) ? "not-allowed" : "pointer" }}>
+        style={{ cursor: item_data == "1" ? "not-allowed" : "pointer" }}>
         {/* show cursor not allowed if any type is selected or unit is service selected in item select module*/}
 
-        {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
+        {tax_rate == 0 || tax_rate === null
+          ? defaultOption
+          : options?.find(account => account?.tax_percentge === value)?.tax_percentge || value}
 
 
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">

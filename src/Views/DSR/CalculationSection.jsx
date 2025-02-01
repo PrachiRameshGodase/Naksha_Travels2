@@ -122,8 +122,8 @@ const CalculationSection = ({
               <p className="edit_changes_021" onClick={openExpenseCharges}>
                 Edit and add charges
                 {openCharges
-                                      ? otherIcons?.down_arrow_svg
-                                      : otherIcons?.up_arrow_svg}
+                  ? otherIcons?.down_arrow_svg
+                  : otherIcons?.up_arrow_svg}
                 {/* <span
                   style={{ marginTop: "10px" }}
                 >
@@ -161,13 +161,13 @@ const CalculationSection = ({
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.customer_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
@@ -192,6 +192,7 @@ const CalculationSection = ({
                       defaultOption="Taxes"
                       extracssclassforscjkls="extracssclassforscjklsitem"
                       className2="item4"
+                      tax_rate={formData?.tax_percent}
                     />
                   </div>
                 </div>
@@ -199,13 +200,13 @@ const CalculationSection = ({
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_tax || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.tax_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
@@ -217,13 +218,13 @@ const CalculationSection = ({
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_total || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.total_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
@@ -312,7 +313,7 @@ export const CalculationSection2 = ({
               placeholder="0.00"
               name="gross_amount"
               className="inputbox"
-              style={{width:"120px"}}
+              style={{ width: "120px" }}
             />
           </div>
         </div>
@@ -336,7 +337,7 @@ export const CalculationSection2 = ({
       <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
-            <label style={{marginTop:"10px"}}>Tax %:</label>
+            <label style={{ marginTop: "10px" }}>Tax %:</label>
             <CustomDropdown13
               options={tax_rate}
               value={formData?.tax_percent || ""}
@@ -346,13 +347,13 @@ export const CalculationSection2 = ({
               defaultOption="Taxes"
               className2="item3"
             />
-             <input
+            <input
               type="text"
               value={formData?.tax_amount || ""}
               placeholder="0.00"
-             name="total_amount"
+              name="total_amount"
               className="inputbox"
-              style={{width:"120px"}}
+              style={{ width: "120px" }}
 
             />
           </div>
@@ -405,7 +406,7 @@ export const CalculationSection2 = ({
               // onChange={(e) => handleChange(e)}
               name="total_amount"
               className="inputbox"
-              style={{width:"120px"}}
+              style={{ width: "120px" }}
             />
           </div>
         </div>

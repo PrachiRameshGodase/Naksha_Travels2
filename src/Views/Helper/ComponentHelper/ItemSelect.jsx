@@ -881,6 +881,7 @@ const ItemSelect = ({
                         defaultOption="Taxes"
                         extracssclassforscjkls="extracssclassforscjklsitem"
                         className2="items"
+                        tax_rate={item?.tax_rate}
                       />
                     ) : (
                       <span style={{ cursor: "not-allowed" }}>

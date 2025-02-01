@@ -173,6 +173,7 @@
     background: $primary;
   }
 }
+
 .active1 {
   background: #c2f3d2;
   color: $btext;
@@ -181,14 +182,18 @@
     background: #c2f3d2;
   }
 }
+
 .inactive1 {
-  background: #f5baba;;
+  background: #f5baba;
+  ;
   color: $btext;
 
   &:before {
-    background: #f5baba;;
+    background: #f5baba;
+    ;
   }
 }
+
 .open,
 .invoiced {
   background: #edf2fe;
@@ -521,6 +526,35 @@
 
   .item_table_width_02 {
     width: 192px;
+  }
+}
+
+// modidy_table_form_grn_item
+#modidy_table_form_grn_item {
+
+  .item_table_width_02 {
+    width: 110px;
+  }
+
+  .table_head_item_02 {
+    text-transform: capitalize;
+  }
+}
+
+// modidy_table_form_grn_charges
+#modidy_table_form_grn_charges {
+  .item_table_width_01 {
+    width: 270px;
+  }
+
+  .table_input_01 {
+    width: 115px;
+  }
+
+  #imgurlanddesc {
+    .form-group {
+      width: inherit;
+    }
   }
 }
 

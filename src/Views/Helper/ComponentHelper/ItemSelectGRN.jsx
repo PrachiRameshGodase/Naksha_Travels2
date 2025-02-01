@@ -300,10 +300,10 @@ export const ItemSelectGRN = ({
     const newItems = [
       ...formData?.charges_type,
       {
-        account_id: null,
-        amount: null,
-        remarks: null,
-        vendor_id: null,
+        account_id: 0,
+        amount: 0,
+        remarks: "",
+        vendor_id: 0,
         upload_image: "",
       },
     ];
@@ -335,18 +335,20 @@ export const ItemSelectGRN = ({
 
         <>
           {/* Table Started */}
-          <table className="itemTable_01">
+          <table className="itemTable_01" id="modidy_table_form_grn_item">
+
             <thead className="table_head_item_02">
               <tr className="table_head_item_02_row">
+
                 <th className="table_column_item item_table_width_01">
                   Item<b className="color_red">*</b>
                 </th>
 
-                <th className="table_column_item item_table_width_02 item_text_end_01">ITEM PRICE {currencySymbol} </th>
+                <th className="table_column_item item_table_width_02 item_text_end_01">({currencySymbol})Item Price  </th>
 
                 {formData?.purchase_order_id &&
                   formData?.purchase_order_id !== 0 ? (
-                  <th className="table_column_item item_text_end_01 item_table_width_02">
+                  <th className="table_column_item item_table_width_02">
                     PO QTY
                   </th>
                 ) : (
@@ -357,7 +359,7 @@ export const ItemSelectGRN = ({
                   GRN QTY
                 </th>
                 <th className="table_column_item item_qty_01 item_table_width_02">
-                  CHARGES WEIGHT
+                  Charges Weight
                 </th>
 
                 <th className="table_column_item item_table_width_02">
@@ -365,21 +367,21 @@ export const ItemSelectGRN = ({
                 </th>
 
                 <th className="table_column_item item_table_width_02">
-                  Tax (%)
+                  Tax(%)
                 </th>
 
                 {formData?.grn_type === "Import" && (
                   <th className="table_column_item item_table_width_03">
-                    CUSTOM DUTY
+                    Custom Duty(%)
                   </th>
                 )}
 
-                <th className="table_column_item item_table_width_02 item_text_end_01">FINAL AMOUNT {currencySymbol} </th>
+                <th className="table_column_item item_table_width_02 item_text_end_01">({currencySymbol})Amount </th>
                 {/* <th>Actions</th> */}
               </tr>
             </thead>
 
-
+            {console.log("formData?.items", formData?.items)}
             <tbody className="table_head_item_02">
               {formData?.items?.map((item, index) => (
                 <React.Fragment key={index}>
@@ -420,7 +422,7 @@ export const ItemSelectGRN = ({
                             handleItemChange(index, "item_remark", e.target.value)
                           }
                           name="item_remark"
-                          placeholder="Discrepency Notes"
+                          placeholder="Enter Discrepency Notes"
                         />
 
                       </div>
@@ -456,6 +458,7 @@ export const ItemSelectGRN = ({
                         className="item_text_end_01"
                       />
 
+                      {/* image upload */}
                       <div id="formofcreateitems " style={{ marginTop: "37px" }}>
                         <form action="">
                           <div id="imgurlanddesc">
@@ -548,9 +551,9 @@ export const ItemSelectGRN = ({
                       />
                     </td>
 
-                    {/* TAX RATE */}
+                    {/* Tax Rate */}
                     <td className="table_column_item table_input_01">
-                      {formData?.is_purchase_order !== 1 ? (
+                      {item?.item_name === "" || item?.tax_rate == 0 ? (//it the selected row have no item name and no tax rate only we given the option of tax rate selection.
                         <CustomDropdown004
                           options={tax_rate}
                           value={item?.tax_rate}
@@ -562,27 +565,14 @@ export const ItemSelectGRN = ({
                           defaultOption="Taxes"
                           extracssclassforscjkls="extracssclassforscjklsitem"
                           item_data={formData?.is_purchase_order}
+                          tax_rate={item?.tax_rate}
                         />
                       ) : (
-                        <div
-                          className="tablsxs1a6x3_rm disabledbtn"
-                          id="ITEM_Selection7"
-                          data-tooltip-content="Tax already applyed"
-                          data-tooltip-id="my-tooltip"
-                          data-tooltip-place="bottom"
-                        >
-                          <CustomDropdown004
-                            options={tax_rate}
-                            value={item?.tax_rate}
-                            onChange={(e) =>
-                              handleItemChange(index, "tax_rate", e.target.value)
-                            }
-                            name="tax_rate"
-                            type="taxRate"
-                            defaultOption="Taxes"
-                            extracssclassforscjkls="extracssclassforscjklsitem"
-                          />
-                        </div>
+                        <span style={{ cursor: "not-allowed" }}>
+                          {item?.tax_name === "Non-Taxable"
+                            ? item?.tax_name
+                            : item?.tax_rate}
+                        </span>
                       )}
                     </td>
 
@@ -613,6 +603,7 @@ export const ItemSelectGRN = ({
                           handleItemChange(index, "final_amount", e.target.value)
                         }
                         readOnly
+                        className="item_text_end_01"
                       />
                     </td>
 
@@ -691,7 +682,7 @@ export const ItemSelectGRN = ({
         <>
 
           {/*Charges Table Started */}
-          <table className="itemTable_01">
+          <table className="itemTable_01" id="modidy_table_form_grn_charges">
             <thead className="table_head_item_02">
               <tr className="table_head_item_02_row">
 
@@ -702,14 +693,14 @@ export const ItemSelectGRN = ({
                   SELECT VENDOR <b className="color_red">*</b>
                 </th>
 
-                <th className="table_column_item item_text_end_01">
+                <th className="table_column_item item_text_end_01 table_input_01">
                   AMOUNT
                 </th>
 
-                <th className="table_column_item item_qty_01">
+                <th className="table_column_item table_input_01" >
                   REMARK
                 </th>
-                <th className="table_column_item ">
+                <th className="table_column_item item_table_width_01">
                   ATTACHAMENT
                 </th>
 
@@ -740,7 +731,7 @@ export const ItemSelectGRN = ({
                         }
                         name="account_id"
                         defaultOption="Select Expense Account"
-                        extracssclassforscjkls={extracssclassforscjkls}
+                        extracssclassforscjkls="extracssclassforscjkls_grn"
                         index={index}
                       />
                     </td>
@@ -763,6 +754,7 @@ export const ItemSelectGRN = ({
                         }
                         name="vendor_id"
                         defaultOption="Select Vendor Name"
+                        sd154w78s877="extracssclassforscjkls_grn"
                         setcusData={setcusData}
                         type="vendor"
                         required
@@ -770,7 +762,7 @@ export const ItemSelectGRN = ({
                     </td>
 
                     {/* Amount */}
-                    <td className="table_column_item table_input_01">
+                    <td className="table_column_item table_input_01 item_text_end_01">
 
                       <NumericInput
                         value={item?.amount}
@@ -792,6 +784,8 @@ export const ItemSelectGRN = ({
                             });
                           }
                         }}
+
+                        className="item_text_end_01"
                       />
                     </td>
 
@@ -814,22 +808,22 @@ export const ItemSelectGRN = ({
                     {/* ATTACHAMENT */}
                     <td className="table_column_item item_table_text_transform">
 
-                      <div id="formofcreateitems " style={{ marginTop: "37px" }}>
-                        <form action="">
-                          <div id="imgurlanddesc">
-                            <ImageUploadGRN
-                              formData={formData}
-                              setFormData={setFormData}
-                              setFreezLoadingImg={setFreezLoadingImg}
-                              imgLoader={imgLoader}
-                              setImgeLoader={setImgeLoader}
-                              component="purchase"
-                              type="grm_charge"
-                              index={index}
-                            />
-                          </div>
-                        </form>
-                      </div>
+                      {/* <div id="formofcreateitems " style={{ marginTop: "37px" }}> */}
+                      <form action="">
+                        <div id="imgurlanddesc">
+                          <ImageUploadGRN
+                            formData={formData}
+                            setFormData={setFormData}
+                            setFreezLoadingImg={setFreezLoadingImg}
+                            imgLoader={imgLoader}
+                            setImgeLoader={setImgeLoader}
+                            component="purchase"
+                            type="grm_charge"
+                            index={index}
+                          />
+                        </div>
+                      </form>
+                      {/* </div> */}
                     </td>
 
 
@@ -842,10 +836,10 @@ export const ItemSelectGRN = ({
                           <button
                             className="refresh_remove_button_item"
                             type="button"
-                            onClick={() => handleItemRemove(index)}
+                            onClick={() => handleChargeRemove(index)}
                             onKeyDown={(event) => {
                               if (event.key === "Enter") {
-                                handleItemRemove(index);
+                                handleChargeRemove(index);
                               }
                             }}
                           >

@@ -166,6 +166,7 @@ import {
 } from "./helpReducers";
 import {
   isIdEqualReducer,
+  manageState,
   productTypeReducer,
 } from "./ManageStateReducer/manageStateReducers";
 import { createMasterReducer, listMasterReducer } from "./masterReducers";
@@ -267,6 +268,9 @@ import { createPassengerMOtherReducer, passengerMOtherDeleteReducer } from "./pa
 import { createUserMasterReducer, listUserMasterReducer, userMasterDeleteReducer } from "./userMasterReducers";
 import { currencyRateCreateReducer, currencyRateListReducer } from "./manageCurrencyReducers";
 const reducer = combineReducers({
+  // manage state
+  manageState,
+
   addItemsReducer,
 
   //orgnization 
@@ -467,7 +471,7 @@ const reducer = combineReducers({
   debitNoteDelete: debitNoteDeleteReducer,
   debitNoteStatus: debitNoteStatusReducer,
 
-  airPort:airportDataReducer,
+  airPort: airportDataReducer,
   countries: countriesDataReducer,
   states: stateDataReducer,
   cities: citiesDataReducer,
@@ -576,6 +580,8 @@ const reducer = combineReducers({
   currencyRateList: currencyRateListReducer,
   currencyReateCreate: currencyRateCreateReducer,
   getCurrency: getCurrencyReducer,
+
+
 
 });
 

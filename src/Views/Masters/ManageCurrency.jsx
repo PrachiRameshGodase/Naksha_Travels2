@@ -9,6 +9,7 @@ import { ManageCurrencyTable } from '../Common/InsideSubModulesCommon/ItemDetail
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import { SubmitButton2 } from '../Common/Pagination/SubmitButton';
+import { formatDate, todayDate } from '../Helper/DateFormat';
 
 const ManageCurrency = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const ManageCurrency = () => {
         : getCurrency?.data?.currency;
 
     // Set initial selectedDate from URL param or default to today
-    const [selectedDate, setSelectedDate] = useState(() => (dateParam ? new Date(dateParam) : new Date()));
+    const [selectedDate, setSelectedDate] = useState(() => (dateParam ? dateParam : todayDate()));
 
     const [formData, setFormData] = useState([]);
 
@@ -45,7 +46,7 @@ const ManageCurrency = () => {
                     code: val.code,
                     country: val.country,
                     symbol: val.symbol,
-                    date: selectedDate, // Always use selectedDate
+                    date: formatDate(selectedDate), // Always use selectedDate
                     current_rate: 0,
                     exchange_rate: 0
                 }));
@@ -53,6 +54,7 @@ const ManageCurrency = () => {
         }
     }, [allCurrency]); // Runs when currencies are updated
 
+    console.log("formdtada ofd currency", formData)
     // Effect to update date inside formData when selectedDate changes
     useEffect(() => {
         setFormData(prevFormData => prevFormData.map(item => ({
@@ -103,7 +105,7 @@ const ManageCurrency = () => {
                                         <span>
                                             <DatePicker
                                                 selected={selectedDate}
-                                                onChange={(date) => setSelectedDate(date)}  // Updates selectedDate state
+                                                onChange={(date) => setSelectedDate(formatDate(date))}  // Updates selectedDate state
                                                 name="date"
                                                 dateFormat="yyyy-MM-dd"
                                                 autoComplete="off"

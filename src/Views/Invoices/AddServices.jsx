@@ -608,6 +608,7 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                                                     type="taxRate"
                                                     defaultOption="Taxes"
                                                     className2="items"
+                                                    tax_rate={item?.tax_rate}
                                                 />
                                             </div>
                                         ) : (

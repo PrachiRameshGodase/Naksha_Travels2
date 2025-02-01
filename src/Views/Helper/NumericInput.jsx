@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NumericInput = ({ value, onChange, name, placeholder,disabled, ...rest }) => {
+const NumericInput = ({ value, onChange, name, placeholder, disabled, ...rest }) => {
     return (
         <input
             autoComplete="off"
@@ -23,7 +23,7 @@ const NumericInput = ({ value, onChange, name, placeholder,disabled, ...rest }) 
                 }
             }}
             {...rest}
-            style={{ width: "100%", cursor:disabled? "not-allowed" :""}}
+            style={{ width: "100%", cursor: disabled ? "not-allowed" : "" }}
         />
 
 

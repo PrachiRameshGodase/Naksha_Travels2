@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useFetchOnMount from "../../Views/Helper/ComponentHelper/useFetchOnMount";
 import { warehouseViewAction } from "../../Redux/Actions/warehouseActions";
 import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
-const externalUrl = import.meta.env.VITE_EXTERNAL_URL;
+const externalUrlWithHome = import.meta.env.VITE_EXTERNAL_URL_Home;
 
 const Topbar = ({ loggedInUserData }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -120,14 +120,6 @@ const Topbar = ({ loggedInUserData }) => {
 
   const clearLocalStoragex1 = () => {
     localStorage.clear();
-    // const url = `${externalUrl}/home_nakshatravels?isLogout=1`;
-    // window.location.href = url;
-
-    // this is use for logout to the domain of erp.nakshatravels when it is redirect..
-    document.cookie = "UserData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.erp.nakshatravels.com;";
-    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.erp.nakshatravels.com;";
-    // alert("Logged out from localhost:5174 and localhost:5175");
-
   };
 
   //fetch all orgnization...
@@ -513,7 +505,7 @@ const Topbar = ({ loggedInUserData }) => {
                   <img src={accountmanageIco} alt="" />
                   Manage Your Account</Link> */}
 
-                <Link className="insidclinks65w6x6w" to={`${externalUrl}/home_nakshatravels`}>
+                <Link className="insidclinks65w6x6w" to={`${externalUrlWithHome}`}>
                   <img src={appsIcon} alt="" />
                   All Apps</Link>
 

@@ -3276,6 +3276,31 @@
   }
 }
 
+.extracssclassforscjkls_grn {
+  min-width: 20px !important;
+  width: 250px;
+
+
+  .dropdown-selected {
+    background: $primary12;
+    padding-left: 10px !important;
+    padding-right: 30px !important;
+    // width: 100%;
+    // width: inherit;
+    // width: 200px;
+    text-transform: capitalize;
+    border-radius: 5px;
+
+    svg {
+      right: 10px !important;
+    }
+
+    &:hover {
+      background: $primary06;
+    }
+  }
+}
+
 .extracssclassforscjklsSalutation {
   min-width: 189px !important;
 

@@ -121,9 +121,9 @@ const CalculationSection = ({
             <label>
               <p className="edit_changes_021" onClick={openExpenseCharges}>
                 Edit and add charges
-                 {openCharges
-                                                      ? otherIcons?.down_arrow_svg
-                                                      : otherIcons?.up_arrow_svg}
+                {openCharges
+                  ? otherIcons?.down_arrow_svg
+                  : otherIcons?.up_arrow_svg}
                 {/* <span
                   style={{ marginTop: "10px" }}
                 >
@@ -154,24 +154,24 @@ const CalculationSection = ({
               </div>
 
               <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Amount</div>
+                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>Amount</div>
 
                 <div className="tablsxs1a2x3" >
                   <NumericInput
                     value={formData?.supplier_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.customer_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
               <div className="tablerowtopsxs1">
                 <div className="tablsxs1a1x3" style={{ display: "flex" }}>
-                  <span style={{fontSize:"12px", display:"flex", alignItems:"center"}}>Tax(%)</span>
+                  <span style={{ fontSize: "12px", display: "flex", alignItems: "center" }}>Tax(%)</span>
                   <div style={{ marginLeft: "20px", fontSize: "12px" }}>
                     <CustomDropdown13
                       options={tax_rate}
@@ -182,6 +182,7 @@ const CalculationSection = ({
                       defaultOption="Taxes"
                       extracssclassforscjkls="extracssclassforscjklsitem"
                       className2="item4"
+                      tax_rate={formData?.tax_percent}
                     />
                   </div>
                 </div>
@@ -189,29 +190,29 @@ const CalculationSection = ({
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_tax || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.tax_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
               <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{fontSize:"12px"}}>Final Amount</div>
+                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>Final Amount</div>
 
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.supplier_total || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
                     value={formData?.total_amount || 0}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   />
                 </div>
               </div>
@@ -334,6 +335,7 @@ export const CalculationSection2 = ({
               type="taxRate"
               defaultOption="Taxes"
               className2="item3"
+              tax_rate={formData?.tax_amount}
             />
           </div>
         </div>

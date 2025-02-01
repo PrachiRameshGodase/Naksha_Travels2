@@ -23,6 +23,7 @@ import CustomDropdown29, {
 } from "../../../../Components/CustomDropdown/CustomDropdown29";
 import { visaListAction } from "../../../../Redux/Actions/visaAction";
 import toast from "react-hot-toast";
+import { manageStateAction } from "../../../../Redux/Actions/ManageStateActions/manageStateData";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -95,8 +96,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     total_amount: false,
   });
 
-  const [storeEntry, setStoreEntry] = useState([]);
-  const [storeVisaType, setStoreVisaType] = useState([]);
+  const { visa_entry_type, visa_type } = useSelector((state) => state.manageState);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,7 +110,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
         dispatch(
           visaListAction({ country_id: selectedVisaData?.country_id })
         ).then((res) => {
-          setStoreEntry(res);
+          dispatch(manageStateAction("visa_entry_type", res))
         });
         // Reset dependent fields when country changes
         setFormData((prev) => ({
@@ -139,7 +139,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
             visa_entry_type: selectedVisaData?.visa_entry_type,
           })
         ).then((res) => {
-          setStoreVisaType(res);
+          dispatch(manageStateAction("visa_type", res))
         });
         setFormData((prev) => ({
           ...prev,
@@ -383,9 +383,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.country_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.country_id
                             ? ""
@@ -405,7 +404,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                             ref={dropdownRef1}
                             label="Select Visa Entry Type"
-                            options={storeEntry}
+                            options={visa_entry_type}
                             value={formData.visa_entry_type}
                             onChange={handleChange}
                             name="visa_entry_type"
@@ -430,9 +429,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_entry_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_entry_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_entry_type
                             ? ""
@@ -451,7 +449,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             autoComplete="off"
                             ref={dropdownRef1}
                             label="Select Visa Type"
-                            options={storeVisaType}
+                            options={visa_type}
                             value={formData?.visa_type_id}
                             onChange={handleChange}
                             name="visa_type_id"
@@ -476,9 +474,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_type_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_type_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_type_id
                             ? ""

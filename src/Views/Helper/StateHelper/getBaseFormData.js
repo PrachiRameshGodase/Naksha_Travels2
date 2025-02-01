@@ -53,7 +53,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
 
         charges: [
             {
-                account_id: null,
+                account_id: 0,
                 amount: 0
             }
         ],

@@ -607,6 +607,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                                     onChange={handleChange}
                                                                     name="tax_rate"
                                                                     defaultOption="Select Tax Preference"
+                                                                    tax_rate={formData?.tax_rate}
                                                                 />
                                                             </span>
 

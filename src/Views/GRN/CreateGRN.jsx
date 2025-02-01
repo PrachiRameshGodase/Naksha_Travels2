@@ -104,30 +104,30 @@ const CreateGRN = () => {
       items: [
         {
           id: 0,
-          item_id: null,
-          item_name: null,
+          item_id: 0,
+          item_name: "",
           po_qty: null,
           gr_qty: 0,
-          rate: null,
-          charges_weight: null,
-          custom_duty: null,
+          rate: 0,
+          charges_weight: 0,
+          custom_duty: 0,
           gross_amount: 0,
-          final_amount: null,
-          tax_rate: null,
+          final_amount: 0,
+          tax_rate: 0,
           tax_amount: 0,
-          unit_id: null,
-          discount: null,
+          unit_id: 0,
+          discount: 0,
           discount_type: null,
-          item_remark: null, // Discrepency Notes
+          item_remark: "", // Discrepency Notes
           upload_image: [], // Attachments
         },
       ],
       charges_type: [
         {
-          account_id: null,
-          amount: null,
-          remarks: null,
-          vendor_id: null,
+          account_id: 0,
+          amount: 0,
+          remarks: "",
+          vendor_id: 0,
           upload_image: [], // Attachment
         },
       ],

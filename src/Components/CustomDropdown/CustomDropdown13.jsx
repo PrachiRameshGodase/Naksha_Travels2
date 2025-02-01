@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
-const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, types }) => {
+const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, types, tax_rate }) => {
 
   const {
     isOpen,
@@ -22,7 +22,11 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
     <div ref={dropdownRef} className={`customdropdownx12s86 ${extracssclassforscjkls}`} tabIndex="0" onKeyDown={handleKeyDown} style={className2 === "item3" ? { minWidth: "120px", background: "white" } : {}}
     >
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : className2 === "item4" ? { minWidth: "88px", background: "white", height: "29px" } : className2 === "item3" ? { marginRight: "8px" } : {}}>
-        {value ? options?.find(account => account?.tax_percentge == value)?.tax_percentge : defaultOption}
+
+        {tax_rate == 0 || tax_rate === null
+          ? defaultOption
+          : options?.find(account => account?.tax_percentge === value)?.tax_percentge || value}
+
 
         {/* {console.log("options?.find(account => account?.tax_percentge == value)?.tax_percentge", options?.find(account => account?.tax_percentge == value)?.tax_percentge)} */}
 

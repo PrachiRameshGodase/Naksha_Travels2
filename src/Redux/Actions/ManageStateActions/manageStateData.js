@@ -11,3 +11,10 @@ export const isStateIdEqualAction = (isId) => {
         payload: isId,
     };
 };
+
+export const manageStateAction = (state, status) => {
+    return {
+        type: "STATE_DATA",
+        payload: { state, status }, // Specify which popup and its new status
+    };
+};
