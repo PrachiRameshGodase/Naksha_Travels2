@@ -44,6 +44,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+
 
   const [formData, setFormData] = useState({
     service_name: "Assist",
@@ -337,8 +339,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="no_of_persons"
                               defaultOption="Select Persons"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
+                              setcusData={setcusData4}
+                              cusData={cusData4}
                               type="noOfPersons"
                               disabled={!formData?.meeting_type}
                             />

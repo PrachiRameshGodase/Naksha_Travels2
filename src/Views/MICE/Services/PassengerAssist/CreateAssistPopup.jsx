@@ -41,6 +41,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+
 
   const [formData, setFormData] = useState({
     mice_id: data?.id,
@@ -441,8 +443,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
+                              setcusData={setcusData4}
+                              cusData={cusData4}
                               type="vendor"
                               required
                             />

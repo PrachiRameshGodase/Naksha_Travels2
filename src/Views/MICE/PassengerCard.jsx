@@ -110,13 +110,13 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
   };
 
   return (
-    <table className="employee-table">
+    <table className="employee-table" style={{width:"100%"}}>
       <thead>
         <tr>
           <th>No.</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Mobile</th>
+          {/* <th>Mobile</th> */}
           <th style={{ width: "120px" }}>Services</th>
           <th style={{ textAlign: "right" }}>Service Total</th>
           <th>Action</th>
@@ -130,7 +130,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
-              <td>{passenger?.passenger?.mobile_no || ""}</td>
+              {/* <td>{passenger?.passenger?.mobile_no || ""}</td> */}
               <td>
                 <CustomDropdown28
                   label="Services"

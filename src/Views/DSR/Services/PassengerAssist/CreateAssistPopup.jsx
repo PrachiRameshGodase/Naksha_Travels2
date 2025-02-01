@@ -38,6 +38,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+  const [cusData4, setcusData4] = useState(null);
+  
 
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
@@ -99,6 +101,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           meeting_type: "",
           no_of_persons: "",
           gross_amount: "",
+          supplier_id:"",
         }));
       }
     } else if (name === "meeting_type") {
@@ -127,6 +130,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           meeting_type: value,
           no_of_persons: "",
           gross_amount: "",
+          supplier_id:""
         }));
       }
     }  else if (name === "no_of_persons") {
@@ -181,8 +185,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       airport_name: formData?.airport_name ? false : true,
       no_of_persons: formData?.no_of_persons ? false : true,
       gross_amount: formData?.gross_amount ? false : true,
-
-      // retain: formData?.retain ? false : true,
       total_amount: formData?.total_amount ? false : true,
     };
     setErrors(newErrors);
@@ -372,8 +374,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
+                              setcusData={setcusData4}
+                              cusData={cusData4}
                               type="vendor"
                               required
                             />

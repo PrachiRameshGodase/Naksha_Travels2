@@ -142,6 +142,7 @@ const DSRS = () => {
 
   const handleNewDsr = (event) => {
     event.preventDefault(); // Prevent the default link behavior
+    localStorage.setItem("dsrId", "");
     navigate("/dashboard/create-dsr");
     dispatch(clearDsrState());
   };

@@ -163,9 +163,12 @@ const MICES = () => {
   };
   //logic for checkBox...
 
-  const handleNewMICE = () => {
+  const handleNewMICE = (event) => {
+    event.preventDefault();
+    localStorage.setItem("miceId", "")
     navigate("/dashboard/create-mice");
     dispatch(clearMiceState());
+    
   };
 
   return (

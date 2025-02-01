@@ -140,9 +140,12 @@ const CreateMICE = () => {
 
         dispatch(MICECreateAction(sendData))
           .then((response) => {
-            console.log("response?.data?.data", response?.data?.data);
-            setIsData(response?.data?.data);
-            setDSRDisabled(true);
+            if (response?.data?.data?.id) {
+              // Store the ID in localStorage
+              localStorage.setItem("miceId", response.data.data.id);
+              setIsData(response.data.data);
+              setDSRDisabled(true);
+            }
           })
           .catch((err) => {
             console.error("Error creating MICE:", err);
@@ -269,6 +272,16 @@ useEffect(() => {
         prevCurrency.current = formData?.currency;
     }
 }, [formData?.currency]); // Dependency on formData.currency
+
+useEffect(() => {
+  const miceId = localStorage.getItem("miceId");
+  if (miceId) {
+    const refreshData = {
+      mice_id: miceId,
+    };
+    dispatch(MICEDetailsAction(refreshData));
+  }
+}, [dispatch]);
   return (
     <div>
       <>

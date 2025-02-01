@@ -59,6 +59,7 @@ const CreateDSR = () => {
   });
 
   const [isData, setIsData] = useState();
+  console.log("isData",isData)
   const [passengerData, setPassengerData] = useState({
     dsr_id: itemId,
     customer_id: "",
@@ -134,9 +135,12 @@ const CreateDSR = () => {
         dispatch(DSRCreateAction(sendData, showAllSequenceId))
           .then(
             (response) => {
-              // if(response?.success===true){
-              setIsData(response?.data?.data);
-              setDSRDisabled(true);
+              if (response?.data?.data?.id) {
+                // Store the ID in localStorage
+                localStorage.setItem("dsrId", response.data.data.id);
+                setIsData(response.data.data);
+                setDSRDisabled(true);
+              }
             }
             // }
           )
@@ -181,6 +185,7 @@ const CreateDSR = () => {
       }
     }
   };
+  
   useEffect(() => {
     if (DSRData?.id || isData?.id) {
       const sendData = {
@@ -253,6 +258,16 @@ useEffect(() => {
         prevCurrency.current = formData?.currency;
     }
 }, [formData?.currency]); // Dependency on formData.currency
+
+useEffect(() => {
+  const dsrId = localStorage.getItem("dsrId");
+  if (dsrId) {
+    const refreshData = {
+      dsr_id: dsrId,
+    };
+    dispatch(DSRDetailsAction(refreshData));
+  }
+}, [dispatch]);
   return (
     <div>
       <>

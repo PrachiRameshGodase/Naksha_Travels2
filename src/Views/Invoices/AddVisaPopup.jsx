@@ -50,6 +50,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
+  const [cusData5, setcusData5] = useState(null);
+
  
    const [formData, setFormData] = useState({
     service_name: "Visa",
@@ -762,8 +764,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
+                              setcusData={setcusData5}
+                              cusData={cusData5}
                               type="vendor"
                               required
                             />

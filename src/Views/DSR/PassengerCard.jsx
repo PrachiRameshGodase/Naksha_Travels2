@@ -15,181 +15,6 @@ import CreateOtherPopup from "./Services/PassengerOthers/CreateOtherPopup";
 import CreateVisaPopup from "./Services/PassengerVisa/CreateVisaPopup";
 import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
-
-//   const navigate = useNavigate();
-//    const currencySymbol = getCurrencySymbol()
-//   const [activePopup, setActivePopup] = useState(null);
-//   const [formData, setFormData] = useState({
-//     service: "",
-//   });
-
-//   const servicesList = ShowUserMasterData("48");
-  
-
-//   const handleServiceChange = (e, passengerId) => {
-//     const { value } = e.target;
-//     console.log("value", value)
-//     setFormData((prev) => ({
-//       ...prev,
-//       service: value,
-//     }));
-
-//     setActivePopup({ popupType: value, passengerId });
-//   };
-
-//   const renderPopup = () => {
-//     if (!activePopup) return null;
-
-//     const { popupType, passengerId } = activePopup;
-
-//     switch (popupType) {
-//       case "Hotels":
-//         return (
-//           <CreateHotelPopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Flights":
-//         return (
-//           <CreateFlightPopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Visa":
-//         return (
-//           <CreateVisaPopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Insurance":
-//         return (
-//           <CreateInsurancePopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Car Hire":
-//         return (
-//           <CreateCarHirePopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Assist":
-//         return (
-//           <CreateAssistPopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       case "Others":
-//         return (
-//           <CreateOtherPopup
-//             showModal={true}
-//             setShowModal={setActivePopup}
-//             data={passengers}
-//             passengerId={passengerId}
-//           />
-//         );
-//       default:
-//         return null;
-//     }
-//   };
-
-//   return (
-//     <table className="employee-table">
-//       <thead>
-//         <tr>
-//           <th>No.</th>
-//           <th>Name</th>
-//           <th>Email</th>
-//           <th>Mobile</th>
-//           <th style={{ width: "120px" }}>Services</th>
-//           <th style={{textAlign:"right"}}>Service Total</th>
-//           <th>Action</th>
-//         </tr>
-//       </thead>
-
-//       <tbody>
-//         {passengers?.passengers?.length > 0 ? (
-//           passengers?.passengers?.map((passenger, index) => (
-//             <tr key={index}>
-//               <td>{index + 1}</td>
-//               <td>{passenger?.passenger?.display_name || ""}</td>
-//               <td>{passenger?.passenger?.email || ""}</td>
-//               <td>{passenger?.passenger?.mobile_no || ""}</td>
-//               <td>
-//                 <CustomDropdown28
-//                   label="Services"
-//                   options={servicesList}
-//                   value={formData?.service ||""}
-//                   onChange={(e) => handleServiceChange(e, passenger?.id)}
-//                   name="service"
-//                   defaultOption="Select Service"
-//                   extracssclassforscjkls="extracssclassforscjklsitem"
-//                   type="service"
-//                   disabled={disabled}
-//                 />
-//               </td>
-//               <td style={{textAlign:"right"}}>({currencySymbol}) {passenger?.service_total || ""}</td>
-//               <td>
-//                 <span
-//                   data-tooltip-content={disabled ? "Not able to click It is invoiced" : ""}
-//                   data-tooltip-id="my-tooltip"
-//                   data-tooltip-place="bottom"
-//                   style={{
-//                     cursor: disabled ? "not-allowed" : "pointer",
-//                     color: "red",
-//                   }}
-//                   onClick={!disabled ? () => onDelete(passenger?.id) : ""}
-//                 >
-//                   {otherIcons.delete_svg}
-//                 </span>
-//                 <span
-//                   style={{
-//                     cursor: "pointer",
-//                     color: "gray",
-//                     fontSize: "20px",
-//                     marginLeft: "10px",
-//                   }}
-//                   onClick={() => {
-//                     navigate(`/dashboard/serviceslist?id=${passenger?.id}`);
-//                   }}
-//                 >
-//                   <BsEye />
-//                 </span>
-//               </td>
-//             </tr>
-//           ))
-//         ) : (
-//           <tr>
-//             <td colSpan="8">
-//               <NoDataFound />
-//             </td>
-//           </tr>
-//         )}
-//       </tbody>
-//       {renderPopup()}
-//     </table>
-//   );
-// };
-
-// export default PassengerCard;
 const PassengerCard = ({ passengers, onDelete, disabled }) => {
   const navigate = useNavigate();
   const currencySymbol = getCurrencySymbol();
@@ -291,7 +116,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
           <th>No.</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Mobile</th>
+          {/* <th>Mobile</th> */}
           <th style={{ width: "120px" }}>Services</th>
           <th style={{ textAlign: "right" }}>Service Total</th>
           <th>Action</th>
@@ -305,7 +130,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
               <td>{index + 1}</td>
               <td>{passenger?.passenger?.display_name || ""}</td>
               <td>{passenger?.passenger?.email || ""}</td>
-              <td>{passenger?.passenger?.mobile_no || ""}</td>
+              {/* <td>{passenger?.passenger?.mobile_no || ""}</td> */}
               <td>
                 <CustomDropdown28
                   label="Services"
