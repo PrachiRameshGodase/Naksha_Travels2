@@ -71,13 +71,13 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
 
-                                <li>
+                                {/* <li>
                                   <span>Room Name/No</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {serviceData?.room?.room_number || "-"}
                                   </p>
-                                </li>
+                                </li> */}
                                 <li>
                                   <span>Bed</span>
                                   <h1>:</h1>

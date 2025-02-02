@@ -223,7 +223,7 @@ const SupplierSummary = () => {
               DSR Supplier Summary
             </h1>
             <p id="firsttagp">
-              {totalItems} Records
+              {/* {totalItems} Records */}
               <span
                 className={`${
                   DSRSupplierSummaryListData?.loading && "rotate_01"
@@ -375,7 +375,9 @@ const SupplierSummary = () => {
                               {item?.service_name || ""}
                             </div>
 
-                            <div className="table-cellx12 quotiosalinvlisxs4">
+                            <div className="table-cellx12 quotiosalinvlisxs4"  data-tooltip-content={item?.supplier_name}
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-place="bottom">
                               {item?.supplier_name || ""}
                             </div>
 

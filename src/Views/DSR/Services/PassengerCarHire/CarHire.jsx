@@ -116,7 +116,7 @@ const CarHires = ({ data, totalItems }) => {
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
-                    Dropdown Location
+                    Drop Location
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
