@@ -500,6 +500,7 @@ const ItemSelect = ({
       gross_amount: parseFloat(data?.gross_amount) * 1,
       final_amount: parseFloat(data?.gross_amount).toFixed(2),
       discount_type: 1,
+      item_id: 0,
       type: "Service",
       service_data: data,
       is_service: 1

@@ -27,11 +27,13 @@ const TextAreaComponentWithTextLimit = ({
   value,
 }) => {
   // Count the characters excluding spaces
-  const charCount = value ? value.replace(/\s/g, "").length : 0;
+  // const charCount = value ? value.replace(/\s/g, "").length : 0;
+  const charCount = value ? value?.length : 0;
 
   const handleTextChange = (e) => {
-    const inputValue = e.target.value;
-    const inputWithoutSpaces = inputValue.replace(/\s/g, "");
+    const inputWithoutSpaces = e.target.value;
+    // const inputValue = e.target.value;
+    // const inputWithoutSpaces = inputValue.replace(/\s/g, "");
 
     // Allow changes only if character count excluding spaces is <= 300
     if (inputWithoutSpaces.length <= 250) {

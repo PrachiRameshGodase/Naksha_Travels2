@@ -54,6 +54,7 @@ const CreateQuotation = () => {
 
   const paymentTerms = ShowMasterData("8");//quotation terms
 
+  console.log("paymentTermspaymentTerms", paymentTerms)
 
   const {
     formData,
@@ -79,6 +80,7 @@ const CreateQuotation = () => {
     isEdit
   );
 
+  // console.log("quoteDetails", quoteDetails)
   //this is the common handle select
   const {
     handleChange,
@@ -254,12 +256,14 @@ const CreateQuotation = () => {
 
                           <div className="form_commonblock">
                             <label>Quotation Terms</label>
+
+                            {/* {console.log("formData?.payment_terms", formData?.payment_terms)} */}
                             <span>
                               {otherIcons.vendor_svg}
                               <CustomDropdown04
                                 autoComplete='off'
                                 options={paymentTerms}
-                                value={preventZeroVal(formData?.payment_terms)}
+                                value={(formData?.payment_terms)}
                                 onChange={handleChange}
                                 name="payment_terms"
                                 defaultOption='Enter Quotation Terms'
@@ -303,7 +307,7 @@ const CreateQuotation = () => {
                             <label >Reference Number</label>
                             <span >
                               {otherIcons.placeofsupply_svg}
-                              <input type="text" value={preventZeroVal(formData.reference_no)} onChange={handleChange}
+                              <input type="number" value={preventZeroVal(formData.reference_no)} onChange={handleChange}
                                 autoComplete='off'
                                 name='reference_no'
                                 placeholder='Enter Reference Number' />

@@ -31,8 +31,7 @@ import { sendData } from '../../Views/Helper/HelperFunctions.js';
 
 export const createPurchases = ({ quotationData: queryParams, navigate: Navigate, section, editDub, buttonName, itemId, convert }) => async (dispatch) => {
 
-    console.log("queryParams, Navigate, section, editDub, buttonName, showAllSequenceId, itemId, convert", queryParams, Navigate, section, editDub, buttonName, itemId, convert)
-
+    // console.log(section, editDub, buttonName, itemId, convert)
 
     dispatch({ type: PURCHASES_CREATE_REQUEST });
 
@@ -112,8 +111,6 @@ export const purchasesStatus = (queryParams, setCallApi) => async (dispatch) => 
     try {
         dispatch({ type: PURCHASES_STATUS_REQUEST });
         const response = await axiosInstance.post(`/purchase-order/status`, queryParams);
-
-
         if (setCallApi) {
             if (response?.data?.message === "Purchase Order Declined Updated Successfully") {
                 toast.success(response?.data?.message);

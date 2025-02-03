@@ -144,11 +144,6 @@ const Quotations = () => {
   };
   //logic for checkBox...
 
-  const handleDataChange = (newValue) => {
-    setDataChanging(newValue);
-  };
-
-
   return (
     <>
       <TopLoadbar />
