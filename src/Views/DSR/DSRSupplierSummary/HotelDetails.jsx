@@ -9,10 +9,10 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 const HotelDetails = ({ data, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
-   const serviceData=data?.service_data ? JSON.parse(data?.service_data):""
-   const attachments = serviceData?.upload_image || "";
-   const charge = serviceData?.charges ? JSON.parse(data?.charges) : "";
- 
+  const serviceData = data?.service_data ? JSON.parse(data?.service_data) : "";
+  const attachments = serviceData?.upload_image || "";
+  const charge = serviceData?.charges ? JSON.parse(data?.charges) : "";
+
   return (
     <>
       {data?.loading ? (
@@ -56,30 +56,16 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                             </div>
                             <div style={{ display: "flex", gap: "20px" }}>
                               <ul>
-                                {/* <li className="pendingfromfrontendx5">
-                                  <span>Entry Type</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.entry_type || "-"}
-                                  </p>
-                                </li> */}
                                 <li className="pendingfromfrontendx5">
-                                  <span>Hotel Name</span>
+                                  <span style={{width:"100px"}}>Hotel Name</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {serviceData?.hotel_name || "-"}
                                   </p>
                                 </li>
 
-                                {/* <li>
-                                  <span>Room Name/No</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {serviceData?.room?.room_number || "-"}
-                                  </p>
-                                </li> */}
                                 <li>
-                                  <span>Bed</span>
+                                  <span style={{width:"100px"}}>Bed</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     <ShowUserMastersValue
@@ -89,7 +75,7 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li className="pendingfrombackendx5">
-                                  <span>Occupancy</span>
+                                  <span style={{width:"100px"}}>Occupancy</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     <ShowUserMastersValue
@@ -99,14 +85,14 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   </p>
                                 </li>
                                 <li className="pendingfrombackendx5">
-                                  <span>Total Days</span>
+                                  <span style={{width:"100px"}}>Total Days</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {serviceData?.total_nights}
                                   </p>
                                 </li>
                                 <li className="pendingfrombackendx5">
-                                  <span>Meal</span>
+                                  <span style={{width:"100px"}}>Meal</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     <ShowUserMastersValue
@@ -117,7 +103,7 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                 </li>
 
                                 <li>
-                                  <span>Guest</span>
+                                  <span style={{width:"100px"}}>Guest</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
                                     {serviceData?.guests
@@ -126,37 +112,33 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                       .join(", ")}
                                   </p>
                                 </li>
-
+                              </ul>
+                              <ul>
                                 <li>
                                   <span>Booking Date</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {formatDate3(serviceData?.booking_date) || ""}
+                                  <p>
+                                    {formatDate3(serviceData?.booking_date) ||
+                                      ""}
                                   </p>
                                 </li>
                                 <li>
                                   <span>CheckIn Date</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {formatDate3(serviceData?.check_in_date) || ""}
+                                  <p>
+                                    {formatDate3(serviceData?.check_in_date) ||
+                                      ""}
                                   </p>
                                 </li>
                                 <li>
                                   <span>CheckOut Date</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {formatDate3(serviceData?.check_out_date) || ""}
+                                  <p>
+                                    {formatDate3(serviceData?.check_out_date) ||
+                                      ""}
                                   </p>
                                 </li>
-                                <li>
-                                  <span>Supplier Name</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {serviceData?.supplier_name || ""}
-                                  </p>
-                                </li>
-                              </ul>
-                              <ul>
+
                                 <li>
                                   <span>Hotel Price</span>
                                   <h1>:</h1>
@@ -165,33 +147,20 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                 <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
-                                 
-                                </li>
-                                <li>
-                                  <span>Customer tax</span>
-                                  <h1>:</h1>
-                                  <p>{serviceData?.tax_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Tax</span>
-                                  <h1>:</h1>
-                                  <p>{serviceData?.supplier_tax || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Price</span>
-                                  <h1>:</h1>
-                                  <p>{serviceData?.supplier_total || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Customer Price</span>
-                                  <h1>:</h1>
-                                  <p>{serviceData?.total_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Retain</span>
-                                  <h1>:</h1>
-                                  <p>{serviceData?.retain || ""}</p>
+                                  <p>
+                                    {charge
+                                      ?.filter(
+                                        (item) =>
+                                          item?.account_name && item?.amount
+                                      )
+                                      .map(
+                                        (item) =>
+                                          `${item?.account_name || ""} - ${
+                                            item?.amount || ""
+                                          }`
+                                      )
+                                      .join(", ")}
+                                  </p>
                                 </li>
 
                                 <li>
@@ -205,6 +174,92 @@ const HotelDetails = ({ data, showPopup, setShowPopup }) => {
                                   <p>
                                     <Attachment2 attachments={attachments} />
                                   </p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inidbx1">
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "447px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Supplier Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span>Supplier Name</span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.supplier_name || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.supplier_total || ""}</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "422px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Customer Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer tax
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.tax_amount || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer Price
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.total_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span style={{ width: "200px" }}>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{serviceData?.retain || ""}</p>
                                 </li>
                               </ul>
                             </div>

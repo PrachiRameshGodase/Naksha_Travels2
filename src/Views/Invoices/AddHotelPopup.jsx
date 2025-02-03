@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -593,16 +593,12 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             placeholderText="Enter Date"
                             dateFormat="dd-MM-yyyy"
                             autoComplete="off"
-                            minDate={
+                            maxDate={
                               formData?.check_in_date
                                 ? new Date(formData.check_in_date)
                                 : null
                             }
-                            maxDate={
-                              formData?.check_out_date
-                                ? new Date(formData.check_out_date)
-                                : null
-                            }
+                           
                           />
                         </span>
                         {errors?.booking_date && (

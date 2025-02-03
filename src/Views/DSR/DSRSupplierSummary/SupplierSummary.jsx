@@ -2,11 +2,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import SearchBox from "../../Common/SearchBox/SearchBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../Helper/DateFormat";
 import { DSRSupplierSummaryListActions } from "../../../Redux/Actions/DSRActions";
-import { currencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import {
+  currencySymbol,
+  useDebounceSearch,
+} from "../../Helper/HelperFunctions";
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
@@ -20,6 +23,7 @@ import AssistDetails from "./AssistDetails";
 import CarHireDetails from "./CarHireDetals";
 import VisaDetails from "./VisaDetails";
 import OtherDetails from "./OtherDetails";
+import { RxCross2 } from "react-icons/rx";
 
 const SupplierSummary = () => {
   const navigate = useNavigate();
@@ -28,7 +32,9 @@ const SupplierSummary = () => {
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
-  const DSRSupplierSummaryListData = useSelector((state) => state?.dsrSupplierSummary);
+  const DSRSupplierSummaryListData = useSelector(
+    (state) => state?.dsrSupplierSummary
+  );
   const DSRSupplierSummaryLists = DSRSupplierSummaryListData?.data?.data || [];
   const totalItems = DSRSupplierSummaryListData?.data?.count || 0;
 
@@ -162,7 +168,7 @@ const SupplierSummary = () => {
       case "assist":
         return (
           <AssistDetails
-          serviceData={passHotelData}
+            serviceData={passHotelData}
             showPopup={showPopup}
             setShowPopup={setShowPopup}
           />
@@ -186,19 +192,19 @@ const SupplierSummary = () => {
       case "car_hire":
         return (
           <CarHireDetails
-          serviceData={passHotelData}
+            serviceData={passHotelData}
             showPopup={showPopup}
             setShowPopup={setShowPopup}
           />
         );
-        case "visa":
-          return (
-            <VisaDetails
+      case "visa":
+        return (
+          <VisaDetails
             serviceData={passHotelData}
-              showPopup={showPopup}
-              setShowPopup={setShowPopup}
-            />
-          );
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+          />
+        );
       case "others":
         return (
           <OtherDetails
@@ -220,7 +226,7 @@ const SupplierSummary = () => {
           <div id="leftareax12">
             <h1 id="firstheading">
               {otherIcons?.warehouse_icon}
-              DSR Supplier Summary
+              {DSRSupplierSummaryLists?.dsr?.dsr_no} DSR Supplier Summary
             </h1>
             <p id="firsttagp">
               {/* {totalItems} Records */}
@@ -286,6 +292,15 @@ const SupplierSummary = () => {
             >
               New DSR <GoPlus />
             </div> */}
+            <Link
+              to={`/dashboard/dsr-details?id=${itemId}`}
+              className="linkx3"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
+            >
+              <RxCross2 />
+            </Link>
             <ResizeFL />
           </div>
         </div>
@@ -306,7 +321,10 @@ const SupplierSummary = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.quotation_icon}
+                    DSR No
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Transaction Date
@@ -322,17 +340,13 @@ const SupplierSummary = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
-                  <p>{currencySymbol} {" "} Supplier Amount</p>
-                  
+                    <p>({currencySymbol}) Supplier Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} {" "} Tax Amount</p>
-                
-                  
+                    <p>({currencySymbol}) Tax Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                  <p>{currencySymbol} {" "} Total Amount</p>
-                  
+                    <p>({currencySymbol}) Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     {otherIcons?.status_svg}
@@ -367,6 +381,9 @@ const SupplierSummary = () => {
                               <div className="checkmark"></div>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs1">
+                              {item?.dsr?.dsr_no || ""}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.dsr?.transaction_date
                                 ? formatDate(item?.dsr?.transaction_date) || ""
                                 : ""}
@@ -375,23 +392,30 @@ const SupplierSummary = () => {
                               {item?.service_name || ""}
                             </div>
 
-                            <div className="table-cellx12 quotiosalinvlisxs4"  data-tooltip-content={item?.supplier_name}
+                            <div
+                              className="table-cellx12 quotiosalinvlisxs4"
+                              data-tooltip-content={item?.supplier_name}
                               data-tooltip-id="my-tooltip"
-                              data-tooltip-place="bottom">
+                              data-tooltip-place="bottom"
+                            >
                               {item?.supplier_name || ""}
                             </div>
 
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                                <p style={{width:"91%"}}>  {item?.supplier_amount || ""}</p>
-                            
+                              <p style={{ width: "95%" }}>
+                                {" "}
+                                {item?.supplier_amount || ""}
+                              </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item ">
-                                <p style={{width:"84%"}}>{item?.tax_amount || ""}</p>
-                              
+                              <p style={{ width: "85%" }}>
+                                {item?.tax_amount || ""}
+                              </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item ">
-                                <p style={{width:"92%"}}>{item?.total || ""}</p>
-                              
+                              <p style={{ width: "95%" }}>
+                                {item?.total || ""}
+                              </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd">
                               <span
@@ -399,7 +423,7 @@ const SupplierSummary = () => {
                                   cursor: "pointer",
                                   color: "gray",
                                   fontSize: "20px",
-                                 
+                                  marginLeft:"32px"
                                 }}
                                 onClick={() => {
                                   handleShowDetails(item);
@@ -423,7 +447,7 @@ const SupplierSummary = () => {
                       setItemsPerPage={setItemsPerPage}
                       setSearchCall={setSearchTrigger}
                     /> */}
-                {showPopup && renderPopupComponent(passHotelData)}
+                    {showPopup && renderPopupComponent(passHotelData)}
                   </>
                 )}
               </div>

@@ -136,6 +136,21 @@ const InsuranceDetails = ({
                     placeholderText="Enter Date"
                     dateFormat="dd-MM-yyyy"
                     autoComplete="off"
+                    minDate={
+                      new Date(new Date().getFullYear() - 50, 0, 1)
+                    } // Minimum date: 50 years ago
+                    maxDate={
+                      insuranceDetails?.expiry_date
+                        ? new Date(insuranceDetails.expiry_date) // Max date: Expiry Date (if set)
+                        : new Date(
+                            new Date().getFullYear() + 50,
+                            11,
+                            31
+                          ) // Default max date: 50 years in the future
+                    }
+                    showYearDropdown // Enables the year dropdown
+                    scrollableYearDropdown // Allows scrolling in the year dropdown
+                    yearDropdownItemNumber={101}
                   />
                 </span>
               </div>
@@ -157,6 +172,17 @@ const InsuranceDetails = ({
                     placeholderText="Enter Date"
                     dateFormat="dd-MM-yyyy"
                     autoComplete="off"
+                    minDate={
+                      insuranceDetails?.issue_date
+                        ? new Date(insuranceDetails.issue_date) // Min date: Issue Date (if set)
+                        : new Date(new Date().getFullYear() - 50, 0, 1) // Default min date: 50 years ago
+                    }
+                    maxDate={
+                      new Date(new Date().getFullYear() + 50, 11, 31)
+                    } // Max date: 50 years in the future
+                    showYearDropdown // Enables the year dropdown
+                    scrollableYearDropdown // Allows scrolling in the year dropdown
+                    yearDropdownItemNumber={101}
                   />
                 </span>
               </div>

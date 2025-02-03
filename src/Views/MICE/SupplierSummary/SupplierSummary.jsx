@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import SearchBox from "../../Common/SearchBox/SearchBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../Helper/DateFormat";
 import { DSRSupplierSummaryListActions } from "../../../Redux/Actions/DSRActions";
@@ -24,6 +24,7 @@ import CarHireDetails from "../../DSR/DSRSupplierSummary/CarHireDetals";
 import VisaDetails from "../../DSR/DSRSupplierSummary/VisaDetails";
 import OtherDetails from "../../DSR/DSRSupplierSummary/OtherDetails";
 import { MICESupplierSummaryListActions } from "../../../Redux/Actions/MICEActions";
+import { RxCross2 } from "react-icons/rx";
 
 const MICESupplierSummary = () => {
   const navigate = useNavigate();
@@ -293,6 +294,15 @@ const MICESupplierSummary = () => {
             >
               New DSR <GoPlus />
             </div> */}
+            <Link
+              to={`/dashboard/mice-details?id=${itemId}`}
+              className="linkx3"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
+            >
+              <RxCross2 />
+            </Link>
             <ResizeFL />
           </div>
         </div>
@@ -409,6 +419,7 @@ const MICESupplierSummary = () => {
                                   cursor: "pointer",
                                   color: "gray",
                                   fontSize: "20px",
+                                  marginLeft: "32px",
                                 }}
                                 onClick={() => {
                                   handleShowDetails(item);

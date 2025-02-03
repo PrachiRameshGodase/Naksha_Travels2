@@ -275,7 +275,7 @@ const Hotels = ({ data }) => {
         </div>
         {showPopup && (
           <PassengerHotelDetails
-            data={passHotelData}
+            serviceData={passHotelData}
             showPopup={showPopup}
             setShowPopup={setShowPopup}
           />

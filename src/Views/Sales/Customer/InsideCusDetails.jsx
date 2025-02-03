@@ -111,15 +111,17 @@ const InsideCusDetails = ({
     <div id="itemsdetailsrowskl">
       <div className="buttonscontainxs2">
         <div
-          className={`divac12cs32 ${activeSection === "basicdetails" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "basicdetails" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("basicdetails")}
         >
           Basic Details
         </div>
         <div
-          className={`divac12cs32 ${activeSection === "transaction" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "transaction" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("transaction")}
         >
           Transaction
@@ -137,8 +139,9 @@ const InsideCusDetails = ({
           Mails
         </div> */}
         <div
-          className={`divac12cs32 ${activeSection === "statement" ? "activediv12cs" : ""
-            }`}
+          className={`divac12cs32 ${
+            activeSection === "statement" ? "activediv12cs" : ""
+          }`}
           onClick={() => setActiveSection("statement")}
         >
           Statement
@@ -151,8 +154,9 @@ const InsideCusDetails = ({
             <div className="inidbcusx2">
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[0] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[0] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(0)}
                 >
                   <p>
@@ -166,8 +170,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[0] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[0] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -235,8 +240,9 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[1] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[1] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(1)}
                 >
                   <p>
@@ -248,8 +254,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[1] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[1] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
@@ -317,8 +324,9 @@ const InsideCusDetails = ({
               {customerDetails?.customer_type == "Individual" ? (
                 <div className="accordion-item">
                   <div
-                    className={`accordion-header ${isOpen[2] ? "openedaccordina" : ""
-                      }`}
+                    className={`accordion-header ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
                     onClick={() => toggleAccordion(2)}
                   >
                     <p>
@@ -330,8 +338,9 @@ const InsideCusDetails = ({
                     </span>
                   </div>
                   <div
-                    className={`accordion-content ${isOpen[2] ? "openedaccordina" : ""
-                      }`}
+                    className={`accordion-content ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
                   >
                     <div className="contents">
                       <div className="ProjectList">
@@ -351,9 +360,11 @@ const InsideCusDetails = ({
                           </thead>
                           <tbody>
                             {family_members?.map((item, index) => {
-
-                              const disabledRow = item?.id === customerDetails?.relation_id;
-                              const hideDetails = customerDetails?.id === customerDetails?.relation_id;
+                              const disabledRow =
+                                item?.id === customerDetails?.relation_id;
+                              const hideDetails =
+                                customerDetails?.id ===
+                                customerDetails?.relation_id;
 
                               return (
                                 <tr
@@ -422,8 +433,9 @@ const InsideCusDetails = ({
               ) : (
                 <div className="accordion-item">
                   <div
-                    className={`accordion-header ${isOpen[2] ? "openedaccordina" : ""
-                      }`}
+                    className={`accordion-header ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
                     onClick={() => toggleAccordion(2)}
                   >
                     <p>
@@ -435,8 +447,9 @@ const InsideCusDetails = ({
                     </span>
                   </div>
                   <div
-                    className={`accordion-content ${isOpen[2] ? "openedaccordina" : ""
-                      }`}
+                    className={`accordion-content ${
+                      isOpen[2] ? "openedaccordina" : ""
+                    }`}
                   >
                     <div className="contents">
                       <div className="ProjectList">
@@ -457,8 +470,9 @@ const InsideCusDetails = ({
                             {employees?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1 || "-"}</td>
-                                <td>{`${item?.first_name || "-"} ${item?.last_name || "-"
-                                  }`}</td>
+                                <td>{`${item?.first_name || "-"} ${
+                                  item?.last_name || "-"
+                                }`}</td>
                                 <td style={{ color: "#2626d3" }}>
                                   {item?.company_name || "-"}
                                 </td>
@@ -490,8 +504,9 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[3] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[3] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(3)}
                 >
                   <p>
@@ -502,10 +517,11 @@ const InsideCusDetails = ({
                     {isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
-                { }
+                {}
                 <div
-                  className={`accordion-content ${isOpen[3] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[3] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div>
                     {customerDetails?.bank_details?.map((val, index) => (
@@ -556,8 +572,9 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[10] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[10] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(10)}
                 >
                   <p>
@@ -568,10 +585,11 @@ const InsideCusDetails = ({
                     {isOpen[10] ? <FiChevronUp /> : <FiChevronDown />}
                   </span>
                 </div>
-                { }
+                {}
                 <div
-                  className={`accordion-content ${isOpen[10] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[10] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div>
                     {customerDetails?.payment_details?.map((val, index) => (
@@ -616,8 +634,9 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[4] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[4] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(4)}
                 >
                   <p>
@@ -629,8 +648,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[4] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[4] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div className="">
@@ -643,8 +663,9 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(5)}
                 >
                   <p>
@@ -656,8 +677,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="cusdes1sec">
                     <div
@@ -927,8 +949,9 @@ const InsideCusDetails = ({
 
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[6] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[6] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(6)}
                 >
                   <p>
@@ -940,8 +963,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[5] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[5] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div>
                     {customerDetails?.address?.map((val, index) => (
@@ -1067,8 +1091,9 @@ const InsideCusDetails = ({
               </div>
               <div className="accordion-item">
                 <div
-                  className={`accordion-header ${isOpen[7] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-header ${
+                    isOpen[7] ? "openedaccordina" : ""
+                  }`}
                   onClick={() => toggleAccordion(7)}
                 >
                   <p>
@@ -1080,8 +1105,9 @@ const InsideCusDetails = ({
                   </span>
                 </div>
                 <div
-                  className={`accordion-content ${isOpen[7] ? "openedaccordina" : ""
-                    }`}
+                  className={`accordion-content ${
+                    isOpen[7] ? "openedaccordina" : ""
+                  }`}
                 >
                   <div className="contents">
                     <div className="ProjectList">
@@ -1114,7 +1140,13 @@ const InsideCusDetails = ({
                                   : "-"}
                               </td>
                               <td>
-                                <AttachmentPreview5 document={item?.upload_documents ? JSON?.parse(item?.upload_documents) : "-"} />
+                                <AttachmentPreview5
+                                  document={
+                                    item?.upload_documents
+                                      ? JSON?.parse(item?.upload_documents)
+                                      : "-"
+                                  }
+                                />
                               </td>
                             </tr>
                           ))}
@@ -1127,159 +1159,173 @@ const InsideCusDetails = ({
                   </div>
                 </div>
               </div>
-              <div className="accordion-item">
-                <div
-                  className={`accordion-header ${isOpen[8] ? "openedaccordina" : ""
+              {customerDetails?.customer_type == "Individual" ? (
+                <div className="accordion-item">
+                  <div
+                    className={`accordion-header ${
+                      isOpen[8] ? "openedaccordina" : ""
                     }`}
-                  onClick={() => toggleAccordion(8)}
-                >
-                  <p>
-                    {otherIcons.company_details_svg}
-                    Vaccination Details
-                  </p>
-                  <span className="svgico4x5s6">
-                    {isOpen[8] ? <FiChevronUp /> : <FiChevronDown />}
-                  </span>
-                </div>
-                <div
-                  className={`accordion-content ${isOpen[8] ? "openedaccordina" : ""
+                    onClick={() => toggleAccordion(8)}
+                  >
+                    <p>
+                      {otherIcons.company_details_svg}
+                      Vaccination Details
+                    </p>
+                    <span className="svgico4x5s6">
+                      {isOpen[8] ? <FiChevronUp /> : <FiChevronDown />}
+                    </span>
+                  </div>
+                  <div
+                    className={`accordion-content ${
+                      isOpen[8] ? "openedaccordina" : ""
                     }`}
-                >
-                  <div className="contents">
-                    <div className="ProjectList">
-                      <table style={{ width: "828px" }}>
-                        <thead>
-                          <tr>
-                            <th>Sr No.</th>
-                            <th>Vaccination Name</th>
-                            <th>Attachment</th>
-                          </tr>
-                        </thead>
-                        {/* {console.log("customerDetails?.vaccination_details", customerDetails?.vaccination_details)} */}
-                        <tbody>
-                          {customerDetails?.vaccination_details?.map(
-                            (item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1 || "-"}</td>
+                  >
+                    <div className="contents">
+                      <div className="ProjectList">
+                        <table style={{ width: "828px" }}>
+                          <thead>
+                            <tr>
+                              <th>Sr No.</th>
+                              <th>Vaccination Name</th>
+                              <th>Attachment</th>
+                            </tr>
+                          </thead>
+                          {/* {console.log("customerDetails?.vaccination_details", customerDetails?.vaccination_details)} */}
+                          <tbody>
+                            {customerDetails?.vaccination_details?.map(
+                              (item, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1 || "-"}</td>
 
-                                <td>{item?.vaccination_name || "-"}</td>
-                                {/* {console.log("itemitemitemitem", item)} */}
-                                <td>
-
-                                  <AttachmentPreview5
-                                    document={
-                                      item?.upload_documents
-                                        ? JSON?.parse(item?.upload_documents)
-                                        : ""
-                                    }
-                                  // attachments={item}
-                                  />
-                                </td>
-                              </tr>
-                            )
-                          )}
-                        </tbody>
-                      </table>
+                                  <td>{item?.vaccination_name || "-"}</td>
+                                  {/* {console.log("itemitemitemitem", item)} */}
+                                  <td>
+                                    <AttachmentPreview5
+                                      document={
+                                        item?.upload_documents
+                                          ? JSON?.parse(item?.upload_documents)
+                                          : ""
+                                      }
+                                      // attachments={item}
+                                    />
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <div className=""></div>
                     </div>
                   </div>
-                  <div>
-                    <div className=""></div>
+                </div>
+              ) : (
+                ""
+              )}
+
+              {customerDetails?.customer_type == "Individual" ? (
+                <div className="accordion-item">
+                  <div
+                    className={`accordion-header ${
+                      isOpen[9] ? "openedaccordina" : ""
+                    }`}
+                    onClick={() => toggleAccordion(9)}
+                  >
+                    <p>
+                      {otherIcons.company_details_svg}
+                      Insurance Details
+                    </p>
+                    <span className="svgico4x5s6">
+                      {isOpen[9] ? <FiChevronUp /> : <FiChevronDown />}
+                    </span>
+                  </div>
+
+                  <div
+                    className={`accordion-content ${
+                      isOpen[9] ? "openedaccordina" : ""
+                    }`}
+                  >
+                    <div>
+                      {customerDetails?.insurrance_details?.map(
+                        (val, index) => (
+                          <div key={index}>
+                            <div className="cusdes1sec">
+                              <div className="cusdes1secchild1">
+                                <ul>
+                                  <li>
+                                    <span style={{ width: "180px" }}>
+                                      Company Name
+                                    </span>
+                                    <h1>:</h1>
+                                    <p>{val?.company_name || ""}</p>
+                                  </li>
+                                  <li>
+                                    <span style={{ width: "180px" }}>
+                                      Policy Number
+                                    </span>
+                                    <h1>:</h1>
+                                    <p>{val?.policy_no || ""}</p>
+                                  </li>
+
+                                  <li>
+                                    <span style={{ width: "180px" }}>
+                                      Issue Date
+                                    </span>
+                                    <h1>:</h1>
+
+                                    <p>
+                                      {val?.issue_date
+                                        ? formatDate3(val?.issue_date)
+                                        : ""}
+                                    </p>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="cusdes1secchild1">
+                                <ul>
+                                  {" "}
+                                  <li>
+                                    <span style={{ width: "180px" }}>
+                                      Expiry Date
+                                    </span>
+                                    <h1>:</h1>
+
+                                    <p>
+                                      {val?.expiry_date
+                                        ? formatDate3(val?.expiry_date)
+                                        : ""}
+                                    </p>
+                                  </li>
+                                  <li>
+                                    <span style={{ width: "180px" }}>
+                                      Attachment
+                                    </span>
+                                    <h1>:</h1>
+
+                                    <p>
+                                      <Attachment2
+                                        attachments={
+                                          val?.upload_documents
+                                            ? JSON?.parse(val?.upload_documents)
+                                            : "[]"
+                                        }
+                                      />
+                                    </p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="accordion-item">
-                <div
-                  className={`accordion-header ${isOpen[9] ? "openedaccordina" : ""
-                    }`}
-                  onClick={() => toggleAccordion(9)}
-                >
-                  <p>
-                    {otherIcons.company_details_svg}
-                    Insurance Details
-                  </p>
-                  <span className="svgico4x5s6">
-                    {isOpen[9] ? <FiChevronUp /> : <FiChevronDown />}
-                  </span>
-                </div>
-
-                <div
-                  className={`accordion-content ${isOpen[9] ? "openedaccordina" : ""
-                    }`}
-                >
-                  <div>
-                    {customerDetails?.insurrance_details?.map((val, index) => (
-                      <div key={index}>
-                        <div className="cusdes1sec">
-                          <div className="cusdes1secchild1">
-                            <ul>
-                              <li>
-                                <span style={{ width: "180px" }}>
-                                  Company Name
-                                </span>
-                                <h1>:</h1>
-                                <p>{val?.company_name || ""}</p>
-                              </li>
-                              <li>
-                                <span style={{ width: "180px" }}>
-                                  Policy Number
-                                </span>
-                                <h1>:</h1>
-                                <p>{val?.policy_no || ""}</p>
-                              </li>
-
-                              <li>
-                                <span style={{ width: "180px" }}>
-                                  Issue Date
-                                </span>
-                                <h1>:</h1>
-
-                                <p>
-                                  {val?.issue_date
-                                    ? formatDate3(val?.issue_date)
-                                    : ""}
-                                </p>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="cusdes1secchild1">
-                            <ul>
-                              {" "}
-                              <li>
-                                <span style={{ width: "180px" }}>
-                                  Expiry Date
-                                </span>
-                                <h1>:</h1>
-
-                                <p>
-                                  {val?.expiry_date
-                                    ? formatDate3(val?.expiry_date)
-                                    : ""}
-                                </p>
-                              </li>
-                              <li>
-                                <span style={{ width: "180px" }}>
-                                  Attachment
-                                </span>
-                                <h1>:</h1>
-
-                                <p>
-                                  <Attachment2
-                                    attachments={
-                                      val?.upload_documents
-                                        ? JSON?.parse(val?.upload_documents)
-                                        : "[]"
-                                    }
-                                  />
-                                </p>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              ) : (
+                ""
+              )}
             </div>
           </>
         )}

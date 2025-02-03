@@ -59,7 +59,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, defaultOption, }) =
           setFocusedOptionIndex((prevIndex) => {
             let nextIndex = prevIndex;
             do {
-              nextIndex = nextIndex < filteredoptions?.length - 1 ? nextIndex + 1 : 0;
+              nextIndex = nextIndex < filteredOptions?.length - 1 ? nextIndex + 1 : 0;
             } while (filteredOptions[nextIndex]?.active == "0" && nextIndex !== prevIndex);
             optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             return nextIndex;
@@ -69,7 +69,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, defaultOption, }) =
           setFocusedOptionIndex((prevIndex) => {
             let nextIndex = prevIndex;
             do {
-              nextIndex = nextIndex > 0 ? nextIndex - 1 : filteredoptions?.length - 1;
+              nextIndex = nextIndex > 0 ? nextIndex - 1 : filteredOptions?.length - 1;
             } while (filteredOptions[nextIndex]?.active == "0" && nextIndex !== prevIndex);
             optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             return nextIndex;
@@ -204,7 +204,7 @@ export const CustomDropdown006 = ({ options, value, onChange, defaultOption, id1
           setFocusedOptionIndex((prevIndex) => {
             let nextIndex = prevIndex;
             do {
-              nextIndex = nextIndex < filteredoptions?.length - 1 ? nextIndex + 1 : 0;
+              nextIndex = nextIndex < filteredOptions?.length - 1 ? nextIndex + 1 : 0;
             } while (filteredOptions[nextIndex]?.active == "0" && nextIndex !== prevIndex);
             optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             return nextIndex;
@@ -214,7 +214,7 @@ export const CustomDropdown006 = ({ options, value, onChange, defaultOption, id1
           setFocusedOptionIndex((prevIndex) => {
             let nextIndex = prevIndex;
             do {
-              nextIndex = nextIndex > 0 ? nextIndex - 1 : filteredoptions?.length - 1;
+              nextIndex = nextIndex > 0 ? nextIndex - 1 : filteredOptions?.length - 1;
             } while (filteredOptions[nextIndex]?.active == "0" && nextIndex !== prevIndex);
             optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             return nextIndex;
