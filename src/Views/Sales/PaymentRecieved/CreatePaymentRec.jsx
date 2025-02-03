@@ -1,29 +1,24 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { accountLists, itemLists } from '../../../Redux/Actions/listApisActions';
-import Loader02 from '../../../Components/Loaders/Loader02'
+import { accountLists } from '../../../Redux/Actions/listApisActions';
 import DatePicker from "react-datepicker";
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import { Toaster, toast } from "react-hot-toast";
 import { paymentRecDetail, updatePaymentRec } from '../../../Redux/Actions/PaymentRecAction';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import { IoCheckbox } from 'react-icons/io5';
-import { formatDate, todayDate } from '../../Helper/DateFormat';
+import { formatDate } from '../../Helper/DateFormat';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
-import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
 import { invoiceDetailes, pendingInvoices } from '../../../Redux/Actions/invoiceActions';
 import NumericInput from '../../Helper/NumericInput';
-import SubmitButton, { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
+import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbol, showAmountWithCurrencySymbolWithPoints, ShowMasterData } from '../../Helper/HelperFunctions';
+import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbolWithPoints, ShowMasterData } from '../../Helper/HelperFunctions';
 import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 // import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
@@ -105,7 +100,7 @@ const CreatePaymentRec = () => {
             }
         ]
 
-    });
+    },);
 
 
     useEffect(() => {
@@ -156,7 +151,7 @@ const CreatePaymentRec = () => {
                 setcusData(fetchDetails?.customer);//if vendor data found in detail api
             }
             if (fetchDetails?.debit || fetchDetails?.total) {
-                setIsAmoutSelect(true)
+                setIsAmoutSelect(true);
             }
 
             if (fetchDetails?.upload_image) {

@@ -92,6 +92,7 @@ const CreateBills = () => {
     convert
   );
 
+  console.log("bill form data", fetchDetails)
   const [loading, setLoading] = useState(false);
 
   //this is the common handle select
@@ -117,7 +118,10 @@ const CreateBills = () => {
       section: "bills",
       updateDispatchAction: createPurchases, // This is dynamic for the dispatch action
       sendData: {
-        isVendorSelect
+        isVendorSelect,
+        itemId,
+        convert
+
       },
     });
 

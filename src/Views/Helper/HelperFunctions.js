@@ -54,6 +54,7 @@ export const showAmountWithCurrencySymbolWithPoints = (val) => {
 
 export const ShowMasterData = (type) => {
     const masterData = useSelector(state => state?.masterData?.masterData);
+    // console.log("formData?.payment_terms", masterData)
     const filteredData = masterData?.filter(item => item.type == type);
     return filteredData || [];
 

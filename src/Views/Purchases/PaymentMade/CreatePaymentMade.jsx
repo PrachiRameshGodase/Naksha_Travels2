@@ -24,12 +24,20 @@ import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAre
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
-import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreatePaymentMade = () => {
+
+    const [cusData, setcusData] = useState(null);
+    const [imgLoader, setImgeLoader] = useState("");
+
+
+    const [isVendorSelect, setIsVendorSelect] = useState(false);
+
+
+
     const dispatch = useDispatch();
     const addUpdate = useSelector((state) => state?.updateAddress);
     const paymentDetails = useSelector((state) => state?.paymentRecDetail);
@@ -48,63 +56,126 @@ const CreatePaymentMade = () => {
     const [fetchDetails, setFetchDetails] = useState("");
     const [showAllSequenceId, setShowAllSequenceId] = useState([]);
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert, bill_no } = Object.fromEntries(params.entries());
+
+
     const [invoiceDatas, setInoiceData] = useState("");
-    const allPaymentMode = ShowMasterData("9")
+    const allPaymentMode = ShowMasterData("9");
+
+
+    // const paymentDetails = useSelector(state => state?.paymentDetails);
+    // const invoice = paymentDetails?.data?.data?.Invoice;
 
     useEffect(() => {
-        if (itemId && paymentDetail) {
+        if (itemId && isEdit) {
             setFetchDetails(paymentDetail);
-        } else if (itemId && (convert === "bill_to_payment" && billDetail1)) {
+        } else if (itemId && convert) {
             setFetchDetails(billDetail1);
         }
-        if (fetchDetails?.credit || fetchDetails?.total) {
-            setIsAmoutSelect(true);
+    }, [itemId, isEdit, paymentDetail, billDetail1, convert]);
+
+    const [formData, setFormData] = useState({
+        id: 0,
+        payment_id: null,
+        vendor_id: null,
+        display_name: null,
+        credit: null,
+        bank_charges: null,
+        transaction_date: formatDate(new Date()),
+        fy: localStorage.getItem('FinancialYear'),
+        payment_mode: null,
+        to_acc: null,
+        inout: 2,
+        tax_deducted: 1,
+        tax_acc_id: 0,
+        reference: "",
+        terms_and_condition: "",
+        customer_note: null,
+        upload_image: null,
+        amt_excess: null,
+        entity_type: 1, // for sale    2-for purchase
+        transaction_id: 0,
+
+        entries: [
+            {
+                bill_id: null,
+                bill_no: null,
+                bill_amount: null,
+                amount: null,
+                balance_amount: null,
+                date: null
+            }
+        ]
+
+    },);
+
+
+    useEffect(() => {
+        if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && paymentDetail) {
+
+            const itemsFromApi = fetchDetails?.entries?.map(item => ({
+                bill_id: item?.id,
+                bill_no: item?.bill_no,
+                bill_amount: item?.bill_amount,
+                balance_amount: item?.balance_amount,
+                amount: item?.amount,
+                date: formatDate(item?.invoice?.transaction_date),
+            }));
+
+            setFormData({
+                ...formData,
+                id: isEdit ? itemId : 0,
+                payment_id: fetchDetails?.payment_id,
+                vendor_id: (+fetchDetails?.vendor_id),
+                credit: convert ? (+fetchDetails?.total) : (+fetchDetails?.credit), // amount received
+                bank_charges: fetchDetails?.bank_charges,
+                transaction_date: formatDate(fetchDetails?.transaction_date), // payment date
+                fy: fetchDetails?.fy,
+                display_name: fetchDetails?.display_name,
+                payment_mode: (+fetchDetails?.payment_mode || 0),
+                to_acc: (+fetchDetails?.to_acc?.id || 0), // deposit to
+                tax_deducted: (+fetchDetails?.tax_deducted || 0),
+                tax_acc_id: (+fetchDetails?.tax_acc_id || 0),
+                reference: fetchDetails?.reference == "0" ? "" : fetchDetails?.reference,
+                customer_note: fetchDetails?.customer_note,
+                terms_and_condition: fetchDetails?.terms_and_condition,
+                upload_image: fetchDetails?.upload_image,
+                amt_excess: (+fetchDetails?.amt_excess || 0),
+
+                // this details will be filled when there is one invoice
+                entity_type: fetchDetails?.entity_type, // for sale    2-for purchase
+                transaction_id: fetchDetails?.transaction_id,
+
+                // when there are multiple invoices
+                entries: itemsFromApi || []
+            });
+
+            if (fetchDetails?.vendor_id) {
+                setIsVendorSelect(true);
+            }
+
+            if (fetchDetails?.customer) {
+                setcusData(fetchDetails?.customer);//if vendor data found in detail api
+            }
+            if (fetchDetails?.credit || fetchDetails?.total) {
+                setIsAmoutSelect(true);
+            }
+
+            if (fetchDetails?.upload_image) {
+                setImgeLoader("success");
+            }
+
+            if (fetchDetails?.vendor_id) {
+                const sendData = {
+                    fy: localStorage.getItem('FinancialYear'),
+                    vendor_id: fetchDetails?.vendor_id,
+                    bill_no: bill_no
+                }
+                dispatch(pendingBillLists(sendData, setInoiceData));
+            }
         }
 
-    }, [itemId, isEdit, convert, billDetail1, isDuplicate, paymentDetail, fetchDetails]);
-
-    const {
-        formData,
-        setFormData,
-        isVendorSelect,
-        setIsVendorSelect,
-        imgLoader,
-        setImgLoader,
-        cusData,
-        setCusData,
-    } = useEditPurchaseForm(
-        {
-            payment_id: null,
-            inout: 2,
-            credit: null,
-            bank_charges: null,
-            payment_mode: null,
-            to_acc: null, // deposit to#
-            tax_deducted: 1,
-            tax_acc_id: 0,
-            amt_excess: null,
-            entity_type: 1, // for sale    2-for purchase
-            entries: [
-                {
-                    bill_id: null,
-                    bill_no: null,
-                    bill_amount: null,
-                    amount: null,
-                    balance_amount: null,
-                    date: null,
-                }
-            ]
-        },//for set new key's and values
-        ["charges", "items", "taxes"], // Keys to remove
-        fetchDetails,
-        itemId,
-        isEdit,
-        convert,
-    );
-
-    // console.log("formdataaaaaaaaaa", formData)
-    // console.log("fetchDetailsfetchDetails", fetchDetails);
+    }, [fetchDetails, itemId, isEdit, isDuplicate, convert]);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
     // Function to handle checkbox clicks
@@ -260,14 +331,6 @@ const CreatePaymentMade = () => {
             transaction_date: todayDate(),
         }));
 
-        if (fetchDetails?.vendor_id) {
-            const sendData = {
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
-                vendor_id: fetchDetails?.vendor_id,
-            }
-            dispatch(pendingBillLists(sendData, setInoiceData));
-        }
         dispatch(productTypeItemAction(""));
 
     }, [cusData]);
@@ -288,8 +351,6 @@ const CreatePaymentMade = () => {
 
     }, [dispatch, itemId, convert]);
 
-    // const [imgLoader, setImgLoader] = useState("");
-
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
     const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
@@ -298,12 +359,10 @@ const CreatePaymentMade = () => {
 
     useFetchApiData(accountLists, payloadGenerator, []);
 
-
     return (
         <>
-
-
             <TopLoadbar />
+
             {(freezLoadingImg || pendingBill?.loading || addUpdate?.loading || createPayment?.loading) && <MainScreenFreezeLoader />}
             <div className='formsectionsgrheigh'>
                 <div id="Anotherbox" className='formsectionx2'>
@@ -337,7 +396,7 @@ const CreatePaymentMade = () => {
                                                     onChange={handleChange}
                                                     name="vendor_id"
                                                     defaultOption="Select Vendor"
-                                                    setcusData={setCusData}
+                                                    setcusData={setcusData}
                                                     cusData={cusData}
                                                     type="vendor"
                                                 />
@@ -697,7 +756,7 @@ const CreatePaymentMade = () => {
                                                     setFormData={setFormData}
                                                     setFreezLoadingImg={setFreezLoadingImg}
                                                     imgLoader={imgLoader}
-                                                    setImgeLoader={setImgLoader}
+                                                    setImgeLoader={setImgeLoader}
                                                     component="purchase"
                                                 />
                                             </div>

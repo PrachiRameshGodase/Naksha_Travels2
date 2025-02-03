@@ -60,6 +60,7 @@ const BillDetail = () => {
       Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
     } else if (val === "bill_to_payment") {
       queryParams.set("convert", val);
+      queryParams.set("bill_no", invoice?.bill_no);
       Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
     }
     else if (val === "bill_to_debit") {

@@ -93,7 +93,9 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                 // when credit note is converted in to the invoice the the invoice_id in invoice is in id variable 
                 ...(convert === "invoiceToCredit" && { invoice_id: detailData?.id }),
 
-                ...(detailData?.reference && { reference_no: detailData?.reference, reference: detailData?.reference, reference_no: detailData?.reference_no }),
+                // ...((detailData?.reference || detailData?.reference_no) && { reference_no: detailData?.reference, reference: detailData?.reference, reference_no: detailData?.reference_no }),
+
+
                 status: detailData?.status,
                 tax_amount: calculateTotalTaxAmount(),
                 items: itemsFromApi,
