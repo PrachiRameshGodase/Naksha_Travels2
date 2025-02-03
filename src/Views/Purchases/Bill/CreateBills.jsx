@@ -99,8 +99,6 @@ const CreateBills = () => {
     handleChange,
   } = useHandleFormChange({ formData, setFormData, addSelect, setAddSelect, setIsVendorSelect, vendorList });
 
-
-
   //trigger show updated address then it updated
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
