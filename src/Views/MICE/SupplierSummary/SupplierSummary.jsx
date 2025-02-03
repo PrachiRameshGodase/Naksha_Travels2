@@ -329,13 +329,13 @@ const MICESupplierSummary = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
-                    <p>{currencySymbol} Supplier Amount</p>
+                    <p>({currencySymbol}) Supplier Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Tax Amount</p>
+                    <p>({currencySymbol}) Tax Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Total Amount</p>
+                    <p>({currencySymbol}) Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     {otherIcons?.status_svg}
