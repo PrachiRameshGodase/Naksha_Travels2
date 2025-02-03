@@ -107,6 +107,7 @@ const InsideCusDetails = ({
   // close emoji mart
   let billingIndex = 0;
   let shippingIndex = 0;
+
   return (
     <div id="itemsdetailsrowskl">
       <div className="buttonscontainxs2">
@@ -359,71 +360,57 @@ const InsideCusDetails = ({
                             </tr>
                           </thead>
                           <tbody>
-                            {family_members?.map((item, index) => {
-                              const disabledRow =
-                                item?.id === customerDetails?.relation_id;
-                              const hideDetails =
-                                customerDetails?.id ===
-                                customerDetails?.relation_id;
-
-                              return (
-                                <tr
-                                  key={index}
-                                  style={{
-                                    backgroundColor: disabledRow
-                                      ? "#f2f2f2"
-                                      : "#fff",
-                                    pointerEvents: disabledRow
-                                      ? "none"
-                                      : "auto",
-                                  }}
-                                >
-                                  <td>{index + 1 || "-"}</td>
-                                  <td
-                                    style={{
-                                      color: "#2626d3",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => {
-                                      navigate(
-                                        `/dashboard/customer-details?id=${item?.id}`
-                                      );
-                                    }}
-                                  >
-                                    {item?.display_name}
-                                  </td>
-                                  {/* <td>{item?.mobile_no || "-"}</td> */}
-                                  <td>{item?.email || "-"}</td>
-                                  <td>
-                                    <ShowMastersValue
-                                      type="45"
-                                      id={item?.gender || "-"}
-                                    />
-                                  </td>
-                                  <td>
-                                    <ShowMastersValue
-                                      type="46"
-                                      id={item?.relationship || "-"}
-                                    />
-                                  </td>
-                                  <td>
-                                    <ShowMastersValue
-                                      type="47"
-                                      id={item?.food_type || "-"}
-                                    />
-                                  </td>
-                                  <td>
-                                    <AttachmentPreview3
-                                      attachments={
-                                        item?.photo
-                                          ? JSON?.parse(item?.photo)
-                                          : "-"
-                                      }
-                                    />
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                            {family_members
+                              ?.filter((item) => item?.relation_id !== customerDetails?.id)
+                              ?.map((item, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{index + 1 || "-"}</td>
+                                    <td
+                                      style={{
+                                        color: "#2626d3",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        navigate(
+                                          `/dashboard/customer-details?id=${item?.id}`
+                                        );
+                                      }}
+                                    >
+                                      {item?.display_name}
+                                    </td>
+                                    {/* <td>{item?.mobile_no || "-"}</td> */}
+                                    <td>{item?.email || "-"}</td>
+                                    <td>
+                                      <ShowMastersValue
+                                        type="45"
+                                        id={item?.gender || "-"}
+                                      />
+                                    </td>
+                                    <td>
+                                      <ShowMastersValue
+                                        type="46"
+                                        id={item?.relationship || "-"}
+                                      />
+                                    </td>
+                                    <td>
+                                      <ShowMastersValue
+                                        type="47"
+                                        id={item?.food_type || "-"}
+                                      />
+                                    </td>
+                                    <td>
+                                      <AttachmentPreview3
+                                        attachments={
+                                          item?.photo
+                                            ? JSON?.parse(item?.photo)
+                                            : "-"
+                                        }
+                                      />
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                           </tbody>
                         </table>
                       </div>
@@ -467,33 +454,33 @@ const InsideCusDetails = ({
                             </tr>
                           </thead>
                           <tbody>
-                            {employees?.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1 || "-"}</td>
-                                <td>{`${item?.first_name || "-"} ${
-                                  item?.last_name || "-"
-                                }`}</td>
-                                <td style={{ color: "#2626d3" }}>
-                                  {item?.company_name || "-"}
-                                </td>
-                                <td>{item?.mobile_no || "-"}</td>
-
-                                <td>{item?.email || "-"}</td>
-                                <td>
-                                  <ShowMastersValue
-                                    type="45"
-                                    id={item?.gender || "-"}
-                                  />
-                                </td>
-
-                                <td>
-                                  <ShowMastersValue
-                                    type="47"
-                                    id={item?.food_type || "-"}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
+                            {employees
+                              ?.filter((item) => item?.relation_id !== customerDetails?.id)
+                              ?.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1 || "-"}</td>
+                                  <td>{`${item?.first_name || "-"} ${
+                                    item?.last_name || "-"
+                                  }`}</td>
+                                  <td style={{ color: "#2626d3" }}>
+                                    {item?.company_name || "-"}
+                                  </td>
+                                  <td>{item?.mobile_no || "-"}</td>
+                                  <td>{item?.email || "-"}</td>
+                                  <td>
+                                    <ShowMastersValue
+                                      type="45"
+                                      id={item?.gender || "-"}
+                                    />
+                                  </td>
+                                  <td>
+                                    <ShowMastersValue
+                                      type="47"
+                                      id={item?.food_type || "-"}
+                                    />
+                                  </td>
+                                </tr>
+                              ))}
                           </tbody>
                         </table>
                       </div>

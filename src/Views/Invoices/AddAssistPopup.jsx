@@ -79,9 +79,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
-      selectedAssistData = assistLists?.find(
-        (item) => item?.airport === value
-      );
+      selectedAssistData = assistLists?.find((item) => item?.airport === value);
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
@@ -95,7 +93,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           airport_name: value,
           meeting_type: "",
           no_of_persons: "",
-          gross_amount: "",
+          gross_amount: "", 
         }));
       }
     } else if (name === "meeting_type") {
@@ -172,6 +170,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
       [name]: false,
     }));
   };
+  console.log("formData", formData)
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -362,7 +361,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -377,14 +376,14 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="supplier_id"
                               defaultOption="Select Supplier"
-                              setcusData={setcusData1}
-                              cusData={cusData1}
+                              setcusData={setcusData3}
+                              cusData={cusData3}
                               type="vendor"
                               required
                             />
                           </span>
                         </div>
-                      </div> */}
+                      </div>
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div

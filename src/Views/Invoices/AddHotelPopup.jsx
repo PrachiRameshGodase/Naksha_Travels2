@@ -80,12 +80,12 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_nights: service_data?.total_nights || "", // Example for total_nights
     confirmation_no: service_data?.confirmation_no || "", // Example for confirmation_no
     total_days: service_data?.total_days || null, // Default to tax_rate or null
-    gross_amount: gross_amount || 0, // If gross_amount is passed as a prop or variable
+    gross_amount: 0, // If gross_amount is passed as a prop or variable
     discount: 0.0, // Default value
     tax_percent: tax_rate || null, // Default to tax_rate or null
     tax_amount: 0.0, // Default value
     total_amount: 0.0, // Default value
-    price: service_data?.price || "", 
+    price: 0, 
   });
 
   // console.log("formdataaaaaaaaaa", formData)
@@ -140,7 +140,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
         meal_id: selectedRoom?.meal_id || "",
         bed: selectedRoom?.bed_id || "",
         max_occupancy: selectedRoom?.max_occupancy,
-        gross_amount: selectedRoom?.price,
+        price: selectedRoom?.price,
       };
 
       // If the new max_occupancy is smaller than selected guests, trim guest_ids

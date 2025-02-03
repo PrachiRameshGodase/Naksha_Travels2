@@ -4,7 +4,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../Helper/DateFormat";
+import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import { DSRSupplierSummaryListActions } from "../../../Redux/Actions/DSRActions";
 import {
   currencySymbol,
@@ -323,7 +323,10 @@ const MICESupplierSummary = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-
+                  <div className="table-cellx12 quotiosalinvlisxs1">
+                    {otherIcons?.quotation_icon}
+                    MICE No
+                  </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.quotation_icon}
                     Transaction Date
@@ -339,13 +342,19 @@ const MICESupplierSummary = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
-                    <p>({currencySymbol}) Supplier Amount</p>
+                    <p style={{ width: "152px" }}>
+                      ({currencySymbol}) Supplier Amount
+                    </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>({currencySymbol}) Tax Amount</p>
+                    <p style={{ width: "138px" }}>
+                      ({currencySymbol}) Tax Amount
+                    </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>({currencySymbol}) Total Amount</p>
+                    <p style={{ width: "165px" }}>
+                      ({currencySymbol}) Total Amount
+                    </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     {otherIcons?.status_svg}
@@ -380,12 +389,21 @@ const MICESupplierSummary = () => {
                               <div className="checkmark"></div>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs1">
+                              {item?.mice?.mice_no || ""}
+                            </div>
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.mice?.transaction_date
-                                ? formatDate(item?.mice?.transaction_date) || ""
+                                ? formatDate3(item?.mice?.transaction_date) || ""
                                 : ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs1">
-                              {item?.service_name || ""}
+                              {item?.service_name
+                                ? item.service_name
+                                    .replace(/_/g, " ")
+                                    .replace(/\b\w/g, (char) =>
+                                      char.toUpperCase()
+                                    )
+                                : ""}
                             </div>
 
                             <div
@@ -393,23 +411,24 @@ const MICESupplierSummary = () => {
                               data-tooltip-content={item?.supplier_name}
                               data-tooltip-id="my-tooltip"
                               data-tooltip-place="bottom"
+                              style={{ marginRight: "90px" }}
                             >
                               {item?.supplier_name || ""}
                             </div>
 
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{ width: "91%" }}>
+                              <p style={{ width: "41%" }}>
                                 {" "}
                                 {item?.supplier_amount || ""}
                               </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item ">
-                              <p style={{ width: "84%" }}>
+                              <p style={{ width: "62%" }}>
                                 {item?.tax_amount || ""}
                               </p>
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item ">
-                              <p style={{ width: "92%" }}>
+                              <p style={{ width: "95%" }}>
                                 {item?.total || ""}
                               </p>
                             </div>
