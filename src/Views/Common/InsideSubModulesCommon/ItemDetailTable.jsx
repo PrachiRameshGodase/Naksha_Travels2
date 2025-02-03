@@ -246,14 +246,18 @@ export default ItemDetailTable;
 export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
   const [showCharges, setShowCharges] = useState(false);
 
+  // const parseCharges = JSON?.parse(GRNdetail?.charges)
+  const parseCharges = []
+  console.log("parseCharges", parseCharges)
+
   const calculateTotalTaxAmount = () => {
     return GRNdetail?.items?.reduce((total, entry) => {
       return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);
     }, 0);
   };
-  const totalExpenseCharges = GRNdetail?.charges;
+  const totalExpenseCharges = JSON?.parse(GRNdetail?.charges || "[]");
 
-  // console.log("GRNdetail", GRNdetail);
+  // console.log("totalExpenseCharges", totalExpenseCharges);
 
   return (
     <>
@@ -366,7 +370,8 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
           </tr>
         </thead>
         <tbody>
-          {GRNdetail?.charges?.map((val, index) => (
+
+          {totalExpenseCharges?.map((val, index) => (
             <tr className="rowsxs15aksx433" key={index}>
               <td className="sfdjklsd1xs2w1">{index + 1}</td>
               <td className="sfdjklsd1xs2w2" style={{ width: "22%" }}>
@@ -384,7 +389,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
               <td className="sfdjklsd1xs2w3" style={{ paddingLeft: "145px" }}>
                 {val?.remarks || ""}
               </td>
-              <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
+              {/* <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
                 {JSON?.parse(val?.upload_image)?.length >= 1 ? (
                   <span
                     onClick={() => showAllImages(JSON?.parse(val?.upload_image))}
@@ -398,7 +403,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
                     : JSON?.parse(val?.upload_image)?.length
                   } Image`
                 )}
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

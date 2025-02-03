@@ -32,6 +32,7 @@ import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Acti
 import { Toaster } from "react-hot-toast";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
+import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreatePurchaseOrder = () => {
   const dispatch = useDispatch();
@@ -46,10 +47,9 @@ const CreatePurchaseOrder = () => {
   const paymentTerms = ShowMasterData("8");//purchase terms
 
 
-  const { city, country, state, zipcode, name, email, street1, street2, mobile_no } = activeOrg_details;
+  const { city, country, state, zipcode, name, email, street1, street2, mobile_no } = activeOrg();
 
   const [deliveryAddress, setDeliveryAddress] = useState("orgnization");
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
 
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
@@ -150,7 +150,7 @@ const CreatePurchaseOrder = () => {
 
   };
 
-
+  // console.log("items i n purchasessssss", formData?.items)
   //this is the common handle select
   const {
     handleChange,
@@ -185,6 +185,8 @@ const CreatePurchaseOrder = () => {
     dispatch(productTypeItemAction(""));
   }, [dispatch, isEdit, itemId]);
   useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
+
+
 
   return (
     <>
@@ -291,7 +293,7 @@ const CreatePurchaseOrder = () => {
                       <div className="form_commonblock">
                         <label>Purchase Order Number</label>
                         <GenerateAutoId
-                          formHandlers={{ setFormData, handleChange, setShowAllSequenceId }}
+                          formHandlers={{ setFormData, handleChange }}
                           nameVal="purchase_order_id"
                           value={formData?.purchase_order_id}
                           module="purchase_order"
@@ -305,7 +307,7 @@ const CreatePurchaseOrder = () => {
                           {otherIcons.placeofsupply_svg}
                           <input
                             type="text"
-                            value={formData.reference}
+                            value={preventZeroVal(formData.reference)}
                             onChange={handleChange}
                             name="reference"
                             placeholder="Enter Reference Number"
@@ -371,7 +373,7 @@ const CreatePurchaseOrder = () => {
                             }
                             name="expected_delivery_Date"
                             placeholderText="Enter Purchase Order Date"
-                            dateFormat="dd-MM-yyyy"
+                            dateFormat="dd-MMM-yyyy"
                             minDate={formData.transaction_date}
                           />
                         </span>

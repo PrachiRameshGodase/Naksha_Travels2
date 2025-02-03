@@ -30,12 +30,11 @@ import { GRNype } from "../Helper/ComponentHelper/DropdownData";
 import { SubmitButton2 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
-import { activeOrg_details, preventZeroVal, sendData } from "../Helper/HelperFunctions";
+import { preventZeroVal } from "../Helper/HelperFunctions";
 import Swal from "sweetalert2";
 import { useEditPurchaseForm } from "../Helper/StateHelper/EditPages/useEditPurchaseForm";
-import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import Loader02 from "../../Components/Loaders/Loader02";
-import { isStateIdEqualAction, productTypeItemAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
+import { productTypeItemAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
 import { ItemSelectGRN } from "../Helper/ComponentHelper/ItemSelectGRN";
 
 const CreateGRN = () => {
@@ -71,10 +70,10 @@ const CreateGRN = () => {
 
   useEffect(() => {
     if (itemId && GRNdetail) {
-      console.log("Setting fetchDetails with GRNdetail");
+      // console.log("Setting fetchDetails with GRNdetail");
       setFetchDetails(GRNdetail);
     } else if (itemId && convert === "purchase_to_grn" && purchseDetail) {
-      console.log("Setting fetchDetails with purchseDetail");
+      // console.log("Setting fetchDetails with purchseDetail");
       setFetchDetails(purchseDetail);
     }
   }, [itemId, GRNdetail, purchseDetail, convert]);
@@ -140,9 +139,9 @@ const CreateGRN = () => {
     convert,
     isDuplicate
   );
-  console.log("GRNdetail:", GRNdetail);
-  console.log("fetchDetails:", fetchDetails);
-  console.log("formData grn", formData)
+  // console.log("GRNdetail:", GRNdetail);
+  // console.log("fetchDetails:", fetchDetails);
+  // console.log("formData grn", formData)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -265,9 +264,12 @@ const CreateGRN = () => {
     }
 
   };
+
+
+  console.log("setcusData1 setcusData1 ", formData)
   useEffect(() => {
     if (itemId && convert && !purchseDetail) {
-      console.log("Fetching purchase details...");
+      // console.log("Fetching purchase details...");
       dispatch(purchasesDetails({ id: itemId, fy: localStorage.getItem('FinancialYear') }));
     }
 
@@ -279,9 +281,8 @@ const CreateGRN = () => {
         status: 1
       }));
     }
-
     if (itemId && isEdit && !GRNdetail) {
-      console.log("Fetching GRN details...");
+      // console.log("Fetching GRN details...");
       dispatch(GRNdetailsActions({ id: itemId }));
     }
   }, [dispatch, itemId, convert, isEdit, purchseDetail, GRNdetail]);
@@ -311,7 +312,7 @@ const CreateGRN = () => {
             custom_duty: null,
             gross_amount: 0,
             final_amount: 0,
-            tax_rate: null,
+            tax_rate: 0,
             tax_amount: 0,
             discount: 0,
             discount_type: null,
@@ -345,7 +346,7 @@ const CreateGRN = () => {
         item_id: +item?.item_id,
         item_name: item?.item?.name,
         unit_id: item?.unit_id,
-        tax_rate: encodeURIComponent(item?.tax_rate),
+        tax_rate: (item?.tax_rate),
         po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.quantity,
         gr_qty: +item?.gr_qty,
         rate: +item?.rate,
@@ -356,6 +357,7 @@ const CreateGRN = () => {
         tax_amount: +item?.tax_amount,
         item_remark: item?.item_remark,
       }));
+
       setFormData((prev) => ({
         ...prev,
         items: itemsFromApi || []
@@ -524,13 +526,14 @@ const CreateGRN = () => {
                                 {otherIcons.name_svg}
                                 <CustomDropdown22
                                   options={purchseList?.data?.purchase_order}
-                                  value={formData.purchase_order_id}
+                                  value={formData?.purchase_order_id}
                                   onChange={handleChange}
                                   name="purchase_order_id"
                                   defaultOption="Select Purchase Order"
                                   setcusData={setCusData}
                                   type="purchase"
                                   label="Select purchase_order"
+                                // purchase_order_id=
 
                                 />
                               </span>

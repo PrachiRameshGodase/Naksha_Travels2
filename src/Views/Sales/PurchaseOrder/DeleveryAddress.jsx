@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { activeOrg_details } from '../../Helper/HelperFunctions';
+import { activeOrg } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const DeleveryAddress = ({ onSendData, formdatas }) => {
-    const { formData } = formdatas;
-
+    const activeOrg_details = activeOrg();
 
     const { name, email, street1, street2, mobile_no } = activeOrg_details
     const [selectedOption, setSelectedOption] = useState("1");

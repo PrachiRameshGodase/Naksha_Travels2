@@ -2,6 +2,7 @@
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from "react-hot-toast";
 import { CREATE_VISA_ERROR, CREATE_VISA_REQUEST, CREATE_VISA_SUCCESS, GET_VISA_ERROR, GET_VISA_REQUEST, GET_VISA_SUCCESS, VISA_DELETE_ERROR, VISA_DELETE_REQUEST, VISA_DELETE_SUCCESS, VISA_DETAIL_ERROR, VISA_DETAIL_REQUEST, VISA_DETAIL_SUCCESS, VISA_STATUS_ERROR, VISA_STATUS_REQUEST, VISA_STATUS_SUCCESS } from "../Constants/visaConstant";
+import { setLocalStorage } from "../../Views/Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 export const CreateVisaAction = (queryParams, Navigate, isEdit, itemId) => async (dispatch) => {
     dispatch({ type: CREATE_VISA_REQUEST });
@@ -34,6 +35,9 @@ export const CreateVisaAction = (queryParams, Navigate, isEdit, itemId) => async
 
 export const visaListAction = (queryParams, setAllListValue) => async (dispatch) => {
     dispatch({ type: GET_VISA_REQUEST });
+
+    // setLocalStorage("visaListPayload", queryParams);
+
     try {
         const response = await axiosInstance.post(`/service/visa/list`, queryParams);
 

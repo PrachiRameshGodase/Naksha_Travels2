@@ -444,7 +444,7 @@ const InsideItemDetailsBox = ({
                           </p>
                         </li>
 
-                        <li><p style={{ marginRight: "3px",width:"172px" }}>Preferred Vendors</p><h1>:</h1>
+                        <li><p style={{ marginRight: "3px", width: "172px" }}>Preferred Vendors</p><h1>:</h1>
                           {preferred_vendor?.length >= 1
                             ?
                             <p style={{ width: "68%" }}>
@@ -553,7 +553,7 @@ const InsideItemDetailsBox = ({
 
         {/* Stock Transaction started */}
         {activeSection === "stock_history" && (
-        <StockTransaction itemDetails={itemDetails}/>
+          <StockTransaction itemDetails={itemDetails} />
         )}
         {/* Stock Transaction End */}
 
@@ -1747,7 +1747,7 @@ export const InsideGrnDetailsBox = ({ itemDetails }) => {
                     <li>
                       <span>Unit</span>
                       <h1>:</h1>
-                      (<ShowMastersValue type="2" id={itemDetails?.unit_id} />)
+                      <ShowMastersValue type="2" id={itemDetails?.unit_id} />
 
                     </li>
                     <li>
@@ -1756,9 +1756,9 @@ export const InsideGrnDetailsBox = ({ itemDetails }) => {
                       <p>{itemDetails?.item?.hsn_code?.toUpperCase()}</p>
                     </li>
                     <li>
-                      <span>Tax Rate</span>
+                      <span>Tax Rate(%)</span>
                       <h1>:</h1>
-                      <p>{itemDetails?.item?.tax_rate?.toUpperCase()}</p>
+                      <p>{itemDetails?.item?.tax_rate}</p>
                     </li>
                   </ul>
                 </div>

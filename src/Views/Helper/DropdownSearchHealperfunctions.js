@@ -17,6 +17,7 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     if (type === "select_item") {
         dispatch(itemLists({ search: searchTerm, ...sendData, ...productType }));
     }
+
     else if (type === "select_item2") {
         dispatch(flightListAction({ search: searchTerm, ...sendData, ...productType }));
     }

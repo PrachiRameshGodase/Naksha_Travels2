@@ -22,8 +22,9 @@ import CustomDropdown04, { CustomDropdown004 } from "../../../Components/CustomD
 import CustomDropdown26 from "../../../Components/CustomDropdown/CustomDropdown26";
 import useFetchApiData from "./useFetchApiData";
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
-import { ShowMasterData } from "../HelperFunctions";
+import { sendData, ShowMasterData } from "../HelperFunctions";
 import TextAreaComponentWithTextLimit from "./TextAreaComponentWithTextLimit";
+import ExpenseCharges from "./ExpenseCharges";
 
 
 
@@ -73,9 +74,12 @@ export const ItemSelectGRN = ({
     const newChargesType = [...formData?.charges_type];
 
     const tax_amount = newItems?.reduce(
-      (acc, item) => acc + parseFloat(item?.tax_amount),
+      (acc, item) => acc + (item?.tax_amount),
       0
     );
+
+    // console.log("tax_amount", tax_amount)
+    // console.log("newItems", newItems)
 
     const total_charges = newCharges?.reduce((acc, item) => {
       const amount =
@@ -101,29 +105,32 @@ export const ItemSelectGRN = ({
     setFormData((prevFormData) => ({
       ...prevFormData,
       subtotal: subtotal?.toFixed(2),
+      total_tax: tax_amount?.toFixed(2),
       tax_amount: tax_amount?.toFixed(2),
       total_charges: total_charges?.toFixed(2),
       total: total?.toFixed(2),
     }));
   }, [
-    formData?.items,
-    formData?.total_charges,
-    formData?.charges,
-    formData?.total,
-    formData?.charges_type,
+    formData.items, // Re-calculate when items change
+    formData.charges, // Re-calculate when charges change
   ]);
   //set all the values of items// when do any changes in items
 
-  useEffect(() => {
-    let sendData = {
+  // call item api on page load...
+  const payloadGenerator = useMemo(
+    () => () => ({
       fy: localStorage.getItem("FinancialYear"),
       noofrec: 15,
       active: 1,
-    };
+    }),
+    []
+  );
 
-    dispatch(itemLists(sendData));
-    dispatch(accountLists({ fy: localStorage.getItem("FinancialYear") }));
-  }, [dispatch]);
+  useFetchApiData(itemLists, payloadGenerator, []); //call api common function
+  useFetchApiData(accountLists, payloadGenerator, []); //call api common function
+
+
+
 
   const [openCharges, setOpenCharges] = useState(false);
   const openExpenseCharges = () => {
@@ -208,6 +215,8 @@ export const ItemSelectGRN = ({
 
         // Calculate finalAmount with the custom duty included
         const finalAmount = grossAmount + chargesWeight + customDutyAmount; // Not including tax in final amount
+        newItems[index].tax_amount = taxAmount?.toFixed(2); // For calculate tax amount
+        newItems[index].final_amount = finalAmount?.toFixed(2); // Round to 2 decimal places
 
         return {
           ...item,
@@ -249,7 +258,7 @@ export const ItemSelectGRN = ({
       total: total?.toFixed(2),
     });
   };
-
+  // console.log("formedatraa", formData)
   useEffect(() => {
     setFormData({
       ...formData,
@@ -381,7 +390,7 @@ export const ItemSelectGRN = ({
               </tr>
             </thead>
 
-            {console.log("formData?.items", formData?.items)}
+            {/* {console.log("formData?.items", formData?.items)} */}
             <tbody className="table_head_item_02">
               {formData?.items?.map((item, index) => (
                 <React.Fragment key={index}>
@@ -589,7 +598,7 @@ export const ItemSelectGRN = ({
                           type="taxRate"
                           defaultOption="Duties"
                           extracssclassforscjkls="extracssclassforscjklsitem"
-
+                          tax_rate={item?.tax_rate}
                         />
                       )}
                     </td>
@@ -953,7 +962,10 @@ export const ItemSelectGRN = ({
                 <label>
                   <p className="edit_changes_021" onClick={openExpenseCharges}>
                     {" "}
-                    Edit and add charges
+                    Edit and add charges{" "}
+                    {openCharges
+                      ? otherIcons?.down_arrow_svg
+                      : otherIcons?.up_arrow_svg}
                   </p>
                 </label>
               </div>

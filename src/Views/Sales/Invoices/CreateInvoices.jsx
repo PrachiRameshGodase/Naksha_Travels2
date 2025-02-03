@@ -13,7 +13,7 @@ import { Toaster, toast } from "react-hot-toast";
 import Loader02 from '../../../Components/Loaders/Loader02';
 import { invoiceDetailes } from '../../../Redux/Actions/invoiceActions';
 import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
-import { activeCustomerData, activeOrg_details, preventZeroVal, ShowMasterData, showRealatedText, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
+import { activeCustomerData, preventZeroVal, ShowMasterData, showRealatedText, stringifyJSON, validateItems } from '../../Helper/HelperFunctions';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SelectAddress } from '../../Common/SelectAddress';
@@ -21,16 +21,18 @@ import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
-import { accountLists } from '../../../Redux/Actions/listApisActions';
 import { isStateIdEqualAction, productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
 import { formatDate } from '../../Helper/DateFormat';
+import { activeOrg } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreateSalesOrders = ({ section }) => {
     const dispatch = useDispatch();
     const location = useLocation();
+
+    const activeOrg_details = activeOrg();
 
     const cusList = activeCustomerData();
     const addUpdate = useSelector((state) => state?.updateAddress);

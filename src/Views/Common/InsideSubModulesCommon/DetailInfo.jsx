@@ -1,7 +1,6 @@
 import React from "react";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import {
-  activeOrg_details,
   getDateStatus,
   getDateStatus1,
 } from "../../Helper/HelperFunctions";

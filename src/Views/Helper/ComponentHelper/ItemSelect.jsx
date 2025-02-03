@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  accountLists,
-  itemLists,
-} from "../../../Redux/Actions/listApisActions";
+import { itemLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import NumericInput from "../NumericInput";
 import toast from "react-hot-toast";
@@ -13,17 +10,14 @@ import { GoPlus } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit } from "react-icons/fi";
 import { otherIcons } from "../SVGIcons/ItemsIcons/Icons";
-import { ImageUploadGRN } from "./ImageUpload";
-import CustomDropdown15 from "../../../Components/CustomDropdown/CustomDropdown15";
-import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import CustomDropdown10 from "../../../Components/CustomDropdown/CustomDropdown10";
+
+
 import CustomDropdown13 from "../../../Components/CustomDropdown/CustomDropdown13";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown26 from "../../../Components/CustomDropdown/CustomDropdown26";
 import useFetchApiData from "./useFetchApiData";
 
 import {
-  activeOrg_details,
   sendData,
   ShowMasterData,
   ShowUserMasterData,
@@ -38,7 +32,6 @@ import AddVisaPopup from "../../Invoices/AddVisaPopup";
 import AddInsurancePopup from "../../Invoices/AddInsurancePopup";
 import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
-import ShowMastersValue, { ShowUserMastersValue } from "../ShowMastersValue";
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
 
@@ -65,7 +58,6 @@ const ItemSelect = ({
 
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 
-  const gstType = activeOrg_details?.tax_type;
   const currencySymbol = getCurrencySymbol();
   // console.log("currencySymbole", currencySymbole)
   const isIdEqualState = useSelector((state) => state?.isIdReducer);
@@ -867,8 +859,33 @@ const ItemSelect = ({
                     </div>
                   </td>
 
+                  {/* {console.log("item?.tax_rate", item?.tax_rate)} */}
+
                   {/* Tax Rate */}
+                  {/* {console.log("item?.item?.tax_preference", item)} */}
                   <td className="table_column_item item_table_text_transform">
+                    {item?.tax_name === "Non-Taxable" ? <span style={{ cursor: "not-allowed" }}>
+                      {item?.tax_name}
+                      {/* this is always shows Non-Taxable for items select */}
+                    </span>
+                      :
+                      <>
+                        <CustomDropdown13
+                          options={tax_rate}
+                          value={item?.tax_rate}
+                          onChange={(e) =>
+                            handleItemChange(index, "tax_rate", e.target.value)
+                          }
+                          name="tax_rate"
+                          type="taxRate"
+                          defaultOption="Taxes"
+                          extracssclassforscjkls="extracssclassforscjklsitem"
+                          className2="items"
+                          tax_rate={item?.tax_rate}
+                        />
+                      </>}
+                  </td>
+                  {/* <td className="table_column_item item_table_text_transform">
                     {item?.item_name === "" || item?.tax_rate == 0 ? (//it the selected row have no item name and no tax rate only we given the option of tax rate selection.
                       <CustomDropdown13
                         options={tax_rate}
@@ -890,7 +907,7 @@ const ItemSelect = ({
                           : item?.tax_rate}
                       </span>
                     )}
-                  </td>
+                  </td> */}
 
                   {/* Amount */}
                   <td className="table_column_item item_table_width_02 item_text_end_01 item_table_text_transform">
@@ -1158,4 +1175,3 @@ const ItemSelect = ({
   );
 };
 export default ItemSelect;
-

@@ -1,7 +1,7 @@
 // PdfTemplate.js
 import React, { useState } from 'react';
 // import './PdfTemplate.scss';
-import { activeOrg_details, showAmountWithCurrencySymbol, showRateWithPercent } from '../../../HelperFunctions';
+import { showAmountWithCurrencySymbol } from '../../../HelperFunctions';
 import { otherIcons } from '../../../SVGIcons/ItemsIcons/Icons';
 import { currentTime, formatDate3, todayDate } from '../../../DateFormat';
 import CommonItemReport from '../../../../Reports/ReportsData/SaleReport/CommonItemReport';
@@ -11,14 +11,8 @@ import CommonDebitNote from '../../../../Reports/ReportsData/DebitNoteReport/Com
 import CommonExpense from '../../../../Reports/ReportsData/ExportReport/CommonExpense';
 import CommonAccountTransaction from '../../../../Reports/ReportsData/AccountantsReport/CommonAccountTransaction';
 
-const ReportsPrintContent = ({ reportData, cusVenData, masterData, moduleId, section }) => {
+const ReportsPrintContent = ({ reportData, masterData, section }) => {
     const data = reportData?.data?.data;
-
-    const calculateTotalTaxAmount = () => {
-        return data?.items?.reduce((total, entry) => {
-            return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
-        }, 0);
-    };
 
     // console.log("repot data", reportData)
 

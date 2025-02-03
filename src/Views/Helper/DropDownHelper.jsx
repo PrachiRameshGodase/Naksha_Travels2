@@ -3,7 +3,7 @@ import useOutsideClick from './PopupData';
 import { DropdownSearchHealperfunctions } from './DropdownSearchHealperfunctions';
 import { useDispatch, useSelector } from 'react-redux';
 
-const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, setBasicDetailsDisplayName,hotelID) => {
+const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, setBasicDetailsDisplayName, hotelID) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState(null);
     const [focusedOptionIndex, setFocusedOptionIndex] = useState(-1);
@@ -13,18 +13,18 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
     const dispatch = useDispatch();
     const debounceTimeoutRef = useRef(null); // Store debounce timeout reference
     const productType = useSelector((state) => state?.type);
-    
+
     const handleSelect = (option) => {
         if (option.active !== "0") {
 
             onChange({
                 target: {
                     name,
-                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label :type==='countryList'? option?.country_id:type=="visa_entry_type" ? option?.visa_entry_type: type==="visa_type_id"? option.visa_type_id: type==="days"?option.days: type==="airportList"? option?.name :type==="airportList2" ? option?.airport:  type==="meetingType" ? option?.meeting_type: type==="noOfPersons" ? option?.no_of_person:type === "select_item2" ? option?.flight_name :type==="companyList"? option?.company_name: type === "account" ? option?.account_type : option.id,
+                    value: type === "masters" ? option.labelid : type === "service" ? option?.label : type === "masters2" ? option?.label : type === "item_type" ? option?.label : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : type === "rate" ? option : type === "masters_salutation" ? option?.label : type === 'countryList' ? option?.country_id : type == "visa_entry_type" ? option?.visa_entry_type : type === "visa_type_id" ? option.visa_type_id : type === "days" ? option.days : type === "airportList" ? option?.name : type === "airportList2" ? option?.airport : type === "meetingType" ? option?.meeting_type : type === "noOfPersons" ? option?.no_of_person : type === "select_item2" ? option?.flight_name : type === "companyList" ? option?.company_name : type === "account" ? option?.account_type : option.id,
                 }
             });
 
-            if (type === "vendor" || type == "purchase" || type == "countryList" || type== "visa_entry_type" || type=='visa_type_id' || type=="days" || type=="airportList" || type=="hotelList" || type=="meetingType" || type=="noOfPersons"|| type == "airportList2" || type==="companyList") {
+            if (type === "vendor" || type == "purchase" || type == "countryList" || type == "visa_entry_type" || type == 'visa_type_id' || type == "days" || type == "airportList" || type == "hotelList" || type == "meetingType" || type == "noOfPersons" || type == "airportList2" || type === "companyList") {
                 setcusData(option);
             } else if (type === "select_item") {
                 setItemData(option)
@@ -44,13 +44,13 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
             dropdownRef.current.focus();
         }
     };
-  
+
     const handleSearch = () => {
         if (debounceTimeoutRef.current) {
             clearTimeout(debounceTimeoutRef.current); // Clear previous timeout
         }
         debounceTimeoutRef.current = setTimeout(() => {
-            DropdownSearchHealperfunctions(searchTerm, type, name, dispatch, productType,hotelID,);
+            DropdownSearchHealperfunctions(searchTerm, type, name, dispatch, productType, hotelID,);
         }, 800);
         // }
     };
