@@ -70,7 +70,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
 
     // Always add an empty row at the end of the items array
     itemsFromApi?.push({
-        item_name: "", service_name: "", discount_type: 1, discount: 0, quantity: 1, tax_rate: 0
+        item_name: "", service_name: "", discount_type: 1, discount: 0, quantity: 1, tax_rate: 0, tax_amount: 0
     });
 
     const all_changes = JSON?.parse(detailData?.charges || "[]");

@@ -1,20 +1,18 @@
 // PdfTemplate.js
 import React, { useState } from "react";
 import "./PdfTemplate.scss";
-import {
-  activeOrg_details,
-} from "../../HelperFunctions";
 import { PdfShowMastersValue } from "../../ShowMastersValue";
 import { formatDate3, formatDate4 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
 import { convertCurrencyWithPercent, convertCurrencyWithSymbol } from "../../CurrencyHelper/convertKESToUSD";
+import { activeOrg } from "../ManageStorage/localStorageUtils";
 // import { useSelector } from "react-redux";
 
 const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, currencyList }) => {
 
   const [showCharges, setShowCharges] = useState(false);
 
-  const active_orgnization = activeOrg_details;
+  const active_orgnization = activeOrg();
 
   const calculateTotalTaxAmount = () => {
     return data?.items?.reduce((total, entry) => {

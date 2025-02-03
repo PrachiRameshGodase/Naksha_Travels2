@@ -10,10 +10,15 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
             const sendData = {
                 status: 3,
                 id: response?.data?.transaction?.id
-            }
-            dispatch(GRNstatusActions(sendData, null, null))//shown send for approval in grn list
-            toast.success("GRN Send For Approval");
-            navigate(`/dashboard/grn`);
+            };
+
+            // Dispatch the action and handle the response
+            dispatch(GRNstatusActions(sendData, null, null))?.then(() => {
+
+                toast.success("GRN Sent For Approval");
+                navigate(`/dashboard/grn`); // Redirect to the GRN list page
+
+            })
         }
 
         // Purchase Order in update

@@ -9,6 +9,7 @@ import DropDownHelper from "../../Views/Helper/DropDownHelper";
 import { sendData } from "../../Views/Helper/HelperFunctions";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 import "./customdropdown.scss";
+import { manageStateAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
 
 const CustomDropdown29 = forwardRef((props, ref) => {
   const {
@@ -39,7 +40,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
   const hotelList = useSelector((state) => state?.hotelList);
   const hotelPayloads = localStorage.getItem("hotelPayload");
 
-  
+
 
   const dispatch = useDispatch();
 
@@ -73,7 +74,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
     []
   );
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
-  
+
   return (
     <div
       ref={combinedRef}
@@ -90,15 +91,15 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           ? cusData
             ? cusData?.name
             : defaultOption
-            :
-            type === "companyList"
+          :
+          type === "companyList"
             ? cusData
               ? cusData?.company_name
               : defaultOption : cusData
-          ? cusData?.hotel_name
-          : value
-          ? fullName?.hotel_name
-          : defaultOption}
+              ? cusData?.hotel_name
+              : value
+                ? fullName?.hotel_name
+                : defaultOption}
 
         <svg
           width="13"
@@ -150,21 +151,21 @@ const CustomDropdown29 = forwardRef((props, ref) => {
                       (type === "hotalList" && option.hotel_name == value
                         ? " selectedoption"
                         : "") +
-                        (type === "companyList" && option.company_name == value
-                          ? " selectedoption"
-                          : "") +
+                      (type === "companyList" && option.company_name == value
+                        ? " selectedoption"
+                        : "") +
                       (index === focusedOptionIndex ? " focusedoption" : "")
                     }
                   >
                     {type === "hotalList"
                       ? `${option?.hotel_name || ""}`
                       : type === "airportList"
-                      ? `${option?.name || ""}`
-                      :
-                      type === "companyList"
-                      ? `${option?.company_name || ""}`
-                      :
-                       ""}
+                        ? `${option?.name || ""}`
+                        :
+                        type === "companyList"
+                          ? `${option?.company_name || ""}`
+                          :
+                          ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
@@ -237,15 +238,20 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
       if (type === "countryList") {
         dispatch(visaListAction({ ...sendData }));
       }
-      // else
-      // if (type === "visa_entry_type") {
-      //   const sendData2={country_name:cusData?.country_name}
-      //   dispatch(visaListAction({sendData2, ...sendData }));
-      // }
-      // else if(type === "visa_type_id") {
-      //   const sendData2={country_name:cusData?.country_name, visa_entry_type:cusData?.visa_entry_type}
-      //   dispatch(visaListAction({sendData2, ...sendData }));
-      // }
+      else
+        if (type === "visa_entry_type") {
+          const sendData2 = { country_name: cusData?.country_name }
+          dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
+            dispatch(manageStateAction("visa_entry_type", res))
+          })
+        }
+        else if (type === "visa_type_id") {
+          const sendData2 = { country_name: cusData?.country_name, visa_entry_type: cusData?.visa_entry_type }
+          dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
+            dispatch(manageStateAction("visa_type", res))
+          })
+
+        }
     }
     // setSearchTerm("");
   }, [isOpen]);
@@ -265,12 +271,12 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
       type === "visa_entry_type"
         ? option?.visa_entry_name
         : type === "countryList"
-        ? option?.country_name
-        : type === "visa_type_id"
-        ? option?.visa_type_id
-        : type === "days"
-        ? option?.days
-        : "";
+          ? option?.country_name
+          : type === "visa_type_id"
+            ? option?.visa_type_id
+            : type === "days"
+              ? option?.days
+              : "";
 
     if (
       key &&
@@ -279,8 +285,8 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
           (type === "visa_entry_type"
             ? item?.visa_entry_name
             : type === "countryList"
-            ? item?.country_name
-            : item?.visa_type_name) === key
+              ? item?.country_name
+              : item?.visa_type_name) === key
       )
     ) {
       acc.push(option);
@@ -305,18 +311,18 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
             ? cusData?.country_name
             : defaultOption
           : type === "visa_entry_type"
-          ? cusData
-            ? cusData?.visa_entry_name
-            : defaultOption
-          : type === "visa_type_id"
-          ? cusData
-            ? cusData?.visa_type_name
-            : defaultOption
-          : type === "days"
-          ? cusData
-            ? cusData?.days
-            : defaultOption
-          : ""}
+            ? cusData
+              ? cusData?.visa_entry_name
+              : defaultOption
+            : type === "visa_type_id"
+              ? cusData
+                ? cusData?.visa_type_name
+                : defaultOption
+              : type === "days"
+                ? cusData
+                  ? cusData?.days
+                  : defaultOption
+                : ""}
 
         <svg
           width="13"
@@ -363,7 +369,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                     className={
                       "dropdown-option" +
                       (type === "visa_entry_type" &&
-                      option.visa_entry_type == value
+                        option.visa_entry_type == value
                         ? " selectedoption"
                         : "") +
                       (type === "countryList" && option.country_id == value
@@ -381,12 +387,12 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                     {type === "countryList"
                       ? `${option?.country_name || ""}`
                       : type === "visa_entry_type"
-                      ? `${option?.visa_entry_name || ""}`
-                      : type === "visa_type_id"
-                      ? `${option?.visa_type_name || ""}`
-                      : type === "days"
-                      ? `${option?.days || ""}`
-                      : ""}
+                        ? `${option?.visa_entry_name || ""}`
+                        : type === "visa_type_id"
+                          ? `${option?.visa_type_name || ""}`
+                          : type === "days"
+                            ? `${option?.days || ""}`
+                            : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
@@ -438,8 +444,8 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
-   const assistData = useSelector((state) => state?.assistList);
- 
+  const assistData = useSelector((state) => state?.assistList);
+
   const hotelPayloads = localStorage.getItem("hotelPayload");
 
   const dispatch = useDispatch();
@@ -486,10 +492,10 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
       type === "airportList2"
         ? option?.airport
         : type === "meetingType"
-        ? option?.meeting_type
-        : type === "noOfPersons"
-        ? option?.no_of_person
-        : "";
+          ? option?.meeting_type
+          : type === "noOfPersons"
+            ? option?.no_of_person
+            : "";
 
     if (
       key &&
@@ -498,15 +504,15 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
           (type === "airportList2"
             ? item?.airport
             : type === "meetingType"
-            ? item?.meeting_type
-            : item?.no_of_person) === key
+              ? item?.meeting_type
+              : item?.no_of_person) === key
       )
     ) {
       acc.push(option);
     }
     return acc;
   }, []);
-  
+
   return (
     <div
       ref={combinedRef}
@@ -524,14 +530,14 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
             ? cusData?.airport
             : defaultOption
           : type === "meetingType"
-          ? cusData
-            ? cusData?.meeting_type
-            : defaultOption
-          : type === "noOfPersons"
-          ? cusData
-            ? cusData?.no_of_person
-            : defaultOption
-          : ""}
+            ? cusData
+              ? cusData?.meeting_type
+              : defaultOption
+            : type === "noOfPersons"
+              ? cusData
+                ? cusData?.no_of_person
+                : defaultOption
+              : ""}
 
         <svg
           width="13"
@@ -592,10 +598,10 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
                     {type === "airportList2"
                       ? `${option?.airport || ""}`
                       : type === "meetingType"
-                      ? `${option?.meeting_type || ""}`
-                      : type === "noOfPersons"
-                      ? `${option?.no_of_person || ""}`
-                      : ""}
+                        ? `${option?.meeting_type || ""}`
+                        : type === "noOfPersons"
+                          ? `${option?.no_of_person || ""}`
+                          : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (

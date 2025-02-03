@@ -30,6 +30,7 @@ import {
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import { generatePDF } from "../../Helper/createPDF";
+
 const PurchaseOrderDetails = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -219,13 +220,13 @@ const PurchaseOrderDetails = () => {
                     <button onClick={() => setShowDropdownx2(!showDropdownx2)} ref={dropdownRef}>Convert {otherIcons?.arrow_svg}
                       {showDropdownx2 && (
                         <div className="dropdownmenucustom5sc51s">
-                          <div
+                          {/* <div
                             className="dmncstomx1 btextcolor"
                             onClick={() => handleEditThing("purchase_to_grn")}
                           >
                             {otherIcons?.print_svg}
                             GRN
-                          </div>
+                          </div> */}
                           <div
                             className="dmncstomx1 btextcolor"
                             onClick={() =>

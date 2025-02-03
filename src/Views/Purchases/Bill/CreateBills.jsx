@@ -13,7 +13,7 @@ import { Toaster } from "react-hot-toast";
 import { billDetails } from "../../../Redux/Actions/billActions";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import { formatDate } from "../../Helper/DateFormat";
-import { activeOrg_details, preventZeroVal, ShowMasterData, stringifyJSON } from "../../Helper/HelperFunctions";
+import { preventZeroVal, ShowMasterData } from "../../Helper/HelperFunctions";
 import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import { GRNdetailsActions } from "../../../Redux/Actions/grnActions";
@@ -22,11 +22,12 @@ import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAre
 import SubmitButton from "../../Common/Pagination/SubmitButton";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import { SelectAddress } from "../../Common/SelectAddress";
-import { handleFormSubmit1, handleFormSubmitCommon } from "../Utils/handleFormSubmit";
+import { handleFormSubmit1 } from "../Utils/handleFormSubmit";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
 import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
+import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateBills = () => {
   const dispatch = useDispatch();
@@ -42,11 +43,12 @@ const CreateBills = () => {
   const GRNdetail = GRNdetails?.data?.bgrnill;
   const paymentTerms = ShowMasterData("8");
 
+  const activeOrg_details = activeOrg();
+
   const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
   const [fetchDetails, setFetchDetails] = useState([]);
-  // const [isVendorSelect, setIsVendorSelect] = useState(false);
-  // const [isItemSelect, setIsItemSelect] = useState(false);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
+
+
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate, } = Object.fromEntries(params.entries());
 
@@ -284,7 +286,6 @@ const CreateBills = () => {
                             formHandlers={{
                               setFormData,
                               handleChange,
-                              setShowAllSequenceId,
                             }}
                             nameVal="bill_no"
                             value={formData?.bill_no}

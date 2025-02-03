@@ -17,12 +17,8 @@ import CustomDropdown17 from "../../../Components/CustomDropdown/CustomDropdown1
 import Loader02 from "../../../Components/Loaders/Loader02";
 
 import {
-  activeOrg_details,
-  handleDropdownError,
   preventZeroVal,
   ShowMasterData,
-  stringifyJSON,
-  validateItems,
 } from "../../Helper/HelperFunctions";
 import ImageUpload from "../../Helper/ComponentHelper/ImageUpload";
 import SubmitButton from "../../Common/Pagination/SubmitButton";
@@ -34,16 +30,17 @@ import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAre
 import { invoiceDetailes } from "../../../Redux/Actions/invoiceActions";
 import { formatDate } from "../../Helper/DateFormat";
 import { useEditPurchaseForm } from "../../Helper/StateHelper/EditPages/useEditPurchaseForm";
-import { parsePurchaseDetails } from "../../Helper/StateHelper/EditPages/parsePurchaseDetails";
 import { isStateIdEqualAction } from "../../../Redux/Actions/ManageStateActions/manageStateData";
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
-import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import { handleFormSubmit1 } from "../../Purchases/Utils/handleFormSubmit";
+import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateCreditNotes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const activeOrg_details = activeOrg();
 
   const location = useLocation();
   const cusList = useSelector((state) => state?.customerList);

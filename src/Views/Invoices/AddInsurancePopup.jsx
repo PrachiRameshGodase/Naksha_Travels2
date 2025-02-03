@@ -26,9 +26,11 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const insuranceLists = insuranceListData?.data?.data || [];
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
- 
+
   const [cusData, setcusData] = useState(null);
   const [cusData3, setcusData3] = useState(null);
+
+  const [cusData1, setcusData1] = useState(null);
 
 
   const [formData, setFormData] = useState({
@@ -107,11 +109,11 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+
+      });
       return;
     } else {
       const sendData = {
@@ -220,19 +222,19 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown29
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Company Name"
-                              options={insuranceLists}
-                              value={formData.company_name}
-                              onChange={handleChange}
-                              name="company_name"
-                              defaultOption="Select Comapnay Name"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
-                              type="companyList"
-                              required
-                            />
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Company Name"
+                            options={insuranceLists}
+                            value={formData.company_name}
+                            onChange={handleChange}
+                            name="company_name"
+                            defaultOption="Select Comapnay Name"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="companyList"
+                            required
+                          />
                         </span>
                         {errors?.company_name && (
                           <p
