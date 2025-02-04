@@ -583,7 +583,7 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
   );
 };
 
-export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
+export const PaymentRecTable = ({ formData, setFormData }) => {
   const currencySymbol = getCurrencySymbol();
   return (
 
@@ -602,6 +602,7 @@ export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
             <th className="table_column_item item_text_end_01">({currencySymbol}) Payment</th>
           </tr>
         </thead>
+
 
         {formData?.customer_id ?
           <>
@@ -715,6 +716,140 @@ export const PaymentRecTable = ({ formData, setFormData, paymentDetail }) => {
     </>
   );
 };
+
+// payment made table
+export const PaymentMadeTable = ({ formData, setFormData }) => {
+  const currencySymbol = getCurrencySymbol();
+  return (
+
+    <>
+      <table className="itemTable_01" id="modidy_table_form_payment_rec_">
+        <thead className="table_head_item_02">
+          <tr className="table_head_item_02_row">
+            <th className="table_column_item item_table_width_01" >#</th>
+            <th className="table_column_item item_table_width_02">
+              Date
+            </th>
+            <th className="table_column_item item_table_width_02">Bill Number</th>
+            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Bill Amount</th>
+            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Amount Due</th>
+            <th className="table_column_item item_text_end_01">({currencySymbol}) Payment</th>
+          </tr>
+        </thead>
+
+        {formData?.vendor_id ?
+          <>
+            <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
+              {formData?.entries?.map((val, index) => (
+
+                <tr key={index} className="table_head_item_02_row itemsectionrows">
+                  <td className="table_column_item">{index + 1}</td>
+
+                  <td className="table_column_item">{val?.date}</td>
+                  <td className="table_column_item">{val?.bill_no}</td>
+                  <td className="table_column_item item_text_end_01">
+                    {(val?.bill_amount?.toFixed(2))}
+                  </td>
+                  <td className="table_column_item item_text_end_01">
+                    {(val?.balance_amount?.toFixed(2))}
+                  </td>
+                  <td className="table_column_item item_text_end_01 tablsxs1a2">
+                    <input
+                      style={{ width: "50%", textAlign: "right" }}
+                      type="number"
+                      value={val.amount !== null ? val.amount : ""}
+                      placeholder="0.00"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        const newValue =
+                          inputValue === "" ? null : parseFloat(inputValue);
+
+                        // Convert credit and balance_amount to numbers for comparison
+                        const formDebit = Number(formData?.credit) || 0;
+                        const balanceAmount =
+                          Number(val?.balance_amount) || 0;
+
+                        // Condition 1: formData.credit is empty
+                        if (formData?.credit === "") {
+                          toast("Please set the amount", {
+                            icon: "👏",
+                            style: {
+                              borderRadius: "10px",
+                              background: "#333",
+                              color: "#fff",
+                              fontSize: "14px",
+                            },
+                          });
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            entries: prevFormData?.entries?.map(
+                              (entry, i) =>
+                                i === index
+                                  ? { ...entry, amount: 0 }
+                                  : entry
+                            ),
+                          }));
+                        }
+
+                        // Condition 2: inputValue exceeds balance amount
+                        else if (newValue > balanceAmount) {
+                          toast(
+                            "The amount entered here is more than the amount due",
+                            {
+                              icon: "👏",
+                              style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#fff",
+                                fontSize: "14px",
+                              },
+                            }
+                          );
+                        }
+
+                        // Condition 3: inputValue exceeds formData.credit
+                        else if (newValue > formDebit) {
+                          toast(
+                            "The amount entered here is more than the amount paid by the customer",
+                            {
+                              icon: "👏",
+                              style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#fff",
+                                fontSize: "14px",
+                              },
+                            }
+                          );
+                        }
+
+                        // Condition 4: inputValue is valid
+                        else {
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            entries: prevFormData?.entries?.map(
+                              (entry, i) =>
+                                i === index
+                                  ? { ...entry, amount: newValue }
+                                  : entry
+                            ),
+                          }));
+                        }
+                      }}
+                    />
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+          </> :
+          <p style={{ textAlign: "center" }}>Please Select Customer</p>}
+
+      </table>
+    </>
+  );
+};
+// payment made table
 
 
 //for manage currency list / and create currencies prices...
