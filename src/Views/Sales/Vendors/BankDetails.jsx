@@ -106,7 +106,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
   useEffect(() => {
     updateUserData({ bank_details: bankDetails });
-  }, []);
+  }, [bankDetails]);
 
   // Handle errors for fields
   const account_noError = !(bankDetails[0]).account_no;

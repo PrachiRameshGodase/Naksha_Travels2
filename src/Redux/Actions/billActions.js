@@ -72,7 +72,7 @@ export const billDetails = (queryParams) => async (dispatch) => {
         );
 
         dispatch({ type: BILL_DETAILS_SUCCESS, payload: response.data });
-
+        return response?.data;
     } catch (error) {
         dispatch({ type: BILL_DETAILS_ERROR, payload: error.message });
         toast.error(response?.data?.message)

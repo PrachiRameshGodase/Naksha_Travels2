@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -8,15 +8,14 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 
-import { useReactToPrint } from 'react-to-print';
 
 import useOutsideClick from '../../Helper/PopupData';
-import { formatDate, formatDate3 } from '../../Helper/DateFormat';
-import ShowMastersValue from '../../Helper/ShowMastersValue';
+import { formatDate3 } from '../../Helper/DateFormat';
 import ItemDetailTable from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, FromToDetailsPurchases } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { MoreInformation, FromToDetailsPurchases } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import { generatePDF } from '../../Helper/createPDF';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const DebitNotesDetails = () => {
     const Navigate = useNavigate();
@@ -34,12 +33,10 @@ const DebitNotesDetails = () => {
     // debitNoteDetail
     // debitNoteDelete
 
-    const dateObject = new Date(debitDetail?.created_at);
 
 
     const dropdownRef = useRef(null);
     const dropdownRef1 = useRef(null);
-    const dropdownRef2 = useRef(null);
     useOutsideClick(dropdownRef, () => setShowDropdown(false));
     useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
 
@@ -93,17 +90,13 @@ const DebitNotesDetails = () => {
         }
     };
 
-    useEffect(() => {
-        if (UrlId) {
-            const queryParams = {
-                id: UrlId,
-            };
-            dispatch(debitNotesDetails(queryParams));
-        }
-    }, [dispatch, UrlId, callApi]);
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: UrlId,
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
+    }), [callApi]);
 
-
-
+    useFetchApiData(debitNotesDetails, payloadGenerator, [callApi]);
 
     // pdf & print
     const [loading, setLoading] = useState(false);

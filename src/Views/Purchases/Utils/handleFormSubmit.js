@@ -81,14 +81,19 @@ export const handleFormSubmit1 = async ({
     }
 
     // it is worked when create credit note is opened....
-    if ((formData?.credit_note_id)) {
+    if (formData?.credit_note_id) {
         if (handleDropdownError(sendData?.isInvoiceSelect, sendData?.dropdownRef3)) return;
+    }
+
+    // it is worked when debit credit note is opened....
+    if ((formData?.debit_note_id)) {
+        if (handleDropdownError(sendData?.isBillSelect, sendData?.dropdownRef3)) return;
     }
 
     if (toSelect === "vendor") {
         if (handleDropdownError(isVendorSelect, dropdownRef1)) return;
-
     }
+
 
     if (errors?.length > 0) {
         setItemErrors(errors);

@@ -114,7 +114,7 @@ const CreateCreditNotes = () => {
   );
 
   // console.log("fetchdetails credit", fetchDetails);
-  console.log("fordaaaaaaa credit", formData);
+  // console.log("fordaaaaaaa credit", formData);
 
   const sendChageData = {
     dispatch: dispatch,
@@ -174,6 +174,7 @@ const CreateCreditNotes = () => {
       editDub: isEdit,
       section: "credit",
       updateDispatchAction: createCreditNotes, // This is dynamic for the dispatch action
+      toSelect: "customer",
       sendData
     });
   };
@@ -214,6 +215,7 @@ const CreateCreditNotes = () => {
       dispatch(creditNotesDetails({ id: itemId }));
     }
   }, [dispatch, cusData]);
+
 
   return (
     <>
