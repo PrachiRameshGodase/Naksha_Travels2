@@ -137,6 +137,46 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
             sendChageData?.setIsInvoiceSelect(false);
         }
 
+        // use in debit note
+        if (name === "bill_id" && value !== "") {
+            sendChageData?.setIsBillSelect(true);
+            if (name === "bill_id") {
+                const selectedInvoice = sendChageData?.billList?.find(
+                    (val) => val?.id === value
+                );
+                if (selectedInvoice?.id) {
+                    sendChageData?.dispatch(sendChageData?.billDetails({ id: selectedInvoice.id })).then((data) => {
+                        if (data) {
+                            // Use the data to parse details
+                            const {
+                                calculateTotalTaxAmount,
+                                itemsFromApi,
+                                all_changes,
+                                total_charges,
+                            } = parsePurchaseDetails(data?.bill);
+
+                            // console.log("itemsFromApi", itemsFromApi)
+                            // Update form data with parsed details
+                            // console.log("data?.Invoice", data?.Invoice?.items)
+
+                            setFormData((prevInner) => ({
+                                ...prevInner,
+                                tax_amount: calculateTotalTaxAmount(),
+                                items: itemsFromApi,
+                                charges: all_changes,
+                                total_charges,
+                            }));
+
+                            // Update item selection status
+                            // setIsItemSelect(!!data?.Invoice.items);
+                        }
+                    });
+                }
+            }
+        } else if (name === "bill_id" && value == "") {
+            sendChageData?.setIsBillSelect(false);
+        }
+
 
         // for vendor 
         if (name === "vendor_id") {

@@ -18,14 +18,18 @@ import { billDetails, billLists } from '../../../Redux/Actions/billActions';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { handleDropdownError, ShowMasterData, validateItems } from '../../Helper/HelperFunctions';
+import { preventZeroVal, ShowMasterData } from '../../Helper/HelperFunctions';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { formatDate } from '../../Helper/DateFormat';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
+import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
+import { handleFormSubmit1 } from '../Utils/handleFormSubmit';
+import NumericInput from '../../Helper/NumericInput';
+
 const CreateDebitNotes = () => {
+
     const dispatch = useDispatch();
     const location = useLocation();
 
@@ -34,7 +38,6 @@ const CreateDebitNotes = () => {
     const billList = useSelector(state => state?.billList?.data?.bills);
     const billDetailss = useSelector((state) => state?.billDetail);
     const billDetail = billDetailss?.data?.bill;
-
 
     const debitNoteDetails = useSelector((state) => state?.debitNoteDetail);
     const debitNote = debitNoteDetails?.data?.data?.debit_note;
@@ -55,11 +58,19 @@ const CreateDebitNotes = () => {
         } else if (itemId && (convert === "bill_to_debit")) {
             setFetchDetails(billDetail);
         }
-
-
     }, [itemId, isEdit, convert, billDetail, debitNote, isDuplicate])
 
-    const currency = getCurrencyValue();
+
+    useEffect(() => {
+        if (!itemId) return; // Exit early if no itemId
+        if (itemId && debitNote) {
+            setFetchDetails(debitNote);
+        } else if (itemId && convert === "invoiceToCredit" && invoiceDetail) {
+            setFetchDetails(invoiceDetails);
+        }
+    }, [itemId, isEdit, convert, debitNote, billDetail]);
+
+    // const currency = getCurrencyValue();
 
     const {
         formData,
@@ -91,7 +102,8 @@ const CreateDebitNotes = () => {
     );
 
 
-
+    console.log("formdaaaaaaaaaaaaaa", formData)
+    console.log("reasonTypeData", reasonTypeData)
     // useEffect(() => {
     //     if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && fetchDetails && convert) {
 
@@ -186,102 +198,107 @@ const CreateDebitNotes = () => {
     //     }
     // }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
 
-    const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-        const subTotalValue = parseFloat(subtotal) || 0;
-        const shippingChargeValue = parseFloat(shippingCharge) || 0;
-        const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-        return (subTotalValue + shippingChargeValue + adjustmentChargeValue).toFixed(2);
-    };
+    const sendChageData = {
+        dispatch: dispatch,
+        billList,
+        setIsBillSelect,
+        billDetails
+    }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        let newValue = value;
-
-        if (name === 'shipping_charge' || name === 'adjustment_charge') {
-            newValue = parseFloat(value) || 0; // Convert to float or default to 0
-        }
+    const {
+        handleChange,
+    } = useHandleFormChange({ formData, setFormData, vendorList, addSelect, setAddSelect, isVendorSelect, setIsVendorSelect, sendChageData });
 
 
-        if (name === "vendor_id" && value !== "") {
-            setIsVendorSelect(true);
-        }
-        else if (name === "vendor_id" && value == "") {
-            setIsVendorSelect(false);
-        }
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     let newValue = value;
 
-        if (name == "bill_id" && value !== "") {
-            setIsBillSelect(true);
-        }
-        else if (name == "bill_id" && value == "") {
-            setIsBillSelect(false);
-        }
-
-        const selectedItem = vendorList?.data?.user?.find((cus) => cus.id == value);
-
-        if (name === "vendor_id") {
-            const findfirstbilling = selectedItem?.address?.find(
-                (val) => val?.is_billing == "1"
-            );
-            const findfirstshipping = selectedItem?.address?.find(
-                (val) => val?.is_shipping == "1"
-            );
-            setAddSelect({
-                billing: findfirstbilling,
-                shipping: findfirstshipping,
-            });
-        }
-        if (name === "bill_id" && value !== "") {
-            setIsBillSelect(true);
-        }
-        else if (name === "vendor_id") {
-            setIsBillSelect(false);
-        }
-
-        setFormData({
-            ...formData,
-            [name]: newValue,
-            ...(name === "vendor_id" ? { bill_id: "" } : ""),
-            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
-            address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
-        });
-    };
+    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
+    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
+    //     }
 
 
+    //     if (name === "vendor_id" && value !== "") {
+    //         setIsVendorSelect(true);
+    //     }
+    //     else if (name === "vendor_id" && value == "") {
+    //         setIsVendorSelect(false);
+    //     }
 
-    useEffect(() => {
-        if (formData?.bill_id) {
-            const getSelectedBillData = billList?.find((val) => val?.id == formData?.bill_id);
+    //     if (name == "bill_id" && value !== "") {
+    //         setIsBillSelect(true);
+    //     }
+    //     else if (name == "bill_id" && value == "") {
+    //         setIsBillSelect(false);
+    //     }
 
-            const itemsFromApi = getSelectedBillData?.items?.map(item => ({
-                item_id: (+item?.item_id),
-                item_name: (item?.item?.name),
-                quantity: (+item?.quantity),
-                gross_amount: (+item?.gross_amount),
-                unit_id: (item?.unit_id),
-                rate: (+item?.rate),
-                final_amount: (+item?.final_amount),
-                tax_rate: (+item?.tax_rate),
-                tax_amount: (+item?.tax_amount),
-                discount: (+item?.discount),
-                discount_type: (+item?.discount_type),
-                item_remark: item?.item_remark,
-                item_name: item?.item?.name,
-                tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
-            }));
+    //     const selectedItem = vendorList?.data?.user?.find((cus) => cus.id == value);
+
+    //     if (name === "vendor_id") {
+    //         const findfirstbilling = selectedItem?.address?.find(
+    //             (val) => val?.is_billing == "1"
+    //         );
+    //         const findfirstshipping = selectedItem?.address?.find(
+    //             (val) => val?.is_shipping == "1"
+    //         );
+    //         setAddSelect({
+    //             billing: findfirstbilling,
+    //             shipping: findfirstshipping,
+    //         });
+    //     }
+    //     if (name === "bill_id" && value !== "") {
+    //         setIsBillSelect(true);
+    //     }
+    //     else if (name === "vendor_id") {
+    //         setIsBillSelect(false);
+    //     }
+
+    //     setFormData({
+    //         ...formData,
+    //         [name]: newValue,
+    //         ...(name === "vendor_id" ? { bill_id: "" } : ""),
+    //         total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
+    //         address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
+    //     });
+    // };
 
 
-            setFormData((prev) => ({
-                ...prev,
-                items: itemsFromApi || []
-            }));
-            const errors = validateItems(getSelectedBillData?.items || []);
-            if (errors.length > 0) {
-                setItemErrors(errors);
-            }
 
-        }
+    // useEffect(() => {
+    //     if (formData?.bill_id) {
+    //         const getSelectedBillData = billList?.find((val) => val?.id == formData?.bill_id);
 
-    }, [formData?.bill_id]);
+    //         const itemsFromApi = getSelectedBillData?.items?.map(item => ({
+    //             item_id: (+item?.item_id),
+    //             item_name: (item?.item?.name),
+    //             quantity: (+item?.quantity),
+    //             gross_amount: (+item?.gross_amount),
+    //             unit_id: (item?.unit_id),
+    //             rate: (+item?.rate),
+    //             final_amount: (+item?.final_amount),
+    //             tax_rate: (+item?.tax_rate),
+    //             tax_amount: (+item?.tax_amount),
+    //             discount: (+item?.discount),
+    //             discount_type: (+item?.discount_type),
+    //             item_remark: item?.item_remark,
+    //             item_name: item?.item?.name,
+    //             tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
+    //         }));
+
+
+    //         setFormData((prev) => ({
+    //             ...prev,
+    //             items: itemsFromApi || []
+    //         }));
+    //         const errors = validateItems(getSelectedBillData?.items || []);
+    //         if (errors.length > 0) {
+    //             setItemErrors(errors);
+    //         }
+
+    //     }
+
+    // }, [formData?.bill_id]);
 
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
@@ -309,33 +326,58 @@ const CreateDebitNotes = () => {
     }, [addUpdate])
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
+    const navigate = useNavigate()
 
-    const vendorRef = useRef(null);
-    const itemRef = useRef(null);
-    const billRef = useRef(null)
+    // const handleFormSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const buttonName = e.nativeEvent.submitter.name;
+    //     const errors = validateItems(formData?.items);
 
-    const Navigate = useNavigate()
+    //     if (errors.length > 0) {
+    //         setItemErrors(errors);
+    //         return;
+    //     }
+    //     if (handleDropdownError(isVendorSelect, vendorRef)) return;
 
+    //     try {
+    //         const updatedItems = formData.items.map((item) => {
+    //             const { tax_name, ...itemWithoutTaxName } = item;
+    //             return itemWithoutTaxName;
+    //         });
+    //         dispatch(createCreditNotes({ ...formData, items: updatedItems, address: JSON.stringify(formData?.address) }, Navigate, "debit_note", isEdit, buttonName, itemId, convert));
+    //     } catch (error) {
+    //         toast.error('Error updating quotation:', error);
+    //     }
+    // };
+
+    const dropdownRef1 = useRef(null);
+    const dropdownRef2 = useRef(null);
+    const dropdownRef3 = useRef(null);
+
+    const sendData = {
+        itemId,
+        convert,
+        dropdownRef3,
+        isBillSelect
+    }
+
+    // console.log("formdata", formData)
     const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        const buttonName = e.nativeEvent.submitter.name;
-        const errors = validateItems(formData?.items);
-
-        if (errors.length > 0) {
-            setItemErrors(errors);
-            return;
-        }
-        if (handleDropdownError(isVendorSelect, vendorRef)) return;
-
-        try {
-            const updatedItems = formData.items.map((item) => {
-                const { tax_name, ...itemWithoutTaxName } = item;
-                return itemWithoutTaxName;
-            });
-            dispatch(createCreditNotes({ ...formData, items: updatedItems, address: JSON.stringify(formData?.address) }, Navigate, "debit_note", isEdit, buttonName, itemId, convert));
-        } catch (error) {
-            toast.error('Error updating quotation:', error);
-        }
+        await handleFormSubmit1({
+            e,
+            formData,
+            isVendorSelect,
+            setItemErrors,
+            dropdownRef1,
+            dropdownRef2,
+            dispatch,
+            navigate,
+            editDub: isEdit,
+            section: "debit_note",
+            updateDispatchAction: createCreditNotes, // This is dynamic for the dispatch action
+            toSelect: "vendor",
+            sendData
+        });
     };
 
 
@@ -367,9 +409,9 @@ const CreateDebitNotes = () => {
 
     }, [dispatch, cusData]);
 
-    useEffect(() => {
-        dispatch(customersList({ fy: localStorage.getItem('FinancialYear'), active: 1, status: 1 }));
-    }, [dispatch,]);
+    // useEffect(() => {
+    //     dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear'), active: 1, status: 1 }));
+    // }, [dispatch,]);
 
 
     return (
@@ -414,7 +456,7 @@ const CreateDebitNotes = () => {
                                                         setcusData={setCusData}
                                                         cusData={cusData}
                                                         type="vendor"
-                                                        ref={vendorRef}
+                                                        ref={dropdownRef1}
                                                     />
                                                 </span>
 
@@ -461,7 +503,8 @@ const CreateDebitNotes = () => {
                                                         name="bill_id"
                                                         defaultOption="Select Bill"
                                                         type="bill_no"
-                                                        ref={billRef}
+                                                        bill_id={convert && billDetail?.bill_id}
+                                                        ref={dropdownRef3}
                                                     />
                                                 </span>
                                                 {
@@ -511,7 +554,7 @@ const CreateDebitNotes = () => {
                                                     {otherIcons.placeofsupply_svg}
                                                     <input
                                                         type="text"
-                                                        value={formData.place_of_supply}
+                                                        value={preventZeroVal(formData.place_of_supply)}
                                                         onChange={handleChange}
                                                         name='place_of_supply'
                                                         placeholder='Enter Place Of Supply'
@@ -523,7 +566,7 @@ const CreateDebitNotes = () => {
                                                 <label >Reference Number</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
-                                                    <input type="text" value={formData.reference_no} onChange={handleChange}
+                                                    <NumericInput value={preventZeroVal(formData.reference_no)} onChange={handleChange}
                                                         // disabled
                                                         name='reference_no'
                                                         placeholder='Enter Reference Number' />
@@ -538,7 +581,7 @@ const CreateDebitNotes = () => {
                                                     <input
                                                         autoComplete='off'
                                                         type="text"
-                                                        value={formData.sale_person}
+                                                        value={preventZeroVal(formData.sale_person)}
                                                         name='sale_person'
                                                         onChange={handleChange}
                                                         placeholder='Enter Sales Person'
@@ -564,7 +607,7 @@ const CreateDebitNotes = () => {
                                             // setIsItemSelect={setIsItemSelect}
                                             // isItemSelect={isItemSelect}
                                             extracssclassforscjkls={"extracssclassforscjkls"}
-                                            dropdownRef2={itemRef}
+                                            dropdownRef2={dropdownRef2}
                                         />
 
                                         <div className='secondtotalsections485s sxfc546sdfr85234e'>
@@ -575,7 +618,7 @@ const CreateDebitNotes = () => {
                                                         formsValues={{ handleChange, formData }}
                                                         placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
                                                         name="terms_and_condition"
-                                                        value={formData?.terms_and_condition}
+                                                        value={preventZeroVal(formData?.terms_and_condition)}
                                                     />
                                                 </div>
                                             </div>
