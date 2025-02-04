@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +23,8 @@ import { MdCheck } from 'react-icons/md';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { handleDropdownError, ShowMasterData } from '../../Helper/HelperFunctions';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreateBills = () => {
     const Navigate = useNavigate();
@@ -44,7 +46,9 @@ const CreateBills = () => {
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate } = Object.fromEntries(params.entries());
-    const allExpenseType = ShowMasterData("35")
+    const allExpenseType = ShowMasterData("35");
+
+    const activeCurrency = getCurrencyValue()
 
 
 
@@ -126,19 +130,19 @@ const CreateBills = () => {
 
     // Fetch initial data when the component mounts or dependencies change
     useEffect(() => {
-        const fetchInitialData = async () => {
-            await dispatch(accountLists());
-            await dispatch(getAccountTypes());
-
-            if (!expenseDetail && itemId) {
-                await dispatch(expensesDetails({ id: itemId }));
-            }
-
-            await dispatch(expenseHeadLists());
-        };
-
-        fetchInitialData();
+        if (!expenseDetail && itemId) {
+            dispatch(expensesDetails({ id: itemId }));
+        }
     }, [dispatch, itemId, expenseDetail]);
+
+
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+    }), [itemId, expenseDetail]);
+
+    useFetchApiData(expenseHeadLists, payloadGenerator, [itemId, expenseDetail]);
+    useFetchApiData(accountLists, payloadGenerator, [itemId, expenseDetail]);
+    useFetchApiData(getAccountTypes, payloadGenerator, [itemId, expenseDetail]);
+
 
     // Update form data when expenseDetail changes
     useEffect(() => {
@@ -308,7 +312,7 @@ const CreateBills = () => {
                                             </span>
                                         </div>
                                         <div className="form_commonblock ">
-                                            <label >Amount</label>
+                                            <label >Amount ({activeCurrency})</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
                                                 <NumericInput

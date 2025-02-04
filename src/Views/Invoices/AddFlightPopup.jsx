@@ -58,6 +58,10 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_amount: 0.0,  // Default value for total_amount
   });
 
+
+  console.log("flight service_data", service_data)
+
+
   const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
@@ -155,11 +159,11 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+
+      });
       return;
     } else {
       const sendData = {
@@ -338,7 +342,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        
+
                         className="form_commonblock"
                       >
                         <label>
@@ -352,7 +356,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                              // disabled={isDisabled}
+                            // disabled={isDisabled}
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -384,7 +388,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            // disabled={isDisabled}
+                          // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (

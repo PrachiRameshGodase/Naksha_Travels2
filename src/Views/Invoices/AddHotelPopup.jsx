@@ -85,8 +85,18 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_percent: tax_rate || null, // Default to tax_rate or null
     tax_amount: 0.0, // Default value
     total_amount: 0.0, // Default value
-    price: 0, 
+    price: 0,
   });
+
+  // console.log("hotal service_data", service_data)
+
+  // for edit hotal edit
+  useEffect(() => {
+    if (service_data?.hotel_id) {
+      dispatch(hotelRoomListAction({ hotel_id: service_data?.hotel_id }));
+    }
+  }, [service_data])
+
 
   // console.log("formdataaaaaaaaaa", formData)
   const [errors, setErrors] = useState({
@@ -100,7 +110,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     booking_date: false,
     check_out_date: false,
     check_in_date: false,
-    
+
   });
 
   const entryType = ShowUserMasterData("50");
@@ -198,48 +208,50 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     }
   };
   const handleDateChange = (date, name) => {
-     // Update the form data with the new date
-     const updatedFormData = {
-       ...formData,
-       [name]: formatDate(date),
-     };
-   
-     // If both check_in_date and check_out_date are set, calculate the difference
-     if (updatedFormData.check_in_date && updatedFormData.check_out_date) {
-       const checkInDate = new Date(updatedFormData.check_in_date);
-       const checkOutDate = new Date(updatedFormData.check_out_date);
-   
-       // Ensure both dates start at midnight to avoid time differences affecting the result
-       checkInDate.setHours(0, 0, 0, 0);
-       checkOutDate.setHours(0, 0, 0, 0);
-   
-      
-       if (checkOutDate < checkInDate) {
-         toast.error("Check-out date must be on or after check-in date.");
-         return; // Exit the function if the dates are invalid
-       }
-   
-       const timeDiff = checkOutDate - checkInDate;
-       let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
-   
-       updatedFormData.total_nights = totalNights;
-       console.log("totalNights", updatedFormData.total_nights);
-     }
-   
-     setFormData(updatedFormData);
-   
-     setErrors((prevData) => ({
-       ...prevData,
-       [name]: false,
-     }));
-   };
-   useEffect(() => {
-     const gross_amount = formData.price * formData.total_nights;
-     setFormData((prev) => ({
-       ...prev,
-       gross_amount:gross_amount ,
-     }));
- }, [formData.total_nights, formData.price]);
+    // Update the form data with the new date
+    const updatedFormData = {
+      ...formData,
+      [name]: formatDate(date),
+    };
+
+    // If both check_in_date and check_out_date are set, calculate the difference
+    if (updatedFormData.check_in_date && updatedFormData.check_out_date) {
+      const checkInDate = new Date(updatedFormData.check_in_date);
+      const checkOutDate = new Date(updatedFormData.check_out_date);
+
+      // Ensure both dates start at midnight to avoid time differences affecting the result
+      checkInDate.setHours(0, 0, 0, 0);
+      checkOutDate.setHours(0, 0, 0, 0);
+
+
+      if (checkOutDate < checkInDate) {
+        toast.error("Check-out date must be on or after check-in date.");
+        return; // Exit the function if the dates are invalid
+      }
+
+      const timeDiff = checkOutDate - checkInDate;
+      let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
+
+      updatedFormData.total_nights = totalNights;
+      // console.log("totalNights", updatedFormData.total_nights);
+    }
+
+    setFormData(updatedFormData);
+
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
+  };
+  useEffect(() => {
+    const gross_amount = formData.price * formData.total_nights;
+    setFormData((prev) => ({
+      ...prev,
+      gross_amount: gross_amount,
+    }));
+  }, [formData.total_nights, formData.price]);
+
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -281,6 +293,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
   useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
+
   // call item api on page load...
   const isDisabled = formData.room_id;
   const isDisabled2 = formData.hotel_id;
@@ -362,9 +375,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.hotel_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.hotel_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.hotel_id ? "" : "Please Select Hotel First"
                         }
@@ -536,10 +548,10 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div>
-                     
+
                     </div>
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Guest Name<b className="color_red">*</b>
                         </label>
@@ -598,7 +610,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                                 ? new Date(formData.check_in_date)
                                 : null
                             }
-                           
+
                           />
                         </span>
                         {errors?.booking_date && (
@@ -654,11 +666,11 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           </p>
                         )}
                       </div>
-                   
+
                     </div>
                     <div className="f1wrapofcreqx1">
-                     
-                         <div className="form_commonblock ">
+
+                      <div className="form_commonblock ">
                         <label>
                           Checkout Date<b className="color_red">*</b>
                         </label>
@@ -677,8 +689,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               formData?.check_in_date
                                 ? new Date(formData.check_in_date)
                                 : formData?.booking_date
-                                ? new Date(formData.booking_date)
-                                : null
+                                  ? new Date(formData.booking_date)
+                                  : null
                             }
                           />
                         </span>
