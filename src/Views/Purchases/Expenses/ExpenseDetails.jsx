@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { useReactToPrint } from 'react-to-print';
 import { deleteExpenses, expensesDetails, expensesStatus } from '../../../Redux/Actions/expenseActions';
 import { InsideExpenseDetailsBox } from '../../Items/InsideItemDetailsBox';
 import { ShowDropdownContent1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const ExpenseDetails = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const ExpenseDetails = () => {
 
 
     const expenseDetails = useSelector(state => state?.expenseDetail);
+    const expenseStatus = useSelector(state => state?.expenseStatus);
     const expenseDetail = expenseDetails?.data?.expense;
     const quoteStatus = useSelector(state => state?.quoteStatus);
     const expenseDelete = useSelector(state => state?.expenseDelete);
@@ -53,15 +55,21 @@ const ExpenseDetails = () => {
             queryParams.set("duplicate", true);
             Navigate(`/dashboard/create-expenses?${queryParams.toString()}`);
 
-        }
-    };
+        } else if (val === "approved") {
+            dispatch(expensesStatus({ id: UrlId, status: 1 })).then(() => {
+                setCallApi((preState) => !preState);
+            });
 
+        };
+    }
     const [callApi, setCallApi] = useState(false);
+
     const changeStatus = (statusVal) => {
         try {
             const sendData = {
                 id: UrlId
             }
+
             switch (statusVal) {
                 case 'accepted':
                     sendData.status = 1
@@ -72,7 +80,6 @@ const ExpenseDetails = () => {
                 default:
             }
 
-
             if (statusVal === "delete") {
                 dispatch(deleteExpenses(sendData, Navigate));
             } else {
@@ -80,24 +87,22 @@ const ExpenseDetails = () => {
                     setCallApi((preState) => !preState);
                 });
             }
+
         } catch (error) {
             console.log("error", error);
         }
     }
 
-    useEffect(() => {
-        if (UrlId) {
-            const queryParams = {
-                id: UrlId,
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
-            };
-            dispatch(expensesDetails(queryParams));
-        }
-    }, [dispatch, UrlId, callApi]);
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: UrlId,
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
+    }), [UrlId, callApi]);
+
+    useFetchApiData(expensesDetails, payloadGenerator, [UrlId, callApi]);
+
 
     // const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
-
     // const generatePDF = () => {
     //     const input = document.getElementById('quotation-content');
     //     html2canvas(input).then((canvas) => {
@@ -112,10 +117,13 @@ const ExpenseDetails = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    console.log("expenseDetails?.data?.status", expenseDetails?.data?.expense?.status)
     return (
         <>
             {quoteStatus?.loading && <MainScreenFreezeLoader />}
             {expenseDelete?.loading && <MainScreenFreezeLoader />}
+            {expenseStatus?.loading && <MainScreenFreezeLoader />}
             {expenseDetails?.loading ? <Loader02 /> :
                 <div id='quotation-content' ref={componentRef} >
                     <div id="Anotherbox" className='formsectionx1'>
@@ -124,10 +132,20 @@ const ExpenseDetails = () => {
                         </div>
                         <div id="buttonsdata">
 
-                            <div className="mainx1" onClick={() => handleEditThing("edit")}>
-                                <img src="/Icons/pen-clip.svg" alt="" />
-                                <p>Edit</p>
-                            </div>
+                            {expenseDetails?.data?.expense?.status == 2 || expenseDetails?.data?.expense?.status == 1 ? "" : <div className="mainx1 s1d2f14s2d542maix4ws" onClick={() => handleEditThing("approved")} >
+                                <p>Approve</p>
+                            </div>}
+
+                            {expenseDetails?.data?.expense?.status == 1 && <div className="mainx1 s1d2f14s2d542maix4ws" >
+                                <p>Approved</p>
+                            </div>}
+
+                            {expenseDetails?.data?.expense?.status == 0 &&
+                                <div className="mainx1" onClick={() => handleEditThing("edit")}>
+                                    <img src="/Icons/pen-clip.svg" alt="" />
+                                    <p>Edit</p>
+                                </div>
+                            }
 
                             {/* <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p>PDF/Print</p>

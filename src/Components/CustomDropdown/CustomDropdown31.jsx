@@ -195,6 +195,8 @@ const CustomDropdown31 = forwardRef((props, ref) => {
 });
 
 export default CustomDropdown31;
+
+
 export const CustomDropdown031 = forwardRef((props, ref) => {
   const {
     options,
@@ -289,11 +291,13 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     }
     setSearchTerm("");
   }, []);
+
   useEffect(() => {
     // Reset storeData when hotel_id changes
     setStoredData([]);
-    onChange([]); 
+    onChange([]);
   }, [formData.hotel_id]);
+
   return (
     <div
       ref={combinedRef}

@@ -54,7 +54,6 @@ const CreateQuotation = () => {
 
   const paymentTerms = ShowMasterData("8");//quotation terms
 
-  console.log("paymentTermspaymentTerms", paymentTerms)
 
   const {
     formData,

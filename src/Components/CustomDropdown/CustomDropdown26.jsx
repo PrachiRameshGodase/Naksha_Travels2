@@ -104,6 +104,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           service_data?.service_name === "Hotels" ? (
             <>
               <div>
+                <b>Service Name:</b> {service_data?.service_name || "-"}
+              </div>
+              <div>
                 <b>Hotel Name:</b> {service_data?.hotel_name || "-"}
               </div>
               <div>
@@ -120,6 +123,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           ) : service_data?.service_name === "Assist" ? (
             <>
               <div>
+                <b>Service Name:</b> {service_data?.service_name || "-"}
+              </div>
+              <div>
                 <b>Airport:</b> {service_data?.airport_name || "-"}
               </div>
               <div>
@@ -134,6 +140,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           ) : service_data?.service_name === "Flights" ? (
             <>
               <div>
+                <b>Service Name:</b> {service_data?.service_name || "-"}
+              </div>
+              <div>
                 <b>Airline Name:</b>{" "}
                 {service_data?.airline_name || "-"}
               </div>
@@ -146,6 +155,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
             </>
           ) : service_data?.service_name === "Visa" ? (
             <>
+              <div>
+                <b>Service Name:</b> {service_data?.service_name || "-"}
+              </div>
               <div>
                 <b>Passport No:</b> {service_data?.passport_no || "-"}
               </div>
@@ -163,6 +175,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           ) :
             service_data?.service_name === "Car Hire" ? (
               <>
+                <div>
+                  <b>Service Name:</b> {service_data?.service_name || "-"}
+                </div>
                 <div>
                   <b>Vehicle Type:</b> <ShowUserMastersValue
                     type="41"
@@ -184,6 +199,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
               service_data?.service_name === "Insurance" ? (
                 <>
                   <div>
+                    <b>Service Name:</b> {service_data?.service_name || "-"}
+                  </div>
+                  <div>
                     <b>Company Name:</b>
                     {service_data?.company_name || "-"}
 
@@ -202,6 +220,9 @@ const CustomDropdown26 = forwardRef((props, ref) => {
 
                 service_data?.service_name === "Others" ? (
                   <>
+                    <div>
+                      <b>Service Name:</b> {service_data?.service_name || "-"}
+                    </div>
                     <div>
                       <b>Service Name:</b> {service_data?.service_name || "-"}
                     </div>

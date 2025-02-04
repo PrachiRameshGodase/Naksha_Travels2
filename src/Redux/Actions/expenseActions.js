@@ -51,7 +51,6 @@ export const createExpenses = (queryParams, Navigate) => async (dispatch) => {
             queryParams
         );
 
-        dispatch(expenseLists(sendData))
         if (response?.data?.Expense === "Expense Created Successfully") {
             toast.success(response?.data?.Expense);
             Navigate("/dashboard/expenses");
@@ -92,7 +91,6 @@ export const deleteExpenses = (queryParams, Navigate) => async (dispatch) => {
         const response = await axiosInstance.post(`/expense/delete`,
             queryParams
         );
-        dispatch(expenseLists(sendData))
         if (response?.data?.message === "Expense deleted Successfully") {
             toast.success(response?.data?.message);
             Navigate("/dashboard/expenses");

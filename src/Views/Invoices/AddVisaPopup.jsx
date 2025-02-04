@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,8 +52,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData4, setcusData4] = useState(null);
   const [cusData5, setcusData5] = useState(null);
 
- 
-   const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState({
     service_name: "Visa",
     passenger_visa_id: service_data?.passenger_visa_id || "", // Example for passenger_visa_id
     passport_no: service_data?.passport_no || "", // Example for passport_no
@@ -78,6 +78,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_amount: 0.0, // Default total amount
   });
 
+
+  console.log("visa service data", service_data)
+
   const [errors, setErrors] = useState({
     passenger_visa_id: false,
     passport_no: false,
@@ -90,13 +93,23 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     issue_date: false,
     visa_no: false,
     expiry_date: false,
-    supplier_id:false,
+    supplier_id: false,
     days: false,
   });
 
- 
+
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
+
+  useEffect(() => {
+    if (service_data?.country_id) {
+      dispatch(
+        visaListAction({ country_id: service_data?.country_id })
+      ).then((res) => {
+        setStoreEntry(res);
+      });
+    }
+  }, [service_data])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -284,6 +297,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
   useFetchApiData(customersList, payloadGenerator, []); //call api common function
+  useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
 
   return (
     <div id="formofcreateitems">
@@ -303,7 +317,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
             <form>
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
-                <div className="f1wrapofcreq">
+                  <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -379,9 +393,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.country_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.country_id
                             ? ""
@@ -426,9 +439,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_entry_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_entry_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_entry_type
                             ? ""
@@ -472,9 +484,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_type_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_type_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_type_id
                             ? ""
@@ -663,10 +674,10 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               formData?.expiry_date
                                 ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
                                 : new Date(
-                                    new Date().getFullYear() + 50,
-                                    11,
-                                    31
-                                  ) // Default max date: 50 years in the future
+                                  new Date().getFullYear() + 50,
+                                  11,
+                                  31
+                                ) // Default max date: 50 years in the future
                             }
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown
@@ -800,8 +811,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
 
-                      </div> 
-                     
+                      </div>
+
                     </div>
                     <div
                       className="secondtotalsections485s"

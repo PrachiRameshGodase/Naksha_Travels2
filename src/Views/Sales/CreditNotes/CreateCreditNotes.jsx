@@ -8,7 +8,7 @@ import { invoiceLists } from "../../../Redux/Actions/listApisActions";
 import DatePicker from "react-datepicker";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import {
   createCreditNotes,
   creditNotesDetails,
@@ -25,7 +25,6 @@ import SubmitButton from "../../Common/Pagination/SubmitButton";
 import { SelectAddress } from "../../Common/SelectAddress";
 import CustomDropdown04 from "../../../Components/CustomDropdown/CustomDropdown04";
 import GenerateAutoId from "../Common/GenerateAutoId";
-// import GenerateAutoId from '../Quotations/GenerateAutoId';
 import TextAreaComponentWithTextLimit from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { invoiceDetailes } from "../../../Redux/Actions/invoiceActions";
 import { formatDate } from "../../Helper/DateFormat";
@@ -53,7 +52,6 @@ const CreateCreditNotes = () => {
   const quoteDetail = useSelector((state) => state?.creditNoteDetail);
   const creditNoteDetail = quoteDetail?.creditDetail?.data?.CreditNote;
   const createCreditNote = useSelector((state) => state?.createCreditNote);
-  const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
   const reasonTypeData = ShowMasterData("12");
 
@@ -377,7 +375,6 @@ const CreateCreditNotes = () => {
                               formHandlers={{
                                 setFormData,
                                 handleChange,
-                                setShowAllSequenceId,
                               }}
                               nameVal="credit_note_id"
                               value={formData?.credit_note_id}

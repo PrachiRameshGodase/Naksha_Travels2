@@ -4,10 +4,8 @@ import { RxCross2 } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCreditNote, updateQuotation } from '../../../Redux/Actions/quotationActions';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { invoiceLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
 import DatePicker from "react-datepicker";
 
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -18,20 +16,18 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import CustomDropdown18 from '../../../Components/CustomDropdown/CustomDropdown18';
 import { billDetails, billLists } from '../../../Redux/Actions/billActions';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
-import CurrencySelect from '../../Helper/ComponentHelper/CurrencySelect';
 import ItemSelect from '../../Helper/ComponentHelper/ItemSelect';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
-import { todayDate } from '../../Helper/DateFormat';
 import { handleDropdownError, ShowMasterData, validateItems } from '../../Helper/HelperFunctions';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
 import SubmitButton from '../../Common/Pagination/SubmitButton';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { formatDate } from '../../Helper/DateFormat';
 import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditPurchaseForm';
 const CreateDebitNotes = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const getCurrency = useSelector((state) => state?.getCurrency?.data);
 
     const addUpdate = useSelector((state) => state?.updateAddress);
     const vendorList = useSelector((state) => state?.vendorList);
@@ -45,20 +41,10 @@ const CreateDebitNotes = () => {
 
     const createCreditNote = useSelector((state) => state?.createCreditNote);
 
-    const [showAllSequenceId, setShowAllSequenceId] = useState([]);
     const reasonTypeData = ShowMasterData("12");
-    const [imgLoader, setImgeLoader] = useState("");
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-    const [cusData, setcusData] = useState(null);
     const [fetchDetails, setFetchDetails] = useState(null);
-
-    const [isVendorSelect, setIsVendorSelect] = useState(false);
-    const [isItemSelect, setIsItemSelect] = useState(false);
-    const [isBillSelect, setIsBillSelect] = useState(false);
-
-
-
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert } = Object.fromEntries(params.entries());
@@ -75,152 +61,130 @@ const CreateDebitNotes = () => {
 
     const currency = getCurrencyValue();
 
-    const [formData, setFormData] = useState({
-        tran_type: "debit_note",
-        vendor_id: null,
-        warehouse_id: 40,
-        bill_id: null,
-        currency: currency,
-        reference_no: "",
-        debit_note_id: null,
-        transaction_date: formatDate(new Date()), // debit_note date
-        sale_person: "",
-        customer_type: null,
-        customer_name: null,
-        display_name: null,
-        phone: null,
-        email: null,
-        // address: null,
-        reason_type: null,
-        place_of_supply: "",
-        customer_note: null,
-        terms_and_condition: null,
-        fy: localStorage.getItem('FinancialYear'),
-        subtotal: null,
-        shipping_charge: null,
-        adjustment_charge: null,
-        total: null,
-        status: null,
-        reference: "",
-        charges: "",
-        upload_image: null,
-        tax_amount: null,
-        discount: null,
-        items: [
-            {
-
-                item_id: '',
-                quantity: 1,
-                gross_amount: null,
-                rate: null,
-                final_amount: null,
-                unit_id: null,
-                tax_rate: null,
-                tax_amount: null,
-                discount: 0,
-                discount_type: 1,
-                item_remark: null,
-                tax_name: ""
-            }
-        ],
-    });
-
-    const [itemErrors, setItemErrors] = useState([]);
-
-
-    useEffect(() => {
-        if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && fetchDetails && convert) {
-
-            const calculateTotalTaxAmount = () => {
-                return fetchDetails?.items?.reduce((total, entry) => {
-                    return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
-                }, 0);
-            };
-
-            const filterBillId = billList?.find((val) => val?.id == (+fetchDetails?.bill_id));
-
-            const itemsFromApi = fetchDetails.items?.map(item => ({
-                item_id: (+item?.item_id),
-                quantity: (+item?.quantity),
-                item_name: item?.item_name,
-                gross_amount: (+item?.gross_amount),
-                unit_id: (item?.unit_id),
-                rate: (+item?.rate),
-                final_amount: (+item?.final_amount),
-                tax_rate: (+item?.tax_rate),
-                tax_amount: (+item?.tax_amount),
-                discount: (+item?.discount),
-                discount_type: (+item?.discount_type),
-                item_remark: item?.item_remark,
-                tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
-            }));
-
-
-            setFormData({
-                ...formData,
-                id: isEdit ? itemId : 0,
-                tran_type: 'debit_note',
-                transaction_date: fetchDetails?.transaction_date,
-                warehouse_id: fetchDetails?.warehouse_id,
-                debit_note_id: fetchDetails?.debit_note_id,
-                upload_image: fetchDetails?.upload_image,
-                customer_type: fetchDetails?.customer_type,
-                customer_name: fetchDetails?.customer_name,
-                display_name: fetchDetails?.display_name,
-                phone: fetchDetails?.phone,
-                reason_type: fetchDetails?.reason_type,
-                vendor_id: (+fetchDetails?.vendor_id),
-                email: fetchDetails?.email,
-                reference_no: fetchDetails?.reference_no,
-                invoice_id: (+fetchDetails?.invoice_id),
-                reference: fetchDetails?.reference,
-                currency: fetchDetails?.currency,
-                place_of_supply: fetchDetails?.place_of_supply == "0" ? "" : fetchDetails?.place_of_supply,
-                sale_person: fetchDetails?.sale_person == "0" ? "" : fetchDetails?.sale_person,
-                customer_note: fetchDetails?.customer_note,
-                terms_and_condition: fetchDetails?.terms_and_condition,
-                bill_id: filterBillId?.id,
-                fy: fetchDetails?.fy,
-                subtotal: fetchDetails?.subtotal,
-                shipping_charge: fetchDetails?.shipping_charge,
-                adjustment_charge: fetchDetails?.adjustment_charge,
-                total: fetchDetails?.total,
-                status: fetchDetails?.status,
-                tax_amount: calculateTotalTaxAmount(),
-                items: itemsFromApi || []
-            });
-
-            if (fetchDetails.upload_image) {
-                setImgeLoader("success");
-            }
-
-            if (fetchDetails?.address) {
-                const parsedAddress = JSON?.parse(fetchDetails?.address);
-                const dataWithParsedAddress = {
-                    ...fetchDetails,
-                    address: parsedAddress
-                };
-
-                setAddSelect({
-                    billing: dataWithParsedAddress?.address?.billing,
-                    shipping: dataWithParsedAddress?.address?.shipping,
-                });
-
-                setcusData(dataWithParsedAddress?.customer)
-            }
-
-            if (fetchDetails?.vendor_id) {
-                setIsVendorSelect(true);
-            }
+    const {
+        formData,
+        setFormData,
+        addSelect,
+        setAddSelect,
+        isVendorSelect,
+        setIsVendorSelect,
+        isBillSelect,
+        setIsBillSelect,
+        itemErrors,
+        setItemErrors,
+        imgLoader,
+        setImgLoader,
+        setCusData,
+        cusData,
+    } = useEditPurchaseForm(
+        {
+            tran_type: "debit_note",
+            debit_note_id: null,
+            bill_id: null,
+            reason_type: "",
+        }, //for set new key's and values
+        [""], // Keys to remove
+        fetchDetails,
+        itemId,
+        isEdit,
+        convert
+    );
 
 
 
-            if (filterBillId?.bill_id) {
-                setIsBillSelect(false);
-            }
+    // useEffect(() => {
+    //     if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && fetchDetails && convert) {
 
-        }
-    }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
+    //         const calculateTotalTaxAmount = () => {
+    //             return fetchDetails?.items?.reduce((total, entry) => {
+    //                 return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
+    //             }, 0);
+    //         };
+
+    //         const filterBillId = billList?.find((val) => val?.id == (+fetchDetails?.bill_id));
+
+    //         const itemsFromApi = fetchDetails.items?.map(item => ({
+    //             item_id: (+item?.item_id),
+    //             quantity: (+item?.quantity),
+    //             item_name: item?.item_name,
+    //             gross_amount: (+item?.gross_amount),
+    //             unit_id: (item?.unit_id),
+    //             rate: (+item?.rate),
+    //             final_amount: (+item?.final_amount),
+    //             tax_rate: (+item?.tax_rate),
+    //             tax_amount: (+item?.tax_amount),
+    //             discount: (+item?.discount),
+    //             discount_type: (+item?.discount_type),
+    //             item_remark: item?.item_remark,
+    //             tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
+    //         }));
+
+
+    //         setFormData({
+    //             ...formData,
+    //             id: isEdit ? itemId : 0,
+    //             tran_type: 'debit_note',
+    //             transaction_date: fetchDetails?.transaction_date,
+    //             warehouse_id: fetchDetails?.warehouse_id,
+    //             debit_note_id: fetchDetails?.debit_note_id,
+    //             upload_image: fetchDetails?.upload_image,
+    //             customer_type: fetchDetails?.customer_type,
+    //             customer_name: fetchDetails?.customer_name,
+    //             display_name: fetchDetails?.display_name,
+    //             phone: fetchDetails?.phone,
+    //             reason_type: fetchDetails?.reason_type,
+    //             vendor_id: (+fetchDetails?.vendor_id),
+    //             email: fetchDetails?.email,
+    //             reference_no: fetchDetails?.reference_no,
+    //             invoice_id: (+fetchDetails?.invoice_id),
+    //             reference: fetchDetails?.reference,
+    //             currency: fetchDetails?.currency,
+    //             place_of_supply: fetchDetails?.place_of_supply == "0" ? "" : fetchDetails?.place_of_supply,
+    //             sale_person: fetchDetails?.sale_person == "0" ? "" : fetchDetails?.sale_person,
+    //             customer_note: fetchDetails?.customer_note,
+    //             terms_and_condition: fetchDetails?.terms_and_condition,
+    //             bill_id: filterBillId?.id,
+    //             fy: fetchDetails?.fy,
+    //             subtotal: fetchDetails?.subtotal,
+    //             shipping_charge: fetchDetails?.shipping_charge,
+    //             adjustment_charge: fetchDetails?.adjustment_charge,
+    //             total: fetchDetails?.total,
+    //             status: fetchDetails?.status,
+    //             tax_amount: calculateTotalTaxAmount(),
+    //             items: itemsFromApi || []
+    //         });
+
+    //         if (fetchDetails.upload_image) {
+    //             setImgeLoader("success");
+    //         }
+
+    //         if (fetchDetails?.address) {
+    //             const parsedAddress = JSON?.parse(fetchDetails?.address);
+    //             const dataWithParsedAddress = {
+    //                 ...fetchDetails,
+    //                 address: parsedAddress
+    //             };
+
+    //             setAddSelect({
+    //                 billing: dataWithParsedAddress?.address?.billing,
+    //                 shipping: dataWithParsedAddress?.address?.shipping,
+    //             });
+
+    //             setCusData(dataWithParsedAddress?.customer)
+    //         }
+
+    //         if (fetchDetails?.vendor_id) {
+    //             setIsVendorSelect(true);
+    //         }
+
+
+
+    //         if (filterBillId?.bill_id) {
+    //             setIsBillSelect(false);
+    //         }
+
+    //     }
+    // }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
 
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
@@ -320,12 +284,6 @@ const CreateDebitNotes = () => {
     }, [formData?.bill_id]);
 
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-
-    // for address select
-    const [addSelect, setAddSelect] = useState({
-        billing: "",
-        shipping: ""
-    });
 
     useEffect(() => {
         setFormData({
@@ -453,7 +411,7 @@ const CreateDebitNotes = () => {
                                                         onChange={handleChange}
                                                         name="vendor_id"
                                                         defaultOption="Select Vendor Name"
-                                                        setcusData={setcusData}
+                                                        setcusData={setCusData}
                                                         cusData={cusData}
                                                         type="vendor"
                                                         ref={vendorRef}
@@ -520,7 +478,7 @@ const CreateDebitNotes = () => {
                                             <div className="form_commonblock">
                                                 <label>Debit Note</label>
                                                 <GenerateAutoId
-                                                    formHandlers={{ setFormData, handleChange, setShowAllSequenceId }}
+                                                    formHandlers={{ setFormData, handleChange }}
                                                     nameVal="debit_note_id"
                                                     value={formData?.debit_note_id}
                                                     module="debit_note"
@@ -628,7 +586,7 @@ const CreateDebitNotes = () => {
                                                     setFormData={setFormData}
                                                     setFreezLoadingImg={setFreezLoadingImg}
                                                     imgLoader={imgLoader}
-                                                    setImgeLoader={setImgeLoader}
+                                                    setImgeLoader={setImgLoader}
                                                     component="purchase"
                                                 />
                                             </div>

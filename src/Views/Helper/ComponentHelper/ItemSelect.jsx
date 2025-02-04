@@ -507,6 +507,7 @@ const ItemSelect = ({
     };
 
 
+
     const firstEmptyRowIndex = formData?.items.findIndex(
       (item) =>
         !(item.item_name && item.item_name.trim()) &&

@@ -1174,10 +1174,6 @@ export const InsideExpenseDetailsBox = ({ itemDetails }) => {
     Navigate(`/dashboard/${val}?${queryParams.toString()}`);
   };
 
-  useEffect(() => {
-    dispatch(fetchMasterData());
-  }, [dispatch]);
-
   return (
     <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
       <div className="insidcontain">
