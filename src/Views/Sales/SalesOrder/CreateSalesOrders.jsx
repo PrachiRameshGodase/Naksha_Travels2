@@ -159,7 +159,8 @@ const CreateSalesOrders = () => {
             editDub: isEdit,
             section: "sale-order",
             updateDispatchAction: updateQuotation, // This is dynamic for the dispatch action
-            sendData
+            sendData,
+            toSelect: "customer"
         });
     };
 

@@ -50,6 +50,8 @@ const CustomerAddress = ({
   useEffect(() => {
     updateUserData({ addresses: addresses });
   }, [addresses]);
+
+
   useEffect(() => {
     if ((user?.id && isEdit) || (user?.id && isDuplicate)) {
       if (user?.address?.length >= 1) {
@@ -279,10 +281,10 @@ const CustomerAddress = ({
                         name="country_id"
                         value={address.country_id}
                         onChange={(e) => handleChange(e, index, "country_id")}
-                        // required
+                      // required
                       >
                         <option value="">Select Country</option>
-                        {countryList?.country?.map((country,index) => (
+                        {countryList?.country?.map((country, index) => (
                           <option key={index} value={country?.id}>
                             {country.name}
                           </option>
@@ -304,9 +306,8 @@ const CustomerAddress = ({
                   style={{
                     cursor: address.country_id ? "pointer" : "not-allowed",
                   }}
-                  className={`form_commonblock ${
-                    address.country_id ? "" : "disabledfield"
-                  }`}
+                  className={`form_commonblock ${address.country_id ? "" : "disabledfield"
+                    }`}
                 >
                   <label>Province</label>
                   <div id="inputx1">
@@ -317,10 +318,10 @@ const CustomerAddress = ({
                         name="state_id"
                         value={address.state_id}
                         onChange={(e) => handleChange(e, index)}
-                        // required
+                      // required
                       >
                         <option value="">Select State</option>
-                        {states?.country?.map((state,index) => (
+                        {states?.country?.map((state, index) => (
                           <option key={index} value={state?.id}>
                             {state.name}
                           </option>
@@ -335,7 +336,7 @@ const CustomerAddress = ({
 
                 <div
                   data-tooltip-content={
-                     address.state_id
+                    address.state_id
                       ? ""
                       : "Please Select State"
                   }
@@ -347,11 +348,10 @@ const CustomerAddress = ({
                         ? "pointer"
                         : "not-allowed",
                   }}
-                  className={`form_commonblock ${
-                     address.state_id
-                      ? ""
-                      : "disabledfield"
-                  }`}
+                  className={`form_commonblock ${address.state_id
+                    ? ""
+                    : "disabledfield"
+                    }`}
                 >
                   <label>City</label>
                   <div id="inputx1">
@@ -361,10 +361,10 @@ const CustomerAddress = ({
                         name="city_id"
                         value={address.city_id}
                         onChange={(e) => handleChange(e, index)}
-                        // required
+                      // required
                       >
                         <option value="">Select City</option>
-                        {cities?.country?.map((city,index) => (
+                        {cities?.country?.map((city, index) => (
                           <option key={index} value={city?.id}>
                             {city.name}
                           </option>
@@ -383,7 +383,7 @@ const CustomerAddress = ({
                   <label>Street 1</label>
                   <div id="inputx1">
                     <span>
-                     {otherIcons.street1_svg}
+                      {otherIcons.street1_svg}
                       <input
                         autoComplete="off"
                         type="text"
@@ -400,7 +400,7 @@ const CustomerAddress = ({
                   <label>Street 2</label>
                   <div id="inputx1">
                     <span>
-                     {otherIcons.street1_svg}
+                      {otherIcons.street1_svg}
                       <input
                         autoComplete="off"
                         type="text"
@@ -434,7 +434,7 @@ const CustomerAddress = ({
                   <label>Phone Number</label>
                   <div id="inputx1">
                     <span>
-                     {otherIcons.mobile_svg}
+                      {otherIcons.mobile_svg}
                       <NumericInput
                         name="phone_no"
                         placeholder="Enter Phone Number"
