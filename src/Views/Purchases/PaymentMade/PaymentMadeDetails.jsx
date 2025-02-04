@@ -10,7 +10,7 @@ import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../R
 import { useReactToPrint } from 'react-to-print';
 import useOutsideClick from '../../Helper/PopupData';
 import { PaymentMadeDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowDropdownContent, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, ShowDropdownContent1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 
@@ -136,11 +136,12 @@ const PaymentMadeDetails = () => {
 
                             <div className="sepc15s63x63"></div>
 
-                            {payment?.status != "1" &&
+                            {
+                                payment?.status != "1" &&
                                 <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
                                     <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-id="my-tooltip" data-tooltip-content="More Options" data-tooltip-place='bottom' />
                                     {showDropdown && (
-                                        <ShowDropdownContent quotation={payment} changeStatus={changeStatus} />
+                                        <ShowDropdownContent1 quotation={payment} changeStatus={changeStatus} />
                                     )}
                                 </div>
                             }
@@ -155,7 +156,9 @@ const PaymentMadeDetails = () => {
 
                         <div className="commonquoatjkx55s">
                             <div className="childommonquoatjkx55s">
-                                {/* <div className="labeltopleftx456">Open</div> */}
+
+                                <ShowAllStatus quotation={payment} />
+
                                 <div className="detailsbox4x15s1">
                                     <div className="xhjksl45s">
                                         <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
@@ -180,7 +183,7 @@ const PaymentMadeDetails = () => {
                             <p>Terms And Conditions:   {payment?.terms_and_condition == 0 ? "" : payment?.terms_and_condition || ""} </p>
                         </div> */}
                         <MoreInformation sale={payment?.sale_person} note={payment?.vendor_note} tc={payment?.terms_and_condition} section="Vendor" />
-                        <TermsAndConditions/>
+                        <TermsAndConditions />
                     </div >
                 </div >}
         </>

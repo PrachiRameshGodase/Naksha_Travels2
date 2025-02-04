@@ -258,6 +258,7 @@ const CreateQuotation = () => {
                             <label>Quotation Terms</label>
 
                             {/* {console.log("formData?.payment_terms", formData?.payment_terms)} */}
+
                             <span>
                               {otherIcons.vendor_svg}
                               <CustomDropdown04

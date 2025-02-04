@@ -4,19 +4,17 @@ import { RxCross2 } from 'react-icons/rx';
 import { Link, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
+import { accountLists } from '../../../Redux/Actions/listApisActions';
 import DatePicker from "react-datepicker";
 
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { expenseHeadLists, fetchMasterData } from '../../../Redux/Actions/globalActions';
+import { expenseHeadLists } from '../../../Redux/Actions/globalActions';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader02 from '../../../Components/Loaders/Loader02';
-import CustomeDropdown2 from '../../../Components/CustomDropdown/CustomeDropdown2';
 import { createExpenses, expensesDetails } from '../../../Redux/Actions/expenseActions';
-import { formatDate, formatDate4, todayDate } from '../../Helper/DateFormat';
+import { formatDate, } from '../../Helper/DateFormat';
 import NumericInput from '../../Helper/NumericInput';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
@@ -49,147 +47,127 @@ const CreateBills = () => {
     const allExpenseType = ShowMasterData("35")
 
 
-    const [formData, setFormData] = useState({
-        expense_head_id: 0, //expense type id
+
+    // Initial form state
+    const initialFormData = {
+        id: 0,
+        expense_head_id: 0, // Expense type ID
         transaction_date: formatDate(new Date()),
         amount: null,
         vendor_id: null,
-        paid_by: 28, //paid throught select from accounts
-        // description: "",
+        paid_by: 28, // Paid through (selected from accounts)
         document: null,
-        acc_id: 68, //expense account_id
+        acc_id: 68, // Expense account ID
         notes: null,
         customer_name: null,
         customer_id: 0,
-        user_type: 1,
-    }
-    );
-
-    const handleTabClick = (user_type) => {
-        setFormData({
-            ...formData,
-            user_type,
-            ...(user_type == 1 && { vendor_id: null }),
-            ...(user_type == 2 && { customer_id: null })
-        });
-
-        if (user_type == 1) {
-            setIsVendorSelect(false);
-        }
-        else {
-            setIsCustomerSelect(false);
-        }
-
+        user_type: 1, // 1 for vendor, 2 for customer
     };
 
-    // console.log("itemId && isEdit && billDetail", itemId, isEdit, billDetail)
+    const [formData, setFormData] = useState(initialFormData);
+    const [loading, setLoading] = useState(false);
+    const [isVendorSelect, setIsVendorSelect] = useState(false);
+    const [isCustomerSelect, setIsCustomerSelect] = useState(false);
 
+    const vendorRef = useRef(null);
+    const customerRef = useRef(null);
+
+    // Handle tab click to switch between vendor and customer
+    const handleTabClick = (user_type) => {
+        setFormData((prev) => ({
+            ...prev,
+            user_type: user_type,
+            vendor_id: user_type === 1 ? null : prev.vendor_id,
+            customer_id: user_type === 2 ? null : prev.customer_id,
+        }));
+
+        // setIsVendorSelect(user_type === 1 ? false : isVendorSelect);
+        // setIsCustomerSelect(user_type === 2 ? false : isCustomerSelect);
+    };
+
+    // Handle form field changes
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === "vendor_id") {
+            setIsVendorSelect(value !== "");
+        } else if (name === "customer_id") {
+            setIsCustomerSelect(value !== "");
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+            ...(name === "customer_id" && { vendor_id: null }),
+            ...(name === "vendor_id" && { customer_id: null }),
+        }));
+    };
+
+    // Handle form submission
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        console.log("isCustomerSelect", isCustomerSelect)
+        if (formData.user_type == 1 && !isCustomerSelect) {
+            if (handleDropdownError(isCustomerSelect, customerRef)) return;
+        }
+        if (formData.user_type == 2 && !isVendorSelect) {
+            if (handleDropdownError(isVendorSelect, vendorRef)) return;
+        }
+
+        try {
+            setLoading(true);
+            await dispatch(createExpenses(formData, Navigate));
+            setLoading(false);
+        } catch (error) {
+            toast.error("Error updating expense:", error);
+            setLoading(false);
+        }
+    };
+
+    // Fetch initial data when the component mounts or dependencies change
     useEffect(() => {
-        if ((itemId && isEdit && expenseDetail) || (itemId && isDuplicate && expenseDetail) || itemId && (convert === "saleToInvoice")) {
-            setFormData({
+        const fetchInitialData = async () => {
+            await dispatch(accountLists());
+            await dispatch(getAccountTypes());
+
+            if (!expenseDetail && itemId) {
+                await dispatch(expensesDetails({ id: itemId }));
+            }
+
+            await dispatch(expenseHeadLists());
+        };
+
+        fetchInitialData();
+    }, [dispatch, itemId, expenseDetail]);
+
+    // Update form data when expenseDetail changes
+    useEffect(() => {
+        if ((itemId && (isEdit || isDuplicate || convert === "saleToInvoice")) && expenseDetail) {
+            const updatedFormData = {
                 id: isEdit ? itemId : 0,
-                expense_head_id: expenseDetail?.expense_head?.id ? +expenseDetail.expense_head.id : 0,
+                expense_head_id: +expenseDetail?.expense_head?.id || 0,
                 transaction_date: expenseDetail?.transaction_date,
                 amount: expenseDetail?.amount,
-                paid_by: (+expenseDetail?.paid_through?.id),
+                paid_by: +expenseDetail?.paid_through?.id,
                 document: expenseDetail?.document,
-                acc_id: (+expenseDetail?.expense_account?.id),
+                acc_id: +expenseDetail?.expense_account?.id,
                 notes: expenseDetail?.notes,
-                customer_id: (+expenseDetail?.customer_id),
-                vendor_id: (+expenseDetail?.vendor_id),
-                user_type: (+expenseDetail?.user_type),
-            });
+                customer_id: +expenseDetail?.customer_id,
+                vendor_id: +expenseDetail?.vendor_id,
+                user_type: +expenseDetail?.user_type,
+            };
+
+            setFormData(updatedFormData);
 
             if (expenseDetail.document) {
                 setImgeLoader("success");
             }
 
-            if (expenseDetail?.customer_id) {
-                setIsCustomerSelect(true)
-            }
-            if (expenseDetail?.vendor_id) {
-                setIsVendorSelect(true)
-            }
-
+            setIsCustomerSelect(!!expenseDetail?.customer_id);
+            setIsVendorSelect(!!expenseDetail?.vendor_id);
         }
-    }, [itemId, isEdit, convert, expenseDetail, isDuplicate]);
+    }, [itemId, isEdit, isDuplicate, convert, expenseDetail]);
 
-
-
-    const [loading, setLoading] = useState(false);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        let newValue = value;
-
-        if (name === "vendor_id" && value !== "") {
-
-            setIsVendorSelect(true);
-        }
-        else if (name === "vendor_id" && value == "") {
-            setIsVendorSelect(false);
-        }
-
-        if (name === "customer_id" && value !== "") {
-            setIsCustomerSelect(true);
-        }
-        else if (name === "customer_id" && value == "") {
-            setIsCustomerSelect(false);
-        }
-        setFormData({
-            ...formData,
-            [name]: newValue,
-            ...(value === "customer_id" && { vendor_id: null }),
-            ...(value === "vendor_id" && { customer_id: null })
-        });
-    };
-
-    const [isVendorSelect, setIsVendorSelect] = useState(false)
-    const [isCustomerSelect, setIsCustomerSelect] = useState(false)
-
-    const vendorRef = useRef(null);
-    const customerRef = useRef(null);
-
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        // if (formData?.user_type == 1) {
-        //     if (handleDropdownError(isCustomerSelect, customerRef)) return;
-        // }
-        // if (formData?.user_type == 2) {
-        //     if (handleDropdownError(isVendorSelect, vendorRef)) return;
-        // }
-        try {
-            dispatch(createExpenses(formData, Navigate));
-            setLoading(false);
-        } catch (error) {
-            toast.error('Error updating quotation:', error);
-        }
-    };
-
-    useEffect(() => {
-        dispatch(accountLists());
-        dispatch(getAccountTypes());
-
-        if (!expenseDetail && itemId) {
-            dispatch(expensesDetails({ id: itemId }));
-        }
-
-        dispatch(expenseHeadLists());
-    }, [dispatch]);
-
-
-    const inputRef = useRef(null);
-
-    // Button click handler
-    const handleClickInputFocus = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-    //
-
-
-    console.log("formdata", formData);
     return (
         <>
             <Toaster />
@@ -259,6 +237,7 @@ const CreateBills = () => {
 
                                                     <CustomDropdown10
                                                         label="Customer Name"
+                                                        ref={customerRef}
                                                         options={cusList?.data?.user}
                                                         value={formData.customer_id}
                                                         onChange={handleChange}
@@ -268,14 +247,16 @@ const CreateBills = () => {
                                                         cusData={cusData}
                                                         type="vendor"
                                                     />
+
                                                 </span>
-                                                {/* {
+
+                                                {
                                                     !isCustomerSelect &&
                                                     <p className="error-message" style={{ whiteSpace: "nowrap" }}>
                                                         {otherIcons.error_svg}
                                                         Please Select Customer
                                                     </p>
-                                                } */}
+                                                }
                                             </div>
                                             :
                                             <div className="form_commonblock ">
@@ -284,6 +265,7 @@ const CreateBills = () => {
                                                     {otherIcons.placeofsupply_svg}
                                                     <CustomDropdown10
                                                         label="Select vendor"
+                                                        ref={vendorRef}
                                                         options={vendorList?.data?.user}
                                                         value={formData?.vendor_id}
                                                         onChange={handleChange}
@@ -295,13 +277,13 @@ const CreateBills = () => {
                                                     />
 
                                                 </span>
-                                                {/* {
+                                                {
                                                     !isVendorSelect &&
                                                     <p className="error-message" style={{ whiteSpace: "nowrap" }}>
                                                         {otherIcons.error_svg}
                                                         Please Select Vendor
                                                     </p>
-                                                } */}
+                                                }
                                             </div>
                                         }
                                     </div>

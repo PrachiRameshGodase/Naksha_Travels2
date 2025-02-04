@@ -27,6 +27,7 @@ import { ShowMasterData } from '../../Helper/HelperFunctions';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { PaymentMadeTable, PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 
 const CreatePaymentMade = () => {
 
@@ -90,7 +91,7 @@ const CreatePaymentMade = () => {
         tax_acc_id: 0,
         reference: "",
         terms_and_condition: "",
-        customer_note: null,
+        vendor_note: null,
         upload_image: null,
         amt_excess: null,
         entity_type: 1, // for sale    2-for purchase
@@ -137,7 +138,7 @@ const CreatePaymentMade = () => {
                 tax_deducted: (+fetchDetails?.tax_deducted || 0),
                 tax_acc_id: (+fetchDetails?.tax_acc_id || 0),
                 reference: fetchDetails?.reference == "0" ? "" : fetchDetails?.reference,
-                customer_note: fetchDetails?.customer_note,
+                vendor_note: fetchDetails?.vendor_note,
                 terms_and_condition: fetchDetails?.terms_and_condition,
                 upload_image: fetchDetails?.upload_image,
                 amt_excess: (+fetchDetails?.amt_excess || 0),
@@ -154,8 +155,8 @@ const CreatePaymentMade = () => {
                 setIsVendorSelect(true);
             }
 
-            if (fetchDetails?.customer) {
-                setcusData(fetchDetails?.customer);//if vendor data found in detail api
+            if (fetchDetails?.vendor) {
+                setcusData(fetchDetails?.vendor);//if vendor data found in detail api
             }
             if (fetchDetails?.credit || fetchDetails?.total) {
                 setIsAmoutSelect(true);
@@ -225,11 +226,11 @@ const CreatePaymentMade = () => {
 
 
         if (name === "vendor_id") {
-            const selectedCustomer = vendorList?.data?.user?.find(cus => cus.id == value);
+            const selectedVendor = vendorList?.data?.user?.find(cus => cus.id == value);
             const sendData = {
                 fy: localStorage.getItem('FinancialYear'),
                 warehouse_id: localStorage.getItem('selectedWarehouseId'),
-                vendor_id: selectedCustomer?.id,
+                vendor_id: selectedVendor?.id,
             }
             dispatch(pendingBillLists(sendData, setInoiceData));
         }
@@ -300,17 +301,23 @@ const CreatePaymentMade = () => {
         if (handleDropdownError(isAmountSelect, dropdownRef2)) return;
 
         try {
+            // Update balance_amount in each entry
             const updatedEntries = formData?.entries?.map((entry) => {
                 if (entry?.amount && entry?.balance_amount != null) {
                     return {
                         ...entry,
-                        balance_amount: (entry?.balance_amount - entry.amount)?.toFixed(2)
+                        balance_amount: entry.balance_amount - entry.amount
                     };
                 }
                 return entry;
             });
             const entriesWithAmount = updatedEntries?.filter((val) => val?.amount > 0);
 
+
+            if (entriesWithAmount?.length <= 0) {
+                toast?.error("Please Fill a Payment.")
+                return;
+            }
             const sendData = {
                 ...formData,
                 entries: entriesWithAmount,
@@ -324,7 +331,7 @@ const CreatePaymentMade = () => {
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            customer_type: cusData?.customer_type,
+            vendor_type: cusData?.vendor_type,
             display_name: cusData?.display_name,
             email: cusData?.email,
             phone: cusData?.mobile_no,
@@ -385,7 +392,9 @@ const CreatePaymentMade = () => {
                             <div className="itemsformwrap">
                                 <div className="f1wrapofcreq">
                                     <div className="form_commonblock">
+
                                         <label >Vendor Name<b className='color_red'>*</b></label>
+
                                         <div id='sepcifixspanflex'>
                                             <span id=''>
                                                 {otherIcons.name_svg}
@@ -400,8 +409,8 @@ const CreatePaymentMade = () => {
                                                     cusData={cusData}
                                                     type="vendor"
                                                 />
-
                                             </span>
+
                                             {
                                                 !isVendorSelect &&
                                                 <p className="error-message" style={{ whiteSpace: "nowrap" }}>
@@ -409,6 +418,7 @@ const CreatePaymentMade = () => {
                                                     Please Select Vendor
                                                 </p>
                                             }
+
                                         </div>
                                     </div>
 
@@ -499,7 +509,7 @@ const CreatePaymentMade = () => {
 
 
                                         <div className="form_commonblock">
-                                            <label>Payment Mode<b className='color_red'>*</b></label>
+                                            <label>Payment Mode </label>
                                             <span >
                                                 {otherIcons.currency_icon}
 
@@ -516,7 +526,7 @@ const CreatePaymentMade = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label >Paid Through<b className='color_red'>*</b></label>
+                                            <label >Paid Through</label>
                                             <span >
                                                 {otherIcons.paid_through}
                                                 <CustomDropdown15
@@ -544,133 +554,14 @@ const CreatePaymentMade = () => {
                                     </div>
                                 </div>
                                 <div className={`${formData?.vendor_id ? "f1wrpofcreqsx2" : "disabledfield f1wrpofcreqsx2"}`}>
-                                    <div className='itemsectionrows'>
-
-                                        {formData?.entries?.length >= 1 ?
+                                    {
+                                        formData?.entries?.length >= 1 ?
                                             <>
-                                                <table id="tablex15s56s31s1">
-                                                    <thead className="thaedaksx433">
-                                                        <tr>
-                                                            <div style={{ marginLeft: "10px" }}>
-                                                                <th className='sfdjklsd1xs2w1' style={{ width: "9%" }}>#</th>
-                                                            </div>
-
-                                                            <th className='sfdjklsd1xs2w4' style={{ width: "16%", paddingLeft: "40px", }}>Date
-                                                            </th>
-
-                                                            <div style={{ marginLeft: "80px", width: "100%" }}>
-                                                                <th className='sfdjklsd1xs2w4' style={{ width: "100%" }}>Bill</th>
-                                                            </div>
-
-                                                            <th className='sfdjklsd1xs2w4' style={{ width: "20%", textAlign: "right", paddingLeft: "100px" }}>Bill Amount
-                                                            </th>
-
-                                                            <div style={{ marginLeft: "150px", width: "50%" }}>
-                                                                <th className='sfdjklsd1xs2w4 ' style={{ width: "100%", textAlign: "right" }}>Amount Due</th>
-                                                            </div>
-
-                                                            <th className='sfdjklsd1xs2w4' style={{ textAlign: "right", padding: "15px 40px" }}>Payment</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    {formData?.vendor_id ? <>
-                                                        <tbody>
-                                                            {formData?.entries?.map((val, index) => (
-                                                                <tr key={index} className="rowsxs15aksx433">
-
-                                                                    <div style={{ marginLeft: "10px" }}><td className="sfdjklsd1xs2w1">{index + 1}</td></div>
-
-                                                                    <td className="sfdjklsd1xs2w2" style={{ paddingLeft: "40px", paddingBottom: "34px" }} > {formatDate3(val?.date)} </td>
-
-                                                                    <div style={{ marginLeft: "80px" }}>   <td className="sfdjklsd1xs2w2" >{val?.bill_no}</td></div>
-
-                                                                    <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>{showAmountWithCurrencySymbol((parseInt(val?.bill_amount))?.toFixed(2))}</td>
-
-                                                                    <td className="sfdjklsd1xs2w3" style={{ textAlign: "right", width: "23%" }}>{showAmountWithCurrencySymbol((parseInt(val?.balance_amount))?.toFixed(2))}</td>
-
-                                                                    <td className="sfdjklsd1xs2w3">
-
-                                                                        <div className="tablsxs1a4" style={{ textAlign: "right", marginRight: "0px" }}>
-                                                                            <div className="tablsxs1a2">
-                                                                                <input
-                                                                                    style={{ width: "56%", textAlign: "center" }}
-                                                                                    type="number"
-                                                                                    value={val.amount !== null ? val.amount : ""}
-                                                                                    placeholder="0.00"
-                                                                                    onChange={(e) => {
-                                                                                        const inputValue = e.target.value;
-                                                                                        const newValue = inputValue === "" ? null : parseFloat(inputValue);
-
-                                                                                        // Convert credit and balance_amount to numbers for comparison
-                                                                                        const formCredit = Number(formData?.credit) || 0;
-                                                                                        const balanceAmount = Number(val?.balance_amount) || 0;
-                                                                                        // Condition 1: formData.credit is empty
-                                                                                        if (!formData?.credit) {
-                                                                                            toast('Please set the amount', {
-                                                                                                icon: '👏',
-                                                                                                style: {
-                                                                                                    borderRadius: '10px',
-                                                                                                    background: '#333',
-                                                                                                    color: '#fff',
-                                                                                                    fontSize: '14px',
-                                                                                                },
-                                                                                            });
-                                                                                            setFormData((prevFormData) => ({
-                                                                                                ...prevFormData,
-                                                                                                entries: prevFormData?.entries?.map((entry, i) =>
-                                                                                                    i === index ? { ...entry, amount: 0 } : entry
-                                                                                                ),
-                                                                                            }));
-                                                                                        }
-                                                                                        // Condition 2: inputValue exceeds balance amount
-                                                                                        else if (newValue > balanceAmount) {
-                                                                                            toast('The amount entered here is more than the balance amount', {
-                                                                                                icon: '👏',
-                                                                                                style: {
-                                                                                                    borderRadius: '10px',
-                                                                                                    background: '#333',
-                                                                                                    color: '#fff',
-                                                                                                    fontSize: '14px',
-                                                                                                },
-                                                                                            });
-                                                                                        }
-                                                                                        // Condition 3: inputValue exceeds formData.credit
-                                                                                        else if (newValue > formCredit) {
-                                                                                            toast('The amount entered here is more than the amount paid by the vendor', {
-                                                                                                icon: '👏',
-                                                                                                style: {
-                                                                                                    borderRadius: '10px',
-                                                                                                    background: '#333',
-                                                                                                    color: '#fff',
-                                                                                                    fontSize: '14px',
-                                                                                                },
-                                                                                            });
-                                                                                        }
-                                                                                        // Condition 4: inputValue is valid
-                                                                                        else {
-                                                                                            setFormData((prevFormData) => ({
-                                                                                                ...prevFormData,
-                                                                                                entries: prevFormData?.entries?.map((entry, i) =>
-                                                                                                    i === index ? { ...entry, amount: newValue } : entry
-                                                                                                ),
-                                                                                            }));
-                                                                                        }
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </> : <p style={{ textAlign: "center" }}>Please Select Vendor</p>}
-                                                </table>
+                                                <PaymentMadeTable formData={formData} setFormData={setFormData} fetchDetails={fetchDetails} />
                                             </>
                                             :
-                                            <p style={{ textAlign: "center", padding: "20px 0" }}>There are no unpaid invoices associated with this customer.</p>
-                                        }
-
-                                    </div>
+                                            <p style={{ textAlign: "center", padding: "20px 0" }}> There are no unpaid invoices associated with this Vendor. </p>
+                                    }
 
 
                                     <div className="height5"></div>
@@ -737,14 +628,12 @@ const CreatePaymentMade = () => {
                                         <div className='textareaofcreatqsiform'>
                                             <label>Terms</label>
                                             <div className='show_no_of_text_limit_0121'>
-
                                                 <TextAreaComponentWithTextLimit
                                                     formsValues={{ handleChange, formData }}
                                                     placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
                                                     name="terms_and_condition"
                                                     value={preventZeroVal(formData?.terms_and_condition)}
                                                 />
-
                                             </div>
                                         </div>
 
