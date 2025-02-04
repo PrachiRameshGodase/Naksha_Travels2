@@ -22,7 +22,10 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
           <div className="custom-modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h5> Passenger Name : {data?.visa_passenger?.display_name || ""}</h5>
+                <h5>
+                  {" "}
+                  Passenger Name : {data?.visa_passenger?.display_name || ""}
+                </h5>
                 <button
                   className="close-button"
                   onClick={() => setShowPopup(false)}
@@ -31,11 +34,7 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div
-                  id="itemsdetailsrowskl"
-                  className="secondinsidedatax15s"
-                  
-                >
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -119,32 +118,24 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                     {data?.days || ""}
                                   </p>
                                 </li>
+                              </ul>
+                              <ul>
                                 <li>
                                   <span>Country</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {data?.country?.name || ""}
-                                  </p>
+                                  <p>{data?.country?.name || ""}</p>
                                 </li>
                                 <li>
                                   <span>Issue Date</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>
-                                    {formatDate3(data?.issue_date) || ""}
-                                  </p>
+                                  <p>{formatDate3(data?.issue_date) || ""}</p>
                                 </li>
-                              </ul>
-                              <ul>
                                 <li>
                                   <span>Expiry Date</span>
                                   <h1>:</h1>
                                   <p>{formatDate3(data?.expiry_date) || ""}</p>
                                 </li>
-                                <li>
-                                  <span>Supplier Name</span>
-                                  <h1>:</h1>
-                                  <p>{data?.supplier_name || ""}</p>
-                                </li>
+
                                 <li>
                                   <span>Visa Price</span>
                                   <h1>:</h1>
@@ -153,33 +144,20 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                 <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
-                                  
-                                </li>
-                                <li>
-                                  <span>Customer tax</span>
-                                  <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Tax</span>
-                                  <h1>:</h1>
-                                  <p>{data?.supplier_tax || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Price</span>
-                                  <h1>:</h1>
-                                  <p>{data?.supplier_total || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Customer Price</span>
-                                  <h1>:</h1>
-                                  <p>{data?.total_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Retain</span>
-                                  <h1>:</h1>
-                                  <p>{data?.retain || ""}</p>
+                                  <p>
+                                    {charge
+                                      ?.filter(
+                                        (item) =>
+                                          item?.account_name && item?.amount
+                                      )
+                                      .map(
+                                        (item) =>
+                                          `${item?.account_name || ""} - ${
+                                            item?.amount || ""
+                                          }`
+                                      )
+                                      .join(", ")}
+                                  </p>
                                 </li>
 
                                 <li>
@@ -194,6 +172,92 @@ const PassengerVisaDetails = ({ data, showPopup, setShowPopup }) => {
                                   <p>
                                     <Attachment2 attachments={attachments} />
                                   </p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inidbx1">
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "447px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Supplier Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span>Supplier Name</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_name || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "422px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Customer Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer tax
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{data?.tax_amount || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer Price
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span style={{ width: "200px" }}>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
                                 </li>
                               </ul>
                             </div>

@@ -104,7 +104,7 @@ const CreateMICE = () => {
   };
 
   useEffect(() => {
-    const sendData = { customer_type: "Individual", active:1, status:1 };
+    const sendData = { active:1, status:1 };
     dispatch(customersList(sendData));
   }, [dispatch]);
 

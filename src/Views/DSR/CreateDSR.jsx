@@ -99,7 +99,7 @@ const CreateDSR = () => {
   };
 
   useEffect(() => {
-    const sendData = { customer_type: "Individual", status:1,active:1 };
+    const sendData = {status:1,active:1 };
     dispatch(customersList(sendData));
   }, [dispatch]);
 

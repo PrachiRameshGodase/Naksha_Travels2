@@ -10,7 +10,9 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
   const [activeSection, setActiveSection] = useState("roomDetails");
 
-  const data=serviceData?.service_data ? JSON.parse(serviceData?.service_data):""
+  const data = serviceData?.service_data
+    ? JSON.parse(serviceData?.service_data)
+    : "";
 
   const attachments = data?.upload_image || "";
   const charge = data?.charges ? JSON.parse(data?.charges) : [];
@@ -33,11 +35,7 @@ const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
                 </button>
               </div>
               <div className="modal-body">
-                <div
-                  id="itemsdetailsrowskl"
-                  className="secondinsidedatax15s"
-                 
-                >
+                <div id="itemsdetailsrowskl" className="secondinsidedatax15s">
                   <div className="insidcontain">
                     {activeSection === "roomDetails" && (
                       <>
@@ -78,7 +76,7 @@ const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
                                   <span>Destination Code</span>
                                   <h1>:</h1>
                                   <p style={{ width: "212px" }}>
-                                  {data?.destination_code ||""}
+                                    {data?.destination_code || ""}
                                   </p>
                                 </li>
                                 <li>
@@ -120,26 +118,24 @@ const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Ticket Number</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.ticket_no || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.ticket_no || ""}
+                                  </p>
                                 </li>
                                 <li>
                                   <span>PRN Number</span>
                                   <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.prn_no || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Route</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.route || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Name</span>
-                                  <h1>:</h1>
-                                  <p style={{ width: "212px" }}>{data?.supplier_name || ""}</p>
+                                  <p style={{ width: "212px" }}>
+                                    {data?.prn_no || ""}
+                                  </p>
                                 </li>
                               </ul>
                               <ul>
-                               
+                                <li>
+                                  <span>Route</span>
+                                  <h1>:</h1>
+                                  <p>{data?.route || ""}</p>
+                                </li>
                                 <li>
                                   <span>Fare Price</span>
                                   <h1>:</h1>
@@ -148,30 +144,22 @@ const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
                                 <li>
                                   <span>Charges</span>
                                   <h1>:</h1>
-                                  <p>{charge?.filter((item) => item?.account_name && item?.amount).map((item) => `${item?.account_name || ""} - ${item?.amount || ""}`) .join(", ")}</p>
-                                 
+                                  <p>
+                                    {charge
+                                      ?.filter(
+                                        (item) =>
+                                          item?.account_name && item?.amount
+                                      )
+                                      .map(
+                                        (item) =>
+                                          `${item?.account_name || ""} - ${
+                                            item?.amount || ""
+                                          }`
+                                      )
+                                      .join(", ")}
+                                  </p>
                                 </li>
-                               
-                                <li>
-                                  <span>Customer tax</span>
-                                  <h1>:</h1>
-                                  <p>{data?.tax_amount || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Tax</span>
-                                  <h1>:</h1>
-                                  <p>{data?.supplier_tax || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Supplier Price</span>
-                                  <h1>:</h1>
-                                  <p>{data?.supplier_total || ""}</p>
-                                </li>
-                                <li>
-                                  <span>Customer Price</span>
-                                  <h1>:</h1>
-                                  <p>{data?.total_amount || ""}</p>
-                                </li>
+
                                 <li>
                                   <span>Retain</span>
                                   <h1>:</h1>
@@ -188,6 +176,92 @@ const FlightDetails = ({ serviceData, showPopup, setShowPopup }) => {
                                   <p>
                                     <Attachment2 attachments={attachments} />
                                   </p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inidbx1">
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "447px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Supplier Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span>Supplier Name</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_name || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span>Supplier Tax</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_tax || ""}</p>
+                                </li>
+                                <li>
+                                  <span>Supplier Price</span>
+                                  <h1>:</h1>
+                                  <p>{data?.supplier_total || ""}</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div
+                            className="inidbx1s1"
+                            style={{
+                              width: "422px",
+                              background: "rgb(232 241 253 / 25%)",
+                              marginTop: "20px",
+                            }}
+                          >
+                            <div
+                              className="inidbs1x1a1"
+                              style={{
+                                background: "#f6f8fa",
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              {otherIcons?.information_svg}
+                              Customer Details
+                            </div>
+                            <div style={{ display: "flex", gap: "20px" }}>
+                              <ul>
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer tax
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{data?.tax_amount || ""}</p>
+                                </li>
+
+                                <li>
+                                  <span style={{ width: "200px" }}>
+                                    Customer Price
+                                  </span>
+                                  <h1>:</h1>
+                                  <p>{data?.total_amount || ""}</p>
+                                </li>
+                                <li>
+                                  <span style={{ width: "200px" }}>Retain</span>
+                                  <h1>:</h1>
+                                  <p>{data?.retain || ""}</p>
                                 </li>
                               </ul>
                             </div>

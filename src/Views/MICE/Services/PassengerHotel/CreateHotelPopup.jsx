@@ -627,16 +627,12 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               placeholderText="Enter Date"
                               dateFormat="dd-MM-yyyy"
                               autoComplete="off"
-                              minDate={
+                              maxDate={
                                 formData?.check_in_date
                                   ? new Date(formData.check_in_date)
                                   : null
                               }
-                              maxDate={
-                                formData?.check_out_date
-                                  ? new Date(formData.check_out_date)
-                                  : null
-                              }
+                              
                             />
                           </span>
                           {errors?.booking_date && (
