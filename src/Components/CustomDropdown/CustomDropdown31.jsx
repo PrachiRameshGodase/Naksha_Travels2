@@ -237,47 +237,41 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  const handleSelect = (account) => {
-    // Copy the current value
-    const selectedItems = [...value];
+  console.log("value", value)
 
-    // Find if the account.id is already in the list
-    const index = selectedItems.findIndex((item) => item === account?.id);
+  const handleSelect = (account) => {
+    if (!account || !account.id) return;
+
+    // Ensure value is always an array
+    const selectedItems = Array.isArray(value) ? [...value] : [];
+    const index = selectedItems.findIndex((item) => item === account.id);
+
     const maxGuests = formData.max_occupancy || formData.no_of_persons;
+
     if (index === -1) {
       if (selectedItems.length >= maxGuests) {
-        toast.error(
-          `You cannot select more than ${maxGuests} guests.`
-        );
+        toast.error(`You cannot select more than ${maxGuests} guests.`);
         return;
-      } else {
-        // Add account.id to selectedItems
-        selectedItems.push(account?.id);
-
-        // Add account to storeData
-        setStoredData((prevStoreData) => [
-          ...prevStoreData,
-          { id: account?.id, display_name: account?.display_name },
-        ]);
       }
-    } else {
-      // Remove account.id from selectedItems
-      selectedItems.splice(index, 1);
 
-      // Remove account from storeData
+      selectedItems.push(account.id);
+      setStoredData((prevStoreData) => [
+        ...prevStoreData,
+        { id: account.id, display_name: account.display_name },
+      ]);
+    } else {
+      selectedItems.splice(index, 1);
       setStoredData((prevStoreData) =>
-        prevStoreData.filter((item) => item.id !== account?.id)
+        prevStoreData.filter((item) => item.id !== account.id)
       );
     }
 
-    // Call onChange with updated selectedItems
     onChange(selectedItems);
-
-    // Reset search term
-    setSearchTerm("");
+    setSearchTerm(""); // Reset search term
   };
 
-  const isSelected = (accountId) => value?.includes(accountId);
+
+  const isSelected = (accountId) => Array.isArray(value) && value.includes(accountId);
 
   useEffect(() => {
     const parsedPayload = JSON?.parse(itemPayloads);
@@ -292,11 +286,20 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     setSearchTerm("");
   }, []);
 
+  // useEffect(() => {
+  //   // Reset storeData when hotel_id changes
+  //   setStoredData([]);
+  //   onChange([]);
+  // }, [formData.hotel_id]);
+
   useEffect(() => {
-    // Reset storeData when hotel_id changes
-    setStoredData([]);
-    onChange([]);
-  }, [formData.hotel_id]);
+    if (value?.length) {
+      setStoredData(
+        options.filter((option) => value.includes(option.id))
+      );
+    }
+  }, [value, options]);
+
 
   return (
     <div
@@ -364,12 +367,10 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
                       {" "}
                       {option?.display_name || ""}
                     </span>
-                    {isSelected(option?.id) ? (
-                      <span style={{ fontSize: "2px", marginRight: "20px" }}>
+                    {isSelected(option?.id) && (
+                      <span style={{ fontSize: "12px", marginRight: "10px" }}>
                         {otherIcons.cross_svg}
                       </span>
-                    ) : (
-                      ""
                     )}
                   </p>
                 </div>
