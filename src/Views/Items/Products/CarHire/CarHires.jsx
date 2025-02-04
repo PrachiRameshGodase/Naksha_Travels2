@@ -256,7 +256,7 @@ const CarHires = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p> 
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Price</p>
                    
                   </div>
@@ -311,7 +311,7 @@ const CarHires = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"35%"}}> {item?.price || ""}</p>
+                              <p style={{width:"38%"}}> {item?.price || ""}</p>
                              
                             </div>
 

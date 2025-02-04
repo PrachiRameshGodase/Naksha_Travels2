@@ -266,7 +266,7 @@ const Visas = () => {
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                   {/* {otherIcons?.refrence_svg} */}
                     <p>
-                    {currencySymbol}{" "}
+                    ({currencySymbol}){" "}
                     Price
                     </p>
                   </div>
@@ -331,7 +331,7 @@ const Visas = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p  style={{width:"46%"}}>
+                              <p  style={{width:"50%"}}>
                               {item?.price || ""}
                               </p>
                             </div>

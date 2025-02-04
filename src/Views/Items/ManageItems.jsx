@@ -986,7 +986,7 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Price
                     </p>
                   </div>
@@ -1104,7 +1104,7 @@ const Quotations = () => {
                               className="table-cellx12 quotiosalinvlisxs5_item"
                           
                             >
-                              <p  style={{ width: "59%" }}>
+                              <p  style={{ width: "63%" }}>
                                 {" "}
                                 {(quotation?.price)}
                               </p>

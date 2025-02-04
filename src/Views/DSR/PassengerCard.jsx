@@ -118,7 +118,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
           <th>Email</th>
           {/* <th>Mobile</th> */}
           <th style={{ width: "120px" }}>Services</th>
-          <th style={{ textAlign: "right" }}>Service Total</th>
+          <th style={{ textAlign: "right" }}>({currencySymbol}) Service Total</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -145,7 +145,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                 />
               </td>
               <td style={{ textAlign: "right" }}>
-                ({currencySymbol}) {passenger?.service_total || ""}
+                 {passenger?.service_total || ""}
               </td>
               <td>
                 <span

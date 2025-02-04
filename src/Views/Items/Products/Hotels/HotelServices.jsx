@@ -340,7 +340,7 @@ const HotelServices = ({ data }) => {
                     Meal
                   </div> */}
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Price</p>
+                    <p>({currencySymbol}) Price</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                     {otherIcons?.status_svg}
@@ -413,7 +413,7 @@ const HotelServices = ({ data }) => {
                               // onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{ width: "54%" }}>
+                              <p style={{ width: "60%" }}>
                                 {" "}
                                 {item?.price || ""}
                               </p>

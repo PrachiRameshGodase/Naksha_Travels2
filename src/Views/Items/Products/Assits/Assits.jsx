@@ -256,7 +256,7 @@ const Assit = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                   <p>{currencySymbol} {" "}  Price</p>
+                   <p>({currencySymbol}) {" "}  Price</p>
                   
                   </div>
 
@@ -315,7 +315,7 @@ const Assit = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"40%"}}> {item?.price || ""}</p>
+                              <p style={{width:"45%"}}> {item?.price || ""}</p>
                              
                             </div>
 

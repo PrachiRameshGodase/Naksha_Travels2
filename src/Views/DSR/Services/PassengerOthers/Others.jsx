@@ -117,7 +117,7 @@ const Others = ({ data, totalItems }) => {
                                     <p>{currencySymbol} {" "}Price</p>
                                     </div> */}
                                     <div className="table-cellx12 quotiosalinvlisxs6_item">
-                                      <p>{currencySymbol} {" "}Total Amount</p>
+                                      <p>({currencySymbol}) {" "}Total Amount</p>
                                       
                                     </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -181,7 +181,7 @@ const Others = ({ data, totalItems }) => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"55%"}}>{item?.total_amount || ""}</p>
+                              <p style={{width:"59%"}}>{item?.total_amount || ""}</p>
                               
                             </div>
                             <div
