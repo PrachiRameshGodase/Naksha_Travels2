@@ -16,6 +16,7 @@ import {
 } from "../../Helper/HelperFunctions";
 import NumericInput from "../../Helper/NumericInput";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown24 from "../../../Components/CustomDropdown/CustomDropdown24";
 
 const BasicDetails = ({
   updateUserData,
@@ -31,11 +32,10 @@ const BasicDetails = ({
 }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
-
-  const countryList = useSelector((state) => state?.countries?.countries);
+  const countries = useSelector(state => state?.countries);
+  const countriess = countries?.countries?.country
 
   const { isDuplicate, isEdit, user } = customerData;
-  const { masterData } = useSelector((state) => state?.masterData);
   const [customerDisplayName, setCustomerDisplayName] = useState(false);
   const [showRegisterdFields, setShowRegisterdFields] = useState(false);
 
@@ -49,38 +49,38 @@ const BasicDetails = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("value", value)
+
     setBasicDetails((prevDetails) => {
       const updatedDetails = {
         ...prevDetails,
         [name]: value,
       };
-  
+
       // Automatically set display_name to first_name if first_name is updated and display_name is empty
       if (name === "first_name") {
         updatedDetails.display_name = value;
       }
- 
+
       // Update citizenship when country_id changes
-      if (name === "country_id") {
+      if (name === "citizenship") {
         updatedDetails.citizenship = value;
       }
-  
+
       return updatedDetails;
     });
-  
+
     // Handle registration_type specific logic
     if (name === "registration_type") {
       setShowRegisterdFields(value === "Registered");
     }
-  
+
     // Clear errors for the field being updated
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: false,
     }));
   };
-  
+
   useEffect(() => {
     dispatch(fetchGetCountries());
   }, [dispatch]);
@@ -91,7 +91,7 @@ const BasicDetails = ({
       department: selectedItems, // Update selected items array
     });
   };
-console.log("basicDetails", basicDetails)
+
   // Function to update displayNames based on basicDetails
   const [displayNames, setDisplayNames] = useState([]);
 
@@ -198,7 +198,7 @@ console.log("basicDetails", basicDetails)
         is_customer: +user?.is_customer,
         gst_no: user?.gst_no,
         pan_no: user?.pan_no,
-        gender:user?.gender,
+        gender: user?.gender,
         d_o_b: user?.d_o_b,
         blood_group: user?.blood_group,
         citizenship: user?.citizenship,
@@ -517,10 +517,10 @@ console.log("basicDetails", basicDetails)
                       dateFormat="dd-MM-yyyy"
                       autoComplete="off"
                       minDate={new Date(new Date().getFullYear() - 50, 0, 1)} // Start 50 years in the past
-                                maxDate={new Date(new Date().getFullYear() + 50, 11, 31)} // End 50 years in the future
-                                showYearDropdown // Enables the year dropdown
-                                scrollableYearDropdown // Allows scrolling in the year dropdown
-                                yearDropdownItemNumber={101}
+                      maxDate={new Date(new Date().getFullYear() + 50, 11, 31)} // End 50 years in the future
+                      showYearDropdown // Enables the year dropdown
+                      scrollableYearDropdown // Allows scrolling in the year dropdown
+                      yearDropdownItemNumber={101}
                     />
                   </span>
                 </div>
@@ -546,18 +546,15 @@ console.log("basicDetails", basicDetails)
                     <span>
                       {otherIcons.country_svg}
 
-                      <select
-                        name="country_id"
-                        value={basicDetails.citizenship}
-                        onChange={(e) => handleChange(e, "country_id")}
-                      >
-                        <option value="">Select Country</option>
-                        {countryList?.country?.map((country) => (
-                          <option key={country.id} value={country.id}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </select>
+                      <CustomDropdown24
+                        label="Select vendor"
+                        options={countriess}
+                        value={basicDetails?.citizenship}
+                        onChange={handleChange}
+                        name="citizenship"
+                        defaultOption="Select Citizenship"
+                        type="countries"
+                      />
                     </span>
                   </div>
                 </div>

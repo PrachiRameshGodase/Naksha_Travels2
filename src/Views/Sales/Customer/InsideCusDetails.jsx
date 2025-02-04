@@ -455,7 +455,7 @@ const InsideCusDetails = ({
                           </thead>
                           <tbody>
                             {employees
-                              ?.filter((item) => item?.relation_id !== customerDetails?.id)
+                              // ?.filter((item) => item?.relation_id !== customerDetails?.id)
                               ?.map((item, index) => (
                                 <tr key={index}>
                                   <td>{index + 1 || "-"}</td>

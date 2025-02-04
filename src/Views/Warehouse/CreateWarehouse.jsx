@@ -1,34 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
+import React, { useEffect, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
-import { Link, useNavigate } from 'react-router-dom';
-import DisableEnterSubmitForm from '../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { customersList } from '../../Redux/Actions/customerActions';
-import CustomDropdown10 from '../../Components/CustomDropdown/CustomDropdown10';
-import { accountLists, itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
-import DatePicker from "react-datepicker";
-
-import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
-import { GoPlus } from 'react-icons/go';
-import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
-import { expenseHeadLists, fetchCurrencies, fetchGetCities, fetchGetCountries, fetchGetStates, fetchMasterData } from '../../Redux/Actions/globalActions';
+import { Link, useNavigate } from 'react-router-dom';
+import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
+import DisableEnterSubmitForm from '../Helper/DisableKeys/DisableEnterSubmitForm';
 import toast, { Toaster } from 'react-hot-toast';
-import Loader02 from '../../Components/Loaders/Loader02';
-import CustomeDropdown2 from '../../Components/CustomDropdown/CustomeDropdown2';
-import { createExpenses, expensesDetails } from '../../Redux/Actions/expenseActions';
-import { formatDate, todayDate } from '../Helper/DateFormat';
-import NumericInput from '../Helper/NumericInput';
-import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15';
-import { getAccountTypes } from '../../Redux/Actions/accountsActions';
-import ImageUpload from '../Helper/ComponentHelper/ImageUpload';
-
-import { warehouse_type, warehouse_for, warehouse_department } from '../Helper/ComponentHelper/DropdownData';
+import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
+import { fetchGetCities, fetchGetStates } from '../../Redux/Actions/globalActions';
+import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown04 from '../../Components/CustomDropdown/CustomDropdown04';
-import { warehouseCreateAction, warehouseDetailAction } from '../../Redux/Actions/warehouseActions';
-import CustomDropdown06, { CustomDropdown006 } from '../../Components/CustomDropdown/CustomDropdown06';
+import { CustomDropdown006 } from '../../Components/CustomDropdown/CustomDropdown06';
 import CustomDropdown24 from '../../Components/CustomDropdown/CustomDropdown24';
+import { warehouseCreateAction, warehouseDetailAction } from '../../Redux/Actions/warehouseActions';
 import { SubmitButton2 } from '../Common/Pagination/SubmitButton';
+import { warehouse_for } from '../Helper/ComponentHelper/DropdownData';
 import { ShowMasterData } from '../Helper/HelperFunctions';
 
 
@@ -69,7 +54,7 @@ const CreateWarehouse = () => {
     }
     );
 
-    // console.log("itemId && isEdit && billDetail", itemId, isEdit, billDetail)
+  
 
     useEffect(() => {
         if ((itemId && isEdit && warehouseDetail) || (itemId && isDublicate && warehouseDetail) || itemId && (convert === "saleToInvoice")) {
