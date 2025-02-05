@@ -10,12 +10,14 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
     // quotation to sale-order show sale-ordered status
     if (section === "sale-order" && convert === "quotationToSale") {
         dispatch(quotationStatus({ id: itemId, status: "7" }, null));
+        navigate(`/dashboard/sales-orders`);
     }
 
     // sent and approve quotation to invoice approval show Invoiced status
     if (section === "invoices" && convert === "quotationToInvoice" && response) {
         dispatch(quotationStatus({ id: itemId, status: "4" }, null));//status shown invoiced in quotaion...
         dispatch(invoicesStatus({ id: response?.data?.transaction?.id, status: "3" }, null, null));//status shown pending in invoice...
+        navigate(`/dashboard/${section}`);
     }
 
     // Sales Orders to invoice show Invoiced status
@@ -29,6 +31,8 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
         if (parshTracking_details?.module_data?.module === "quotationToSale") {
             dispatch(quotationStatus({ id: parshTracking_details?.module_data?.id, status: "4" }, null));//status shown pending in invoice
         }
+
+        navigate(`/dashboard/${section}`);
     }
 
     // purchase order to bill show bill status
@@ -45,6 +49,7 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
     }
     if (section === "payment_rec" && convert === "toPayment") {
         dispatch(invoicesStatus({ id: itemId, status: "5" }, null));//paid status(invoice) when convert invoice to payment receive...
+        navigate("/dashboard/payment-recieved")
     }
 
     if (section === "payment_made" && convert === "bill_to_payment") {
@@ -54,6 +59,7 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
     if (section === "credit" && convert === "invoiceToCredit" && response) {
         dispatch(CreditNotesStatus({ id: response?.data?.data?.id, status: "4" }));//close status in credit note...
         dispatch(invoicesStatus({ id: itemId, status: "5" }, null));//paid status(invoice) when convert invoice to credit note...
+        navigate("/dashboard/credit-notes")
     }
 
     // bill to debit note

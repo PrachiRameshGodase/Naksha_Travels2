@@ -61,6 +61,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
 
+  const toArry = service_data?.guest_ids?.split(",")?.map(Number);
+
   const [formData, setFormData] = useState({
     service_name: "Hotels",
     hotel_id: service_data?.hotel_id || "", // Example for hotel_id
@@ -70,7 +72,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     meal_id: service_data?.meal_id || "", // Example for meal_id
     room_no: service_data?.room_no || "", // Example for room_no
     bed: service_data?.bed || "", // Example for bed
-    guest_ids: service_data?.guest_ids || "", // Example for guest_ids
+    guest_ids: toArry || '', // Example for guest_ids
     booking_date: formatDate(new Date()), // Current date
     check_in_date: service_data?.check_in_date || "", // Example for check_in_date
     check_out_date: service_data?.check_out_date || "", // Example for check_out_date
@@ -88,7 +90,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     price: 0,
   });
 
-  // console.log("hotal service_data", service_data)
+  console.log("hotal service_data formData", formData)
+  console.log("hotal service_data service_data?.guest_ids", service_data?.guest_ids)
 
   // for edit hotal edit
   useEffect(() => {
@@ -98,7 +101,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   }, [service_data])
 
 
-  // console.log("formdataaaaaaaaaa", formData)
+  console.log("formdataaaaaaaaaa", formData)
   const [errors, setErrors] = useState({
     hotel_id: false,
     room_id: false,
@@ -114,11 +117,14 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   });
 
   const entryType = ShowUserMasterData("50");
+
   const occupancy = ShowUserMasterData("36");
   const meal = ShowUserMasterData("37");
   const bed = ShowUserMasterData("38");
 
   const handleChange = (e) => {
+    // console.log("handleChangehandleChangehandleChange")
+
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
 
@@ -136,7 +142,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
         bed: "",
         max_occupancy: "",
         gross_amount: "",
-        guest_ids: "",
+        // guest_ids: "",
       };
     }
 
@@ -190,7 +196,10 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       [name]: false,
     }));
   };
+
+
   const handleChange1 = (selectedItems, name) => {
+    // console.log("handleChange1handleChange1handleChange1", selectedItems)
     if (selectedItems.length > formData.max_occupancy) {
       toast.error(
         `You cannot select more than ${formData.max_occupancy} guests.`
@@ -201,12 +210,14 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
         ...formData,
         guest_ids: selectedItems,
       });
+
       setErrors((prevData) => ({
         ...prevData,
         [name]: false,
       }));
     }
   };
+
   const handleDateChange = (date, name) => {
     // Update the form data with the new date
     const updatedFormData = {

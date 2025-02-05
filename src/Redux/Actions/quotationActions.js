@@ -20,6 +20,7 @@ import {
     QUOTATION_SEND_REQUEST,
     QUOTATION_SEND_SUCCESS,
     QUOTATION_SEND_ERROR,
+
 } from "../Constants/quotationConstants";
 
 import Swal from 'sweetalert2';
@@ -53,7 +54,6 @@ export const quotationDetails = (queryParams, setDetail_api_data) => async (disp
     }
 };
 
-
 export const updateQuotation = ({
     quotationData,
     navigate,
@@ -69,8 +69,6 @@ export const updateQuotation = ({
         const response = await axiosInstance.post(`/sales/create/update`, quotationData);
 
         dispatch({ type: QUOTATION_UPDATE_SUCCESS, payload: response.data });
-
-
 
         if (response?.data?.message === "Transaction Created Successfully") {
 
@@ -91,18 +89,19 @@ export const updateQuotation = ({
             }
 
             // autoGenerateIdFunction(dispatch, editDub, itemId, showAllSequenceId)
-
             if (section === "quotation") {
                 handleQuotationNavigation(editDub, buttonName, confirmed, navigate, response);
             } else if (section === "sale-order") {
                 handleSaleOrderNavigation(editDub, buttonName, confirmed, navigate, response)
-            } else if (section === "invoices" || section === "delivery_challan") {
+            } else if ((section === "invoices" && !convert) || (section === "delivery_challan" && !convert)) {
+                console.log("convert invoice")
                 invoiceHelper(editDub, buttonName, navigate, section);
             }
 
         } else {
             toast.error(response?.data?.message);
         }
+
     } catch (error) {
         dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
         toast.error(error.message);

@@ -177,6 +177,7 @@ export const CustomDropdown006 = ({ options, value, onChange, defaultOption, id1
   };
 
   const isSelected = (accountId) => value?.includes(accountId);
+
   const renderSelectedOptions = () => {
     // Ensure value is always an array
     const selectedValues = Array.isArray(value) ? value : [];
@@ -245,6 +246,7 @@ export const CustomDropdown006 = ({ options, value, onChange, defaultOption, id1
   }, [isOpen]);
 
   useOutsideClick(dropdownRef, () => setIsOpen(false));
+
   return (
     <>
 
