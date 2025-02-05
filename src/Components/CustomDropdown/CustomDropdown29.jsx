@@ -72,8 +72,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
   useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
+  
 
-  console.log("cusData", cusData)
   return (
     <div
       ref={combinedRef}
@@ -93,6 +93,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           : type === "companyList"
             ? cusData
               ? cusData?.company_name
+              : value? value
               : defaultOption
             : cusData
               ? cusData?.hotel_name

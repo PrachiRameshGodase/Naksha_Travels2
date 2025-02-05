@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import DropDownHelper from '../../Views/Helper/DropDownHelper';
+import React from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
+import DropDownHelper from '../../Views/Helper/DropDownHelper';
 
 const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption, extracssclassforscjkls, className2, types, tax_rate }) => {
 
@@ -23,12 +22,11 @@ const CustomDropdown13 = ({ options, value, onChange, name, type, defaultOption,
     >
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')} style={className2 === "item" ? { cursor: types === "Service" ? "not-allowed" : "default", } : className2 === "item4" ? { minWidth: "88px", background: "white", height: "29px" } : className2 === "item3" ? { marginRight: "8px" } : {}}>
 
-        {tax_rate == 0 || tax_rate === null
+        {tax_rate == 0 || tax_rate === null 
           ? defaultOption
           : options?.find(account => account?.tax_percentge === value)?.tax_percentge || value}
 
 
-        {/* {console.log("options?.find(account => account?.tax_percentge == value)?.tax_percentge", options?.find(account => account?.tax_percentge == value)?.tax_percentge)} */}
 
         <svg
           width="13"

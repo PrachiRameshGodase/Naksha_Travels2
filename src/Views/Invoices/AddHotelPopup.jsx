@@ -1,51 +1,42 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import CustomDropdown02 from "../../Components/CustomDropdown/CustomDropdown02";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../Components/CustomDropdown/CustomDropdown29";
-import CustomDropdown31, {
+import {
   CustomDropdown031,
 } from "../../Components/CustomDropdown/CustomDropdown31";
-import { formatDate } from "../Helper/DateFormat";
-import {
-  sendData,
-  ShowMasterData,
-  ShowUserMasterData,
-} from "../Helper/HelperFunctions";
-import NumericInput from "../Helper/NumericInput";
-import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import "../DSR/Services/CreateHotelPopup.scss";
 import { customersList } from "../../Redux/Actions/customerActions";
-import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { hotelRoomListAction } from "../../Redux/Actions/hotelActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { CalculationSection2 } from "../DSR/CalculationSection";
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import "../DSR/Services/CreateHotelPopup.scss";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import { formatDate } from "../Helper/DateFormat";
+import {
+  sendData,
+  ShowUserMasterData
+} from "../Helper/HelperFunctions";
+import NumericInput from "../Helper/NumericInput";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
 const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   // console.log("edit_data", edit_data)
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data, } = edit_data;
-
-  // console.log("gross_amount", gross_amount)
-
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
 
   const cusList = useSelector((state) => state?.customerList);
   const vendorList = useSelector((state) => state?.vendorList);
 
-  const hotelList = useSelector(
-    (state) => state?.hotelList?.data?.hotels || []
-  );
-  const hotelRoomListData = useSelector(
-    (state) => state?.hotelRoomList?.data?.hotels || []
-  );
-  const createHotel = useSelector((state) => state?.createPassengerHotel);
+  const hotelList = useSelector((state) => state?.hotelList?.data?.hotels || []);
+  const hotelRoomListData = useSelector((state) => state?.hotelRoomList?.data?.hotels || []);
 
   const [cusData, setcusData] = useState("anurag");
   const [cusData1, setcusData1] = useState(null);
