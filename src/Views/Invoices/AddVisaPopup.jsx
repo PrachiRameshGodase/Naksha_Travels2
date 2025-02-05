@@ -2,29 +2,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
+import Swal from "sweetalert2";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
+import { CustomDropdown029 } from "../../Components/CustomDropdown/CustomDropdown29";
 import { customersList } from "../../Redux/Actions/customerActions";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
+import { visaListAction } from "../../Redux/Actions/visaAction";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
+import { CalculationSection2,} from "../DSR/CalculationSection";
+import "../DSR/Services/CreateHotelPopup.scss";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../Helper/DateFormat";
-import {
-  sendData,
-  ShowMasterData,
-  ShowUserMasterData,
-} from "../Helper/HelperFunctions";
-import NumericInput from "../Helper/NumericInput";
+import {sendData} from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import "../DSR/Services/CreateHotelPopup.scss";
-import CalculationSection, {
-  CalculationSection2,
-} from "../DSR/CalculationSection";
-import Swal from "sweetalert2";
-import { CustomDropdown029 } from "../../Components/CustomDropdown/CustomDropdown29";
-import { visaListAction } from "../../Redux/Actions/visaAction";
 
-const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddVisaPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const {
     discount,
     discount_type,
@@ -93,10 +85,6 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
-
-
-  // console.log("storeVisaType", storeVisaType)
-  // console.log("service_dataservice_data", service_data)
 
 
   useEffect(() => {
@@ -803,7 +791,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div> */}
-                      <div className="form_commonblock">
+                     {section !="sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -824,7 +812,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>}
                     </div>
                     <div
                       className="secondtotalsections485s"

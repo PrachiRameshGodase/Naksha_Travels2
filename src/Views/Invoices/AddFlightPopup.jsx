@@ -15,13 +15,10 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import "../DSR/Services/CreateHotelPopup.scss";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../Helper/DateFormat";
-import {
-  sendData,
-  ShowUserMasterData
-} from "../Helper/HelperFunctions";
+import {sendData,ShowUserMasterData} from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
-const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddFlightPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
@@ -36,9 +33,6 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData2, setcusData2] = useState(null);
 
   const toArry = service_data?.guest_ids?.split(",")?.map(Number);
-
-  console.log("toArrytoArry", toArry)
-
   const [formData, setFormData] = useState({
     service_name: "Flights",
     travel_date: service_data?.travel_date || "",  // Example for travel_date
@@ -60,9 +54,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_amount: 0.0,  // Default value for tax_amount
     total_amount: 0.0,  // Default value for total_amount
   });
-  console.log("formData", formData)
-
-  const [errors, setErrors] = useState({
+ 
+ const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
     airline_name: false,
@@ -72,7 +65,6 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     prn_no: false,
     guest_ids: false,
   });
-  const entryType = ShowUserMasterData("50");
   const travelType = ShowUserMasterData("51");
   const destinationCode = ShowUserMasterData("52");
   const GDSPortal = ShowUserMasterData("53");
@@ -502,7 +494,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
 
-                      <div className="form_commonblock">
+                     {section !="sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -522,7 +514,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>}
 
                       <div
                         className="secondtotalsections485s"

@@ -220,6 +220,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     sd154w78s877,
     disable,
     formData,
+   disabled
   } = props;
 
   // Custom hook for managing dropdown functionality
@@ -332,7 +333,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
         readOnly
       />
 
-      {isOpen && (
+      {isOpen && disabled && (
         <div className="dropdown-options">
           <RiSearch2Line id="newsvgsearchicox2" />
           <input

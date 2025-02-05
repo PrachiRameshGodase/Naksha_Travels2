@@ -441,7 +441,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                        <div className="form_commonblock">
+                        <div className={`form_commonblock ${
+                          formData?.room_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.room_id ? "" : "Please Select Room First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                           <label>
                             Occupancy<b className="color_red">*</b>
                           </label>
@@ -474,7 +481,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className="form_commonblock">
+                        <div className={`form_commonblock ${
+                          formData?.room_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.room_id ? "" : "Please Select Room First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                           <label>
                             Meal Plan<b className="color_red">*</b>
                           </label>
@@ -504,7 +518,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                        <div className="form_commonblock">
+                        <div className={`form_commonblock ${
+                          formData?.room_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.room_id ? "" : "Please Select Room First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                           <label>
                             Bed<b className="color_red">*</b>
                           </label>
@@ -540,7 +561,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           }
                           data-tooltip-id="my-tooltip"
                           data-tooltip-place="bottom"
-                          className="form_commonblock"
+                          className={`form_commonblock ${
+                            formData?.room_id ? "" : "disabledfield"
+                          }`}
                         >
                           <label>
                             Max Occupancy Of Persons
@@ -573,7 +596,14 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className="form_commonblock">
+                        <div className={`form_commonblock ${
+                          formData?.room_id ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.room_id ? "" : "Please Select Room First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                           <label>
                             Family Member
                           </label>
@@ -596,6 +626,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 cusData={cusData}
                                 type="vendor"
                                 formData={formData}
+                                disabled={isDisabled}
                               />
                             </span>
                             {errors?.guest_ids && (
