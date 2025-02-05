@@ -12,6 +12,7 @@ import CommonDebitNote from './CommonDebitNote';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
 import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComponent/ReportsModulPrintAndPDF/ReportsPrintContent';
 import { generatePDF } from '../../../Helper/createPDF';
+import { financialYear } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const DebitNoteDetailsReport = () => {
 
@@ -58,7 +59,7 @@ const DebitNoteDetailsReport = () => {
                         end_date: formatDate(new Date(dateRange[0].endDate)),
                     }),
             }),
-            fy: 2024,
+            fy: financialYear(),
             start_date: "2024-10-01"
         };
         if (searchTrigger || !allData) {

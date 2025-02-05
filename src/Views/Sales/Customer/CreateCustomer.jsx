@@ -25,7 +25,7 @@ import PaymentDetails from "./PaymentDetails";
 import EmployeeDetails from "./EmployeeDetails";
 import FamilyMember from "./FamilyMember";
 import { SubmitButton2 } from "../../Common/Pagination/SubmitButton";
-import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 import Swal from "sweetalert2";
 const CreateCustomer = () => {
   const dispatch = useDispatch();
@@ -237,7 +237,7 @@ const CreateCustomer = () => {
     if ((cusId && isEdit) || (cusId && isDuplicate)) {
       const queryParams = {
         user_id: cusId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
         warehouse_id: localStorage.getItem("selectedWarehouseId"),
       };
       dispatch(customersView(queryParams));
@@ -329,11 +329,10 @@ const CreateCustomer = () => {
                     <button
                       type="button"
                       key={type?.labelid}
-                      className={`type-button ${
-                        basicDetails.customer_type === type?.label
-                          ? "selectedbtn"
-                          : ""
-                      }`}
+                      className={`type-button ${basicDetails.customer_type === type?.label
+                        ? "selectedbtn"
+                        : ""
+                        }`}
                       onClick={() =>
                         setBasicDetails({
                           ...basicDetails,
@@ -368,9 +367,8 @@ const CreateCustomer = () => {
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
               <button
-                className={`type-button ${
-                  switchCusData === "Basic" && "selectedbtnx2"
-                }`}
+                className={`type-button ${switchCusData === "Basic" && "selectedbtnx2"
+                  }`}
                 style={{ width: "200px" }}
                 onClick={() => setSwitchCusData("Basic")}
               >
@@ -379,9 +377,8 @@ const CreateCustomer = () => {
               </button>
 
               <button
-                className={`type-button ${tick?.basicTick ? "" : ""}  ${
-                  switchCusData === "Address" && "selectedbtnx2"
-                }`}
+                className={`type-button ${tick?.basicTick ? "" : ""}  ${switchCusData === "Address" && "selectedbtnx2"
+                  }`}
                 style={{ width: "200px" }}
                 onClick={() => setSwitchCusData("Address")}
               >
@@ -390,9 +387,8 @@ const CreateCustomer = () => {
               {userData?.customer_type == "Individual" && (
                 <button
                   style={{ width: "200px" }}
-                  className={`type-button ${
-                    tick?.basicTick && tick?.addressTick ? "" : ""
-                  } ${switchCusData === "Contact" && "selectedbtnx2"}`}
+                  className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
+                    } ${switchCusData === "Contact" && "selectedbtnx2"}`}
                   onClick={() => setSwitchCusData("Contact")}
                 >
                   Family Member
@@ -402,9 +398,8 @@ const CreateCustomer = () => {
               {userData?.customer_type == "Business" && (
                 <button
                   style={{ width: "200px" }}
-                  className={`type-button ${
-                    tick?.basicTick && tick?.addressTick ? "" : ""
-                  } ${switchCusData === "Employee Details" && "selectedbtnx2"}`}
+                  className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : ""
+                    } ${switchCusData === "Employee Details" && "selectedbtnx2"}`}
                   onClick={() => setSwitchCusData("Employee Details")}
                 >
                   Employee Details
@@ -414,14 +409,13 @@ const CreateCustomer = () => {
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${
-                  tick?.basicTick &&
+                className={`type-button ${tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.addressTick
-                    ? ""
-                    : ""
-                } ${switchCusData === "Bank" && "selectedbtnx2"}`}
+                  ? ""
+                  : ""
+                  } ${switchCusData === "Bank" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Bank")}
               >
                 Bank Details
@@ -430,15 +424,14 @@ const CreateCustomer = () => {
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${
-                  tick?.basicTick &&
+                className={`type-button ${tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.addressTick &&
                   tick?.bankTick
-                    ? ""
-                    : ""
-                } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
+                  ? ""
+                  : ""
+                  } ${switchCusData === "Payment Details" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Payment Details")}
               >
                 Payment Details
@@ -448,15 +441,14 @@ const CreateCustomer = () => {
               {/* remark button */}
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${
-                  tick?.basicTick &&
+                className={`type-button ${tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick
-                    ? ""
-                    : ""
-                } ${switchCusData === "Remark" && "selectedbtnx2"}`}
+                  ? ""
+                  : ""
+                  } ${switchCusData === "Remark" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Remark")}
               >
                 Remarks {tick?.remarkTick && <> {otherIcons.backtick_svg}</>}
@@ -464,18 +456,16 @@ const CreateCustomer = () => {
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${
-                  tick?.basicTick &&
+                className={`type-button ${tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick &&
                   tick.remarkTick
-                    ? ""
-                    : ""
-                } ${
-                  switchCusData === "Upload Image/Document" && "selectedbtnx2"
-                }`}
+                  ? ""
+                  : ""
+                  } ${switchCusData === "Upload Image/Document" && "selectedbtnx2"
+                  }`}
                 onClick={() => setSwitchCusData("Upload Image/Document")}
               >
                 Upload Image/Document{" "}
@@ -484,17 +474,16 @@ const CreateCustomer = () => {
 
               <button
                 style={{ width: "200px" }}
-                className={`type-button ${
-                  tick?.basicTick &&
+                className={`type-button ${tick?.basicTick &&
                   tick?.addressTick &&
                   contactTick &&
                   tick?.bankTick &&
                   tick?.paymentDetailsTick &&
                   tick.remarkTick &&
                   uploadTick
-                    ? ""
-                    : ""
-                } ${switchCusData === "Documents" && "selectedbtnx2"}`}
+                  ? ""
+                  : ""
+                  } ${switchCusData === "Documents" && "selectedbtnx2"}`}
                 onClick={() => setSwitchCusData("Documents")}
               >
                 Documents
@@ -504,8 +493,7 @@ const CreateCustomer = () => {
                 <>
                   <button
                     style={{ width: "200px" }}
-                    className={`type-button ${
-                      tick?.basicTick &&
+                    className={`type-button ${tick?.basicTick &&
                       tick?.addressTick &&
                       contactTick &&
                       tick?.bankTick &&
@@ -513,11 +501,10 @@ const CreateCustomer = () => {
                       tick.remarkTick &&
                       uploadTick &&
                       tick?.documentsTick
-                        ? ""
-                        : ""
-                    } ${
-                      switchCusData === "Vaccination Details" && "selectedbtnx2"
-                    }`}
+                      ? ""
+                      : ""
+                      } ${switchCusData === "Vaccination Details" && "selectedbtnx2"
+                      }`}
                     onClick={() => setSwitchCusData("Vaccination Details")}
                   >
                     Vaccination Details
@@ -528,8 +515,7 @@ const CreateCustomer = () => {
 
                   <button
                     style={{ width: "200px" }}
-                    className={`type-button ${
-                      tick?.basicTick &&
+                    className={`type-button ${tick?.basicTick &&
                       tick?.addressTick &&
                       contactTick &&
                       tick?.bankTick &&
@@ -538,11 +524,10 @@ const CreateCustomer = () => {
                       uploadTick &&
                       tick?.documentsTick &&
                       tick?.vaccinationDetailTick
-                        ? ""
-                        : ""
-                    } ${
-                      switchCusData === "Insurance Details" && "selectedbtnx2"
-                    }`}
+                      ? ""
+                      : ""
+                      } ${switchCusData === "Insurance Details" && "selectedbtnx2"
+                      }`}
                     onClick={() => setSwitchCusData("Insurance Details")}
                   >
                     Insurance Details

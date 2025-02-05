@@ -16,6 +16,7 @@ import { stockTransactionAction } from "../../Redux/Actions/itemsActions";
 import { formatDate, formatDate3 } from "../Helper/DateFormat";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { RxCross2 } from "react-icons/rx";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const StockTransaction = ({ itemDetails }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const StockTransaction = ({ itemDetails }) => {
   const itemStockeducer = useSelector((state) => state?.itemStock);
   const stockDetails = itemStockeducer?.data?.stock_details;
   const totalItems = stockDetails?.count || 0;
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -80,7 +81,7 @@ const StockTransaction = ({ itemDetails }) => {
 
   const fetchStockTransaction = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -102,10 +103,10 @@ const StockTransaction = ({ itemDetails }) => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
         }),
       };
 
@@ -290,16 +291,17 @@ const StockTransaction = ({ itemDetails }) => {
                       <>
                         {stockDetails?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
-                            style={{    display: "flex"
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
+                            style={{
+                              display: "flex"
                               ,
-                                  borderBottom: "1px dashed #d0d7de",
-                                  background: "#ffffff",
-                                  cursor: "pointer"}}
+                              borderBottom: "1px dashed #d0d7de",
+                              background: "#ffffff",
+                              cursor: "pointer"
+                            }}
                             key={index}
                           >
                             <div
@@ -349,9 +351,9 @@ const StockTransaction = ({ itemDetails }) => {
                               {item?.description
                                 ? item.description.split(" ").length > 15
                                   ? `${item.description
-                                      .split(" ")
-                                      .slice(0, 15)
-                                      .join(" ")}...`
+                                    .split(" ")
+                                    .slice(0, 15)
+                                    .join(" ")}...`
                                   : item.description
                                 : ""}
                             </div>

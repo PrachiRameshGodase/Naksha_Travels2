@@ -17,7 +17,7 @@ const Home = () => {
   const [loggedInUserData, setLoggedInUserData] = useState(null);
 
   const fetchLoggedInUser = useCallback(async () => {
-    localStorage.setItem('FinancialYear', '2024');
+    localStorage.setItem('FinancialYear', '2025');
     try {
       const token = localStorage.getItem('AccessToken');
 

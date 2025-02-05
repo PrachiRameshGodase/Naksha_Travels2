@@ -13,6 +13,7 @@ import ImagesCrou from "../../Components/ShowImageCarousel.jsx/ImagesCrou";
 import UpdateStatusPopup from "./UpdateStatusPopup";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const HelpList = () => {
   const dispatch = useDispatch();
   const helpList = useSelector((state) => state?.helpList);
@@ -27,7 +28,7 @@ const HelpList = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

@@ -18,7 +18,7 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { GRNRecAreaSortOptions, } from "../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const GRNreceipt = () => {
   const currencySymbol = getCurrencySymbol();//get currency symbol form active org. and local storage
@@ -81,7 +81,7 @@ const GRNreceipt = () => {
   // serch,filter and sortby////////////////////////////////////
   const fetchVendor = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = searchTermFromChild ? 1 : currentPage;
 
       const sendData = {

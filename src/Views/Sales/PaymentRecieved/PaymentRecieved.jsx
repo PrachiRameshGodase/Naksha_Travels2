@@ -23,7 +23,7 @@ import {
 } from "../../Helper/SortByFilterContent/filterContent";
 import { formatDate3 } from "../../Helper/DateFormat";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PaymentRecieved = () => {
 
@@ -88,7 +88,7 @@ const PaymentRecieved = () => {
 
   const fetchQuotations = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

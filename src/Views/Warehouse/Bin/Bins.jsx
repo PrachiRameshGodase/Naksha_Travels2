@@ -16,6 +16,7 @@ import { binSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent
 import { showDeparmentLabels, useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Bins = () => {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const Bins = () => {
 
   const fetchWarehouse = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

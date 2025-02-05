@@ -19,7 +19,7 @@ import { purchaseOrderFilterOptions } from "../../Helper/SortByFilterContent/fil
 import { purchaseOrderSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 const PurchaseOrder = () => {
@@ -84,7 +84,7 @@ const PurchaseOrder = () => {
 
   const fetchVendor = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

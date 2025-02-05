@@ -19,7 +19,7 @@ import { GRNSortOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import { showAmountWithCurrencySymbol, useDebounceSearch } from "../Helper/HelperFunctions";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
-import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 const GRN = () => {
@@ -85,7 +85,7 @@ const GRN = () => {
 
   const fetchVendor = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = searchTermFromChild ? 1 : currentPage;
 
       const sendData = {

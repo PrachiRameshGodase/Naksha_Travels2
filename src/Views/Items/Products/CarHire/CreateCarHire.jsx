@@ -15,6 +15,7 @@ import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/Text
 import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateCarHires = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const CreateCarHires = () => {
     if (itemId) {
       const queryParams = {
         car_hire_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(carHireDetailsAction(queryParams));
     }
@@ -148,17 +149,17 @@ const CreateCarHires = () => {
                           />
                         </span>
                         {errors?.type_of_vehicle && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Type Of Vehicle
-                            </p>
-                          )}
+                          <p
+                            className="error_message"
+                            style={{
+                              whiteSpace: "nowrap",
+                              marginBottom: "0px important",
+                            }}
+                          >
+                            {otherIcons.error_svg}
+                            Please Select Type Of Vehicle
+                          </p>
+                        )}
                       </div>
 
                       <div className="form_commonblock">

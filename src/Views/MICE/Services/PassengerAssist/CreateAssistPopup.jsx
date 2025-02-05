@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { CustomDropdown0029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
 import { assistListAction } from "../../../../Redux/Actions/assistAction";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -76,7 +77,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     no_of_persons: false,
     guest_ids: false,
     gross_amount: false,
-    supplier_id:false,
+    supplier_id: false,
     // retain: false,
     total_amount: false,
   });
@@ -99,7 +100,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-     
+
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -116,7 +117,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a airport first.");
         return;
       }
-     
+
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
@@ -139,7 +140,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           gross_amount: "",
         }));
       }
-    }  else if (name === "no_of_persons") {
+    } else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -148,7 +149,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
-      
+
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -177,12 +178,12 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       ...(name === "no_of_persons" && {
-        gross_amount:false,
+        gross_amount: false,
       }),
       [name]: false,
     }));
   };
-  
+
   const handleChange1 = (selectedItems, name) => {
     if (selectedItems.length > formData.no_of_persons) {
       toast.error(
@@ -249,7 +250,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -315,9 +316,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.airport_name ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.airport_name ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.airport_name
                             ? ""
@@ -346,9 +346,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.meeting_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.meeting_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.meeting_type
                             ? ""
@@ -395,7 +394,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Family Member
                         </label>
@@ -455,17 +454,17 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                       </div>

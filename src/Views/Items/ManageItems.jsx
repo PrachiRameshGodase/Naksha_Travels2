@@ -26,6 +26,7 @@ import {
 } from "../Helper/HelperFunctions";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Quotations = () => {
   const dispatch = useDispatch();
@@ -169,8 +170,8 @@ const Quotations = () => {
         purchasePrice === "Ascending"
           ? "1"
           : purchasePrice === "Descending"
-          ? "0"
-          : "",
+            ? "0"
+            : "",
       price: price === "Ascending" ? "1" : price === "Descending" ? "0" : "",
       name: names ? "1" : "",
     };
@@ -281,7 +282,7 @@ const Quotations = () => {
   const payloadGenerator = useMemo(
     () => () => ({
       //useMemo because  we ensure that this function only changes when [dependency] changes
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       noofrec: itemsPerPage,
       currentpage: currentPage,
       active: 1,
@@ -486,9 +487,8 @@ const Quotations = () => {
                         </label>
 
                         <label
-                          className={`${
-                            names ? "active-filter" : "labelfistc51s"
-                          } `}
+                          className={`${names ? "active-filter" : "labelfistc51s"
+                            } `}
                         >
                           <input
                             type="checkbox"
@@ -521,9 +521,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                price === "Ascending" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${price === "Ascending" ? "selected" : ""
+                                }`}
                             >
                               Ascending
                             </span>
@@ -542,9 +541,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                price === "Descending" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${price === "Descending" ? "selected" : ""
+                                }`}
                             >
                               Descending
                             </span>
@@ -614,9 +612,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                itemType === "Product" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${itemType === "Product" ? "selected" : ""
+                                }`}
                             >
                               Products
                             </span>
@@ -635,9 +632,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                itemType === "Service" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${itemType === "Service" ? "selected" : ""
+                                }`}
                             >
                               Services
                             </span>
@@ -657,9 +653,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                itemType === "Packaging" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${itemType === "Packaging" ? "selected" : ""
+                                }`}
                             >
                               Packaging
                             </span>
@@ -684,9 +679,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                status == "active" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${status == "active" ? "selected" : ""
+                                }`}
                             >
                               Active
                             </span>
@@ -706,9 +700,8 @@ const Quotations = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                status == "inactive" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${status == "inactive" ? "selected" : ""
+                                }`}
                             >
                               Inactive
                             </span>
@@ -1000,11 +993,10 @@ const Quotations = () => {
                       <>
                         {itemList?.map((quotation, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(quotation.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(quotation.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             // style={{marginRight:"19px"}}
                             key={index}
                           >
@@ -1034,32 +1026,29 @@ const Quotations = () => {
 
                             <div
                               onClick={() => handleRowClicked(quotation)}
-          
+
 
                               className="table-cellx12 quotiosalinvlisxs2_item"
                               data-tooltip-id="my-tooltip"
-                              data-tooltip-content={`${
-                                quotation?.category?.name || ""
-                              }${
-                                quotation?.sub_category?.name
+                              data-tooltip-content={`${quotation?.category?.name || ""
+                                }${quotation?.sub_category?.name
                                   ? ` / ${quotation?.sub_category?.name}`
                                   : ""
-                              }`}
-                              
+                                }`}
+
                             >
-                              {`${quotation?.category?.name || ""}${
-                                quotation?.sub_category?.name
-                                  ? ` / ${quotation?.sub_category?.name}`
-                                  : ""
-                              }`}
+                              {`${quotation?.category?.name || ""}${quotation?.sub_category?.name
+                                ? ` / ${quotation?.sub_category?.name}`
+                                : ""
+                                }`}
                             </div>
                             <div
-                            
+
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs3"
                               data-tooltip-id="my-tooltip"
                               data-tooltip-content={quotation?.sku}
-                            
+
 
                             >
                               {quotation?.sku || ""}
@@ -1067,7 +1056,7 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs4"
-                            
+
 
                             >
                               {quotation?.type === "Raw"
@@ -1077,7 +1066,7 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5"
-                           
+
 
                             >
                               <span
@@ -1092,7 +1081,7 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5"
-                           
+
 
                             >
                               {quotation?.tax_rate
@@ -1102,9 +1091,9 @@ const Quotations = () => {
                             <div
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
-                          
+
                             >
-                              <p  style={{ width: "63%" }}>
+                              <p style={{ width: "63%" }}>
                                 {" "}
                                 {(quotation?.price)}
                               </p>

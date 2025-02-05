@@ -19,7 +19,7 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { deliveryChallanFilterOptions, invoiceFilterOptions } from "../../Helper/SortByFilterContent/filterContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Invoices = ({ section }) => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const Invoices = ({ section }) => {
 
   const fetchQuotations = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
       const sendData = {
         fy,

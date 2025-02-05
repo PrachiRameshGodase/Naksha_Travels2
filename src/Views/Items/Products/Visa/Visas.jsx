@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { visaListAction } from "../../../../Redux/Actions/visaAction";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Visas = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Visas = () => {
   const visaListData = useSelector((state) => state?.visaList);
   const visaLists = visaListData?.data?.data || [];
   const totalItems = visaListData?.data?.count || 0;
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -84,7 +85,7 @@ const Visas = () => {
 
   const fetchVisas = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -257,17 +258,17 @@ const Visas = () => {
                     Visa Type
                   </div>
 
-                  
+
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     {otherIcons?.refrence_svg}
                     Days
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                  {/* {otherIcons?.refrence_svg} */}
+                    {/* {otherIcons?.refrence_svg} */}
                     <p>
-                    ({currencySymbol}){" "}
-                    Price
+                      ({currencySymbol}){" "}
+                      Price
                     </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -320,7 +321,7 @@ const Visas = () => {
                             >
                               {item?.visa_type_name || ""}
                             </div>
-                            
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
@@ -331,8 +332,8 @@ const Visas = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p  style={{width:"50%"}}>
-                              {item?.price || ""}
+                              <p style={{ width: "50%" }}>
+                                {item?.price || ""}
                               </p>
                             </div>
 

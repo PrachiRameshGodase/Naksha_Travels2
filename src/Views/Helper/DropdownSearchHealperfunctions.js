@@ -8,6 +8,7 @@ import { InsuranceListAction } from '../../Redux/Actions/InsuranceActions';
 import { categoryList, itemLists, vendorsLists } from '../../Redux/Actions/listApisActions';
 import { manageStateAction } from '../../Redux/Actions/ManageStateActions/manageStateData';
 import { visaListAction } from '../../Redux/Actions/visaAction';
+import { financialYear } from './ComponentHelper/ManageStorage/localStorageUtils';
 import { sendData } from './HelperFunctions';
 
 
@@ -36,7 +37,7 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
 
     else if (type === "countryList" || type === "visa_entry_type" || type === "visa_type_id") {
 
-        dispatch(visaListAction({ search: searchTerm, status: "1", fy: localStorage.getItem("FinancialYear"), }))
+        dispatch(visaListAction({ search: searchTerm, status: "1", fy: financialYear(), }))
             .then((res) => {
                 if (type === "visa_type_id") {
                     dispatch(manageStateAction("visa_type", res))
@@ -49,11 +50,11 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     }
 
     else if (type === "categories") {
-        dispatch(categoryList({ search: searchTerm, status: "1", fy: localStorage.getItem("FinancialYear"), }));
+        dispatch(categoryList({ search: searchTerm, status: "1", fy: financialYear(), }));
     }
 
     else if (type === "account") {
-        dispatch(getAccountTypes({ search: searchTerm, fy: localStorage.getItem("FinancialYear"), }));
+        dispatch(getAccountTypes({ search: searchTerm, fy: financialYear(), }));
     }
 
     else if (type === "hotalList") {

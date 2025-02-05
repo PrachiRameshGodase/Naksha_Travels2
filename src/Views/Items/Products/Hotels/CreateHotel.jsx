@@ -27,6 +27,7 @@ import {
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateHotel = () => {
   const Navigate = useNavigate();
@@ -70,7 +71,7 @@ const CreateHotel = () => {
     pincode: false,
   });
 
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData };
@@ -119,7 +120,7 @@ const CreateHotel = () => {
     if (itemId) {
       const queryParams = {
         hotel_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(hotelDetailsAction(queryParams));
     }
@@ -317,9 +318,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData?.country_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                            }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""
@@ -367,9 +367,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData.state_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>
                             City<b className="color_red">*</b>

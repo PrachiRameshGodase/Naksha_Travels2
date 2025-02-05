@@ -33,7 +33,7 @@ import { isStateIdEqualAction } from "../../../Redux/Actions/ManageStateActions/
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
 import { handleFormSubmit1 } from "../../Purchases/Utils/handleFormSubmit";
-import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { activeOrg, financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateCreditNotes = () => {
   const dispatch = useDispatch();
@@ -206,7 +206,7 @@ const CreateCreditNotes = () => {
     } else if (cusData?.id) {
       dispatch(
         invoiceLists({
-          fy: localStorage.getItem("FinancialYear"),
+          fy: financialYear(),
           customer_id: cusData?.id,
           status: 1,
         })

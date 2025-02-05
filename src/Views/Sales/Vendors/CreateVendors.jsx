@@ -18,6 +18,7 @@ import VendorBasicDetails from "./VendorBasicDetails";
 import BankDetails from "./BankDetails";
 import { MultiImageUpload } from "../../Helper/ComponentHelper/ImageUpload";
 import { OverflowHideBOdy } from "../../../Utils/OverflowHideBOdy";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const CreateVendors = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -122,7 +123,7 @@ const CreateVendors = () => {
     if ((cusId && isEdit) || (cusId && isDuplicate)) {
       const queryParams = {
         user_id: cusId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
         warehouse_id: localStorage.getItem("selectedWarehouseId"),
       };
       dispatch(vendorssView(queryParams));

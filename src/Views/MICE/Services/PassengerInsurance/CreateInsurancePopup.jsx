@@ -27,6 +27,7 @@ import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdo
 import Swal from "sweetalert2";
 import { InsuranceListAction } from "../../../../Redux/Actions/InsuranceActions";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateInsurancePopup = ({
   showModal,
@@ -91,8 +92,8 @@ const CreateInsurancePopup = ({
     gross_amount: false,
     tax_amount: false,
     tax_percent: false,
-    company_name:false,
-    supplier_id:false,
+    company_name: false,
+    supplier_id: false,
     total_amount: false,
   });
 
@@ -173,7 +174,7 @@ const CreateInsurancePopup = ({
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -272,19 +273,19 @@ const CreateInsurancePopup = ({
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown29
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Company Name"
-                              options={insuranceLists}
-                              value={formData.company_name}
-                              onChange={handleChange}
-                              name="company_name"
-                              defaultOption="Select Comapnay Name"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
-                              type="companyList"
-                              required
-                            />
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Company Name"
+                            options={insuranceLists}
+                            value={formData.company_name}
+                            onChange={handleChange}
+                            name="company_name"
+                            defaultOption="Select Comapnay Name"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="companyList"
+                            required
+                          />
                         </span>
                         {errors?.company_name && (
                           <p
@@ -348,10 +349,10 @@ const CreateInsurancePopup = ({
                               formData?.expiry_date
                                 ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
                                 : new Date(
-                                    new Date().getFullYear() + 50,
-                                    11,
-                                    31
-                                  ) // Default max date: 50 years in the future
+                                  new Date().getFullYear() + 50,
+                                  11,
+                                  31
+                                ) // Default max date: 50 years in the future
                             }
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown
@@ -362,7 +363,7 @@ const CreateInsurancePopup = ({
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      
+
                       <div className="form_commonblock ">
                         <label>Expiry Date</label>
                         <span>
@@ -461,7 +462,7 @@ const CreateInsurancePopup = ({
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                     
+
                       <div className="form_commonblock">
                         <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">

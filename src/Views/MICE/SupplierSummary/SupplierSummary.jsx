@@ -25,6 +25,7 @@ import VisaDetails from "../../DSR/DSRSupplierSummary/VisaDetails";
 import OtherDetails from "../../DSR/DSRSupplierSummary/OtherDetails";
 import { MICESupplierSummaryListActions } from "../../../Redux/Actions/MICEActions";
 import { RxCross2 } from "react-icons/rx";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const MICESupplierSummary = () => {
   const navigate = useNavigate();
@@ -95,7 +96,7 @@ const MICESupplierSummary = () => {
   const payloadGenerator = useMemo(
     () => () => ({
       //useMemo because  we ensure that this function only changes when [dependency] changes
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       noofrec: itemsPerPage,
       currentpage: currentPage,
       mice_id: itemId,
@@ -109,15 +110,15 @@ const MICESupplierSummary = () => {
       // }),
       ...(searchTermFromChild && { search: searchTermFromChild }),
       ...(clearFilter === false &&
-        {
-          //   ...(specificDate
-          //     ? { custom_date: formatDate(new Date(specificDate)) }
-          //     : dateRange[0]?.startDate &&
-          //       dateRange[0]?.endDate && {
-          //         from_date: formatDate(new Date(dateRange[0].startDate)),
-          //         to_date: formatDate(new Date(dateRange[0].endDate)),
-          //       }),
-        }),
+      {
+        //   ...(specificDate
+        //     ? { custom_date: formatDate(new Date(specificDate)) }
+        //     : dateRange[0]?.startDate &&
+        //       dateRange[0]?.endDate && {
+        //         from_date: formatDate(new Date(dateRange[0].startDate)),
+        //         to_date: formatDate(new Date(dateRange[0].endDate)),
+        //       }),
+      }),
     }),
     [searchTrigger]
   );
@@ -233,9 +234,8 @@ const MICESupplierSummary = () => {
             <p id="firsttagp">
               {/* {totalItems} Records */}
               <span
-                className={`${
-                  MICESupplierSummaryListData?.loading && "rotate_01"
-                }`}
+                className={`${MICESupplierSummaryListData?.loading && "rotate_01"
+                  }`}
                 data-tooltip-content="Reload"
                 data-tooltip-place="bottom"
                 data-tooltip-id="my-tooltip"
@@ -370,11 +370,10 @@ const MICESupplierSummary = () => {
                       <>
                         {MICESupplierSummaryLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -399,10 +398,10 @@ const MICESupplierSummary = () => {
                             <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.service_name
                                 ? item.service_name
-                                    .replace(/_/g, " ")
-                                    .replace(/\b\w/g, (char) =>
-                                      char.toUpperCase()
-                                    )
+                                  .replace(/_/g, " ")
+                                  .replace(/\b\w/g, (char) =>
+                                    char.toUpperCase()
+                                  )
                                 : ""}
                             </div>
 

@@ -17,6 +17,7 @@ import {
   useDebounceSearch,
 } from "../../../Helper/HelperFunctions";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Assit = () => {
   const dispatch = useDispatch();
@@ -81,7 +82,7 @@ const Assit = () => {
 
   const fetchAssists = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -241,12 +242,12 @@ const Assit = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                 
+
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
                     Airport
                   </div>
-                 <div className="table-cellx12 quotiosalinvlisxs1">
+                  <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons?.date_svg}
                     Meeting Type
                   </div>
@@ -256,8 +257,8 @@ const Assit = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                   <p>({currencySymbol}) {" "}  Price</p>
-                  
+                    <p>({currencySymbol}) {" "}  Price</p>
+
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -304,7 +305,7 @@ const Assit = () => {
                               {item?.meeting_type || ""}
                             </div>
 
-                           
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs3"
@@ -315,8 +316,8 @@ const Assit = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"45%"}}> {item?.price || ""}</p>
-                             
+                              <p style={{ width: "45%" }}> {item?.price || ""}</p>
+
                             </div>
 
                             <div

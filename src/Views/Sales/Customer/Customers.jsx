@@ -23,6 +23,7 @@ import SortBy2 from "../../Common/SortBy/SortBy2";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const SalesOrderList = () => {
 
@@ -123,7 +124,7 @@ const SalesOrderList = () => {
 
   const fetchCustomers = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

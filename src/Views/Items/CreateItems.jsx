@@ -42,6 +42,7 @@ import {
 import { SubmitButton2 } from "../Common/Pagination/SubmitButton.jsx";
 import ShowMastersValue from "../Helper/ShowMastersValue.jsx";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit.jsx";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils.js";
 
 const CreateAndUpdateItem = () => {
   const Navigate = useNavigate();
@@ -106,7 +107,7 @@ const CreateAndUpdateItem = () => {
   console.log("formdata of items", formData)
 
   useEffect(() => {
-    dispatch(accountLists({ fy: localStorage.getItem("FinancialYear") }));
+    dispatch(accountLists({ fy: financialYear() }));
     dispatch(vendorsLists({ status: 1, active: 1 }));
     dispatch(categoryList());
   }, [dispatch]);
@@ -236,7 +237,7 @@ const CreateAndUpdateItem = () => {
 
     const sendData = {
       // warehouse_id: localStorage.getItem("selectedWarehouseId"),
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date),
       preferred_vendor:
         formData?.preferred_vendor?.length === 0
@@ -377,7 +378,7 @@ const CreateAndUpdateItem = () => {
     if ((itemId && isEdit) || (itemId && isDuplicate)) {
       const queryParams = {
         item_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
         warehouse_id: localStorage.getItem("selectedWarehouseId"),
       };
       dispatch(itemDetails(queryParams));

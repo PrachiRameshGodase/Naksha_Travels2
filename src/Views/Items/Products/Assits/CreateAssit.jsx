@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
-import {assistDetailsAction,CreateAssistAction} from "../../../../Redux/Actions/assistAction";
+import { assistDetailsAction, CreateAssistAction } from "../../../../Redux/Actions/assistAction";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import { sendData, ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
@@ -15,21 +15,22 @@ import { fetchAirport } from "../../../../Redux/Actions/globalActions";
 import useFetchApiData from "../../../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown29 from "../../../../Components/CustomDropdown/CustomDropdown29";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateAssit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const dropdownRef1=useRef()
+  const dropdownRef1 = useRef()
   const params = new URLSearchParams(location.search);
   const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
   const assitCreates = useSelector((state) => state?.createAssist);
   const assistDetails = useSelector((state) => state?.assistDetails);
   const assitData = assistDetails?.data?.data?.data || {};
-  const airportList=useSelector((state) => state?.airPort?.countries?.data);
+  const airportList = useSelector((state) => state?.airPort?.countries?.data);
 
   const meetingType = ShowUserMasterData("55");
-   
-  const [cusData3, setcusData3]=useState(null)
+
+  const [cusData3, setcusData3] = useState(null)
   const [formData, setFormData] = useState({
     meeting_type: "",
     airport: "",
@@ -62,12 +63,12 @@ const CreateAssit = () => {
     if (itemId) {
       const queryParams = {
         assist_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(assistDetailsAction(queryParams));
     }
   }, [dispatch, itemId]);
-  
+
   useEffect(() => {
     if (itemId && isEdit && assitData) {
       setFormData({
@@ -108,10 +109,10 @@ const CreateAssit = () => {
     }
   };
 
-   // call item api on page load...
-   const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
-   useFetchApiData(fetchAirport, payloadGenerator, []); //call api common function
-   // call item api on page load...
+  // call item api on page load...
+  const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
+  useFetchApiData(fetchAirport, payloadGenerator, []); //call api common function
+  // call item api on page load...
   return (
     <div>
       <>
@@ -140,26 +141,26 @@ const CreateAssit = () => {
                 <div className="itemsformwrap">
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>
                           Airport<b className="color_red">*</b>
                         </label>
-                         <span id="">
+                        <span id="">
                           {otherIcons.placeofsupply_svg}
                           <CustomDropdown29
-                              autoComplete="off"
-                              ref={dropdownRef1}
-                              label="Airport"
-                              options={airportList}
-                              value={formData.airport}
-                              onChange={handleChange}
-                              name="airport"
-                              defaultOption="Select Airport"
-                              setcusData={setcusData3}
-                              cusData={cusData3}
-                              type="airportList"
-                              required
-                            />
+                            autoComplete="off"
+                            ref={dropdownRef1}
+                            label="Airport"
+                            options={airportList}
+                            value={formData.airport}
+                            onChange={handleChange}
+                            name="airport"
+                            defaultOption="Select Airport"
+                            setcusData={setcusData3}
+                            cusData={cusData3}
+                            type="airportList"
+                            required
+                          />
                         </span>
                         {errors?.airport && (
                           <p
@@ -204,7 +205,7 @@ const CreateAssit = () => {
                           </p>
                         )}
                       </div>
-                    
+
                       <div className="form_commonblock">
                         <label>
                           No Of Persons<b className="color_red">*</b>

@@ -19,6 +19,7 @@ import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { creditNotesOptions } from "../../Helper/SortByFilterContent/filterContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreditNotes = () => {
 
@@ -85,7 +86,7 @@ const CreditNotes = () => {
 
   const fetchQuotations = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

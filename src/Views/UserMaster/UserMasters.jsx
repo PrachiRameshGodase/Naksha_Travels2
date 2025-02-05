@@ -20,6 +20,7 @@ import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import Swal from "sweetalert2";
 import { BsEye } from "react-icons/bs";
 import "./CreateMasters.scss"
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const UserMasters = () => {
   const dispatch = useDispatch();
@@ -110,7 +111,7 @@ const UserMasters = () => {
 
   const fetchMasters = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const sendData = {
         fy,
         ...(searchTermFromChild && { search: searchTermFromChild }),
@@ -203,11 +204,10 @@ const UserMasters = () => {
                     {userMasterList?.length > 0 ? (
                       userMasterList?.map((master, index) => (
                         <div
-                          className={`table-rowx12 ${
-                            selectedRows.includes(master.id)
-                              ? "selectedresult"
-                              : ""
-                          }`}
+                          className={`table-rowx12 ${selectedRows.includes(master.id)
+                            ? "selectedresult"
+                            : ""
+                            }`}
                           key={index}
                         >
                           <div
@@ -254,7 +254,7 @@ const UserMasters = () => {
                               : ""}
                           </div>
 
-                          <div className="table-cellx12 quotiosalinvlisxs6 " style={{marginRight:"10px"}}>
+                          <div className="table-cellx12 quotiosalinvlisxs6 " style={{ marginRight: "10px" }}>
                             <div className="actionxxs">
                               <span
                                 onClick={() => handleClickOnView(master?.id)}

@@ -22,6 +22,7 @@ import "../CreateHotelPopup.scss";
 import CustomDropdown31 from "../../../../Components/CustomDropdown/CustomDropdown31";
 import { customersView } from "../../../../Redux/Actions/customerActions";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dropdownRef1 = useRef(null);
@@ -67,8 +68,8 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     drop_location: false,
     guest_ids: false,
     gross_amount: false,
-    supplier_id:false,
- 
+    supplier_id: false,
+
     total_amount: false,
   });
   const [imgLoader, setImgeLoader] = useState("");
@@ -152,7 +153,7 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -363,17 +364,17 @@ const CreateCarHirePopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                       </div>

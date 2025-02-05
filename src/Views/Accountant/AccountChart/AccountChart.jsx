@@ -27,6 +27,7 @@ import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import { accountsSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const AccountChart = () => {
     const itemPayloads = localStorage.getItem(("accountPayload"));
@@ -82,7 +83,7 @@ const AccountChart = () => {
 
     const handleRowClicked = (quotation) => {
         const sendData = {
-            fy: localStorage.getItem("FinancialYear"), id: quotation?.id
+            fy: financialYear(), id: quotation?.id
         }
         dispatch(accountDetail(sendData, Navigate, "details"));
 
@@ -138,7 +139,8 @@ const AccountChart = () => {
         }
         else if (name === "edit") {
             const sendData = {
-                fy: localStorage.getItem("FinancialYear"), id: accountValue?.id
+                fy: financialYear(),
+                id: accountValue?.id
             }
             dispatch(accountDetail(sendData, Navigate));
 
@@ -201,7 +203,7 @@ const AccountChart = () => {
     // fetch all accounts lists
     const fetchAccount = useCallback(async () => {
         try {
-            const fy = localStorage.getItem("FinancialYear");
+            const fy = financialYear();
 
             const sendData = {
                 fy,

@@ -33,6 +33,7 @@ import { OutsideClick } from "../Helper/ComponentHelper/OutsideClick";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton"
 import RequisitionItemList from "../Production/RequisitionItemList";
 import StockTransaction from "./StockTransaction";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const InsideItemDetailsBox = ({
   itemDetails,
@@ -187,7 +188,7 @@ const InsideItemDetailsBox = ({
 
     const sendData = {
       item_id: itemDetails?.id,
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       currentpage: currentPage,
     };
 
@@ -1918,7 +1919,7 @@ export const RequisitionDetailsBox = ({
   const createSendData = () => {
     const sendData = {
       item_id: itemDetails?.id,
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       currentpage: currentPage,
     };
 

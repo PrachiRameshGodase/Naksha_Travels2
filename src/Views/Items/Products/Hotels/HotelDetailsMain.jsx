@@ -13,6 +13,7 @@ import {
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import HotelDetails from "./HotelDetails";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const HotelDetailsMain = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const HotelDetailsMain = () => {
     if (itemId) {
       const queryParams = {
         hotel_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(hotelDetailsAction(queryParams));
     }

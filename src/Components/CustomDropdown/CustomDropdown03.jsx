@@ -184,14 +184,14 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
 
-   const flightListData = useSelector((state) => state?.flightList);
-    const categoryLists = useSelector(state => state?.categoryList);
+  const flightListData = useSelector((state) => state?.flightList);
+  const categoryLists = useSelector(state => state?.categoryList);
 
   const combinedRef = (node) => {
     dropdownRef.current = node;
     if (ref) ref.current = node;
   };
-  
+
   return (
     <div
       tabIndex="0"
@@ -205,7 +205,7 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}
       >
 
-        { value ? options?.find(option => option.flight_name == value)?.flight_name : defaultOption}
+        {value ? options?.find(option => option.flight_name == value)?.flight_name : defaultOption}
 
         <svg
           width="13"
@@ -281,7 +281,7 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
               )}
             </>}
 
-         
+
         </div>
       )
       }
@@ -360,7 +360,6 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
 //   useEffect(() => {
 //     if (isOpen || debouncedSearchTerm?.length > 0) {
 //       const sendData = {
-//         fy: "2024",
 //         noofrec: 500,
 //         active: 1,
 //         search: debouncedSearchTerm,

@@ -33,6 +33,7 @@ import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 import { formatDate } from '../Helper/DateFormat.jsx';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
+import { financialYear } from '../Helper/ComponentHelper/ManageStorage/localStorageUtils.js';
 
 const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked }) => {
     const Navigate = useNavigate();
@@ -207,7 +208,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         });
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
-            fy: localStorage.getItem("FinancialYear"),
+            fy: financialYear(),
             as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date),
             preferred_vendor: formData?.preferred_vendor?.length === 0 ? null : JSON?.stringify(formData?.preferred_vendor)
         }

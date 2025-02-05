@@ -27,6 +27,7 @@ import {
 } from '../Constants/accountConstants';
 import { sendData } from '../../Views/Helper/HelperFunctions';
 import { accountLists } from './listApisActions';
+import { financialYear } from '../../Views/Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 export const createJournals = (queryParams) => async (dispatch) => {
     dispatch({ type: CREATE_JOURNAL_REQUEST });
@@ -105,7 +106,7 @@ export const accountStatus = (queryParams) => async (dispatch) => {
             dispatch(accountLists(sendData));//for update list when data is fetched
             const sendData = {
                 id: queryParams?.id,
-                fy: localStorage.getItem("FinancialYear"),
+                fy: financialYear(),
             }
             // toast.success(response?.data?.message);
             dispatch(accountDetail(sendData, null, ""));
