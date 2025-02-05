@@ -139,9 +139,7 @@ const CreateGRN = () => {
     convert,
     isDuplicate
   );
-  // console.log("GRNdetail:", GRNdetail);
-  // console.log("fetchDetails:", fetchDetails);
-  // console.log("formData grn", formData)
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -244,18 +242,18 @@ const CreateGRN = () => {
         const preparedFormData = JSON?.parse(JSON.stringify(formData));
         preparedFormData.items = preparedFormData.items.map(item => ({
           ...item,
-          upload_image: JSON.stringify(item.upload_image)
+          upload_image: JSON.stringify(item?.upload_image)
         }));
 
         preparedFormData.charges_type = preparedFormData.charges_type?.map(charge => ({
           ...charge,
-          upload_image: JSON.stringify(charge.upload_image)
+          upload_image: JSON.stringify(charge?.upload_image)
         }));
 
         preparedFormData.charges = JSON.stringify(preparedFormData.charges);
         return preparedFormData;
       };
-
+    
       // Prepare formData for API
       const formDataForApi = prepareFormDataForApi(formData);
       dispatch(GRNcreateActions(formDataForApi, Navigate, isEdit, buttonName, itemId, convert, showAllSequenceId,));
@@ -266,7 +264,7 @@ const CreateGRN = () => {
   };
 
 
-  console.log("setcusData1 setcusData1 ", formData)
+  
   useEffect(() => {
     if (itemId && convert && !purchseDetail) {
       // console.log("Fetching purchase details...");
@@ -304,7 +302,7 @@ const CreateGRN = () => {
           {
             id: 0,
             item_id: null,
-            // item_name: null,
+            item_name: null,
             po_qty: 0,
             gr_qty: 0,
             rate: 0,
@@ -342,6 +340,7 @@ const CreateGRN = () => {
   //empty all the fields when no select
   useEffect(() => {
     if (formData?.purchase_order_id) {
+      console.log("purchseDetail",purchseDetail)
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
         item_name: item?.item?.name,
@@ -371,7 +370,7 @@ const CreateGRN = () => {
     }
   }, [formData?.purchase_order_id, purchseDetail]);
 
-
+console.log("purchseDetail?.items",formData)
   return (
     <>
       {(GRNdetails?.loading) ? <Loader02 /> : <>

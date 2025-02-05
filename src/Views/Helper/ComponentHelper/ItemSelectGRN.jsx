@@ -148,7 +148,7 @@ export const ItemSelectGRN = ({
     const chargesItems = [...formData.charges];
     const newCharges = [...formData.charges_type];
     let updatedTotalCharges = totalCharges || formData?.total_grn_charges;
-
+console.log("value",value)
     // Update charges and recalculate total charges
     if (field === "amount" && newCharges[index]) {
       newCharges[index][field] = value;
@@ -173,16 +173,47 @@ export const ItemSelectGRN = ({
       const selectedItem = itemList?.data?.item?.find(
         (item) => item?.id == value
       );
+      // if (selectedItem) {
+      //   newItems[index] = {
+      //     ...newItems[index],
+      //     rate: +selectedItem.price,
+      //     gross_amount: +selectedItem?.price * +newItems[index]?.gr_qty,
+      //     tax_rate: selectedItem?.tax_rate
+      //       ? Math.floor(selectedItem?.tax_rate).toString()
+      //       : null,
+      //     item_id: selectedItem?.id,
+      //   };
+      // }
       if (selectedItem) {
-        newItems[index] = {
-          ...newItems[index],
-          rate: +selectedItem.price,
-          gross_amount: +selectedItem?.price * +newItems[index]?.gr_qty,
-          tax_rate: selectedItem?.tax_rate
-            ? Math.floor(selectedItem?.tax_rate).toString()
-            : null,
-          item_id: selectedItem?.id,
-        };
+        const showPrice = formData?.sale_type
+          ? selectedItem?.price
+          : selectedItem?.purchase_price;
+
+        newItems[index].unit_id = selectedItem?.unit;
+        newItems[index].item_name = selectedItem?.name;
+        newItems[index].type = selectedItem?.type;
+        newItems[index].rate = showPrice;
+        newItems[index].gross_amount = +showPrice * + newItems[index]?.gr_qty;
+        newItems[index].hsn_code = selectedItem?.hsn_code;
+
+        if (selectedItem?.tax_preference == "1") {
+          newItems[index].tax_rate = !selectedItem?.tax_rate
+            ? 0
+            : selectedItem?.tax_rate;
+          newItems[index].tax_name = "Taxable";
+        } else {
+          newItems[index].tax_rate = "0";
+          newItems[index].tax_name = "Non-Taxable";
+        }
+
+        // newErrors[index] = {
+        //   ...newErrors[index],
+        //   item_id: 0,
+        //   item_name: "",
+        //   tax_rate: "",
+        //   unit_id: 0,
+        //   rate: "",
+        // };
       }
       setItemErrors(value !== "");
     } else if (field === "unit_id") {
@@ -193,9 +224,9 @@ export const ItemSelectGRN = ({
       newItems[index][field] = value;
 
       // Recalculate gross_amount only when "gr_qty" is updated
-      if (field === "gr_qty") {
-        newItems[index].gross_amount = +newItems[index].rate * +value;
-      }
+      // if (field === "gr_qty") {
+      //   newItems[index].gross_amount = +newItems[index].rate * +value;
+      // }
     }
 
     // Only update final_amount if specific fields change or total charges change
