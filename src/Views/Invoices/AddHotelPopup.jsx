@@ -90,9 +90,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     price: 0,
   });
 
-  console.log("hotal service_data formData", formData)
-  console.log("hotal service_data service_data?.guest_ids", service_data?.guest_ids)
-
+  
   // for edit hotal edit
   useEffect(() => {
     if (service_data?.hotel_id) {
@@ -101,7 +99,6 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   }, [service_data])
 
 
-  console.log("formdataaaaaaaaaa", formData)
   const [errors, setErrors] = useState({
     hotel_id: false,
     room_id: false,
@@ -123,9 +120,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const bed = ShowUserMasterData("38");
 
   const handleChange = (e) => {
-    // console.log("handleChangehandleChangehandleChange")
-
-    const { name, value } = e.target;
+   const { name, value } = e.target;
     let updatedFields = { [name]: value };
 
     if (name === "hotel_id") {

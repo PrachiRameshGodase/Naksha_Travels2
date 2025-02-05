@@ -15,7 +15,16 @@ import CustomDropdown03 from "../../Components/CustomDropdown/CustomDropdown03";
 import Swal from "sweetalert2";
 
 const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
-  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
+  const {
+    discount,
+    discount_type,
+    gross_amount,
+    item_id,
+    item_name,
+    rate,
+    tax_rate,
+    service_data,
+  } = edit_data;
 
   const dropdownRef1 = useRef(null);
   const vendorList = useSelector((state) => state?.vendorList);
@@ -27,21 +36,20 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const [formData, setFormData] = useState({
     service_name: "Others",
-    item_id: service_data?.item_id || 0,                   // Example for item ID
-    item_name: service_data?.item_name || "",              // Example for item name
-    quantity: service_data?.quantity || null,             // Example for quantity
-    price: service_data?.price || 0,                   // Example for price
-    supplier_id: service_data?.supplier_id || "",         // Example for supplier ID
-    supplier_name: service_data?.supplier_name || "",     // Example for supplier name
+    item_id: service_data?.item_id || 0, // Example for item ID
+    item_name: service_data?.item_name || "", // Example for item name
+    quantity: service_data?.quantity || null, // Example for quantity
+    price: service_data?.price || 0, // Example for price
+    supplier_id: service_data?.supplier_id || "", // Example for supplier ID
+    supplier_name: service_data?.supplier_name || "", // Example for supplier name
 
     // Amount fields
-    gross_amount: gross_amount || 0,                      // Gross amount if provided
-    discount: 0.0,                            // Default discount value
-    tax_percent: tax_rate || null,                        // Tax percent if provided
-    tax_amount: 0.0,                                      // Default tax amount
-    total_amount: 0.0,                                    // Default total amount
+    gross_amount: gross_amount || 0, // Gross amount if provided
+    discount: 0.0, // Default discount value
+    tax_percent: tax_rate || null, // Tax percent if provided
+    tax_amount: 0.0, // Default tax amount
+    total_amount: 0.0, // Default total amount
   });
-
 
   const [errors, setErrors] = useState({
     item_id: false,
@@ -65,8 +73,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
     if (name === "item_id") {
       const selectedItemName = options2?.find((item) => item?.id == value);
       updatedFields.item_name = selectedItemName?.name || "";
-      updatedFields.gross_amount=selectedItemName?.price
-      
+      updatedFields.gross_amount = selectedItemName?.price;
     }
     setFormData((prev) => ({
       ...prev,
@@ -76,8 +83,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...prevData,
       [name]: false,
       ...(name === "item_id" && {
-       
-        gross_amount:false
+        gross_amount: false,
       }),
     }));
   };
@@ -88,18 +94,16 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
       item_id: formData?.item_id ? false : true,
       quantity: formData?.quantity ? false : true,
       // price: formData?.item_id ? false : true,
-
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+      });
       return;
     } else {
       const sendData = {
@@ -193,7 +197,9 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div className="form_commonblock">
-                        <label>Quantity<b className="color_red">*</b></label>
+                        <label>
+                          Quantity<b className="color_red">*</b>
+                        </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
@@ -246,14 +252,8 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div> */}
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
-
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -277,7 +277,10 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                      <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
+                      <div
+                        className="secondtotalsections485s"
+                        style={{ justifyContent: "flex-end" }}
+                      >
                         {" "}
                         <CalculationSection2
                           formData={formData}

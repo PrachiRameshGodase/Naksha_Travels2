@@ -19,6 +19,7 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import Swal from "sweetalert2";
 import { assistListAction } from "../../Redux/Actions/assistAction";
 import { CustomDropdown0029 } from "../../Components/CustomDropdown/CustomDropdown29";
+import { CustomDropdown031 } from "../../Components/CustomDropdown/CustomDropdown31";
 
 const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const {
@@ -35,15 +36,18 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
-
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
   const vendorList = useSelector((state) => state?.vendorList);
+  const cusList = useSelector((state) => state?.customerList);
+
+  const toArry = service_data?.guest_ids?.split(",")?.map(Number);
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
+  const [cusData5, setcusData5] = useState(null);
 
   const [formData, setFormData] = useState({
     service_name: "Assist",
@@ -51,7 +55,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     airport_name: service_data?.airport_name || "", // Example for airport name
     meeting_type: service_data?.meeting_type || null, // Example for meeting type
     no_of_persons: service_data?.no_of_persons || "", // Example for the number of persons
-    guest_ids: service_data?.guest_ids || "", // Example for guest IDs
+    guest_ids: toArry || "", // Example for guest IDs
     supplier_id: service_data?.supplier_id || "", // Example for supplier ID
     supplier_name: service_data?.supplier_name || null, // Example for supplier name
 
@@ -62,7 +66,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_amount: 0.0, // Default tax amount
     total_amount: 0.0, // Default total amount
   });
-console.log("formDAta", formData)
+
   const [errors, setErrors] = useState({
     airport_name: false,
     no_of_persons: false,
@@ -76,7 +80,7 @@ console.log("formDAta", formData)
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
@@ -174,6 +178,23 @@ console.log("formDAta", formData)
     }));
   };
 
+  const handleChange1 = (selectedItems, name) => {
+    if (selectedItems.length > formData.no_of_persons) {
+      toast.error(
+        `You cannot select more than ${formData.no_of_persons} guests.`
+      );
+      return;
+    } else {
+      setFormData({
+        ...formData,
+        guest_ids: selectedItems,
+      });
+      setErrors((prevData) => ({
+        ...prevData,
+        [name]: false,
+      }));
+    }
+  };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -344,6 +365,43 @@ console.log("formDAta", formData)
                     </div>
 
                     <div className="f1wrapofcreqx1">
+                      <div className="form_commonblock">
+                        <label>Guest</label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown031
+                              ref={dropdownRef1}
+                              label="Select Guest"
+                              options={cusList?.data?.user}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Guest "
+                              setcusData={setcusData5}
+                              cusData={cusData5}
+                              type="vendor"
+                              formData={formData}
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
+                        </div>
+                      </div>
                       <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">

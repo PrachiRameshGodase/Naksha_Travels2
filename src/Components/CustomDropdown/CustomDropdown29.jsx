@@ -10,6 +10,7 @@ import { sendData } from "../../Views/Helper/HelperFunctions";
 import { TableViewSkeletonDropdown } from "../SkeletonLoder/TableViewSkeleton";
 import "./customdropdown.scss";
 import { manageStateAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
+import { InsuranceListAction } from "../../Redux/Actions/InsuranceActions";
 
 const CustomDropdown29 = forwardRef((props, ref) => {
   const {
@@ -38,6 +39,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
   const hotelList = useSelector((state) => state?.hotelList);
+  const insuranceListData = useSelector((state) => state?.insuranceList);
   const hotelPayloads = localStorage.getItem("hotelPayload");
 
   const dispatch = useDispatch();
@@ -64,15 +66,13 @@ const CustomDropdown29 = forwardRef((props, ref) => {
   }, [isOpen]);
 
   // call item api on page load...
-  const payloadGenerator = useMemo(
-    () => () => ({
-      //useMemo because  we ensure that this function only changes when [dependency] changes
-      ...sendData,
-    }),
-    []
-  );
-  useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
+  const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+      ...sendData,}),[]);
 
+  useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
+  useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
+  
+console.log("cusData",cusData)
   return (
     <div
       ref={combinedRef}
@@ -130,7 +130,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           />
 
           <div className="dropdownoptoscroll">
-            {hotelList?.loading ? (
+            {(hotelList?.loading ||insuranceListData?.loading) ? (
               <>
                 <TableViewSkeletonDropdown />
               </>

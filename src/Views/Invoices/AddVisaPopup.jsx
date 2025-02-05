@@ -44,14 +44,12 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const createVisa = useSelector((state) => state?.createPassengerVisa);
   const vendorList = useSelector((state) => state?.vendorList);
 
-
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
   const [cusData5, setcusData5] = useState(null);
-
 
   const [formData, setFormData] = useState({
     service_name: "Visa",
@@ -78,9 +76,6 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_amount: 0.0, // Default total amount
   });
 
-
-  console.log("visa service data", formData)
-
   const [errors, setErrors] = useState({
     passenger_visa_id: false,
     passport_no: false,
@@ -93,23 +88,21 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
     issue_date: false,
     visa_no: false,
     expiry_date: false,
-    supplier_id: false,
     days: false,
   });
-
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
 
   useEffect(() => {
     if (service_data?.country_id) {
-      dispatch(
-        visaListAction({ country_id: service_data?.country_id })
-      ).then((res) => {
-        setStoreEntry(res);
-      });
+      dispatch(visaListAction({ country_id: service_data?.country_id })).then(
+        (res) => {
+          setStoreEntry(res);
+        }
+      );
     }
-  }, [service_data])
+  }, [service_data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -224,7 +217,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       };
     }
     if (name === "supplier_id") {
-      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      const selectedHotel = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
       updatedFields = {
         ...updatedFields,
         supplier_name: selectedHotel?.display_name || "",
@@ -265,7 +260,6 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
       visa_type_id: formData?.visa_type_id ? false : true,
       visa_entry_type: formData?.visa_entry_type ? false : true,
       country_id: formData?.country_id ? false : true,
-      supplier_id: formData?.supplier_id ? false : true,
       issue_date: formData?.issue_date ? false : true,
       expiry_date: formData?.expiry_date ? false : true,
       visa_no: formData?.visa_no ? false : true,
@@ -393,8 +387,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
-                          }`}
+                        className={`form_commonblock ${
+                          formData?.country_id ? "" : "disabledfield"
+                        }`}
                         data-tooltip-content={
                           formData?.country_id
                             ? ""
@@ -439,8 +434,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${formData?.visa_entry_type ? "" : "disabledfield"
-                          }`}
+                        className={`form_commonblock ${
+                          formData?.visa_entry_type ? "" : "disabledfield"
+                        }`}
                         data-tooltip-content={
                           formData?.visa_entry_type
                             ? ""
@@ -484,8 +480,9 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${formData?.visa_type_id ? "" : "disabledfield"
-                          }`}
+                        className={`form_commonblock ${
+                          formData?.visa_type_id ? "" : "disabledfield"
+                        }`}
                         data-tooltip-content={
                           formData?.visa_type_id
                             ? ""
@@ -608,6 +605,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="email"
                             placeholder="Enter Email"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.email && (
@@ -674,10 +672,10 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               formData?.expiry_date
                                 ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
                                 : new Date(
-                                  new Date().getFullYear() + 50,
-                                  11,
-                                  31
-                                ) // Default max date: 50 years in the future
+                                    new Date().getFullYear() + 50,
+                                    11,
+                                    31
+                                  ) // Default max date: 50 years in the future
                             }
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown
@@ -778,7 +776,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div> */}
                       <div className="form_commonblock">
-                        <label>Supplier<b className="color_red">*</b></label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -797,22 +795,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               required
                             />
                           </span>
-                          {errors?.supplier_id && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Supplier
-                            </p>
-                          )}
                         </div>
-
                       </div>
-
                     </div>
                     <div
                       className="secondtotalsections485s"

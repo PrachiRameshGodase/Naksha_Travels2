@@ -24,7 +24,7 @@ const DropDownHelper = (options, onChange, name, type, setItemData, setcusData, 
                 }
             });
 
-            if (type === "vendor" || type == "purchase" || type == "countryList" || type == "visa_entry_type" || type == 'visa_type_id' || type == "days" || type == "airportList" || type == "hotelList" || type == "meetingType" || type == "noOfPersons" || type == "airportList2" || type === "companyList") {
+            if (type === "vendor" || type == "purchase" || type == "countryList" || type == "visa_entry_type" || type == 'visa_type_id' || type == "days" || type == "airportList" || type == "hotelList" || type == "meetingType" || type == "noOfPersons" || type == "airportList2" || type == "companyList") {
                 setcusData(option);
             } else if (type === "select_item") {
                 setItemData(option)

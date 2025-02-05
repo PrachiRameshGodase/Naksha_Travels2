@@ -50,8 +50,10 @@ const CustomDropdown31 = forwardRef((props, ref) => {
   };
 
   const handleSelect = (account) => {
-    // Copy the current value
-    const selectedItems = [...value];
+    if (!account || !account.id) return;
+
+    // Ensure value is always an array
+    const selectedItems = Array.isArray(value) ? [...value] : [];
 
     // Find if the account.id is already in the list
     const index = selectedItems.findIndex((item) => item === account?.id);
@@ -82,8 +84,8 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     setSearchTerm("");
   };
 
-  const isSelected = (accountId) => value?.includes(accountId);
-
+  const isSelected = (accountId) => Array.isArray(value) && value.includes(accountId);
+ 
   useEffect(() => {
     const parsedPayload = JSON?.parse(itemPayloads);
     // Check if API call is necessary
@@ -96,7 +98,14 @@ const CustomDropdown31 = forwardRef((props, ref) => {
     }
     setSearchTerm("");
   }, []);
-  console.log("storeData", storeData);
+ 
+  useEffect(() => {
+    if (value?.length) {
+      setStoredData(
+        options?.filter((option) => value?.includes(option.id))
+      );
+    }
+  }, [value, options]);
   return (
     <div
       ref={combinedRef}
@@ -237,7 +246,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  console.log("value", value)
+
 
   const handleSelect = (account) => {
     if (!account || !account.id) return;
@@ -295,7 +304,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
   useEffect(() => {
     if (value?.length) {
       setStoredData(
-        options.filter((option) => value.includes(option.id))
+        options?.filter((option) => value?.includes(option.id))
       );
     }
   }, [value, options]);
