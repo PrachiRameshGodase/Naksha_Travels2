@@ -17,6 +17,7 @@ import { ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CustomDropdown24 from "../../../../Components/CustomDropdown/CustomDropdown24";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateVisa = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const CreateVisa = () => {
   const visaData = VisaDetails?.data?.data?.data || {};
   const countries = useSelector(state => state?.countries);
   const countryList = countries?.countries?.country
-     
+
   const visaentryType = ShowUserMasterData("39");
   const visatype = ShowUserMasterData("40");
 
@@ -56,7 +57,7 @@ const CreateVisa = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
-    
+
     const visaEntryType = visaentryType?.find((val) => val?.labelid == value);
     const visaType = visatype?.find((val) => val?.labelid == value);
     if (name === "country_id") {
@@ -93,7 +94,7 @@ const CreateVisa = () => {
     if (itemId) {
       const queryParams = {
         visa_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(visaDetailsAction(queryParams));
     }

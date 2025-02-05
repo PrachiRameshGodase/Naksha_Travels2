@@ -73,7 +73,6 @@ import {
 
 // warehouse
 export const warehouseViewAction = (queryParams) => async (dispatch) => {
-    localStorage.setItem("warehousePayload", JSON.stringify(queryParams));
     dispatch({ type: WAREHOUSE_VIEW_REQUEST });
     try {
         const response = await axiosInstance.post(`/warehouse/list`,

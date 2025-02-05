@@ -33,6 +33,7 @@ import {
   warehouseViewAction,
   zoneViewAction,
 } from "../../Redux/Actions/warehouseActions";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils.js";
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const StockAdjustment = () => {
     bin_id: null,
     inout: "",
     quantity: "",
-    fy: +localStorage.getItem("FinancialYear"),
+    fy: financialYear(),
     transaction_date: new Date(),
   });
 
@@ -143,7 +144,7 @@ const StockAdjustment = () => {
 
   useEffect(() => {
     dispatch(itemLists());
-    dispatch(accountLists({ fy: localStorage.getItem("FinancialYear") }));
+    dispatch(accountLists({ fy: financialYear() }));
     dispatch(fetchMasterData());
     dispatch(getAccountTypes());
     dispatch(warehouseViewAction());

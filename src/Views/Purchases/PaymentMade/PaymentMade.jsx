@@ -23,6 +23,7 @@ import { paymentMadeOptions } from "../../Helper/SortByFilterContent/sortbyConte
 import FilterBy from "../../Common/FilterBy/FilterBy";
 import { paymentRecOptions } from "../../Helper/SortByFilterContent/filterContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PaymentMade = () => {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ const PaymentMade = () => {
 
   const fetchVendor = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { autoGenerateIdList } from "../../Redux/Actions/globalActions";
 import { isPartiallyInViewport } from "./is_scroll_focus";
-import { getCurrencySymbol, getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol, getCurrencyValue, getLocalStorage } from "./ComponentHelper/ManageStorage/localStorageUtils";
 import useFetchApiData from "./ComponentHelper/useFetchApiData";
 
 // const getLocalStorageData = localStorage?.getItem("UserData");
@@ -15,19 +15,19 @@ export const showRateWithPercent = (val) => {
 
 
 export const sendData = {
-    fy: 2024,
+    fy: financialYear(),
     noofrec: 10,
     active: 1,
     status: 1
 }
 export const sendData2 = {
-    fy: 2024,
+    fy: financialYear(),
     noofrec: 10,
     active: 1
 }
 //this is only for accounts
 export const sendData3 = {
-    fy: 2024,
+    fy: financialYear(),
     // noofrec: 10,
     active: 1, status: 1
 }

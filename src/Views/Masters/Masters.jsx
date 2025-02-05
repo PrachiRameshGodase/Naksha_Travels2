@@ -15,6 +15,7 @@ import SearchBox from "../Common/SearchBox/SearchBox";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import "./CreateMasters.scss"
 import { BsEye } from "react-icons/bs";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Masters = () => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const Masters = () => {
   };
   const fetchMasters = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
 
       const sendData = {
         fy,
@@ -178,11 +179,10 @@ const Masters = () => {
                     {masterLists?.length > 0 ? (
                       masterLists?.map((master, index) => (
                         <div
-                          className={`table-rowx12 ${
-                            selectedRows.includes(master.id)
-                              ? "selectedresult"
-                              : ""
-                          }`}
+                          className={`table-rowx12 ${selectedRows.includes(master.id)
+                            ? "selectedresult"
+                            : ""
+                            }`}
                           key={index}
                         >
                           <div

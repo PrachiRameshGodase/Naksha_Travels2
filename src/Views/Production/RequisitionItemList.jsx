@@ -24,6 +24,7 @@ import { materialRequisitionsList } from "../../Redux/Actions/manufacturingActio
 import { ShowStatusInList } from "../Helper/ComponentHelper/ShowStatus";
 import CreateStockPopup from "../Items/CreateStockPopup";
 import CreateRequisitionApprovePopup from "./CreateRequisitionApprovePopup";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 
@@ -95,7 +96,7 @@ const RequisitionItemList = ({ itemDetails }) => {
 
     const fetchQuotations = useCallback(async () => {
         try {
-            const fy = localStorage.getItem("FinancialYear");
+            const fy = financialYear();
             const currentpage = currentPage;
 
             const sendData = {

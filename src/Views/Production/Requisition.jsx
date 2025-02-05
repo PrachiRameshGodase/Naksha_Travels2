@@ -22,6 +22,7 @@ import { quotationFilterOptions } from "../Helper/SortByFilterContent/filterCont
 import { quotationSortByOptions } from "../Helper/SortByFilterContent/sortbyContent";
 import { materialRequisitionsList } from "../../Redux/Actions/manufacturingActions";
 import { useDebounceSearch } from "../Helper/HelperFunctions";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Requisition = () => {
     const dispatch = useDispatch();
@@ -88,7 +89,7 @@ const Requisition = () => {
 
     const fetchQuotations = useCallback(async () => {
         try {
-            const fy = localStorage.getItem("FinancialYear");
+            const fy = financialYear();
             const currentpage = currentPage;
 
             const sendData = {

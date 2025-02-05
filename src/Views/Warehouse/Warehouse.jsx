@@ -16,6 +16,7 @@ import FilterBy1 from "../Common/FilterBy/FilterBy1";
 import { showDeparmentLabels, ShowMasterData, stringifyJSON, useDebounceSearch } from "../Helper/HelperFunctions";
 import useFetchOnMount from "../Helper/ComponentHelper/useFetchOnMount";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Warehouse = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const Warehouse = () => {
 
   const fetchWarehouse = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

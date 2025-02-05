@@ -62,3 +62,10 @@ export const activeOrg = () => {
     return UserData?.active_organisation;
 }
 
+
+// get Active orgnization
+export const financialYear = () => {
+    const UserData = getLocalStorage("FinancialYear");
+    return UserData;
+}
+

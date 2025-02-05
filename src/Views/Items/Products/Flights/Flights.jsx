@@ -27,6 +27,7 @@ import {
 import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
 import ShowMastersValue from "../../../Helper/ShowMastersValue";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Flights = () => {
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ const Flights = () => {
 
   const fetchFlights = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -382,7 +383,7 @@ const Flights = () => {
                               {item?.destination_code || ""}
                             </div> */}
                             <div
-                               onClick={() => {
+                              onClick={() => {
                                 handleStatusChange(item);
                               }}
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
@@ -402,7 +403,7 @@ const Flights = () => {
                                     ? "Active"
                                     : ""}
                                 <span
-                                 
+
                                 >
                                   <MdArrowOutward />
                                 </span>

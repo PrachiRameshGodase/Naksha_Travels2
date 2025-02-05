@@ -20,7 +20,7 @@ import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { Nav } from 'react-bootstrap';
-import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { financialYear, getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 
 const CreateAccountChart = () => {
@@ -175,7 +175,7 @@ const CreateAccountChart = () => {
 
     useEffect(() => {
         let sendData = {
-            fy: localStorage.getItem("FinancialYear"),
+            fy: financialYear(),
         };
         dispatch(accountLists(sendData));
     }, [dispatch]);

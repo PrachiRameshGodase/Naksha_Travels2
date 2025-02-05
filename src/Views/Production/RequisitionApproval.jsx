@@ -25,6 +25,7 @@ import {
   requisitionApprovalListAction,
 } from "../../Redux/Actions/manufacturingActions";
 import CreateRequisitionApprovePopup from "./CreateRequisitionApprovePopup";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const RequisitionApproval = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const RequisitionApproval = () => {
 
   const fetchQuotations = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

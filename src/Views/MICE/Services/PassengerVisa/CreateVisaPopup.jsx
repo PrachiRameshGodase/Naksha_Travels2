@@ -21,6 +21,7 @@ import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import { visaListAction } from "../../../../Redux/Actions/visaAction";
 import { vendorsLists } from "../../../../Redux/Actions/listApisActions";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const visaListData = useSelector((state) => state?.visaList?.data?.data);
   const createVisa = useSelector((state) => state?.createPassengerMVisa);
   const vendorList = useSelector((state) => state?.vendorList);
-  
+
 
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
@@ -98,12 +99,12 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     days: false,
     gross_amount: false,
     total_amount: false,
-    supplier_id:false
+    supplier_id: false
   });
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
- 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
@@ -248,7 +249,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
       [name]: false,
     }));
   };
-  
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -303,7 +304,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -330,7 +331,7 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
           <div className="modal-body">
             <form>
               <div className="relateivdiv">
-              <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -407,9 +408,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.country_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.country_id
                             ? ""
@@ -454,9 +454,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_entry_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_entry_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_entry_type
                             ? ""
@@ -500,9 +499,8 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_type_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_type_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_type_id
                             ? ""
@@ -691,10 +689,10 @@ const CreateVisaPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               formData?.expiry_date
                                 ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
                                 : new Date(
-                                    new Date().getFullYear() + 50,
-                                    11,
-                                    31
-                                  ) // Default max date: 50 years in the future
+                                  new Date().getFullYear() + 50,
+                                  11,
+                                  31
+                                ) // Default max date: 50 years in the future
                             }
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown

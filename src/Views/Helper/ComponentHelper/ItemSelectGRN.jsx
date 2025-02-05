@@ -21,7 +21,7 @@ import CustomDropdown13 from "../../../Components/CustomDropdown/CustomDropdown1
 import CustomDropdown04, { CustomDropdown004 } from "../../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown26 from "../../../Components/CustomDropdown/CustomDropdown26";
 import useFetchApiData from "./useFetchApiData";
-import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { sendData, ShowMasterData } from "../HelperFunctions";
 import TextAreaComponentWithTextLimit from "./TextAreaComponentWithTextLimit";
 import ExpenseCharges from "./ExpenseCharges";
@@ -119,7 +119,7 @@ export const ItemSelectGRN = ({
   // call item api on page load...
   const payloadGenerator = useMemo(
     () => () => ({
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       noofrec: 15,
       active: 1,
     }),

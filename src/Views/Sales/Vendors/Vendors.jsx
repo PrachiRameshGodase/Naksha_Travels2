@@ -21,6 +21,7 @@ import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Vendors = () => {
   const itemPayloads = localStorage.getItem(("vendorPayload"));
@@ -126,7 +127,7 @@ const Vendors = () => {
 
   const fetchVendors = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

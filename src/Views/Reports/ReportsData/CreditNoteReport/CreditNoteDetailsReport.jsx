@@ -16,6 +16,7 @@ import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComp
 import { generatePDF } from '../../../Helper/createPDF';
 import CommonDebitNote from '../DebitNoteReport/CommonDebitNote';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
+import { financialYear } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const CreditNoteDetailsReport = () => {
 
@@ -62,7 +63,7 @@ const CreditNoteDetailsReport = () => {
                         end_date: formatDate(new Date(dateRange[0].endDate)),
                     }),
             }),
-            fy: 2024,
+            fy: financialYear(),
         };
         // if (searchTrigger || !allData) {
         dispatch(creditNoteReportAction(sendData));

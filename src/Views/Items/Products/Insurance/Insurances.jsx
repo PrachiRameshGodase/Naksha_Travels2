@@ -24,6 +24,7 @@ import {
   InsurancestatusActions,
 } from "../../../../Redux/Actions/InsuranceActions";
 import { MdArrowOutward } from "react-icons/md";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Insurances = () => {
   const dispatch = useDispatch();
@@ -91,7 +92,7 @@ const Insurances = () => {
 
   const fetchInsurances = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -111,10 +112,10 @@ const Insurances = () => {
           ...(specificDate
             ? { custom_date: formatDate(new Date(specificDate)) }
             : dateRange[0]?.startDate &&
-              dateRange[0]?.endDate && {
-                from_date: formatDate(new Date(dateRange[0].startDate)),
-                to_date: formatDate(new Date(dateRange[0].endDate)),
-              }),
+            dateRange[0]?.endDate && {
+              from_date: formatDate(new Date(dateRange[0].startDate)),
+              to_date: formatDate(new Date(dateRange[0].endDate)),
+            }),
         }),
       };
 
@@ -334,11 +335,10 @@ const Insurances = () => {
                       <>
                         {insuranceLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -372,15 +372,15 @@ const Insurances = () => {
                                     item?.status == "1"
                                       ? "active1"
                                       : item?.status == "0"
-                                      ? "inactive1"
-                                      : ""
+                                        ? "inactive1"
+                                        : ""
                                   }
                                 >
                                   {item?.status == "0"
                                     ? "Inactive"
                                     : item?.status == "1"
-                                    ? "Active"
-                                    : ""}
+                                      ? "Active"
+                                      : ""}
                                   <span>
                                     <MdArrowOutward />
                                   </span>

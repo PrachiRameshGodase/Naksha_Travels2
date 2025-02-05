@@ -24,6 +24,7 @@ import CarHireDetails from "./CarHireDetals";
 import VisaDetails from "./VisaDetails";
 import OtherDetails from "./OtherDetails";
 import { RxCross2 } from "react-icons/rx";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const SupplierSummary = () => {
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ const SupplierSummary = () => {
   const payloadGenerator = useMemo(
     () => () => ({
       //useMemo because  we ensure that this function only changes when [dependency] changes
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       noofrec: itemsPerPage,
       currentpage: currentPage,
       dsr_id: itemId,
@@ -107,15 +108,15 @@ const SupplierSummary = () => {
       // }),
       ...(searchTermFromChild && { search: searchTermFromChild }),
       ...(clearFilter === false &&
-        {
-          //   ...(specificDate
-          //     ? { custom_date: formatDate(new Date(specificDate)) }
-          //     : dateRange[0]?.startDate &&
-          //       dateRange[0]?.endDate && {
-          //         from_date: formatDate(new Date(dateRange[0].startDate)),
-          //         to_date: formatDate(new Date(dateRange[0].endDate)),
-          //       }),
-        }),
+      {
+        //   ...(specificDate
+        //     ? { custom_date: formatDate(new Date(specificDate)) }
+        //     : dateRange[0]?.startDate &&
+        //       dateRange[0]?.endDate && {
+        //         from_date: formatDate(new Date(dateRange[0].startDate)),
+        //         to_date: formatDate(new Date(dateRange[0].endDate)),
+        //       }),
+      }),
     }),
     [searchTrigger]
   );
@@ -231,9 +232,8 @@ const SupplierSummary = () => {
             <p id="firsttagp">
               {/* {totalItems} Records */}
               <span
-                className={`${
-                  DSRSupplierSummaryListData?.loading && "rotate_01"
-                }`}
+                className={`${DSRSupplierSummaryListData?.loading && "rotate_01"
+                  }`}
                 data-tooltip-content="Reload"
                 data-tooltip-place="bottom"
                 data-tooltip-id="my-tooltip"
@@ -368,11 +368,10 @@ const SupplierSummary = () => {
                       <>
                         {DSRSupplierSummaryLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -397,10 +396,10 @@ const SupplierSummary = () => {
                             <div className="table-cellx12 quotiosalinvlisxs1">
                               {item?.service_name
                                 ? item.service_name
-                                    .replace(/_/g, " ")
-                                    .replace(/\b\w/g, (char) =>
-                                      char.toUpperCase()
-                                    )
+                                  .replace(/_/g, " ")
+                                  .replace(/\b\w/g, (char) =>
+                                    char.toUpperCase()
+                                  )
                                 : ""}
                             </div>
 

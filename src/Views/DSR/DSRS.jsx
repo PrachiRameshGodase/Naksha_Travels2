@@ -21,6 +21,7 @@ import { clearDsrState, DSRListActions } from "../../Redux/Actions/DSRActions";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import PrintContent from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import PrintContent2 from "../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent2";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const DSRS = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const DSRS = () => {
   const payloadGenerator = useMemo(
     () => () => ({
       //useMemo because  we ensure that this function only changes when [dependency] changes
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       noofrec: itemsPerPage,
       currentpage: currentPage,
       ...(selectedSortBy !== "Normal" && {
@@ -101,10 +102,10 @@ const DSRS = () => {
         ...(specificDate
           ? { custom_date: formatDate(new Date(specificDate)) }
           : dateRange[0]?.startDate &&
-            dateRange[0]?.endDate && {
-              from_date: formatDate(new Date(dateRange[0].startDate)),
-              to_date: formatDate(new Date(dateRange[0].endDate)),
-            }),
+          dateRange[0]?.endDate && {
+            from_date: formatDate(new Date(dateRange[0].startDate)),
+            to_date: formatDate(new Date(dateRange[0].endDate)),
+          }),
       }),
     }),
     [searchTrigger]
@@ -148,7 +149,7 @@ const DSRS = () => {
   };
   const [loading, setLoading] = useState(false);
 
- 
+
   return (
     <>
       <TopLoadbar />
@@ -264,7 +265,7 @@ const DSRS = () => {
                     {otherIcons?.status_svg}
                     Status
                   </div>
-                 
+
                 </div>
 
                 {DSRListData?.loading ? (
@@ -275,11 +276,10 @@ const DSRS = () => {
                       <>
                         {DSRLists?.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -328,18 +328,18 @@ const DSRS = () => {
                                   item?.is_invoiced == "0"
                                     ? "draft"
                                     : item?.is_invoiced == "1"
-                                    ? "invoiced"
-                                    : ""
+                                      ? "invoiced"
+                                      : ""
                                 }
                               >
                                 {item?.is_invoiced == "1"
                                   ? "Invoiced"
                                   : item?.is_invoiced == "0"
-                                  ? "Not Invoiced"
-                                  : ""}
+                                    ? "Not Invoiced"
+                                    : ""}
                               </p>
                             </div>
-                           
+
                           </div>
                         ))}
                       </>

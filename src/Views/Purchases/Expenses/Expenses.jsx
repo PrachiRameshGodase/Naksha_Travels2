@@ -21,6 +21,7 @@ import { formatDate, formatDate3 } from "../../Helper/DateFormat";
 import DatePicker from "../../Common/DatePicker/DatePicker";
 import { expenseSortOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Expenses = () => {
   const itemPayloads = localStorage.getItem(("expensePayload"));
@@ -155,7 +156,7 @@ const Expenses = () => {
 
   const fetchVendor = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

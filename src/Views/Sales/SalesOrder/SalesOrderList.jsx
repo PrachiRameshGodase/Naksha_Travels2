@@ -20,7 +20,7 @@ import { saleOrderFilterOptions } from "../../Helper/SortByFilterContent/filterC
 import { saleOrderSortByOptions } from "../../Helper/SortByFilterContent/sortbyContent";
 import { useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const SalesOrderList = () => {
 
@@ -87,7 +87,7 @@ const SalesOrderList = () => {
 
   const fetchQuotations = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

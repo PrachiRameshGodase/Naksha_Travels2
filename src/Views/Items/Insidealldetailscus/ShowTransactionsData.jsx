@@ -26,7 +26,7 @@ import {
   ShowStatusInList,
 } from "../../Helper/ComponentHelper/ShowStatus";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { financialYear, getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const ShowTransactionsData = ({ activeSection, type }) => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const ShowTransactionsData = ({ activeSection, type }) => {
   useEffect(() => {
     const sendData = {
       id: itemId,
-      fy: localStorage.getItem("FinancialYear"),
+      fy: financialYear(),
       warehouse_id: localStorage.getItem("selectedWarehouseId"),
       currentpage: currentPage,
       noofrec: itemsPerPage,

@@ -21,6 +21,7 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { carHireListAction } from "../../../../Redux/Actions/carHireActions";
 import ShowMastersValue, { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CarHires = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ const CarHires = () => {
 
   const fetchCarHires = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -255,10 +256,10 @@ const CarHires = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p> 
+                    <p>
                       ({currencySymbol}){" "}
                       Price</p>
-                   
+
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -311,8 +312,8 @@ const CarHires = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"38%"}}> {item?.price || ""}</p>
-                             
+                              <p style={{ width: "38%" }}> {item?.price || ""}</p>
+
                             </div>
 
                             <div

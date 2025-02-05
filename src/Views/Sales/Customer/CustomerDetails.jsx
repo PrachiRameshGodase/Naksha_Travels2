@@ -19,6 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import Swal from "sweetalert2";
 import { showToast } from "../../Helper/ComponentHelper/toastConfigure";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 const CustomerDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -41,7 +42,7 @@ const CustomerDetails = () => {
     if (itemId) {
       const queryParams = {
         user_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -57,9 +58,8 @@ const CustomerDetails = () => {
     if (confirmed === null) {
       const result = await Swal.fire({
         // title: 'Are you sure?',
-        text: `Do you want to ${
-          switchValue == "1" ? "Inactive" : "Active"
-        } this customer ?`,
+        text: `Do you want to ${switchValue == "1" ? "Inactive" : "Active"
+          } this customer ?`,
         // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: "Yes",
@@ -106,9 +106,8 @@ const CustomerDetails = () => {
     if (confirmed === null) {
       const result = await Swal.fire({
         // title: 'Are you sure?',
-        text: `Do you want to ${
-          switchValue1 == "1" ? "Pending" : "Approve"
-        } this customer ?`,
+        text: `Do you want to ${switchValue1 == "1" ? "Pending" : "Approve"
+          } this customer ?`,
         // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: "Yes",
@@ -296,7 +295,7 @@ const CustomerDetails = () => {
               employees={customerDetail?.employees}
               family_members={customerDetail?.family_members}
               type="customer"
-              // stockDetails={stock_details}
+            // stockDetails={stock_details}
             />
             <div className="height50"></div>
             <div className="height50"></div>

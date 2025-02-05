@@ -71,7 +71,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     supplier_name: "",
     total_nights: "",
     confirmation_no: "",
-    price:null,
+    price: null,
     //amount
     charges: [{ amount: null, account_id: null }],
     gross_amount: 0,
@@ -94,7 +94,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     meal_id: false,
     bed: false,
     guest_ids: false,
-    supplier_id:false,
+    supplier_id: false,
     booking_date: false,
     check_out_date: false,
     check_in_date: false,
@@ -114,7 +114,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     let updatedFields = { [name]: value };
 
     if (name === "hotel_id") {
@@ -130,7 +130,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         meal_id: "",
         bed: "",
         max_occupancy: "",
-       
+
         guest_ids: "",
       };
     }
@@ -179,7 +179,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
         occupancy_id: false,
         meal_id: false,
         bed: false,
-        gross_amount:false,
+        gross_amount: false,
         max_occupancy: false,
       }),
       [name]: false,
@@ -209,31 +209,31 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
       ...formData,
       [name]: formatDate(date),
     };
-  
+
     // If both check_in_date and check_out_date are set, calculate the difference
     if (updatedFormData.check_in_date && updatedFormData.check_out_date) {
       const checkInDate = new Date(updatedFormData.check_in_date);
       const checkOutDate = new Date(updatedFormData.check_out_date);
-  
+
       // Ensure both dates start at midnight to avoid time differences affecting the result
       checkInDate.setHours(0, 0, 0, 0);
       checkOutDate.setHours(0, 0, 0, 0);
-  
-     
+
+
       if (checkOutDate < checkInDate) {
         toast.error("Check-out date must be on or after check-in date.");
         return; // Exit the function if the dates are invalid
       }
-  
+
       const timeDiff = checkOutDate - checkInDate;
       let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
-  
+
       updatedFormData.total_nights = totalNights;
       console.log("totalNights", updatedFormData.total_nights);
     }
-  
+
     setFormData(updatedFormData);
-  
+
     setErrors((prevData) => ({
       ...prevData,
       [name]: false,
@@ -243,9 +243,9 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     const gross_amount = formData.price * formData.total_nights;
     setFormData((prev) => ({
       ...prev,
-      gross_amount:gross_amount ,
+      gross_amount: gross_amount,
     }));
-}, [formData.total_nights, formData.price]);
+  }, [formData.total_nights, formData.price]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -300,7 +300,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -396,9 +396,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </div>
                         </div>
                         <div
-                          className={`form_commonblock ${
-                            formData?.hotel_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData?.hotel_id ? "" : "disabledfield"
+                            }`}
                           data-tooltip-content={
                             formData?.hotel_id
                               ? ""
@@ -441,14 +440,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                        <div className={`form_commonblock ${
-                          formData?.room_id ? "" : "disabledfield"
-                        }`}
-                        data-tooltip-content={
-                          formData?.room_id ? "" : "Please Select Room First"
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        <div className={`form_commonblock ${formData?.room_id ? "" : "disabledfield"
+                          }`}
+                          data-tooltip-content={
+                            formData?.room_id ? "" : "Please Select Room First"
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom">
                           <label>
                             Occupancy<b className="color_red">*</b>
                           </label>
@@ -481,14 +479,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className={`form_commonblock ${
-                          formData?.room_id ? "" : "disabledfield"
-                        }`}
-                        data-tooltip-content={
-                          formData?.room_id ? "" : "Please Select Room First"
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        <div className={`form_commonblock ${formData?.room_id ? "" : "disabledfield"
+                          }`}
+                          data-tooltip-content={
+                            formData?.room_id ? "" : "Please Select Room First"
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom">
                           <label>
                             Meal Plan<b className="color_red">*</b>
                           </label>
@@ -518,14 +515,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             </p>
                           )}
                         </div>
-                        <div className={`form_commonblock ${
-                          formData?.room_id ? "" : "disabledfield"
-                        }`}
-                        data-tooltip-content={
-                          formData?.room_id ? "" : "Please Select Room First"
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        <div className={`form_commonblock ${formData?.room_id ? "" : "disabledfield"
+                          }`}
+                          data-tooltip-content={
+                            formData?.room_id ? "" : "Please Select Room First"
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom">
                           <label>
                             Bed<b className="color_red">*</b>
                           </label>
@@ -561,9 +557,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           }
                           data-tooltip-id="my-tooltip"
                           data-tooltip-place="bottom"
-                          className={`form_commonblock ${
-                            formData?.room_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData?.room_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>
                             Max Occupancy Of Persons
@@ -596,14 +591,13 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                        <div className={`form_commonblock ${
-                          formData?.room_id ? "" : "disabledfield"
-                        }`}
-                        data-tooltip-content={
-                          formData?.room_id ? "" : "Please Select Room First"
-                        }
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        <div className={`form_commonblock ${formData?.room_id ? "" : "disabledfield"
+                          }`}
+                          data-tooltip-content={
+                            formData?.room_id ? "" : "Please Select Room First"
+                          }
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-place="bottom">
                           <label>
                             Family Member
                           </label>
@@ -630,17 +624,17 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               />
                             </span>
                             {errors?.guest_ids && (
-                            <p
-                              className="error_message"
-                              style={{
-                                whiteSpace: "nowrap",
-                                marginBottom: "0px important",
-                              }}
-                            >
-                              {otherIcons.error_svg}
-                              Please Select Family Member
-                            </p>
-                          )}
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select Family Member
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="form_commonblock ">
@@ -663,7 +657,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                   ? new Date(formData.check_in_date)
                                   : null
                               }
-                              
+
                             />
                           </span>
                           {errors?.booking_date && (
@@ -721,7 +715,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </div>
                       </div>
                       <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock ">
+                        <div className="form_commonblock ">
                           <label>
                             Checkout Date<b className="color_red">*</b>
                           </label>
@@ -740,8 +734,8 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 formData?.check_in_date
                                   ? new Date(formData.check_in_date)
                                   : formData?.booking_date
-                                  ? new Date(formData.booking_date)
-                                  : null
+                                    ? new Date(formData.booking_date)
+                                    : null
                               }
                             />
                           </span>
@@ -768,7 +762,7 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                                 name="total_nights"
                                 placeholder="Enter Total Days"
                                 value={formData.total_nights}
-                                // onChange={(e) => handleChange(e)}
+                              // onChange={(e) => handleChange(e)}
                               />
                             </span>
                           </div>
@@ -793,21 +787,21 @@ const CreateHotelPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               />
                             </span>
                             {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                              <p
+                                className="error_message"
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  marginBottom: "0px important",
+                                }}
+                              >
+                                {otherIcons.error_svg}
+                                Please Select Supplier
+                              </p>
+                            )}
                           </div>
 
-                         </div> 
-                       
+                        </div>
+
                         <div id="imgurlanddesc" className="calctotalsectionx2">
                           <ImageUpload
                             formData={formData}

@@ -25,6 +25,7 @@ import {
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import { MultiImageUploadHelp } from "../../../Helper/ComponentHelper/ImageUpload";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateTourPackage = () => {
   const Navigate = useNavigate();
@@ -89,7 +90,7 @@ const CreateTourPackage = () => {
     if (itemId) {
       const queryParams = {
         tour_id: itemId,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(tourPackageDetailsAction(queryParams));
     }
@@ -139,11 +140,11 @@ const CreateTourPackage = () => {
       (value) => value === true
     );
     if (hasAnyError) {
-       await Swal.fire({
-              text: "Please fill all the required fields.",
-             confirmButtonText: "OK",
-             
-            });
+      await Swal.fire({
+        text: "Please fill all the required fields.",
+        confirmButtonText: "OK",
+
+      });
       return;
     } else {
       try {

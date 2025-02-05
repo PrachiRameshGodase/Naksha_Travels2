@@ -21,6 +21,7 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { tourPackageListAction } from "../../../../Redux/Actions/tourPackageActions";
 import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const TourPackages = () => {
   const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const TourPackages = () => {
 
   const fetchTourPackages = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -331,7 +332,7 @@ const TourPackages = () => {
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs4"
-                              style={{marginLeft:"10px"}}
+                              style={{ marginLeft: "10px" }}
                             >
                               {item?.days || ""}
                             </div>
@@ -339,8 +340,8 @@ const TourPackages = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"50%"}}>{item?.price_per_person || ""}</p>
-                              
+                              <p style={{ width: "50%" }}>{item?.price_per_person || ""}</p>
+
                             </div>
 
                             <div

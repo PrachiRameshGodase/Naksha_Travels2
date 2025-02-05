@@ -22,6 +22,7 @@ import {
   clearMiceState,
   MICEListActions,
 } from "../../Redux/Actions/MICEActions";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const MICES = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const MICES = () => {
 
   const fetchDSR = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -168,7 +169,7 @@ const MICES = () => {
     localStorage.setItem("miceId", "")
     navigate("/dashboard/create-mice");
     dispatch(clearMiceState());
-    
+
   };
 
   return (
@@ -299,8 +300,8 @@ const MICES = () => {
                         {DSRLists?.map((item, index) => (
                           <div
                             className={`table-rowx12 ${selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
+                              ? "selectedresult"
+                              : ""
                               }`}
                             key={index}
                           >

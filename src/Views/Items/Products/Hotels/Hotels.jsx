@@ -20,6 +20,7 @@ import { GoPlus } from "react-icons/go";
 import ResizeFL from "../../../../Components/ExtraButtons/ResizeFL";
 import { hotelListAction } from "../../../../Redux/Actions/hotelActions";
 import { ShowUserMastersValue } from "../../../Helper/ShowMastersValue";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Hotels = () => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const Hotels = () => {
 
   const fetchHotels = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {

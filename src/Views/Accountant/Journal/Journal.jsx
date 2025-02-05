@@ -30,6 +30,7 @@ import FilterIco from '../../../assets/outlineIcons/othericons/FilterIco.svg';
 import newmenuicoslz from '../../../assets/outlineIcons/othericons/newmenuicoslz.svg';
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
+import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 
 
@@ -204,7 +205,7 @@ const Journal = () => {
     const fetchAccount = useCallback(async () => {
         try {
             let sendData = {
-                fy: "2024",
+                fy: financialYear(),
                 noofrec: itemsPerPage,
                 currentpage: currentPage,
             };

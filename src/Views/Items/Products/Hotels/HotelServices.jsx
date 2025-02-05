@@ -26,6 +26,7 @@ import Swal from "sweetalert2";
 import { MdArrowOutward } from "react-icons/md";
 import HotelServicesDetails from "./HotelServicesDetails";
 import CreateHotelService from "./CreateHotelService";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const HotelServices = ({ data }) => {
   const dispatch = useDispatch();
@@ -91,7 +92,7 @@ const HotelServices = ({ data }) => {
 
   const fetchHotels = useCallback(async () => {
     try {
-      const fy = localStorage.getItem("FinancialYear");
+      const fy = financialYear();
       const currentpage = currentPage;
 
       const sendData = {
@@ -200,7 +201,7 @@ const HotelServices = ({ data }) => {
         hotel_id: item?.hotel_id,
       };
       dispatch(hotelRoomStatusActions(sendData, sendData2))
-        .then(() => {})
+        .then(() => { })
         .catch((error) => {
           toast.error("Failed to update room status");
           console.error("Error updating room status:", error);
@@ -360,11 +361,10 @@ const HotelServices = ({ data }) => {
                       <>
                         {hotelRoomLists.map((item, index) => (
                           <div
-                            className={`table-rowx12 ${
-                              selectedRows.includes(item?.id)
-                                ? "selectedresult"
-                                : ""
-                            }`}
+                            className={`table-rowx12 ${selectedRows.includes(item?.id)
+                              ? "selectedresult"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div
@@ -431,15 +431,15 @@ const HotelServices = ({ data }) => {
                                   item?.availability_status == "1"
                                     ? "active1"
                                     : item?.availability_status == "0"
-                                    ? "inactive1"
-                                    : ""
+                                      ? "inactive1"
+                                      : ""
                                 }
                               >
                                 {item?.availability_status == "1"
                                   ? "Available"
                                   : item?.availability_status == "0"
-                                  ? "Unavailable"
-                                  : ""}
+                                    ? "Unavailable"
+                                    : ""}
                                 <span>
                                   <MdArrowOutward />
                                 </span>

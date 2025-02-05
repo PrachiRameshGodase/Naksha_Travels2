@@ -36,6 +36,7 @@ import { useEditPurchaseForm } from "../Helper/StateHelper/EditPages/useEditPurc
 import Loader02 from "../../Components/Loaders/Loader02";
 import { productTypeItemAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
 import { ItemSelectGRN } from "../Helper/ComponentHelper/ItemSelectGRN";
+import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateGRN = () => {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ const CreateGRN = () => {
     if (name === "vendor_id" && value !== "") {
       setIsVendorSelect(true);
       const sendData = {
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
         vendor_id: value,
         status: 1
       };
@@ -274,7 +275,7 @@ const CreateGRN = () => {
     //fetch the list of purchases when vendor id is found on convert. 
     if (convert && formData?.vendor_id) {
       dispatch(purchseOrdersLists({
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
         vendor_id: formData?.vendor_id,
         status: 1
       }));

@@ -27,6 +27,7 @@ import "../CreateHotelPopup.scss";
 import { CustomDropdown003 } from "../../../../Components/CustomDropdown/CustomDropdown03";
 import { flightListAction } from "../../../../Redux/Actions/flightActions";
 import Swal from "sweetalert2";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     destination_code: false,
     guest_ids: false,
     gross_amount: false,
-    supplier_id:false,
+    supplier_id: false,
     tax_amount: false,
     tax_percent: false,
     // retain: false,
@@ -109,7 +110,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
       updatedFields = {
         ...updatedFields,
         airline_name: selectedRoom?.flight_name || "",
-            };
+      };
     }
     if (name === "supplier_id") {
       const selectedVendor = vendorList?.data?.user?.find((item) => item?.id == value);
@@ -210,7 +211,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     if (data?.customer_id) {
       const queryParams = {
         user_id: data?.customer_id,
-        fy: localStorage.getItem("FinancialYear"),
+        fy: financialYear(),
       };
       dispatch(customersView(queryParams));
     }
@@ -385,7 +386,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                       
+
                         className="form_commonblock"
                       >
                         <label>
@@ -431,7 +432,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            // disabled={isDisabled}
+                          // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
@@ -546,7 +547,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                     <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -567,21 +568,21 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
 
                         {/* <DeleveryAddress onSendData={handleChildData} formdatas={{ formData, setFormData }} /> */}
-                       </div> 
+                      </div>
 
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload

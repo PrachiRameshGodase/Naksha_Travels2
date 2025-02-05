@@ -541,7 +541,7 @@ const ItemSelect = ({
   };
 
 
-  
+
 
   const renderPopup = () => {
     if (!activePopup) return null;
@@ -627,7 +627,7 @@ const ItemSelect = ({
     <>
       {renderPopup()}
 
-      <div className="f1wrpofcreqsx2" id={section}>
+      <div className="f1wrpofcreqsx2">
 
         {/* Table Started */}
         <table className="itemTable_01">
