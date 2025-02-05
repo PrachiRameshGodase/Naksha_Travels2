@@ -52,7 +52,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
         );
       }
     }
-  }, [user?.contact_person]);
+  }, [user?.bank_details]);
 
   const handleChange = (fieldName, index, value) => {
     const updatedbankDetails = [...bankDetails];

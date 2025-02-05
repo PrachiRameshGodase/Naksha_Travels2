@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
@@ -35,21 +35,19 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dropdownRef1 = useRef(null);
   const dispatch = useDispatch();
 
-  const createAssist = useSelector((state) => state?.createPassengerAssist);
+
   const assistData = useSelector((state) => state?.assistList);
   const assistLists = assistData?.data?.data || [];
   const vendorList = useSelector((state) => state?.vendorList);
-
 
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
 
-
   const [formData, setFormData] = useState({
     service_name: "Assist",
-    airport_id: service_data?.airport_id || null, // Example for airport ID
+    // airport_id: service_data?.airport_id || null, // Example for airport ID
     airport_name: service_data?.airport_name || "", // Example for airport name
     meeting_type: service_data?.meeting_type || null, // Example for meeting type
     no_of_persons: service_data?.no_of_persons || "", // Example for the number of persons
@@ -64,16 +62,21 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_amount: 0.0, // Default tax amount
     total_amount: 0.0, // Default total amount
   });
-
+console.log("formDAta", formData)
   const [errors, setErrors] = useState({
     airport_name: false,
     no_of_persons: false,
   });
-  const entryType = ShowUserMasterData("50");
+
+  useEffect(() => {
+    if (service_data) {
+      setFormData({ ...service_data }); // Directly assign service_data
+    }
+  }, [service_data]);
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
@@ -84,7 +87,6 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -93,7 +95,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           airport_name: value,
           meeting_type: "",
           no_of_persons: "",
-          gross_amount: "", 
+          gross_amount: "",
         }));
       }
     } else if (name === "meeting_type") {
@@ -101,7 +103,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a airport first.");
         return;
       }
-     
+
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
@@ -124,7 +126,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           gross_amount: "",
         }));
       }
-    }  else if (name === "no_of_persons") {
+    } else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -133,7 +135,6 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
-      
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -151,7 +152,9 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
       };
     }
     if (name === "supplier_id") {
-      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      const selectedHotel = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
       updatedFields = {
         ...updatedFields,
         supplier_name: selectedHotel?.display_name || "",
@@ -170,7 +173,6 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
       [name]: false,
     }));
   };
-  console.log("formData", formData)
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -223,29 +225,10 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
           <div className="modal-body">
             <form>
-              {/* Keep your form as it is */}
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
-                        <label>
-                          Entry Type<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Entry Type"
-                            options={entryType}
-                            value={formData?.entry_type}
-                            onChange={handleChange}
-                            name="entry_type"
-                            defaultOption="Select Entry Type"
-                            type="masters2"
-                          />
-                        </span>
-                      </div> */}
                       <div className="form_commonblock">
                         <label>
                           Airport<b className="color_red">*</b>
@@ -362,9 +345,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
-                        <label>
-                          Supplier
-                        </label>
+                        <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}

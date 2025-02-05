@@ -79,7 +79,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   });
 
 
-  console.log("visa service data", service_data)
+  console.log("visa service data", formData)
 
   const [errors, setErrors] = useState({
     passenger_visa_id: false,
