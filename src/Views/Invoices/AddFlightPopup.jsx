@@ -34,8 +34,10 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
-  
+
   const toArry = service_data?.guest_ids?.split(",")?.map(Number);
+
+  console.log("toArrytoArry", toArry)
 
   const [formData, setFormData] = useState({
     service_name: "Flights",
@@ -58,9 +60,9 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_amount: 0.0,  // Default value for tax_amount
     total_amount: 0.0,  // Default value for total_amount
   });
-console.log("formData", formData)
+  console.log("formData", formData)
 
-    const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
     airline_name: false,
@@ -106,6 +108,7 @@ console.log("formData", formData)
       [name]: false,
     }));
   };
+
   const handleDateChange = (date, name) => {
     setFormData((prev) => ({
       ...prev,
@@ -195,7 +198,7 @@ console.log("formData", formData)
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    
+
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>

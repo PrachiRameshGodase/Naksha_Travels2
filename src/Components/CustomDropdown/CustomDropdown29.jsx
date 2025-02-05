@@ -67,12 +67,13 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   // call item api on page load...
   const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-      ...sendData,}),[]);
+    ...sendData,
+  }), []);
 
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
   useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
-  
-console.log("cusData",cusData)
+
+  console.log("cusData", cusData)
   return (
     <div
       ref={combinedRef}
@@ -90,14 +91,14 @@ console.log("cusData",cusData)
             ? cusData?.name
             : defaultOption
           : type === "companyList"
-          ? cusData
-            ? cusData?.company_name
-            : defaultOption
-          : cusData
-          ? cusData?.hotel_name
-          : value
-          ? fullName?.hotel_name
-          : defaultOption}
+            ? cusData
+              ? cusData?.company_name
+              : defaultOption
+            : cusData
+              ? cusData?.hotel_name
+              : value
+                ? fullName?.hotel_name
+                : defaultOption}
 
         <svg
           width="13"
@@ -130,7 +131,7 @@ console.log("cusData",cusData)
           />
 
           <div className="dropdownoptoscroll">
-            {(hotelList?.loading ||insuranceListData?.loading) ? (
+            {(hotelList?.loading || insuranceListData?.loading) ? (
               <>
                 <TableViewSkeletonDropdown />
               </>
@@ -158,10 +159,10 @@ console.log("cusData",cusData)
                     {type === "hotalList"
                       ? `${option?.hotel_name || ""}`
                       : type === "airportList"
-                      ? `${option?.name || ""}`
-                      : type === "companyList"
-                      ? `${option?.company_name || ""}`
-                      : ""}
+                        ? `${option?.name || ""}`
+                        : type === "companyList"
+                          ? `${option?.company_name || ""}`
+                          : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
@@ -201,6 +202,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     style,
     sd154w78s877,
     disabled,
+    data
   } = props;
   const {
     isOpen,
@@ -213,6 +215,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     handleKeyDown,
     handleSelect,
     focusedOptionIndex,
+
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
   const visaListData = useSelector((state) => state?.visaList);
@@ -266,12 +269,12 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
       type === "visa_entry_type"
         ? option?.visa_entry_name
         : type === "countryList"
-        ? option?.country_name
-        : type === "visa_type_id"
-        ? option?.visa_type_id
-        : type === "days"
-        ? option?.days
-        : "";
+          ? option?.country_name
+          : type === "visa_type_id"
+            ? option?.visa_type_id
+            : type === "days"
+              ? option?.days
+              : "";
 
     if (
       key &&
@@ -280,15 +283,16 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
           (type === "visa_entry_type"
             ? item?.visa_entry_name
             : type === "countryList"
-            ? item?.country_name
-            : item?.visa_type_name) === key
+              ? item?.country_name
+              : item?.visa_type_name) === key
       )
     ) {
       acc.push(option);
     }
     return acc;
   }, []);
-  // console.log("options", options)
+
+
   return (
     <div
       ref={combinedRef}
@@ -301,23 +305,34 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected" + (value ? " filledcolorIn" : "")}
       >
+
         {type === "countryList"
-          ? cusData
+          ?
+          cusData
             ? cusData?.country_name
-            : defaultOption
+            : data?.visa_entry_name ? data?.country_name : defaultOption
           : type === "visa_entry_type"
-          ? cusData
-            ? cusData?.visa_entry_name
-            : defaultOption
-          : type === "visa_type_id"
-          ? cusData
-            ? cusData?.visa_type_name
-            : defaultOption
-          : type === "days"
-          ? cusData
-            ? cusData?.days
-            : defaultOption
-          : ""}
+            ?
+            cusData
+              ? cusData?.visa_entry_name :
+              data?.visa_entry_name ? data?.visa_entry_name :
+                defaultOption
+            : type === "visa_type_id"
+              ?
+
+              cusData
+                ? cusData?.visa_type_name :
+                data ? data?.visa_type_name :
+                  defaultOption
+              : type === "days"
+                ?
+
+                cusData
+                  ? cusData?.days :
+                  data?.days ? data?.days
+                    : defaultOption
+                : ""}
+
 
         <svg
           width="13"
@@ -364,7 +379,7 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                     className={
                       "dropdown-option" +
                       (type === "visa_entry_type" &&
-                      option.visa_entry_type == value
+                        option.visa_entry_type == value
                         ? " selectedoption"
                         : "") +
                       (type === "countryList" && option.country_id == value
@@ -382,12 +397,12 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
                     {type === "countryList"
                       ? `${option?.country_name || ""}`
                       : type === "visa_entry_type"
-                      ? `${option?.visa_entry_name || ""}`
-                      : type === "visa_type_id"
-                      ? `${option?.visa_type_name || ""}`
-                      : type === "days"
-                      ? `${option?.days || ""}`
-                      : ""}
+                        ? `${option?.visa_entry_name || ""}`
+                        : type === "visa_type_id"
+                          ? `${option?.visa_type_name || ""}`
+                          : type === "days"
+                            ? `${option?.days || ""}`
+                            : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (
@@ -485,10 +500,10 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
       type === "airportList2"
         ? option?.airport
         : type === "meetingType"
-        ? option?.meeting_type
-        : type === "noOfPersons"
-        ? option?.no_of_person
-        : "";
+          ? option?.meeting_type
+          : type === "noOfPersons"
+            ? option?.no_of_person
+            : "";
 
     if (
       key &&
@@ -497,8 +512,8 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
           (type === "airportList2"
             ? item?.airport
             : type === "meetingType"
-            ? item?.meeting_type
-            : item?.no_of_person) === key
+              ? item?.meeting_type
+              : item?.no_of_person) === key
       )
     ) {
       acc.push(option);
@@ -525,14 +540,14 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
             ? cusData?.airport
             : defaultOption
           : type === "meetingType"
-          ? cusData
-            ? cusData?.meeting_type
-            : defaultOption
-          : type === "noOfPersons"
-          ? cusData
-            ? cusData?.no_of_person
-            : defaultOption
-          : ""}
+            ? cusData
+              ? cusData?.meeting_type
+              : defaultOption
+            : type === "noOfPersons"
+              ? cusData
+                ? cusData?.no_of_person
+                : defaultOption
+              : ""}
 
         <svg
           width="13"
@@ -593,10 +608,10 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
                     {type === "airportList2"
                       ? `${option?.airport || ""}`
                       : type === "meetingType"
-                      ? `${option?.meeting_type || ""}`
-                      : type === "noOfPersons"
-                      ? `${option?.no_of_person || ""}`
-                      : ""}
+                        ? `${option?.meeting_type || ""}`
+                        : type === "noOfPersons"
+                          ? `${option?.no_of_person || ""}`
+                          : ""}
                   </div>
                 ))}
                 {options?.length === 0 && (

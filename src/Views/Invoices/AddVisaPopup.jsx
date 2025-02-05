@@ -94,13 +94,40 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
 
+
+  // console.log("storeVisaType", storeVisaType)
+  // console.log("service_dataservice_data", service_data)
+
+
   useEffect(() => {
+
+    if (!service_data) {
+      setStoreEntry([]);
+      setStoreVisaType([]);
+    }
+
     if (service_data?.country_id) {
       dispatch(visaListAction({ country_id: service_data?.country_id })).then(
         (res) => {
           setStoreEntry(res);
         }
       );
+    }
+
+    if (service_data?.visa_entry_type && service_data?.country_id) {
+      dispatch(
+        visaListAction({ visa_entry_type: service_data?.visa_entry_type, country_id: service_data?.country_id })
+      ).then((res) => {
+        setStoreVisaType(res);
+      });
+    }
+
+    if (service_data?.visa_entry_type && service_data?.country_id && service_data?.visa_type_id) {
+      dispatch(
+        visaListAction({ visa_entry_type: service_data?.visa_entry_type, country_id: service_data?.country_id, visa_type_id: service_data?.visa_type_id })
+      ).then((res) => {
+        setStoreVisaType(res);
+      });
     }
   }, [service_data]);
 
@@ -362,6 +389,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               ref={dropdownRef1}
                               label="Country"
                               options={visaListData}
+                              data={storeVisaType[0]}
                               value={formData.country_id}
                               onChange={handleChange}
                               name="country_id"
@@ -387,9 +415,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.country_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.country_id
                             ? ""
@@ -410,6 +437,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             ref={dropdownRef1}
                             label="Select Visa Entry Type"
                             options={storeEntry}
+                            data={storeVisaType[0]}
                             value={formData.visa_entry_type}
                             onChange={handleChange}
                             name="visa_entry_type"
@@ -434,9 +462,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_entry_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_entry_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_entry_type
                             ? ""
@@ -456,6 +483,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             ref={dropdownRef1}
                             label="Select Visa Type"
                             options={storeVisaType}
+                            data={storeVisaType[0]}
                             value={formData?.visa_type_id}
                             onChange={handleChange}
                             name="visa_type_id"
@@ -480,9 +508,8 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.visa_type_id ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.visa_type_id ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.visa_type_id
                             ? ""
@@ -502,6 +529,7 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               ref={dropdownRef1}
                               label="Days"
                               options={visaListData}
+                              data={storeVisaType[0]}
                               value={formData?.days}
                               onChange={handleChange}
                               name="days"
@@ -672,10 +700,10 @@ const AddVisaPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               formData?.expiry_date
                                 ? new Date(formData.expiry_date) // Max date: Expiry Date (if set)
                                 : new Date(
-                                    new Date().getFullYear() + 50,
-                                    11,
-                                    31
-                                  ) // Default max date: 50 years in the future
+                                  new Date().getFullYear() + 50,
+                                  11,
+                                  31
+                                ) // Default max date: 50 years in the future
                             }
                             showYearDropdown // Enables the year dropdown
                             scrollableYearDropdown // Allows scrolling in the year dropdown

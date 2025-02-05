@@ -127,10 +127,10 @@ const CustomDropdown31 = forwardRef((props, ref) => {
         className={
           "dropdown-selected" + (value?.length > 0 ? " filledcolorIn" : "")
         }
-        title={storeData.map((val) => val.display_name).join(", ")}
+        title={storeData?.map((val) => val.display_name).join(", ")}
         value={
-          storeData.length > 0
-            ? storeData.map((val) => val.display_name).join(", ")
+          storeData?.length > 0
+            ? storeData?.map((val) => val.display_name).join(", ")
             : defaultOption
         }
         readOnly
@@ -247,7 +247,6 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
   };
 
 
-
   const handleSelect = (account) => {
     if (!account || !account.id) return;
 
@@ -258,7 +257,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     const maxGuests = formData.max_occupancy || formData.no_of_persons;
 
     if (index === -1) {
-      if (selectedItems.length >= maxGuests) {
+      if (selectedItems?.length >= maxGuests) {
         toast.error(`You cannot select more than ${maxGuests} guests.`);
         return;
       }
@@ -325,10 +324,10 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
         className={
           "dropdown-selected" + (value?.length > 0 ? " filledcolorIn" : "")
         }
-        title={storeData.map((val) => val.display_name).join(", ")}
+        title={storeData?.map((val) => val.display_name).join(", ")}
         value={
-          storeData.length > 0
-            ? storeData.map((val) => val.display_name).join(", ")
+          storeData?.length > 0
+            ? storeData?.map((val) => val.display_name).join(", ")
             : defaultOption
         }
         readOnly
