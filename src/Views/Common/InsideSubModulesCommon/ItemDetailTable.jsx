@@ -253,7 +253,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
 
   // const parseCharges = JSON?.parse(GRNdetail?.charges)
   const parseCharges = []
-  console.log("parseCharges", parseCharges)
+  console.log("GRNdetail", GRNdetail)
 
   const calculateTotalTaxAmount = () => {
     return GRNdetail?.items?.reduce((total, entry) => {
@@ -328,7 +328,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
               </td>
 
               <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                {JSON?.parse(val?.upload_image)?.length > 1 ? (
+                {JSON?.parse(val?.upload_image)?.length >= 1 ? (
                   <span
                     onClick={() => showAllImages(JSON?.parse(val?.upload_image))}
                   >
@@ -395,7 +395,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
               <td className="sfdjklsd1xs2w3" style={{ paddingLeft: "145px" }}>
                 {val?.remarks || ""}
               </td>
-              {/* <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
+              <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
                 {JSON?.parse(val?.upload_image)?.length >= 1 ? (
                   <span
                     onClick={() => showAllImages(JSON?.parse(val?.upload_image))}
@@ -409,7 +409,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
                     : JSON?.parse(val?.upload_image)?.length
                   } Image`
                 )}
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

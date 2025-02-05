@@ -492,6 +492,7 @@ const CreateCreditNotes = () => {
                             extracssclassforscjkls={"extracssclassforscjkls"}
                             dropdownRef2={dropdownRef2}
                             note="customer"
+                            section="sales"
                           />}
                       </div>
 
