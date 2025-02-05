@@ -15,7 +15,7 @@ import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import Swal from "sweetalert2";
 import CustomDropdown31 from "../../Components/CustomDropdown/CustomDropdown31";
 
-const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
 
   const dropdownRef1 = useRef(null);
@@ -288,7 +288,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </div>
                       </div>
                     
-                      <div className="form_commonblock">
+                      {section !="sales" && <div className="form_commonblock">
                         <label>
                           Supplier
                         </label>
@@ -311,7 +311,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>}
                     </div>
 
                     <div className="f1wrapofcreqx1">

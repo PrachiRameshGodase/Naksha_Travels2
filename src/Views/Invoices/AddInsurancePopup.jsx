@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 import CustomDropdown29 from "../../Components/CustomDropdown/CustomDropdown29";
 import { InsuranceListAction } from "../../Redux/Actions/InsuranceActions";
 
-const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data } = edit_data
 
   const dropdownRef1 = useRef(null);
@@ -365,7 +365,7 @@ console.log("service_data",service_data)
                       </div>
                     </div>
                     <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                     {section !="sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -387,7 +387,7 @@ console.log("service_data",service_data)
                           </span>
                         </div>
 
-                      </div>
+                      </div>}
                       <div className="secondtotalsections485s" style={{ justifyContent: "flex-end" }}>
                         <CalculationSection2
                           formData={formData}

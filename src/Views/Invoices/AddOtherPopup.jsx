@@ -14,7 +14,7 @@ import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import CustomDropdown03 from "../../Components/CustomDropdown/CustomDropdown03";
 import Swal from "sweetalert2";
 
-const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddOtherPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const {
     discount,
     discount_type,
@@ -252,7 +252,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div> */}
-                      <div className="form_commonblock">
+                     {section !="sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -273,7 +273,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>}
                     </div>
 
                     <div className="f1wrapofcreqx1">

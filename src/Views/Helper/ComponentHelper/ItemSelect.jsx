@@ -44,6 +44,7 @@ const ItemSelect = ({
   extracssclassforscjkls,
   dropdownRef2,
   note,
+  section,
 }) => {
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
@@ -540,7 +541,7 @@ const ItemSelect = ({
   };
 
 
-  // console.log("iteererere", formData?.items)
+
 
   const renderPopup = () => {
     if (!activePopup) return null;
@@ -554,6 +555,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
 
@@ -563,6 +565,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
 
@@ -572,6 +575,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
 
@@ -581,6 +585,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
       case "Car Hire":
@@ -589,6 +594,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
 
@@ -598,6 +604,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
 
@@ -607,6 +614,7 @@ const ItemSelect = ({
             setShowModal={setActivePopup}
             handleAddService={handleAddService}
             edit_data={activePopup?.data || []}
+            section={section}
           />
         );
       default:

@@ -1,27 +1,21 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
-import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
-import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
-import {
-  sendData,
-  ShowMasterData,
-  ShowUserMasterData,
-} from "../Helper/HelperFunctions";
-import NumericInput from "../Helper/NumericInput";
-import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import "../DSR/Services/CreateHotelPopup.scss";
-import { customersList } from "../../Redux/Actions/customerActions";
-import { vendorsLists } from "../../Redux/Actions/listApisActions";
-import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
-import { CalculationSection2 } from "../DSR/CalculationSection";
 import Swal from "sweetalert2";
-import { assistListAction } from "../../Redux/Actions/assistAction";
+import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import { CustomDropdown0029 } from "../../Components/CustomDropdown/CustomDropdown29";
 import { CustomDropdown031 } from "../../Components/CustomDropdown/CustomDropdown31";
+import { assistListAction } from "../../Redux/Actions/assistAction";
+import { customersList } from "../../Redux/Actions/customerActions";
+import { vendorsLists } from "../../Redux/Actions/listApisActions";
+import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
+import { CalculationSection2 } from "../DSR/CalculationSection";
+import "../DSR/Services/CreateHotelPopup.scss";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import {sendData} from "../Helper/HelperFunctions";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
-const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
+const AddAssistPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const {
     discount,
     discount_type,
@@ -71,15 +65,6 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     airport_name: false,
     no_of_persons: false,
   });
-
-  useEffect(() => {
-    if (service_data) {
-      setFormData({ ...service_data }); // Directly assign service_data
-    }
-  }, [service_data]);
-
-  // console.log("service_dataservice_data", service_data);
-  // console.log("formdata", formData);
 
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
@@ -404,7 +389,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                           )}
                         </div>
                       </div>
-                      <div className="form_commonblock">
+                      {section !="sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -424,7 +409,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>}
                     </div>
                     <div className="f1wrapofcreqx1">
                       <div

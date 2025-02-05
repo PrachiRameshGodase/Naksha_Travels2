@@ -383,7 +383,7 @@ export const CalculationSection2 = ({
         </div>
       </div> */}
 
-      <div className="calcuparentc">
+      {/* <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>Invoice Total:</label>
@@ -398,7 +398,7 @@ export const CalculationSection2 = ({
             />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
