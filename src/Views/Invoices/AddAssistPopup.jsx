@@ -78,6 +78,9 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     }
   }, [service_data]);
 
+  // console.log("service_dataservice_data", service_data);
+  // console.log("formdata", formData);
+
   const [storeEntry, setStoreEntry] = useState([]);
   const [storeVisaType, setStoreVisaType] = useState([]);
 
@@ -85,6 +88,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
+
     if (name === "airport_name") {
       selectedAssistData = assistLists?.find((item) => item?.airport === value);
       if (selectedAssistData) {

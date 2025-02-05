@@ -441,6 +441,8 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
     sd154w78s877,
     disabled,
   } = props;
+
+
   const {
     isOpen,
     setIsOpen,
@@ -538,15 +540,19 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
         {type === "airportList2"
           ? cusData
             ? cusData?.airport
-            : defaultOption
+
+            : value ? value
+              : defaultOption
           : type === "meetingType"
             ? cusData
               ? cusData?.meeting_type
-              : defaultOption
+              : value ? value
+                : defaultOption
             : type === "noOfPersons"
               ? cusData
                 ? cusData?.no_of_person
-                : defaultOption
+                : value ? value
+                  : defaultOption
               : ""}
 
         <svg
@@ -585,6 +591,7 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
                 <TableViewSkeletonDropdown />
               </>
             ) : (
+
               <>
                 {uniqueOptions?.map((option, index) => (
                   <div
@@ -614,6 +621,7 @@ export const CustomDropdown0029 = forwardRef((props, ref) => {
                           : ""}
                   </div>
                 ))}
+
                 {options?.length === 0 && (
                   <>
                     <div className="notdatafound02">
