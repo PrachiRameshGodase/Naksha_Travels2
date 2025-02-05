@@ -93,6 +93,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           : type === "companyList"
             ? cusData
               ? cusData?.company_name
+              : value? value
               : defaultOption
             : cusData
               ? cusData?.hotel_name
