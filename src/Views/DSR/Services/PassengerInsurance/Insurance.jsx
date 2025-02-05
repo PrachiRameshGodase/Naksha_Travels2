@@ -125,7 +125,7 @@ const Insurances = ({ data, totalItems }) => {
                     Expiry Date
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Total Amount</p>
+                    <p>({currencySymbol}) Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs2">
                     {otherIcons?.quotation_icon}
@@ -175,7 +175,7 @@ const Insurances = ({ data, totalItems }) => {
                               {formatDate3(item?.expiry_date) || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{width:"91%"}}>{item?.total_amount || ""}</p>
+                              <p style={{width:"96%"}}>{item?.total_amount || ""}</p>
                            
                             </div>
                             <div

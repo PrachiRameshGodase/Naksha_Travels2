@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { formatDate } from "../Helper/DateFormat";
-import { ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
+import { sendData, ShowMasterData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import "../DSR/Services/CreateHotelPopup.scss";
 import { CalculationSection2 } from "../DSR/CalculationSection";
@@ -29,7 +29,6 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
 
   const [cusData, setcusData] = useState(null);
   const [cusData3, setcusData3] = useState(null);
-
   const [cusData1, setcusData1] = useState(null);
 
 
@@ -53,8 +52,6 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_amount: 0.0,                                                  // Default total amount
   });
 
-
-
   const [errors, setErrors] = useState({
     passenger_insurance_id: false,
     company_name: false,
@@ -64,8 +61,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
     expiry_date: false,
 
   });
-  const entryType = ShowUserMasterData("50");
-
+console.log("service_data",service_data)
   const handleChange = (e) => {
     const { name, value } = e.target;
     const selectedSupplierName = vendorList?.data?.user?.find(
@@ -97,7 +93,6 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
     let newErrors = {
       passenger_insurance_id: formData?.passenger_insurance_id ? false : true,
       company_name: formData?.company_name ? false : true,
-
       policy_no: formData?.policy_no ? false : true,
       insurance_plan: formData?.insurance_plan ? false : true,
       issue_date: formData?.issue_date ? false : true,
@@ -156,27 +151,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    {/* <div className="f1wrapofcreqx1">
-                                            <div className="form_commonblock">
-                                                <label>
-                                                    Entry Type<b className="color_red">*</b>
-                                                </label>
-
-                                                <span id="">
-                                                    {otherIcons.name_svg}
-                                                    <CustomDropdown04
-                                                        label="Entry Type"
-                                                        options={entryType}
-                                                        value={formData?.entry_type}
-                                                        onChange={handleChange}
-                                                        name="entry_type"
-                                                        defaultOption="Select Entry Type"
-                                                        type="masters2"
-                                                    />
-                                                </span>
-                                            </div>
-                                        </div> */}
-
+                    
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -229,7 +204,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             value={formData.company_name}
                             onChange={handleChange}
                             name="company_name"
-                            defaultOption="Select Comapnay Name"
+                            defaultOption="Select Company Name"
                             setcusData={setcusData3}
                             cusData={cusData3}
                             type="companyList"
@@ -260,6 +235,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="policy_no"
                             placeholder="Enter Policy No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.policy_no && (
@@ -371,6 +347,7 @@ const AddInsurancePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="insurance_plan"
                             placeholder="Enter Insurance Plan"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.insurance_plan && (

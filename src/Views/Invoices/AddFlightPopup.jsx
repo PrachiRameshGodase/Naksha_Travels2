@@ -2,25 +2,24 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
 import CustomDropdown04 from "../../Components/CustomDropdown/CustomDropdown04";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown31 from "../../Components/CustomDropdown/CustomDropdown31";
+import { customersList } from "../../Redux/Actions/customerActions";
+import { flightListAction } from "../../Redux/Actions/flightActions";
+import { vendorsLists } from "../../Redux/Actions/listApisActions";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
+import { CalculationSection2 } from "../DSR/CalculationSection";
+import "../DSR/Services/CreateHotelPopup.scss";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../Helper/DateFormat";
 import {
   sendData,
-  ShowMasterData,
-  ShowUserMasterData,
+  ShowUserMasterData
 } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
-import "../DSR/Services/CreateHotelPopup.scss";
-import { CalculationSection2 } from "../DSR/CalculationSection";
-import { customersList } from "../../Redux/Actions/customerActions";
-import { vendorsLists } from "../../Redux/Actions/listApisActions";
-import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
-import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
-import { flightListAction } from "../../Redux/Actions/flightActions";
-import Swal from "sweetalert2";
 
 const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const dispatch = useDispatch();
@@ -35,6 +34,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData, setcusData] = useState(null);
   const [cusData1, setcusData1] = useState(null);
   const [cusData2, setcusData2] = useState(null);
+  
+  const toArry = service_data?.guest_ids?.split(",")?.map(Number);
 
   const [formData, setFormData] = useState({
     service_name: "Flights",
@@ -43,7 +44,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     travel_type_id: service_data?.travel_type_id || "",  // Example for travel_type_id
     airline_name: service_data?.airline_name || "",  // Example for airline_name
     air_line_code: service_data?.air_line_code || "",  // Example for air_line_code
-    guest_ids: "",  // Example for guest_ids
+    guest_ids: toArry || "",  // Example for guest_ids
     gds_portal: service_data?.gds_portal || "",  // Example for gds_portal
     destination_code: service_data?.destination_code || "",  // Example for destination_code
     ticket_no: service_data?.ticket_no || "",  // Example for ticket_no
@@ -57,12 +58,9 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
     tax_amount: 0.0,  // Default value for tax_amount
     total_amount: 0.0,  // Default value for total_amount
   });
+console.log("formData", formData)
 
-
-  console.log("flight service_data", service_data)
-
-
-  const [errors, setErrors] = useState({
+    const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
     airline_name: false,
@@ -113,23 +111,10 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...prev,
       [name]: formatDate(date),
     }));
-    setErrors((prevErrors) => {
-      const updatedErrors = { ...prevErrors };
-
-      const bookingDate = new Date(formData?.booking_date);
-      const travelDate = new Date(formData?.travel_date);
-      const selectedDate = new Date(date);
-
-      if (name === "booking_date") {
-        updatedErrors.booking_date =
-          formData?.travel_date && selectedDate > travelDate;
-      }
-
-      if (name === "travel_date") {
-        updatedErrors.travel_date = selectedDate < bookingDate;
-      }
-      return updatedErrors;
-    });
+    setErrors((prevData) => ({
+      ...prevData,
+      [name]: false,
+    }));
   };
   const handleChange1 = (selectedItems, name) => {
     setFormData({
@@ -210,26 +195,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
-                    {/* <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
-                        <label>
-                          Entry Type<b className="color_red">*</b>
-                        </label>
-
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Entry Type"
-                            options={entryType}
-                            value={formData?.entry_type}
-                            onChange={handleChange}
-                            name="entry_type"
-                            defaultOption="Select Entry Type"
-                            type="masters2"
-                          />
-                        </span>
-                      </div>
-                    </div> */}
+                    
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -356,7 +322,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="air_line_code"
                               placeholder="Enter Airline Code"
-                            // disabled={isDisabled}
+                              autoComplete="off"
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -471,6 +437,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               onChange={handleChange}
                               name="ticket_no"
                               placeholder="Enter Ticket Number"
+                              autoComplete="off"
                             />
                           </span>
                           {errors?.ticket_no && (
@@ -500,6 +467,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="prn_no"
                             placeholder="Enter PRN No"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.prn_no && (

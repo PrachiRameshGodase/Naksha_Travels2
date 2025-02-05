@@ -28,13 +28,15 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
   const [cusData1, setcusData1] = useState(null);
   const [cusData, setcusData] = useState(null);
 
+  const toArry = service_data?.guest_ids?.split(",")?.map(Number);
+  
   const [formData, setFormData] = useState({
     service_name: "Car Hire",
     vehicle_type_id: service_data?.vehicle_type_id || "",        // Example for vehicle type ID
     days: service_data?.days || "",                             // Example for number of days
     pickup_location: service_data?.pickup_location || null,     // Example for pickup location
     drop_location: service_data?.drop_location || null,         // Example for drop-off location
-    guest_ids: service_data?.guest_ids || "",                   // Example for guest IDs
+    guest_ids: toArry || "",                   // Example for guest IDs
     supplier_id: service_data?.supplier_id || "",               // Example for supplier ID
     supplier_name: service_data?.supplier_name || null,         // Example for supplier name
 
@@ -144,25 +146,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                 <div className="itemsformwrap" style={{ paddingBottom: "0px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
-                      {/* <div className="form_commonblock">
-                                                <label>
-                                                    Entry Type<b className="color_red">*</b>
-                                                </label>
-
-                                                <span id="">
-                                                    {otherIcons.name_svg}
-                                                    <CustomDropdown04
-                                                        label="Entry Type"
-                                                        options={entryType}
-                                                        value={formData?.entry_type}
-                                                        onChange={handleChange}
-                                                        name="entry_type"
-                                                        defaultOption="Select Entry Type"
-                                                        type="masters2"
-                                                    />
-                                                </span>
-                                            </div> */}
-                      <div className="form_commonblock">
+                       <div className="form_commonblock">
                         <label>
                           Vechile Type<b className="color_red">*</b>
                         </label>
@@ -217,6 +201,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="pickup_location"
                             placeholder="Enter Pickup Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.pickup_location && (
@@ -247,6 +232,7 @@ const AddCarHirePopup = ({ setShowModal, handleAddService, edit_data }) => {
                             onChange={handleChange}
                             name="drop_location"
                             placeholder="Enter Drop Location"
+                            autoComplete="off"
                           />
                         </span>
                         {errors?.drop_location && (

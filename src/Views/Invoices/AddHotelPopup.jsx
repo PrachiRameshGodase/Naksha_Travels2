@@ -112,8 +112,6 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   const bed = ShowUserMasterData("38");
 
   const handleChange = (e) => {
-    // console.log("handleChangehandleChangehandleChange")
-
     const { name, value } = e.target;
     let updatedFields = { [name]: value };
 

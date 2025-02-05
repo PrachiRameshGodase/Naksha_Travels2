@@ -270,7 +270,7 @@ const TourPackages = () => {
                     {/* {otherIcons?.refrence_svg} */}
                     <p>
                       {/* {otherIcons?.doller_svg} */}
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Price
                     </p>
                   </div>
@@ -339,7 +339,7 @@ const TourPackages = () => {
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p style={{width:"46%"}}>{item?.price_per_person || ""}</p>
+                              <p style={{width:"50%"}}>{item?.price_per_person || ""}</p>
                               
                             </div>
 

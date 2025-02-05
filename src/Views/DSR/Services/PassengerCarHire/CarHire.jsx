@@ -121,7 +121,7 @@ const CarHires = ({ data, totalItems }) => {
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
                       {/* {otherIcons?.doller_svg} */}
-                      {currencySymbol} Total Amount
+                      ({currencySymbol}) Total Amount
                     </p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -172,7 +172,7 @@ const CarHires = ({ data, totalItems }) => {
                               {item?.drop_location || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{ width: "79%" }}>
+                              <p style={{ width: "84%" }}>
                                 {item?.total_amount || ""}
                               </p>
                             </div>

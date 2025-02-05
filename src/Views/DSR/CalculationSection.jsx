@@ -314,6 +314,7 @@ export const CalculationSection2 = ({
               name="gross_amount"
               className="inputbox"
               style={{ width: "120px" }}
+              autoComplete="off"
             />
           </div>
         </div>

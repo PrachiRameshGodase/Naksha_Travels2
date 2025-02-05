@@ -137,7 +137,7 @@ const Hotels = ({ data }) => {
                     Checkout Date
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Total Amount</p>
+                    <p>({currencySymbol}) Total Amount</p>
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
                     {otherIcons?.status_svg}
@@ -222,7 +222,7 @@ const Hotels = ({ data }) => {
                               {formatDate3(item?.check_out_date) || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{ width: "91%" }}>
+                              <p style={{ width: "97%" }}>
                                 {" "}
                                 {item?.total_amount || ""}
                               </p>

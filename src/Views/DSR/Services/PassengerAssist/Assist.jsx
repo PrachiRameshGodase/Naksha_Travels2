@@ -115,7 +115,7 @@ const Assit = ({ data, totalItems }) => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
-                    <p>{currencySymbol} Total Amount</p>
+                    <p>({currencySymbol}) Total Amount</p>
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -161,7 +161,7 @@ const Assit = ({ data, totalItems }) => {
                               {item?.no_of_persons || ""}
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs5_item">
-                              <p style={{ width: "67%" }}>
+                              <p style={{ width: "71%" }}>
                                 {" "}
                                 {item?.total_amount || ""}
                               </p>

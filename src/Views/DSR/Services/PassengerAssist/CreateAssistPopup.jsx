@@ -19,7 +19,10 @@ import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
 import CalculationSection from "../../CalculationSection";
 import "../CreateHotelPopup.scss";
 import Swal from "sweetalert2";
-import { CustomDropdown0029, CustomDropdown029 } from "../../../../Components/CustomDropdown/CustomDropdown29";
+import {
+  CustomDropdown0029,
+  CustomDropdown029,
+} from "../../../../Components/CustomDropdown/CustomDropdown29";
 import { assistListAction } from "../../../../Redux/Actions/assistAction";
 import { CustomDropdown031 } from "../../../../Components/CustomDropdown/CustomDropdown31";
 
@@ -40,7 +43,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
   const [cusData3, setcusData3] = useState(null);
   const [cusData4, setcusData4] = useState(null);
   const [cusData5, setcusData5] = useState(null);
-  
 
   const [formData, setFormData] = useState({
     dsr_id: data?.id,
@@ -73,7 +75,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     no_of_persons: false,
     gross_amount: false,
     total_amount: false,
-    supplier_id:false
+    supplier_id: false,
   });
 
   const [imgLoader, setImgeLoader] = useState("");
@@ -86,14 +88,11 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     let updatedFields = { [name]: value };
     let selectedAssistData = null;
     if (name === "airport_name") {
-      selectedAssistData = assistLists?.find(
-        (item) => item?.airport === value
-      );
+      selectedAssistData = assistLists?.find((item) => item?.airport === value);
       if (selectedAssistData) {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-     
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -103,7 +102,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           meeting_type: "",
           no_of_persons: "",
           gross_amount: "",
-          supplier_id:"",
+          supplier_id: "",
         }));
       }
     } else if (name === "meeting_type") {
@@ -111,7 +110,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a airport first.");
         return;
       }
-     
+
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
@@ -132,10 +131,10 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
           meeting_type: value,
           no_of_persons: "",
           gross_amount: "",
-          supplier_id:""
+          supplier_id: "",
         }));
       }
-    }  else if (name === "no_of_persons") {
+    } else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -144,7 +143,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
-      
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -160,11 +158,12 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
         meeting_type: selectedAssistData?.meeting_type || "",
         gross_amount: selectedAssistData?.price || "",
         supplier_id: selectedAssistData?.supplier_id || "",
-
       };
     }
     if (name === "supplier_id") {
-      const selectedHotel = vendorList?.data?.user?.find((item) => item?.id == value);
+      const selectedHotel = vendorList?.data?.user?.find(
+        (item) => item?.id == value
+      );
       updatedFields = {
         ...updatedFields,
         supplier_name: selectedHotel?.display_name || "",
@@ -181,7 +180,7 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
     setErrors((prevData) => ({
       ...prevData,
       ...(name === "no_of_persons" && {
-        gross_amount:false
+        gross_amount: false,
       }),
       [name]: false,
     }));
@@ -211,7 +210,6 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
       gross_amount: formData?.gross_amount ? false : true,
       total_amount: formData?.total_amount ? false : true,
       supplier_id: formData?.supplier_id ? false : true,
-
     };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
@@ -308,7 +306,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           </p>
                         )}
                       </div>
-                      <div className={`form_commonblock ${
+                      <div
+                        className={`form_commonblock ${
                           formData?.airport_name ? "" : "disabledfield"
                         }`}
                         data-tooltip-content={
@@ -317,7 +316,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             : "Please Select Airport First"
                         }
                         data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        data-tooltip-place="bottom"
+                      >
                         <label>Meeting Type</label>
                         <span>
                           {otherIcons.placeofsupply_svg}
@@ -338,7 +338,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                      <div  className={`form_commonblock ${
+                      <div
+                        className={`form_commonblock ${
                           formData?.meeting_type ? "" : "disabledfield"
                         }`}
                         data-tooltip-content={
@@ -347,7 +348,8 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             : "Please Select Meeting type First"
                         }
                         data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom">
+                        data-tooltip-place="bottom"
+                      >
                         <label>
                           No Of Persons<b className="color_red">*</b>
                         </label>
@@ -355,19 +357,19 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                           <span>
                             {otherIcons.name_svg}
                             <CustomDropdown0029
-                            autoComplete="off"
-                            ref={dropdownRef1}
-                            label="Select Persons"
-                            options={storeVisaType}
-                            value={formData?.no_of_persons}
-                            onChange={handleChange}
-                            name="no_of_persons"
-                            defaultOption="Select Persons"
-                            setcusData={setcusData3}
-                            cusData={cusData3}
-                            type="noOfPersons"
-                            disabled={!formData?.meeting_type}
-                          />
+                              autoComplete="off"
+                              ref={dropdownRef1}
+                              label="Select Persons"
+                              options={storeVisaType}
+                              value={formData?.no_of_persons}
+                              onChange={handleChange}
+                              name="no_of_persons"
+                              defaultOption="Select Persons"
+                              setcusData={setcusData3}
+                              cusData={cusData3}
+                              type="noOfPersons"
+                              disabled={!formData?.meeting_type}
+                            />
                           </span>
                           {errors?.no_of_persons && (
                             <p
@@ -386,47 +388,47 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                     </div>
 
                     <div className="f1wrapofcreqx1">
-                        <div className="form_commonblock">
-                                              <label>
-                                              Guest 
-                                              </label>
-                      
-                                              <div id="sepcifixspanflex">
-                                                <span id="">
-                                                  {otherIcons.name_svg}
-                      
-                                                  <CustomDropdown031
-                                                    ref={dropdownRef1}
-                                                    label="Select Guest"
-                                                    options={cusList?.data?.user}
-                                                    value={formData.guest_ids}
-                                                    onChange={(selectedItems) =>
-                                                      handleChange1(selectedItems, "guest_ids")
-                                                    }
-                                                    name="guest_ids"
-                                                    defaultOption="Select Guest "
-                                                    setcusData={setcusData5}
-                                                    cusData={cusData5}
-                                                    type="vendor"
-                                                    formData={formData}
-                                                  />
-                                                </span>
-                                                {errors?.guest_ids && (
-                                                  <p
-                                                    className="error_message"
-                                                    style={{
-                                                      whiteSpace: "nowrap",
-                                                      marginBottom: "0px important",
-                                                    }}
-                                                  >
-                                                    {otherIcons.error_svg}
-                                                    Please Select Guest 
-                                                  </p>
-                                                )}
-                                              </div>
-                                            </div>
                       <div className="form_commonblock">
-                        <label>Supplier<b className="color_red">*</b></label>
+                        <label>Guest</label>
+
+                        <div id="sepcifixspanflex">
+                          <span id="">
+                            {otherIcons.name_svg}
+
+                            <CustomDropdown031
+                              ref={dropdownRef1}
+                              label="Select Guest"
+                              options={cusList?.data?.user}
+                              value={formData.guest_ids}
+                              onChange={(selectedItems) =>
+                                handleChange1(selectedItems, "guest_ids")
+                              }
+                              name="guest_ids"
+                              defaultOption="Select Guest "
+                              setcusData={setcusData5}
+                              cusData={cusData5}
+                              type="vendor"
+                              formData={formData}
+                            />
+                          </span>
+                          {errors?.guest_ids && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Guest
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form_commonblock">
+                        <label>
+                          Supplier<b className="color_red">*</b>
+                        </label>
                         <div id="sepcifixspanflex">
                           <span id="">
                             {otherIcons.name_svg}
@@ -446,19 +448,18 @@ const CreateAssistPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
-
                       </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload

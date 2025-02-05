@@ -220,9 +220,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
 
                 service_data?.service_name === "Others" ? (
                   <>
-                    <div>
-                      <b>Service Name:</b> {service_data?.service_name || "-"}
-                    </div>
+                   
                     <div>
                       <b>Service Name:</b> {service_data?.service_name || "-"}
                     </div>

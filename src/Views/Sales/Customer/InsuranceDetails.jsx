@@ -111,11 +111,13 @@ const InsuranceDetails = ({
                 <div id="inputx1">
                   <span>
                     {otherIcons.quotation_icon}
-                    <NumericInput
+                    <input
                       name="policy_no"
                       placeholder="Enter Policy Number"
                       value={insuranceDetails.policy_no}
                       onChange={handleChange}
+                      type="text"
+                      autoComplete="off"
                     />
                   </span>
                 </div>
