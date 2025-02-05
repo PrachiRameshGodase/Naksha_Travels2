@@ -320,22 +320,7 @@ export const CalculationSection2 = ({
         </div>
       </div>
 
-      {/* <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Supplier Service Charge:</label>
-            <input
-              type="text"
-              value={formData?.charges}
-              placeholder="0.00"
-              onChange={(e) => handleChange(e)}
-              name="charges"
-            />
-          </div>
-        </div>
-      </div> */}
-
-      <div className="calcuparentc">
+    <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label style={{ marginTop: "10px" }}>Tax %:</label>
@@ -347,6 +332,8 @@ export const CalculationSection2 = ({
               type="taxRate"
               defaultOption="Taxes"
               className2="item3"
+              tax_rate={formData?.tax_percent}
+              
             />
             <input
               type="text"
