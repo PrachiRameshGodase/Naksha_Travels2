@@ -113,8 +113,8 @@ const CreateCreditNotes = () => {
     convert
   );
 
-  // console.log("fetchdetails credit", fetchDetails);
-  // console.log("fordaaaaaaa credit", formData);
+  console.log("fetchDetails", fetchDetails)
+  console.log("formData.bill_id", formData.invoice_id)
 
   const sendChageData = {
     dispatch: dispatch,

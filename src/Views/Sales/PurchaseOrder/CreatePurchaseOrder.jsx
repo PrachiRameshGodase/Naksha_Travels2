@@ -101,8 +101,6 @@ const CreatePurchaseOrder = () => {
     isDuplicate
   );
 
-  console.log("formData in purchases", formData?.items)
-
   // set billing/shipping when customer select
   const [addSelectCus, setAddSelectCus] = useState({
     billing: "",
@@ -310,7 +308,7 @@ const CreatePurchaseOrder = () => {
                             value={preventZeroVal(formData.reference)}
                             onChange={handleChange}
                             name="reference"
-                            placeholder="Enter Reference Number"
+                            placeholder="Enter Reference"
                           />
                         </span>
                       </div>

@@ -237,8 +237,6 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     if (ref) ref.current = node;
   };
 
-  console.log("value", value)
-
   const handleSelect = (account) => {
     if (!account || !account.id) return;
 
@@ -285,12 +283,6 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
     }
     setSearchTerm("");
   }, []);
-
-  // useEffect(() => {
-  //   // Reset storeData when hotel_id changes
-  //   setStoredData([]);
-  //   onChange([]);
-  // }, [formData.hotel_id]);
 
   useEffect(() => {
     if (value?.length) {

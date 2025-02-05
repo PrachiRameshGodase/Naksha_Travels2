@@ -28,6 +28,7 @@ import { isStateIdEqualAction, productTypeItemAction } from "../../../Redux/Acti
 import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
 import { activeOrg } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import NumericInput from "../../Helper/NumericInput";
 
 const CreateBills = () => {
   const dispatch = useDispatch();
@@ -92,7 +93,7 @@ const CreateBills = () => {
     convert
   );
 
-  console.log("bill form data", fetchDetails)
+  // console.log("bill form data", fetchDetails)
   const [loading, setLoading] = useState(false);
 
   //this is the common handle select
@@ -383,8 +384,7 @@ const CreateBills = () => {
                           <label>Reference Number</label>
                           <span>
                             {otherIcons.placeofsupply_svg}
-                            <input
-                              type="text"
+                            <NumericInput
                               value={preventZeroVal(formData?.reference_no)}
                               onChange={handleChange}
                               name="reference_no"

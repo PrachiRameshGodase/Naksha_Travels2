@@ -2488,7 +2488,6 @@
         vertical-align: top;
         word-wrap: break-word;
 
-
         .discount_type_dropdown {
           display: flex;
           gap: 5px;
@@ -2496,7 +2495,18 @@
         }
       }
 
+      .question_mark_position {
+        display: flex;
+        align-items: center;
+        gap: 3px;
 
+        svg {
+          width: 16px;
+          height: 13px;
+          cursor: pointer;
+        }
+
+      }
 
       .table_input_01 {
         input {
@@ -2535,7 +2545,7 @@
 
       // discount width
       .item_table_width_04 {
-        width: 126px;
+        width: 110px;
       }
 
       //for right align content

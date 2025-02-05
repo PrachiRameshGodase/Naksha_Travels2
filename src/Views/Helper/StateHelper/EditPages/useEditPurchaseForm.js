@@ -89,12 +89,10 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     }),
                 }),
 
-
                 // when credit note is converted in to the invoice the the invoice_id in invoice is in id variable 
                 ...(convert === "invoiceToCredit" && { invoice_id: detailData?.id }),
 
                 // ...((detailData?.reference || detailData?.reference_no) && { reference_no: detailData?.reference, reference: detailData?.reference, reference_no: detailData?.reference_no }),
-
 
                 status: detailData?.status,
                 tax_amount: calculateTotalTaxAmount(),
@@ -125,7 +123,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
             setIsCustomerSelect(!!detailData?.customer_id);//remove vendor error if vendor is selected
             setIsVendorSelect(!!detailData?.vendor_id);//remove vendor error if vendor is selected
             setIsInvoiceSelect(!!detailData?.invoice_id);//remove invoice error if invoice is selected
-            setIsBillSelect(!!detailData?.bill_id);//remove bill error if bill is selected
+            setIsBillSelect(!!detailData?.bill_no);//remove bill error if bill is selected
             setIsGrnQntySelect(!!detailData?.items);
 
 

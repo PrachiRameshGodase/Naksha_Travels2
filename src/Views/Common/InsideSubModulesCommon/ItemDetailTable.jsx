@@ -40,6 +40,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
             <th className="table_column_item">Type</th>
             <th className="table_column_item item_text_end_01">Rate</th>
             <th className="table_column_item">Qty</th>
+            <th className="table_column_item item_text_end_01" >Discount</th>
             <th className="table_column_item">Tax Rate</th>
             <th className="table_column_item item_text_end_01 ">Amount</th>
           </tr>
@@ -194,9 +195,13 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
 
                   {(val?.unit_id || val?.unit_id != 0) && (
                     <>
-                      (<ShowMastersValue type="2" id={val?.unit_id} />)
+                      <ShowMastersValue type="2" id={val?.unit_id} />
                     </>
                   )}
+                </td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.discount)}
+
                 </td>
                 <td className="table_column_item">
                   {showRateWithPercent(val?.tax_rate)}
@@ -256,6 +261,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
     }, 0);
   };
   const totalExpenseCharges = JSON?.parse(GRNdetail?.charges || "[]");
+  const chargestype = JSON?.parse(GRNdetail?.charges || "[]");
 
   // console.log("totalExpenseCharges", totalExpenseCharges);
 
@@ -371,7 +377,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
         </thead>
         <tbody>
 
-          {totalExpenseCharges?.map((val, index) => (
+          {GRNdetail?.charges_type?.map((val, index) => (
             <tr className="rowsxs15aksx433" key={index}>
               <td className="sfdjklsd1xs2w1">{index + 1}</td>
               <td className="sfdjklsd1xs2w2" style={{ width: "22%" }}>
@@ -410,39 +416,33 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
       </table>
 
       <div className="finalcalculateiosxl44s">
-        <span>
-          <p>Subtotal</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(GRNdetail?.subtotal)}</h5>
-        </span>
-        <span
-          onClick={() => setShowCharges(!showCharges)}
-          style={{ cursor: "pointer", color: "#408dfb" }}
-        >
-          <p>Charges</p>{" "}
-        </span>
-        {showCharges && (
-          <>
-            {totalExpenseCharges?.map((val) => (
-              <span>
-                <p>{val?.account?.account_name}</p>{" "}
-                <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5>
-              </span>
-            ))}
-          </>
-        )}
-        <span>
-          <p>Total Tax</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount())}</h5>
-        </span>
+        <p><p>Subtotal</p> <h5>{showAmountWithCurrencySymbol(GRNdetail?.subtotal)}</h5></p>
+        <p><p>Total Tax</p> <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount()?.toFixed(2))}</h5></p>
 
-        <span>
-          <p>Total GRN Charge</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(GRNdetail?.total_grn_charges)}</h5>
-        </span>
-        <span>
-          <p>Total</p> <h5>{showAmountWithCurrencySymbol(GRNdetail?.total)}</h5>
-        </span>
-      </div>
+        {totalExpenseCharges?.[0]?.account_name && totalExpenseCharges?.[0]?.amount && <>
+          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#408dfb" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
+        </>}
+
+        {showCharges && <>
+          {totalExpenseCharges?.map((val, index) => (
+            <p><p className='' key={index}>{val?.account_name}</p> <h5>{showAmountWithCurrencySymbol(val?.amount)}</h5></p>
+          ))}
+
+        </>}
+
+        <p><p className='finalcalcuFs'>Total</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol((parseFloat(GRNdetail?.total)))}</h5></p>
+        <p><p className='finalcalcuFs'>Total Charges</p> <h5 className='finalcalcuFs'>{showAmountWithCurrencySymbol((parseFloat(GRNdetail?.total_grn_charges)))}</h5></p>
+
+        {/* {section === "bill" ?
+          <>
+            <p><p>Payment Made</p> <h5>{showAmountWithCurrencySymbol(GRNdetail?.amount_paid)}</h5></p>
+            <p><p>Amount In Excess</p> <h5>{showAmountWithCurrencySymbol(GRNdetail?.amt_excess)}</h5></p>
+          </> :
+          <>
+          </>
+
+        } */}
+      </div >
     </>
   );
 };

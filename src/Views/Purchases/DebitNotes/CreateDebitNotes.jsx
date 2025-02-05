@@ -102,8 +102,9 @@ const CreateDebitNotes = () => {
     );
 
 
-    console.log("formdaaaaaaaaaaaaaa", formData)
-    console.log("reasonTypeData", reasonTypeData)
+    console.log("fetchDetails", fetchDetails)
+    console.log("formData.bill_id", formData.bill_id)
+    console.log("billDetail.billDetail", billDetail)
     // useEffect(() => {
     //     if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && fetchDetails && convert) {
 
@@ -503,7 +504,7 @@ const CreateDebitNotes = () => {
                                                         name="bill_id"
                                                         defaultOption="Select Bill"
                                                         type="bill_no"
-                                                        bill_id={convert && billDetail?.bill_id}
+                                                        bill_id={convert && billDetail?.bill_no}
                                                         ref={dropdownRef3}
                                                     />
                                                 </span>

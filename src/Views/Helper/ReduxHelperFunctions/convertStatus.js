@@ -66,6 +66,7 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
     if (section === "debit_note" && convert === "bill_to_debit" && response) {
         dispatch(debitNotesStatus({ id: response?.data?.data?.id, status: "4" }));//close status in debit note...
         dispatch(billStatus({ id: itemId, status: "5" }, null));;//paid status(bill) when convert bill to payment made...
+        navigate("/dashboard/debit-notes")
     }
 
 };

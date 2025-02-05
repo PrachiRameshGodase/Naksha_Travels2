@@ -29,18 +29,9 @@ import toast from "react-hot-toast";
 
 const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   // console.log("edit_data", edit_data)
-  const {
-    discount,
-    discount_type,
-    gross_amount,
-    item_id,
-    item_name,
-    rate,
-    tax_rate,
-    service_data,
-  } = edit_data;
+  const { discount, discount_type, gross_amount, item_id, item_name, rate, tax_rate, service_data, } = edit_data;
 
-  // console.log("edit_data", service_data)
+  // console.log("gross_amount", gross_amount)
 
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
@@ -82,16 +73,13 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
     total_nights: service_data?.total_nights || "", // Example for total_nights
     confirmation_no: service_data?.confirmation_no || "", // Example for confirmation_no
     total_days: service_data?.total_days || null, // Default to tax_rate or null
-    gross_amount: 0, // If gross_amount is passed as a prop or variable
+    gross_amount: gross_amount || 0, // If gross_amount is passed as a prop or variable
     discount: 0.0, // Default value
     tax_percent: tax_rate || null, // Default to tax_rate or null
     tax_amount: 0.0, // Default value
     total_amount: 0.0, // Default value
     price: 0,
   });
-
-  console.log("hotal service_data formData", formData)
-  console.log("hotal service_data service_data?.guest_ids", service_data?.guest_ids)
 
   // for edit hotal edit
   useEffect(() => {
@@ -101,7 +89,8 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
   }, [service_data])
 
 
-  console.log("formdataaaaaaaaaa", formData)
+  // console.log("formdataaaaaaaaaa", formData)
+
   const [errors, setErrors] = useState({
     hotel_id: false,
     room_id: false,
@@ -144,6 +133,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
         gross_amount: "",
         // guest_ids: "",
       };
+
     }
 
     if (name === "room_id") {
@@ -244,7 +234,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       let totalNights = Math.round(timeDiff / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the last day
 
       updatedFormData.total_nights = totalNights;
-      // console.log("totalNights", updatedFormData.total_nights);
+
     }
 
     setFormData(updatedFormData);
@@ -253,15 +243,19 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       ...prevData,
       [name]: false,
     }));
+
   };
+
+  // 
   useEffect(() => {
     const gross_amount = formData.price * formData.total_nights;
-    setFormData((prev) => ({
-      ...prev,
-      gross_amount: gross_amount,
-    }));
+    if (gross_amount) {
+      setFormData((prev) => ({
+        ...prev,
+        gross_amount: gross_amount,
+      }));
+    }
   }, [formData.total_nights, formData.price]);
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -277,6 +271,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
       check_in_date: formData?.check_in_date ? false : true,
       max_occupancy: formData?.max_occupancy ? false : true,
     };
+
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
@@ -328,6 +323,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
               <div className="relateivdiv">
                 <div className="itemsformwrap" style={{ paddingBottom: "50px" }}>
                   <div className="f1wrapofcreq">
+
                     {/* <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -348,6 +344,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
                     </div> */}
+
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
                         <label>
@@ -587,6 +584,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               formData={formData}
                             />
                           </span>
+
                           {errors?.guest_ids && (
                             <p
                               className="error_message"
@@ -599,12 +597,15 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                               Please Select Guest
                             </p>
                           )}
+
                         </div>
                       </div>
                       <div className="form_commonblock ">
+
                         <label>
                           Booking Date <b className="color_red">*</b>
                         </label>
+
                         <span>
                           {otherIcons.date_svg}
                           <DatePicker
@@ -624,6 +625,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
 
                           />
                         </span>
+
                         {errors?.booking_date && (
                           <p
                             className="error_message"
@@ -636,6 +638,7 @@ const AddHotelPopup = ({ setShowModal, handleAddService, edit_data }) => {
                             Please Select Booking Date
                           </p>
                         )}
+
                       </div>
                       <div className="form_commonblock ">
                         <label>

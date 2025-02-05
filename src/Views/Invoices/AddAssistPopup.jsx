@@ -69,6 +69,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
     airport_name: false,
     no_of_persons: false,
   });
+
   const entryType = ShowUserMasterData("50");
 
   const [storeEntry, setStoreEntry] = useState([]);
@@ -84,7 +85,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         dispatch(
           assistListAction({ airport: selectedAssistData?.airport })
         ).then((res) => {
-     
+
           setStoreEntry(res);
         });
         // Reset dependent fields when country changes
@@ -93,7 +94,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           airport_name: value,
           meeting_type: "",
           no_of_persons: "",
-          gross_amount: "", 
+          gross_amount: "",
         }));
       }
     } else if (name === "meeting_type") {
@@ -101,7 +102,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a airport first.");
         return;
       }
-     
+
       selectedAssistData = assistLists?.find(
         (item) =>
           item?.meeting_type == value &&
@@ -124,7 +125,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
           gross_amount: "",
         }));
       }
-    }  else if (name === "no_of_persons") {
+    } else if (name === "no_of_persons") {
       if (!formData?.airport_name) {
         toast.error("Please select a airport  first.");
         return;
@@ -133,7 +134,7 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
         toast.error("Please select a meeting type first.");
         return;
       }
-      
+
 
       selectedAssistData = assistLists?.find(
         (item) =>
@@ -281,9 +282,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         )}
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.airport_name ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.airport_name ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.airport_name
                             ? ""
@@ -312,9 +312,8 @@ const AddAssistPopup = ({ setShowModal, handleAddService, edit_data }) => {
                         </span>
                       </div>
                       <div
-                        className={`form_commonblock ${
-                          formData?.meeting_type ? "" : "disabledfield"
-                        }`}
+                        className={`form_commonblock ${formData?.meeting_type ? "" : "disabledfield"
+                          }`}
                         data-tooltip-content={
                           formData?.meeting_type
                             ? ""

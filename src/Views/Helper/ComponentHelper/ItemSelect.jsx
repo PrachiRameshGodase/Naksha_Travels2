@@ -629,27 +629,45 @@ const ItemSelect = ({
               <th className="table_column_item item_table_width_01">
                 Item / Service<b className="color_red">*</b>
               </th>
-              <th className="table_column_item item_table_width_03">
-                Type <b className="color_red">*</b>
+              <th className="table_column_item item_table_width_03 ">
+                <div className="question_mark_position">
+                  Type
+
+                  <span data-tooltip-content="The type is updated exclusively when an item is added manually through user input."
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}</span>
+                </div>
               </th>
 
               <th className="table_column_item item_text_end_01 item_table_width_02">
-                Sales Price
+                Sales Price<b className="color_red">*</b>
               </th>
 
               <th className="table_column_item item_qty_01 item_table_width_02">
-                Quantity
+
+                <div className="question_mark_position">
+                  Quantity <span data-tooltip-content="The default quantity for the selected service type is set to 1."
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}</span>
+                </div>
               </th>
-              <th className="table_column_item item_table_width_02">
-                Unit
+
+              <th className="table_column_item item_table_width_02 ">
+                <div className="question_mark_position">
+                  Unit
+                  <span data-tooltip-content="Unit is not changed for the service select."
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}</span>
+                </div>
               </th>
+
               <th className="table_column_item item_table_width_03">
                 Discount
               </th>
               <th className="table_column_item item_table_width_02">
                 Tax (%)
               </th>
-              <th className="table_column_item item_table_width_02 item_text_end_01">Amount {currencySymbol} </th>
+              <th className="table_column_item item_table_width_04 item_text_end_01">Amount ({currencySymbol}) </th>
               {/* <th>Actions</th> */}
             </tr>
           </thead>
@@ -924,7 +942,7 @@ const ItemSelect = ({
                         type="button"
                         onClick={() => setActivePopup({ popupType: item?.service_data?.service_name, index, data: item })}//set index and data in active popup
                       >
-                        <FiEdit className="react_icn_items" />
+                        <FiEdit className="react_icn_items" style={{ color: "#5d369f" }} />
                       </button>
                     }
 

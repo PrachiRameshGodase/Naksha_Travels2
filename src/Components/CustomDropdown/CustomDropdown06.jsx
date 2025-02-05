@@ -146,7 +146,6 @@ const CustomDropdown06 = ({ label, options, value, onChange, defaultOption, }) =
 };
 export default CustomDropdown06;
 
-
 export const CustomDropdown006 = ({ options, value, onChange, defaultOption, id1 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

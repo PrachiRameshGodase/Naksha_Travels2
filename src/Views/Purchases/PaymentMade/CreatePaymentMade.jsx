@@ -109,10 +109,10 @@ const CreatePaymentMade = () => {
         ]
 
     },);
-
+    // itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && invoice
 
     useEffect(() => {
-        if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && paymentDetail) {
+        if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && billDetail1) {
 
             const itemsFromApi = fetchDetails?.entries?.map(item => ({
                 bill_id: item?.id,
