@@ -44,7 +44,6 @@ const ItemSelect = ({
   extracssclassforscjkls,
   dropdownRef2,
   note,
-  invoice_section,
 }) => {
   const itemList = useSelector((state) => state?.itemList);
   const productType = useSelector((state) => state?.type);
@@ -620,7 +619,7 @@ const ItemSelect = ({
     <>
       {renderPopup()}
 
-      <div className="f1wrpofcreqsx2" id={invoice_section}>
+      <div className="f1wrpofcreqsx2">
 
         {/* Table Started */}
         <table className="itemTable_01">
