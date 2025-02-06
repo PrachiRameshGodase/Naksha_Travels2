@@ -221,11 +221,14 @@ export const ItemSelectGRN = ({
     // Only update final_amount if specific fields change or total charges change
     const updatedItems = newItems.map((item, i) => {
       if (i === index || field === "amount" || field === "custom_duty") {
-        const grossAmount = +item?.rate * +item?.gr_qty;
+        const grossAmount = parseFloat(item?.rate || 0) * parseInt(item?.gr_qty || 0);
 
-        const taxAmount = (grossAmount * (+item?.tax_rate || 0)) / 100;
+        const taxAmount = (grossAmount * (parseInt(item?.tax_rate) || 0)) / 100;
 
-        console.log("taxAmounttaxAmount", taxAmount)
+        // console.log("item?.rate", item?.rate)
+        // console.log("item?.gr_qty", item?.gr_qty)
+        // console.log("grossAmount", grossAmount)
+        // console.log("taxAmounttaxAmount", taxAmount)
 
         // Ensure custom_duty is a valid number; if not, set it to 0
         const customDuty = !isNaN(+item.custom_duty) ? +item.custom_duty : 0;

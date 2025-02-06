@@ -320,7 +320,7 @@ export const CalculationSection2 = ({
         </div>
       </div>
 
-    <div className="calcuparentc">
+      <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label style={{ marginTop: "10px" }}>Tax %:</label>
@@ -333,7 +333,7 @@ export const CalculationSection2 = ({
               defaultOption="Taxes"
               className2="item3"
               tax_rate={formData?.tax_percent}
-              
+
             />
             <input
               type="text"
@@ -348,7 +348,7 @@ export const CalculationSection2 = ({
         </div>
       </div>
 
-      {/* <div className="calcuparentc">
+      <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>Tax:</label>
@@ -362,8 +362,8 @@ export const CalculationSection2 = ({
             />
           </div>
         </div>
-      </div> */}
-      {/* <div className="calcuparentc">
+      </div>
+      <div className="calcuparentc">
         <div id="tax-details">
           <div className="clcsecx12s1">
             <label>
@@ -381,7 +381,7 @@ export const CalculationSection2 = ({
             />
           )}
         </div>
-      </div> */}
+      </div>
 
       {/* <div className="calcuparentc">
         <div id="tax-details">

@@ -137,10 +137,10 @@ const PurchaseOrderDetails = () => {
                             } */}
 
                             {/* {GRNdetail?.status == 0 && */}
-                            <div className="mainx1" onClick={() => handleEditThing("edit")} data-tooltip-place='bottom' data-tooltip-id="my-tooltip" data-tooltip-content="Edit">
+                            {/* <div className="mainx1" onClick={() => handleEditThing("edit")} data-tooltip-place='bottom' data-tooltip-id="my-tooltip" data-tooltip-content="Edit">
                                 <img src="/Icons/pen-clip.svg" alt="" />
                                 <p>Edit</p>
-                            </div>
+                            </div> */}
                             {/* } */}
 
                             <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>

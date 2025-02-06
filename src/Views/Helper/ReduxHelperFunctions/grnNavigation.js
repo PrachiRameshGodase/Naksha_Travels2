@@ -3,6 +3,7 @@ import { GRNstatusActions } from "../../../Redux/Actions/grnActions";
 
 export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, response) => {
 
+    // console.log("buttonName", buttonName)
     // Purchase Order in create
     if (!editDub) {
         if (buttonName === "saveAsDraft") {
@@ -13,17 +14,20 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
 
             // Dispatch the action and handle the response
             dispatch(GRNstatusActions(sendData, null, null))?.then(() => {
+
                 toast.success("GRN Sent For Approval");
-                navigate(`/dashboard/grn`, _blank); // Redirect to the GRN list page
+                navigate(`/dashboard/grn`); // Redirect to the GRN list page
+
             })
         }
+
         // Purchase Order in update
     }
 
     else if (editDub) {
         if (buttonName === "saveAsDraft") {
             toast.success("GRN Updated Successfully");
-            navigate(`/dashboard/grn`, _blank); // Redirect to the GRN list page
+            navigate(`/dashboard/grn`); // Redirect to the GRN list page
         }
     }
 
