@@ -221,7 +221,7 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
         <p><p>Total Tax</p> <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount()?.toFixed(2))}</h5></p>
 
         {totalExpenseCharges?.[0]?.account_name && totalExpenseCharges?.[0]?.amount && <>
-          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#408dfb" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
+          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#5d369f" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
         </>}
 
         {showCharges && <>
@@ -420,7 +420,7 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
         <p><p>Total Tax</p> <h5>{showAmountWithCurrencySymbol(calculateTotalTaxAmount()?.toFixed(2))}</h5></p>
 
         {totalExpenseCharges?.[0]?.account_name && totalExpenseCharges?.[0]?.amount && <>
-          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#408dfb" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
+          <p onClick={() => setShowCharges(!showCharges)} style={{ cursor: "pointer", color: "#5d369f" }}><p>Charges{showCharges ? otherIcons?.down_arrow_svg : otherIcons?.up_arrow_svg} </p> </p>
         </>}
 
         {showCharges && <>

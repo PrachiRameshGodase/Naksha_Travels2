@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import {
   purchseOrdersLists,
-  vendorsLists,
 } from "../../Redux/Actions/listApisActions";
 import DatePicker from "react-datepicker";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
@@ -30,7 +29,7 @@ import { GRNype } from "../Helper/ComponentHelper/DropdownData";
 import { SubmitButton2 } from "../Common/Pagination/SubmitButton";
 import TextAreaComponentWithTextLimit from "../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
 import GenerateAutoId from "../Sales/Common/GenerateAutoId";
-import { preventZeroVal } from "../Helper/HelperFunctions";
+import { handleDropdownError, preventZeroVal } from "../Helper/HelperFunctions";
 import Swal from "sweetalert2";
 import { useEditPurchaseForm } from "../Helper/StateHelper/EditPages/useEditPurchaseForm";
 import Loader02 from "../../Components/Loaders/Loader02";
@@ -79,8 +78,6 @@ const CreateGRN = () => {
     }
   }, [itemId, GRNdetail, purchseDetail, convert]);
 
-
-
   const {
     formData,
     setFormData,
@@ -101,6 +98,7 @@ const CreateGRN = () => {
       is_purchase_order: 1, // 0 no and 1 yes
       purchase_order_id: "",
       total_grn_charges: null,
+
       items: [
         {
           id: 0,
@@ -122,6 +120,7 @@ const CreateGRN = () => {
           upload_image: [], // Attachments
         },
       ],
+
       charges_type: [
         {
           account_id: 0,
@@ -140,7 +139,142 @@ const CreateGRN = () => {
     convert,
     isDuplicate
   );
- 
+
+  console.log("formdata", formData)
+  // console.log("fetchDetailsfetchDetailsfetchDetailsfetchDetails", fetchDetails)
+
+
+  useEffect(() => {
+
+    // update the field of items
+    const itemsFromApi = fetchDetails?.items?.length > 0
+      ? fetchDetails?.items?.map((item) => {
+        let newItem = {};
+
+        // Extract all keys dynamically from item
+        const itemKeys = Object.keys(item || {});
+        itemKeys.forEach((key) => {
+          if (item[key] !== undefined) {
+            newItem[key] = item[key];
+          }
+        });
+
+        // Extract all keys dynamically from item?.item and merge them
+        if (item?.item) {
+          const nestedItemKeys = Object.keys(item.item);
+          nestedItemKeys.forEach((key) => {
+            if (item.item[key] !== undefined) {
+              newItem[key] = item.item[key]; // Merge nested item properties
+            }
+          });
+        }
+        // console.log("newItem1", newItem1)
+        return {
+          ...newItem,
+
+          // Ensure purchase_price from item?.item is included
+          // purchase_price: +item?.item?.purchase_price,
+
+          item_name: item?.item?.name,
+
+          // Additional conditions
+          ...(convert === "purchase_to_grn" && fetchDetails && {
+            po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
+            gr_qty: +item?.gr_qty,
+            charges_weight: +item?.charges_weight,
+            custom_duty: item?.custom_duty,
+            ...(convert === "purchase_to_grn" ? "" : { upload_image: JSON?.parse(item?.upload_image) }),
+          }),
+
+          // quantity: convert === "grn_to_bill" ? +item?.gr_qty : +item?.quantity,
+          // discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
+          tax_name: item?.item?.tax_preference == "2" ? "Non-Taxable" : "",
+          // service_data: JSON?.parse(item?.service_data || "{}"),
+        };
+      })
+      : [
+        {
+          item_id: 0,
+          unit_id: 0,
+          item_name: "",
+          tax_name: "",
+          hsn_code: "",
+          type: "",
+          quantity: 1,
+          tax_rate: 0,
+          tax_amount: 0,
+          discount: 0,
+          gross_amount: 0,
+          final_amount: 0,
+          discount_type: 1,
+          item_remark: "",
+          is_service: null,
+          service_data: null,
+        },
+      ];
+
+
+    // Always add an empty row at the end of the items array
+    // itemsFromApi?.push({
+    //   item_name: "", service_name: "", discount_type: 1, discount: 0, quantity: 1, tax_rate: 0, tax_amount: 0
+    // });
+
+
+
+    // update the field of charges
+    const chargesFromApi = fetchDetails?.charges_type?.length > 0
+      ?
+      fetchDetails?.charges_type?.map((charges) => {
+        let newChargesType = {};
+
+        // Extract all keys dynamically from item
+        const itemKeys = Object.keys(charges || {});
+        itemKeys.forEach((key) => {
+          if (charges[key] !== undefined) {
+            newChargesType[key] = charges[key];
+          }
+        });
+
+        return {
+          ...newChargesType,
+        };
+      })
+      : [
+        {
+          account_id: 0,
+          account_name: 0,
+          vendor_name: 0,
+          amount: 0,
+          remarks: "",
+          vendor_id: 0,
+          upload_image: []
+        },
+      ];
+
+    setFormData({
+      ...formData,
+      items: itemsFromApi,
+      charges_type: chargesFromApi,
+      id: isEdit ? fetchDetails?.id : 0,//it works in 0 is works convert create/and dublicate..
+
+
+      //for grn update and convert purchase to grn
+      ...(fetchDetails && convert === "purchase_to_grn" && {
+        is_purchase_order: convert === "purchase_to_grn" ? 1 : (+fetchDetails?.is_purchase_order), // 0 no and 1 yes
+        ...(!convert === "purchase_to_grn" && { charges_type: chargesFromApi || [] }),
+        purchase_order_id: fetchDetails?.id,
+
+        tracking_details: Json.stringify({
+          ...(convert === "purchase_to_grn" ? { module: convert, id: itemId } : []),
+        }),
+        ...(convert === "purchase_to_grn" && {
+          total_charges: total_charges,
+          charges: all_changes,
+        }),
+      }),
+    })
+
+  }, [fetchDetails, convert])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -188,24 +322,13 @@ const CreateGRN = () => {
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
 
-  const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-    const subTotalValue = parseFloat(subtotal) || 0;
-    const shippingChargeValue = parseFloat(shippingCharge) || 0;
-    const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-
-    return (
-      subTotalValue +
-      shippingChargeValue +
-      adjustmentChargeValue
-    ).toFixed(2);
-
-  };
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const buttonName = e.nativeEvent.submitter.name;
     try {
+
+      if (handleDropdownError(isVendorSelect, dropdownRef1)) return;
 
       // Helper function to find item name by id
       const findItemNameById = (id) => {
@@ -237,8 +360,6 @@ const CreateGRN = () => {
         confirmed = isConfirmed;
       }
 
-      // if (!confirmed) return;
-
       const prepareFormDataForApi = (formData) => {
         const preparedFormData = JSON?.parse(JSON.stringify(formData));
         preparedFormData.items = preparedFormData.items.map(item => ({
@@ -254,18 +375,15 @@ const CreateGRN = () => {
         preparedFormData.charges = JSON.stringify(preparedFormData.charges);
         return preparedFormData;
       };
-    
+
       // Prepare formData for API
       const formDataForApi = prepareFormDataForApi(formData);
       dispatch(GRNcreateActions(formDataForApi, Navigate, isEdit, buttonName, itemId, convert, showAllSequenceId,));
     } catch (error) {
       toast.error('Error updating GRN:', error);
     }
-
   };
 
-
-  
   useEffect(() => {
     if (itemId && convert && !purchseDetail) {
       // console.log("Fetching purchase details...");
@@ -341,7 +459,7 @@ const CreateGRN = () => {
   //empty all the fields when no select
   useEffect(() => {
     if (formData?.purchase_order_id) {
-      console.log("purchseDetail",purchseDetail)
+      // console.log("purchseDetail", purchseDetail)
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
         item_name: item?.item?.name,
@@ -371,7 +489,7 @@ const CreateGRN = () => {
     }
   }, [formData?.purchase_order_id, purchseDetail]);
 
-console.log("purchseDetail?.items",formData)
+  // console.log("purchseDetail?.items", formData)
   return (
     <>
       {(GRNdetails?.loading) ? <Loader02 /> : <>
@@ -439,6 +557,7 @@ console.log("purchseDetail?.items",formData)
                           />
                         </span>
                       </div>
+
                       <div className="form_commonblock">
                         <label>GRN Number</label>
                         <GenerateAutoId
@@ -455,6 +574,7 @@ console.log("purchseDetail?.items",formData)
                         <span>
                           {otherIcons.placeofsupply_svg}
                           <input
+
                             type="text"
                             value={formData.reference}
                             onChange={handleChange}

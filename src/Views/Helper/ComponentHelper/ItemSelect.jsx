@@ -224,7 +224,6 @@ const ItemSelect = ({
 
     if (field === "item_name") {
       newItems[index].item_name = value;
-      newItems[index].item_id = 0;
       newItems[index].hsn_code = "";
       newErrors[index].item_id = 0;
       newErrors[index].item_name = "";
@@ -450,6 +449,7 @@ const ItemSelect = ({
         })
       );
     }
+
   }, [searchTrigger, productType]);
 
   // call item api on page load...
