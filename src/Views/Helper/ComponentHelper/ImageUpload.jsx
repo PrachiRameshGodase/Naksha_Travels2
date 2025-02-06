@@ -660,6 +660,7 @@ export const ImageUploadGRN = ({
     type === "grm_charge"
       ? formData?.charges_type?.[index] || {}
       : formData?.items?.[index] || {};
+      
   const CloseShowDeleteImgIndex = () => {
     setCurrentImageIndex(null);
     setCurrentPOP(false);

@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdown04";
 import MainScreenFreezeLoader from "../../../../Components/Loaders/MainScreenFreezeLoader";
 import TopLoadbar from "../../../../Components/Toploadbar/TopLoadbar";
@@ -17,17 +18,14 @@ import {
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
 import {
-  MultiImageUploadHelp,
-  SingleImageUpload,
+  SingleImageUpload
 } from "../../../Helper/ComponentHelper/ImageUpload";
+import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 import {
-  ShowMasterData,
-  ShowUserMasterData,
+  ShowUserMasterData
 } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
-import Swal from "sweetalert2";
-import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const CreateHotel = () => {
   const Navigate = useNavigate();

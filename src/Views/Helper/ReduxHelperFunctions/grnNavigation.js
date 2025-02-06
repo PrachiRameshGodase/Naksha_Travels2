@@ -14,7 +14,7 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
             // Dispatch the action and handle the response
             dispatch(GRNstatusActions(sendData, null, null))?.then(() => {
                 toast.success("GRN Sent For Approval");
-                navigate(`/dashboard/grn`, _blank); // Redirect to the GRN list page
+                navigate(`/dashboard/grn`); // Redirect to the GRN list page
             })
         }
         // Purchase Order in update
@@ -23,7 +23,7 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
     else if (editDub) {
         if (buttonName === "saveAsDraft") {
             toast.success("GRN Updated Successfully");
-            navigate(`/dashboard/grn`, _blank); // Redirect to the GRN list page
+            navigate(`/dashboard/grn`); // Redirect to the GRN list page
         }
     }
 
