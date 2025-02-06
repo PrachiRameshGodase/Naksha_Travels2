@@ -333,7 +333,7 @@ export const CustomDropdown031 = forwardRef((props, ref) => {
         readOnly
       />
 
-      {isOpen && disabled && (
+      {isOpen && (
         <div className="dropdown-options">
           <RiSearch2Line id="newsvgsearchicox2" />
           <input
