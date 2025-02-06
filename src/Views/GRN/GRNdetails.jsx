@@ -2,25 +2,18 @@ import React, { useEffect, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
-// import { purchaseOrderDelete, purchaseOrderDetails, purchaseOrderStatus } from '../../../Redux/Actions/purchaseOrderActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
-import toast, { Toaster } from 'react-hot-toast';
-import { formatDate, formatDate2, formatDate3, formatDate4, generatePDF } from '../Helper/DateFormat';
-
+import { Toaster } from 'react-hot-toast';
+import { formatDate3, generatePDF } from '../Helper/DateFormat';
 import { useReactToPrint } from 'react-to-print';
 import useOutsideClick from '../Helper/PopupData';
-import { purchasesDelete, purchasesDetails, purchasesStatus } from '../../Redux/Actions/purchasesActions';
 import { GRNdeleteActions, GRNdetailsActions, GRNstatusActions } from '../../Redux/Actions/grnActions';
 import ImagesCrou from '../../Components/ShowImageCarousel.jsx/ImagesCrou';
-import { fetchMasterData } from '../../Redux/Actions/globalActions';
-import { MdArrowOutward } from 'react-icons/md';
-import { showAmountWithCurrencySymbol, showRateWithPercent } from '../Helper/HelperFunctions';
-import ShowMastersValue from '../Helper/ShowMastersValue';
 import { GrnItemsDetailTable } from '../Common/InsideSubModulesCommon/ItemDetailTable';
-// import { GrnItemsDetailTable } from '../Items/ItemDetailTable';
 import { MoreInformation, TermsAndConditions } from '../Common/InsideSubModulesCommon/DetailInfo';
+
 const PurchaseOrderDetails = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
@@ -35,8 +28,6 @@ const PurchaseOrderDetails = () => {
 
     const dropdownRef1 = useRef(null);
     const dropdownRef2 = useRef(null);
-
-
 
     useOutsideClick(dropdownRef2, () => setShowDropdown(false));
     useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
@@ -60,9 +51,7 @@ const PurchaseOrderDetails = () => {
         }
     };
 
-
     const changeStatus = (statusVal) => {
-        // console.log("statusVal", statusVal);
         try {
             const sendData = {
                 id: UrlId
@@ -115,6 +104,8 @@ const PurchaseOrderDetails = () => {
     //         pdf.save('quotation.pdf');
     //     });
     // };
+
+
     // pdf & print
     const [showImagesModal, setshowImagesModal] = useState(false);
     const [showComponent, setShowComponent] = useState(false);
@@ -122,11 +113,9 @@ const PurchaseOrderDetails = () => {
 
 
     const showAllImages = (val) => {
-        // console.log("valeeeeeee", val);
         setImagesVal(val);
         setshowImagesModal(true);
         setShowComponent(true);
-
     }
 
     return (
@@ -147,12 +136,13 @@ const PurchaseOrderDetails = () => {
                             </div>
                             } */}
 
-                            {GRNdetail?.status != 0  &&
-                                <div className="mainx1" onClick={() => handleEditThing("edit")} data-tooltip-place='bottom' data-tooltip-id="my-tooltip" data-tooltip-content="Edit">
-                                    <img src="/Icons/pen-clip.svg" alt="" />
-                                    <p>Edit</p>
-                                </div>
-                            }
+                            {/* {GRNdetail?.status == 0 && */}
+                            <div className="mainx1" onClick={() => handleEditThing("edit")} data-tooltip-place='bottom' data-tooltip-id="my-tooltip" data-tooltip-content="Edit">
+                                <img src="/Icons/pen-clip.svg" alt="" />
+                                <p>Edit</p>
+                            </div>
+                            {/* } */}
+
                             <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p >PDF/Print</p>
                                 {otherIcons?.arrow_svg}
@@ -222,7 +212,7 @@ const PurchaseOrderDetails = () => {
                         </div>
 
                         <MoreInformation sale={GRNdetail?.sale_person} note={GRNdetail?.vendor_note} tc={GRNdetail?.terms_and_condition} section="Vendor" />
-                        <TermsAndConditions/>
+                        <TermsAndConditions />
                     </div>
                 </div>
             }

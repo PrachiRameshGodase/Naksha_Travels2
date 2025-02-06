@@ -42,7 +42,8 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
             });
 
             // console.log("updatedFields", updatedFields);
-            // console.log("billDaaaaaaaaaaaaaaaaaaaaaaaa", detailData)
+            // console.log("isEdit", isEdit)
+            // console.log("detailData", detailData)
 
             // set all data inside the formdata
             setFormData((prevFormData) => ({
@@ -74,20 +75,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     })
                 }),
 
-                //for grn update and convert purchase to grn
-                ...(detailData && convert === "purchase_to_grn" && {
-                    is_purchase_order: convert === "purchase_to_grn" ? 1 : (+detailData?.is_purchase_order), // 0 no and 1 yes
-                    ...(!convert === "purchase_to_grn" && { charges_type: chargesFromApi || [] }),
-                    purchase_order_id: detailData?.id,
-                    tracking_details: stringifyJSON({
-                        ...(convert === "purchase_to_grn" ? { module: convert, id: itemId } : []),
-                    }),
 
-                    ...(convert === "purchase_to_grn" && {
-                        total_charges: total_charges,
-                        charges: all_changes,
-                    }),
-                }),
 
                 // when credit note is converted in to the invoice the the invoice_id in invoice is in id variable 
                 ...(convert === "invoiceToCredit" && { invoice_id: detailData?.id }),
@@ -150,6 +138,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
     useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
 
+    console.log("formData", formData)
     return {
         formData,
         setFormData,

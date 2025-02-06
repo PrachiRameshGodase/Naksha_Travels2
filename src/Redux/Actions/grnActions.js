@@ -68,7 +68,6 @@ export const GRNcreateActions = (queryParams, Navigate, editDub, buttonName, ite
 
 
 export const GRNlistActions = (queryParams, setAllListValue) => async (dispatch) => {
-    localStorage.setItem("grnPayload", JSON.stringify(queryParams));
     dispatch({ type: GET_GRN_REQUEST });
 
     try {
@@ -100,7 +99,6 @@ export const GRNstatusActions = (queryParams, setCallApi, billData, autoId, trac
     dispatch({ type: GRN_STATUS_REQUEST });
     try {
         const response = await axiosInstance.post(`/grn/status`, queryParams);
-        dispatch(GRNlistActions(sendData));//update list then data is change
         if (response?.data?.message === "GRN Declined Updated Successfully") {
             toast.success(response?.data?.message);
             setCallApi((preState) => !preState);
@@ -147,7 +145,6 @@ export const GRNdeleteActions = (queryParams, Navigate) => async (dispatch) => {
         const response = await axiosInstance.post(`/grn/delete`, queryParams);
 
         if (response?.data?.message === "GRN deleted Successfully") {
-            dispatch(GRNlistActions(sendData));//update list then data is change
             toast.success(response?.data?.message);
             Navigate("/dashboard/grn");
         } else {

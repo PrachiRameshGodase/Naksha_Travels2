@@ -78,7 +78,7 @@ export const ItemSelectGRN = ({
       0
     );
 
-    // console.log("tax_amount", tax_amount)
+    console.log("tax_amount", tax_amount)
     // console.log("newItems", newItems)
 
     const total_charges = newCharges?.reduce((acc, item) => {
@@ -97,10 +97,7 @@ export const ItemSelectGRN = ({
       return acc + (isNaN(finalAmount) ? 0 : finalAmount);
     }, 0);
 
-    const total =
-      subtotal +
-      (parseFloat(tax_amount) || 0) +
-      (parseFloat(total_charges) || 0);
+    const total = subtotal + (parseFloat(tax_amount) || 0) + (parseFloat(total_charges) || 0);
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -110,6 +107,7 @@ export const ItemSelectGRN = ({
       total_charges: total_charges?.toFixed(2),
       total: total?.toFixed(2),
     }));
+
   }, [
     formData.items, // Re-calculate when items change
     formData.charges, // Re-calculate when charges change
@@ -129,9 +127,6 @@ export const ItemSelectGRN = ({
   useFetchApiData(itemLists, payloadGenerator, []); //call api common function
   useFetchApiData(accountLists, payloadGenerator, []); //call api common function
 
-
-
-
   const [openCharges, setOpenCharges] = useState(false);
   const openExpenseCharges = () => {
     setOpenCharges(!openCharges);
@@ -145,10 +140,12 @@ export const ItemSelectGRN = ({
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...formData.items];
+    const item = newItems[index];
+    const newErrors = [...itemErrors];
+
     const chargesItems = [...formData.charges];
     const newCharges = [...formData.charges_type];
     let updatedTotalCharges = totalCharges || formData?.total_grn_charges;
-console.log("value",value)
     // Update charges and recalculate total charges
     if (field === "amount" && newCharges[index]) {
       newCharges[index][field] = value;
@@ -170,20 +167,9 @@ console.log("value",value)
 
     // Update item details
     if (field === "item_id") {
-      const selectedItem = itemList?.data?.item?.find(
-        (item) => item?.id == value
-      );
-      // if (selectedItem) {
-      //   newItems[index] = {
-      //     ...newItems[index],
-      //     rate: +selectedItem.price,
-      //     gross_amount: +selectedItem?.price * +newItems[index]?.gr_qty,
-      //     tax_rate: selectedItem?.tax_rate
-      //       ? Math.floor(selectedItem?.tax_rate).toString()
-      //       : null,
-      //     item_id: selectedItem?.id,
-      //   };
-      // }
+      const selectedItem = itemList?.data?.item?.find((item) => item?.id == value);
+
+      // console.log("selectedItem", selectedItem)
       if (selectedItem) {
         const showPrice = formData?.sale_type
           ? selectedItem?.price
@@ -193,8 +179,10 @@ console.log("value",value)
         newItems[index].item_name = selectedItem?.name;
         newItems[index].type = selectedItem?.type;
         newItems[index].rate = showPrice;
-        newItems[index].gross_amount = +showPrice * + newItems[index]?.gr_qty;
+        newItems[index].gross_amount = +showPrice * +item?.quantity;
         newItems[index].hsn_code = selectedItem?.hsn_code;
+        newItems[index].hsn_code = selectedItem?.hsn_code;
+        newItems[index].item_id = selectedItem?.id;
 
         if (selectedItem?.tax_preference == "1") {
           newItems[index].tax_rate = !selectedItem?.tax_rate
@@ -206,17 +194,18 @@ console.log("value",value)
           newItems[index].tax_name = "Non-Taxable";
         }
 
-        // newErrors[index] = {
-        //   ...newErrors[index],
-        //   item_id: 0,
-        //   item_name: "",
-        //   tax_rate: "",
-        //   unit_id: 0,
-        //   rate: "",
-        // };
+        newErrors[index] = {
+          ...newErrors[index],
+          item_id: 0,
+          item_name: "",
+          tax_rate: "",
+          unit_id: 0,
+          rate: "",
+        };
       }
-      setItemErrors(value !== "");
-    } else if (field === "unit_id") {
+    }
+
+    else if (field === "unit_id") {
       newItems[index].unit_id = value;
     } else if (["account_id", "remarks", "vendor_id"].includes(field)) {
       newCharges[index][field] = value;
@@ -233,7 +222,10 @@ console.log("value",value)
     const updatedItems = newItems.map((item, i) => {
       if (i === index || field === "amount" || field === "custom_duty") {
         const grossAmount = +item?.rate * +item?.gr_qty;
+
         const taxAmount = (grossAmount * (+item?.tax_rate || 0)) / 100;
+
+        console.log("taxAmounttaxAmount", taxAmount)
 
         // Ensure custom_duty is a valid number; if not, set it to 0
         const customDuty = !isNaN(+item.custom_duty) ? +item.custom_duty : 0;
@@ -275,10 +267,7 @@ console.log("value",value)
       0
     );
 
-    const total =
-      subtotal +
-      (parseFloat(tax_amount) || 0) +
-      (parseFloat(total_charges) || 0);
+    const total = subtotal + (parseFloat(tax_amount) || 0) + (parseFloat(total_charges) || 0);
     // const total = subtotal;
 
     setFormData({
@@ -464,12 +453,9 @@ console.log("value",value)
                           name="item_remark"
                           placeholder="Enter Discrepency Notes"
                         />
-
                       </div>
 
-
                     </td>
-
 
                     {/* ITEM PRICE */}
                     <td className={`table_column_item table_input_01  ${formData?.grn_type === "Import" ? "incom_12312" : ""
@@ -525,7 +511,6 @@ console.log("value",value)
                         <NumericInput value={item?.po_qty} readOnly />
                       </td>
                     ) : ("")}
-
 
                     {/* GRN QUANTITY */}
                     <td className="table_column_item table_input_01">
@@ -591,8 +576,35 @@ console.log("value",value)
                       />
                     </td>
 
+
+
                     {/* Tax Rate */}
-                    <td className="table_column_item table_input_01">
+                    {/* {console.log("item?.item?.tax_preference", item)} */}
+                    <td className="table_column_item item_table_text_transform">
+                      {item?.tax_name === "Non-Taxable" ? <span style={{ cursor: "not-allowed" }}>
+                        {item?.tax_name}
+                        {/* this is always shows Non-Taxable for items select */}
+                      </span>
+                        :
+                        <>
+                          <CustomDropdown004
+                            options={tax_rate}
+                            value={item?.tax_rate}
+                            onChange={(e) =>
+                              handleItemChange(index, "tax_rate", e.target.value)
+                            }
+                            name="tax_rate"
+                            type="taxRate"
+                            defaultOption="Taxes"
+                            extracssclassforscjkls="extracssclassforscjklsitem"
+                            className2="items"
+                            item_data={formData?.is_purchase_order}
+                            tax_rate={item?.tax_rate} />
+                        </>}
+                    </td>
+
+                    {/*Old Tax Rate */}
+                    {/* <td className="table_column_item table_input_01">
                       {item?.item_name === "" || item?.tax_rate == 0 ? (//it the selected row have no item name and no tax rate only we given the option of tax rate selection.
                         <CustomDropdown004
                           options={tax_rate}
@@ -614,26 +626,27 @@ console.log("value",value)
                             : item?.tax_rate}
                         </span>
                       )}
-                    </td>
+                    </td> */}
 
                     {/* Custom Duty*/}
-                    <td className="table_column_item table_input_01 ">
-                      {formData?.grn_type === "Import" && (
-                        <CustomDropdown004
-                          options={tax_rate}
-                          value={item?.custom_duty}
-                          onChange={(e) =>
-                            handleItemChange(index, "custom_duty", e.target.value)
-                          }
-                          name="custom_duty"
-                          type="taxRate"
-                          defaultOption="Duties"
-                          extracssclassforscjkls="extracssclassforscjklsitem"
-                          tax_rate={item?.tax_rate}
-                        />
-                      )}
-                    </td>
-
+                    {formData?.grn_type === "Import" && (
+                      <td className="table_column_item table_input_01 ">
+                        {formData?.grn_type === "Import" && (
+                          <CustomDropdown004
+                            options={tax_rate}
+                            value={item?.custom_duty}
+                            onChange={(e) =>
+                              handleItemChange(index, "custom_duty", e.target.value)
+                            }
+                            name="custom_duty"
+                            type="taxRate"
+                            defaultOption="Duties"
+                            extracssclassforscjkls="extracssclassforscjklsitem"
+                            tax_rate={item?.tax_rate}
+                          />
+                        )}
+                      </td>
+                    )}
                     {/* Amount */}
                     <td className="table_column_item table_input_01">
                       <NumericInput
@@ -769,6 +782,7 @@ console.log("value",value)
                             e.target.option
                           )
                         }
+                        data={item?.account}
                         name="account_id"
                         defaultOption="Select Expense Account"
                         extracssclassforscjkls="extracssclassforscjkls_grn"
@@ -792,6 +806,8 @@ console.log("value",value)
                             e.target.option
                           )
                         }
+
+                        cusData={item?.vendor}
                         name="vendor_id"
                         defaultOption="Select Vendor Name"
                         sd154w78s877="extracssclassforscjkls_grn"

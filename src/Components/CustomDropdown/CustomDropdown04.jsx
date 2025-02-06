@@ -61,7 +61,7 @@ const CustomDropdown04 = forwardRef((props, ref) => {
 
       </div>
 
-      {isOpen && !disabled && disabled && (
+      {isOpen && (
         <div className="dropdown-options"
         >
           <RiSearch2Line id="newsvgsearchicox2" />
