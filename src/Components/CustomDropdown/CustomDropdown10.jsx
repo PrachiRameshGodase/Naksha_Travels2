@@ -73,6 +73,14 @@ const CustomDropdown10 = forwardRef((props, ref) => {
     ) {
       dispatch(customersList({ ...sendData }));
     }
+    if (
+      isOpen && // Ensure modal or component is open
+      (name === "member_id" || name === "employee_id") &&
+      (parsedPayload?.search || !parsedPayload?.status == 1 || !customList?.data)
+    ) {
+      dispatch(customersList({ ...sendData , customer_type: "Individual"}));
+    }
+    
 
     setSearchTerm("");
   }, [isOpen, dispatch]);

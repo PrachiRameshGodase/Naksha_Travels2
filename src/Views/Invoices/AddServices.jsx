@@ -46,7 +46,7 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const isIdEqualState = useSelector((state) => state?.isIdReducer);
 
     const [activePopup, setActivePopup] = useState(null);
-console.log("activePopup",activePopup)
+    console.log("activePopup",activePopup)
     const [showAddModal, setShowAddModal] = useState(false);
 
     const handleSelectService = (e) => {

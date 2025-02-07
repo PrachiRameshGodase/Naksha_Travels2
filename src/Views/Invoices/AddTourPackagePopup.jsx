@@ -1,13 +1,18 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SubmitButton6 } from "../Common/Pagination/SubmitButton";
 import { CalculationSection2 } from "../DSR/CalculationSection";
 import CustomDropdown10 from "../../Components/CustomDropdown/CustomDropdown10";
 import CustomDropdown29 from "../../Components/CustomDropdown/CustomDropdown29";
 import { CustomDropdown003 } from "../../Components/CustomDropdown/CustomDropdown03";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { vendorsLists } from "../../Redux/Actions/listApisActions";
-import { tourPackageListAction } from "../../Redux/Actions/tourPackageActions";
-import { sendData } from "../Helper/HelperFunctions";
+import { itineraryListAction, tourPackageListAction } from "../../Redux/Actions/tourPackageActions";
+import { sendData, ShowUserMasterData } from "../Helper/HelperFunctions";
+import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
+import { RxCross2 } from "react-icons/rx";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown04, { CustomDropdown0004, CustomDropdown004 } from "../../Components/CustomDropdown/CustomDropdown04";
+import { transport } from "../Helper/ComponentHelper/DropdownData";
 
 const AddTourPackagePopup = ({
   setShowModal,
@@ -31,17 +36,24 @@ const AddTourPackagePopup = ({
   const vendorList = useSelector((state) => state?.vendorList);
   const tourPackageListData = useSelector((state) => state?.tourPackageList);
   const tourPackageLists = tourPackageListData?.data?.data || [];
+  const itinaeraryListData = useSelector((state) => state?.itineraryList);
+  const itineraryLists = itinaeraryListData?.data?.data || [];
+
+  const hotelType = ShowUserMasterData("35");
+  const meal = ShowUserMasterData("37");
 
   const [formData, setFormData] = useState({
     service_name: "Tour Package",
-    // airport_id: service_data?.airport_id || null, // Example for airport ID
+    tour_package_id:service_data?.tour_package_id || "",
+    hotel_type: service_data?.hotel_type || null, // Example for airport ID
     package_name: service_data?.package_name || "", // Example for airport name
     destination: service_data?.destination || "", // Example for meeting type
-    meal: service_data?.meal || "", // Example for the number of persons
+    meal_id: service_data?.meal_id || "", // Example for the number of persons
     is_transport: service_data?.is_transport || "", // Example for the number of persons
     days: service_data?.days || "", // Example for the number of persons
     supplier_id: service_data?.supplier_id || "", // Example for supplier ID
     supplier_name: service_data?.supplier_name || null, // Example for supplier name
+    itinerary:[{}],
 
     // Amount fields
     gross_amount: gross_amount || 0, // Gross amount if provided
@@ -59,22 +71,21 @@ const AddTourPackagePopup = ({
   const [cusData2, setcusData2] = useState(null);
   
   const handleChange =(e)=>{
-   
-    const { name, value } = e.target;
-    let updatedFields = { [name]: value };
-    
-    if (name === "package_name") {
-        const selectedPackage = tourPackageListData?.find((tourpackage) => room?.package_name == value);
-        console.log("selectedPackage",selectedPackage)
+   const { name, value } = e.target;
+   let updatedFields = { [name]: value };
+   if (name === "package_name") {
+        const selectedPackage = tourPackageLists?.find((tourpackage) => tourpackage?.package_name == value);
         updatedFields = {
           ...updatedFields,
+          tour_package_id:selectedPackage?.id,
           package_name: selectedPackage?.package_name,
+          hotel_type :selectedPackage?.hotel_type ||"", 
           destination: selectedPackage?.destination || "",
-          meal: selectedPackage?.meal || "",
+          meal_id: selectedPackage?.meal_id || "",
           is_transport: selectedPackage?.is_transport || "",
           days: selectedPackage?.days || "",
           supplier_id: selectedPackage?.supplier_id,
-          gross_amount:selectedPackage?.price
+          gross_amount:selectedPackage?.price_per_person
         };
     }
     if (name === "supplier_id") {
@@ -98,7 +109,24 @@ const AddTourPackagePopup = ({
         [name]: false,
       }));
   }
-
+  useEffect(() => {
+    if (formData.tour_package_id) {
+      const sendData = {
+        tour_package_id: formData.tour_package_id,
+      };
+      dispatch(itineraryListAction(sendData));
+    }
+  }, [formData.tour_package_id, dispatch]);
+  
+  useEffect(() => {
+    if (itineraryLists.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        itinerary: itineraryLists, // Automatically set itinerary data
+      }));
+    }
+  }, [itineraryLists]);
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {
@@ -127,13 +155,15 @@ const AddTourPackagePopup = ({
    const payloadGenerator = useMemo(() => () => ({ ...sendData }), []);
    useFetchApiData(tourPackageListAction, payloadGenerator, []); //call api common function
    useFetchApiData(vendorsLists, payloadGenerator, []); //call api common function
-   // call item api on page load...
+   // call item api on page loa
+   // d...
+
   return (
     <div id="formofcreateitems">
       <div className="custom-modal">
         <div className="modal-content">
           <div className="modal-header">
-            <h5>Add Hotel Service</h5>
+            <h5>Add Tour Package Service</h5>
             <button
               className="close-button"
               onClick={() => setShowModal(false)}
@@ -164,7 +194,7 @@ const AddTourPackagePopup = ({
                               value={formData?.package_name}
                               name="package_name"
                               onChange={handleChange}
-                              type="select_item2"
+                              type="package_name"
                               setItemData={setcusData2}
                               defaultOption="Select Package Name"
                               index="0"
@@ -193,8 +223,8 @@ const AddTourPackagePopup = ({
                         }`}
                         data-tooltip-content={
                           formData?.package_name
-                            ? ""
-                            : "Please Select Hotel First"
+                            ? "It is getting from package"
+                            : "Please Select Package First"
                         }
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"
@@ -205,9 +235,10 @@ const AddTourPackagePopup = ({
                           {otherIcons.placeofsupply_svg}
                           <input
                             value={formData.destination}
-                            onChange={handleChange}
+                            // onChange={handleChange}
                             name="destination"
                             placeholder="Enter Destination"
+                            readOnly
                           />
                         </span>
                       </div>
@@ -218,7 +249,7 @@ const AddTourPackagePopup = ({
                         data-tooltip-content={
                           formData?.package_name
                             ? ""
-                            : "Please Select Room First"
+                            : "Please Select Package First"
                         }
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"
@@ -227,11 +258,16 @@ const AddTourPackagePopup = ({
 
                         <span id="">
                           {otherIcons.name_svg}
-                          <input
-                            value={formData.hotel_type}
+                          <CustomDropdown0004
+                            label="Hotel Type"
+                            options={hotelType}
+                            value={formData?.hotel_type}
                             onChange={handleChange}
                             name="hotel_type"
-                            placeholder="Enter Hotel Type"
+                            defaultOption="Select Hotel Type"
+                            type="masters"
+                            disabled={!formData?.package_name}
+
                           />
                         </span>
                       </div>
@@ -244,7 +280,7 @@ const AddTourPackagePopup = ({
                         data-tooltip-content={
                           formData?.package_name
                             ? ""
-                            : "Please Select Room First"
+                            : "Please Select Package First"
                         }
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"
@@ -252,11 +288,16 @@ const AddTourPackagePopup = ({
                         <label>Meal Plan</label>
                         <span id="">
                           {otherIcons.name_svg}
-                          <input
-                            value={formData.meal}
+                          <CustomDropdown0004
+                            label="Meal"
+                            options={meal}
+                            value={formData?.meal_id}
                             onChange={handleChange}
-                            name="meal"
-                            placeholder="Enter Meal"
+                            name="meal_id"
+                            defaultOption="Select Meal"
+                            type="masters"
+                            disabled={!formData?.package_name}
+
                           />
                         </span>
                       </div>
@@ -275,31 +316,47 @@ const AddTourPackagePopup = ({
                         <label>Transport</label>
                         <span id="">
                           {otherIcons.name_svg}
-                          <input
-                            value={formData.is_transport}
-                            onChange={handleChange}
-                            name="is_transport"
-                            placeholder="Enter Transport"
-                          />
+                          <CustomDropdown0004
+                              label="Transport"
+                              options={transport}
+                              value={formData?.is_transport}
+                              onChange={handleChange}
+                              name="is_transport"
+                              defaultOption="Select Yes/No"
+                              type="masters"
+                              disabled={!formData?.package_name}
+
+                            />
                         </span>
                       </div>
-                    </div>
-
-                    <div className="f1wrapofcreqx1">
-                      <div className="form_commonblock">
+                      <div  className={`form_commonblock ${
+                          formData?.package_name ? "" : "disabledfield"
+                        }`}
+                        data-tooltip-content={
+                          formData?.package_name
+                            ? "It is getting from package"
+                            : "Please Select Package First"
+                        }
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom">
                         <label>Total Days</label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <input
                               value={formData.days}
-                              onChange={handleChange}
+                              // onChange={handleChange}
                               name="days"
                               placeholder="Enter Transport"
+                              readOnly
                             />
                           </span>
                         </div>
                       </div>
+                    </div>
+
+                    <div className="f1wrapofcreqx1">
+                      
                       {section != "sales" && (
                         <div className="form_commonblock">
                           <label>Supplier</label>

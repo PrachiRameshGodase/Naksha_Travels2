@@ -92,7 +92,7 @@ const EmployeeDetails = ({
 
   // Fetch customer list
   const fetchCustomers = () => {
-    const sendData = { customer_type: "Individual",status:1, active:1 };
+    const sendData = { customer_type: "Individual", status:1, active:1 };
     dispatch(customersList(sendData));
   };
 
@@ -165,7 +165,8 @@ const EmployeeDetails = ({
         </thead>
         <tbody>
           {employeeDetails?.length >= 1 ? (
-            employeeDetails?.map((member, index) => {
+            employeeDetails?.filter((item) => item?.member_id != customerDetails?.user?.id)?.map((member, index) => {
+           
               const selectedMember = cusList?.data?.user.find(
                 (user) => user.id === member.employee_id
               );

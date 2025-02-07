@@ -65,7 +65,7 @@ const CreateGRN = () => {
   const purchseDetail = purchseDetails?.data?.purchaseOrder;
 
   const [fetchDetails, setFetchDetails] = useState([]);
-
+console.log("fetchDetails",fetchDetails)
   useEffect(() => {
     if (itemId && GRNdetail) {
       // console.log("Setting fetchDetails with GRNdetail");
@@ -138,7 +138,7 @@ const CreateGRN = () => {
     isDuplicate
   );
 
- console.log("cusData", cusData)
+
 
 
   useEffect(() => {
@@ -202,6 +202,7 @@ const CreateGRN = () => {
           tax_rate: 0,
           tax_amount: 0,
           discount: 0,
+          custom_duty:0,
           gross_amount: 0,
           final_amount: 0,
           discount_type: 1,
@@ -461,7 +462,6 @@ const CreateGRN = () => {
   //empty all the fields when no select
   useEffect(() => {
     if (formData?.purchase_order_id) {
-      console.log("purchseDetail", purchseDetail)
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
         item_name: item?.item?.name,
@@ -477,7 +477,6 @@ const CreateGRN = () => {
         tax_amount: item?.tax_amount,
         item_remark: item?.item_remark,
       }));
-      console.log("itemsFromApi",purchseDetail?.items)
       setFormData((prev) => ({
         ...prev,
         items: itemsFromApi || []
@@ -490,7 +489,7 @@ const CreateGRN = () => {
       // }
     }
   }, [formData?.purchase_order_id, purchseDetail]);
-console.log("formData", formData?.purchase_order_id)
+
 
   return (
     <>

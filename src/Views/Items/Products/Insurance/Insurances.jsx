@@ -363,6 +363,9 @@ const Insurances = () => {
                               onClick={() => {
                                 handleStatusChange(item);
                               }}
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content="Clicking on the arrow will update the insurance status"
+                              data-tooltip-place="bottom"
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
                             >
                               <div>

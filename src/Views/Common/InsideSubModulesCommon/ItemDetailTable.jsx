@@ -75,8 +75,39 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
                             />
                           </div>
                         </>
-                      ) : parsedServiceData?.service_name === "Assist" ? (
+                      ) : parsedServiceData?.service_name === "Tour Package" ? (
                         <>
+                          <div>
+                            <b>Service Name:</b> {parsedServiceData?.service_name || "-"}
+                          </div>
+                          <div>
+                            <b>Package Name:</b> {parsedServiceData?.package_name || "-"}
+                          </div>
+                          <div>
+                            <b>Destination:</b> {parsedServiceData?.destination || "-"}
+                          </div>
+                          <div>
+                            <b>Hotel Type:</b>{" "}
+                            <ShowUserMastersValue
+                              type="35"
+                              id={parsedServiceData?.hotel_type || "-"}
+                            />
+                          </div>
+                          {parsedServiceData?.itinerary?.length>=1 && parsedServiceData?.itinerary?.map((item, index)=>(<div key={index}><div>
+                            <b>Itinerary:</b>
+                          </div>                          
+                          <div><b>Day:</b> {item?.day || "-"}</div>
+                          <div><b>Day Plan:</b> {item?.day_plan || "-"}</div>
+                          
+                          </div>
+                          
+                        ))}
+                        </>
+                      ): parsedServiceData?.service_name === "Assist" ? (
+                        <>
+                         <div>
+                            <b>Service Name:</b> {parsedServiceData?.service_name || "-"}
+                          </div>
                           <div>
                             <b>Airport:</b> {parsedServiceData?.airport_name || "-"}
                           </div>
