@@ -34,6 +34,7 @@ import ItemSelect from "../../Helper/ComponentHelper/ItemSelect";
 import { useHandleFormChange } from "../../Helper/ComponentHelper/handleChange";
 import { handleFormSubmit1 } from "../../Purchases/Utils/handleFormSubmit";
 import { activeOrg, financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
 
 const CreateCreditNotes = () => {
   const dispatch = useDispatch();
@@ -401,6 +402,13 @@ const CreateCreditNotes = () => {
                                 dateFormat="dd-MM-yyy"
                               />
                             </span>
+                          </div>
+
+                          <div className="form_commonblock">
+                            <CurrencySelect2
+                              value={formData?.currency}
+                              onChange={handleChange}
+                            />
                           </div>
 
                           <div className="form_commonblock">

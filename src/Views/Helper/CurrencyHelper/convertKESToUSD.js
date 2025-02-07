@@ -2,12 +2,14 @@ import { getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageU
 
 // currencyConversionUtils.js
 export const convertCurrencyWithSymbol = (amount, fetchCurrencyData, moduleCurrency, currencyList) => {
-    // const activeOrgCurrencyValue = getCurrencyValue();
+    console.log("amountamount", amount)
+    console.log("moduleCurrency", moduleCurrency)
+    console.log("fetchCurrencyData?.exchange_rate", fetchCurrencyData?.exchange_rate)
 
     const symbol = currencyList?.find(val => val?.code === moduleCurrency)?.symbol
 
     // Convert KES to USD or any other currency using exchange rate
-    const rate = (amount / fetchCurrencyData?.exchange_rate).toFixed(2);
+    const rate = ((parseFloat(amount) / parseInt(fetchCurrencyData?.exchange_rate))).toFixed(2);
 
     return rate == "0" ? `${symbol} 0.00` : rate ? `${symbol} ${rate}` : "";
 };

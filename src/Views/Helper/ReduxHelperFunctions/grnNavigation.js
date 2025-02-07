@@ -3,7 +3,6 @@ import { GRNstatusActions } from "../../../Redux/Actions/grnActions";
 
 export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, response) => {
 
-    // console.log("buttonName", buttonName)
     // Purchase Order in create
     if (!editDub) {
         if (buttonName === "saveAsDraft") {
@@ -20,7 +19,6 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
 
             })
         }
-
         // Purchase Order in update
     }
 

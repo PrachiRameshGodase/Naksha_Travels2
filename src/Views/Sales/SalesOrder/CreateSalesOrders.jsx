@@ -30,6 +30,7 @@ import { confirmWithZeroAmount } from '../../Helper/ConfirmHelperFunction/Confir
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { activeOrg } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 const CreateSalesOrders = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -306,6 +307,14 @@ const CreateSalesOrders = () => {
                                                         type="masters"
                                                     />
                                                 </span >
+                                            </div>
+
+
+                                            <div className="form_commonblock">
+                                                <CurrencySelect2
+                                                    value={formData?.currency}
+                                                    onChange={handleChange}
+                                                />
                                             </div>
 
                                             <div className="form_commonblock">

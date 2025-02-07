@@ -69,3 +69,10 @@ export const financialYear = () => {
     return UserData;
 }
 
+// get Active orgnization
+export const isAdmin = () => {
+    const UserData = getLocalStorage("UserData");
+    const isAdmin = UserData?.is_admin;
+    return isAdmin;
+}
+

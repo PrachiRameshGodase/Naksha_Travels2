@@ -20,7 +20,6 @@ const CustomDropdown15 = forwardRef((props, ref) => {
     focusedOptionIndex
   } = DropDownHelperAccount(options, onChange, name, type, "", nextFocusRef);
 
-
   const hasMounted = useRef(false);
 
   if (index) {

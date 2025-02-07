@@ -13,13 +13,13 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { Toaster, toast } from "react-hot-toast";
 import { paymentRecDetail, updatePaymentRec } from '../../../Redux/Actions/PaymentRecAction';
 import { IoCheckbox } from 'react-icons/io5';
-import { formatDate, formatDate3, todayDate } from '../../Helper/DateFormat';
+import { formatDate, todayDate } from '../../Helper/DateFormat';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { billDetails, pendingBillLists } from '../../../Redux/Actions/billActions';
 import NumericInput from '../../Helper/NumericInput';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import GenerateAutoId from '../../Sales/Common/GenerateAutoId';
-import { handleDropdownError, preventZeroVal, sendData, showAmountWithCurrencySymbol } from '../../Helper/HelperFunctions';
+import { handleDropdownError, preventZeroVal } from '../../Helper/HelperFunctions';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
@@ -27,29 +27,28 @@ import { ShowMasterData } from '../../Helper/HelperFunctions';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
-import { PaymentMadeTable, PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { PaymentMadeTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 
 const CreatePaymentMade = () => {
 
     const [cusData, setcusData] = useState(null);
     const [imgLoader, setImgeLoader] = useState("");
 
-
     const [isVendorSelect, setIsVendorSelect] = useState(false);
-
-
 
     const dispatch = useDispatch();
     const addUpdate = useSelector((state) => state?.updateAddress);
     const paymentDetails = useSelector((state) => state?.paymentRecDetail);
-    const accList = useSelector(state => state?.accountList);
     const createPayment = useSelector((state) => state?.createPayment);
-    const accountList = accList?.data?.accounts || [];
     const paymentDetail = paymentDetails?.data?.data?.payment;
     const pendingBill = useSelector((state) => state?.pendingBill);
     const vendorList = useSelector((state) => state?.vendorList);
     const billDetail = useSelector(state => state?.billDetail);
     const billDetail1 = billDetail?.data?.bill;
+
+    const allAccounts = useSelector((state) => state?.accountList);
+    const accountList = allAccounts?.data?.accounts || [];
 
     // get currency symbol from active orgnization form localStorage
     const currencySymbol = getCurrencySymbol();
@@ -59,13 +58,8 @@ const CreatePaymentMade = () => {
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert, bill_no } = Object.fromEntries(params.entries());
 
-
     const [invoiceDatas, setInoiceData] = useState("");
     const allPaymentMode = ShowMasterData("9");
-
-
-    // const paymentDetails = useSelector(state => state?.paymentDetails);
-    // const invoice = paymentDetails?.data?.data?.Invoice;
 
     useEffect(() => {
         if (itemId && isEdit) {
@@ -76,6 +70,7 @@ const CreatePaymentMade = () => {
     }, [itemId, isEdit, paymentDetail, billDetail1, convert]);
 
     const [formData, setFormData] = useState({
+
         id: 0,
         payment_id: null,
         vendor_id: null,
@@ -84,8 +79,10 @@ const CreatePaymentMade = () => {
         bank_charges: null,
         transaction_date: formatDate(new Date()),
         fy: localStorage.getItem('FinancialYear'),
-        payment_mode: null,
-        to_acc: null,
+
+        payment_mode: 1,// for set payment mode to Cash. when convert.
+        to_acc: 50, // // for set account Pettiy Cash. when convert.
+
         inout: 2,
         tax_deducted: 1,
         tax_acc_id: 0,
@@ -109,7 +106,7 @@ const CreatePaymentMade = () => {
         ]
 
     },);
-    // itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && invoice
+
 
     useEffect(() => {
         if (itemId && isEdit && fetchDetails || itemId && isDuplicate && fetchDetails || itemId && convert && billDetail1) {
@@ -133,11 +130,13 @@ const CreatePaymentMade = () => {
                 transaction_date: formatDate(fetchDetails?.transaction_date), // payment date
                 fy: fetchDetails?.fy,
                 display_name: fetchDetails?.display_name,
-                payment_mode: (+fetchDetails?.payment_mode || 0),
-                to_acc: (+fetchDetails?.to_acc?.id || 0), // deposit to
+
+                payment_mode: 1,// for set payment mode to Cash. when convert.
+                to_acc: 50, // // for set account Pettiy Cash. when convert.
+
                 tax_deducted: (+fetchDetails?.tax_deducted || 0),
                 tax_acc_id: (+fetchDetails?.tax_acc_id || 0),
-                reference: fetchDetails?.reference == "0" ? "" : fetchDetails?.reference,
+                reference: fetchDetails?.reference,
                 vendor_note: fetchDetails?.vendor_note,
                 terms_and_condition: fetchDetails?.terms_and_condition,
                 upload_image: fetchDetails?.upload_image,
@@ -179,6 +178,7 @@ const CreatePaymentMade = () => {
     }, [fetchDetails, itemId, isEdit, isDuplicate, convert]);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
+
     // Function to handle checkbox clicks
     const handleCheckboxClick = checkboxName => {
         setIsChecked(prevState => ({
@@ -241,7 +241,6 @@ const CreatePaymentMade = () => {
         });
     };
 
-
     useEffect(() => {
         if (!formData?.credit) {
             setFormData((prevData) => ({
@@ -277,7 +276,6 @@ const CreatePaymentMade = () => {
         return total === 0 ? "0.00" : total?.toFixed(2);
     };
 
-
     useEffect(() => {
         setFormData({
             ...formData,
@@ -286,9 +284,8 @@ const CreatePaymentMade = () => {
     }, [calculateTotalAmount()], fetchDetails)
 
     const dropdownRef1 = useRef(null);
-    const dropdownRef2 = useRef(null)
+    const dropdownRef2 = useRef(null);
 
-    // const [isVendorSelect, setIsVendorSelect] = useState(false);
     const [isAmountSelect, setIsAmoutSelect] = useState(false);
 
     const Navigate = useNavigate()
@@ -313,11 +310,11 @@ const CreatePaymentMade = () => {
             });
             const entriesWithAmount = updatedEntries?.filter((val) => val?.amount > 0);
 
-
             if (entriesWithAmount?.length <= 0) {
                 toast?.error("Please Fill a Payment.")
                 return;
             }
+
             const sendData = {
                 ...formData,
                 entries: entriesWithAmount,
@@ -361,7 +358,7 @@ const CreatePaymentMade = () => {
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
     const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-        ...sendData
+
     }), []);
 
     useFetchApiData(accountLists, payloadGenerator, []);
@@ -509,7 +506,7 @@ const CreatePaymentMade = () => {
 
 
                                         <div className="form_commonblock">
-                                            <label>Payment Mode </label>
+                                            <label>Payment Mode <b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.currency_icon}
 
@@ -526,7 +523,13 @@ const CreatePaymentMade = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label >Paid Through</label>
+                                            <CurrencySelect2
+                                                value={formData?.currency}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="form_commonblock">
+                                            <label> Paid Through <b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.paid_through}
                                                 <CustomDropdown15

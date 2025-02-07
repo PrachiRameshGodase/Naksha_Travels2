@@ -52,8 +52,10 @@ const CreateVendors = () => {
   // all submit data of create customer
   const [userData, setUserData] = useState({
     remarks: "",
+    ...(isEdit && { status: 0 })
   });
 
+  console.log("userDatauserData", userData)
   const handleRemarksChange = (e) => {
     const { value } = e.target;
     setUserData((prevUserData) => ({

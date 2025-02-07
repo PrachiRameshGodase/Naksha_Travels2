@@ -13,6 +13,7 @@ import { vendorsDelete, vendorsStatus, vendorssView } from '../../../Redux/Actio
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import Swal from 'sweetalert2';
 import { showToast } from '../../Helper/ComponentHelper/toastConfigure';
+import { isAdmin } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const VendorsDetails = () => {
   const dispatch = useDispatch();
@@ -180,26 +181,32 @@ const VendorsDetails = () => {
             <p id="firsttagp">1 SKU</p> */}
           </div>
           <div id="buttonsdata">
-            <div className="switchbuttontext">
-              <div className="switches-container">
-                <input type="radio" id="switchMonthly1" name="switchPlan1" value="0" checked={switchValue1 == "0"} onChange={handleSwitchChange1} />
-                <input type="radio" id="switchYearly1" name="switchPlan1" className='newinput' value="1" checked={switchValue1 == "1"} onChange={handleSwitchChange1} />
-                <label htmlFor="switchMonthly1">Pending</label>
-                <label htmlFor="switchYearly1">Approve</label>
-                <div className="switch-wrapper">
-                  <div className="switch">
-                    <div id='inactiveid'>Pending</div>
-                    <div>Approve</div>
+
+            {isAdmin() && <>
+              <div className="switchbuttontext">
+                <div className="switches-container">
+                  <input type="radio" id="switchMonthly1" name="switchPlan1" value="0" checked={switchValue1 == "0"} onChange={handleSwitchChange1} />
+                  <input type="radio" id="switchYearly1" name="switchPlan1" className='newinput' value="1" checked={switchValue1 == "1"} onChange={handleSwitchChange1} />
+                  <label htmlFor="switchMonthly1">Pending</label>
+                  <label htmlFor="switchYearly1">Approve</label>
+                  <div className="switch-wrapper">
+                    <div className="switch">
+                      <div id='inactiveid'>Pending</div>
+                      <div>Approve</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="separatorx21"></div>
+              <div className="separatorx21"></div>
+            </>}
+
             <div className="switchbuttontext">
               <div className="switches-container">
                 <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue == "0"} onChange={handleSwitchChange} />
                 <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue == "1"} onChange={handleSwitchChange} />
+
                 <label htmlFor="switchMonthly">Inactive</label>
+
                 <label htmlFor="switchYearly">Active</label>
                 <div className="switch-wrapper">
                   <div className="switch">
@@ -211,10 +218,12 @@ const VendorsDetails = () => {
             </div>
 
             <div className="separatorx21"></div>
-            <div className="mainx1" onClick={() => handleCustomersActions("edit")}>
-              <img src="/Icons/pen-clip.svg" alt="" />
-              <p>Edit</p>
-            </div>
+            {user?.status != 1 &&
+              <div className="mainx1" onClick={() => handleCustomersActions("edit")}>
+                <img src="/Icons/pen-clip.svg" alt="" />
+                <p>Edit</p>
+              </div>
+            }
             <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
               <img src="/Icons/menu-dots-vertical.svg" alt="" />
               {showDropdown && (

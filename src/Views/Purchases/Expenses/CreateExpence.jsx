@@ -25,6 +25,7 @@ import { handleDropdownError, ShowMasterData } from '../../Helper/HelperFunction
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 
 const CreateBills = () => {
     const Navigate = useNavigate();
@@ -357,6 +358,13 @@ const CreateBills = () => {
 
                                                 />
                                             </span>
+                                        </div>
+
+                                        <div className="form_commonblock">
+                                            <CurrencySelect2
+                                                value={formData?.currency}
+                                                onChange={handleChange}
+                                            />
                                         </div>
 
                                         <div className="form_commonblock">

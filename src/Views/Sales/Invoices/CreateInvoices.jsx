@@ -27,6 +27,7 @@ import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
 import { formatDate } from '../../Helper/DateFormat';
 import { activeOrg } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 
 const CreateSalesOrders = ({ section }) => {
     const dispatch = useDispatch();
@@ -334,7 +335,6 @@ const CreateSalesOrders = ({ section }) => {
                                                     module={section === "delivery_challan" ? "delivery_challan" : "invoice"}
                                                     showField={isEdit}
                                                 />
-
                                             </div>
 
                                             <div className="form_commonblock">
@@ -355,8 +355,14 @@ const CreateSalesOrders = ({ section }) => {
                                                         placeholderText="Enter Quotation Date"
                                                         dateFormat="dd-MM-yyy"
                                                     />
-
                                                 </span>
+                                            </div>
+
+                                            <div className="form_commonblock">
+                                                <CurrencySelect2
+                                                    value={formData?.currency}
+                                                    onChange={handleChange}
+                                                />
                                             </div>
 
                                             <div className="form_commonblock">

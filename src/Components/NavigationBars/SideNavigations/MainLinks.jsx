@@ -535,7 +535,7 @@ const MainLinks = ({
               Invoice Approval
             </li>
 
-            <li
+            {/* <li
               onClick={() => {
                 handleMenuItemClick("pick_list");
               }}
@@ -543,7 +543,7 @@ const MainLinks = ({
                 }`}
             >
               Pick List
-            </li>
+            </li> */}
 
             <li
               onClick={() => {
@@ -797,6 +797,7 @@ const MainLinks = ({
             >
               Warehouse
             </li>
+
             {/* <li
               onClick={() => {
                 handleMenuItemClick("zone");
@@ -1046,7 +1047,8 @@ const MainLinks = ({
             >
               User Masters
             </li>
-            <li
+            {/* hide currency in nakshsa */}
+            {/* <li
               onClick={() => {
                 handleMenuItemClick("manage-currency");
               }}
@@ -1054,7 +1056,7 @@ const MainLinks = ({
                 }`}
             >
               Currency
-            </li>
+            </li> */}
 
             <li
               onClick={() => {

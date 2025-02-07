@@ -7,7 +7,7 @@ const SearchBox = ({ placeholder, onSearch, section }) => {
 
   // Function to handle input changes
   const handleSearch = (e) => {
-    const term = e.target.value.trim();
+    const term = e.target.value;
     setSearchTerm(term);
 
     const searchInput = document.getElementById("commonmcsearchbar");

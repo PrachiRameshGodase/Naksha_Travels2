@@ -340,6 +340,8 @@ const CreatePurchaseOrder = () => {
                         </span>
                       </div>
 
+
+
                       <div className="form_commonblock ">
                         <label>Payment Terms</label>
                         <span>

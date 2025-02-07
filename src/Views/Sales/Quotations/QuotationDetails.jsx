@@ -19,6 +19,7 @@ import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyAct
 import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 // import { convertObjectCurrency } from '../../Helper/CurrencyHelper/convertKESToUSD';
 import { confirIsCurrencyCreate, confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
+import { UserMasterListAction } from '../../../Redux/Actions/userMasterActions';
 
 const QuotationDetails = () => {
   const dispatch = useDispatch();
@@ -107,72 +108,55 @@ const QuotationDetails = () => {
   useFetchApiData(quotationDetails, payloadGenerator, [callApi]);
 
   const [loading, setLoading] = useState(false);
-  // console.log("quotationquotation", quotation)
 
+  const getCurrency = getCurrencyValue();// active currency value
 
-  // currency convert and download pdf
-  // const [exchangeRate, setExchangeRate] = useState(null);
-
-  //fields to convert in quotation pdf
-  // const fieldsToConvert = [
-  //   'currency_value',
-  //   'subtotal',
-  //   'total_tax',
-  //   'shipping_charge',
-  //   'total',
-  //   'gross_amount',
-  //   'final_amount',
-  //   'rate'
-  // ];
-
-  // const convertedQuotation = convertObjectCurrency(quotation, fieldsToConvert, exchangeRate);//update function of rates convertor. use in pdf
-
-
-
-  const getCurrency = getCurrencyValue();
+  console.log("quoteDetail", quotation)
 
   const handleDownloadPDF = async () => {
     try {
 
       if (quotation?.transaction_date) {
 
-        //////////// check if the org currency have exchange rate or not ///////////////////
+        // Fetch currency rates with module transaction-date
+        const res = dispatch(currencyRateListAction({ date: quotation?.transaction_date }))
+          .then((res) => {
 
-        // Fetch currency rates with date
-        const res = await dispatch(currencyRateListAction({ date: quotation?.transaction_date }));
+            // if the crrency is created for module transaction-date
+            if (res?.success === true) {
+              // Find the fetchCurrencyData of active organization currency with specific date
+              const fetchCurrencyData = res?.data?.find(val => val?.code === quotation?.currency);//here I found the currency details of created in which the found in module in that transaction date...
+              console.log("if the module currency is created data", fetchCurrencyData)
 
-        if (res?.success === true) {
-          // Find the fetchCurrencyData of active organization currency with specific date
-          const fetchCurrencyData = res?.data?.find(val => val?.code === getCurrency);
-          // console.log("fetchCurrencyData", fetchCurrencyData)
+              // create and show the pdf of converted currency on the exchange rate....
+              if (!quotation || !masterData) {
+                dispatch(UserMasterListAction())/// if the master data is not found then call api
+                alert("Data is still loading, please try again.");
+                return;
+              }
 
-          // create and show the pdf of converted currency on the exchange rate....
-          if (!quotation || !masterData) {
-            alert("Data is still loading, please try again.");
-            return;
-          }
+              const contentComponent = (
+                <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} currencyList={currencyList} />
+              );
 
-          const contentComponent = (
-            <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} currencyList={currencyList} />
-          );
+              generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
 
-          generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
+            } else {
+              // if the module currency is not created that date then create first then download pdf
+              const confirmed = confirIsCurrencyPDF(quotation?.currency);
+              if (confirmed) {
 
-        } else {
-          // Ask user if they want to create currency exchange rate
-          const confirmed = await confirIsCurrencyPDF(getCurrency);
+                // set params on currency crate page of that moudel currency currency
+                const queryParams = new URLSearchParams();
+                queryParams.set("date", quotation?.transaction_date);
+                queryParams.set("currency", quotation?.currency);//send 
+                Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+              } else {
+                return;
+              }
 
-          if (confirmed) {
-            const queryParams = new URLSearchParams();
-            queryParams.set("date", quotation?.transaction_date);
-            queryParams.set("currency", getCurrency);//send active org currency 
-            Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
-          } else {
-            return;
-          }
-          //////////// check if the org currency have exchange rate or not ///////////////////
-
-        }
+            }
+          })
       }
 
     } catch (error) {

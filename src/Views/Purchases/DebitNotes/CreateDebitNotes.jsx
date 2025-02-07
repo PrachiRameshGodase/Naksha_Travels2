@@ -27,6 +27,7 @@ import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditP
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../Utils/handleFormSubmit';
 import NumericInput from '../../Helper/NumericInput';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 
 const CreateDebitNotes = () => {
 
@@ -490,6 +491,13 @@ const CreateDebitNotes = () => {
                                                         type="masters"
                                                     />
                                                 </span>
+                                            </div>
+
+                                            <div className="form_commonblock">
+                                                <CurrencySelect2
+                                                    value={formData?.currency}
+                                                    onChange={handleChange}
+                                                />
                                             </div>
 
 

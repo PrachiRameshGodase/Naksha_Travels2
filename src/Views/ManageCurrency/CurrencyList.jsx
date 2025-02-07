@@ -26,6 +26,9 @@ const CurrencyList = () => {
   }), [selectedDate]);
   useFetchApiData(currencyRateListAction, payloadGenerator, [selectedDate]);
 
+
+  // console.log("selectedDateselectedDate", selectedDate)
+
   return (
     <>
       <TopLoadbar />
@@ -59,7 +62,7 @@ const CurrencyList = () => {
                       {otherIcons.date_svg}
                       <DatePicker
                         selected={selectedDate}
-                        onChange={(date) => setSelectedDate(date)} // Call handleDateChange when a date is selected
+                        onChange={(date) => setSelectedDate(formatDate(date))} // Call handleDateChange when a date is selected
                         name="date"
                         dateFormat="yyyy-MM-dd"
                         autoComplete="off"

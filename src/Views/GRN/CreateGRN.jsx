@@ -36,6 +36,7 @@ import Loader02 from "../../Components/Loaders/Loader02";
 import { productTypeItemAction } from "../../Redux/Actions/ManageStateActions/manageStateData";
 import { ItemSelectGRN } from "../Helper/ComponentHelper/ItemSelectGRN";
 import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { CurrencySelect2 } from "../Helper/ComponentHelper/CurrencySelect";
 
 const CreateGRN = () => {
   const dispatch = useDispatch();
@@ -584,6 +585,12 @@ const CreateGRN = () => {
                         </span>
                       </div>
 
+                      <div className="form_commonblock">
+                        <CurrencySelect2
+                          value={formData?.currency}
+                          onChange={handleChange}
+                        />
+                      </div>
                       <div className="form_commonblock">
                         <label>With Purchase Order<b className='color_red'>*</b></label>
                         <div id="inputx1">

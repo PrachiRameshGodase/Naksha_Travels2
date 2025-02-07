@@ -20,13 +20,14 @@ import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbolWithPoints, ShowMasterData } from '../../Helper/HelperFunctions';
 import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-// import GenerateAutoId from '../Quotations/GenerateAutoId';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 
 const CreatePaymentRec = () => {
+
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
     const addUpdate = useSelector((state) => state?.updateAddress);
@@ -35,6 +36,7 @@ const CreatePaymentRec = () => {
     const accountList = allAccounts?.data?.accounts || [];
 
     // get currency symbol from active orgnization form localStorage
+
     const currencySymbol = getCurrencySymbol();
 
     const createPayment = useSelector((state) => state?.createPayment);
@@ -43,7 +45,7 @@ const CreatePaymentRec = () => {
     const invoiceDetail = useSelector(state => state?.invoiceDetail);
     const invoice = invoiceDetail?.data?.data?.Invoice;
 
-    const allPaymentMode = ShowMasterData("9")
+    const allPaymentMode = ShowMasterData("9");
 
     const [showAllSequenceId, setShowAllSequenceId] = useState([]);
 
@@ -76,8 +78,8 @@ const CreatePaymentRec = () => {
         bank_charges: null,
         transaction_date: formatDate(new Date()),
         fy: localStorage.getItem('FinancialYear'),
-        payment_mode: 1,
-        to_acc: 50,
+        payment_mode: 1,// for set payment mode to Cash. By default.
+        to_acc: 50, // // for set account Pettiy Cash. By default.
         inout: 1,
         tax_deducted: null,
         tax_acc_id: 0,
@@ -125,11 +127,11 @@ const CreatePaymentRec = () => {
                 transaction_date: formatDate(fetchDetails?.transaction_date), // payment date
                 fy: fetchDetails?.fy,
                 display_name: fetchDetails?.display_name,
-                payment_mode: (+fetchDetails?.payment_mode || 0),
-                to_acc: (+fetchDetails?.to_acc?.id || 0), // deposit to
+                payment_mode: 1,// for set payment mode to Cash. when convert.
+                to_acc: 50, // // for set account Pettiy Cash. when convert.
                 tax_deducted: (+fetchDetails?.tax_deducted || 0),
                 tax_acc_id: (+fetchDetails?.tax_acc_id || 0),
-                reference: fetchDetails?.reference == "0" ? "" : fetchDetails?.reference,
+                reference: fetchDetails?.reference,
                 customer_note: fetchDetails?.customer_note,
                 terms_and_condition: fetchDetails?.terms_and_condition,
                 upload_image: fetchDetails?.upload_image,
@@ -229,7 +231,6 @@ const CreatePaymentRec = () => {
 
         if (name === "customer_id") {
             const selectedCustomer = cusList?.data?.user?.find(cus => cus.id == value);
-            console.log("selectedCustomerselectedCustomer", selectedCustomer)
             const sendData = {
                 fy: localStorage.getItem('FinancialYear'),
                 customer_id: selectedCustomer?.id,
@@ -392,7 +393,6 @@ const CreatePaymentRec = () => {
                                     <div className="form_commonblock">
                                         <label >Customer Name<b className='color_red'>*</b></label>
                                         <div id='sepcifixspanflex'>
-                                            {console.log("formdaaaaaa", formData)}
                                             <span id=''>
                                                 {otherIcons.name_svg}
                                                 <CustomDropdown10
@@ -478,6 +478,13 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
+                                            <CurrencySelect2
+                                                value={formData?.currency}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                        <div className="form_commonblock">
                                             <label className=''>Payment Date</label>
                                             <span >
                                                 {otherIcons.date_svg}
@@ -498,7 +505,7 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label className=''>Payment No</label>
+                                            <label className=''>Payment Number</label>
 
                                             <GenerateAutoId
                                                 formHandlers={{ setFormData, handleChange, setShowAllSequenceId }}
@@ -510,7 +517,7 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label>Payment Mode</label>
+                                            <label>Payment Mode <b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.currency_icon}
                                                 <CustomDropdown04
@@ -528,17 +535,16 @@ const CreatePaymentRec = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label className=''>Deposit To</label>
+                                            <label className=''>Deposit To <b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.tag_svg}
                                                 <CustomDropdown15
-                                                    label="Purchase Account"
+                                                    label="Account"
                                                     options={accountList}
                                                     value={formData.to_acc}
                                                     onChange={handleChange}
                                                     name="to_acc"
-                                                    defaultOption="Select Account"
-                                                    autoComplete='off'
+                                                    defaultOption="Select An Account"
                                                 />
                                             </span>
 
@@ -546,13 +552,13 @@ const CreatePaymentRec = () => {
 
 
                                         <div className="form_commonblock ">
-                                            <label className=''>Reference Number</label>
+                                            <label className=''>Reference</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.reference == 0 ? "" : formData?.reference} onChange={handleChange}
+                                                <input type="text" value={preventZeroVal(formData.reference)} onChange={handleChange}
                                                     // disabled
                                                     name='reference'
-                                                    placeholder='Enter Reference Number' autoComplete='off' />
+                                                    placeholder='Enter Reference' autoComplete='off' />
 
                                             </span>
                                         </div>

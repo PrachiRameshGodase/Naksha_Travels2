@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useFetchOnMount from "../../Views/Helper/ComponentHelper/useFetchOnMount";
 import { warehouseViewAction } from "../../Redux/Actions/warehouseActions";
 import useFetchApiData from "../../Views/Helper/ComponentHelper/useFetchApiData";
+import useNavigation from "../../Views/Helper/Navigation";
 const externalUrlWithHome = import.meta.env.VITE_EXTERNAL_URL_Home;
 
 const Topbar = ({ loggedInUserData }) => {
@@ -35,6 +36,9 @@ const Topbar = ({ loggedInUserData }) => {
   const organisationList1 = useSelector((state => state?.orgnizationList));
   const organisationList = organisationList1?.data?.organisations;
   const dispatch = useDispatch();
+
+  const { canGoBack, canGoForward, goBack, goForward } = useNavigation();
+
 
   const [searchTrigger, setSearchTrigger] = useState(0);
 
@@ -180,41 +184,6 @@ const Topbar = ({ loggedInUserData }) => {
     localStorage.setItem("selectedWarehouseId", warehouse.id);
   };
 
-
-  // new code
-  const [canGoBack, setCanGoBack] = useState(false);
-  const [canGoForward, setCanGoForward] = useState(false);
-
-  useEffect(() => {
-    const checkHistory = () => {
-      setCanGoBack(window.history.state !== null && window.history.length > 1);
-      setCanGoForward(true); // Simplified check; adjust as needed for your app
-    };
-
-    checkHistory();
-
-    const handlePopState = () => {
-      checkHistory();
-    };
-
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
-
-  const goBack = () => {
-    if (canGoBack) {
-      window.history.back();
-    }
-  };
-
-  const goForward = () => {
-    if (canGoForward) {
-      window.history.forward();
-    }
-  };
 
   return (
     <>
