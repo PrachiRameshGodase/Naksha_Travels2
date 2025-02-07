@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { otherIcons } from '../../../Helper/SVGIcons/ItemsIcons/Icons';
 import { Link } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
-import { useDispatch, useSelector } from 'react-redux';
-import TableViewSkeleton from '../../../../Components/SkeletonLoder/TableViewSkeleton';
-import NoDataFound from '../../../../Components/NoDataFound/NoDataFound';
+import { useSelector } from 'react-redux';
 import { formatDate, formatDate3, formatDate4 } from '../../../Helper/DateFormat';
-import { showAmountWithCurrencySymbol } from '../../../Helper/HelperFunctions';
-import ShowMastersValue from '../../../Helper/ShowMastersValue';
 import LoadingText from '../../../../Components/Loaders/LoadingText';
 import ResizeFL from '../../../../Components/ExtraButtons/ResizeFL';
 import DatePicker from '../../../Common/DatePicker/DatePicker';
@@ -17,13 +13,13 @@ import { generatePDF } from '../../../Helper/createPDF';
 import CommonDebitNote from '../DebitNoteReport/CommonDebitNote';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
 import { financialYear } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import useFetchApiData from '../../../Helper/ComponentHelper/useFetchApiData';
 
 const CreditNoteDetailsReport = () => {
 
     const reportData = useSelector(state => state?.creditReport);
     const allData = reportData?.data?.data;
 
-    const dispatch = useDispatch();
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     //date range picker
@@ -49,26 +45,23 @@ const CreditNoteDetailsReport = () => {
     };
 
     //load all the api's of reports when this page is fully loaded
-    useEffect(() => {
-        const sendData = {
-            ...(clearFilter === false && {
-                ...(specificDate
-                    ? {
-                        start_date: formatDate(new Date(specificDate)),
-                        end_date: formatDate(new Date(specificDate)),
-                    }
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        ...(clearFilter === false && {
+            ...(specificDate
+                ? {
+                    start_date: formatDate(new Date(specificDate)),
+                    end_date: formatDate(new Date(specificDate)),
+                }
 
-                    : dateRange[0]?.startDate && dateRange[0]?.endDate && {
-                        start_date: formatDate(new Date(dateRange[0].startDate)),
-                        end_date: formatDate(new Date(dateRange[0].endDate)),
-                    }),
-            }),
-            fy: financialYear(),
-        };
-        // if (searchTrigger || !allData) {
-        dispatch(creditNoteReportAction(sendData));
-        // }
-    }, [dispatch, searchTrigger]);
+                : dateRange[0]?.startDate && dateRange[0]?.endDate && {
+                    start_date: formatDate(new Date(dateRange[0].startDate)),
+                    end_date: formatDate(new Date(dateRange[0].endDate)),
+                }),
+        }),
+        fy: financialYear(),
+    }), [searchTrigger]);
+
+    useFetchApiData(creditNoteReportAction, payloadGenerator, [searchTrigger]);
 
     //print and pdf implementation
     const [loading, setLoading] = useState(false);

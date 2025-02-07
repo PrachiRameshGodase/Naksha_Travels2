@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { otherIcons } from '../../../Helper/SVGIcons/ItemsIcons/Icons';
 import { Link } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
@@ -13,6 +13,7 @@ import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFre
 import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComponent/ReportsModulPrintAndPDF/ReportsPrintContent';
 import { generatePDF } from '../../../Helper/createPDF';
 import { financialYear } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import useFetchApiData from '../../../Helper/ComponentHelper/useFetchApiData';
 
 const DebitNoteDetailsReport = () => {
 
@@ -45,27 +46,24 @@ const DebitNoteDetailsReport = () => {
     };
 
     //load all the api's of reports when this page is fully loaded
-    useEffect(() => {
-        const sendData = {
-            ...(clearFilter === false && {
-                ...(specificDate
-                    ? {
-                        start_date: formatDate(new Date(specificDate)),
-                        end_date: formatDate(new Date(specificDate)),
-                    }
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        ...(clearFilter === false && {
+            ...(specificDate
+                ? {
+                    start_date: formatDate(new Date(specificDate)),
+                    end_date: formatDate(new Date(specificDate)),
+                }
 
-                    : dateRange[0]?.startDate && dateRange[0]?.endDate && {
-                        start_date: formatDate(new Date(dateRange[0].startDate)),
-                        end_date: formatDate(new Date(dateRange[0].endDate)),
-                    }),
-            }),
-            fy: financialYear(),
-            start_date: "2024-10-01"
-        };
-        if (searchTrigger || !allData) {
-            dispatch(debitNoteReportAction(sendData));
-        }
-    }, [dispatch, searchTrigger]);
+                : dateRange[0]?.startDate && dateRange[0]?.endDate && {
+                    start_date: formatDate(new Date(dateRange[0].startDate)),
+                    end_date: formatDate(new Date(dateRange[0].endDate)),
+                }),
+        }),
+        fy: financialYear(),
+        // start_date: "2024-10-01"
+    }), [searchTrigger]);
+
+    useFetchApiData(debitNoteReportAction, payloadGenerator, [searchTrigger]);
 
     //print and pdf implementation
     const [loading, setLoading] = useState(false);

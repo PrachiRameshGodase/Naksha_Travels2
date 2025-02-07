@@ -47,7 +47,8 @@ const CreateBills = () => {
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, duplicate: isDuplicate } = Object.fromEntries(params.entries());
-    const allExpenseType = ShowMasterData("35");
+
+    const allExpenseType = ShowMasterData("23");
 
     const activeCurrency = getCurrencyValue()
 

@@ -14,6 +14,7 @@ import DatePicker from '../../../Common/DatePicker/DatePicker';
 import useFetchApiData from '../../../Helper/ComponentHelper/useFetchApiData';
 import { generatePDF } from '../../../Helper/createPDF';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
+import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComponent/ReportsModulPrintAndPDF/ReportsPrintContent';
 
 const GerneralLedgerReport = () => {
     const reportData = useSelector(state => state?.gernalLedger);
@@ -84,7 +85,7 @@ const GerneralLedgerReport = () => {
 
             <div className="maindivofreporstx5w633">
                 <div className="reportbarinsx5w">
-                    <h1>Gernal Ledger</h1>
+                    <h1>General Ledger</h1>
 
                     <div className="rightfiltex4w">
                         <DatePicker
@@ -115,7 +116,7 @@ const GerneralLedgerReport = () => {
                     </div>
 
                     <div className="ch2xjlokw5456w1">
-                        <div className="x45wx5w2"> <h3> Gernal Leadger</h3></div>
+                        <div className="x45wx5w2"> <h3> General Leadger</h3></div>
                         {/* <div className="x45wx5w3">{reportData?.data?.account_name}</div> */}
                         <div className='x45wx5w34'> From  {reportData?.loading ? <>Date is <LoadingText /> </> : <> {formatDate4(reportData?.data?.startDate)}, To {formatDate4(reportData?.data?.endDate)}</>}
                         </div>
@@ -124,7 +125,7 @@ const GerneralLedgerReport = () => {
                     <div className='account_report_888'>
                         <div className="ch2xjlokw5456wx321">
                             <div className="tex5w6x6ws xkwls2z1">Account</div>
-                            <div className="tex5w6x6ws xkwls2z2">Account Code#</div>
+                            {/* <div className="tex5w6x6ws xkwls2z2">Account Code#</div> */}
                             <div className="tex5w6x6ws xkwls2z3">Account Types</div>
 
 
@@ -138,6 +139,11 @@ const GerneralLedgerReport = () => {
                                 textAlign: "right"
                             }}> Credit</p></div>
 
+                            <div className="tex5w6x6ws xkwls2z9"><p style={{
+                                width: "100px",
+                                textAlign: "right"
+                            }}> Balance</p></div>
+
                         </div>
 
                         {reportData?.loading ? <TableViewSkeleton /> :
@@ -149,10 +155,11 @@ const GerneralLedgerReport = () => {
                                                 <div className="ch2xjlokw5456wx3211" key={index}>
                                                     {/* <div className="tex5w6x6ws xkwls2z1">{formatDate4(val?.transaction_date)}</div> */}
                                                     <div className="tex5w6x6ws xkwls2z1">{val?.account_name}</div>
-                                                    <div className="tex5w6x6ws xkwls2z2">{val?.account_code}</div>
+                                                    {/* <div className="tex5w6x6ws xkwls2z2">{val?.account_code}</div> */}
                                                     <div className="tex5w6x6ws xkwls2z3"> {val?.account_type}</div>
-                                                    <div className="tex5w6x6ws xkwls2z4"><p style={{ width: "100px", textAlign: "right" }}> {showAmountWithCurrencySymbol(val?.debit)} </p></div>
-                                                    <div className="tex5w6x6ws xkwls2z9"><p style={{ width: "100px", textAlign: "right" }}>{showAmountWithCurrencySymbol(val?.credit)}</p></div>
+                                                    <div className="tex5w6x6ws xkwls2z4"><p style={{ width: "100px", textAlign: "right" }}> {showAmountWithCurrencySymbol(val?.total_debit)} </p></div>
+                                                    <div className="tex5w6x6ws xkwls2z9"><p style={{ width: "100px", textAlign: "right" }}>{showAmountWithCurrencySymbol(val?.total_credit)}</p></div>
+                                                    <div className="tex5w6x6ws xkwls2z9"><p style={{ width: "100px", textAlign: "right" }}>{showAmountWithCurrencySymbol((parseFloat(val?.total_debit) - parseFloat(val?.total_credit)).toFixed(2))}</p></div>
                                                 </div>
                                             ))}
 

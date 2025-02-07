@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { otherIcons } from '../../../Helper/SVGIcons/ItemsIcons/Icons';
 import { Link } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDate3 } from '../../../Helper/DateFormat';
-import NoDataFound from '../../../../Components/NoDataFound/NoDataFound';
 import ResizeFL from '../../../../Components/ExtraButtons/ResizeFL';
-import TableViewSkeleton from '../../../../Components/SkeletonLoder/TableViewSkeleton';
 import LoadingText from '../../../../Components/Loaders/LoadingText';
-import { showAmountWithCurrencySymbol } from '../../../Helper/HelperFunctions';
-import DatePicker from '../../../Common/DatePicker/DatePicker';
 import { vendorSummaryReportAction } from '../../../../Redux/Actions/ReportsActions/PayablesReportAction';
 import CommonCustomerBlance from '../ReceivablesReport/CommonCustomerBlance';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
 import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComponent/ReportsModulPrintAndPDF/ReportsPrintContent';
 import { generatePDF } from '../../../Helper/createPDF';
+import DatePicker from '../../../Common/DatePicker/DatePicker';
+import useFetchApiData from '../../../Helper/ComponentHelper/useFetchApiData';
 
 
 const VendorBalanceSummaryReport = () => {
@@ -48,33 +46,21 @@ const VendorBalanceSummaryReport = () => {
     };
 
     //load all the api's of reports when this page is fully loaded
-    const fetchReports = () => {
-        try {
-            const sendData = {
-                ...(clearFilter === false && {
-                    ...(specificDate
-                        ? {
-                            startDate: formatDate(new Date(specificDate)),
-                            endDate: formatDate(new Date(specificDate)),
-                        }
-                        : dateRange[0]?.startDate && dateRange[0]?.endDate && {
-                            startDate: formatDate(new Date(dateRange[0].startDate)),
-                            endDate: formatDate(new Date(dateRange[0].endDate)),
-                        }),
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        ...(clearFilter === false && {
+            ...(specificDate
+                ? {
+                    startDate: formatDate(new Date(specificDate)),
+                    endDate: formatDate(new Date(specificDate)),
+                }
+                : dateRange[0]?.startDate && dateRange[0]?.endDate && {
+                    startDate: formatDate(new Date(dateRange[0].startDate)),
+                    endDate: formatDate(new Date(dateRange[0].endDate)),
                 }),
-            };
+        }),
+    }), [searchTrigger]);
 
-            dispatch(vendorSummaryReportAction(sendData));
-        } catch (error) {
-            console.error("Error fetching reports:", error);
-        }
-    }
-
-    useEffect(() => {
-        if (searchTrigger || !allData) {
-            fetchReports();
-        }
-    }, [searchTrigger]);
+    useFetchApiData(vendorSummaryReportAction, payloadGenerator, [searchTrigger]);
 
     //print and pdf implementation
     const [loading, setLoading] = useState(false);
@@ -90,6 +76,7 @@ const VendorBalanceSummaryReport = () => {
 
         generatePDF(contentComponent, "Vendor_Balance_Summary.pdf", setLoading, 500);
     }
+
     return (
         <>
             {(loading) && <MainScreenFreezeLoader />}

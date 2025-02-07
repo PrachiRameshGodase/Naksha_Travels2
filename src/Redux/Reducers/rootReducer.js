@@ -170,8 +170,8 @@ import {
   productTypeReducer,
 } from "./ManageStateReducer/manageStateReducers";
 import { createMasterReducer, listMasterReducer } from "./masterReducers";
-import { saleByCustomerReducer } from "./ReportReducers/SaleReportReducers";
-import { accountTransactionReducer } from "./ReportReducers/AccountReportReducers";
+import { saleByCustomerReducer, saleByItemReducer } from "./ReportReducers/SaleReportReducers";
+import { accountTransactionReducer, gernalLedgerReducer } from "./ReportReducers/AccountReportReducers";
 import {
   createHotelReducer,
   createHotelRoomReducer,
@@ -268,6 +268,11 @@ import { createPassengerMInsuranceReducer, passengerMInsuranceDeleteReducer } fr
 import { createPassengerMOtherReducer, passengerMOtherDeleteReducer } from "./pasengerMOtherReducers";
 import { createUserMasterReducer, listUserMasterReducer, userMasterDeleteReducer } from "./userMasterReducers";
 import { currencyRateCreateReducer, currencyRateListReducer } from "./manageCurrencyReducers";
+import { purchaseByVendorReducer } from "./ReportReducers/PurchaseReportReducers";
+import { customerSummaryReducer } from "./ReportReducers/ReceivablesReportReducer";
+import { vendorSummaryReducer } from "./ReportReducers/PayablesReportReducers";
+import { creditNoteReportReducer, debitNoteReportReducer } from "./ReportReducers/DebitCreditNoteReportReducers";
+import { expenseReportReducer } from "./ReportReducers/ExpenseReportReducers";
 const reducer = combineReducers({
   // manage state
   manageState,
@@ -370,7 +375,7 @@ const reducer = combineReducers({
   DSRStatus: DSRStatusReducer,
   addPassenger: AddPassengerReducer,
   deletePassenger: DeletePassengerReducer,
-  dsrSupplierSummary:listDSRSupplierSummaryreducer,
+  dsrSupplierSummary: listDSRSupplierSummaryreducer,
 
   createMICE: createMICEreducer,
   MICEList: listMICEreducer,
@@ -379,8 +384,8 @@ const reducer = combineReducers({
   MICEStatus: MICEStatusReducer,
   addPassenger: AddMPassengerReducer,
   deletePassenger: DeleteMPassengerReducer,
-  miceSupplierSummary:listMICESupplierSummaryreducer,
-  
+  miceSupplierSummary: listMICESupplierSummaryreducer,
+
 
   //mice-passenger-services
   createPassengerMHotel: createPassengerMHotelReducer,
@@ -574,17 +579,44 @@ const reducer = combineReducers({
   type: productTypeReducer,
   isIdReducer: isIdEqualReducer,
 
-  //Sale By Customer Report
-  sale_by_customer: saleByCustomerReducer,
 
-  //account transaction report
-  accTran: accountTransactionReducer,
 
   // manage currencies list and create and update.
   currencyRateList: currencyRateListReducer,
   currencyReateCreate: currencyRateCreateReducer,
   getCurrency: getCurrencyReducer,
 
+
+
+  // REPORT STARTED
+
+  //sale by item report 
+  sale_by_item: saleByItemReducer,
+
+  //Sale By Customer Report
+  sale_by_customer: saleByCustomerReducer,
+
+  //account transaction report
+  accTran: accountTransactionReducer,
+
+  //purchase by vendor report
+  purchase_by_vendor: purchaseByVendorReducer,
+
+  //account transaction report
+  accTran: accountTransactionReducer,
+  gernalLedger: gernalLedgerReducer,
+
+  // // debit/credit report
+  debitReport: debitNoteReportReducer,
+  creditReport: creditNoteReportReducer,
+
+  // //expense report
+  expenseReport: expenseReportReducer,
+
+  // //Payables/Receivable report
+  vendorSummaryReport: vendorSummaryReducer,
+  customerSummaryReport: customerSummaryReducer,
+  // REPORT END
 
 
 });

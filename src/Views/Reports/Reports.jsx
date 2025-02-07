@@ -133,7 +133,7 @@ const Reports = () => {
                         </div>
 
                         <ul>
-                            <li><Link to={"/dashboard/account_transactions"}> Account Transactions</Link></li>
+                            {/* <li><Link to={"/dashboard/account_transactions"}> Account Transactions</Link></li> */}
                             <li><Link to={"/dashboard/gernal-ledger-report"}>General Ledger</Link></li>
                             {/* <li><Link to={"/dashboard/Expense_Reports"}>Detailed General Ledger</Link></li>
                             <li><Link to={"/dashboard/Activity_Report"}>Journal Report</Link></li> */}

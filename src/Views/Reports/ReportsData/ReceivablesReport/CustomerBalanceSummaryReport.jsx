@@ -133,7 +133,7 @@ const CustomerBalanceSummaryReport = () => {
                     </div>
 
                     <>
-                        <CommonCustomerBlance reportData={reportData} />
+                        <CommonCustomerBlance reportData={reportData} section="customer" />
                     </>
 
 

@@ -665,6 +665,7 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                         </div>
                     )}
                 </div>
+
                 <CustomDropdown28
                     label="Services"
                     options={servicesList}

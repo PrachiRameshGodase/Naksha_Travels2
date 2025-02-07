@@ -74,7 +74,10 @@ const MasterDetails = ({ closePopup, list }) => {
                         <div id="item-listsforcontainer">
                           <div id="newtableofagtheme">
                             <div className="table-headerx12">
-                             
+                              <div className="table-cellx12 quotiosalinvlisxs1">
+                                {otherIcons.warehouse_name_svg}
+                                Label Id
+                              </div>
                               <div className="table-cellx12 quotiosalinvlisxs1">
                                 {otherIcons.warehouse_name_svg}
                                 Label
@@ -99,14 +102,20 @@ const MasterDetails = ({ closePopup, list }) => {
                               <>
                                 {masterLists?.map((master, index) => (
                                   <div
-                                    className={`table-rowx12 ${
-                                      selectedRows.includes(master.id)
-                                        ? "selectedresult"
-                                        : ""
-                                    }`}
+                                    className={`table-rowx12 ${selectedRows.includes(master.id)
+                                      ? "selectedresult"
+                                      : ""
+                                      }`}
                                     key={index}
                                   >
-                                   
+
+                                    <div
+                                      onClick={() => handleRowClicked(master)}
+                                      className="table-cellx12 quotiosalinvlisxs1"
+                                    >
+                                      {master?.labelid}
+                                    </div>
+
                                     <div
                                       onClick={() => handleRowClicked(master)}
                                       className="table-cellx12 quotiosalinvlisxs1"
@@ -133,9 +142,9 @@ const MasterDetails = ({ closePopup, list }) => {
                                         {master?.note
                                           ? master?.note?.length > 10
                                             ? master?.note?.substring(
-                                                0,
-                                                30
-                                              ) + "..."
+                                              0,
+                                              30
+                                            ) + "..."
                                             : master?.note
                                           : ""}
                                       </p>

@@ -16,8 +16,6 @@ const CommonExpense = ({ reportData, masterData }) => {
         return lable ? lable.label : '';
     };
 
-    console.log("masterdata", masterData)
-
     return (
         <div className='account_report_888'>
             <div className="ch2xjlokw5456wx321">
@@ -63,11 +61,13 @@ const CommonExpense = ({ reportData, masterData }) => {
                                                             : ""}
                                         </div>
                                         <div className="tex5w6x6ws xkwls2z2">{formatDate3(val?.transaction_date)}</div>
-                                        <div className="tex5w6x6ws xkwls2z3">
-                                            {val?.customer?.display_name}
-                                        </div>
+
                                         <div className="tex5w6x6ws xkwls2z3">
                                             {val?.vendor?.display_name}
+                                        </div>
+
+                                        <div className="tex5w6x6ws xkwls2z3">
+                                            {val?.customer?.display_name}
                                         </div>
 
                                         <div className="tex5w6x6ws xkwls2z4"> {findUnitNameById(11, val?.transaction_type)}</div>

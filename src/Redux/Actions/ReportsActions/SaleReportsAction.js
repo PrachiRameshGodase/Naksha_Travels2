@@ -26,6 +26,8 @@ export const saleByItemAction = (params) => async dispatch => {
     dispatch({ type: SALE_BY_ITEM_REQUEST });
     try {
         const response = await axiosInstance.post(`/report/sale_by_item_report`, params);
+        console.log("resppppppppppp", response)
+
         dispatch({ type: SALE_BY_ITEM_SUCCESS, payload: response.data });
     } catch (error) {
         dispatch({ type: SALE_BY_ITEM_FAILURE, payload: error.message });
