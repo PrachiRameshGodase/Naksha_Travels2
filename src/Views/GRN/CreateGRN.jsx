@@ -174,6 +174,7 @@ const CreateGRN = () => {
 
           item_name: item?.item?.name,
           upload_image: JSON?.parse(item?.upload_image),
+          custom_duty:item?.custom_duty,
           // Additional conditions
           ...(convert === "purchase_to_grn" && fetchDetails && {
             po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
@@ -460,7 +461,7 @@ const CreateGRN = () => {
   //empty all the fields when no select
   useEffect(() => {
     if (formData?.purchase_order_id) {
-      // console.log("purchseDetail", purchseDetail)
+      console.log("purchseDetail", purchseDetail)
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
         item_name: item?.item?.name,
@@ -489,7 +490,7 @@ const CreateGRN = () => {
       // }
     }
   }, [formData?.purchase_order_id, purchseDetail]);
-
+console.log("formData", formData?.purchase_order_id)
 
   return (
     <>

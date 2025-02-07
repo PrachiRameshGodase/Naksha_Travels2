@@ -84,172 +84,162 @@ const CalculationSection = ({
 
   return (
     <div className="calctotalsection">
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              {section} Price:<b className="color_red">*</b>
-            </label>
-            <input
-              type="text"
-              value={formData?.gross_amount || ""}
-              onChange={(e) => handleChange(e)}
-              placeholder="0.00"
-              name="gross_amount"
-              autoComplete="off"
-              className="inputbox"
-            />
-          </div>
-          {errors?.gross_amount && (
-            <p
-              className="error_message"
-              style={{
-                whiteSpace: "nowrap",
-                // marginBottom: "0px important",
-              }}
-            >
-              {otherIcons.error_svg}
-              Please Fill {section} Price
-            </p>
-          )}
+    <div className="calcuparentc">
+      <div id="tax-details">
+        <div className="clcsecx12s1">
+          <label>
+            {section} Price:<b className="color_red">*</b>
+          </label>
+          <input
+            type="text"
+            value={formData?.gross_amount || ""}
+            onChange={(e) => handleChange(e)}
+            placeholder="0.00"
+            name="gross_amount"
+            autoComplete="off"
+            className="inputbox"
+          />
         </div>
+        {errors?.gross_amount && (
+          <p
+            className="error_message"
+            style={{
+              whiteSpace: "nowrap",
+              marginBottom: "0px important",
+            }}
+          >
+            {otherIcons.error_svg}
+            Please Fill {section} Price
+          </p>
+        )}
       </div>
+    </div>
 
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              <p className="edit_changes_021" onClick={openExpenseCharges}>
-                Edit and add charges
-                {openCharges
-                  ? otherIcons?.down_arrow_svg
-                  : otherIcons?.up_arrow_svg}
-                {/* <span
-                  style={{ marginTop: "10px" }}
-                >
-                  Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total.
-                </span> */}
-              </p>
-            </label>
-          </div>
-
-          {openCharges && (
-            <ExpenseCharges
-              formValues={{ formData, setFormData, handleChange }}
-            />
-          )}
-        </div>
-      </div>
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <div className="itemsectionrows" id="expense_charges_3223">
-              <div
-                className="tableheadertopsxs1"
-                style={{ textTransform: "inherit" }}
+    <div className="calcuparentc">
+      <div id="tax-details">
+        <div className="clcsecx12s1">
+          <label>
+            <p className="edit_changes_021" onClick={openExpenseCharges}>
+              Edit and add charges
+              {openCharges
+                ? otherIcons?.down_arrow_svg
+                : otherIcons?.up_arrow_svg}
+              {/* <span
+                style={{ marginTop: "10px" }}
               >
-                <p className="tablsxs1a1x3"></p>
-                <p className="tablsxs1a2x3">Supplier Price</p>
-                <p className="tablsxs1a2x3">Customer Price</p>
+                Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total.
+              </span> */}
+            </p>
+          </label>
+        </div>
+
+        {openCharges && (
+          <ExpenseCharges
+            formValues={{ formData, setFormData, handleChange }}
+          />
+        )}
+      </div>
+    </div>
+    <div className="calcuparentc">
+      <div id="tax-details">
+        <div className="clcsecx12s1">
+          <div className="itemsectionrows" id="expense_charges_3223">
+            <div
+              className="tableheadertopsxs1"
+              style={{ textTransform: "inherit" }}
+            >
+              <p className="tablsxs1a1x3" ></p>
+              <p className="tablsxs1a2x3">Supplier Price</p>
+              <p className="tablsxs1a2x3">Customer Price</p>
+            </div>
+
+            <div className="tablerowtopsxs1">
+              <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>Amount</div>
+
+              <div className="tablsxs1a2x3" >
+                <NumericInput
+                  value={formData?.supplier_amount ? formData.supplier_amount.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
               </div>
-
-              <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>
-                  Amount
-                </div>
-
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.supplier_amount || 0}
-                  // onChange={handleChange}
-                  />
-                </div>
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.customer_amount || 0}
-                  // onChange={handleChange}
-                  />
-                </div>
+              <div className="tablsxs1a2x3">
+                <NumericInput
+                  value={formData?.customer_amount ? formData.customer_amount.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
               </div>
-              <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{ display: "flex" }}>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    Tax(%)
-                  </span>
-                  <div style={{ marginLeft: "20px", fontSize: "12px" }}>
-                    <CustomDropdown13
-                      options={tax_rate}
-                      value={formData?.tax_percent || ""}
-                      onChange={handleChange}
-                      name="tax_percent"
-                      type="taxRate"
-                      defaultOption="Taxes"
-                      extracssclassforscjkls="extracssclassforscjklsitem"
-                      className2="item4"
-                      tax_rate={formData?.tax_percent}
-                    />
-                  </div>
-                </div>
-
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.supplier_tax || 0}
-                  // onChange={handleChange}
-                  />
-                </div>
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.tax_amount || 0}
-                  // onChange={handleChange}
+            </div>
+            <div className="tablerowtopsxs1">
+              <div className="tablsxs1a1x3" style={{ display: "flex" }}>
+                <span style={{ fontSize: "12px", display: "flex", alignItems: "center" }}>Tax(%)</span>
+                <div style={{ marginLeft: "20px", fontSize: "12px" }}>
+                  <CustomDropdown13
+                    options={tax_rate}
+                    value={formData?.tax_percent || ""}
+                    onChange={handleChange}
+                    name="tax_percent"
+                    type="taxRate"
+                    defaultOption="Taxes"
+                    extracssclassforscjkls="extracssclassforscjklsitem"
+                    className2="item4"
+                    tax_rate={formData?.tax_percent}
                   />
                 </div>
               </div>
-              <div className="tablerowtopsxs1">
-                <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>
-                  Final Amount
-                </div>
 
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.supplier_total || 0}
-                  // onChange={handleChange}
-                  />
-                </div>
-                <div className="tablsxs1a2x3">
-                  <NumericInput
-                    value={formData?.total_amount || 0}
-                  // onChange={handleChange}
-                  />
-                </div>
+              <div className="tablsxs1a2x3">
+                <NumericInput
+                 value={formData?.supplier_tax ? formData.supplier_tax.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
+              </div>
+              <div className="tablsxs1a2x3">
+                <NumericInput
+                  value={formData?.tax_amount ? formData.tax_amount.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="tablerowtopsxs1">
+              <div className="tablsxs1a1x3" style={{ fontSize: "12px" }}>Final Amount</div>
+
+              <div className="tablsxs1a2x3">
+                <NumericInput
+                  value={formData?.supplier_total ? formData.supplier_total.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
+              </div>
+              <div className="tablsxs1a2x3">
+                <NumericInput
+                   value={formData?.total_amount ? formData.total_amount.toFixed(2) : "0.00"}
+                // onChange={handleChange}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Retain:</label>
-            <input
-              type="text"
-              value={formData?.retain}
-              placeholder="0.00"
-              onChange={handleChange}
-              name="retain"
-              className="inputbox"
-              autoComplete="off"
-            />
-          </div>
+    <div className="calcuparentc">
+      <div id="tax-details">
+        <div className="clcsecx12s1">
+          <label>
+            Retain:
+          </label>
+          <input
+            type="text"
+            value={formData?.retain}
+            placeholder="0.00"
+            onChange={handleChange}
+            name="retain"
+            autoComplete="off"
+            className="inputbox"
+          />
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

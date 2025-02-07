@@ -204,8 +204,7 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
         onClick={() => setIsOpen(!isOpen)}
         className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}
       >
-
-        {value ? options?.find(option => option.flight_name == value)?.flight_name : defaultOption}
+      {name=="package_name"?value ? options?.find(option => option.package_name == value)?.package_name : defaultOption:value ? options?.find(option => option.flight_name == value)?.flight_name : defaultOption}
 
         <svg
           width="13"
@@ -261,9 +260,10 @@ export const CustomDropdown003 = forwardRef((props, ref) => {
                       }
                       : {})}
                   >
-                    {option?.flight_name}
-                    {option?.category?.name ? ` / ${option.category.name}` : ''}
-                    {option?.sub_category?.name ? ` / ${option.sub_category.name}` : ''}
+                    {name=="package_name"? option?.package_name:option?.flight_name}
+                    
+                    {/* {option?.category?.name ? ` / ${option.category.name}` : ''}
+                    {option?.sub_category?.name ? ` / ${option.sub_category.name}` : ''} */}
                   </div>
                 ))}
 
