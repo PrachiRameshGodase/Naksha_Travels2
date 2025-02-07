@@ -107,8 +107,8 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     setCusData(detailData?.customer);//if customer data found. in detail api
                 }
             }
-             if (detailData?.vendor) {
-                    setCusData(detailData?.vendor);//if vendor data found in detail api
+            if (detailData?.vendor) {
+                setCusData(detailData?.vendor);//if vendor data found in detail api
 
             }
 
@@ -142,10 +142,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
     useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
 
-<<<<<<< HEAD
-=======
     // console.log("formData", formData)
->>>>>>> c5c77c92675544332fea640389575629322ecee4
     return {
         formData,
         setFormData,

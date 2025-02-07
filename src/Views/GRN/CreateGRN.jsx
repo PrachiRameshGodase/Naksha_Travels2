@@ -42,7 +42,7 @@ const CreateGRN = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const vendorList = useSelector((state) => state?.vendorList);
- 
+
   const purchseList = useSelector((state) => state?.purchseList);
   const detailsPurchase = useSelector((state) => state?.detailsPurchase);
   const GRNcreates = useSelector((state) => state?.GRNcreate);
@@ -66,7 +66,7 @@ const CreateGRN = () => {
   const purchseDetail = purchseDetails?.data?.purchaseOrder;
 
   const [fetchDetails, setFetchDetails] = useState([]);
-console.log("fetchDetails",fetchDetails)
+  console.log("fetchDetails", fetchDetails)
   useEffect(() => {
     if (itemId && GRNdetail) {
       // console.log("Setting fetchDetails with GRNdetail");
@@ -139,14 +139,6 @@ console.log("fetchDetails",fetchDetails)
     isDuplicate
   );
 
-<<<<<<< HEAD
-  // console.log("formdata", formData)
-  // console.log("fetchDetailsfetchDetailsfetchDetailsfetchDetails", fetchDetails)
-=======
-
->>>>>>> c5c77c92675544332fea640389575629322ecee4
-
-
   useEffect(() => {
 
     // update the field of items
@@ -180,7 +172,7 @@ console.log("fetchDetails",fetchDetails)
 
           item_name: item?.item?.name,
           upload_image: JSON?.parse(item?.upload_image),
-          custom_duty:item?.custom_duty,
+          custom_duty: item?.custom_duty,
           // Additional conditions
           ...(convert === "purchase_to_grn" && fetchDetails && {
             po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
@@ -208,7 +200,7 @@ console.log("fetchDetails",fetchDetails)
           tax_rate: 0,
           tax_amount: 0,
           discount: 0,
-          custom_duty:0,
+          custom_duty: 0,
           gross_amount: 0,
           final_amount: 0,
           discount_type: 1,
@@ -243,7 +235,7 @@ console.log("fetchDetails",fetchDetails)
         return {
           ...newChargesType,
           upload_image: JSON?.parse(charges?.upload_image),
-          
+
         };
       })
       : [
@@ -260,8 +252,8 @@ console.log("fetchDetails",fetchDetails)
 
     setFormData({
       ...formData,
-      vendor_id:fetchDetails?.vendor_id,
-      purchase_order_id:fetchDetails?.purchase_order_id,
+      vendor_id: fetchDetails?.vendor_id,
+      purchase_order_id: fetchDetails?.purchase_order_id,
       items: itemsFromApi,
       charges_type: chargesFromApi,
       id: isEdit ? fetchDetails?.id : 0,//it works in 0 is works convert create/and dublicate..
@@ -507,7 +499,7 @@ console.log("fetchDetails",fetchDetails)
             <div id="leftareax12">
               <h1 id="firstheading">
                 {otherIcons?.create_grn_svg}
-                {isEdit ? "Update GRN" :"New GRN"}
+                {isEdit ? "Update GRN" : "New GRN"}
               </h1>
             </div>
             <div id="buttonsdata">
