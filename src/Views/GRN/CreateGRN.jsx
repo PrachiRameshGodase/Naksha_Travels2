@@ -42,7 +42,7 @@ const CreateGRN = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const vendorList = useSelector((state) => state?.vendorList);
-  // const [cusData, setCusData] = useState(null);
+ 
   const purchseList = useSelector((state) => state?.purchseList);
   const detailsPurchase = useSelector((state) => state?.detailsPurchase);
   const GRNcreates = useSelector((state) => state?.GRNcreate);
@@ -58,9 +58,7 @@ const CreateGRN = () => {
   const itemList = useSelector((state) => state?.itemList);
   const allItems = itemList?.data?.item;
 
-  // const [isVendorSelect, setIsVendorSelect] = useState(false);
-  // const [isItemSelect, setIsItemSelect] = useState(false);
-  // const [isGrnQntySelect, setIsGrnQntySelect] = useState(false)
+
   const GRNdetails = useSelector((state) => state?.GRNdetails);
   const GRNdetail = GRNdetails?.data?.bgrnill;
 
@@ -68,7 +66,7 @@ const CreateGRN = () => {
   const purchseDetail = purchseDetails?.data?.purchaseOrder;
 
   const [fetchDetails, setFetchDetails] = useState([]);
-
+console.log("fetchDetails",fetchDetails)
   useEffect(() => {
     if (itemId && GRNdetail) {
       // console.log("Setting fetchDetails with GRNdetail");
@@ -141,8 +139,12 @@ const CreateGRN = () => {
     isDuplicate
   );
 
+<<<<<<< HEAD
   // console.log("formdata", formData)
   // console.log("fetchDetailsfetchDetailsfetchDetailsfetchDetails", fetchDetails)
+=======
+
+>>>>>>> c5c77c92675544332fea640389575629322ecee4
 
 
   useEffect(() => {
@@ -177,7 +179,8 @@ const CreateGRN = () => {
           // purchase_price: +item?.item?.purchase_price,
 
           item_name: item?.item?.name,
-
+          upload_image: JSON?.parse(item?.upload_image),
+          custom_duty:item?.custom_duty,
           // Additional conditions
           ...(convert === "purchase_to_grn" && fetchDetails && {
             po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.po_qty,
@@ -205,6 +208,7 @@ const CreateGRN = () => {
           tax_rate: 0,
           tax_amount: 0,
           discount: 0,
+          custom_duty:0,
           gross_amount: 0,
           final_amount: 0,
           discount_type: 1,
@@ -238,6 +242,8 @@ const CreateGRN = () => {
 
         return {
           ...newChargesType,
+          upload_image: JSON?.parse(charges?.upload_image),
+          
         };
       })
       : [
@@ -254,6 +260,8 @@ const CreateGRN = () => {
 
     setFormData({
       ...formData,
+      vendor_id:fetchDetails?.vendor_id,
+      purchase_order_id:fetchDetails?.purchase_order_id,
       items: itemsFromApi,
       charges_type: chargesFromApi,
       id: isEdit ? fetchDetails?.id : 0,//it works in 0 is works convert create/and dublicate..
@@ -460,23 +468,21 @@ const CreateGRN = () => {
   //empty all the fields when no select
   useEffect(() => {
     if (formData?.purchase_order_id) {
-      // console.log("purchseDetail", purchseDetail)
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
         item_name: item?.item?.name,
         unit_id: item?.unit_id,
         tax_rate: (item?.tax_rate),
         po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.quantity,
-        gr_qty: +item?.gr_qty,
-        rate: +item?.rate,
-        charges_weight: +item?.charges_weight,
+        gr_qty: item?.gr_qty,
+        rate: item?.rate,
+        charges_weight: item?.charges_weight,
         custom_duty: item?.custom_duty,
-        gross_amount: +item?.gross_amount,
+        gross_amount: item?.gross_amount,
         final_amount: item?.final_amount,
-        tax_amount: +item?.tax_amount,
+        tax_amount: item?.tax_amount,
         item_remark: item?.item_remark,
       }));
-
       setFormData((prev) => ({
         ...prev,
         items: itemsFromApi || []
@@ -490,7 +496,7 @@ const CreateGRN = () => {
     }
   }, [formData?.purchase_order_id, purchseDetail]);
 
-  // console.log("purchseDetail?.items", formData)
+
   return (
     <>
       {(GRNdetails?.loading) ? <Loader02 /> : <>
@@ -501,7 +507,7 @@ const CreateGRN = () => {
             <div id="leftareax12">
               <h1 id="firstheading">
                 {otherIcons?.create_grn_svg}
-                New GRN
+                {isEdit ? "Update GRN" :"New GRN"}
               </h1>
             </div>
             <div id="buttonsdata">

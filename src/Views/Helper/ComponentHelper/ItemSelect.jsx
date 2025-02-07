@@ -34,6 +34,7 @@ import AddAssistPopup from "../../Invoices/AddAssistPopup";
 import CustomDropdown28 from "../../../Components/CustomDropdown/CustomDropdown28";
 import { getCurrencySymbol } from "./ManageStorage/localStorageUtils";
 import { useLocation } from "react-router-dom";
+import AddTourPackagePopup from "../../Invoices/AddTourPackagePopup";
 
 const ItemSelect = ({
   formData,
@@ -597,7 +598,15 @@ const ItemSelect = ({
             section={section}
           />
         );
-
+        case "Tour Package":
+          return (
+            <AddTourPackagePopup
+              setShowModal={setActivePopup}
+              handleAddService={handleAddService}
+              edit_data={activePopup?.data || []}
+              section={section}
+            />
+          );
       case "Assist":
         return (
           <AddAssistPopup

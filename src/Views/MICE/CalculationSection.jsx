@@ -158,13 +158,13 @@ const CalculationSection = ({
 
                 <div className="tablsxs1a2x3" >
                   <NumericInput
-                    value={formData?.supplier_amount || 0}
+                    value={formData?.supplier_amount ? formData.supplier_amount.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
-                    value={formData?.customer_amount || 0}
+                    value={formData?.customer_amount ? formData.customer_amount.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>
@@ -189,13 +189,13 @@ const CalculationSection = ({
 
                 <div className="tablsxs1a2x3">
                   <NumericInput
-                    value={formData?.supplier_tax || 0}
+                   value={formData?.supplier_tax ? formData.supplier_tax.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
-                    value={formData?.tax_amount || 0}
+                    value={formData?.tax_amount ? formData.tax_amount.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>
@@ -205,13 +205,13 @@ const CalculationSection = ({
 
                 <div className="tablsxs1a2x3">
                   <NumericInput
-                    value={formData?.supplier_total || 0}
+                    value={formData?.supplier_total ? formData.supplier_total.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>
                 <div className="tablsxs1a2x3">
                   <NumericInput
-                    value={formData?.total_amount || 0}
+                     value={formData?.total_amount ? formData.total_amount.toFixed(2) : "0.00"}
                   // onChange={handleChange}
                   />
                 </div>

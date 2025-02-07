@@ -120,7 +120,28 @@ const CustomDropdown26 = forwardRef((props, ref) => {
                 />
               </div>
             </>
-          ) : service_data?.service_name === "Assist" ? (
+          ) :
+          service_data?.service_name === "Tour Package" ? (
+            <>
+              <div>
+                <b>Service Name:</b> {service_data?.service_name || "-"}
+              </div>
+              <div>
+                <b>Package Name:</b> {service_data?.package_name || "-"}
+              </div>
+              <div>
+                <b>Destination:</b> {service_data?.destination || "-"}
+              </div>
+              <div>
+                <b>Hotel Type:</b>{" "}
+                <ShowUserMastersValue
+                  type="35"
+                  id={service_data?.hotel_type || "-"}
+                />
+              </div>
+            </>
+          )
+          : service_data?.service_name === "Assist" ? (
             <>
               <div>
                 <b>Service Name:</b> {service_data?.service_name || "-"}

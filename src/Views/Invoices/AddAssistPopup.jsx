@@ -14,6 +14,7 @@ import "../DSR/Services/CreateHotelPopup.scss";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import {sendData} from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import toast from "react-hot-toast";
 
 const AddAssistPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
   const {

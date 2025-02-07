@@ -20,6 +20,7 @@ import ExpenseCharges from "../Helper/ComponentHelper/ExpenseCharges";
 import ShowMastersValue from "../Helper/ShowMastersValue";
 import { formatDate3 } from "../Helper/DateFormat";
 import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import AddTourPackagePopup from "./AddTourPackagePopup";
 
 const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const dispatch = useDispatch();
@@ -45,11 +46,13 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
     const isIdEqualState = useSelector((state) => state?.isIdReducer);
 
     const [activePopup, setActivePopup] = useState(null);
-
+    console.log("activePopup",activePopup)
     const [showAddModal, setShowAddModal] = useState(false);
 
     const handleSelectService = (e) => {
+        console.log("e", e)
         const { value } = e.target;
+        
         setActivePopup({ popupType: value });
     };
 
@@ -68,6 +71,8 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                                 ? data?.passport_no
                                 : name === "CarHire"
                                     ? data?.vehicle_type_id
+                                    : name === "Tour Package"
+                                 ? data?.package_name
                                     : name === "Other"
                                         ? data?.item_name
                                         : "";
@@ -276,7 +281,7 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
         if (!activePopup) return null;
 
         const { popupType } = activePopup;
-
+       console.log("popupType", popupType)
         switch (popupType) {
             case "Hotels":
                 return (
@@ -313,6 +318,13 @@ const AddServices = ({ formData, setFormData, handleChange, note }) => {
                         handleAddService={handleAddService}
                     />
                 );
+            case "Tour Package":
+                    return (
+                        <AddTourPackagePopup
+                            setShowModal={setActivePopup}
+                            handleAddService={handleAddService}
+                        />
+                    );
             case "Assist":
                 return (
                     <AddAssistPopup

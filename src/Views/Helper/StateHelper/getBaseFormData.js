@@ -78,6 +78,7 @@ export const getBaseFormData = (overrides = {}, removeKeys = []) => {
                 // for service select
                 is_service: null,
                 service_data: null,
+             
             },
         ],
     };

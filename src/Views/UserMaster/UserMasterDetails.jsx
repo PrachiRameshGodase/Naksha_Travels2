@@ -99,9 +99,13 @@ const UserMasterDetails = ({ closePopup, list }) => {
                           <div id="newtableofagtheme">
                             <div className="table-headerx12">
                              
-                              <div className="table-cellx12 quotiosalinvlisxs1">
+                            <div className="table-cellx12 quotiosalinvlisxs1">
                                 {otherIcons.warehouse_name_svg}
                                 Label
+                              </div>
+                              <div className="table-cellx12 quotiosalinvlisxs1">
+                                {otherIcons.warehouse_name_svg}
+                                Labelid 
                               </div>
                               <div className="table-cellx12 quotiosalinvlisxs2">
                                 {otherIcons.quantity_svg}
@@ -137,6 +141,13 @@ const UserMasterDetails = ({ closePopup, list }) => {
                                     >
                                       {master?.label}
                                     </div>
+                                    <div
+                                      onClick={() => handleRowClicked(master)}
+                                      className="table-cellx12 quotiosalinvlisxs1"
+                                    >
+                                      {master?.labelid}
+                                    </div>
+                                   
                                     <div
                                       onClick={() => handleRowClicked(master)}
                                       className="table-cellx12 quotiosalinvlisxs2"

@@ -22,13 +22,17 @@ export const DropdownSearchHealperfunctions = (searchTerm, type, name, dispatch,
     else if (type === "select_item2") {
         dispatch(flightListAction({ search: searchTerm, ...sendData, ...productType }));
     }
-
+    
     else if (type === "vendor" || type === "vendor_charges") {
         if (name === "customer_id" || name === "guest_ids" || name === "passenger_visa_id" || name === "passenger_insurance_id") {
             dispatch(customersList({ ...sendData, search: searchTerm }));
-        } else if (name === "vendor_id") {
+        }else  if (name === "member_id" || name === "employee_id") {
+            dispatch(customersList({ ...sendData, search: searchTerm,customer_type: "Individual" }));
+        }
+         else if (name === "vendor_id") {
             dispatch(vendorsLists({ ...sendData, search: searchTerm }));
         }
+        
         else if (name === "room_id") {
             dispatch(hotelRoomListAction({ search: searchTerm, hotel_id: hotelID, ...sendData, }));
         }

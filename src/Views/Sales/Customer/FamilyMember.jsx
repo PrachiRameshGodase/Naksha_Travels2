@@ -96,7 +96,7 @@ const FamilyMember = ({
   }, [employeeDetails, setUserData]);
 
   const fetchCustomers = () => {
-    const sendData = {  active: 1 , status: 1};
+    const sendData = {customer_type: "Individual",  active: 1 , status: 1};
     dispatch(customersList(sendData));
   };
 
@@ -177,17 +177,14 @@ const FamilyMember = ({
         <tbody>
           {employeeDetails?.length > 0 ? (
             
-            employeeDetails?.map((member, index) => {
+            employeeDetails?.filter((item) => item?.member_id != customerDetails?.user?.id)?.map((member, index) => {
              
-              const disabledRow =member?.member_id == customerDetails?.user?.id;
+              // const disabledRow =member?.member_id == customerDetails?.user?.id;
               return (
                  (
                   <tr
                     key={index}
-                    style={{backgroundColor: disabledRow ? "#f2f2f2" : "#fff",cursor: disabledRow ? "not-allowed" : "pointer",}}
-                    data-tooltip-content={disabledRow? "Not able to do anything yourself as a family member": ""}
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-place="bottom"
+                 
                   >
                     <td>{index + 1}</td>
                     <td>{member?.display_name}</td>
@@ -205,7 +202,7 @@ const FamilyMember = ({
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}
                         index={index}
-                        disabled={disabledRow}
+                        // disabled={disabledRow}
                       />
                     </td>
                     <td style={{ width: "40px" }}>

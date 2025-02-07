@@ -423,7 +423,9 @@ const HotelServices = ({ data }) => {
                               onClick={() => {
                                 handleStatusChange(item);
                               }}
-                              // onClick={() => handleRowClicked(item)}
+                              data-tooltip-id="my-tooltip"
+                              data-tooltip-content="Clicking on the arrow will update the room status"
+                              data-tooltip-place="bottom"
                               className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
                             >
                               <p

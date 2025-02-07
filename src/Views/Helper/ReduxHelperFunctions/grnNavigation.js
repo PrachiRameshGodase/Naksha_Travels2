@@ -16,7 +16,10 @@ export const handleGrnNavigation = (dispatch, editDub, buttonName, navigate, res
 
                 toast.success("GRN Sent For Approval");
                 navigate(`/dashboard/grn`); // Redirect to the GRN list page
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5c77c92675544332fea640389575629322ecee4
             })
         }
         // Purchase Order in update

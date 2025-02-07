@@ -78,10 +78,7 @@ export const ItemSelectGRN = ({
       0
     );
 
-    console.log("tax_amount", tax_amount)
-    // console.log("newItems", newItems)
-
-    const total_charges = newCharges?.reduce((acc, item) => {
+   const total_charges = newCharges?.reduce((acc, item) => {
       const amount =
         item?.amount && !isNaN(item?.amount) ? parseFloat(item?.amount) : 0;
       return acc + amount;
@@ -225,12 +222,16 @@ export const ItemSelectGRN = ({
 
         const taxAmount = (grossAmount * (parseInt(item?.tax_rate) || 0)) / 100;
 
+<<<<<<< HEAD
         // console.log("item?.rate", item?.rate)
         // console.log("item?.gr_qty", item?.gr_qty)
         // console.log("grossAmount", grossAmount)
         // console.log("taxAmounttaxAmount", taxAmount)
 
         // Ensure custom_duty is a valid number; if not, set it to 0
+=======
+       // Ensure custom_duty is a valid number; if not, set it to 0
+>>>>>>> c5c77c92675544332fea640389575629322ecee4
         const customDuty = !isNaN(+item.custom_duty) ? +item.custom_duty : 0;
         const customDutyAmount = (grossAmount * customDuty) / 100;
 

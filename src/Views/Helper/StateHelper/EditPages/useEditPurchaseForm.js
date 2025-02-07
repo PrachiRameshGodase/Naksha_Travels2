@@ -92,7 +92,7 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
             if (detailData?.upload_image) setImgLoader("success");
 
-            // console.log("detailData", detailData)
+            console.log("detailData", detailData?.vendor)
             if (detailData?.address) {
                 const parsedAddress = JSON?.parse(detailData?.address);
                 setAddSelect({
@@ -106,6 +106,10 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                 } else {
                     setCusData(detailData?.customer);//if customer data found. in detail api
                 }
+            }
+             if (detailData?.vendor) {
+                    setCusData(detailData?.vendor);//if vendor data found in detail api
+
             }
 
             setIsCustomerSelect(!!detailData?.customer_id);//remove vendor error if vendor is selected
@@ -138,6 +142,10 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
     useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
 
+<<<<<<< HEAD
+=======
+    // console.log("formData", formData)
+>>>>>>> c5c77c92675544332fea640389575629322ecee4
     return {
         formData,
         setFormData,
