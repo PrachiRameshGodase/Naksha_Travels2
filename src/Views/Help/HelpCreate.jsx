@@ -44,6 +44,7 @@ const HelpCreate = () => {
     comments: null,
     upload_documents: [],
     id: 0,
+    
   });
 
   const params = new URLSearchParams(location.search);

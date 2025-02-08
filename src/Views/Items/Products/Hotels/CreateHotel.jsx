@@ -17,15 +17,12 @@ import {
   hotelDetailsAction,
 } from "../../../../Redux/Actions/hotelActions";
 import { SubmitButton2 } from "../../../Common/Pagination/SubmitButton";
-import {
-  SingleImageUpload
-} from "../../../Helper/ComponentHelper/ImageUpload";
+import { SingleImageUpload } from "../../../Helper/ComponentHelper/ImageUpload";
 import { financialYear } from "../../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
-import {
-  ShowUserMasterData
-} from "../../../Helper/HelperFunctions";
+import { ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import NumericInput from "../../../Helper/NumericInput";
 import { otherIcons } from "../../../Helper/SVGIcons/ItemsIcons/Icons";
+import CustomDropdown24 from "../../../../Components/CustomDropdown/CustomDropdown24";
 
 const CreateHotel = () => {
   const Navigate = useNavigate();
@@ -36,11 +33,12 @@ const CreateHotel = () => {
   const hotelDetails = useSelector((state) => state?.hotelDetail);
   const hotelData = hotelDetails?.data?.data?.hotels || {};
 
-  const countryList = useSelector((state) => state?.countries?.countries);
-  const states = useSelector((state) => state?.states?.state);
-  const statesLoader = useSelector((state) => state?.states?.loading);
-  const cities = useSelector((state) => state?.cities?.city);
-  const citiesLoader = useSelector((state) => state?.cities?.loading);
+  const countryListData = useSelector((state) => state?.countries);
+  const countryList = countryListData?.countries?.country;
+  const stateListData = useSelector((state) => state?.states);
+  const statess = stateListData?.state?.country;
+  const cityListData = useSelector((state) => state?.cities);
+  const citiess = cityListData?.city?.country;
 
   const hotelType = ShowUserMasterData("35");
 
@@ -68,7 +66,6 @@ const CreateHotel = () => {
     city_id: false,
     pincode: false,
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,10 +106,6 @@ const CreateHotel = () => {
       [name]: false,
     }));
   };
-
-  useEffect(() => {
-    dispatch(fetchGetCountries());
-  }, [dispatch]);
 
   useEffect(() => {
     if (itemId) {
@@ -194,12 +187,11 @@ const CreateHotel = () => {
   return (
     <div>
       <>
-        {statesLoader && <MainScreenFreezeLoader />}
-        {citiesLoader && <MainScreenFreezeLoader />}
         <TopLoadbar />
-        {(freezLoadingImg || hotelCreates?.loading) && (
-          <MainScreenFreezeLoader />
-        )}
+        {(freezLoadingImg ||
+          hotelCreates?.loading ||
+          stateListData?.loading ||
+          cityListData?.loading) && <MainScreenFreezeLoader />}
         <div className="formsectionsgrheigh">
           <div id="Anotherbox" className="formsectionx2">
             <div id="leftareax12">
@@ -287,18 +279,15 @@ const CreateHotel = () => {
                           <div id="inputx1">
                             <span>
                               {otherIcons.country_svg}
-                              <select
+                              <CustomDropdown24
+                                label="Select Country"
+                                options={countryList}
+                                value={formData?.country_id}
+                                onChange={handleChange}
                                 name="country_id"
-                                value={formData.name_svg}
-                                onChange={(e) => handleChange(e, "country_id")}
-                              >
-                                <option value="">Select Country</option>
-                                {countryList?.country?.map((country) => (
-                                  <option key={country.id} value={country.id}>
-                                    {country.name}
-                                  </option>
-                                ))}
-                              </select>
+                                defaultOption="Select Country Name"
+                                type="countries"
+                              />
                             </span>
                             {errors?.country_id && (
                               <p
@@ -316,8 +305,9 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
-                            }`}
+                          className={`form_commonblock ${
+                            formData?.country_id ? "" : "disabledfield"
+                          }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""
@@ -333,18 +323,15 @@ const CreateHotel = () => {
                             <span>
                               {otherIcons.name_svg}
 
-                              <select
+                              <CustomDropdown24
+                                label="Select vendor"
+                                options={statess}
+                                value={formData?.state_id}
+                                onChange={handleChange}
                                 name="state_id"
-                                value={formData.state_id}
-                                onChange={(e) => handleChange(e, "state_id")}
-                              >
-                                <option value="">Select State</option>
-                                {states?.country?.map((state) => (
-                                  <option key={state.id} value={state.id}>
-                                    {state.name}
-                                  </option>
-                                ))}
-                              </select>
+                                defaultOption="Select State Name"
+                                type="countries"
+                              />
                             </span>
                             {errors?.state_id && (
                               <p
@@ -365,8 +352,9 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
-                            }`}
+                          className={`form_commonblock ${
+                            formData.state_id ? "" : "disabledfield"
+                          }`}
                         >
                           <label>
                             City<b className="color_red">*</b>
@@ -374,18 +362,15 @@ const CreateHotel = () => {
                           <div id="inputx1">
                             <span>
                               {otherIcons.city_svg}
-                              <select
+                              <CustomDropdown24
+                                label="Select vendor"
+                                options={citiess}
+                                value={formData.city_id}
+                                onChange={handleChange}
                                 name="city_id"
-                                value={formData.name_svg}
-                                onChange={(e) => handleChange(e)}
-                              >
-                                <option value="">Select City</option>
-                                {cities?.country?.map((city) => (
-                                  <option key={city.id} value={city.id}>
-                                    {city.name}
-                                  </option>
-                                ))}
-                              </select>
+                                defaultOption="Select City Name"
+                                type="countries"
+                              />
                             </span>
                             {errors?.city_id && (
                               <p

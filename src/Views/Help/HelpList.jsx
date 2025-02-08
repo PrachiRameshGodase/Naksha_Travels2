@@ -60,9 +60,8 @@ const HelpList = () => {
   const [showPopup1, setShowPopup1] = useState(false);
   const [statusValue, setstatusValue] = useState(false);
 
-  const handleUpdateStatus = (id) => {
-    console.log("id", id);
-    setstatusValue(id);
+  const handleUpdateStatus = (item) => {
+    setstatusValue(item?.id);
     setShowPopup1(true);
   };
   return (
@@ -203,23 +202,23 @@ const HelpList = () => {
                             {quotation?.comments || ""}
                           </div>
 
-                          <div className="table-cellx12 quotiosalinvlisxs5 help_pointer" onClick={() => handleUpdateStatus(quotation.id)}>
+                          <div className="table-cellx12 quotiosalinvlisxs5 help_pointer" onClick={() => handleUpdateStatus(quotation)}>
                             <p
                               className={
-                                quotation.status == "1"
+                                quotation.status == "0"
                                   ? "declined"
-                                  : quotation.status == "2"
+                                  : quotation.status == "1"
                                     ? "draft"
-                                    : quotation.status == "3"
+                                    : quotation.status == "2"
                                       ? "approved"
                                       : ""
                               }
                             >
-                              {quotation.status == "1"
+                              {quotation.status == "0"
                                 ? "Pending"
-                                : quotation.status == "2"
+                                : quotation.status == "1"
                                   ? "In Progress"
-                                  : quotation.status == "3"
+                                  : quotation.status == "2"
                                     ? "Resolved"
                                     : ""}{" "}
                               {userData?.is_admin === true && (

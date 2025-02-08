@@ -197,7 +197,7 @@ const CreateVisa = () => {
                               ))}
                             </select> */}
                             <CustomDropdown24
-                              label="Select vendor"
+                              label="Select Country"
                               options={countryList}
                               value={formData?.country_id}
                               onChange={handleChange}
