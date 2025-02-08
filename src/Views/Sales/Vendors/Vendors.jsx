@@ -43,10 +43,8 @@ const Vendors = () => {
 
   // outside close and open filter and sortBy
   const filterDropdown = OutsideClick();
-  const sortByDropdown = OutsideClick();
   const moreDropdown = OutsideClick();
   // serch,filter and sortBy//////////////////////////////////////////////////////////
-  const [searchCall, setSearchCall] = useState(false);
 
   // filter/
   const [selectAllCustomer, setSelectAllCustomer] = useState(false);

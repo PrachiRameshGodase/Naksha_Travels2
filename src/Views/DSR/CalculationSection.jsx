@@ -329,7 +329,7 @@ export const CalculationSection2 = ({
               type="text"
               value={formData?.tax_amount || ""}
               placeholder="0.00"
-              name="total_amount"
+              name="tax_amount"
               className="inputbox"
               style={{ width: "120px" }}
 
@@ -338,40 +338,8 @@ export const CalculationSection2 = ({
         </div>
       </div>
 
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>Tax:</label>
-            <input
-              type="text"
-              value={formData?.tax_amount || ""}
-              placeholder="0.00"
-              className="inputsfocalci465s"
-              readOnly
-
-            />
-          </div>
-        </div>
-      </div>
-      <div className="calcuparentc">
-        <div id="tax-details">
-          <div className="clcsecx12s1">
-            <label>
-              <p className="edit_changes_021" onClick={openExpenseCharges}>
-                Edit and add charges
-                <span title="Use a positive amount to add charges. if use a negative amount (-amount) to reduce the invoice total." style={{ marginTop: "10px" }}>
-                  {otherIcons.question_svg}
-                </span>
-              </p>
-            </label>
-          </div>
-          {openCharges && (
-            <ExpenseCharges
-              formValues={{ formData, setFormData, handleChange }}
-            />
-          )}
-        </div>
-      </div>
+     
+     
 
       <div className="calcuparentc">
         <div id="tax-details">
