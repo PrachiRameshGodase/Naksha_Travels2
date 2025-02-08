@@ -143,7 +143,7 @@ const PurchaseOrderDetails = () => {
                             </div> */}
                             {/* } */}
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
+                            {/* <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p >PDF/Print</p>
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
@@ -157,7 +157,7 @@ const PurchaseOrderDetails = () => {
 
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
 
                             <div className="sepc15s63x63"></div>
 

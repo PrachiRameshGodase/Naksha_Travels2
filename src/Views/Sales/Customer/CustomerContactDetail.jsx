@@ -150,7 +150,7 @@ const CustomerContactDetail = ({
     }));
     updateUserData({ contact_persons: updatedContactPersons });
   };
-  
+
   return (
     <>
       {switchCusData === "Contact" ? (
@@ -275,7 +275,7 @@ const CustomerContactDetail = ({
                         </span>
                       </div>
                     </div>
-                    <div className="form_commonblock">
+                    {/* <div className="form_commonblock">
                       <label>Gender</label>
                       <span>
                         {otherIcons.vendor_svg}
@@ -291,11 +291,12 @@ const CustomerContactDetail = ({
                           type="masters"
                         />
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                   <div id="fcx3s1parent">
                     {" "}
-                    <div className="form_commonblock">
+
+                    {/* <div className="form_commonblock">
                       <label>Relationship</label>
                       <span>
                         {otherIcons.vendor_svg}
@@ -311,7 +312,8 @@ const CustomerContactDetail = ({
                           type="masters"
                         />
                       </span>
-                    </div>
+                    </div> */}
+
                   </div>
                 </div>
 

@@ -1,17 +1,36 @@
-import { getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageUtils";
+import { getCurrencySymbol, getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageUtils";
 
 // currencyConversionUtils.js
 export const convertCurrencyWithSymbol = (amount, fetchCurrencyData, moduleCurrency, currencyList) => {
-    console.log("amountamount", amount)
-    console.log("moduleCurrency", moduleCurrency)
-    console.log("fetchCurrencyData?.exchange_rate", fetchCurrencyData?.exchange_rate)
 
-    const symbol = currencyList?.find(val => val?.code === moduleCurrency)?.symbol
+    // here the rate is convert currency amount for ex. we convert kes to use then 
+    // Amount is amount in kes
+    //exchanges rate is  exchange rate of use in per kes. means when we put exchange rate of usd it will calcucalted as per kes price..
 
-    // Convert KES to USD or any other currency using exchange rate
+    // console.log("amountamount", amount)
+    // console.log("moduleCurrency", moduleCurrency)
+    // console.log("fetchCurrencyData", fetchCurrencyData)
+
+    //fetch the active org currency code
+    const orgCurrencyCode = getCurrencyValue()
+
+    // const symbol = currencyList?.find(val => val?.code === moduleCurrency)?.symbol
+    // console.log("symbol", symbol)
+
+    // Convert the currency using exchange rate
     const rate = ((parseFloat(amount) / parseInt(fetchCurrencyData?.exchange_rate))).toFixed(2);
 
-    return rate == "0" ? `${symbol} 0.00` : rate ? `${symbol} ${rate}` : "";
+    // check if the org currency and module currency is same then currency is not converted...
+    const noCurrencyConvert = fetchCurrencyData?.code === orgCurrencyCode;
+
+    console.log("rate ? `${fetchCurrencyData?.symbol} ${rate}", fetchCurrencyData?.symbol, rate)
+
+    if (noCurrencyConvert) {
+        return amount == "0" ? `${fetchCurrencyData?.symbol} 0.00` : amount ? `${fetchCurrencyData?.symbol} ${amount}` : "";
+
+    } else { // return converted currrency rate if the org currency and module currency is not equal
+        return rate == "0" ? `${fetchCurrencyData?.symbol} 0.00` : rate ? `${fetchCurrencyData?.symbol} ${rate}` : "";
+    }
 };
 
 export const convertCurrencyWithPercent = (amount, fetchCurrencyData, moduleCurrency, currencyList) => {
@@ -20,12 +39,12 @@ export const convertCurrencyWithPercent = (amount, fetchCurrencyData, moduleCurr
 
     // If the active organization currency matches the target currency, return the original amount with its symbol
     if (activeOrgCurrencyValue === symbol) {
-        return amount ? `${amount} %` : 'Non-Taxable';
+        return amount ? `${amount} % ` : 'Non-Taxable';
     }
 
     const rate = (amount / fetchCurrencyData?.exchange_rate).toFixed(2);
 
-    return rate ? `${rate} %` : 'Non-Taxable';
+    return rate ? `${rate} % ` : 'Non-Taxable';
 }
 
 

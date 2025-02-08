@@ -34,7 +34,7 @@ export const parsePurchaseDetails = (detailData, convert) => {
             tax_rate: +item?.tax_rate,
             tax_amount: +item?.tax_amount,
             discount: +item?.discount,
-            // discount_type: convert === "grn_to_bill" ? 1 : +item?.discount_type,
+            discount_type: +item?.discount_type,
             item_remark: item?.item_remark,
             tax_name: item?.item?.tax_preference == "2" && "Non-Taxable",
             unit_id: item?.unit_id,

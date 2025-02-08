@@ -23,17 +23,13 @@ import {
 
 import axiosInstance from "../../Configs/axiosInstance";
 import toast from 'react-hot-toast';
-import { sendData, sendData2 } from '../../Views/Helper/HelperFunctions';
 
 export const createCustomers = (queryParams, Navigate, editDub) => async (dispatch) => {
-
     dispatch({ type: CREATE_CUSTOMER_REQUEST });
-
     try {
         const response = await axiosInstance.post(`/customer/create/update`,
             queryParams
         );
-        dispatch(customersList(sendData2));// call customer list api when We change something on it...
         if (editDub === "edit" && (response?.data?.message === "Record Updated Successfully")) {
             toast.success(response?.data?.message);
             Navigate('/dashboard/customers');
@@ -104,7 +100,6 @@ export const customerStatus = (queryParams) => async (dispatch) => {
         );
 
         dispatch({ type: CUSTOMER_STATUS_SUCCESS, payload: response.data });
-        dispatch(customersList(sendData2));// call customer list api when We change something on it...
         // if (response?.data?.message === "Status Updated successfully.") {
         //     toast.success(response?.data?.message);
         // } else {
@@ -128,7 +123,6 @@ export const deleteCustomer = (queryParams, Navigate) => async (dispatch) => {
         );
 
         dispatch({ type: CUSTOMER_DELETE_SUCCESS, payload: response.data });
-        dispatch(customersList(sendData));// call customer list api when We change something on it...
 
         if (response?.data?.message === "Deleted successfully.") {
             toast.success("Customer Deleted Successfully");

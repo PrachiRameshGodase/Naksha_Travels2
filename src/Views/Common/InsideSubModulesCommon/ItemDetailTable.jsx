@@ -93,19 +93,19 @@ const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
                               id={parsedServiceData?.hotel_type || "-"}
                             />
                           </div>
-                          {parsedServiceData?.itinerary?.length>=1 && parsedServiceData?.itinerary?.map((item, index)=>(<div key={index}><div>
+                          {parsedServiceData?.itinerary?.length >= 1 && parsedServiceData?.itinerary?.map((item, index) => (<div key={index}><div>
                             <b>Itinerary:</b>
-                          </div>                          
-                          <div><b>Day:</b> {item?.day || "-"}</div>
-                          <div><b>Day Plan:</b> {item?.day_plan || "-"}</div>
-                          
                           </div>
-                          
-                        ))}
+                            <div><b>Day:</b> {item?.day || "-"}</div>
+                            <div><b>Day Plan:</b> {item?.day_plan || "-"}</div>
+
+                          </div>
+
+                          ))}
                         </>
-                      ): parsedServiceData?.service_name === "Assist" ? (
+                      ) : parsedServiceData?.service_name === "Assist" ? (
                         <>
-                         <div>
+                          <div>
                             <b>Service Name:</b> {parsedServiceData?.service_name || "-"}
                           </div>
                           <div>

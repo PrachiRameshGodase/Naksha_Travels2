@@ -111,7 +111,7 @@ const QuotationDetails = () => {
 
   const getCurrency = getCurrencyValue();// active currency value
 
-  console.log("quoteDetail", quotation)
+  // console.log("quoteDetail", quotation)
 
   const handleDownloadPDF = async () => {
     try {
@@ -119,13 +119,13 @@ const QuotationDetails = () => {
       if (quotation?.transaction_date) {
 
         // Fetch currency rates with module transaction-date
-        const res = dispatch(currencyRateListAction({ date: quotation?.transaction_date }))
+        dispatch(currencyRateListAction({ date: quotation?.transaction_date }))
           .then((res) => {
 
             // if the crrency is created for module transaction-date
-            if (res?.success === true) {
-              // Find the fetchCurrencyData of active organization currency with specific date
-              const fetchCurrencyData = res?.data?.find(val => val?.code === quotation?.currency);//here I found the currency details of created in which the found in module in that transaction date...
+            // Find the fetchCurrencyData of active organization currency with specific date
+            const fetchCurrencyData = res?.data?.find(val => val?.code === quotation?.currency);//here I found the currency details of created in which the found in module in that transaction date...
+            if (fetchCurrencyData) {
               console.log("if the module currency is created data", fetchCurrencyData)
 
               // create and show the pdf of converted currency on the exchange rate....
@@ -143,17 +143,18 @@ const QuotationDetails = () => {
 
             } else {
               // if the module currency is not created that date then create first then download pdf
-              const confirmed = confirIsCurrencyPDF(quotation?.currency);
-              if (confirmed) {
+              confirIsCurrencyPDF(quotation?.currency).then((res) => {//here the res is return true or false click on yes or no .
+                if (res) {
+                  // set params on currency crate page of that moudel currency currency
+                  const queryParams = new URLSearchParams();
+                  queryParams.set("date", quotation?.transaction_date);
+                  queryParams.set("currency", quotation?.currency);//send 
+                  Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+                } else {
+                  return;
+                }
+              })
 
-                // set params on currency crate page of that moudel currency currency
-                const queryParams = new URLSearchParams();
-                queryParams.set("date", quotation?.transaction_date);
-                queryParams.set("currency", quotation?.currency);//send 
-                Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
-              } else {
-                return;
-              }
 
             }
           })

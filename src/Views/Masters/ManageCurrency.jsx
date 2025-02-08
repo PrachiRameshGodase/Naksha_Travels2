@@ -75,42 +75,40 @@ const ManageCurrency = () => {
         e.preventDefault();
 
         try {
-            // Filter entries based on the rules
+            // Filter out rows where both rates are zero (ignore them)
             const filteredEntries = formData.filter((entry) => {
-                const hasCurrentRate = entry.current_rate !== 0 && entry.current_rate !== '';
-                const hasExchangeRate = entry.exchange_rate !== 0 && entry.exchange_rate !== '';
-
-                // Include the entry if:
-                // 1. Only current_rate is filled, or
-                // 2. Only exchange_rate is filled, or
-                // 3. Both current_rate and exchange_rate are filled
-                return hasCurrentRate || hasExchangeRate;
+                return entry.current_rate != 0 || entry.exchange_rate != 0;
             });
 
-            // Further filter out entries where both current_rate and exchange_rate are 0 or empty
-            const finalEntries = filteredEntries.filter(
-                (entry) => entry.current_rate !== 0 || entry.exchange_rate !== 0
+            // Validate each entry: if current_rate is filled, exchange_rate must be filled too
+            const invalidEntry = filteredEntries.find(
+                (entry) => entry.current_rate != 0 && entry.exchange_rate == 0
             );
 
-            // Validate if there are any valid entries
-            if (finalEntries.length === 0) {
-                toast.error('Please fill in either current rate or exchange rate for at least one entry.');
-                return;
+            if (filteredEntries?.length >= 1) {
+                if (invalidEntry) {
+                    return toast.error("Exchange rate is required when current rate is filled.");
+                }
+            } else {
+                return toast?.error("Please fill a exchange rate minimum.")
             }
 
-            // console.log("finalEntries", finalEntries)
-            // Create payload with the final filtered entries
-            const payload = { currencies: finalEntries };
-            console.log("payloadpayload", payload)
-            // Dispatch the action
-            // dispatch(currencyRateCreateAction(payload)).then((res) => {
-            //     if (res?.data?.success === true && currencyParam && dateParam) {
-            //         goBack();
-            //     }
-            // });
+
+            // Prepare payload only with valid entries
+            const payload = { currencies: filteredEntries };
+
+
+
+            dispatch(currencyRateCreateAction(payload))
+                .then((res) => {
+                    if (res?.data?.success === true && currencyParam && dateParam) {
+                        goBack();
+                    }
+                });
         } catch (error) {
-            toast.error('Error updating quotation:', error);
+            toast.error("Error updating quotation:", error);
         }
+
     };
 
     return (

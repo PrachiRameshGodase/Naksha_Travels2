@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import { parsePurchaseDetails } from "../StateHelper/EditPages/parsePurchaseDetails";
 import toast from "react-hot-toast";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { confirIsCurrencyCreate } from "../ConfirmHelperFunction/ConfirmWithZeroAmount";
 import { useNavigate } from "react-router-dom";
+import { currencyRateListAction } from "../../../Redux/Actions/manageCurrencyActions";
+import useFetchApiData from "./useFetchApiData";
 
 export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList, setAddSelect, setIsCustomerSelect, setIsVendorSelect, sendChageData }) => {
 
@@ -21,20 +23,22 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
         let confirmed = null;
 
         const checkIsCurrencyCreated = currencyList?.find(val => val?.code === formData?.currency);
-        // console.log("checkIsCurrencyCreated", checkIsCurrencyCreated)
+        console.log("checkIsCurrencyCreated", checkIsCurrencyCreated)
         // console.log("formData?.currency", formData?.currency)
         // console.log("currencyList", currencyList)
         if (checkIsCurrencyCreated) {
-            toast.success(`Current Rate is ${checkIsCurrencyCreated?.current_rate} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.exchange_rate}`)
+            toast.success(
+                `Current Rate of ${checkIsCurrencyCreated?.currency_name} is ${checkIsCurrencyCreated?.symbol} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.symbol} ${checkIsCurrencyCreated?.exchange_rate}`,
+            );
         } else {
             confirmed = await confirIsCurrencyCreate();
             if (confirmed) {
                 const queryParams = new URLSearchParams();
                 queryParams.set("date", formData?.transaction_date);
                 queryParams.set("currency", formData?.currency);
-                Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
+                Navigate(`/ dashboard / manage - currency ? ${queryParams.toString()} `);
             }
-
+            z
 
         }
     }
@@ -209,9 +213,17 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
     // Using useRef to store the previous value of formData.currency because this useEffect not call on load
     const prevCurrency = useRef(formData?.currency);
 
+
+    // for fetch the currencies list of selected date. It is just for update currency list acc. to date..
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        date: formData?.transaction_date,
+    }), [formData?.transaction_date]);
+    useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
+
     useEffect(() => {
         // Only call checkIsCurrencyCreated when formData?.currency changes and is different from the previous value
         if (formData?.currency !== prevCurrency.current) {
+
             checkIsCurrencyCreated();
 
             // Update the ref to the new currency
