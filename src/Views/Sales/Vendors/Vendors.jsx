@@ -134,7 +134,7 @@ const Vendors = () => {
         fy,
         noofrec: itemsPerPage,
         // status: 1,
-        active: 1,
+        // active: 1,
         currentpage,
         ...(selectedSortBy !== "Normal" && {
           sort_by: selectedSortBy,

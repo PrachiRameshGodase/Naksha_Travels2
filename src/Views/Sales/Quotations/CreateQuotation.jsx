@@ -31,6 +31,7 @@ import { useEditPurchaseForm } from '../../Helper/StateHelper/EditPages/useEditP
 import { useHandleFormChange } from '../../Helper/ComponentHelper/handleChange';
 import { handleFormSubmit1 } from '../../Purchases/Utils/handleFormSubmit';
 import { formatDate } from '../../Helper/DateFormat';
+import NumericInput from '../../Helper/NumericInput';
 
 const CreateQuotation = () => {
 
@@ -79,7 +80,7 @@ const CreateQuotation = () => {
     isEdit
   );
 
-  // console.log("quoteDetails", quoteDetails)
+  // console.log("formData", formData)
   //this is the common handle select
   const {
     handleChange,
@@ -134,7 +135,7 @@ const CreateQuotation = () => {
     dispatch(productTypeItemAction("Product"));
   }, [dispatch]);
 
-  // console.log("daaaaaaaaaaaaaaaa", formData?.transaction_date)
+  // console.log("daaaaaaaaaaaaaaaa", formData?.items)
 
   return (
     <>
@@ -261,7 +262,7 @@ const CreateQuotation = () => {
                               <CustomDropdown04
                                 autoComplete='off'
                                 options={paymentTerms}
-                                value={(formData?.payment_terms)}
+                                value={(preventZeroVal(formData?.payment_terms))}
                                 onChange={handleChange}
                                 name="payment_terms"
                                 defaultOption='Enter Quotation Terms'
@@ -305,7 +306,7 @@ const CreateQuotation = () => {
                             <label >Reference Number</label>
                             <span >
                               {otherIcons.placeofsupply_svg}
-                              <input type="number" value={preventZeroVal(formData.reference_no)} onChange={handleChange}
+                              <NumericInput value={preventZeroVal(formData.reference_no)} onChange={handleChange}
                                 autoComplete='off'
                                 name='reference_no'
                                 placeholder='Enter Reference Number' />

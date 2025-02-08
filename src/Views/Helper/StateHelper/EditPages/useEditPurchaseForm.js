@@ -133,15 +133,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
         // console.log("formDataformDataformDataformData", formData)
 
     }, [detailData, itemId, isEdit, convert]);
-
-
-    // for fetch the currencies list of selected date
-    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
-        date: formData?.transaction_date,
-    }), [formData?.transaction_date]);
-
-    useFetchApiData(currencyRateListAction, payloadGenerator, [formData?.transaction_date]);
-
     // console.log("formData", formData)
     return {
         formData,

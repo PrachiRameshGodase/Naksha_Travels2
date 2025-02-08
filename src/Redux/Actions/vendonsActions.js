@@ -45,7 +45,6 @@ export const createVerndors = (queryParams, Navigate, editDub) => async (dispatc
         );
 
         dispatch({ type: CREATE_VENDOS_SUCCESS, payload: response.data });
-        dispatch(vendorsLists(sendData));//update list when data is changes
         if (editDub === "edit" && (response?.data?.message === "Record Updated Successfully")) {
             toast.success(response?.data?.message);
             Navigate('/dashboard/vendors');
@@ -68,7 +67,7 @@ export const createVerndors = (queryParams, Navigate, editDub) => async (dispatc
     }
 };
 
-export const vendorsStatus = (queryParams, Navigate) => async (dispatch) => {
+export const vendorsStatus = (queryParams) => async (dispatch) => {
 
     dispatch({ type: VENDOS_STATUS_REQUEST });
     try {
@@ -77,12 +76,9 @@ export const vendorsStatus = (queryParams, Navigate) => async (dispatch) => {
         );
 
         dispatch({ type: VENDOS_STATUS_SUCCESS, payload: response.data });
-        dispatch(vendorsLists(sendData));//update list when data is changes
 
     } catch (error) {
         dispatch({ type: VENDOR_STATUS_ERROR, payload: error.message });
-        // toast.error("Something went wrong thorw error");
-
     }
 };
 
@@ -96,7 +92,6 @@ export const vendorsDelete = (queryParams, Navigate) => async (dispatch) => {
 
         dispatch({ type: VENDOS_DELETE_SUCCESS, payload: response.data });
         if (response?.data?.message === "Deleted successfully.") {
-            dispatch(vendorsLists(sendData));//update list when data is changes
             toast.success(response?.data?.message);
             Navigate("/dashboard/vendors");
         } else {
