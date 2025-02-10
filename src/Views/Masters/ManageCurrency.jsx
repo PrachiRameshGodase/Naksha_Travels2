@@ -11,6 +11,8 @@ import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoa
 import { SubmitButton2 } from '../Common/Pagination/SubmitButton';
 import { formatDate, todayDate } from '../Helper/DateFormat';
 import useNavigation from '../Helper/Navigation';
+import { getCurrencyValue } from '../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 
 const ManageCurrency = () => {
     const dispatch = useDispatch();
@@ -26,9 +28,12 @@ const ManageCurrency = () => {
     const dateParam = searchParams.get("date");
     const currencyParam = searchParams.get("currency");
 
-    const allCurrency = currencyParam
-        ? getCurrency?.data?.currency?.filter(val => val?.code === currencyParam)
-        : getCurrency?.data?.currency;
+    const allCurrency = currencyParam ? getCurrency?.data?.currency?.filter(val => val?.code === currencyParam) : getCurrency?.data?.currency;
+
+
+    // console.log("allCurrency", allCurrency)
+    // console.log("getCurrency?.data?.currency", getCurrency?.data?.currency)
+    // console.log("currencyParam", currencyParam)
 
     // Set initial selectedDate from URL param or default to today
     const [selectedDate, setSelectedDate] = useState(() => (dateParam ? dateParam : todayDate()));
@@ -120,11 +125,13 @@ const ManageCurrency = () => {
                     <div id="leftareax12">
                         <h1 id="firstheading" >Manage Currency</h1>
                     </div>
+
                     {/* <div id="buttonsdata">
                         <Link to={"/dashboard/manage-currency"} className="linkx3">
                             <RxCross2 />
                         </Link>
                     </div> */}
+
                 </div>
 
                 <div id="formofcreateitems">
@@ -135,6 +142,7 @@ const ManageCurrency = () => {
                                     <div className="form_commonblock">
                                         <label >Date</label>
                                         <span>
+                                            {otherIcons.date_svg}
                                             <DatePicker
                                                 selected={selectedDate}
                                                 onChange={(date) => setSelectedDate(formatDate(date))}  // Updates selectedDate state
@@ -147,6 +155,7 @@ const ManageCurrency = () => {
                                 </div>
 
                                 <div className={`${formData?.customer_id ? "f1wrpofcreqsx2" : "f1wrpofcreqsx2"}`}>
+                                    <p style={{ fontSize: "13px", color: "#00000082" }}> <span style={{ color: "red" }}> Note:-</span> Here you given the Exchange and Current rate of your base Currency {getCurrencyValue()}</p>
                                     <div className='itemsectionrows'>
                                         <ManageCurrencyTable formData={formData} setFormData={setFormData} section="create" />
                                     </div>

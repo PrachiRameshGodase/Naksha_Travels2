@@ -19,11 +19,6 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
     }, 0);
   };
 
-  // const render_table = section === "Payment Receive" ? data?.entries : data?.items
-
-  // console.log("moduleId, section", moduleId, section)
-  // console.log("data?.entries", data?.entries)
-
   const totalExpenseCharges = section === "Payment Receive" ? [] : data?.charges ? JSON?.parse(data?.charges) : "";
 
   const calculateTotalAmount = () => {
@@ -90,10 +85,6 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
                   <p>
                     {section} Date: {formatDate3(data?.transaction_date)}
                   </p>
-
-                  {/* <p>Payment Due: October 04, 2024</p>
-                  <p>Amount Due (USD): $704.30</p> */}
-
                 </>
               </div>
             </div>

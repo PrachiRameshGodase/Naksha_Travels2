@@ -23,9 +23,7 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
         let confirmed = null;
 
         const checkIsCurrencyCreated = currencyList?.find(val => val?.code === formData?.currency);
-        console.log("checkIsCurrencyCreated", checkIsCurrencyCreated)
-        // console.log("formData?.currency", formData?.currency)
-        // console.log("currencyList", currencyList)
+
         if (checkIsCurrencyCreated) {
             toast.success(
                 `Current Rate of ${checkIsCurrencyCreated?.currency_name} is ${checkIsCurrencyCreated?.symbol} ${checkIsCurrencyCreated?.current_rate} and Exchange rate is ${checkIsCurrencyCreated?.symbol} ${checkIsCurrencyCreated?.exchange_rate}`,
@@ -36,9 +34,8 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
                 const queryParams = new URLSearchParams();
                 queryParams.set("date", formData?.transaction_date);
                 queryParams.set("currency", formData?.currency);
-                Navigate(`/ dashboard / manage - currency ? ${queryParams.toString()} `);
+                Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
             }
-            z
 
         }
     }
@@ -212,7 +209,6 @@ export const useHandleFormChange = ({ formData, setFormData, cusList, vendorList
 
     // Using useRef to store the previous value of formData.currency because this useEffect not call on load
     const prevCurrency = useRef(formData?.currency);
-
 
     // for fetch the currencies list of selected date. It is just for update currency list acc. to date..
     const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes

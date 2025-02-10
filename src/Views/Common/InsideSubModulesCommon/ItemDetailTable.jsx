@@ -14,7 +14,7 @@ import NumericInput from "../../Helper/NumericInput";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
-import { getCurrencySymbol } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { getCurrencySymbol, getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);
@@ -621,7 +621,8 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
         <p style={{ textAlign: "center", padding: "20px 0" }}>
           There are no unpaid invoices associated with this customer.
         </p>
-      )}
+      )
+      }
 
       {/*  */}
 
@@ -797,7 +798,15 @@ export const ManageCurrencyTable = ({ formData, setFormData, section }) => {
               <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Currency Symbol</th>
 
               <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Current Rate {currencySymbol}</th>
-              <th className='sfdjklsd1xs2w4 text-right padding-15-40'>Exchange Rate {currencySymbol}</th>
+              <th className='sfdjklsd1xs2w4 text-right padding-15-40'>
+                <div className="question_mark_position">
+                  Exchange Rate  {currencySymbol}
+                  {/* <span data-tooltip-content={``}
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}
+                  </span> */}
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>

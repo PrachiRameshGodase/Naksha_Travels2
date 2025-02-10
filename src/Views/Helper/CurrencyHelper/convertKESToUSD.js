@@ -1,23 +1,27 @@
-import { getCurrencyValue } from "../ComponentHelper/ManageStorage/localStorageUtils";
+import { getCurrencySymbol } from "../ComponentHelper/ManageStorage/localStorageUtils";
 
 // currencyConversionUtils.js
 export const convertCurrencyWithSymbol = (amount, fetchCurrencyData) => {
 
+    // console.log("amount", amount)
+    // console.log("fetch currency", fetchCurrencyData)
     //fetch the active org currency code
-    const orgCurrencyCode = getCurrencyValue()
+    const orgCurrencyCode = getCurrencySymbol();
 
     // Convert the currency using exchange rate
-    const rate = ((parseFloat(amount) / parseInt(fetchCurrencyData?.exchange_rate))).toFixed(2);
+    const exchangeRate = parseFloat(fetchCurrencyData?.exchange_rate);
+    // console.log("fetch exchangeRate", exchangeRate)
+
+    // Ensure exchangeRate is a valid, non-zero number
+    const rate = exchangeRate && exchangeRate !== 0 ? (parseFloat(amount) / exchangeRate).toFixed(2) : "N/A"; // or any fallback value like "0.00"
 
     // check if the org currency and module currency is same then currency is not converted...
-    const noCurrencyConvert = fetchCurrencyData?.code === orgCurrencyCode;
+    // const noCurrencyConvert = fetchCurrencyData?.code === orgCurrencyCode;
 
-    console.log("rate ? `${fetchCurrencyData?.symbol} ${rate}", fetchCurrencyData?.symbol, rate)
-
-    if (noCurrencyConvert) {
-        return amount == "0" ? `${fetchCurrencyData?.symbol} 0.00` : amount ? `${fetchCurrencyData?.symbol} ${amount}` : "";
-
+    if (!fetchCurrencyData) {
+        return amount == "0" ? `${orgCurrencyCode} 0.00` : amount ? `${orgCurrencyCode} ${amount}` : "";
     } else { // return converted currrency rate if the org currency and module currency is not equal
         return rate == "0" ? `${fetchCurrencyData?.symbol} 0.00` : rate ? `${fetchCurrencyData?.symbol} ${rate}` : "";
     }
+
 };

@@ -108,60 +108,50 @@ const QuotationDetails = () => {
   const [loading, setLoading] = useState(false);
 
   const rateLoading = useSelector(state => state?.currencyRateList);
+
   const handleDownloadPDF = async () => {
     try {
+      if (!quotation?.transaction_date) return;
 
-      if (quotation?.transaction_date) {
+      // Fetch currency rates for the transaction date
+      const res = await dispatch(currencyRateListAction({ date: quotation?.transaction_date }));
+      const fetchCurrencyData = res?.data?.find(val => val?.code === quotation?.currency);
 
-        // Fetch currency rates with module transaction-date
-        dispatch(currencyRateListAction({ date: quotation?.transaction_date }))
-          .then((res) => {
-
-            // if the crrency is created for module transaction-date
-            // Find the fetchCurrencyData of active organization currency with specific date
-            const fetchCurrencyData = res?.data?.find(val => val?.code === quotation?.currency);//here I found the currency details of created in which the found in module in that transaction date...
-            if (fetchCurrencyData) {
-              console.log("if the module currency is created data", fetchCurrencyData)
-
-              // create and show the pdf of converted currency on the exchange rate....
-              if (!quotation || !masterData) {
-                dispatch(UserMasterListAction())/// if the master data is not found then call api
-                alert("Data is still loading, please try again.");
-                return;
-              }
-
-              const contentComponent = (
-                <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} />
-              );
-
-              generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
-
-            } else {
-              // if the module currency is not created that date then create first then download pdf
-              confirIsCurrencyPDF(quotation?.currency).then((res) => {//here the res is return true or false click on yes or no .
-                if (res) {
-                  // set params on currency crate page of that moudel currency currency
-                  const queryParams = new URLSearchParams();
-                  queryParams.set("date", quotation?.transaction_date);
-                  queryParams.set("currency", quotation?.currency);//send 
-                  Navigate(`/dashboard/manage-currency?${queryParams.toString()}`);
-                } else {
-                  return;
-                }
-              })
-            }
-          })
+      // Ensure masterData & quotation exist before proceeding
+      if (!quotation || !masterData) {
+        dispatch(UserMasterListAction());
+        alert("Data is still loading, please try again.");
+        return;
       }
 
+      const generatePDFWithData = (currencyData) => {
+        const contentComponent = (
+          <PrintContent
+            data={quotation}
+            masterData={masterData}
+            moduleId={quotation?.quotation_id}
+            section="Quotation"
+            fetchCurrencyData={currencyData}
+          />
+        );
+        generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
+      };
+
+      if (fetchCurrencyData) {
+        generatePDFWithData(fetchCurrencyData);
+      } else if (quotation?.currency === getCurrencyValue()) {
+        generatePDFWithData(null); // No conversion needed
+      } else {
+        // Prompt user to create missing currency
+        const res = await confirIsCurrencyPDF(quotation?.currency);
+        if (res) {
+          Navigate(`/dashboard/manage-currency?date=${quotation?.transaction_date}&currency=${quotation?.currency}`);
+        }
+      }
     } catch (error) {
       console.error("Error fetching currency rates:", error);
     }
-  }
-
-
-
-
-
+  };
 
   // if (!quotation || !masterData) {
   //   alert("Data is still loading, please try again.");

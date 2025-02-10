@@ -1,9 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { parsePurchaseDetails } from "./parsePurchaseDetails";
 import { getBaseFormData } from "../getBaseFormData";
 import { stringifyJSON, validateItems } from "../../HelperFunctions";
-import useFetchApiData from "../../ComponentHelper/useFetchApiData";
-import { currencyRateListAction } from "../../../../Redux/Actions/manageCurrencyActions";
 
 //Common component for state management
 export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], detailData, itemId, isEdit, convert) => {
@@ -41,9 +39,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                 }
             });
 
-            // console.log("updatedFields", updatedFields);
-            // console.log("isEdit", isEdit)
-            // console.log("detailData", detailData)
 
             // set all data inside the formdata
             setFormData((prevFormData) => ({
@@ -75,8 +70,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     })
                 }),
 
-
-
                 // when credit note is converted in to the invoice the the invoice_id in invoice is in id variable 
                 ...(convert === "invoiceToCredit" && { invoice_id: detailData?.id }),
 
@@ -92,7 +85,6 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
 
             if (detailData?.upload_image) setImgLoader("success");
 
-            console.log("detailData", detailData?.vendor)
             if (detailData?.address) {
                 const parsedAddress = JSON?.parse(detailData?.address);
                 setAddSelect({

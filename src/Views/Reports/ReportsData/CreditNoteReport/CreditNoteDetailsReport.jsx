@@ -12,8 +12,12 @@ import ReportsPrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComp
 import { generatePDF } from '../../../Helper/createPDF';
 import CommonDebitNote from '../DebitNoteReport/CommonDebitNote';
 import MainScreenFreezeLoader from '../../../../Components/Loaders/MainScreenFreezeLoader';
-import { financialYear } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { financialYear, getCurrencyValue } from '../../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import useFetchApiData from '../../../Helper/ComponentHelper/useFetchApiData';
+import PrintContent from '../../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
+import { currencyRateListAction } from '../../../../Redux/Actions/manageCurrencyActions';
+import { UserMasterListAction } from '../../../../Redux/Actions/userMasterActions';
+import { confirIsCurrencyPDF } from '../../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const CreditNoteDetailsReport = () => {
 
@@ -65,22 +69,71 @@ const CreditNoteDetailsReport = () => {
 
     //print and pdf implementation
     const [loading, setLoading] = useState(false);
-    const handleDownloadPDF = () => {
-        if (!allData) {
-            alert("Data is still loading, please try again.");
-            return;
+
+    // const handleDownloadPDF = () => {
+    //     if (!allData) {
+    //         alert("Data is still loading, please try again.");
+    //         return;
+    //     }
+    //     const contentComponent = (
+    //         <ReportsPrintContent reportData={reportData} cusVenData={allData?.vendor} masterData="" moduleId={allData?.quotation_id} section="Credit Note Detail" />
+    //     );
+
+    //     generatePDF(contentComponent, "Debit_Note_Detail.pdf", setLoading, 500);
+
+    // }
+
+
+
+    const rateLoading = useSelector(state => state?.currencyRateList);
+
+    const handleDownloadPDF = async () => {
+        try {
+            if (!allData?.transaction_date) return;
+
+            // Fetch currency rates for the transaction date
+            const res = await dispatch(currencyRateListAction({ date: allData?.transaction_date }));
+            const fetchCurrencyData = res?.data?.find(val => val?.code === allData?.currency);
+
+            // Ensure masterData & quotation exist before proceeding
+            if (!allData || !masterData) {
+                dispatch(UserMasterListAction());
+                alert("Data is still loading, please try again.");
+                return;
+            }
+
+            const generatePDFWithData = (currencyData) => {
+                const contentComponent = (
+                    <PrintContent
+                        data={allData}
+                        masterData={masterData}
+                        moduleId={allData?.credit_note_id}
+                        section="Credit Note"
+                        fetchCurrencyData={currencyData}
+                    />
+                );
+                generatePDF(contentComponent, "Credit_Note_Document.pdf", setLoading, 500);
+            };
+
+            if (fetchCurrencyData) {
+                generatePDFWithData(fetchCurrencyData);
+            } else if (allData?.currency === getCurrencyValue()) {
+                generatePDFWithData(null); // No conversion needed
+            } else {
+                // Prompt user to create missing currency
+                const res = await confirIsCurrencyPDF(allData?.currency);
+                if (res) {
+                    Navigate(`/dashboard/manage-currency?date=${allData?.transaction_date}&currency=${allData?.currency}`);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching currency rates:", error);
         }
-
-        const contentComponent = (
-            <ReportsPrintContent reportData={reportData} cusVenData={allData?.vendor} masterData="" moduleId={allData?.quotation_id} section="Credit Note Detail" />
-        );
-
-        generatePDF(contentComponent, "Debit_Note_Detail.pdf", setLoading, 500);
-    }
+    };
 
     return (
         <>
-            {(loading) && <MainScreenFreezeLoader />}
+            {(loading || rateLoading?.loading) && <MainScreenFreezeLoader />}
 
             <div className="maindivofreporstx5w633">
                 <div className="reportbarinsx5w">

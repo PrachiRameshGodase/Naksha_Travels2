@@ -598,15 +598,15 @@ const ItemSelect = ({
             section={section}
           />
         );
-        case "Tour Package":
-          return (
-            <AddTourPackagePopup
-              setShowModal={setActivePopup}
-              handleAddService={handleAddService}
-              edit_data={activePopup?.data || []}
-              section={section}
-            />
-          );
+      case "Tour Package":
+        return (
+          <AddTourPackagePopup
+            setShowModal={setActivePopup}
+            handleAddService={handleAddService}
+            edit_data={activePopup?.data || []}
+            section={section}
+          />
+        );
       case "Assist":
         return (
           <AddAssistPopup
@@ -673,7 +673,8 @@ const ItemSelect = ({
                   Unit
                   <span data-tooltip-content="Unit is not changed for the service select."
                     data-tooltip-id="my-tooltip"
-                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}</span>
+                    data-tooltip-place="right"> {otherIcons?.question_mark_svg}
+                  </span>
                 </div>
               </th>
 

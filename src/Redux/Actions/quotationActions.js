@@ -92,9 +92,8 @@ export const updateQuotation = ({
             if (section === "quotation") {
                 handleQuotationNavigation(editDub, buttonName, confirmed, navigate, response);
             } else if (section === "sale-order") {
-                handleSaleOrderNavigation(editDub, buttonName, confirmed, navigate, response)
+                handleSaleOrderNavigation(editDub, buttonName, confirmed, navigate, response);
             } else if ((section === "invoices" && !convert) || (section === "delivery_challan" && !convert)) {
-                console.log("convert invoice")
                 invoiceHelper(editDub, buttonName, navigate, section);
             }
 

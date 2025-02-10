@@ -18,6 +18,9 @@ import { showRealatedText } from '../../Helper/HelperFunctions';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
+import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
 
 const InvoicesDetails = ({ section }) => {
   const Navigate = useNavigate();
@@ -133,24 +136,57 @@ const InvoicesDetails = ({ section }) => {
   const masterData = useSelector(state => state?.masterData?.masterData);
   const [loading, setLoading] = useState(false);
 
-  const handleDownloadPDF = () => {
-    if (!invoice || !masterData) {
-      alert("Data is still loading, please try again.");
-      return;
+
+  // handle download pdf......
+  const rateLoading = useSelector(state => state?.currencyRateList);
+  const handleDownloadPDF = async () => {
+    try {
+      if (!invoice?.transaction_date) return;
+
+      // Fetch currency rates for the transaction date
+      const res = await dispatch(currencyRateListAction({ date: invoice?.transaction_date }));
+      const fetchCurrencyData = res?.data?.find(val => val?.code === invoice?.currency);
+
+      // Ensure masterData & invoice exist before proceeding
+      if (!invoice || !masterData) {
+        dispatch(UserMasterListAction());
+        alert("Data is still loading, please try again.");
+        return;
+      }
+
+      const generatePDFWithData = (currencyData) => {
+        const contentComponent = (
+          <PrintContent
+            data={invoice}
+            masterData={masterData}
+            moduleId={invoice?.invoice_id}
+            section="Invoice"
+            fetchCurrencyData={currencyData}
+          />
+        );
+        generatePDF(contentComponent, "Invoice_Document.pdf", setLoading, 500);
+      };
+
+      if (fetchCurrencyData) {
+        generatePDFWithData(fetchCurrencyData);
+      } else if (invoice?.currency === getCurrencyValue()) {
+        generatePDFWithData(null); // No conversion needed
+      } else {
+        // Prompt user to create missing currency
+        const res = await confirIsCurrencyPDF(invoice?.currency);
+        if (res) {
+          Navigate(`/dashboard/manage-currency?date=${invoice?.transaction_date}&currency=${invoice?.currency}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
     }
-
-    const contentComponent = (
-      <PrintContent data={invoice} cusVenData={invoice?.customer} masterData={masterData} moduleId={invoice?.invoice_id} section={section === "delivery_challan" ? "Delivery Challan" : "Invoice"} />
-    );
-
-    generatePDF(contentComponent, section === "delivery_challan" ? "Delivery_Challan_Document.pdf" : "Invoice_Document.pdf", setLoading, 500);
-
   };
 
 
   return (
     <>
-      {(invoiceStatus?.loading || invoiceDelete?.loading || invoiceSent?.loading || loading) && <MainScreenFreezeLoader />}
+      {(invoiceStatus?.loading || invoiceDelete?.loading || invoiceSent?.loading || rateLoading?.loading || loading) && <MainScreenFreezeLoader />}
 
       {invoiceDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >

@@ -15,6 +15,10 @@ import { Payment_Receive_DetailTable } from '../../Common/InsideSubModulesCommon
 import { generatePDF } from '../../Helper/createPDF';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
+import { UserMasterListAction } from '../../../Redux/Actions/userMasterActions';
+import { confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const PaymentRevievedDetail = () => {
 
@@ -83,30 +87,76 @@ const PaymentRevievedDetail = () => {
 
     useFetchApiData(paymentRecDetail, payloadGenerator, [callApi]);
 
-
     // pdf & print
     const componentRef = useRef(null);
     const masterData = useSelector(state => state?.masterData?.masterData);
     const [loading, setLoading] = useState(false);
 
-    const handleDownloadPDF = () => {
-        if (!payment || !masterData) {
-            alert("Data is still loading, please try again.");
-            return;
+    // const handleDownloadPDF = () => {
+    //     if (!payment || !masterData) {
+    //         alert("Data is still loading, please try again.");
+    //         return;
+    //     }
+
+    //     const contentComponent = (
+    //         <PrintContent data={payment} cusVenData={payment?.customer} masterData={masterData} moduleId={payment?.payment_id} section="Payment Receive" />
+    //     );
+
+    //     generatePDF(contentComponent, "Payment_Receive_Document.pdf", setLoading, 500);
+    // };
+
+
+    const rateLoading = useSelector(state => state?.currencyRateList);
+
+    const handleDownloadPDF = async () => {
+        try {
+            if (!payment?.transaction_date) return;
+
+            // Fetch currency rates for the transaction date
+            const res = await dispatch(currencyRateListAction({ date: payment?.transaction_date }));
+            const fetchCurrencyData = res?.data?.find(val => val?.code === payment?.currency);
+
+            // Ensure masterData & quotation exist before proceeding
+            if (!payment || !masterData) {
+                dispatch(UserMasterListAction());
+                alert("Data is still loading, please try again.");
+                return;
+            }
+
+            const generatePDFWithData = (currencyData) => {
+                const contentComponent = (
+                    <PrintContent
+                        data={payment}
+                        masterData={masterData}
+                        moduleId={payment?.credit_note_id}
+                        section="Payment Receive"
+                        fetchCurrencyData={currencyData}
+                    />
+                );
+                generatePDF(contentComponent, "Payment_Receive_Document.pdf", setLoading, 500);
+            };
+
+            if (fetchCurrencyData) {
+                generatePDFWithData(fetchCurrencyData);
+            } else if (payment?.currency === getCurrencyValue()) {
+                generatePDFWithData(null); // No conversion needed
+            } else {
+                // Prompt user to create missing currency
+                const res = await confirIsCurrencyPDF(payment?.currency);
+                if (res) {
+                    Navigate(`/dashboard/manage-currency?date=${payment?.transaction_date}&currency=${payment?.currency}`);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching currency rates:", error);
         }
-
-        const contentComponent = (
-            <PrintContent data={payment} cusVenData={payment?.customer} masterData={masterData} moduleId={payment?.payment_id} section="Payment Receive" />
-        );
-
-        generatePDF(contentComponent, "Payment_Receive_Document.pdf", setLoading, 500);
     };
 
 
 
     return (
         <>
-            {(paymentDelete?.loading || paymentRecStatuss?.loading || loading) && <MainScreenFreezeLoader />}
+            {(paymentDelete?.loading || paymentRecStatuss?.loading || loading || rateLoading?.loading) && <MainScreenFreezeLoader />}
 
             {paymentDetail?.loading ? <Loader02 /> :
                 <div ref={componentRef} >

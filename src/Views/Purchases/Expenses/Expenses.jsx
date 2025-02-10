@@ -471,7 +471,6 @@ const Expenses = () => {
                             {quotation?.expense_head?.expense_name || ""}
                           </div>
 
-                          {console.log("quotation?.expense_head", quotation)}
                           <div
                             onClick={() => handleRowClicked(quotation)}
                             className="table-cellx12 quotiosalinvlisxs4"

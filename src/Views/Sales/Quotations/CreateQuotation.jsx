@@ -87,7 +87,6 @@ const CreateQuotation = () => {
     calculateExpiryDate,
   } = useHandleFormChange({ formData, setFormData, cusList, addSelect, setAddSelect, isCustomerSelect, setIsCustomerSelect, });
 
-
   // this is the common handle submit 
   const handleFormSubmit = async (e) => {
     await handleFormSubmit1({
@@ -135,7 +134,6 @@ const CreateQuotation = () => {
     dispatch(productTypeItemAction("Product"));
   }, [dispatch]);
 
-  // console.log("daaaaaaaaaaaaaaaa", formData?.items)
 
   return (
     <>

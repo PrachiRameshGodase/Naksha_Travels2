@@ -83,8 +83,6 @@ export const parsePurchaseDetails = (detailData, convert) => {
 
     // for grn select items
 
-    console.log("itemsFromApiitemsFromApiitemsFromApiitemsFromApiitemsFromApiitemsFromApi", itemsFromApi)
-
     return {
         calculateTotalTaxAmount,
         itemsFromApi,
