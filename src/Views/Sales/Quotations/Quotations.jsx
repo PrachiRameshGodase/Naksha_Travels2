@@ -239,7 +239,6 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {/* {otherIcons?.doller_svg} */}
                       {currencySymbol}{" "}
                       Amount
                     </p>

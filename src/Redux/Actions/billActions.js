@@ -90,7 +90,6 @@ export const billDeletes = (queryParams, Navigate) => async (dispatch) => {
 
         dispatch({ type: BILL_DELETE_SUCCESS, payload: response.data });
         if (response?.data?.message === "Bill deleted Successfully") {
-            dispatch(billLists(sendData));
             toast.success(response?.data?.message);
             Navigate("/dashboard/bills");
         } else {
@@ -109,7 +108,6 @@ export const billStatus = (queryParams, setCallApi) => async (dispatch) => {
         const response = await axiosInstance.post(`/purchase/bills/status`,
             queryParams
         );
-        dispatch(billLists(sendData));
         if (setCallApi) {
             if (response?.data?.message === "Bill Declined Updated Successfully") {
                 toast.success(response?.data?.message);
@@ -150,7 +148,6 @@ export const billSend = (quotationData, Navigate) => async (dispatch) => {
         });
 
         if (data?.message === "Bill sent Successfully") {
-            dispatch(billLists(sendData));
             const sendData = {
                 id: quotationData?.id,
                 status: 6,

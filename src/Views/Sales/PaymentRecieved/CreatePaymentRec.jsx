@@ -19,12 +19,13 @@ import NumericInput from '../../Helper/NumericInput';
 import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import ImageUpload from '../../Helper/ComponentHelper/ImageUpload';
 import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbolWithPoints, ShowMasterData } from '../../Helper/HelperFunctions';
-import { PaymentRecTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { PaymentTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
 import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
+import { confirmIsAmountFill } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const CreatePaymentRec = () => {
 
@@ -57,7 +58,7 @@ const CreatePaymentRec = () => {
 
 
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert, invoice_no } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, duplicate: isDuplicate, convert, invoice_no } = Object.fromEntries(params?.entries());
 
 
     useEffect(() => {
@@ -183,74 +184,125 @@ const CreatePaymentRec = () => {
     }, [dispatch, itemId, convert]);
 
 
+    const calculateTotalPayment = () => {
+        const total = formData?.entries?.reduce((total, entry) => {
+            return total + (entry.amount ? parseFloat(entry.amount) : 0.00);
+        }, 0.00);
+
+        return parseFloat(total?.toFixed(2)); // Ensures it's a number, not a string
+    };
+
+
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
 
-    const handleCheckboxClick = checkboxName => {
-        setIsChecked(prevState => ({
+    const handleCheckboxClick = (checkboxName) => {
+        setIsChecked((prevState) => ({
             ...prevState,
             [checkboxName]: !prevState[checkboxName],
         }));
 
-        if (isChecked?.checkbox1) {
-            setFormData({
-                ...formData,
-                debit: (parseInt(invoiceDatas?.unpaid_amount).toFixed(2)),
-            });
-            setIsAmoutSelect(true);
-        } else {
-            setFormData({
-                ...formData,
-                debit: "",
-            });
-            setIsAmoutSelect(false);
-        }
-    }
+        const totalPayment = calculateTotalPayment(); // Get total payment from entries
+
+        setFormData((prevFormData) => {
+            if (isChecked?.checkbox1) {
+                // If checkbox is checked, set form debit to unpaid amount//which is amount receive field
+                setIsAmoutSelect(true);
+                return { ...prevFormData, debit: parseFloat(invoiceDatas?.unpaid_amount)?.toFixed(2) };
+            }
+
+            if (totalPayment >= 1) {
+                // If entries have payment, ask for confirmation before resetting
+                confirmIsAmountFill(totalPayment).then((res) => {
+                    if (res) {
+                        // User clicked "Yes" → Reset all entries and clear debit
+                        setFormData({
+                            ...prevFormData,
+                            debit: "",
+                            entries: prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })),
+                        });
+                        setIsAmoutSelect(false);
+                    } else {
+                        // User clicked "No" → Keep debit amount as total entries amount
+                        setFormData({ ...prevFormData, debit: totalPayment });
+                        setIsAmoutSelect(true);
+                    }
+                });
+            } else {
+                // If no entries, reset debit and entries
+                setIsAmoutSelect(false);
+                return {
+                    ...prevFormData,
+                    debit: "",
+                    entries: prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })),
+                };
+
+            }
+        });
+    };
+
+    /**
+     * Handles input change events for form fields.
+     */
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        let newValue = value;
 
-        if (name === 'shipping_charge' || name === 'adjustment_charge' || name === 'bank_charges') {
-            newValue = parseFloat(value) || 0; // Convert to float or default to 0
+        let newValue = value === "" ? "" : parseFloat(value) || 0; // Convert value to number or default to 0
+
+        // If the input field is one of the charges, ensure it's parsed as a float
+        if (["bank_charges"].includes(name)) {
+            newValue = parseFloat(value) || 0;
         }
 
-        // Convert empty string to zero
-        if (newValue === '') {
-            newValue = "";
-        }
-
-        if (name === "customer_id" && value !== "") {
-            setIsCustomerSelect(true);
-        } else if (name === "customer_id" && value == "") {
-            setIsCustomerSelect(false);
-        }
-
-        else if (name === "debit" && value !== "") {
-            setIsAmoutSelect(true);
-        }
-
+        // Handle customer selection
         if (name === "customer_id") {
-            const selectedCustomer = cusList?.data?.user?.find(cus => cus.id == value);
-            const sendData = {
-                fy: localStorage.getItem('FinancialYear'),
-                customer_id: selectedCustomer?.id,
+            setIsCustomerSelect(value !== ""); // Set customer selection flag
+
+            const selectedCustomer = cusList?.data?.user?.find((cus) => cus.id == value);
+            if (selectedCustomer) {
+                dispatch(
+                    pendingInvoices(
+                        { fy: localStorage.getItem("FinancialYear"), customer_id: selectedCustomer?.id },
+                        setInoiceData
+                    )
+                );
             }
-            dispatch(pendingInvoices(sendData, setInoiceData))
         }
 
+        // Handle changes in the "debit" field
+        if (name === "debit" && value !== "") {
+            setIsAmoutSelect(true); // Mark amount as selected
 
-        setFormData({
-            ...formData,
+            const totalPayment = calculateTotalPayment(); // Get the total payment from entries
+
+            if (newValue < totalPayment) {
+                // If the new debit value is less than total entries, ask for confirmation
+                confirmIsAmountFill(totalPayment).then((res) => {
+                    setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        debit: res ? newValue : totalPayment, // Keep debit as totalPayment if user cancels
+                        entries: res ? prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })) : prevFormData?.entries,
+                    }));
+                });
+                return; // Stop further execution to wait for confirmation
+            }
+        }
+
+        // Update form state with the new value
+        setFormData((prevFormData) => ({
+            ...prevFormData,
             [name]: newValue,
-        });
+        }));
     };
+
+
 
 
     useEffect(() => {
         if (!formData?.debit) {
             setFormData((prevData) => ({
                 ...prevData,
-                entries: prevData.entries.map(entry => ({
+                entries: prevData?.entries?.map(entry => ({
                     ...entry,
                     amount: null
                 }))
@@ -258,7 +310,8 @@ const CreatePaymentRec = () => {
         }
     }, [formData?.debit]);
 
-    // console.log(" invoiceDatas?.invoices", invoiceDatas?.invoices)
+
+    // invoiceDatas this is the pending invoice list data, pass customer id and set it inside entries
     useEffect(() => {
         if (invoiceDatas) {
             setFormData({
@@ -266,6 +319,7 @@ const CreatePaymentRec = () => {
                 entries: invoiceDatas?.invoices?.map(invoice => ({
                     invoice_no: invoice?.invoice_id,
                     invoice_id: invoice?.id,
+                    // amount: invoice?.amount,
                     invoice_amount: +invoice?.total,
                     balance_amount: (+invoice?.total) - (+invoice?.amount_paid),
                     date: formatDate(invoice?.transaction_date),
@@ -276,21 +330,19 @@ const CreatePaymentRec = () => {
     }, [invoiceDatas]);
 
 
-    const calculateTotalAmount = () => {
-        const total = formData?.entries?.reduce((total, entry) => {
-            return total + (entry.amount ? parseFloat(entry.amount) : 0.00);
-        }, 0.00);
-        return total === 0 ? "0.00" : total.toFixed(2);
-    };
+
+    console.log("invoiceDAta", invoiceDatas)
+    console.log("formdatqa", formData)
+
 
 
 
     useEffect(() => {
         setFormData({
             ...formData,
-            amt_excess: (+formData?.debit) - calculateTotalAmount()
+            amt_excess: (+formData?.debit) - calculateTotalPayment()
         })
-    }, [calculateTotalAmount()]);
+    }, [formData?.entries]);
 
 
     const dropdownRef1 = useRef(null);
@@ -338,7 +390,6 @@ const CreatePaymentRec = () => {
             toast.error('Error updating quotation:', error);
         }
     };
-
 
 
     useEffect(() => {
@@ -399,7 +450,7 @@ const CreatePaymentRec = () => {
                                                     ref={dropdownRef1}
                                                     label="Customer Name"
                                                     options={cusList?.data?.user}
-                                                    value={formData.customer_id}
+                                                    value={formData?.customer_id}
                                                     onChange={handleChange}
                                                     name="customer_id"
                                                     defaultOption="Select Customer"
@@ -432,7 +483,7 @@ const CreatePaymentRec = () => {
                                                     autoComplete='off'
                                                     ref={dropdownRef2}
                                                     type="number"
-                                                    value={formData.debit}
+                                                    value={formData?.debit}
                                                     name='debit'
                                                     onChange={handleChange}
                                                     placeholder='Enter Received Amount'
@@ -468,7 +519,7 @@ const CreatePaymentRec = () => {
                                                 {otherIcons.tag_svg}
 
                                                 <NumericInput
-                                                    value={formData.bank_charges}
+                                                    value={formData?.bank_charges}
                                                     placeholder='Enter Bank Charges'
                                                     onChange={handleChange}
                                                     name='bank_charges'
@@ -489,7 +540,7 @@ const CreatePaymentRec = () => {
                                             <span >
                                                 {otherIcons.date_svg}
                                                 <DatePicker
-                                                    selected={formData.transaction_date}
+                                                    selected={formData?.transaction_date}
                                                     onChange={(date) =>
                                                         setFormData({
                                                             ...formData,
@@ -541,7 +592,7 @@ const CreatePaymentRec = () => {
                                                 <CustomDropdown15
                                                     label="Account"
                                                     options={accountList}
-                                                    value={formData.to_acc}
+                                                    value={formData?.to_acc}
                                                     onChange={handleChange}
                                                     name="to_acc"
                                                     defaultOption="Select An Account"
@@ -555,7 +606,7 @@ const CreatePaymentRec = () => {
                                             <label className=''>Reference</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={preventZeroVal(formData.reference)} onChange={handleChange}
+                                                <input type="text" value={preventZeroVal(formData?.reference)} onChange={handleChange}
                                                     // disabled
                                                     name='reference'
                                                     placeholder='Enter Reference' autoComplete='off' />
@@ -574,7 +625,7 @@ const CreatePaymentRec = () => {
                                     {
                                         formData?.entries?.length >= 1 ?
                                             <>
-                                                <PaymentRecTable formData={formData} setFormData={setFormData} fetchDetails={fetchDetails} />
+                                                <PaymentTable formData={formData} setFormData={setFormData} section={true} />
                                             </>
                                             :
                                             <p style={{ textAlign: "center", padding: "20px 0" }}> There are no unpaid invoices associated with this customer. </p>
@@ -602,24 +653,25 @@ const CreatePaymentRec = () => {
                                                     <label>Amount received: ({currencySymbol})</label>
                                                     <input
                                                         type="text"
-                                                        value={parseInt(formData?.debit)?.toFixed(2)}
+                                                        value={(parseInt(formData?.debit || 0.00))?.toFixed(2)}
                                                         readOnly
                                                         placeholder='0.00'
                                                         className='inputsfocalci465s'
                                                         style={{ color: formData?.debit < 0 ? 'rgb(255, 46, 18)' : 'black', }}
                                                     />
                                                 </div>
+
                                                 <div className='clcsecx12s1'>
                                                     <label>Amount used for payment: ({currencySymbol})</label>
                                                     <input
                                                         className='inputsfocalci465s'
                                                         readOnly
                                                         type="text"
-                                                        value={calculateTotalAmount()}
+                                                        value={calculateTotalPayment()}
                                                         placeholder='0.00'
-                                                        style={{}}
                                                     />
                                                 </div>
+
                                                 <div className='clcsecx12s1'>
                                                     <label>Amount In Excess: ({currencySymbol})</label>
                                                     <input

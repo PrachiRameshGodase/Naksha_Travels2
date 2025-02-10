@@ -30,7 +30,6 @@ import {
 
 import { convertStatus } from '../../Views/Helper/ReduxHelperFunctions/convertStatus';
 import { paymentMadeNavigation, paymentReceiveNavigation } from '../../Views/Helper/ReduxHelperFunctions/paymentNavigation';
-import { sendData } from '../../Views/Helper/HelperFunctions';
 
 
 export const updatePaymentRec = (quotationData, navigate, section, editDub, buttonName, itemId, convert, showAllSequenceId) => async (dispatch) => {
