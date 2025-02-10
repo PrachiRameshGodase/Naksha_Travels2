@@ -118,8 +118,9 @@ const CreateBills = () => {
       editDub: isEdit,
       section: "bills",
       updateDispatchAction: createPurchases, // This is dynamic for the dispatch action
+      isVendorSelect,
+      toSelect: "vendor",
       sendData: {
-        isVendorSelect,
         itemId,
         convert
 

@@ -26,9 +26,10 @@ import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
-import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
-import { PaymentMadeTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { financialYear, getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { PaymentTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
+import { confirmIsAmountFill } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const CreatePaymentMade = () => {
 
@@ -179,6 +180,14 @@ const CreatePaymentMade = () => {
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
 
+    const calculateTotalPayment = () => {
+        const total = formData?.entries?.reduce((total, entry) => {
+            return total + (entry.amount ? parseFloat(entry.amount) : 0.00);
+        }, 0.00);
+
+        return parseFloat(total?.toFixed(2)); // Ensures it's a number, not a string
+    };
+
     // Function to handle checkbox clicks
     const handleCheckboxClick = checkboxName => {
         setIsChecked(prevState => ({
@@ -186,19 +195,43 @@ const CreatePaymentMade = () => {
             [checkboxName]: !prevState[checkboxName],
         }));
 
-        if (isChecked?.checkbox1) {
-            setFormData({
-                ...formData,
-                credit: (+invoiceDatas?.unpaid_amount?.toFixed(2)),
-            });
-            setIsAmoutSelect(true);
-        } else {
-            setFormData({
-                ...formData,
-                credit: "",
-            });
-            setIsAmoutSelect(false);
-        }
+        const totalPayment = calculateTotalPayment(); // Get total payment from entries
+
+        setFormData((prevFormData) => {
+            if (isChecked?.checkbox1) {
+                // If checkbox is checked, set form credit to unpaid amount//which is amount receive field
+                setIsAmoutSelect(true);
+                return { ...prevFormData, credit: parseFloat(invoiceDatas?.unpaid_amount)?.toFixed(2) };
+            }
+
+            if (totalPayment >= 1) {
+                // If entries have payment, ask for confirmation before resetting
+                confirmIsAmountFill(totalPayment).then((res) => {
+                    if (res) {
+                        // User clicked "Yes" → Reset all entries and clear credit
+                        setFormData({
+                            ...prevFormData,
+                            credit: "",
+                            entries: prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })),
+                        });
+                        setIsAmoutSelect(false);
+                    } else {
+                        // User clicked "No" → Keep credit amount as total entries amount
+                        setFormData({ ...prevFormData, credit: totalPayment });
+                        setIsAmoutSelect(true);
+                    }
+                });
+            } else {
+                // If no entries, reset credit and entries
+                setIsAmoutSelect(false);
+                return {
+                    ...prevFormData,
+                    credit: "",
+                    entries: prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })),
+                };
+
+            }
+        });
     }
 
 
@@ -210,29 +243,38 @@ const CreatePaymentMade = () => {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
 
-        // Convert empty string to zero
-        if (newValue === '') {
-            newValue = "";
-        }
-
-        if (name === "vendor_id" && value !== "") {
-            setIsVendorSelect(true);
-        } else if (name === "vendor_id" && value == "") {
-            setIsVendorSelect(false);
-        }
-        else if (name === "credit" && value !== "") {
-            setIsAmoutSelect(true);
-        }
-
-
+        // Handle customer selection
         if (name === "vendor_id") {
-            const selectedVendor = vendorList?.data?.user?.find(cus => cus.id == value);
-            const sendData = {
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
-                vendor_id: selectedVendor?.id,
+            setIsVendorSelect(value !== ""); // Set customer selection flag
+
+            const selectedVendor = vendorList?.data?.user?.find((cus) => cus.id == value);
+            if (selectedVendor) {
+                dispatch(
+                    pendingBillLists(
+                        { fy: financialYear(), vendor_id: selectedVendor?.id },
+                        setInoiceData
+                    )
+                );
             }
-            dispatch(pendingBillLists(sendData, setInoiceData));
+        }
+
+        // Handle changes in the "credit" field
+        if (name === "credit" && value !== "") {
+            setIsAmoutSelect(true); // Mark amount as selected
+
+            const totalPayment = calculateTotalPayment(); // Get the total payment from entries
+
+            if (newValue < totalPayment) {
+                // If the new credit value is less than total entries, ask for confirmation
+                confirmIsAmountFill(totalPayment).then((res) => {
+                    setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        credit: res ? newValue : totalPayment, // Keep credit as totalPayment if user cancels
+                        entries: res ? prevFormData?.entries?.map((entry) => ({ ...entry, amount: "" })) : prevFormData?.entries,
+                    }));
+                });
+                return; // Stop further execution to wait for confirmation
+            }
         }
 
         setFormData({
@@ -253,6 +295,8 @@ const CreatePaymentMade = () => {
         }
     }, [formData?.credit]);
 
+
+    // invoiceDatas this is the pending invoice list data, pass customer id and set it inside entries   
     useEffect(() => {
         if (invoiceDatas) {
             setFormData({
@@ -263,7 +307,9 @@ const CreatePaymentMade = () => {
                     bill_amount: +invoice?.total,
                     order_no: invoice?.order_no,
                     balance_amount: (+invoice?.total) - (+invoice?.amount_paid),
-                    date: formatDate(invoice?.transaction_date)
+                    date: formatDate(invoice?.transaction_date),
+                    ...(bill_no && { amount: (+invoice?.total) - (+invoice?.amount_paid) })
+
                 }))
             })
         }
@@ -560,7 +606,7 @@ const CreatePaymentMade = () => {
                                     {
                                         formData?.entries?.length >= 1 ?
                                             <>
-                                                <PaymentMadeTable formData={formData} setFormData={setFormData} fetchDetails={fetchDetails} />
+                                                <PaymentTable formData={formData} setFormData={setFormData} section={false} />
                                             </>
                                             :
                                             <p style={{ textAlign: "center", padding: "20px 0" }}> There are no unpaid invoices associated with this Vendor. </p>
@@ -607,7 +653,7 @@ const CreatePaymentMade = () => {
                                                     />
                                                 </div>
                                                 <div className='clcsecx12s1'>
-                                                    <label>Amount In Balance: ({currencySymbol})</label>
+                                                    <label>Amount In Execss: ({currencySymbol})</label>
                                                     <input
                                                         className='inputsfocalci465s'
                                                         readOnly

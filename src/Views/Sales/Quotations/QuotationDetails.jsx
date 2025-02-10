@@ -33,8 +33,6 @@ const QuotationDetails = () => {
 
   const masterData = useSelector(state => state?.masterData?.masterData);
   const currencyList1 = useSelector((state) => state?.getCurrency);
-  const currencyList = currencyList1?.data?.currency || []
-  // console.log("currencyList", currencyList)
 
   const componentRef = useRef(null);
 
@@ -109,10 +107,7 @@ const QuotationDetails = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const getCurrency = getCurrencyValue();// active currency value
-
-  // console.log("quoteDetail", quotation)
-
+  const rateLoading = useSelector(state => state?.currencyRateList);
   const handleDownloadPDF = async () => {
     try {
 
@@ -136,7 +131,7 @@ const QuotationDetails = () => {
               }
 
               const contentComponent = (
-                <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} currencyList={currencyList} />
+                <PrintContent data={quotation} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" fetchCurrencyData={fetchCurrencyData} />
               );
 
               generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
@@ -154,8 +149,6 @@ const QuotationDetails = () => {
                   return;
                 }
               })
-
-
             }
           })
       }
@@ -186,7 +179,7 @@ const QuotationDetails = () => {
     <>
       {/* <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" /> */}
 
-      {(quoteStatus?.loading || quoteDelete?.loading || loading) && <MainScreenFreezeLoader />}
+      {((quoteStatus?.loading) || (quoteDelete?.loading) || loading || (rateLoading?.loading)) && <MainScreenFreezeLoader />}
       {quoteDetail?.loading ? <Loader02 /> :
         <div ref={componentRef} >
           <div id="Anotherbox" className='formsectionx1'>
@@ -203,8 +196,8 @@ const QuotationDetails = () => {
               }
 
 
-              <div className="mainx1">
-                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+              <div className="mainx1" onClick={handleDownloadPDF} >
+                <p style={{ cursor: 'pointer' }}>
                   PDF/Print
                 </p>
               </div>

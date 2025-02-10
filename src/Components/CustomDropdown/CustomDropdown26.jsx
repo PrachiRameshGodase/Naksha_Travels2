@@ -61,6 +61,7 @@ const CustomDropdown26 = forwardRef((props, ref) => {
     }
   };
 
+
   // Handle selecting an option from the dropdown
   const handleOptionSelect = (option) => {
     handleSelect(option);
@@ -121,165 +122,165 @@ const CustomDropdown26 = forwardRef((props, ref) => {
               </div>
             </>
           ) :
-          service_data?.service_name === "Tour Package" ? (
-            <>
-              <div>
-                <b>Service Name:</b> {service_data?.service_name || "-"}
-              </div>
-              <div>
-                <b>Package Name:</b> {service_data?.package_name || "-"}
-              </div>
-              <div>
-                <b>Destination:</b> {service_data?.destination || "-"}
-              </div>
-              <div>
-                <b>Hotel Type:</b>{" "}
-                <ShowUserMastersValue
-                  type="35"
-                  id={service_data?.hotel_type || "-"}
-                />
-              </div>
-            </>
-          )
-          : service_data?.service_name === "Assist" ? (
-            <>
-              <div>
-                <b>Service Name:</b> {service_data?.service_name || "-"}
-              </div>
-              <div>
-                <b>Airport:</b> {service_data?.airport_name || "-"}
-              </div>
-              <div>
-                <b>Meeting Type:</b>{" "}
-                {service_data?.meeting_type || "-"}
-              </div>
-              <div>
-                <b>No Of Persons:</b>{" "}
-                {service_data?.no_of_persons || "-"}
-              </div>
-            </>
-          ) : service_data?.service_name === "Flights" ? (
-            <>
-              <div>
-                <b>Service Name:</b> {service_data?.service_name || "-"}
-              </div>
-              <div>
-                <b>Airline Name:</b>{" "}
-                {service_data?.airline_name || "-"}
-              </div>
-              <div>
-                <b>Ticket No:</b> {service_data?.ticket_no || "-"}
-              </div>
-              <div>
-                <b>PRN No:</b> {service_data?.prn_no || "-"}
-              </div>
-            </>
-          ) : service_data?.service_name === "Visa" ? (
-            <>
-              <div>
-                <b>Service Name:</b> {service_data?.service_name || "-"}
-              </div>
-              <div>
-                <b>Passport No:</b> {service_data?.passport_no || "-"}
-              </div>
-              <div>
-                <b>Visa No:</b> {service_data?.visa_no || "-"}
-              </div>
-              <div>
-                <b>Visa Type:</b>{" "}
-                <ShowUserMastersValue
-                  type="40"
-                  id={service_data?.visa_type_id || "-"}
-                />
-              </div>
-            </>
-          ) :
-            service_data?.service_name === "Car Hire" ? (
+            service_data?.service_name === "Tour Package" ? (
               <>
                 <div>
                   <b>Service Name:</b> {service_data?.service_name || "-"}
                 </div>
                 <div>
-                  <b>Vehicle Type:</b> <ShowUserMastersValue
-                    type="41"
-                    id={service_data?.vehicle_type_id || "-"}
+                  <b>Package Name:</b> {service_data?.package_name || "-"}
+                </div>
+                <div>
+                  <b>Destination:</b> {service_data?.destination || "-"}
+                </div>
+                <div>
+                  <b>Hotel Type:</b>{" "}
+                  <ShowUserMastersValue
+                    type="35"
+                    id={service_data?.hotel_type || "-"}
                   />
                 </div>
-                <div>
-                  <b>Pickup Location:</b> {service_data?.pickup_location || "-"}
-                </div>
-                <div>
-                  <b>Drop Location:</b>{" "}
-
-                  {service_data?.drop_location || "-"}
-
-                </div>
               </>
-            ) :
-
-              service_data?.service_name === "Insurance" ? (
+            )
+              : service_data?.service_name === "Assist" ? (
                 <>
                   <div>
                     <b>Service Name:</b> {service_data?.service_name || "-"}
                   </div>
                   <div>
-                    <b>Company Name:</b>
-                    {service_data?.company_name || "-"}
-
+                    <b>Airport:</b> {service_data?.airport_name || "-"}
                   </div>
                   <div>
-                    <b>Policy No:</b> {service_data?.policy_no || "-"}
+                    <b>Meeting Type:</b>{" "}
+                    {service_data?.meeting_type || "-"}
                   </div>
                   <div>
-                    <b>Insurance Plan:</b>{" "}
-
-                    {service_data?.insurance_plan || "-"}
-
+                    <b>No Of Persons:</b>{" "}
+                    {service_data?.no_of_persons || "-"}
+                  </div>
+                </>
+              ) : service_data?.service_name === "Flights" ? (
+                <>
+                  <div>
+                    <b>Service Name:</b> {service_data?.service_name || "-"}
+                  </div>
+                  <div>
+                    <b>Airline Name:</b>{" "}
+                    {service_data?.airline_name || "-"}
+                  </div>
+                  <div>
+                    <b>Ticket No:</b> {service_data?.ticket_no || "-"}
+                  </div>
+                  <div>
+                    <b>PRN No:</b> {service_data?.prn_no || "-"}
+                  </div>
+                </>
+              ) : service_data?.service_name === "Visa" ? (
+                <>
+                  <div>
+                    <b>Service Name:</b> {service_data?.service_name || "-"}
+                  </div>
+                  <div>
+                    <b>Passport No:</b> {service_data?.passport_no || "-"}
+                  </div>
+                  <div>
+                    <b>Visa No:</b> {service_data?.visa_no || "-"}
+                  </div>
+                  <div>
+                    <b>Visa Type:</b>{" "}
+                    <ShowUserMastersValue
+                      type="40"
+                      id={service_data?.visa_type_id || "-"}
+                    />
                   </div>
                 </>
               ) :
-
-                service_data?.service_name === "Others" ? (
+                service_data?.service_name === "Car Hire" ? (
                   <>
-                   
                     <div>
                       <b>Service Name:</b> {service_data?.service_name || "-"}
                     </div>
-
                     <div>
-                      <b>Item Name:</b>
-                      {service_data?.item_name || "-"}
+                      <b>Vehicle Type:</b> <ShowUserMastersValue
+                        type="41"
+                        id={service_data?.vehicle_type_id || "-"}
+                      />
                     </div>
-
                     <div>
-                      <b>Supplier Name:</b>{" "}
+                      <b>Pickup Location:</b> {service_data?.pickup_location || "-"}
+                    </div>
+                    <div>
+                      <b>Drop Location:</b>{" "}
 
-                      {service_data?.supplier_name || "-"}
+                      {service_data?.drop_location || "-"}
 
                     </div>
                   </>
-                )
-                  :
-                  <div
-                    onClick={() => setIsOpen(!isOpen)}
-                    className={"dropdown-select" + (value ? " filledcolorIn" : "")}
-                  >
-                    <textarea
-                      type="text"
-                      placeholder="Type or Select the Item"
-                      value={searchTerm || itemData?.item_name}
-                      onChange={handleInputChange}
-                      onBlur={handleInputBlur}
-                      style={{
-                        width: "100%",
-                        border: "none",
-                        resize: "none",
-                      }}
-                      className="dropdown-search customdropdownx12s86 custom-scrollbar"
-                      autoFocus
-                      ref={inputRef}
-                    />
-                  </div>
+                ) :
+
+                  service_data?.service_name === "Insurance" ? (
+                    <>
+                      <div>
+                        <b>Service Name:</b> {service_data?.service_name || "-"}
+                      </div>
+                      <div>
+                        <b>Company Name:</b>
+                        {service_data?.company_name || "-"}
+
+                      </div>
+                      <div>
+                        <b>Policy No:</b> {service_data?.policy_no || "-"}
+                      </div>
+                      <div>
+                        <b>Insurance Plan:</b>{" "}
+
+                        {service_data?.insurance_plan || "-"}
+
+                      </div>
+                    </>
+                  ) :
+
+                    service_data?.service_name === "Others" ? (
+                      <>
+
+                        <div>
+                          <b>Service Name:</b> {service_data?.service_name || "-"}
+                        </div>
+
+                        <div>
+                          <b>Item Name:</b>
+                          {service_data?.item_name || "-"}
+                        </div>
+
+                        <div>
+                          <b>Supplier Name:</b>{" "}
+
+                          {service_data?.supplier_name || "-"}
+
+                        </div>
+                      </>
+                    )
+                      :
+                      <div
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={"dropdown-select" + (value ? " filledcolorIn" : "")}
+                      >
+                        <textarea
+                          type="text"
+                          placeholder="Type or Select the Item"
+                          value={searchTerm || itemData?.item_name}
+                          onChange={handleInputChange}
+                          onBlur={handleInputBlur}
+                          style={{
+                            width: "100%",
+                            border: "none",
+                            resize: "none",
+                          }}
+                          className="dropdown-search customdropdownx12s86 custom-scrollbar"
+                          autoFocus
+                          ref={inputRef}
+                        />
+                      </div>
         }
 
       </>
@@ -339,12 +340,12 @@ const CustomDropdown26 = forwardRef((props, ref) => {
           </>
         )}
 
-        <div className="lastbuttonsecofdropdown">
+        {/* <div className="lastbuttonsecofdropdown">
           <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
             Add Item
             <GoPlus />
           </p>
-        </div>
+        </div> */}
       </div>
       )}
     </div>

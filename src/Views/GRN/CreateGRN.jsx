@@ -417,7 +417,6 @@ const CreateGRN = () => {
         ...formData,
         purchase_order_id: null,
         vendor_id: null,
-
         items: [
           {
             id: 0,
@@ -462,7 +461,7 @@ const CreateGRN = () => {
     if (formData?.purchase_order_id) {
       const itemsFromApi = purchseDetail?.items?.map(item => ({
         item_id: +item?.item_id,
-        item_name: item?.item?.name,
+        item_name: item?.item?.name || item?.item_name,
         unit_id: item?.unit_id,
         tax_rate: (item?.tax_rate),
         po_qty: convert === "purchase_to_grn" ? +item?.quantity : +item?.quantity,

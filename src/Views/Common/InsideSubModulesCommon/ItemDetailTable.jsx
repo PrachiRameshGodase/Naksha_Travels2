@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   showAmountWithCurrencySymbol,
   showRateWithPercent,
@@ -479,57 +479,88 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
 };
 
 export const PaymentMadeDetailTable = ({ payment }) => {
+
+  console.log("payment made payment", payment)
+
+  const currencySymbol = getCurrencySymbol();
+
+  const calculateTotalAmount = () => {
+    const total = payment?.entries?.reduce((total, entry) => {
+      return parseFloat(total) + (parseFloat(entry?.amount) ? parseFloat(entry?.amount) : 0.0);
+    }, 0.0);
+
+    // Ensure it returns a number, not a string
+    return total === 0 ? 0.0 : parseFloat(total?.toFixed(2));
+  };
+
   return (
     <>
-      <table id="tablex15s56s31s1">
-        <thead className="thaedaksx433">
-          <tr>
-            <th className="sfdjklsd1xs2w1">#</th>
-            <th className="sfdjklsd1xs2w2" style={{ width: "25%" }}>
-              Bill Number
-            </th>
-            <th className="sfdjklsd1xs2w3" style={{ width: "10%" }}>
-              Bill Date
-            </th>
-            <th className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-              Amount Paid
-            </th>
-            <th className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-              Bill Amount
-            </th>
-            {/* <th className='sfdjklsd1xs2w4' style={{ textAlign: "right" }}>Amount Due</th> */}
-          </tr>
-        </thead>
-        <tbody>
-          {payment?.entries?.map((val, index) => (
-            <tr className="rowsxs15aksx433" key={index}>
-              <td className="sfdjklsd1xs2w1">{index + 1}</td>
-              <td className="sfdjklsd1xs2w2">{val?.bill?.bill_no || ""}</td>
-              <td className="sfdjklsd1xs2w3">
-                {formatDate4(val?.bill?.transaction_date)}
-              </td>
-              <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                {showAmountWithCurrencySymbol(val?.bill?.amount_paid)}
-              </td>
-              <td className="sfdjklsd1xs2w4" style={{ textAlign: "right" }}>
-                {showAmountWithCurrencySymbol(val?.bill?.total) || ""}
-              </td>
-              {/* <td className='sfdjklsd1xs2w4' style={{ textAlign: "right" }}>{showAmountWithCurrencySymbol(((+val?.bill?.total) - (+val?.bill?.amount_paid))?.toFixed(2))}</td> */}
+      {payment?.entries?.length >= 1 ? (
+        <table className="itemTable_01" id="modidy_table_form_details">
+          <thead className="table_head_item_02">
+            <tr className="table_head_item_02_row">
+              <th className="table_column_item item_table_width_01" >#</th>
+              <th className="table_column_item item_table_width_02">
+                Date
+              </th>
+              <th className="table_column_item">Bill Number</th>
+              <th className="table_column_item item_text_end_01">Bill Amount</th>
+              <th className="table_column_item item_text_end_01">Amount Due</th>
+              <th className="table_column_item item_text_end_01">Payment</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
+
+            {payment?.entries?.map((val, index) => (
+
+              <tr key={index} className="table_head_item_02_row">
+                <td className="table_column_item">{index + 1}</td>
+                <td className="table_column_item">{formatDate4(val?.bill?.transaction_date) || ""}</td>
+                <td className="table_column_item">
+                  {val?.bill?.bill_no || ""}
+                </td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.bill?.total)}
+                </td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.balance_amount)}
+                </td>
+                <td className="table_column_item item_text_end_01">
+                  {showAmountWithCurrencySymbol(val?.amount)}
+                </td>
+              </tr>
+            ))}
+
+          </tbody>
+        </table>
+      ) : (
+        <p style={{ textAlign: "center", padding: "20px 0" }}>
+          There are no unpaid invoices associated with this customer.
+        </p>
+      )}
+
+
+
+
 
       <div className="finalcalculateiosxl44s">
-        <span>
-          <p>Amount In Balance</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(payment?.amt_excess)}</h5>
-        </span>
-        <span>
-          <p>Amount to be Paid</p>{" "}
-          <h5>{showAmountWithCurrencySymbol(payment?.credit)}</h5>
-        </span>
-      </div>
+
+        <p><p className="finalcalcuFs">Amount Paid: </p> <h5 className="finalcalcuFs">{showAmountWithCurrencySymbol(payment?.credit)}</h5></p>
+
+        <p><p className=''>Amount Used For Payment:</p> <h5> ({currencySymbol}){calculateTotalAmount()}</h5></p>
+
+        <p><p>Amount In Execss:</p> <h5>
+          ({currencySymbol}) {+payment?.amt_excess < 0 ? (
+            <span style={{ color: "rgb(255, 46, 18)" }}>
+              {+payment?.amt_excess}
+            </span>
+          ) : (
+            +payment?.amt_excess
+          )}
+        </h5></p>
+
+      </div >
+
     </>
   );
 };
@@ -537,13 +568,14 @@ export const PaymentMadeDetailTable = ({ payment }) => {
 export const Payment_Receive_DetailTable = ({ payment }) => {
 
   const currencySymbol = getCurrencySymbol();
+
   const calculateTotalAmount = () => {
     const total = payment?.entries?.reduce((total, entry) => {
-      return +total + (entry.amount ? parseFloat(entry.amount) : 0.0);
+      return parseFloat(total) + (parseFloat(entry?.amount) ? parseFloat(entry?.amount) : 0.0);
     }, 0.0);
 
-    // Return "0.00" as a string if the total is 0, otherwise return the total formatted to 2 decimal places
-    return +total == 0 ? "0.00" : (+total).toFixed(2);
+    // Ensure it returns a number, not a string
+    return total === 0 ? 0.0 : parseFloat(total?.toFixed(2));
   };
   return (
     <>
@@ -575,7 +607,7 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
                   {showAmountWithCurrencySymbol(val?.invoice?.total)}
                 </td>
                 <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol((+val?.invoice?.total) - (+val?.invoice?.amount_paid))}
+                  {showAmountWithCurrencySymbol(val?.balance_amount)}
                 </td>
                 <td className="table_column_item item_text_end_01">
                   {showAmountWithCurrencySymbol(val?.amount)}
@@ -594,7 +626,7 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
       {/*  */}
 
       <div className="finalcalculateiosxl44s">
-        <p><p>Amount Received: </p> <h5>{showAmountWithCurrencySymbol(payment?.debit)}</h5></p>
+        <p><p className="finalcalcuFs">Amount Received: </p> <h5 className="finalcalcuFs">{showAmountWithCurrencySymbol(payment?.debit)}</h5></p>
         <p><p>Amount In Blance:</p> <h5>
           ({currencySymbol}) {+payment?.amt_excess < 0 ? (
             <span style={{ color: "rgb(255, 46, 18)" }}>
@@ -604,7 +636,7 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
             +payment?.amt_excess
           )}
         </h5></p>
-        <p><p className='finalcalcuFs'>Amount Used For Payment:</p> <h5>{calculateTotalAmount()}</h5></p>
+        <p><p>Amount Used For Payment:</p> <h5> ({currencySymbol}){calculateTotalAmount()}</h5></p>
       </div >
 
       {/*  */}
@@ -614,8 +646,70 @@ export const Payment_Receive_DetailTable = ({ payment }) => {
   );
 };
 
-export const PaymentRecTable = ({ formData, setFormData }) => {
+
+// payment receive table
+export const PaymentTable = ({ formData, setFormData, section }) => {
   const currencySymbol = getCurrencySymbol();
+
+  const handleAmountChange = (e, index) => {
+    let inputValue = e.target.value;
+    let newValue = inputValue === "" ? null : parseFloat(inputValue);
+
+    const formReceiveAmount = Number(section ? formData?.debit : formData?.credit) || 0; // Total available amount
+    const balanceAmount = Number(formData?.entries?.[index]?.balance_amount) || 0; // Individual balance amount
+
+    // Calculate the total sum of entered amounts in all entries (excluding current entry)
+    const totalEnteredAmount = formData?.entries?.reduce((sum, entry, i) =>
+      i === index ? sum : sum + (Number(entry.amount) || 0), 0
+    );
+
+    const remainingAmount = formReceiveAmount - totalEnteredAmount; // Calculate remaining balance
+    // Condition 1: If receiveAmount is empty
+    if (remainingAmount == 0) {
+      showToast("Please fill the receive amount");
+      updateEntry(index, "");
+      return;
+    }
+
+    // Condition 2: If inputValue exceeds balance amount
+    if (newValue > balanceAmount) {
+      showToast("The amount entered here is more than the amount due");
+      return;
+    }
+
+    // Condition 3: If inputValue exceeds the remaining available formReceiveAmount
+    if (newValue > remainingAmount) {
+      showToast(`You can not enter more than the received amount. Left amount is ${remainingAmount}`);
+      return;
+    }
+
+    // Condition 4: Valid input, update the value
+    updateEntry(index, newValue);
+  };
+
+  // Helper function to show toast notifications
+  const showToast = (message) => {
+    toast(message, {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+        fontSize: "14px",
+      },
+    });
+  };
+
+  // Helper function to update the form data
+  const updateEntry = (index, amount) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      entries: prevFormData?.entries?.map((entry, i) =>
+        i === index ? { ...entry, amount } : entry
+      ),
+    }));
+  };
+
   return (
 
     <>
@@ -627,260 +721,54 @@ export const PaymentRecTable = ({ formData, setFormData }) => {
             <th className="table_column_item item_table_width_02">
               Date
             </th>
-            <th className="table_column_item item_table_width_02">Invoice Number</th>
-            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Invoice Amount</th>
+            <th className="table_column_item item_table_width_02">{section ? "Invoice" : "Bill"} Number</th>
+            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) {section ? "Invoice" : "Bill"} Amount</th>
             <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Amount Due</th>
             <th className="table_column_item item_text_end_01">({currencySymbol}) Payment</th>
           </tr>
         </thead>
 
-
-        {formData?.customer_id ?
+        {(formData?.customer_id || formData?.vendor_id) ?
           <>
             <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
+
               {formData?.entries?.map((val, index) => (
 
                 <tr key={index} className="table_head_item_02_row itemsectionrows">
                   <td className="table_column_item">{index + 1}</td>
-
                   <td className="table_column_item">{val?.date}</td>
-                  <td className="table_column_item">{val?.invoice_no}</td>
+                  <td className="table_column_item">{section ? val?.invoice_no : val?.bill_no}</td>
+
                   <td className="table_column_item item_text_end_01">
-                    {(val?.invoice_amount?.toFixed(2))}
+                    {section ? (val?.invoice_amount?.toFixed(2)) : (val?.bill_amount?.toFixed(2))}
                   </td>
+
                   <td className="table_column_item item_text_end_01">
                     {(val?.balance_amount?.toFixed(2))}
                   </td>
+
+                  {/* {console.log("firstfirstfirst", val?.amount)} */}
+
                   <td className="table_column_item item_text_end_01 tablsxs1a2">
                     <input
                       style={{ width: "50%", textAlign: "right" }}
                       type="number"
-                      value={val.amount !== null ? val.amount : ""}
+                      value={val?.amount !== null ? val?.amount : ""}
                       placeholder="0.00"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        const newValue =
-                          inputValue === "" ? null : parseFloat(inputValue);
-
-                        // Convert debit and balance_amount to numbers for comparison
-                        const formDebit = Number(formData?.debit) || 0;
-                        const balanceAmount =
-                          Number(val?.balance_amount) || 0;
-
-                        // Condition 1: formData.debit is empty
-                        if (formData?.debit === "") {
-                          toast("Please set the amount", {
-                            icon: "👏",
-                            style: {
-                              borderRadius: "10px",
-                              background: "#333",
-                              color: "#fff",
-                              fontSize: "14px",
-                            },
-                          });
-                          setFormData((prevFormData) => ({
-                            ...prevFormData,
-                            entries: prevFormData?.entries?.map(
-                              (entry, i) =>
-                                i === index
-                                  ? { ...entry, amount: 0 }
-                                  : entry
-                            ),
-                          }));
-                        }
-
-                        // Condition 2: inputValue exceeds balance amount
-                        else if (newValue > balanceAmount) {
-                          toast(
-                            "The amount entered here is more than the amount due",
-                            {
-                              icon: "👏",
-                              style: {
-                                borderRadius: "10px",
-                                background: "#333",
-                                color: "#fff",
-                                fontSize: "14px",
-                              },
-                            }
-                          );
-                        }
-
-                        // Condition 3: inputValue exceeds formData.debit
-                        else if (newValue > formDebit) {
-                          toast(
-                            "The amount entered here is more than the amount paid by the customer",
-                            {
-                              icon: "👏",
-                              style: {
-                                borderRadius: "10px",
-                                background: "#333",
-                                color: "#fff",
-                                fontSize: "14px",
-                              },
-                            }
-                          );
-                        }
-
-                        // Condition 4: inputValue is valid
-                        else {
-                          setFormData((prevFormData) => ({
-                            ...prevFormData,
-                            entries: prevFormData?.entries?.map(
-                              (entry, i) =>
-                                i === index
-                                  ? { ...entry, amount: newValue }
-                                  : entry
-                            ),
-                          }));
-                        }
-                      }}
+                      onChange={(e) => handleAmountChange(e, index)}
                     />
                   </td>
-
                 </tr>
               ))}
+
             </tbody>
           </> :
-          <p style={{ textAlign: "center" }}>Please Select Customer</p>}
+          <p style={{ textAlign: "center" }}>Please Select {section ? "Customer" : "Vendor"}</p>}
 
       </table>
     </>
   );
 };
-
-// payment made table
-export const PaymentMadeTable = ({ formData, setFormData }) => {
-  const currencySymbol = getCurrencySymbol();
-  return (
-
-    <>
-      <table className="itemTable_01" id="modidy_table_form_payment_rec_">
-        <thead className="table_head_item_02">
-          <tr className="table_head_item_02_row">
-            <th className="table_column_item item_table_width_01" >#</th>
-            <th className="table_column_item item_table_width_02">
-              Date
-            </th>
-            <th className="table_column_item item_table_width_02">Bill Number</th>
-            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Bill Amount</th>
-            <th className="table_column_item item_text_end_01 item_table_width_02">({currencySymbol}) Amount Due</th>
-            <th className="table_column_item item_text_end_01">({currencySymbol}) Payment</th>
-          </tr>
-        </thead>
-
-        {formData?.vendor_id ?
-          <>
-            <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
-              {formData?.entries?.map((val, index) => (
-
-                <tr key={index} className="table_head_item_02_row itemsectionrows">
-                  <td className="table_column_item">{index + 1}</td>
-
-                  <td className="table_column_item">{val?.date}</td>
-                  <td className="table_column_item">{val?.bill_no}</td>
-                  <td className="table_column_item item_text_end_01">
-                    {(val?.bill_amount?.toFixed(2))}
-                  </td>
-                  <td className="table_column_item item_text_end_01">
-                    {(val?.balance_amount?.toFixed(2))}
-                  </td>
-                  <td className="table_column_item item_text_end_01 tablsxs1a2">
-                    <input
-                      style={{ width: "50%", textAlign: "right" }}
-                      type="number"
-                      value={val.amount !== null ? val.amount : ""}
-                      placeholder="0.00"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        const newValue =
-                          inputValue === "" ? null : parseFloat(inputValue);
-
-                        // Convert credit and balance_amount to numbers for comparison
-                        const formDebit = Number(formData?.credit) || 0;
-                        const balanceAmount =
-                          Number(val?.balance_amount) || 0;
-
-                        // Condition 1: formData.credit is empty
-                        if (formData?.credit === "") {
-                          toast("Please set the amount", {
-                            icon: "👏",
-                            style: {
-                              borderRadius: "10px",
-                              background: "#333",
-                              color: "#fff",
-                              fontSize: "14px",
-                            },
-                          });
-                          setFormData((prevFormData) => ({
-                            ...prevFormData,
-                            entries: prevFormData?.entries?.map(
-                              (entry, i) =>
-                                i === index
-                                  ? { ...entry, amount: 0 }
-                                  : entry
-                            ),
-                          }));
-                        }
-
-                        // Condition 2: inputValue exceeds balance amount
-                        else if (newValue > balanceAmount) {
-                          toast(
-                            "The amount entered here is more than the amount due",
-                            {
-                              icon: "👏",
-                              style: {
-                                borderRadius: "10px",
-                                background: "#333",
-                                color: "#fff",
-                                fontSize: "14px",
-                              },
-                            }
-                          );
-                        }
-
-                        // Condition 3: inputValue exceeds formData.credit
-                        else if (newValue > formDebit) {
-                          toast(
-                            "The amount entered here is more than the amount paid by the customer",
-                            {
-                              icon: "👏",
-                              style: {
-                                borderRadius: "10px",
-                                background: "#333",
-                                color: "#fff",
-                                fontSize: "14px",
-                              },
-                            }
-                          );
-                        }
-
-                        // Condition 4: inputValue is valid
-                        else {
-                          setFormData((prevFormData) => ({
-                            ...prevFormData,
-                            entries: prevFormData?.entries?.map(
-                              (entry, i) =>
-                                i === index
-                                  ? { ...entry, amount: newValue }
-                                  : entry
-                            ),
-                          }));
-                        }
-                      }}
-                    />
-                  </td>
-
-                </tr>
-              ))}
-            </tbody>
-          </> :
-          <p style={{ textAlign: "center" }}>Please Select Customer</p>}
-
-      </table>
-    </>
-  );
-};
-// payment made table
 
 
 //for manage currency list / and create currencies prices...

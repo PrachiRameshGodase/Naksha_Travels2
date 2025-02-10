@@ -1,6 +1,7 @@
 import { billStatus } from "../../../Redux/Actions/billActions";
 import { invoicesStatus } from "../../../Redux/Actions/invoiceActions";
 import { CreditNotesStatus, debitNotesStatus } from "../../../Redux/Actions/notesActions";
+import { paymentRecStatus } from "../../../Redux/Actions/PaymentRecAction";
 import { purchasesStatus } from "../../../Redux/Actions/purchasesActions";
 import { quotationStatus } from "../../../Redux/Actions/quotationActions";
 import { saleOrderStatus } from "../../../Redux/Actions/saleOrderActions";
@@ -47,12 +48,16 @@ export const convertStatus = (dispatch, section, navigate, itemId, convert, resp
     if (section === "grn" && convert === "grn_to_bill") {
         dispatch(purchasesStatus({ id: itemId, status: "3" }, null));//purchase order become Transfer to grn status...
     }
+
+    // invoice to payment rec convert...
     if (section === "payment_rec" && convert === "toPayment") {
+        dispatch(paymentRecStatus({ id: response?.payment.id, status: "1" }))//in payment made status will approved and 
         dispatch(invoicesStatus({ id: itemId, status: "5" }, null));//paid status(invoice) when convert invoice to payment receive...
         navigate("/dashboard/payment-recieved")
     }
 
     if (section === "payment_made" && convert === "bill_to_payment") {
+        dispatch(paymentRecStatus({ id: response?.payment.id, status: "1" }))//in payment made status will approved and 
         dispatch(billStatus({ id: itemId, status: "5" }, null));//paid status(bill) when convert bill to payment made...
     }
 

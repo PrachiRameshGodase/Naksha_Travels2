@@ -41,9 +41,7 @@ export const createPurchases = ({ quotationData: queryParams, navigate: Navigate
         dispatch({ type: PURCHASES_CREATE_SUCCESS, payload: response.data });
 
         if (response?.data?.message === "Transaction Created Successfully") {
-            if (queryParams?.purchase_type === "bills") {//refresh bill list api when bill is create on approve grn
-                dispatch(billLists(sendData));
-            }
+
             let confirmed = null;
             if (buttonName === "saveAndSend" && confirmed === null) {
                 const result = await Swal.fire({

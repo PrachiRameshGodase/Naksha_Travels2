@@ -21,7 +21,7 @@ import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import { useDebounceSearch } from "../../Helper/HelperFunctions";
+import { currencySymbol, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
@@ -749,7 +749,7 @@ const SalesOrderList = () => {
                       WORK PHONE
                     </div>
 
-                    <div className="table-cellx12 x125cd06">
+                    <div className="table-cellx12 x125cd06 quotiosalinvlisxs6_item">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -780,7 +780,10 @@ const SalesOrderList = () => {
                           strokeLinejoin="round"
                         />
                       </svg>
-                      RECEIVABLES
+                      <p>
+
+                        RECEIVABLES
+                      </p>
                     </div>
 
                     <div className="table-cellx12 quotiosalinvlisxs6" style={{ flex: "0.23" }}>
@@ -849,10 +852,18 @@ const SalesOrderList = () => {
                               >
                                 {quotation.work_phone || ""}
                               </div>
+
+
                               <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd06"
                               >
+
+                                <p style={{ width: "53%", textAlign: 'right' }}>
+                                  {showAmountWithCurrencySymbol(
+                                    parseFloat(quotation?.balance)?.toFixed(2)
+                                  )}
+                                </p>
                               </div>
 
                               <div
