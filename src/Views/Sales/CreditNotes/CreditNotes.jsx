@@ -17,7 +17,7 @@ import FilterBy from "../../Common/FilterBy/FilterBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { creditNotesOptions } from "../../Helper/SortByFilterContent/filterContent";
-import { useDebounceSearch } from "../../Helper/HelperFunctions";
+import { currencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
@@ -258,7 +258,7 @@ const CreditNotes = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
                     <p style={{ display: "flex", alignItems: "center" }}>
-                      {otherIcons?.doller_svg}
+                     ({currencySymbol})
                       Amount
                     </p>
                   </div>

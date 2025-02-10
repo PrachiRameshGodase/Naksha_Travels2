@@ -80,15 +80,15 @@ const ListComponent = ({
           className="table-cellx12 quotiosalinvlisxs5_item"
 
         >
-          <p style={section === "invoice" ? { width: "62%" } : {}}> {showAmountWithCurrencySymbol(quotation?.total)}</p>
+          <p style={section === "invoice" ? { width: "72%" } : {width:"62%"}}> {(quotation?.total)}</p>
         </div>
         {section === "invoice" && (
           <div
             onClick={() => handleRowClicked(quotation)}
             className="table-cellx12 quotiosalinvlisxs5_item"
           >
-            <p style={{ width: "81%" }}>
-              {showAmountWithCurrencySymbol(
+            <p style={{ width: "91%" }}>
+              {(
                 (
                   parseFloat(quotation.total) -
                   parseFloat(quotation.amount_paid)
@@ -188,9 +188,9 @@ export const ListComponent2 = ({
         onClick={() => handleRowClicked(quotation)}
         className="table-cellx12 quotiosalinvlisxs5_item"
       >
-        <p style={{ width: "37%" }}>
+        <p style={{ width: "47%" }}>
           {" "}
-          {showAmountWithCurrencySymbol(quotation?.total)}
+          {(quotation?.total)}
         </p>
       </div>
 
@@ -284,7 +284,7 @@ export const ListComponent3 = ({
           onClick={() => handleRowClicked(quotation)}
           className="table-cellx12 quotiosalinvlisxs5_item"
         >
-          <p style={{ width: "61%" }}>{showAmountWithCurrencySymbol(quotation.total)}</p>
+          <p style={{ width: "71%" }}>{showAmountWithCurrencySymbol(quotation.total)}</p>
 
         </div>
       )}
@@ -295,7 +295,7 @@ export const ListComponent3 = ({
           className="table-cellx12 quotiosalinvlisxs5_item"
         >
 
-          <p style={{ width: "79%" }}>
+          <p style={{ width: "91%" }}>
             {showAmountWithCurrencySymbol(
               (
                 parseFloat(quotation.total) -

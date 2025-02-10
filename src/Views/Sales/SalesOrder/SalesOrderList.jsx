@@ -252,7 +252,7 @@ const SalesOrderList = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Amount
                     </p>
                   </div>

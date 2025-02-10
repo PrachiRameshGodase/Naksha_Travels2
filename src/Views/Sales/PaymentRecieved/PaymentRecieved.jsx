@@ -260,7 +260,7 @@ const PaymentRecieved = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Amount
                     </p>
                   </div>
@@ -360,10 +360,10 @@ const PaymentRecieved = () => {
                                 className="table-cellx12 quotiosalinvlisxs5_item"
                               >
                                 <p
-                                  style={{ paddingRight: "20px", width: "74%" }}
+                                  style={{ paddingRight: "20px", width: "95%" }}
                                 >
                                   {" "}
-                                  {showAmountWithCurrencySymbol(
+                                  {(
                                     quotation?.debit
                                   ) || ""}
                                 </p>
