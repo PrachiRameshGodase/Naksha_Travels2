@@ -240,7 +240,7 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Amount
                     </p>
                   </div>
@@ -254,7 +254,7 @@ const Quotations = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Balance Due
                     </p>
                   </div>

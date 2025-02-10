@@ -13,7 +13,7 @@ import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { expenseLists } from "../../../Redux/Actions/expenseActions";
 import newmenuicoslz from "../../../assets/outlineIcons/othericons/newmenuicoslz.svg";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
-import { showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import { currencySymbol, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy from "../../Common/SortBy/SortBy";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
@@ -404,7 +404,7 @@ const Expenses = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons?.doller_svg}
+                     ({currencySymbol})
                       Amount
                     </p>
                   </div>
@@ -484,8 +484,8 @@ const Expenses = () => {
                             className="table-cellx12 quotiosalinvlisxs5_item"
 
                           >
-                            <p style={{ width: "62%" }}>
-                              {showAmountWithCurrencySymbol(quotation?.amount)}
+                            <p style={{ width: "82%" }}>
+                              {(quotation?.amount)}
                             </p>
                           </div>
                           <div

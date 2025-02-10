@@ -260,7 +260,7 @@ const PurchaseOrder = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
-                    {currencySymbol}{" "}
+                    ({currencySymbol}){" "}
                     AMOUNT
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs6">
@@ -340,8 +340,8 @@ const PurchaseOrder = () => {
                               className="table-cellx12 quotiosalinvlisxs5_item"
                               style={{ marginRight: "25px" }}
                             >
-                              <p>
-                                {showAmountWithCurrencySymbol(quotation.total)}
+                              <p style={{width:"61%"}}>
+                                { (quotation.total)}
                               </p>
                             </div>
 

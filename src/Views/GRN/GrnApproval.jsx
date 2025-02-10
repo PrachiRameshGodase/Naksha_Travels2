@@ -247,7 +247,7 @@ const GrnApproval = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       AMOUNT
                     </p>
                   </div>
@@ -313,7 +313,7 @@ const GrnApproval = () => {
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p> {showAmountWithCurrencySymbol(quotation?.total)}</p>
+                              <p style={{width:"61%"}}> {(quotation?.total)}</p>
                             </div>
                             <div
                               onClick={() => handleRowClicked(quotation)}

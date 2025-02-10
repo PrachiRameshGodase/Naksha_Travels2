@@ -10,6 +10,7 @@ import { paymentRecList } from "../../../Redux/Actions/PaymentRecAction";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import ResizeFL from "../../../Components/ExtraButtons/ResizeFL";
 import {
+  currencySymbol,
   showAmountWithCurrencySymbol,
   useDebounceSearch,
 } from "../../Helper/HelperFunctions";
@@ -255,7 +256,7 @@ const PaymentMade = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {otherIcons?.doller_svg}
+                     ({currencySymbol})
                       Amount
                     </p>
                   </div>
@@ -380,9 +381,9 @@ const PaymentMade = () => {
                                 className="table-cellx12 quotiosalinvlisxs5_item"
                               >
                                 <p
-                                  style={{ paddingRight: "3px", width: "74%" }}
+                                  style={{ paddingRight: "3px", width: "83%" }}
                                 >
-                                  {showAmountWithCurrencySymbol(
+                                  {(
                                     quotation?.credit
                                   )}
                                 </p>

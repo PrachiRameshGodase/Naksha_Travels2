@@ -245,7 +245,7 @@ const GRN = () => {
 
                   <div className="table-cellx12 quotiosalinvlisxs6_item">
                     <p>
-                      {currencySymbol}{" "}
+                      ({currencySymbol}){" "}
                       Amount
                     </p>
                   </div>
@@ -313,7 +313,7 @@ const GRN = () => {
                               onClick={() => handleRowClicked(quotation)}
                               className="table-cellx12 quotiosalinvlisxs5_item"
                             >
-                              <p>  {showAmountWithCurrencySymbol(quotation?.total)}</p>
+                              <p style={{width:"61%"}}>  {(quotation?.total)}</p>
                             </div>
                             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                               <p className={quotation?.status == "1" ? "open" : quotation?.status == "0" ? "draft" : quotation?.status == "2" ? "close" : quotation?.status == "3" ? "pending" : quotation?.status == "4" ? "overdue" : ""}>

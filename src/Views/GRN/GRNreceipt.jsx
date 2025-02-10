@@ -234,7 +234,7 @@ const GRNreceipt = () => {
                   </div>
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
-                    {currencySymbol}{" "}
+                    ({currencySymbol}){" "}
                     Final AMOUNT
                   </div>
 
