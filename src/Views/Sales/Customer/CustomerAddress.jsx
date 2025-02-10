@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import CustomDropdown24 from "../../../Components/CustomDropdown/CustomDropdown24";
 import {
+  fetchGetCities,
   fetchGetCountries,
   fetchGetStates,
-  fetchGetCities,
 } from "../../../Redux/Actions/globalActions";
-import { AiOutlineDelete } from "react-icons/ai";
+import NumericInput from "../../Helper/NumericInput";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import NumericInput from "../../Helper/NumericInput";
 
 const CustomerAddress = ({
   updateUserData,
@@ -19,12 +20,14 @@ const CustomerAddress = ({
 }) => {
   const dispatch = useDispatch();
   const { isDuplicate, isEdit, user } = customerData;
+  const countryListData = useSelector((state) => state?.countries);
+  const countryList = countryListData?.countries?.country;
+  
+  const stateListData = useSelector((state) => state?.states);
+  const statess = stateListData?.state?.country;
 
-  const countryList = useSelector((state) => state?.countries?.countries);
-  const states = useSelector((state) => state?.states?.state);
-  const statesLoader = useSelector((state) => state?.states?.loading);
-  const cities = useSelector((state) => state?.cities?.city);
-  const citiesLoader = useSelector((state) => state?.cities?.loading);
+  const cityListData = useSelector((state) => state?.cities);
+  const citiess = cityListData?.city?.country;
 
   const [countryErr, setCountryErr] = useState(false);
   const [cityErr, setCityErr] = useState(false);
@@ -36,7 +39,7 @@ const CustomerAddress = ({
       street_1: "",
       street_2: "",
       state_id: "",
-      city_id: "684",
+      city_id: "",
       zip_code: "",
       address_type: "",
       is_billing: 0,
@@ -46,11 +49,10 @@ const CustomerAddress = ({
       // id: 1
     },
   ]);
-
+  
   useEffect(() => {
     updateUserData({ addresses: addresses });
   }, [addresses]);
-
 
   useEffect(() => {
     if ((user?.id && isEdit) || (user?.id && isDuplicate)) {
@@ -141,6 +143,7 @@ const CustomerAddress = ({
 
   const handleChange = (e, index, fieldType, type) => {
     const { name, value, checked } = e.target;
+    
     const updatedAddresses = [...addresses];
 
     let address = { ...updatedAddresses[index] }; // Copy the address object
@@ -211,9 +214,7 @@ const CustomerAddress = ({
     setStateErr(!addresses[0]?.state_id);
   }, [addresses]);
 
-  useEffect(() => {
-    dispatch(fetchGetCountries());
-  }, [dispatch]);
+
 
   const deleteAddress = (index) => {
     const updatedAddresses = addresses?.filter((_, i) => i !== index);
@@ -223,8 +224,7 @@ const CustomerAddress = ({
 
   return (
     <>
-      {statesLoader && <MainScreenFreezeLoader />}
-      {citiesLoader && <MainScreenFreezeLoader />}
+      {(stateListData?.loading || cityListData?.loading) && <MainScreenFreezeLoader />}
       {switchCusData === "Address" ? (
         <div id="secondx2_customer">
           {addresses?.map((address, index) => (
@@ -277,19 +277,15 @@ const CustomerAddress = ({
                     <span>
                       {otherIcons.country_svg}
 
-                      <select
-                        name="country_id"
-                        value={address.country_id}
+                      <CustomDropdown24
+                        label="Select Country"
+                        options={countryList}
+                        value={address?.country_id}
                         onChange={(e) => handleChange(e, index, "country_id")}
-                      // required
-                      >
-                        <option value="">Select Country</option>
-                        {countryList?.country?.map((country, index) => (
-                          <option key={index} value={country?.id}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </select>
+                        name="country_id"
+                        defaultOption="Select Country Name"
+                        type="countries"
+                      />
                     </span>
                   </div>
                   {/* {countryErr && <p className="error-message">
@@ -306,27 +302,24 @@ const CustomerAddress = ({
                   style={{
                     cursor: address.country_id ? "pointer" : "not-allowed",
                   }}
-                  className={`form_commonblock ${address.country_id ? "" : "disabledfield"
-                    }`}
+                  className={`form_commonblock ${
+                    address.country_id ? "" : "disabledfield"
+                  }`}
                 >
-                  <label>Province</label>
+                  <label>State/Province</label>
                   <div id="inputx1">
                     <span>
                       {otherIcons.country_svg}
 
-                      <select
+                      <CustomDropdown24
+                        label="Select vendor"
+                        options={statess}
+                        value={address?.state_id}
+                        onChange={(e) => handleChange(e, index, "state_id")}
                         name="state_id"
-                        value={address.state_id}
-                        onChange={(e) => handleChange(e, index)}
-                      // required
-                      >
-                        <option value="">Select State</option>
-                        {states?.country?.map((state, index) => (
-                          <option key={index} value={state?.id}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
+                        defaultOption="Select State Name"
+                        type="countries"
+                      />
                     </span>
                   </div>
                   {/* {stateErr && <p className="error-message">
@@ -336,40 +329,30 @@ const CustomerAddress = ({
 
                 <div
                   data-tooltip-content={
-                    address.state_id
-                      ? ""
-                      : "Please Select State"
+                    address.state_id ? "" : "Please Select State"
                   }
                   data-tooltip-id="my-tooltip"
                   data-tooltip-place="bottom"
                   style={{
-                    cursor:
-                      address.state_id
-                        ? "pointer"
-                        : "not-allowed",
+                    cursor: address.state_id ? "pointer" : "not-allowed",
                   }}
-                  className={`form_commonblock ${address.state_id
-                    ? ""
-                    : "disabledfield"
-                    }`}
+                  className={`form_commonblock ${
+                    address.state_id ? "" : "disabledfield"
+                  }`}
                 >
                   <label>City</label>
                   <div id="inputx1">
                     <span>
                       {otherIcons.country_svg}
-                      <select
-                        name="city_id"
+                      <CustomDropdown24
+                        label="Select vendor"
+                        options={citiess}
                         value={address.city_id}
-                        onChange={(e) => handleChange(e, index)}
-                      // required
-                      >
-                        <option value="">Select City</option>
-                        {cities?.country?.map((city, index) => (
-                          <option key={index} value={city?.id}>
-                            {city.name}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(e) => handleChange(e, index, "city_id")}
+                        name="city_id"
+                        defaultOption="Select City Name"
+                        type="countries"
+                      />
                     </span>
                   </div>
                   {/* {cityErr && <p className="error-message">

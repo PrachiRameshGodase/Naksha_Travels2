@@ -248,7 +248,7 @@ const CreateWarehouse = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label >Provence</label>
+                                            <label >State/Province</label>
                                             <span >
                                                 {otherIcons?.country_flag_svg}
                                                 <CustomDropdown24

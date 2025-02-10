@@ -96,17 +96,17 @@ export const helpPriority = [
 export const helpStatus = [
     {
         "id": 1,
-        "labelid": 1,
+        "labelid": 0,
         "label": "Pending",
     },
     {
         "id": 2,
-        "labelid": 2,
+        "labelid": 1,
         "label": "In Progress",
     },
     {
         "id": 3,
-        "labelid": 3,
+        "labelid": 2,
         "label": "Resolved",
     },
 

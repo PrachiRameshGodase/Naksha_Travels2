@@ -1,11 +1,13 @@
-import React, { useState, useRef, forwardRef } from 'react';
+import React, { useState, useRef, forwardRef, useEffect } from 'react';
 import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
+import { fetchGetCountries } from '../../Redux/Actions/globalActions';
 
 const CustomDropdown24 = forwardRef((props, ref) => {
   let { options, value, onChange, name, type, setcusData, defaultOption, style, sd154w78s877 } = props;
-
+  
   const {
     isOpen,
     setIsOpen,
@@ -20,21 +22,28 @@ const CustomDropdown24 = forwardRef((props, ref) => {
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, "", setcusData);
 
-
+const dispatch=useDispatch()
   // Merge refs to handle both internal and external refs
   const combinedRef = (node) => {
     dropdownRef.current = node;
     if (ref) ref.current = node;
   };
 
-
-
   if (searchTerm) {
     options = searchTerm?.length === 0 ? options : options?.filter(option =>
       option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
   }
-  const fullName = options?.find(account => account?.id == value);
+  console.log("name",name)
+  useEffect(() => {
+    if(isOpen && (name=="citizenship" || name=="country_id" || name=="country")){
+    dispatch(fetchGetCountries());
+    }
+  }, [dispatch,isOpen]);
+
+
+  const fullName = options?.find((account) => account?.id == value);
+
 
   return (
     <div ref={combinedRef} tabIndex="0" className={`customdropdownx12s86 ${sd154w78s877}`} onKeyDown={handleKeyDown} style={style}>
