@@ -153,17 +153,6 @@ const QuotationDetails = () => {
     }
   };
 
-  // if (!quotation || !masterData) {
-  //   alert("Data is still loading, please try again.");
-  //   return;
-  // }
-
-  // const contentComponent = (
-  //   <PrintContent data={quotation} cusVenData={quotation?.customer} masterData={masterData} moduleId={quotation?.quotation_id} section="Quotation" />
-  // );
-  // generatePDF(contentComponent, "Quotation_Document.pdf", setLoading, 500);
-
-  // };
 
   return (
     <>

@@ -7,13 +7,16 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { Toaster } from 'react-hot-toast';
 import { formatDate3 } from '../../Helper/DateFormat';
 import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
-import { useReactToPrint } from 'react-to-print';
 import useOutsideClick from '../../Helper/PopupData';
 import { PaymentMadeDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
+import { UserMasterListAction } from '../../../Redux/Actions/userMasterActions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 
 const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
@@ -22,11 +25,12 @@ const PaymentMadeDetails = () => {
     const masterData = useSelector(state => state?.masterData?.masterData);
 
     const [showDropdown, setShowDropdown] = useState(false);
+
     const [showDropdownx1, setShowDropdownx1] = useState(false);
+
     const paymentDetail = useSelector(state => state?.paymentRecDetail);
     const paymentDelete = useSelector(state => state?.paymentRecDelete);
     const payment = paymentDetail?.data?.data?.payment;
-
 
     const dropdownRef = useRef(null);
     const dropdownRef1 = useRef(null);
@@ -38,6 +42,7 @@ const PaymentMadeDetails = () => {
 
     const [callApi, setCallApi] = useState(0);
     const UrlId = new URLSearchParams(location.search).get("id");
+
 
     const changeStatus = (statusVal) => {
         try {
@@ -73,6 +78,7 @@ const PaymentMadeDetails = () => {
         } catch (error) {
             console.log("error", error);
         }
+
     }
 
     const [loading, setLoading] = useState(false);
@@ -80,24 +86,56 @@ const PaymentMadeDetails = () => {
     const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
         id: UrlId,
     }), [callApi]);
+
     useFetchApiData(paymentRecDetail, payloadGenerator, [callApi]);
 
-    // pdf & print
     const componentRef = useRef(null);
 
     // pdf & print
-    const handleDownloadPDF = () => {
-        if (!payment || !masterData) {
-            alert("Data is still loading, please try again.");
-            return;
+    const handleDownloadPDF = async () => {
+        try {
+            if (!payment?.transaction_date) return;
+
+            // Fetch currency rates for the transaction date
+            const res = await dispatch(currencyRateListAction({ date: payment?.transaction_date }));
+            const fetchCurrencyData = res?.data?.find(val => val?.code === payment?.currency);
+
+            // Ensure masterData & quotation exist before proceeding
+            if (!payment || !masterData) {
+                dispatch(UserMasterListAction());
+                alert("Data is still loading, please try again.");
+                return;
+            }
+
+            const generatePDFWithData = (currencyData) => {
+                const contentComponent = (
+                    <PrintContent
+                        data={payment}
+                        masterData={masterData}
+                        moduleId={payment?.quotation_id}
+                        section="Payment Made"
+                        fetchCurrencyData={currencyData}
+                    />
+                );
+                generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
+            };
+
+            if (fetchCurrencyData) {
+                generatePDFWithData(fetchCurrencyData);
+            } else if (payment?.currency === getCurrencyValue()) {
+                generatePDFWithData(null); // No conversion needed
+            } else {
+                // Prompt user to create missing currency
+                const res = await confirIsCurrencyPDF(payment?.currency);
+                if (res) {
+                    Navigate(`/dashboard/manage-currency?date=${payment?.transaction_date}&currency=${payment?.currency}`);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching currency rates:", error);
         }
-
-        const contentComponent = (
-            <PrintContent data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" />
-        );
-
-        generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
     };
+
 
     return (
         <>

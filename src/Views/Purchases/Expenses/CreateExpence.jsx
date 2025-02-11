@@ -50,7 +50,7 @@ const CreateBills = () => {
 
     const allExpenseType = ShowMasterData("23");
 
-    const activeCurrency = getCurrencyValue()
+    const activeCurrency = getCurrencyValue();
 
 
 
@@ -72,6 +72,7 @@ const CreateBills = () => {
     };
 
     const [formData, setFormData] = useState(initialFormData);
+
     const [loading, setLoading] = useState(false);
     const [isVendorSelect, setIsVendorSelect] = useState(false);
     const [isCustomerSelect, setIsCustomerSelect] = useState(false);
@@ -146,7 +147,6 @@ const CreateBills = () => {
     useFetchApiData(accountLists, payloadGenerator, [itemId, expenseDetail]);
     useFetchApiData(getAccountTypes, payloadGenerator, [itemId, expenseDetail]);
 
-
     // Update form data when expenseDetail changes
     useEffect(() => {
         if ((itemId && (isEdit || isDuplicate || convert === "saleToInvoice")) && expenseDetail) {
@@ -176,11 +176,13 @@ const CreateBills = () => {
         }
     }, [itemId, isEdit, isDuplicate, convert, expenseDetail]);
 
+
     return (
         <>
             <Toaster />
             <TopLoadbar />
             {expenseDetails?.loading ? <Loader02 /> : <>
+
                 {(freezLoadingImg || expenseCreate?.loading) && <MainScreenFreezeLoader />}
 
                 <div className='formsectionsgrheigh'>
@@ -198,6 +200,7 @@ const CreateBills = () => {
                                 <RxCross2 />
                             </Link>
                         </div>
+
                     </div>
 
                     <div id="formofcreateitems" >
@@ -332,6 +335,24 @@ const CreateBills = () => {
                                                 />
                                             </span>
                                         </div>
+
+                                        <div className="form_commonblock">
+                                            <label>Expense Head Type</label>
+                                            <span>
+                                                {otherIcons.unit_svg}
+                                                <CustomDropdown04
+                                                    label="Unit Name"
+                                                    options={allExpenseType}
+                                                    value={formData.expense_head_id}
+                                                    onChange={handleChange}
+                                                    name="expense_head_id"
+                                                    defaultOption="Select Expenses"
+                                                    type="masters"
+                                                // ref={unitRef}
+                                                />
+                                            </span>
+                                        </div>
+
                                         <div className="form_commonblock">
                                             <label>Expense Account</label>
                                             <span >
@@ -373,22 +394,7 @@ const CreateBills = () => {
                                             />
                                         </div>
 
-                                        <div className="form_commonblock">
-                                            <label>Expense Type</label>
-                                            <span>
-                                                {otherIcons.unit_svg}
-                                                <CustomDropdown04
-                                                    label="Unit Name"
-                                                    options={allExpenseType}
-                                                    value={formData.expense_head_id}
-                                                    onChange={handleChange}
-                                                    name="expense_head_id"
-                                                    defaultOption="Select Expenses"
-                                                    type="masters"
-                                                // ref={unitRef}
-                                                />
-                                            </span>
-                                        </div>
+
 
                                         <div className="form_commonblock">
                                             <label >Notes</label>

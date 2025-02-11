@@ -248,7 +248,7 @@ const CreatePaymentRec = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        let newValue = parseFloat(value); // Convert value to number or default to 0
+        let newValue = parseFloat(value) || value; // Convert value to number or default to 0
 
         // If the input field is one of the charges, ensure it's parsed as a float
         if (["bank_charges"].includes(name)) {

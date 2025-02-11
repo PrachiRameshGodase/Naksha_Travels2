@@ -4,7 +4,6 @@ import { RxCross2 } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
 import DatePicker from "react-datepicker";
 
@@ -71,8 +70,6 @@ const CreateDebitNotes = () => {
         }
     }, [itemId, isEdit, convert, debitNote, billDetail]);
 
-    // const currency = getCurrencyValue();
-
     const {
         formData,
         setFormData,
@@ -104,101 +101,10 @@ const CreateDebitNotes = () => {
 
 
     console.log("fetchDetails", fetchDetails)
-    console.log("formData.bill_id", formData.bill_id)
-    console.log("billDetail.billDetail", billDetail)
-    // useEffect(() => {
-    //     if ((itemId && isEdit && fetchDetails) || (itemId && isDuplicate && fetchDetails) || itemId && fetchDetails && convert) {
 
-    //         const calculateTotalTaxAmount = () => {
-    //             return fetchDetails?.items?.reduce((total, entry) => {
-    //                 return total + ((entry?.tax_amount) ? parseFloat(entry?.tax_amount) : 0);
-    //             }, 0);
-    //         };
-
-    //         const filterBillId = billList?.find((val) => val?.id == (+fetchDetails?.bill_id));
-
-    //         const itemsFromApi = fetchDetails.items?.map(item => ({
-    //             item_id: (+item?.item_id),
-    //             quantity: (+item?.quantity),
-    //             item_name: item?.item_name,
-    //             gross_amount: (+item?.gross_amount),
-    //             unit_id: (item?.unit_id),
-    //             rate: (+item?.rate),
-    //             final_amount: (+item?.final_amount),
-    //             tax_rate: (+item?.tax_rate),
-    //             tax_amount: (+item?.tax_amount),
-    //             discount: (+item?.discount),
-    //             discount_type: (+item?.discount_type),
-    //             item_remark: item?.item_remark,
-    //             tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
-    //         }));
-
-
-    //         setFormData({
-    //             ...formData,
-    //             id: isEdit ? itemId : 0,
-    //             tran_type: 'debit_note',
-    //             transaction_date: fetchDetails?.transaction_date,
-    //             warehouse_id: fetchDetails?.warehouse_id,
-    //             debit_note_id: fetchDetails?.debit_note_id,
-    //             upload_image: fetchDetails?.upload_image,
-    //             customer_type: fetchDetails?.customer_type,
-    //             customer_name: fetchDetails?.customer_name,
-    //             display_name: fetchDetails?.display_name,
-    //             phone: fetchDetails?.phone,
-    //             reason_type: fetchDetails?.reason_type,
-    //             vendor_id: (+fetchDetails?.vendor_id),
-    //             email: fetchDetails?.email,
-    //             reference_no: fetchDetails?.reference_no,
-    //             invoice_id: (+fetchDetails?.invoice_id),
-    //             reference: fetchDetails?.reference,
-    //             currency: fetchDetails?.currency,
-    //             place_of_supply: fetchDetails?.place_of_supply == "0" ? "" : fetchDetails?.place_of_supply,
-    //             sale_person: fetchDetails?.sale_person == "0" ? "" : fetchDetails?.sale_person,
-    //             customer_note: fetchDetails?.customer_note,
-    //             terms_and_condition: fetchDetails?.terms_and_condition,
-    //             bill_id: filterBillId?.id,
-    //             fy: fetchDetails?.fy,
-    //             subtotal: fetchDetails?.subtotal,
-    //             shipping_charge: fetchDetails?.shipping_charge,
-    //             adjustment_charge: fetchDetails?.adjustment_charge,
-    //             total: fetchDetails?.total,
-    //             status: fetchDetails?.status,
-    //             tax_amount: calculateTotalTaxAmount(),
-    //             items: itemsFromApi || []
-    //         });
-
-    //         if (fetchDetails.upload_image) {
-    //             setImgeLoader("success");
-    //         }
-
-    //         if (fetchDetails?.address) {
-    //             const parsedAddress = JSON?.parse(fetchDetails?.address);
-    //             const dataWithParsedAddress = {
-    //                 ...fetchDetails,
-    //                 address: parsedAddress
-    //             };
-
-    //             setAddSelect({
-    //                 billing: dataWithParsedAddress?.address?.billing,
-    //                 shipping: dataWithParsedAddress?.address?.shipping,
-    //             });
-
-    //             setCusData(dataWithParsedAddress?.customer)
-    //         }
-
-    //         if (fetchDetails?.vendor_id) {
-    //             setIsVendorSelect(true);
-    //         }
-
-
-
-    //         if (filterBillId?.bill_id) {
-    //             setIsBillSelect(false);
-    //         }
-
-    //     }
-    // }, [fetchDetails, itemId, isEdit, convert, isDuplicate]);
+    // console.log("fetchDetails", fetchDetails)
+    // console.log("formData.bill_id", formData.bill_id)
+    // console.log("billDetail.billDetail", billDetail)
 
     const sendChageData = {
         dispatch: dispatch,
@@ -211,98 +117,6 @@ const CreateDebitNotes = () => {
         handleChange,
     } = useHandleFormChange({ formData, setFormData, vendorList, addSelect, setAddSelect, isVendorSelect, setIsVendorSelect, sendChageData });
 
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-
-    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
-    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    //     }
-
-
-    //     if (name === "vendor_id" && value !== "") {
-    //         setIsVendorSelect(true);
-    //     }
-    //     else if (name === "vendor_id" && value == "") {
-    //         setIsVendorSelect(false);
-    //     }
-
-    //     if (name == "bill_id" && value !== "") {
-    //         setIsBillSelect(true);
-    //     }
-    //     else if (name == "bill_id" && value == "") {
-    //         setIsBillSelect(false);
-    //     }
-
-    //     const selectedItem = vendorList?.data?.user?.find((cus) => cus.id == value);
-
-    //     if (name === "vendor_id") {
-    //         const findfirstbilling = selectedItem?.address?.find(
-    //             (val) => val?.is_billing == "1"
-    //         );
-    //         const findfirstshipping = selectedItem?.address?.find(
-    //             (val) => val?.is_shipping == "1"
-    //         );
-    //         setAddSelect({
-    //             billing: findfirstbilling,
-    //             shipping: findfirstshipping,
-    //         });
-    //     }
-    //     if (name === "bill_id" && value !== "") {
-    //         setIsBillSelect(true);
-    //     }
-    //     else if (name === "vendor_id") {
-    //         setIsBillSelect(false);
-    //     }
-
-    //     setFormData({
-    //         ...formData,
-    //         [name]: newValue,
-    //         ...(name === "vendor_id" ? { bill_id: "" } : ""),
-    //         total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
-    //         address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
-    //     });
-    // };
-
-
-
-    // useEffect(() => {
-    //     if (formData?.bill_id) {
-    //         const getSelectedBillData = billList?.find((val) => val?.id == formData?.bill_id);
-
-    //         const itemsFromApi = getSelectedBillData?.items?.map(item => ({
-    //             item_id: (+item?.item_id),
-    //             item_name: (item?.item?.name),
-    //             quantity: (+item?.quantity),
-    //             gross_amount: (+item?.gross_amount),
-    //             unit_id: (item?.unit_id),
-    //             rate: (+item?.rate),
-    //             final_amount: (+item?.final_amount),
-    //             tax_rate: (+item?.tax_rate),
-    //             tax_amount: (+item?.tax_amount),
-    //             discount: (+item?.discount),
-    //             discount_type: (+item?.discount_type),
-    //             item_remark: item?.item_remark,
-    //             item_name: item?.item?.name,
-    //             tax_name: item?.item?.tax_preference == "1" ? "Taxable" : "Non-Taxable"
-    //         }));
-
-
-    //         setFormData((prev) => ({
-    //             ...prev,
-    //             items: itemsFromApi || []
-    //         }));
-    //         const errors = validateItems(getSelectedBillData?.items || []);
-    //         if (errors.length > 0) {
-    //             setItemErrors(errors);
-    //         }
-
-    //     }
-
-    // }, [formData?.bill_id]);
-
-    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
     useEffect(() => {
         setFormData({
@@ -329,28 +143,6 @@ const CreateDebitNotes = () => {
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
     const navigate = useNavigate()
-
-    // const handleFormSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const buttonName = e.nativeEvent.submitter.name;
-    //     const errors = validateItems(formData?.items);
-
-    //     if (errors.length > 0) {
-    //         setItemErrors(errors);
-    //         return;
-    //     }
-    //     if (handleDropdownError(isVendorSelect, vendorRef)) return;
-
-    //     try {
-    //         const updatedItems = formData.items.map((item) => {
-    //             const { tax_name, ...itemWithoutTaxName } = item;
-    //             return itemWithoutTaxName;
-    //         });
-    //         dispatch(createCreditNotes({ ...formData, items: updatedItems, address: JSON.stringify(formData?.address) }, Navigate, "debit_note", isEdit, buttonName, itemId, convert));
-    //     } catch (error) {
-    //         toast.error('Error updating quotation:', error);
-    //     }
-    // };
 
     const dropdownRef1 = useRef(null);
     const dropdownRef2 = useRef(null);
@@ -410,11 +202,6 @@ const CreateDebitNotes = () => {
         }
 
     }, [dispatch, cusData]);
-
-    // useEffect(() => {
-    //     dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear'), active: 1, status: 1 }));
-    // }, [dispatch,]);
-
 
     return (
         <>

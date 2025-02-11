@@ -99,21 +99,21 @@ export const useEditPurchaseForm = (initialOverrides = {}, removeKeys = [], deta
                     setCusData(detailData?.customer);//if customer data found. in detail api
                 }
             }
+
             if (detailData?.vendor) {
                 setCusData(detailData?.vendor);//if vendor data found in detail api
-
             }
 
-            setIsCustomerSelect(!!detailData?.customer_id);//remove vendor error if vendor is selected
-            setIsVendorSelect(!!detailData?.vendor_id);//remove vendor error if vendor is selected
-            setIsInvoiceSelect(!!detailData?.invoice_id);//remove invoice error if invoice is selected
-            setIsBillSelect(!!detailData?.bill_no);//remove bill error if bill is selected
+            setIsCustomerSelect(!!detailData?.customer_id); //remove vendor error if vendor is selected
+            setIsVendorSelect(!!detailData?.vendor_id); //remove vendor error if vendor is selected
+            setIsInvoiceSelect(!!detailData?.invoice_id); //remove invoice error if invoice is selected
+            setIsBillSelect(!!detailData?.bill_id); //remove bill error if bill is selected
             setIsGrnQntySelect(!!detailData?.items);
-
 
             // setIsItemSelect(!!detailData?.items);//remove items error if item is selected
             // for showing items select errors..
             // console.log("itemsFromApi", itemsFromApi)
+
             const errors = validateItems(itemsFromApi);
 
             if (errors.length > 0) {

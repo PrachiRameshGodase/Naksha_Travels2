@@ -122,3 +122,24 @@ export const expensesDetails = (queryParams, Navigate) => async (dispatch) => {
         dispatch({ type: EXPENSE_DETAIL_ERROR, payload: error.message });
     }
 };
+
+
+
+export const expensesHead = (queryParams, Navigate) => async (dispatch) => {
+    dispatch({ type: EXPENSE_DETAIL_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/expense/details`,
+            queryParams
+        );
+        // if (response?.data?.message === "Expense deleted Successfully") {
+        //     toast.success(response?.data?.message);
+        //     Navigate("/dashboard/expenses");
+        // } else {
+        //     toast.error(response?.data?.Expense);
+        // }
+        dispatch({ type: EXPENSE_DETAIL_SUCCESS, payload: response.data });
+
+    } catch (error) {
+        dispatch({ type: EXPENSE_DETAIL_ERROR, payload: error.message });
+    }
+};
