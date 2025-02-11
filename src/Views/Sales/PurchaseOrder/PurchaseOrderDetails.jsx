@@ -30,6 +30,9 @@ import {
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
 import { generatePDF } from "../../Helper/createPDF";
+import { currencyRateListAction } from "../../../Redux/Actions/manageCurrencyActions";
+import { UserMasterListAction } from "../../../Redux/Actions/userMasterActions";
+import { confirIsCurrencyPDF } from "../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
 
 const PurchaseOrderDetails = () => {
   const Navigate = useNavigate();
@@ -91,9 +94,6 @@ const PurchaseOrderDetails = () => {
 
   // pdf & print
   const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   const changeStatus = (statusVal) => {
     try {
@@ -129,21 +129,55 @@ const PurchaseOrderDetails = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleDownloadPDF = () => {
-    if (!purchase || !masterData) {
-      alert("Data is still loading, please try again.");
-      return;
-    }
+  const rateLoading = useSelector(state => state?.currencyRateList);
 
-    const contentComponent = (
-      <PrintContent data={purchase} cusVenData={purchase?.vendor} masterData={masterData} moduleId={purchase?.purchase_order_id} section="Purchase Order" />
-    );
-    generatePDF(contentComponent, "Purchser_Order_Document.pdf", setLoading, 500);
+  const handleDownloadPDF = async () => {
+    try {
+      if (!payment?.transaction_date) return;
+
+      // Fetch currency rates for the transaction date
+      const res = await dispatch(currencyRateListAction({ date: purchase?.transaction_date }));
+      const fetchCurrencyData = res?.data?.find(val => val?.code === purchase?.currency);
+
+      // Ensure masterData & quotation exist before proceeding
+      if (!purchase || !masterData) {
+        dispatch(UserMasterListAction());
+        alert("Data is still loading, please try again.");
+        return;
+      }
+
+      const generatePDFWithData = (currencyData) => {
+        const contentComponent = (
+          <PrintContent
+            data={purchase}
+            masterData={masterData}
+            moduleId={purchase?.purchase_order_id}
+            section="Payment Receive"
+            fetchCurrencyData={currencyData}
+          />
+        );
+        generatePDF(contentComponent, "Purchases_Document.pdf", setLoading, 500);
+      };
+
+      if (fetchCurrencyData) {
+        generatePDFWithData(fetchCurrencyData);
+      } else if (purchase?.currency === getCurrencyValue()) {
+        generatePDFWithData(null); // No conversion needed
+      } else {
+        // Prompt user to create missing currency
+        const res = await confirIsCurrencyPDF(purchase?.currency);
+        if (res) {
+          Navigate(`/dashboard/manage-currency?date=${purchase?.transaction_date}&currency=${purchase?.currency}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
+    }
   };
 
   return (
     <>
-      {(purchaseDelete?.loading || purchaseStatus?.loading || loading) && <MainScreenFreezeLoader />}
+      {(purchaseDelete?.loading || purchaseStatus?.loading || loading || rateLoading?.loading) && <MainScreenFreezeLoader />}
 
       {purchaseDetail?.loading ? (
         <Loader02 />
@@ -169,12 +203,9 @@ const PurchaseOrderDetails = () => {
                   <p>Edit</p>
                 </div>
               )}
-              <div
-                onClick={() => setShowDropdownx1(!showDropdownx1)}
-                className="mainx1"
-                ref={dropdownRef1}
-              >
-                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+
+              <div className="mainx1" onClick={handleDownloadPDF}>
+                <p style={{ cursor: 'pointer' }}>
                   PDF/Print
                 </p>
               </div>

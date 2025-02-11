@@ -24,6 +24,7 @@ import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Vendors = () => {
+
   const itemPayloads = localStorage.getItem(("vendorPayload"));
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -382,6 +383,7 @@ const Vendors = () => {
                 data-tooltip-place="bottom"
               />
             </div>
+
             {filterDropdown?.isOpen && (
               <div className="" ref={filterDropdown.ref}>
                 <div className="filter-container">
@@ -671,6 +673,7 @@ const Vendors = () => {
                       </svg>
                       TYPE
                     </div> */}
+
                     <div className="table-cellx12 x125cd02">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -769,6 +772,8 @@ const Vendors = () => {
                       </svg>
                       EMAIL
                     </div>
+
+
                     <div className="table-cellx12 x125cd04">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -790,7 +795,7 @@ const Vendors = () => {
                       WORK PHONE
                     </div>
 
-                    <div className="table-cellx12 x125cd05 quotiosalinvlisxs6_item">
+                    <div className="table-cellx12 x125cd06 ">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -826,39 +831,7 @@ const Vendors = () => {
                         PAYABLES
                       </p>
                     </div>
-                    {/* <div className="table-cellx12 x125cd05">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#5d369f"}
-                        fill={"none"}
-                        className=""
-                      >
-                        <path
-                          d="M12 22C16.4183 22 20 18.4183 20 14C20 8 12 2 12 2C11.6117 4.48692 11.2315 5.82158 10 8C8.79908 7.4449 8.5 7 8 5.75C6 8 4 11 4 14C4 18.4183 7.58172 22 12 22Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 17L14 13"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 13H10.009M13.991 17H14"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      PAYABLES
-                    </div> */}
+
                     <div className="table-cellx12 quotiosalinvlisxs6" style={{ flex: "0.18" }}>
                       {otherIcons?.status_svg}
                       Status
@@ -898,12 +871,14 @@ const Vendors = () => {
                               >
                                 {quotation.display_name || ""}
                               </div>
+
                               {/* <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd02"
                               >
                                 {quotation.customer_type || ""}
                               </div> */}
+
                               <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd02"
@@ -932,13 +907,12 @@ const Vendors = () => {
                                 className="table-cellx12 x125cd06"
                               >
 
-                                <p style={{ width: "47%", textAlign: 'right' }}>
+                                <p style={{ width: "42%", textAlign: 'right' }}>
                                   {showAmountWithCurrencySymbol(
                                     parseFloat(quotation?.balance)?.toFixed(2)
                                   )}
                                 </p>
                               </div>
-
                               <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
