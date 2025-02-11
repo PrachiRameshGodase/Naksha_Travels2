@@ -21,19 +21,21 @@ import { OutsideClick } from "../../Helper/ComponentHelper/OutsideClick";
 import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
-import { currencySymbol, showAmountWithCurrencySymbol, useDebounceSearch } from "../../Helper/HelperFunctions";
+import {
+  currencySymbol,
+  showAmountWithCurrencySymbol,
+  useDebounceSearch,
+} from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const SalesOrderList = () => {
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
   const cusList = useSelector((state) => state?.customerList);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-
 
   // reset current page to 1 when any filters are applied
   const resetPageIfNeeded = () => {
@@ -84,7 +86,7 @@ const SalesOrderList = () => {
     if (checked) {
       setCustomerType("");
       setStatus("");
-      setAllFilters({})
+      setAllFilters({});
     }
 
     const filterButton1 = document.getElementById("filterButton");
@@ -131,7 +133,7 @@ const SalesOrderList = () => {
         fy,
         noofrec: itemsPerPage,
         // active: 0,
-        // active: 1, 
+        // active: 1,
         currentpage,
         ...(selectedSortBy !== "Normal" && {
           sort_by: selectedSortBy,
@@ -151,14 +153,12 @@ const SalesOrderList = () => {
       };
 
       dispatch(customersList(sendData));
-
     } catch (error) {
       console.error("Error fetching quotations:", error);
     }
   }, [searchTrigger]);
 
   useFetchOnMount(fetchCustomers); // Use the custom hook for call API
-
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -288,7 +288,6 @@ const SalesOrderList = () => {
       } else {
         setActive("");
       }
-
     } else if (name === "status" && val) {
       if (checked) {
         setStatus(val);
@@ -299,15 +298,14 @@ const SalesOrderList = () => {
     }
   };
 
-
-
   const filterDropdown = OutsideClick();
   const moreDropdown = OutsideClick();
 
   return (
     <>
       <TopLoadbar />
-
+      <div>
+      <div id="middlesection">
       <div id="Anotherbox" className="formsectionx1">
         <div id="leftareax12">
           <h1 id="firstheading">
@@ -315,13 +313,15 @@ const SalesOrderList = () => {
             All Customer
           </h1>
 
-          <p id="firsttagp">{cusList?.data?.count} Records
+          <p id="firsttagp">
+            {cusList?.data?.count} Records
             <span
               className={`${cusList?.loading && "rotate_01"}`}
               data-tooltip-content="Reload"
               data-tooltip-place="bottom"
               data-tooltip-id="my-tooltip"
-              onClick={() => setSearchTrigger(prev => prev + 1)}>
+              onClick={() => setSearchTrigger((prev) => prev + 1)}
+            >
               {otherIcons?.refresh_svg}
             </span>
           </p>
@@ -394,8 +394,9 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${customerType === "Business" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            customerType === "Business" ? "selected" : ""
+                          }`}
                         >
                           Business
                         </span>
@@ -413,15 +414,15 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${customerType === "Individual" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            customerType === "Individual" ? "selected" : ""
+                          }`}
                         >
                           Individual
                         </span>
                       </label>
                     </div>
                   </div>
-
 
                   <div className={`cusfilters12x2`}>
                     <p className="custtypestext4s">Status</p>
@@ -442,8 +443,9 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${active == "1" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            active == "1" ? "selected" : ""
+                          }`}
                         >
                           Active
                         </span>
@@ -461,8 +463,9 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${active == "0" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            active == "0" ? "selected" : ""
+                          }`}
                         >
                           Inactive
                         </span>
@@ -489,8 +492,9 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${status == "1" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            status == "1" ? "selected" : ""
+                          }`}
                         >
                           Approved
                         </span>
@@ -508,8 +512,9 @@ const SalesOrderList = () => {
                           }
                         />
                         <span
-                          className={`filter-button ${status == "0" ? "selected" : ""
-                            }`}
+                          className={`filter-button ${
+                            status == "0" ? "selected" : ""
+                          }`}
                         >
                           Pending Approval
                         </span>
@@ -568,15 +573,15 @@ const SalesOrderList = () => {
         </div>
       </div>
 
-      <div className="listsectionsgrheigh">
-        <div id="middlesection">
-          <div id="mainsectioncsls">
+     
+
+          <div id="mainsectioncsls" className="commonmainqusalincetcsecion">
             <div id="leftsidecontentxls">
               <div id="item-listsforcontainer">
                 <div id="newtableofagtheme">
                   <div className="table-headerx12">
                     <div
-                      className="table-cellx12 checkboxfx1 x2s5554"
+                      className="table-cellx12 checkboxfx1 "
                       id="styl_for_check_box"
                     >
                       <input
@@ -587,11 +592,9 @@ const SalesOrderList = () => {
                       <div className="checkmark"></div>
                     </div>
 
-                    <div className="table-cellx12 x125cd01">
-                      CUSTOMER NAME
-                    </div>
+                    <div className="table-cellx12 quotiosalinvlisxs1">{otherIcons.customer_svg} CUSTOMER NAME</div>
 
-                    <div className="table-cellx12 x125cd02">
+                    <div className="table-cellx12 quotiosalinvlisxs2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -629,62 +632,12 @@ const SalesOrderList = () => {
                       </svg>
                       TYPE
                     </div>
-                    <div className="table-cellx12 x125cd03">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#5d369f"}
-                        fill={"none"}
-                        className=""
-                      >
-                        <path
-                          d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                        />
-                        <path
-                          d="M11 7L17 7"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M7 7L8 7"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M7 12L8 12"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M7 17L8 17"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M11 12L17 12"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M11 17L17 17"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
+                    <div className="table-cellx12 quotiosalinvlisxs3">
+                      {otherIcons.quotation_icon}
                       COMPANY NAME
                     </div>
 
-                    <div className="table-cellx12 x125cd04">
+                    <div className="table-cellx12 quotiosalinvlisxs4">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -728,65 +681,19 @@ const SalesOrderList = () => {
                       EMAIL
                     </div>
 
-                    <div className="table-cellx12 x125cd05">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#5d369f"}
-                        fill={"none"}
-                        className=""
-                      >
-                        <path
-                          d="M15 3V21M15 3H10M15 3H21M10 12H7.5C5.01472 12 3 9.98528 3 7.5C3 5.01472 5.01472 3 7.5 3H10M10 12V3M10 12V21"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                    <div className="table-cellx12 quotiosalinvlisxs4">
+                    {otherIcons.mobile_svg}
                       WORK PHONE
                     </div>
 
-                    <div className="table-cellx12 x125cd06 quotiosalinvlisxs6_item">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                        color={"#5d369f"}
-                        fill={"none"}
-                        className=""
-                      >
-                        <path
-                          d="M12 22C16.4183 22 20 18.4183 20 14C20 8 12 2 12 2C11.6117 4.48692 11.2315 5.82158 10 8C8.79908 7.4449 8.5 7 8 5.75C6 8 4 11 4 14C4 18.4183 7.58172 22 12 22Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 17L14 13"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 13H10.009M13.991 17H14"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <p>
-
-                        RECEIVABLES
-                      </p>
+                    <div className="table-cellx12  quotiosalinvlisxs6_item">
+                      <p>({currencySymbol}) RECEIVABLES</p>
                     </div>
 
-                    <div className="table-cellx12 quotiosalinvlisxs6" style={{ flex: "0.23" }}>
+                    <div
+                      className="table-cellx12 quotiosalinvlisxs6"
+                     
+                    >
                       {otherIcons?.status_svg}
                       Status
                     </div>
@@ -800,10 +707,11 @@ const SalesOrderList = () => {
                         <>
                           {cusList?.data?.user?.map((quotation, index) => (
                             <div
-                              className={`table-rowx12 ${selectedRows.includes(quotation.id)
-                                ? "selectedresult"
-                                : ""
-                                }`}
+                              className={`table-rowx12 ${
+                                selectedRows.includes(quotation.id)
+                                  ? "selectedresult"
+                                  : ""
+                              }`}
                               key={index}
                             >
                               <div
@@ -821,46 +729,42 @@ const SalesOrderList = () => {
                               </div>
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd01"
+                                className="table-cellx12 quotiosalinvlisxs1"
                               >
-                                {/* {quotation.salutation + " " + quotation.first_name + " " + quotation.last_name || ""} */}
-                                {/* {`${quotation?.salutation || ""} ${quotation?.first_name || ""
-                                  } ${quotation?.last_name || ""}`} */}
+                              
                                 {quotation.display_name || ""}
                               </div>
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd02"
+                                className="table-cellx12 quotiosalinvlisxs2"
                               >
                                 {quotation.customer_type || ""}
                               </div>
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd03"
+                                className="table-cellx12 quotiosalinvlisxs3"
                               >
                                 {quotation.company_name || ""}
                               </div>
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd04"
+                                className="table-cellx12 quotiosalinvlisxs4"
                               >
                                 {quotation.email || ""}
                               </div>
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd05"
+                                className="table-cellx12 quotiosalinvlisxs4"
                               >
                                 {quotation.work_phone || ""}
                               </div>
 
-
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 x125cd06"
+                                className="table-cellx12 quotiosalinvlisxs5_item"
                               >
-
-                                <p style={{ width: "53%", textAlign: 'right' }}>
-                                  {showAmountWithCurrencySymbol(
+                                <p style={{ width: "89%", }}>
+                                  {(
                                     parseFloat(quotation?.balance)?.toFixed(2)
                                   )}
                                 </p>
@@ -868,23 +772,35 @@ const SalesOrderList = () => {
 
                               <div
                                 onClick={() => handleRowClicked(quotation)}
-                                className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 s25x85werse5d4rfsd"
+                                className="table-cellx12 quotiosalinvlisxs6"
                               >
-                                <div> <p className={quotation?.status == "1" ? "approved" : quotation?.status == "0" ? "draft" : quotation?.status == "7" ? "approved" : ""} >
-                                  {quotation?.status == "0" ? "Pending" : quotation?.status == "1" ? "Approved" : ""}
-                                </p>
+                                <div>
+                                  {" "}
+                                  <p
+                                    className={
+                                      quotation?.status == "1"
+                                        ? "approved"
+                                        : quotation?.status == "0"
+                                        ? "draft"
+                                        : quotation?.status == "7"
+                                        ? "approved"
+                                        : ""
+                                    }
+                                  >
+                                    {quotation?.status == "0"
+                                      ? "Pending"
+                                      : quotation?.status == "1"
+                                      ? "Approved"
+                                      : ""}
+                                  </p>
                                 </div>
                               </div>
-
-
-
                             </div>
                           ))}
                         </>
                       ) : (
                         <NoDataFound />
                       )}
-
 
                       <PaginationComponent
                         itemList={cusList?.data?.count}
@@ -896,7 +812,6 @@ const SalesOrderList = () => {
                       />
                     </>
                   )}
-
                 </div>
               </div>
             </div>
