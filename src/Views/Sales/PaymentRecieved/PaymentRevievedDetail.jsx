@@ -18,6 +18,7 @@ import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyAct
 import { UserMasterListAction } from '../../../Redux/Actions/userMasterActions';
 import { confirIsCurrencyPDF } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
 import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import PrintContent3 from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent3';
 
 const PaymentRevievedDetail = () => {
 
@@ -124,7 +125,7 @@ const PaymentRevievedDetail = () => {
 
             const generatePDFWithData = (currencyData) => {
                 const contentComponent = (
-                    <PrintContent
+                    <PrintContent3
                         data={payment}
                         masterData={masterData}
                         moduleId={payment?.credit_note_id}
