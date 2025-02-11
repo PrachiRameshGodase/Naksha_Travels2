@@ -14,6 +14,7 @@ import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1, Te
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
+import PrintContent3 from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent3';
 
 const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
@@ -93,7 +94,7 @@ const PaymentMadeDetails = () => {
         }
 
         const contentComponent = (
-            <PrintContent data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" />
+            <PrintContent3 data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" />
         );
 
         generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
@@ -102,6 +103,7 @@ const PaymentMadeDetails = () => {
     return (
         <>
             {(paymentDelete?.loading || paymentRecStatuss?.loading || loading) && <MainScreenFreezeLoader />}
+            {/* <PrintContent3 data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" /> */}
 
             {paymentDetail?.loading ? <Loader02 /> :
                 <div ref={componentRef} >
