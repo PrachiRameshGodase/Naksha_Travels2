@@ -21,14 +21,12 @@ import SearchBox from "../../Common/SearchBox/SearchBox";
 import SortBy2 from "../../Common/SortBy/SortBy2";
 import {
   currencySymbol,
-  showAmountWithCurrencySymbol,
   useDebounceSearch,
 } from "../../Helper/HelperFunctions";
 import useFetchOnMount from "../../Helper/ComponentHelper/useFetchOnMount";
 import { financialYear } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const Vendors = () => {
-  const itemPayloads = localStorage.getItem("vendorPayload");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -415,9 +413,8 @@ const Vendors = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                active == "1" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${active == "1" ? "selected" : ""
+                                }`}
                             >
                               Active
                             </span>
@@ -435,9 +432,8 @@ const Vendors = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                active == "0" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${active == "0" ? "selected" : ""
+                                }`}
                             >
                               Inactive
                             </span>
@@ -464,9 +460,8 @@ const Vendors = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                status == "1" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${status == "1" ? "selected" : ""
+                                }`}
                             >
                               Approved
                             </span>
@@ -484,9 +479,8 @@ const Vendors = () => {
                               }
                             />
                             <span
-                              className={`filter-button ${
-                                status == "0" ? "selected" : ""
-                              }`}
+                              className={`filter-button ${status == "0" ? "selected" : ""
+                                }`}
                             >
                               Pending Approval
                             </span>
@@ -629,7 +623,7 @@ const Vendors = () => {
                     </div>
 
                     <div className="table-cellx12 quotiosalinvlisxs6_item">
-                     
+
                       <p> ({currencySymbol}){" "}PAYABLES</p>
                     </div>
 
@@ -647,11 +641,10 @@ const Vendors = () => {
                         <>
                           {cusList?.data?.user?.map((quotation, index) => (
                             <div
-                              className={`table-rowx12 ${
-                                selectedRows.includes(quotation.id)
+                              className={`table-rowx12 ${selectedRows.includes(quotation.id)
                                   ? "selectedresult"
                                   : ""
-                              }`}
+                                }`}
                               key={index}
                             >
                               <div
@@ -673,12 +666,14 @@ const Vendors = () => {
                               >
                                 {quotation.display_name || ""}
                               </div>
+
                               {/* <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 x125cd02"
                               >
                                 {quotation.customer_type || ""}
                               </div> */}
+
                               <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 quotiosalinvlisxs2"
@@ -712,7 +707,6 @@ const Vendors = () => {
                                   )}
                                 </p>
                               </div>
-
                               <div
                                 onClick={() => handleRowClicked(quotation)}
                                 className="table-cellx12 quotiosalinvlisxs6  "
@@ -724,17 +718,17 @@ const Vendors = () => {
                                       quotation?.status == "1"
                                         ? "approved"
                                         : quotation?.status == "0"
-                                        ? "draft"
-                                        : quotation?.status == "7"
-                                        ? "approved"
-                                        : ""
+                                          ? "draft"
+                                          : quotation?.status == "7"
+                                            ? "approved"
+                                            : ""
                                     }
                                   >
                                     {quotation?.status == "0"
                                       ? "Pending"
                                       : quotation?.status == "1"
-                                      ? "Approved"
-                                      : ""}
+                                        ? "Approved"
+                                        : ""}
                                   </p>
                                 </div>
                               </div>

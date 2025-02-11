@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
-import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 import { formatDate3 } from '../../Helper/DateFormat';
 import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, ShowDropdownContent1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
 
 import useOutsideClick from '../../Helper/PopupData';
 import { Payment_Receive_DetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
@@ -167,8 +166,8 @@ const PaymentRevievedDetail = () => {
                         </div>
                         <div id="buttonsdata">
 
-                            <div className="mainx1">
-                                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                            <div className="mainx1" onClick={handleDownloadPDF}>
+                                <p style={{ cursor: 'pointer' }}>
                                     PDF/Print
                                 </p>
                             </div>
