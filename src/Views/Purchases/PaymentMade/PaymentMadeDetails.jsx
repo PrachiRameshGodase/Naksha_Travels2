@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,9 +10,10 @@ import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../R
 import { useReactToPrint } from 'react-to-print';
 import useOutsideClick from '../../Helper/PopupData';
 import { PaymentMadeDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
-import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent, ShowDropdownContent1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
+import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
 import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
+import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 
 const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
@@ -74,22 +75,15 @@ const PaymentMadeDetails = () => {
         }
     }
 
-
-    useEffect(() => {
-        if (UrlId) {
-            const queryParams = {
-                id: UrlId,
-            };
-            dispatch(paymentRecDetail(queryParams));
-        }
-    }, [dispatch, UrlId, callApi]);
     const [loading, setLoading] = useState(false);
+
+    const payloadGenerator = useMemo(() => () => ({//useMemo because  we ensure that this function only changes when [dependency] changes
+        id: UrlId,
+    }), [callApi]);
+    useFetchApiData(paymentRecDetail, payloadGenerator, [callApi]);
 
     // pdf & print
     const componentRef = useRef(null);
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-    });
 
     // pdf & print
     const handleDownloadPDF = () => {
@@ -108,6 +102,7 @@ const PaymentMadeDetails = () => {
     return (
         <>
             {(paymentDelete?.loading || paymentRecStatuss?.loading || loading) && <MainScreenFreezeLoader />}
+
             {paymentDetail?.loading ? <Loader02 /> :
                 <div ref={componentRef} >
                     <Toaster />
@@ -115,18 +110,8 @@ const PaymentMadeDetails = () => {
                         <div id="leftareax12">
                             <h1 id="firstheading">{payment?.payment_id}</h1>
                         </div>
+
                         <div id="buttonsdata">
-
-                            {/* {
-                                payment?.status == 1 || payment?.status == 3 ? "" : <div className="mainx1 s1d2f14s2d542maix4ws" onClick={() => handleEditThing("approved")} >
-                                    <p>Approve</p>
-                                </div>
-                            } */}
-
-                            {/* <div className="mainx1" onClick={() => handleEditThing("edit")}>
-                                <img src="/Icons/pen-clip.svg" alt="" />
-                                <p>Edit</p>
-                            </div> */}
 
                             <div className="mainx1">
                                 <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
@@ -153,12 +138,9 @@ const PaymentMadeDetails = () => {
                     </div>
                     <div className="listsectionsgrheigh">
 
-
                         <div className="commonquoatjkx55s">
                             <div className="childommonquoatjkx55s">
-
                                 <ShowAllStatus quotation={payment} />
-
                                 <div className="detailsbox4x15s1">
                                     <div className="xhjksl45s">
                                         <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
@@ -174,14 +156,10 @@ const PaymentMadeDetails = () => {
                                 <br />
                                 <FromToDetails quotation={payment?.vendor} section="Payment Made" />
                                 <PaymentMadeDetailTable payment={payment} />
-
                             </div>
+
                         </div>
-                        {/* <div className="lastseck4x5s565">
-                            <p>More information</p>
-                            <p>Vendor Note:   {payment?.vendor_note == 0 ? "" : payment?.vendor_note || ""} </p>
-                            <p>Terms And Conditions:   {payment?.terms_and_condition == 0 ? "" : payment?.terms_and_condition || ""} </p>
-                        </div> */}
+
                         <MoreInformation sale={payment?.sale_person} note={payment?.vendor_note} tc={payment?.terms_and_condition} section="Vendor" />
                         <TermsAndConditions />
                     </div >

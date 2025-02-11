@@ -19,7 +19,7 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
     }, 0);
   };
 
-  const totalExpenseCharges = section === "Payment Receive" ? [] : data?.charges ? JSON?.parse(data?.charges) : "";
+  const totalExpenseCharges = (section === "Payment Receive" || section === "Payment Made") ? [] : data?.charges ? JSON?.parse(data?.charges) : "";
 
   const calculateTotalAmount = () => {
     const total = data?.entries?.reduce((total, entry) => {

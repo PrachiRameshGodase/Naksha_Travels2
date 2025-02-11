@@ -26,7 +26,7 @@ import { SubmitButton2 } from '../../Common/Pagination/SubmitButton';
 import { ShowMasterData } from '../../Helper/HelperFunctions';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { productTypeItemAction } from '../../../Redux/Actions/ManageStateActions/manageStateData';
-import { financialYear, getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { financialYear, getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import { PaymentTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 import { confirmIsAmountFill } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
@@ -94,6 +94,7 @@ const CreatePaymentMade = () => {
         amt_excess: null,
         entity_type: 1, // for sale    2-for purchase
         transaction_id: 0,
+        currency: getCurrencyValue(),
 
         entries: [
             {
@@ -239,7 +240,7 @@ const CreatePaymentMade = () => {
         const { name, value } = e.target;
         let newValue = value;
 
-        if (name === 'shipping_charge' || name === 'adjustment_charge' || name === 'bank_charges') {
+        if (name === 'bank_charges') {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
 
@@ -294,7 +295,6 @@ const CreatePaymentMade = () => {
             }));
         }
     }, [formData?.credit]);
-
 
     // invoiceDatas this is the pending invoice list data, pass customer id and set it inside entries   
     useEffect(() => {

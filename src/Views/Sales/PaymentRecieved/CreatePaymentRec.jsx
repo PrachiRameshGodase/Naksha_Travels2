@@ -22,7 +22,7 @@ import { handleDropdownError, preventZeroVal, showAmountWithCurrencySymbolWithPo
 import { PaymentTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import GenerateAutoId from '../Common/GenerateAutoId';
 import TextAreaComponentWithTextLimit from '../../Helper/ComponentHelper/TextAreaComponentWithTextLimit';
-import { getCurrencySymbol } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
+import { getCurrencySymbol, getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { CurrencySelect2 } from '../../Helper/ComponentHelper/CurrencySelect';
 import { confirmIsAmountFill } from '../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount';
@@ -91,6 +91,7 @@ const CreatePaymentRec = () => {
         amt_excess: null,
         entity_type: 1, // for sale    2-for purchase
         transaction_id: 0,
+        currency: getCurrencyValue(),
 
         entries: [
             {
@@ -137,6 +138,7 @@ const CreatePaymentRec = () => {
                 terms_and_condition: fetchDetails?.terms_and_condition,
                 upload_image: fetchDetails?.upload_image,
                 amt_excess: (+fetchDetails?.amt_excess || 0),
+                // currency: fetchDetails?.currency,
 
                 // this details will be filled when there is one invoice
                 entity_type: fetchDetails?.entity_type, // for sale    2-for purchase
@@ -172,7 +174,6 @@ const CreatePaymentRec = () => {
         }
 
     }, [fetchDetails, itemId, isEdit, isDuplicate, convert]);
-
 
     useEffect(() => {
         if (itemId && convert && !invoice) {
@@ -247,7 +248,7 @@ const CreatePaymentRec = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        let newValue = value === "" ? "" : parseFloat(value) || 0; // Convert value to number or default to 0
+        let newValue = parseFloat(value); // Convert value to number or default to 0
 
         // If the input field is one of the charges, ensure it's parsed as a float
         if (["bank_charges"].includes(name)) {
@@ -293,6 +294,7 @@ const CreatePaymentRec = () => {
             ...prevFormData,
             [name]: newValue,
         }));
+
     };
 
 
@@ -331,8 +333,8 @@ const CreatePaymentRec = () => {
 
 
 
-    console.log("invoiceDAta", invoiceDatas)
-    console.log("formdatqa", formData)
+    // console.log("invoiceDAta", invoiceDatas)
+    // console.log("formdatqa", formData)
 
 
 
