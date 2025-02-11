@@ -33,6 +33,7 @@ import { generatePDF } from "../../Helper/createPDF";
 import { currencyRateListAction } from "../../../Redux/Actions/manageCurrencyActions";
 import { UserMasterListAction } from "../../../Redux/Actions/userMasterActions";
 import { confirIsCurrencyPDF } from "../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
+import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const PurchaseOrderDetails = () => {
   const Navigate = useNavigate();
@@ -133,7 +134,7 @@ const PurchaseOrderDetails = () => {
 
   const handleDownloadPDF = async () => {
     try {
-      if (!payment?.transaction_date) return;
+      if (!purchase?.transaction_date) return;
 
       // Fetch currency rates for the transaction date
       const res = await dispatch(currencyRateListAction({ date: purchase?.transaction_date }));
@@ -152,7 +153,7 @@ const PurchaseOrderDetails = () => {
             data={purchase}
             masterData={masterData}
             moduleId={purchase?.purchase_order_id}
-            section="Payment Receive"
+            section="Purchase Order"
             fetchCurrencyData={currencyData}
           />
         );

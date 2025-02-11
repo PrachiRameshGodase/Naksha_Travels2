@@ -68,6 +68,7 @@ const CreateBills = () => {
         customer_name: null,
         customer_id: 0,
         user_type: 1, // 1 for vendor, 2 for customer
+        currency: activeCurrency
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -161,6 +162,7 @@ const CreateBills = () => {
                 customer_id: +expenseDetail?.customer_id,
                 vendor_id: +expenseDetail?.vendor_id,
                 user_type: +expenseDetail?.user_type,
+                currency: expenseDetail?.currency,
             };
 
             setFormData(updatedFormData);
@@ -263,6 +265,7 @@ const CreateBills = () => {
                                                         Please Select Customer
                                                     </p>
                                                 }
+
                                             </div>
                                             :
                                             <div className="form_commonblock ">
@@ -283,6 +286,7 @@ const CreateBills = () => {
                                                     />
 
                                                 </span>
+
                                                 {
                                                     !isVendorSelect &&
                                                     <p className="error-message" style={{ whiteSpace: "nowrap" }}>
@@ -290,6 +294,7 @@ const CreateBills = () => {
                                                         Please Select Vendor
                                                     </p>
                                                 }
+
                                             </div>
                                         }
                                     </div>

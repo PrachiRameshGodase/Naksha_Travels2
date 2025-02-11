@@ -1,36 +1,36 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import Loader02 from "../../../Components/Loaders/Loader02";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
-import toast, { Toaster } from "react-hot-toast";
-import {
-  formatDate3,
-} from "../../Helper/DateFormat";
-import {
-  billDeletes,
-  billDetails,
-  billStatus,
-} from "../../../Redux/Actions/billActions";
+import { Toaster } from "react-hot-toast";
+import { formatDate3 } from "../../Helper/DateFormat";
+import { billDeletes, billDetails } from "../../../Redux/Actions/billActions";
 import useOutsideClick from "../../Helper/PopupData";
-
 import ItemDetailTable from "../../Common/InsideSubModulesCommon/ItemDetailTable";
 import { ShowDropdownContent } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import { MoreInformation } from "../../Common/InsideSubModulesCommon/DetailInfo";
-import { FromToDetails, FromToDetailsPurchases } from "../../Common/InsideSubModulesCommon/DetailInfo";
+import { FromToDetailsPurchases } from "../../Common/InsideSubModulesCommon/DetailInfo";
 import useFetchApiData from "../../Helper/ComponentHelper/useFetchApiData";
 import { generatePDF } from "../../Helper/createPDF";
 import PrintContent from "../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent";
+import { confirIsCurrencyPDF } from "../../Helper/ConfirmHelperFunction/ConfirmWithZeroAmount";
+import { UserMasterListAction } from "../../../Redux/Actions/userMasterActions";
+import { currencyRateListAction } from "../../../Redux/Actions/manageCurrencyActions";
+import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+
+
 const BillDetail = () => {
+
   const Navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const invoiceDetail = useSelector((state) => state?.billDetail);
-  const invoiceStatus = useSelector((state) => state?.billStatuses);
+  const billDetail = useSelector((state) => state?.billDetail);
+  const billStatus = useSelector((state) => state?.billStatuses);
   const billDelete = useSelector((state) => state?.billDelete);
-  const invoice = invoiceDetail?.data?.bill;
+  const bills = billDetail?.data?.bill;
   const masterData = useSelector(state => state?.masterData?.masterData);
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -51,7 +51,6 @@ const BillDetail = () => {
   const handleEditThing = (val) => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", UrlId);
-
     if (val === "edit") {
       queryParams.set(val, true);
       Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
@@ -60,7 +59,7 @@ const BillDetail = () => {
       Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
     } else if (val === "bill_to_payment") {
       queryParams.set("convert", val);
-      queryParams.set("bill_no", invoice?.bill_no);
+      queryParams.set("bill_no", bills?.bill_no);
       Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
     }
     else if (val === "bill_to_debit") {
@@ -108,38 +107,68 @@ const BillDetail = () => {
   const [loading, setLoading] = useState(false);
 
 
-  const handleDownloadPDF = () => {
-    if (!invoice || !masterData) {
-      alert("Data is still loading, please try again.");
-      return;
-    }
+  const rateLoading = useSelector(state => state?.currencyRateList);
 
-    const contentComponent = (
-      <PrintContent data={invoice} cusVenData={invoice?.vendor} masterData={masterData} moduleId={invoice?.bill_no} section="Bill" />
-    );
-    generatePDF(contentComponent, "Bill_Document.pdf", setLoading, 500);
+  const handleDownloadPDF = async () => {
+    try {
+      if (!bills?.transaction_date) return;
+
+      // Fetch currency rates for the transaction date
+      const res = await dispatch(currencyRateListAction({ date: bills?.transaction_date }));
+      const fetchCurrencyData = res?.data?.find(val => val?.code === bills?.currency);
+
+      // Ensure masterData & quotation exist before proceeding
+      if (!bills || !masterData) {
+        dispatch(UserMasterListAction());
+        alert("Data is still loading, please try again.");
+        return;
+      }
+
+      const generatePDFWithData = (currencyData) => {
+        const contentComponent = (
+          <PrintContent
+            data={bills}
+            masterData={masterData}
+            moduleId={bills?.bill_no}
+            section="Bill"
+            fetchCurrencyData={currencyData}
+          />
+        );
+        generatePDF(contentComponent, "Bill_Document.pdf", setLoading, 500);
+      };
+
+      if (fetchCurrencyData) {
+        generatePDFWithData(fetchCurrencyData);
+      } else if (bills?.currency === getCurrencyValue()) {
+        generatePDFWithData(null); // No conversion needed
+      } else {
+        // Prompt user to create missing currency
+        const res = await confirIsCurrencyPDF(bills?.currency);
+        if (res) {
+          Navigate(`/dashboard/manage-currency?date=${bills?.transaction_date}&currency=${bills?.currency}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching currency rates:", error);
+    }
   };
 
   return (
     <>
-      {billDelete?.loading ||
-        ((invoiceStatus?.loading || loading) && <MainScreenFreezeLoader />)}
-      {invoiceDetail?.loading ? (
+      {(billDelete?.loading || billStatus?.loading || loading || rateLoading?.loading) && <MainScreenFreezeLoader />}
+
+      {billDetail?.loading ? (
         <Loader02 />
       ) : (
         <div ref={componentRef}>
           <Toaster />
           <div id="Anotherbox" className="formsectionx1">
             <div id="leftareax12">
-              <h1 id="firstheading">{invoice?.bill_no}</h1>
+              <h1 id="firstheading">{bills?.bill_no}</h1>
             </div>
             <div id="buttonsdata">
-              {/* {invoice?.status == "1" ? "" : <div className="mainx1 s1d2f14s2d542maix4ws" onClick={() => changeStatus("accepted")} >
-                                <p>Approve</p>
-                            </div>
-                            } */}
 
-              {(invoice?.status == 1 || invoice?.status == 5) ? (
+              {(bills?.status == 1 || bills?.status == 5) ? (
                 ""
               ) : (
                 <div className="mainx1" onClick={() => handleEditThing("edit")}>
@@ -159,7 +188,7 @@ const BillDetail = () => {
 
               <div className="sepc15s63x63"></div>
 
-              {invoice?.status != "1" && (
+              {bills?.status != "1" && (
                 <div
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="mainx2"
@@ -174,7 +203,7 @@ const BillDetail = () => {
                   />
                   {showDropdown && (
                     <ShowDropdownContent
-                      quotation={invoice}
+                      quotation={bills}
                       changeStatus={changeStatus}
                     />
                   )}
@@ -193,7 +222,7 @@ const BillDetail = () => {
             </div>
           </div>
           <div className="listsectionsgrheigh" id='quotation-content'>
-            {invoice?.status == 1 && <div className="commonquoatjkx54s">
+            {bills?.status == 1 && <div className="commonquoatjkx54s">
               <div className="firstsecquoatjoks45">
                 <div className="detailsbox4x15sfirp">
                   <img
@@ -241,32 +270,32 @@ const BillDetail = () => {
               <div className="childommonquoatjkx55s">
                 <div
                   className={
-                    invoice?.status == 0
+                    bills?.status == 0
                       ? "draftClassName"
-                      : invoice?.status == 1
+                      : bills?.status == 1
                         ? "approvedClassName"
-                        : invoice?.status == 2
+                        : bills?.status == 2
                           ? "declinedClassName"
-                          : invoice?.status == 3
+                          : bills?.status == 3
                             ? "sentClassName"
-                            : invoice?.status == 6
+                            : bills?.status == 6
                               ? "sentClassName3"
-                              : invoice?.status == 5
+                              : bills?.status == 5
                                 ? "paidClassName"
                                 : "defaultClassName"
                   }
                 >
-                  {invoice?.status == "0"
+                  {bills?.status == "0"
                     ? "Draft"
-                    : invoice?.status == "1"
+                    : bills?.status == "1"
                       ? "Aporoved"
-                      : invoice?.status == "2"
+                      : bills?.status == "2"
                         ? "Decline"
-                        : invoice?.status == "3"
+                        : bills?.status == "3"
                           ? "Pending"
-                          : invoice?.status == "6"
+                          : bills?.status == "6"
                             ? "Sent"
-                            : invoice?.status == "5"
+                            : bills?.status == "5"
                               ? "Paid"
                               : ""}
                 </div>
@@ -286,24 +315,24 @@ const BillDetail = () => {
                   <div className="xhjksl45s2">
                     <h1>BILL</h1>
                     <span>
-                      <p>Bill Number:</p> <h3>{invoice?.bill_no}</h3>
+                      <p>Bill Number:</p> <h3>{bills?.bill_no}</h3>
                     </span>
                     <span>
                       <p>Bill Date:</p>{" "}
-                      <h3> {formatDate3(invoice?.transaction_date)}</h3>
+                      <h3> {formatDate3(bills?.transaction_date)}</h3>
                     </span>
                   </div>
                 </div>
 
                 <br />
-                <FromToDetailsPurchases quotation={invoice?.vendor} section="Bill" />
-                <ItemDetailTable itemsData={invoice} section="bill" />
+                <FromToDetailsPurchases quotation={bills?.vendor} section="Bill" />
+                <ItemDetailTable itemsData={bills} section="bill" />
               </div>
             </div>
             <MoreInformation
-              sale={invoice?.sale_person}
-              note={invoice?.vendor_note}
-              tc={invoice?.terms_and_condition}
+              sale={bills?.sale_person}
+              note={bills?.vendor_note}
+              tc={bills?.terms_and_condition}
               section="Vendor"
             />
           </div>
