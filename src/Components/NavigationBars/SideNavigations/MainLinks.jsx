@@ -225,7 +225,7 @@ const MainLinks = ({
   return (
     <>
       <div id="sidebarx1">
-        <div
+        {/* <div
           {...(isSidebarCollapsedx1 && {
             "data-tooltip-id": "my-tooltip",
             "data-tooltip-content": "Home",
@@ -235,7 +235,7 @@ const MainLinks = ({
         >
           <img className="svgiconsidebar" src={homes_chinmey} alt="" />
           <p className="dispynonesidebarc5w6s">Home</p>
-        </div>
+        </div> */}
 
         {/* organization start */}
         {/* <div className="menu-itemxse">

@@ -280,18 +280,20 @@ export const FromToDetails = ({ quotation, section }) => {
 
         <p>
           <span>
-            {" "}
             <b>{active_orgnization?.name || ""}</b>
           </span>
-          <br />
-          <span>{active_orgnization?.email || ""}</span>
-          <br />
-          <span>{active_orgnization?.mobile_no || ""}</span>
-          <br />
-          <span>{active_orgnization?.street2 || ""}</span>
-          <br />
-          <span>{active_orgnization?.street1 || ""}</span>
-          <br />
+
+          <p style={{ color: "#00000069" }}>
+            <b>PIN: {active_orgnization?.zipcode || ""}</b>
+          </p>
+          <p>{active_orgnization?.vat_ragistation || ""}</p>
+
+          <p>{active_orgnization?.street2 || ""}</p>
+          <p>{active_orgnization?.street1 || ""}</p>
+
+          <p>{active_orgnization?.email || ""}</p>
+          <p>{active_orgnization?.mobile_no || ""}</p>
+
         </p>
       </div>
 

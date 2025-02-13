@@ -239,7 +239,7 @@ const HelpList = () => {
                                 }
                               >
                                 {JSON?.parse(quotation?.upload_documents)?.length}{" "}
-                                Images <MdArrowOutward />
+                                Files <MdArrowOutward />
                               </span>
                             ) : (
                               `${JSON?.parse(quotation?.upload_documents)?.length <
@@ -247,7 +247,7 @@ const HelpList = () => {
                                 ? "No"
                                 : JSON?.parse(quotation?.upload_documents)
                                   ?.length
-                              } Image`
+                              } Files`
                             )}
                           </div>
                         </div>

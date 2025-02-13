@@ -227,7 +227,7 @@ const ItemSelect = ({
       newItems[index].item_name = value;
       newItems[index].hsn_code = "";
       newErrors[index].item_id = 0;
-      newErrors[index].item_name = "";
+      // newErrors[index].item_name = "";
     }
 
     if (field === "discount_type") {
@@ -312,6 +312,7 @@ const ItemSelect = ({
       (item) => !(item.item_name && item.item_name.trim()) && !(item?.service_data?.service_name && item?.service_data?.service_name.trim())
     );
 
+    console.log("firstEmptyRowIndex", firstEmptyRowIndex)
     // add new empty at the end of row when item is selected 
     const finalItems = firstEmptyRowIndex === -1 ? [...newItems, { item_name: "", service_name: "", discount_type: 1, quantity: 1, discount: 0, tax_rate: 0 }] : newItems;
 

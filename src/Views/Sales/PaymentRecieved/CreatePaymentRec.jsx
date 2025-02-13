@@ -517,7 +517,7 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock">
                                             <label className=''>Bank Charges (If Any)</label>
-                                            <span >
+                                            <span>
                                                 {otherIcons.tag_svg}
 
                                                 <NumericInput
@@ -539,7 +539,7 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock">
                                             <label className=''>Payment Date</label>
-                                            <span >
+                                            <span>
                                                 {otherIcons.date_svg}
                                                 <DatePicker
                                                     selected={formData?.transaction_date}
@@ -571,7 +571,7 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock">
                                             <label>Payment Mode <b className='color_red'>*</b></label>
-                                            <span >
+                                            <span>
                                                 {otherIcons.currency_icon}
                                                 <CustomDropdown04
                                                     options={allPaymentMode}
@@ -589,7 +589,7 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock">
                                             <label className=''>Deposit To <b className='color_red'>*</b></label>
-                                            <span >
+                                            <span>
                                                 {otherIcons.tag_svg}
                                                 <CustomDropdown15
                                                     label="Account"
@@ -606,10 +606,12 @@ const CreatePaymentRec = () => {
 
                                         <div className="form_commonblock ">
                                             <label className=''>Reference</label>
-                                            <span >
+                                            <span>
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={preventZeroVal(formData?.reference)} onChange={handleChange}
-                                                    // disabled
+                                                <input
+                                                    type="text"
+                                                    value={preventZeroVal(formData?.reference)}
+                                                    onChange={handleChange}
                                                     name='reference'
                                                     placeholder='Enter Reference' autoComplete='off' />
 

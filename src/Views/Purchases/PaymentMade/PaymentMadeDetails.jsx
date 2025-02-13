@@ -8,12 +8,13 @@ import { Toaster } from 'react-hot-toast';
 import { formatDate3 } from '../../Helper/DateFormat';
 import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
 import useOutsideClick from '../../Helper/PopupData';
-import { PaymentMadeDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { PaymentDetailTable, } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1, TermsAndConditions } from '../../Common/InsideSubModulesCommon/DetailInfo';
-import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import { generatePDF } from '../../Helper/createPDF';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import PrintContent3 from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent3';
+import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
+import { getCurrencyValue } from '../../Helper/ComponentHelper/ManageStorage/localStorageUtils';
 
 const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
@@ -89,6 +90,8 @@ const PaymentMadeDetails = () => {
     const componentRef = useRef(null);
 
     // pdf & print
+    const rateLoading = useSelector(state => state?.currencyRateList);
+
     const handleDownloadPDF = async () => {
         try {
             if (!payment?.transaction_date) return;
@@ -106,12 +109,13 @@ const PaymentMadeDetails = () => {
 
             const generatePDFWithData = (currencyData) => {
                 const contentComponent = (
-                    <PrintContent
+                    <PrintContent3
                         data={payment}
                         masterData={masterData}
-                        moduleId={payment?.quotation_id}
-                        section="Payment Made"
+                        moduleId={payment?.credit_note_id}
                         fetchCurrencyData={currencyData}
+                        section={false}
+                        sectionName="Payment Made"
                     />
                 );
                 generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
@@ -131,18 +135,11 @@ const PaymentMadeDetails = () => {
         } catch (error) {
             console.error("Error fetching currency rates:", error);
         }
-
-        const contentComponent = (
-            <PrintContent3 data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" />
-        );
-
-        generatePDF(contentComponent, "Payment_Made_Document.pdf", setLoading, 500);
     };
-
 
     return (
         <>
-            {(paymentDelete?.loading || paymentRecStatuss?.loading || loading) && <MainScreenFreezeLoader />}
+            {(paymentDelete?.loading || paymentRecStatuss?.loading || loading || rateLoading?.loading) && <MainScreenFreezeLoader />}
             {/* <PrintContent3 data={payment?.entries} cusVenData={payment?.vendor} masterData={masterData} moduleId={payment?.payment_id} section="Payment Made" /> */}
 
             {paymentDetail?.loading ? <Loader02 /> :
@@ -155,8 +152,8 @@ const PaymentMadeDetails = () => {
 
                         <div id="buttonsdata">
 
-                            <div className="mainx1">
-                                <p onClick={handleDownloadPDF} style={{ cursor: 'pointer' }}>
+                            <div className="mainx1" onClick={handleDownloadPDF}>
+                                <p style={{ cursor: 'pointer' }}>
                                     PDF/Print
                                 </p>
                             </div>
@@ -197,7 +194,7 @@ const PaymentMadeDetails = () => {
 
                                 <br />
                                 <FromToDetails quotation={payment?.vendor} section="Payment Made" />
-                                <PaymentMadeDetailTable payment={payment} />
+                                <PaymentDetailTable payment={payment} section={false} />
                             </div>
 
                         </div>

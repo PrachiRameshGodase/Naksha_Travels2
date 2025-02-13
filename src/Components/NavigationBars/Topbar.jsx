@@ -233,7 +233,7 @@ const Topbar = ({ loggedInUserData }) => {
               <div className="suggestion-box">
                 <div id="sugnboxx1">
                   <ul>
-                    <Link to={"/"}>Home</Link>
+                    {/* <Link to={"/"}>Home</Link> */}
                     {/* <Link to={"/"}>Bell</Link>
                     <Link to={"/"}>More</Link> */}
                   </ul>
@@ -250,7 +250,9 @@ const Topbar = ({ loggedInUserData }) => {
         </div>
 
         <div id="tobarsj03">
+
           <ul>
+
             {/* <div data-tooltip-id="my-tooltip" data-tooltip-content="Warehouse" id="textofcompanycwarehouse" onClick={handleWarehouseClick}> */}
             {/* <p> <img className='svgiconsidebar' src={warehouse_alt} alt="" />
                 {selectedWarehouse ? selectedWarehouse.name : "Select Warehouse"}</p>
@@ -266,21 +268,25 @@ const Topbar = ({ loggedInUserData }) => {
               </div>
             )}
             <span id="sepx15s"></span>
+
             <li>
               <Link data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" onClick={toggleNotificationPopup} className="custtobsx45" to={""}>
                 <span className="bellx15w fa fa-bell"></span>
               </Link>
             </li>
+
             <li>
-              <Link data-tooltip-id="my-tooltip" data-tooltip-content="Settings" className="custtobsx45" to={"/settings"}>
+              {/* <Link data-tooltip-id="my-tooltip" data-tooltip-content="Settings" className="custtobsx45" to={"/settings"}>
                 <img className='svgiconsidebar' src={settingIco} alt="" />
-              </Link>
+              </Link> */}
             </li>
+
             <li>
               <Link data-tooltip-id="my-tooltip" data-tooltip-content="Account" onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 <img className='svgiconsidebar' src={personprofileIco} alt="" />
               </Link>
             </li>
+
           </ul>
         </div>
       </div>
@@ -323,16 +329,6 @@ const Topbar = ({ loggedInUserData }) => {
                   <span className="asdf">Manage Warehouses</span>
                 </Link>
               </div>
-
-              {/* <div className="xklw54c15w3s6">
-
-                <svg enableBackground="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg" id="fi_3134700"><path d="m17.76 5.91-8.44-5.81c-.19-.13-.45-.13-.64 0l-8.44 5.81c-.15.11-.24.28-.24.47v10.31c0 .72.59 1.31 1.31 1.31h7.7c-.01-.17-.01-.33-.01-.5 0-4.69 3.81-8.5 8.5-8.5.17 0 .33 0 .5.01v-2.63c0-.19-.09-.36-.24-.47z" fill="#cfd8dc"></path><path d="m9.81 13.88h-6.06v4.12h5.26c-.01-.17-.01-.33-.01-.5 0-.87.13-1.71.37-2.5.12-.39.27-.76.44-1.12z" fill="#78909c"></path><path d="m3.75 10.88v4.12h5.62c.12-.39.27-.76.44-1.12.32-.68.73-1.31 1.21-1.88.35-.41.73-.78 1.15-1.12z" fill="#90a4ae"></path><path d="m13.5 8.25h-9c-.41 0-.75.34-.75.75v3h7.27c.35-.41.73-.78 1.15-1.12.63-.51 1.32-.92 2.08-1.23v-.65c0-.41-.34-.75-.75-.75z" fill="#78909c"></path><path d="m9 .002c-.112 0-.225.032-.32.097l-8.44 5.811c-.15.11-.24.28-.24.47v10.31c0 .72.59 1.31 1.31 1.31h7.69-5.25v-4.12-3-1.88c0-.41.34-.75.75-.75h4.5z" fill="#b4bcc0"></path><path d="m3.75 13.88v4.12h5.25v-.492-.008-2.5h-5.25z" fill="#687d88"></path><path d="m3.75 10.88v3 1.12h5.25v-3h-5.25z" fill="#7d8f97"></path><path d="m9 8.25h-4.5c-.41 0-.75.34-.75.75v1.88 1.12h5.25z" fill="#687d88"></path><path d="m17.5 11c-3.584 0-6.5 2.916-6.5 6.5s2.916 6.5 6.5 6.5 6.5-2.916 6.5-6.5-2.916-6.5-6.5-6.5z" fill="#2196f3"></path><path d="m17.5 21c-.414 0-.75-.336-.75-.75v-5.5c0-.414.336-.75.75-.75s.75.336.75.75v5.5c0 .414-.336.75-.75.75z" fill="#fff"></path><path d="m20.25 18.25h-5.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h5.5c.414 0 .75.336.75.75s-.336.75-.75.75z" fill="#fff"></path><path d="m17.5 11c-3.584 0-6.5 2.916-6.5 6.5s2.916 6.5 6.5 6.5v-3c-.414 0-.75-.336-.75-.75v-2h-2c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h2v-2c0-.414.336-.75.75-.75z" fill="#1d83d4"></path><g fill="#dedede"><path d="m17.5 18.25h-.75v2c0 .414.336.75.75.75zm0-4.25c-.414 0-.75.336-.75.75v2h.75z"></path><path d="m17.5 16.75h-.75-2c-.414 0-.75.336-.75.75s.336.75.75.75h2 .75z"></path></g></svg>
-                <Link to={"/settings/create-organisations"} className="buttonx3">
-
-
-                  <span className="asdf">Add New Warehouse</span>
-                </Link>
-              </div> */}
 
             </div>
 
@@ -481,9 +477,9 @@ const Topbar = ({ loggedInUserData }) => {
                 {/* <Link className="insidclinks65w6x6w">
                   <img src={feedbacksendIco} alt="" />
                   Send Feedback</Link> */}
-                <Link className="insidclinks65w6x6w" to="/settings/organisations">
+                {/* <Link className="insidclinks65w6x6w" to="/settings/organisations">
                   <img src={organizationIco} alt="" />
-                  Organizations</Link>
+                  Organizations</Link> */}
                 {/* <Link className="insidclinks65w6x6w">
                   <img src={inviteUserIco} alt="" />
                   Invite Users</Link> */}

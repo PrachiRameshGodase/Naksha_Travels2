@@ -10,9 +10,8 @@ import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../R
 import { FromToDetails, MoreInformation, ShowAllStatus, ShowDropdownContent1 } from '../../Common/InsideSubModulesCommon/DetailInfo';
 
 import useOutsideClick from '../../Helper/PopupData';
-import { Payment_Receive_DetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
+import { PaymentDetailTable } from '../../Common/InsideSubModulesCommon/ItemDetailTable';
 import { generatePDF } from '../../Helper/createPDF';
-import PrintContent from '../../Helper/ComponentHelper/PrintAndPDFComponent/PrintContent';
 import useFetchApiData from '../../Helper/ComponentHelper/useFetchApiData';
 import { currencyRateListAction } from '../../../Redux/Actions/manageCurrencyActions';
 import { UserMasterListAction } from '../../../Redux/Actions/userMasterActions';
@@ -129,8 +128,9 @@ const PaymentRevievedDetail = () => {
                         data={payment}
                         masterData={masterData}
                         moduleId={payment?.credit_note_id}
-                        section="Payment Receive"
                         fetchCurrencyData={currencyData}
+                        sectionName="Payment Receive"
+                        section={true}
                     />
                 );
                 generatePDF(contentComponent, "Payment_Receive_Document.pdf", setLoading, 500);
@@ -205,14 +205,18 @@ const PaymentRevievedDetail = () => {
                                     </div>
 
                                     <div className="xhjksl45s2">
+
                                         <h1>Payment</h1>
                                         <span><p>Payment No:</p> <h3>{payment?.payment_id}</h3></span>
                                         <span><p>Payment Date:</p> <h3> {formatDate3(payment?.transaction_date)}</h3></span>
+
                                     </div>
 
                                 </div>
+
                                 <FromToDetails quotation={payment?.customer} section="Payment Receive" />
-                                <Payment_Receive_DetailTable payment={payment} />
+                                <PaymentDetailTable payment={payment} section={true} />
+
                             </div>
                         </div>
                         <MoreInformation sale={payment?.sale_person || ""} note={payment?.customer_note} tc={payment?.terms_and_condition} section="Customer" />

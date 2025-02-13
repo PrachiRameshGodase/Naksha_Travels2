@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { getCurrencySymbol, getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import { convertCurrencyWithSymbol } from "../../Helper/CurrencyHelper/convertKESToUSD";
 
 const ItemDetailTable = ({ itemsData, showChargesVal, section }) => {
   const [showCharges, setShowCharges] = useState(false);
@@ -478,9 +479,11 @@ export const GrnItemsDetailTable = ({ GRNdetail, showAllImages }) => {
   );
 };
 
-export const PaymentMadeDetailTable = ({ payment }) => {
 
-  console.log("payment made payment", payment)
+// payments details table
+export const PaymentDetailTable = ({ payment, section }) => {
+
+  // console.log("payment made payment", payment)
 
   const currencySymbol = getCurrencySymbol();
 
@@ -503,8 +506,8 @@ export const PaymentMadeDetailTable = ({ payment }) => {
               <th className="table_column_item item_table_width_02">
                 Date
               </th>
-              <th className="table_column_item">Bill Number</th>
-              <th className="table_column_item item_text_end_01">Bill Amount</th>
+              <th className="table_column_item">{section ? "Invoice" : "Bill"} Number</th>
+              <th className="table_column_item item_text_end_01">{section ? "Invoice" : "Bill"} Amount</th>
               <th className="table_column_item item_text_end_01">Amount Due</th>
               <th className="table_column_item item_text_end_01">Payment</th>
             </tr>
@@ -515,15 +518,16 @@ export const PaymentMadeDetailTable = ({ payment }) => {
 
               <tr key={index} className="table_head_item_02_row">
                 <td className="table_column_item">{index + 1}</td>
-                <td className="table_column_item">{formatDate4(val?.bill?.transaction_date) || ""}</td>
+                <td className="table_column_item">{section ? formatDate4(val?.invoice?.transaction_date) : formatDate4(val?.bill?.transaction_date) || ""}</td>
                 <td className="table_column_item">
-                  {val?.bill?.bill_no || ""}
+                  {section ? val?.invoice_no : val?.bill_no}
                 </td>
                 <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol(val?.bill?.total)}
+                  {/* {showAmountWithCurrencySymbol(val?.bill?.total)} */}
+                  {section ? (parseFloat(val?.invoice?.total)?.toFixed(2)) : (parseFloat(val?.bill?.total)?.toFixed(2))}
                 </td>
                 <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol(val?.balance_amount)}
+                  {convertCurrencyWithSymbol(val?.balance_amount)}
                 </td>
                 <td className="table_column_item item_text_end_01">
                   {showAmountWithCurrencySymbol(val?.amount)}
@@ -539,13 +543,9 @@ export const PaymentMadeDetailTable = ({ payment }) => {
         </p>
       )}
 
-
-
-
-
       <div className="finalcalculateiosxl44s">
 
-        <p><p className="finalcalcuFs">Amount Paid: </p> <h5 className="finalcalcuFs">{showAmountWithCurrencySymbol(payment?.credit)}</h5></p>
+        <p><p className="finalcalcuFs">Amount Paid: </p> <h5 className="finalcalcuFs">{showAmountWithCurrencySymbol(section ? payment?.debit : payment?.credit)}</h5></p>
 
         <p><p className=''>Amount Used For Payment:</p> <h5> ({currencySymbol}){calculateTotalAmount()}</h5></p>
 
@@ -565,90 +565,8 @@ export const PaymentMadeDetailTable = ({ payment }) => {
   );
 };
 
-export const Payment_Receive_DetailTable = ({ payment }) => {
 
-  const currencySymbol = getCurrencySymbol();
-
-  const calculateTotalAmount = () => {
-    const total = payment?.entries?.reduce((total, entry) => {
-      return parseFloat(total) + (parseFloat(entry?.amount) ? parseFloat(entry?.amount) : 0.0);
-    }, 0.0);
-
-    // Ensure it returns a number, not a string
-    return total === 0 ? 0.0 : parseFloat(total?.toFixed(2));
-  };
-  return (
-    <>
-      {payment?.entries?.length >= 1 ? (
-        <table className="itemTable_01" id="modidy_table_form_details">
-          <thead className="table_head_item_02">
-            <tr className="table_head_item_02_row">
-              <th className="table_column_item item_table_width_01" >#</th>
-              <th className="table_column_item item_table_width_02">
-                Date
-              </th>
-              <th className="table_column_item">Invoice Number</th>
-              <th className="table_column_item item_text_end_01">Invoice Amount</th>
-              <th className="table_column_item item_text_end_01">Amount Due</th>
-              <th className="table_column_item item_text_end_01">Payment</th>
-            </tr>
-          </thead>
-          <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
-
-            {payment?.entries?.map((val, index) => (
-
-              <tr key={index} className="table_head_item_02_row">
-                <td className="table_column_item">{index + 1}</td>
-                <td className="table_column_item">{formatDate4(val?.invoice?.transaction_date) || ""}</td>
-                <td className="table_column_item">
-                  {val?.invoice?.invoice_id || ""}
-                </td>
-                <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol(val?.invoice?.total)}
-                </td>
-                <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol(val?.balance_amount)}
-                </td>
-                <td className="table_column_item item_text_end_01">
-                  {showAmountWithCurrencySymbol(val?.amount)}
-                </td>
-              </tr>
-            ))}
-
-          </tbody>
-        </table>
-      ) : (
-        <p style={{ textAlign: "center", padding: "20px 0" }}>
-          There are no unpaid invoices associated with this customer.
-        </p>
-      )
-      }
-
-      {/*  */}
-
-      <div className="finalcalculateiosxl44s">
-        <p><p className="finalcalcuFs">Amount Received: </p> <h5 className="finalcalcuFs">{showAmountWithCurrencySymbol(payment?.debit)}</h5></p>
-        <p><p>Amount In Blance:</p> <h5>
-          ({currencySymbol}) {+payment?.amt_excess < 0 ? (
-            <span style={{ color: "rgb(255, 46, 18)" }}>
-              {+payment?.amt_excess}
-            </span>
-          ) : (
-            +payment?.amt_excess
-          )}
-        </h5></p>
-        <p><p>Amount Used For Payment:</p> <h5> ({currencySymbol}){calculateTotalAmount()}</h5></p>
-      </div >
-
-      {/*  */}
-
-
-    </>
-  );
-};
-
-
-// payment receive table
+// payment create tables
 export const PaymentTable = ({ formData, setFormData, section }) => {
   const currencySymbol = getCurrencySymbol();
 

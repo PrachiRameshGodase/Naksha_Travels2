@@ -258,7 +258,7 @@ export const validateItems = (items) => {
         }
 
         // Validate other fields as needed
-        // if (!item?.tax_rate) itemErrors.tax_rate = "Please Select Tax Rate";
+        if (!item?.type) itemErrors.type = "Please Select Type of an Item";
         // if (!item?.unit_id) itemErrors.unit_id = "Please Select An Unit";
 
         // Add errors for this item if there are any

@@ -72,7 +72,7 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
             <div className="detailsbox4x15s2">
               <div className="cjkls5xs1">
                 <p>
-                  <h3 style={{ color: "gray" }}>Bill To</h3>
+                  <h3 style={{ color: "gray" }}>{section} To</h3>
 
                   <p>{active_orgnization?.email || ""}</p>
                 </p>
@@ -118,51 +118,53 @@ const PrintContent = ({ data, masterData, moduleId, section, fetchCurrencyData, 
               <>
 
                 <>
-                  {data?.entries?.length >= 1 ? (
-                    <table className="itemTable_01" id="modidy_table_form_details">
-                      <thead className="table_head_item_02">
-                        <tr className="table_head_item_02_row">
-                          <th className="table_column_item item_table_width_01" >#</th>
-                          <th className="table_column_item item_table_width_02">
-                            Date
-                          </th>
-                          <th className="table_column_item">Invoice Number</th>
-                          <th className="table_column_item item_text_end_01">Invoice Amount</th>
-                          <th className="table_column_item item_text_end_01">Amount Due</th>
-                          <th className="table_column_item item_text_end_01">Payment</th>
-                        </tr>
-                      </thead>
-                      <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
-
-                        {data?.entries?.map((val, index) => (
-
-                          <tr key={index} className="table_head_item_02_row">
-                            <td className="table_column_item">{index + 1}</td>
-                            <td className="table_column_item">{formatDate4(val?.invoice?.transaction_date) || ""}</td>
-                            <td className="table_column_item">
-                              {val?.invoice?.invoice_id || ""}
-                            </td>
-
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(val?.invoice?.total, fetchCurrencyData,)}
-                            </td>
-
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(((+val?.invoice?.total) - (+val?.invoice?.amount_paid)), fetchCurrencyData,)}
-                            </td>
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(val?.amount, fetchCurrencyData,)}
-                            </td>
+                  {
+                    data?.entries?.length >= 1 ? (
+                      <table className="itemTable_01" id="modidy_table_form_details">
+                        <thead className="table_head_item_02">
+                          <tr className="table_head_item_02_row">
+                            <th className="table_column_item item_table_width_01" >#</th>
+                            <th className="table_column_item item_table_width_02">
+                              Date
+                            </th>
+                            <th className="table_column_item">Invoice Number</th>
+                            <th className="table_column_item item_text_end_01">Invoice Amount</th>
+                            <th className="table_column_item item_text_end_01">Amount Due</th>
+                            <th className="table_column_item item_text_end_01">Payment</th>
                           </tr>
-                        ))}
+                        </thead>
+                        <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
 
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p style={{ textAlign: "center", padding: "20px 0" }}>
-                      There are no unpaid invoices associated with this customer.
-                    </p>
-                  )}
+                          {data?.entries?.map((val, index) => (
+
+                            <tr key={index} className="table_head_item_02_row">
+                              <td className="table_column_item">{index + 1}</td>
+                              <td className="table_column_item">{formatDate4(val?.invoice?.transaction_date) || ""}</td>
+                              <td className="table_column_item">
+                                {val?.invoice?.invoice_id || ""}
+                              </td>
+
+                              <td className="table_column_item item_text_end_01">
+                                {convertCurrencyWithSymbol(val?.invoice?.total, fetchCurrencyData,)}
+                              </td>
+
+                              <td className="table_column_item item_text_end_01">
+                                {convertCurrencyWithSymbol(((+val?.invoice?.total) - (+val?.invoice?.amount_paid)), fetchCurrencyData,)}
+                              </td>
+                              <td className="table_column_item item_text_end_01">
+                                {convertCurrencyWithSymbol(val?.amount, fetchCurrencyData,)}
+                              </td>
+                            </tr>
+                          ))}
+
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p style={{ textAlign: "center", padding: "20px 0" }}>
+                        There are no unpaid invoices associated with this customer.
+                      </p>
+                    )
+                  }
                 </>
 
               </> : <>

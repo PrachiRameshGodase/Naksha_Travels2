@@ -1,43 +1,25 @@
 // PdfTemplate.js
-import React, { useState } from "react";
+import React from "react";
 import "./PdfTemplate.scss";
-import { PdfShowMastersValue } from "../../ShowMastersValue";
 import { formatDate3, formatDate4 } from "../../DateFormat";
 import nakshalogo from "../../../../assets/Naksha.png";
+import { activeOrg, getCurrencySymbol } from "../ManageStorage/localStorageUtils";
 import { convertCurrencyWithSymbol } from "../../CurrencyHelper/convertKESToUSD";
-import { activeOrg } from "../ManageStorage/localStorageUtils";
-import { showRateWithPercent } from "../../HelperFunctions";
 // import { useSelector } from "react-redux";
 
-const PrintContent3 = ({
-  data,
-  masterData,
-  moduleId,
-  section,
-  fetchCurrencyData,
-}) => {
+const PrintContent3 = ({ data, masterData, moduleId, fetchCurrencyData, sectionName, section }) => {
+  console.log("section", section)
   const active_orgnization = activeOrg();
 
-  const calculateTotalTaxAmount = () => {
-    return data?.items?.reduce((total, entry) => {
-      return total + (entry?.tax_amount ? parseFloat(entry?.tax_amount) : 0);
-    }, 0);
-  };
-
-  const totalExpenseCharges =
-    section === "Payment Receive" || section === "Payment Made"
-      ? []
-      : data?.charges
-      ? JSON?.parse(data?.charges)
-      : "";
+  const currencySymbol = getCurrencySymbol();
 
   const calculateTotalAmount = () => {
     const total = data?.entries?.reduce((total, entry) => {
-      return +total + (entry.amount ? parseFloat(entry.amount) : 0.0);
+      return parseFloat(total) + (parseFloat(entry?.amount) ? parseFloat(entry?.amount) : 0.0);
     }, 0.0);
 
-    // Return "0.00" as a string if the total is 0, otherwise return the total formatted to 2 decimal places
-    return +total == 0 ? "0.00" : (+total).toFixed(2);
+    // Ensure it returns a number, not a string
+    return total === 0 ? 0.0 : parseFloat(total?.toFixed(2));
   };
 
   return (
@@ -47,7 +29,7 @@ const PrintContent3 = ({
         style={{ marginLeft: "5px", justifyContent: "space-between" }}
       >
         <div className="contacts_321">
-          <h1>{section}</h1>
+          <h1>{sectionName}</h1>
           <p style={{ color: "gray" }}>PIN: P051850633C</p>
           <p>Naksha Travels Limited</p>
 
@@ -101,245 +83,78 @@ const PrintContent3 = ({
           </div>
         </div>
       </div>
+
+      {/* table started */}
       <>
-        <table className="itemTable_01" id="modidy_table_form_details">
-          {section !== "Payment Receive" && (
-            <thead className="table_head_item_02">
-              <tr className="table_head_item_02_row">
-                <th className="table_column_item item_table_width_01">#</th>
-                <th className="table_column_item item_table_width_02" style={{width:"120px"}}>Date</th>
-                <th className="table_column_item">Bill Number</th>
-                <th className="table_column_item item_text_end_01">
-                  Bill Amount
-                </th>
-                <th className="table_column_item item_text_end_01">
-                  Amount Due
-                </th>
-                <th className="table_column_item item_text_end_01">Payment</th>
-              </tr>
-            </thead>
-          )}
-          <tbody
-            className="table_head_item_02"
-            style={{ background: "white", textTransform: "capitalize" }}
-          >
-            {section === "Payment Receive" ? (
-              <>
-                <>
-                  {data?.entries?.length >= 1 ? (
-                    <table
-                      className="itemTable_01"
-                      id="modidy_table_form_details"
-                    >
-                      <thead className="table_head_item_02">
-                        <tr className="table_head_item_02_row">
-                          <th className="table_column_item item_table_width_01">
-                            #
-                          </th>
-                          <th className="table_column_item item_table_width_02" style={{ width: "80px", }}>
-                            Date
-                          </th>
-                          <th className="table_column_item">Invoice Number</th>
-                          <th className="table_column_item item_text_end_01">
-                            Invoice Amount
-                          </th>
-                          <th className="table_column_item item_text_end_01">
-                            Amount Due
-                          </th>
-                          <th className="table_column_item item_text_end_01">
-                            Payment
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody
-                        className="table_head_item_02"
-                        style={{
-                          background: "white",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {data?.entries?.map((val, index) => (
-                          <tr key={index} className="table_head_item_02_row">
-                            <td className="table_column_item">{index + 1}</td>
-                            <td className="table_column_item">
-                              {formatDate4(val?.invoice?.transaction_date) ||
-                                ""}
-                            </td>
-                            <td className="table_column_item">
-                              {val?.invoice?.invoice_id || ""}
-                            </td>
+        <>
+          {data?.entries?.length >= 1 ? (
+            <table className="itemTable_01" id="modidy_table_form_details">
+              <thead className="table_head_item_02">
+                <tr className="table_head_item_02_row">
+                  <th className="table_column_item item_table_width_01" >#</th>
+                  <th className="table_column_item item_table_width_02">
+                    Date
+                  </th>
+                  <th className="table_column_item">{section ? "Invoice" : "Bill"} Number</th>
+                  <th className="table_column_item item_text_end_01">{section ? "Invoice" : "Bill"} Amount</th>
+                  <th className="table_column_item item_text_end_01">Amount Due</th>
+                  <th className="table_column_item item_text_end_01">Payment</th>
+                </tr>
+              </thead>
+              <tbody className="table_head_item_02" style={{ background: "white", textTransform: "capitalize" }}>
 
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(
-                                val?.invoice?.total,
-                                fetchCurrencyData
-                              )}
-                            </td>
-
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(
-                                +val?.invoice?.total -
-                                  +val?.invoice?.amount_paid,
-                                fetchCurrencyData
-                              )}
-                            </td>
-                            <td className="table_column_item item_text_end_01">
-                              {convertCurrencyWithSymbol(
-                                val?.amount,
-                                fetchCurrencyData
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p style={{ textAlign: "center", padding: "20px 0" }}>
-                      There are no unpaid invoices associated with this
-                      customer.
-                    </p>
-                  )}
-                </>
-              </>
-            ) : (
-              <>
-                <>
-                  {data?.items?.map((val, index) => (
+                {
+                  data?.entries?.map((val, index) => (
                     <tr key={index} className="table_head_item_02_row">
-                      <td
-                        className="table_column_item"
-                        style={{ width: "30px" }}
-                      >
-                        {index + 1}
-                      </td>
-                      <td
-                        className="table_column_item"
-                        style={{ width: "150px" }}
-                      >
-                        {val?.item?.name || val?.item_name}
-                      </td>
+                      <td className="table_column_item">{index + 1}</td>
+                      <td className="table_column_item"> {section ? formatDate4(val?.invoice?.transaction_date) : formatDate4(val?.bill?.transaction_date) || ""} </td>
                       <td className="table_column_item">
-                        {val?.item?.type || val?.type}
-                      </td>
-
-                      <td className="table_column_item item_text_end_01">
-                        {/* {showAmountWithCurrencySymbol(val?.rate)} */}
-                        {convertCurrencyWithSymbol(
-                          val?.rate,
-                          fetchCurrencyData
-                        )}
-                      </td>
-                      <td className="table_column_item">
-                        {val?.quantity || ""}{" "}
-                        {(val?.unit_id || val?.unit_id != 0) && (
-                          <>
-                            (
-                            <PdfShowMastersValue
-                              type="2"
-                              id={val?.unit_id}
-                              masterData={masterData}
-                            />
-                            )
-                          </>
-                        )}
-                      </td>
-                      <td className="table_column_item">
-                        {showRateWithPercent(val?.tax_rate)}
+                        {section ? val?.invoice_no : val?.bill_no}
                       </td>
                       <td className="table_column_item item_text_end_01">
-                        {convertCurrencyWithSymbol(
-                          val?.final_amount,
-                          fetchCurrencyData
-                        )}
+                        {convertCurrencyWithSymbol((section ? val?.invoice?.total : val?.bill?.total), fetchCurrencyData)}
+                      </td>
+                      <td className="table_column_item item_text_end_01">
+                        {convertCurrencyWithSymbol(val?.balance_amount, fetchCurrencyData)}
+                      </td>
+                      <td className="table_column_item item_text_end_01">
+                        {convertCurrencyWithSymbol(val?.amount, fetchCurrencyData)}
                       </td>
                     </tr>
-                  ))}
-                </>
-              </>
-            )}
-          </tbody>
-        </table>
+                  ))
+                }
 
-        {section === "Payment Receive" ? (
-          <>
-            <div className="finalcalculateiosxl44s">
-              <p>
-                <p>Amount Received: </p>{" "}
-                <h5>
-                  {convertCurrencyWithSymbol(data?.debit, fetchCurrencyData)}
-                </h5>
-              </p>
-              <p>
-                <p>Amount In Blance:</p>{" "}
-                <h5>
-                  ({fetchCurrencyData}){" "}
-                  {+data?.amt_excess < 0 ? (
-                    <span style={{ color: "rgb(255, 46, 18)" }}>
-                      {+data?.amt_excess}
-                    </span>
-                  ) : (
-                    +data?.amt_excess
-                  )}
-                </h5>
-              </p>
-              <p>
-                <p className="finalcalcuFs">Amount Used For Payment:</p>{" "}
-                <h5>{calculateTotalAmount()}</h5>
-              </p>
-            </div>
-          </>
-        ) : (
-          <>
-            <div
-              className="finalcalculateiosxl44s"
-              style={{ borderTop: "none" }}
-            >
-              <p>
-                <p>Subtotal</p>{" "}
-                <h5>
-                  {convertCurrencyWithSymbol(data?.subtotal, fetchCurrencyData)}
-                </h5>
-              </p>
-              <p>
-                <p>Total Tax</p>{" "}
-                <h5>
-                  {convertCurrencyWithSymbol(
-                    calculateTotalTaxAmount()?.toFixed(2),
-                    fetchCurrencyData
-                  )}
+              </tbody>
+            </table>
+          ) : (
+            <p style={{ textAlign: "center", padding: "20px 0" }}>
+              There are no unpaid invoices associated with this customer.
+            </p>
+          )}
 
-                  {/* {showAmountWithCurrencySymbol(data?.total_tax)} */}
-                </h5>
-              </p>
+          <div className="finalcalculateiosxl44s">
 
-              <>
-                {totalExpenseCharges?.map((val, index) => (
-                  <p>
-                    <p className="" key={index}>
-                      {val?.account_name}
-                    </p>{" "}
-                    <h5>
-                      {convertCurrencyWithSymbol(
-                        val?.amount.toFixed(2),
-                        fetchCurrencyData
-                      )}
-                    </h5>
-                  </p>
-                ))}
-              </>
-              <p>
-                <p className="finalcalcuFs">Total</p>{" "}
-                <h5 className="finalcalcuFs">
-                  {convertCurrencyWithSymbol(
-                    parseFloat(data?.total).toFixed(2),
-                    fetchCurrencyData
-                  )}
-                </h5>
-              </p>
-            </div>
-          </>
-        )}
+            <p><p className="finalcalcuFs">Amount Paid: </p> <h5 className="finalcalcuFs">{convertCurrencyWithSymbol((section ? data?.debit : data?.credit), fetchCurrencyData)}</h5></p>
+
+            <p><p className=''>Amount Used For Payment:</p> <h5> {convertCurrencyWithSymbol(calculateTotalAmount(), fetchCurrencyData)} </h5></p>
+
+            <p><p>Amount In Execss:</p><h5>
+
+              {+data?.amt_excess < 0 ? (
+                <span style={{ color: "rgb(20, 17, 17)" }}>
+                  {convertCurrencyWithSymbol(data?.amt_excess, fetchCurrencyData)}
+                </span>
+              ) : (
+                convertCurrencyWithSymbol(data?.amt_excess, fetchCurrencyData)
+              )}
+
+            </h5></p>
+
+          </div >
+
+        </>
       </>
+      {/* table end */}
 
       <div
         className="copy_bottom_footer_98"

@@ -287,7 +287,7 @@ export const MultiImageUpload = ({
 
   return (
     <>
-      <div className="form-group" style={{display:"flex", flexDirection:"column", gap:"15px"}}>
+      <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         <label style={{ marginLeft: "2px" }}>Upload Images/Documents</label>
         <div
           className="file-upload"
@@ -391,6 +391,8 @@ export const MultiImageUploadHelp = ({
       "bmp",
       "webp",
       "pdf",
+      "mp3",
+      "mp4"
     ];
     const updatedUploadDocuments = Array.isArray(formData?.upload_documents)
       ? [...formData.upload_documents]
@@ -660,7 +662,7 @@ export const ImageUploadGRN = ({
     type === "grm_charge"
       ? formData?.charges_type?.[index] || {}
       : formData?.items?.[index] || {};
-      
+
   const CloseShowDeleteImgIndex = () => {
     setCurrentImageIndex(null);
     setCurrentPOP(false);
@@ -1665,7 +1667,7 @@ export const SingleImagePhoto = ({
   };
 
   const isPhotoExpired = expiryDate && new Date() > expiryDate;
-  
+
 
   return (
     <>
@@ -1682,9 +1684,9 @@ export const SingleImagePhoto = ({
                       id={`file-${index}`} // Use index in id for uniqueness
                       className="inputfile"
                       accept="image/*"
-                      onChange={!disabled ? ()=>{handleImageChange()}:undefined}
+                      onChange={!disabled ? () => { handleImageChange() } : undefined}
                       disabled={disabled}
-                 
+
                     />
                     <span style={{ cursor: "pointer" }}>
                       {otherIcons.export_svg}

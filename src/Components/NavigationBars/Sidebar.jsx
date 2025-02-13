@@ -404,7 +404,7 @@ const Sidebar = ({ loggedInUserData }) => {
       case "dsr-visa-details":
         return <PassengerVisaDetails />
       case "dsr-supplier-summary":
-        return <SupplierSummary/>
+        return <SupplierSummary />
 
       //mice
       case "create-mice":
@@ -414,7 +414,7 @@ const Sidebar = ({ loggedInUserData }) => {
       case "mice-details":
         return <MICEDetails />;
       case "mice-supplier-summary":
-      return <MICESupplierSummary/>
+        return <MICESupplierSummary />
       //mice-services
       case "mice-serviceslist":
         return <FamilyServicesList />
@@ -727,14 +727,14 @@ const Sidebar = ({ loggedInUserData }) => {
               {isSidebarCollapsed ? <TfiAngleDoubleRight /> : <TfiAngleDoubleLeft />}
             </div>
 
-            <div className="lastoptionsxkw"
+            {/* <div className="lastoptionsxkw"
               ref={showaddshortcutsRef}
               onClick={handleSearchButtonClickx12}
             >
               <p className="dispynonesidebarc5w6s">Shortcuts</p>
               <LuPlus />
 
-            </div>
+            </div> */}
           </div>
           <div className="divider"></div>
           <div className="main-content">

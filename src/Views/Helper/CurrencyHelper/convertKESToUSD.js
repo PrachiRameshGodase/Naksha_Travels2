@@ -2,9 +2,6 @@ import { getCurrencySymbol } from "../ComponentHelper/ManageStorage/localStorage
 
 // currencyConversionUtils.js
 export const convertCurrencyWithSymbol = (amount, fetchCurrencyData) => {
-
-    // console.log("amount", amount)
-    // console.log("fetch currency", fetchCurrencyData)
     //fetch the active org currency code
     const orgCurrencyCode = getCurrencySymbol();
 
