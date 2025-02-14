@@ -53,7 +53,7 @@ const CreateQuotation = () => {
 
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
-  const paymentTerms = ShowMasterData("8");//quotation terms
+  // const paymentTerms = ShowMasterData("8");//quotation terms
 
 
   const {
