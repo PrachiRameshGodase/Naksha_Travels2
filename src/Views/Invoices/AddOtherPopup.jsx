@@ -252,7 +252,7 @@ const AddOtherPopup = ({ setShowModal, handleAddService, edit_data, section }) =
                           )}
                         </div>
                       </div> */}
-                     {section !="sales" && <div className="form_commonblock">
+                      {section != "sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">

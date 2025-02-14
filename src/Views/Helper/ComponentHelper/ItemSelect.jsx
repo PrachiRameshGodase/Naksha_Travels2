@@ -247,32 +247,29 @@ const ItemSelect = ({
       newErrors[index].tax_rate = "";
     }
 
+
     if (field === "item_id") {
-      const selectedItem = itemList?.data?.item?.find(
-        (item) => item?.id == value
-      );
+      // Find the selected item from itemList based on the given item_id (value)
+      const selectedItem = itemList?.data?.item?.find((item) => item?.id == value);
+
       if (selectedItem) {
-        const showPrice = formData?.sale_type
-          ? selectedItem?.price
-          : selectedItem?.purchase_price;
+        // Determine the price based on sale_type (sale price or purchase price)
+        const showPrice = formData?.sale_type ? selectedItem?.price : selectedItem?.purchase_price;
 
-        newItems[index].unit_id = selectedItem?.unit;
-        newItems[index].item_name = selectedItem?.name;
-        newItems[index].type = selectedItem?.type;
-        newItems[index].rate = showPrice;
-        newItems[index].gross_amount = +showPrice * +item?.quantity;
-        newItems[index].hsn_code = selectedItem?.hsn_code;
+        // Update the selected item's details in newItems array
+        newItems[index] = {
+          ...newItems[index], // Keep existing data
+          unit_id: selectedItem?.unit, // Assign unit_id from selected item
+          item_name: selectedItem?.name, // Set the item name
+          type: selectedItem?.type, // Assign type
+          rate: showPrice, // Set rate based on sale_type
+          gross_amount: +showPrice * +item?.quantity, // Calculate gross amount
+          hsn_code: selectedItem?.hsn_code, // Assign HSN code
+          tax_rate: selectedItem?.tax_preference == "1" ? (selectedItem?.tax_rate || 0) : 0, // Set tax rate
+          tax_name: selectedItem?.tax_preference == "1" ? "Taxable" : "Non-Taxable", // Assign tax name
+        };
 
-        if (selectedItem?.tax_preference == "1") {
-          newItems[index].tax_rate = !selectedItem?.tax_rate
-            ? 0
-            : selectedItem?.tax_rate;
-          newItems[index].tax_name = "Taxable";
-        } else {
-          newItems[index].tax_rate = "0";
-          newItems[index].tax_name = "Non-Taxable";
-        }
-
+        // Reset any previous errors for this row
         newErrors[index] = {
           ...newErrors[index],
           item_id: 0,
@@ -282,6 +279,35 @@ const ItemSelect = ({
           rate: "",
         };
       }
+
+      // Check if there is already an empty row in the list
+      const firstEmptyRowIndex = newItems.findIndex(
+        (item) => !(item.item_name && item.item_name.trim()) &&
+          !(item?.service_data?.service_name && item?.service_data?.service_name.trim())
+      );
+
+      // console.log("firstEmptyRowIndex", firstEmptyRowIndex);
+
+      // Add a new empty row only if no empty row is present
+      if (firstEmptyRowIndex === -1) {
+        newItems.push({
+          item_name: "", // Empty item name
+          service_name: "", // Empty service name
+          discount_type: 1, // Default discount type
+          quantity: 1, // Default quantity
+          discount: 0, // Default discount value
+          tax_rate: 0, // Default tax rate
+        });
+      }
+
+      // Update state with modified newItems array
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        items: newItems, // Assign the updated items array
+      }));
+
+      // Update state with modified errors array
+      setItemErrors(newErrors);
     }
 
     if (field === "quantity" || field === "rate") {
@@ -307,19 +333,13 @@ const ItemSelect = ({
     newItems[index].tax_amount = taxAmount?.toFixed(2); // For calculate tax amount
 
 
-    // Check if all previous items have valid item_name
-    const firstEmptyRowIndex = formData?.items.findIndex(
-      (item) => !(item.item_name && item.item_name.trim()) && !(item?.service_data?.service_name && item?.service_data?.service_name.trim())
-    );
 
-    console.log("firstEmptyRowIndex", firstEmptyRowIndex)
-    // add new empty at the end of row when item is selected 
-    const finalItems = firstEmptyRowIndex === -1 ? [...newItems, { item_name: "", service_name: "", discount_type: 1, quantity: 1, discount: 0, tax_rate: 0 }] : newItems;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      items: finalItems,
+      items: newItems, // Use the updated list
     }));
+
     setItemErrors(newErrors);
   };
 
@@ -1000,6 +1020,7 @@ const ItemSelect = ({
                   </td>
                 </tr>
 
+                {console.log("itemErrorsitemErrors", itemErrors)}
                 {/* Validation Errors */}
                 <tr className="error-row">
                   <td colSpan={9} style={{ textTransform: "capitalize" }}>
@@ -1008,9 +1029,15 @@ const ItemSelect = ({
                         {otherIcons.error_svg} {itemErrors[index].item_name}
                       </span>
                     )}
+
                     {itemErrors[index]?.rate && (
                       <span className="error-message">
                         {otherIcons.error_svg} {itemErrors[index].rate}
+                      </span>
+                    )}
+                    {itemErrors[index]?.type && (
+                      <span className="error-message">
+                        {otherIcons.error_svg} {itemErrors[index].type}
                       </span>
                     )}
 

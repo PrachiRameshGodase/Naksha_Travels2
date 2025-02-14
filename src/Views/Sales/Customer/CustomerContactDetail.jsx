@@ -160,7 +160,7 @@ const CustomerContactDetail = ({
               <div className="x1parenchild54" key={index}>
                 <div className="iconheading">
                   {otherIcons.title_svg}
-                  <p>Family Member {index + 1}</p>
+                  <p>Contact Person {index + 1}</p>
                   {index >= 1 && (
                     <AiOutlineDelete
                       onClick={() => deleteContactPerson(index)}
@@ -323,7 +323,7 @@ const CustomerContactDetail = ({
           </div>
 
           <button onClick={addContactPerson} className="addcust" type="button">
-            Add Family Member
+            Add New Contact
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

@@ -21,6 +21,10 @@ const VendorsDetails = () => {
   const Navigate = useNavigate();
   const itemId = new URLSearchParams(location.search).get("id");
 
+
+  //fetch user is admin or not...
+  const is_admin = isAdmin();
+
   const [switchValue, setSwitchValue] = useState(''); // State for the switch button value
   const [switchValue1, setSwitchValue1] = useState(''); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
@@ -165,7 +169,6 @@ const VendorsDetails = () => {
   }, []);
 
 
-
   return (
     <>
       {user1?.loading ? <Loader02 /> : <>
@@ -182,7 +185,9 @@ const VendorsDetails = () => {
           </div>
           <div id="buttonsdata">
 
-            {isAdmin() && <>
+            {console.log("is adminm", isAdmin())}
+
+            {is_admin === true || is_admin === 1 && <>
               <div className="switchbuttontext">
                 <div className="switches-container">
                   <input type="radio" id="switchMonthly1" name="switchPlan1" value="0" checked={switchValue1 == "0"} onChange={handleSwitchChange1} />
