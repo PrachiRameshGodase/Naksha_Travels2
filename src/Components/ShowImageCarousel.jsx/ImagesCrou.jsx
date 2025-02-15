@@ -1,12 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Container } from "react-bootstrap";
-import ImagesPopupCarousel from "./ImagesPopupCarousel.jsx";
 import "./ImageCrou.scss";
 
 const ImagesCrou = ({ images, showModal, closeModal }) => {
-    const [currentImage, setCurrentImage] = useState(0);
-    const [viewerIsOpen, setViewerIsOpen] = useState(false);
-
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -41,7 +37,6 @@ const ImagesCrou = ({ images, showModal, closeModal }) => {
         if (showModal) {
             resources = loadBootstrapResources();
         }
-
         return () => {
             if (resources) {
                 cleanupBootstrapResources(resources);
@@ -49,16 +44,14 @@ const ImagesCrou = ({ images, showModal, closeModal }) => {
         };
     }, [showModal]);
 
-    const openLightbox = useCallback((index) => {
-        setCurrentImage(index);
-        setViewerIsOpen(true);
-    }, []);
-
-    const photos = images?.map((imgUrl) => ({
-        src: imgUrl,
-        thumbnail: imgUrl,
-        title: imgUrl.split('/').pop(), // Just an example to give a title from the URL
-    }));
+    const getFileType = (url) => {
+        const extension = url.split(".").pop().toLowerCase();
+        if (["jpg", "jpeg", "png", "gif", "webp"].includes(extension)) return "image";
+        if (["mp4", "webm", "ogg"].includes(extension)) return "video";
+        if (["mp3", "wav", "aac"].includes(extension)) return "audio";
+        if (["pdf"].includes(extension)) return "pdf";
+        return "other";
+    };
 
     return (
         <>
@@ -71,34 +64,32 @@ const ImagesCrou = ({ images, showModal, closeModal }) => {
                 centered
                 fullscreen
             >
-                <Modal.Header
-                    closeButton
-                    className="custom-close-btn"
-                    style={{ borderBottom: "none" }}
-                >
-                </Modal.Header>
+                <Modal.Header closeButton className="custom-close-btn" style={{ borderBottom: "none" }}></Modal.Header>
                 <Modal.Body>
                     <Container>
                         <div className="row">
                             <div id="colOfthhs" className="col">
                                 <div className="gallery">
-                                    {photos?.map((photo, index) => (
-                                        <img
-                                            key={index}
-                                            src={photo.thumbnail}
-                                            alt={photo.title}
-                                            className="thumbnail"
-                                            onClick={() => openLightbox(index)}
-                                        />
-                                    ))}
+                                    {images?.map((file, index) => {
+                                        const fileType = getFileType(file);
+                                        const fileName = file.split("/").pop();
+                                        return (
+                                            <a key={index} href={file} target="_blank" rel="noopener noreferrer">
+                                                {fileType === "image" ? (
+                                                    <img src={file} alt={fileName} className="thumbnail" />
+                                                ) : fileType === "video" ? (
+                                                    <div className="thumbnail video-file">📹 Video Preview</div>
+                                                ) : fileType === "audio" ? (
+                                                    <div className="thumbnail audio-file">🎵 Audio Preview</div>
+                                                ) : fileType === "pdf" ? (
+                                                    <div className="thumbnail pdf-file">📄 PDF Preview</div>
+                                                ) : (
+                                                    <div className="thumbnail other-file">📁 File Preview</div>
+                                                )}
+                                            </a>
+                                        );
+                                    })}
                                 </div>
-                                {/* <ImagesPopupCarousel
-                                    photos={photos}
-                                    viewerIsOpen={viewerIsOpen}
-                                    closeModal={setViewerIsOpen}
-                                    currentImage={currentImage}
-                                    setCurrentImage={setCurrentImage}
-                                /> */}
                             </div>
                         </div>
                     </Container>

@@ -72,7 +72,7 @@ const CustomDropdown29 = forwardRef((props, ref) => {
 
   useFetchApiData(hotelListAction, payloadGenerator, []); //call api common function
   useFetchApiData(InsuranceListAction, payloadGenerator, []); //call api common function
-  
+
 
   return (
     <div
@@ -93,8 +93,8 @@ const CustomDropdown29 = forwardRef((props, ref) => {
           : type === "companyList"
             ? cusData
               ? cusData?.company_name
-              : value? value
-              : defaultOption
+              : value ? value
+                : defaultOption
             : cusData
               ? cusData?.hotel_name
               : value
@@ -237,20 +237,22 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
     if (isOpen) {
       if (type === "countryList") {
         dispatch(visaListAction({ ...sendData }));
-      } else if (type === "visa_entry_type") {
-        const sendData2 = { country_name: cusData?.country_name };
-        dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
-          dispatch(manageStateAction("visa_entry_type", res));
-        });
-      } else if (type === "visa_type_id") {
-        const sendData2 = {
-          country_name: cusData?.country_name,
-          visa_entry_type: cusData?.visa_entry_type,
-        };
-        dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
-          dispatch(manageStateAction("visa_type", res));
-        });
       }
+
+      // else if (type === "visa_entry_type") {
+      //   const sendData2 = { country_name: cusData?.country_name };
+      //   dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
+      //     dispatch(manageStateAction("visa_entry_type", res));
+      //   });
+      // } else if (type === "visa_type_id") {
+      //   const sendData2 = {
+      //     country_name: cusData?.country_name,
+      //     visa_entry_type: cusData?.visa_entry_type,
+      //   };
+      //   dispatch(visaListAction({ sendData2, ...sendData })).then((res) => {
+      //     dispatch(manageStateAction("visa_type", res));
+      //   });
+      // }
     }
     // setSearchTerm("");
   }, [isOpen]);
@@ -353,17 +355,20 @@ export const CustomDropdown029 = forwardRef((props, ref) => {
       </div>
       {isOpen && !disabled && (
         <div className="dropdown-options">
-          <RiSearch2Line id="newsvgsearchicox2" />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="dropdown-search"
-            autoFocus
-            ref={inputRef}
-            disabled={disabled}
-          />
+
+          {type === "countryList" && <>
+            <RiSearch2Line id="newsvgsearchicox2" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="dropdown-search"
+              autoFocus
+              ref={inputRef}
+              disabled={disabled}
+            />
+          </>}
 
           <div className="dropdownoptoscroll">
             {visaListData?.loading ? (

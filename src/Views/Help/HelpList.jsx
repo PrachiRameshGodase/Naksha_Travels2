@@ -280,7 +280,7 @@ const HelpList = () => {
           <ImagesCrou
             showModal={showImagesModal}
             closeModal={setshowImagesModal}
-            images={imagesVal?.map((image) => image?.url)}
+            attachments={imagesVal?.map((image) => image?.url)}
           />
         )}
         {/* <Toaster /> */}

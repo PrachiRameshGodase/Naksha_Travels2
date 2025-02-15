@@ -544,7 +544,10 @@ const InsideCusDetails = ({
                       ))}
                     </div>
                   </div>
-                </div>}
+                </div>
+              }
+
+
               {customerDetails?.is_customer == 1 && <div className="accordion-item">
                 <div
                   className={`accordion-header ${isOpen[10] ? "openedaccordina" : ""
@@ -605,6 +608,7 @@ const InsideCusDetails = ({
                   </div>
                 </div>
               </div>}
+
               <div className="accordion-item">
                 <div
                   className={`accordion-header ${isOpen[4] ? "openedaccordina" : ""
@@ -632,6 +636,7 @@ const InsideCusDetails = ({
                   </div>
                 </div>
               </div>
+
               <div className="accordion-item">
                 <div
                   className={`accordion-header ${isOpen[5] ? "openedaccordina" : ""

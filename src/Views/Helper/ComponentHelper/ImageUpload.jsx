@@ -373,47 +373,20 @@ export const MultiImageUploadHelp = ({
   setImgeLoader,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
-  const [errorMessage, setErrorMessage] = useState(""); // State for error messages
-
+  const [selectedImage, setSelectedImage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const popupRef = useRef(null);
 
   const handleImageChange = (e) => {
     setFreezLoadingImg(true);
     setImgeLoader(true);
-    setErrorMessage(""); // Clear any previous error message
+    setErrorMessage("");
 
-    const allowedExtensions = [
-      "jpg",
-      "jpeg",
-      "png",
-      "gif",
-      "bmp",
-      "webp",
-      "pdf",
-      "mp3",
-      "mp4"
-    ];
     const updatedUploadDocuments = Array.isArray(formData?.upload_documents)
       ? [...formData.upload_documents]
       : [];
 
     const files = Array.from(e.target.files);
-    const invalidFiles = files.filter((file) => {
-      const fileExtension = file.name.split(".").pop().toLowerCase();
-      return !allowedExtensions.includes(fileExtension);
-    });
-
-    if (invalidFiles.length > 0) {
-      setErrorMessage(
-        `Please upload files with the following extensions: ${allowedExtensions.join(
-          ", "
-        )}`
-      );
-      setFreezLoadingImg(false);
-      setImgeLoader(false);
-      return;
-    }
 
     Promise.all(
       files.map((file) => {
@@ -443,7 +416,7 @@ export const MultiImageUploadHelp = ({
         });
       })
       .catch((error) => {
-        console.error("Error uploading images:", error);
+        console.error("Error uploading files:", error);
       });
   };
 
@@ -462,16 +435,10 @@ export const MultiImageUploadHelp = ({
     });
   };
 
-  const isImage = (fileUrl) => {
-    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
-    const fileExtension = fileUrl.split(".").pop().toLowerCase();
-    return imageExtensions.includes(fileExtension);
-  };
-
   return (
     <>
       <div className="form-group">
-        <label style={{ marginLeft: "2px" }}>Upload Images/Documents</label>
+        <label style={{ marginLeft: "2px" }}>Upload Files</label>
         <div
           className="file-upload"
           tabIndex="0"
@@ -484,7 +451,7 @@ export const MultiImageUploadHelp = ({
         >
           <input
             type="file"
-            name="image_url"
+            name="file_upload"
             id="file"
             className="inputfile"
             onChange={handleImageChange}
@@ -500,7 +467,6 @@ export const MultiImageUploadHelp = ({
           </label>
         </div>
 
-        {/* Show error message below input box */}
         {errorMessage && (
           <p style={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
             {errorMessage}
@@ -519,24 +485,17 @@ export const MultiImageUploadHelp = ({
                         ? `${file?.name.substring(0, 12)}...`
                         : file?.name}
                     </p>
-
                     <div onClick={() => handleDeleteImage(file.url)}>
                       <MdOutlineDeleteForever />
                     </div>
-                    {isImage(file.url) ? (
-                      <div onClick={() => showImagePopup(file.url)}>
-                        <FaEye />
-                      </div>
-                    ) : (
-                      <a
-                        href={file.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title="Preview File"
-                      >
-                        <FaEye />
-                      </a>
-                    )}
+                    <a
+                      href={file.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Preview File"
+                    >
+                      <FaEye />
+                    </a>
                   </div>
                 </div>
               ))}
@@ -559,7 +518,7 @@ export const MultiImageUploadHelp = ({
             </span>
             <img
               src={selectedImage}
-              alt="Selected Image"
+              alt="Selected File Preview"
               height={500}
               width={500}
             />
@@ -569,6 +528,7 @@ export const MultiImageUploadHelp = ({
     </>
   );
 };
+
 
 export const ImageUploadGRN = ({
   formData,

@@ -38,12 +38,14 @@ const CreateAssit = () => {
     price: "",
     description: "",
   });
+
   const [errors, setErrors] = useState({
     meeting_type: false,
     airport: false,
     no_of_person: false,
     price: false,
   });
+
   const [freezLoadingImg, setFreezLoadingImg] = useState(false);
   const [imgLoader, setImgeLoader] = useState("");
 
