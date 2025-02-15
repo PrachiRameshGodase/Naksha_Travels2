@@ -37,6 +37,8 @@ const HotelServices = ({ data }) => {
   const totalItems = hotelRoomListData?.data?.count || 0;
   const hotelRoomStatusUpdate = useSelector((state) => state?.hotelRoomStatus);
 
+  console.log("hotelRoomLists", hotelRoomLists)
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -174,7 +176,9 @@ const HotelServices = ({ data }) => {
 
   const [showPopup, setShowPopup] = useState(false);
   const [passHotelData, setPassengerHotelData] = useState("");
+
   const handleShowDetails = (item) => {
+
     setPassengerHotelData(item);
     setShowPopup((prev) => !prev);
   };
@@ -229,6 +233,7 @@ const HotelServices = ({ data }) => {
 
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [passRoomData, setPassRoomData] = useState("");
+  // console.log("passHotelData", passRoomData)
 
   const handleEditRoom = (item) => {
     setPassRoomData(item);
@@ -497,6 +502,7 @@ const HotelServices = ({ data }) => {
             setShowPopup={setShowPopup}
           />
         )}
+
         {showAddPopup && (
           <CreateHotelService
             data={passRoomData}
@@ -504,6 +510,7 @@ const HotelServices = ({ data }) => {
             setShowPopup={setShowAddPopup}
           />
         )}
+
         <Toaster />
       </div>
     </>

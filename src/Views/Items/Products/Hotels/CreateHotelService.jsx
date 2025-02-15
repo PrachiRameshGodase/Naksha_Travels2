@@ -34,7 +34,7 @@ import { getCurrencyValue } from "../../../Helper/ComponentHelper/ManageStorage/
 import Swal from "sweetalert2";
 
 const CreateHotelService = ({ data, showPopup, setShowPopup }) => {
- 
+
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
@@ -46,8 +46,10 @@ const CreateHotelService = ({ data, showPopup, setShowPopup }) => {
   const hotelRoomData = hotelRoomDetails?.data?.data?.room || {};
 
   const hotelType = ShowUserMasterData("35");
+
   const occupancy = ShowUserMasterData("36");
   const bed = ShowUserMasterData("38");
+
   const meal = ShowUserMasterData("37");
   const amenitiesType = ShowUserMasterData("49");
 
@@ -85,7 +87,7 @@ const CreateHotelService = ({ data, showPopup, setShowPopup }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
-       ...prev,
+      ...prev,
       [name]: value,
     }));
     setErrors((prevData) => ({
@@ -97,7 +99,7 @@ const CreateHotelService = ({ data, showPopup, setShowPopup }) => {
   const handleChange1 = (selectedItems, name) => {
     setFormData({
       ...formData,
-      amenities: selectedItems, 
+      amenities: selectedItems,
     });
     setErrors((prevData) => ({
       ...prevData,

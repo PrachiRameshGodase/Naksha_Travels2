@@ -30,6 +30,10 @@ import {
     GET_TAX_RATE_SUCCESS,
     GET_TAX_RATE_ERROR,
 
+    CREATE_TAX_RATE_REQUEST,
+    CREATE_TAX_RATE_SUCCESS,
+    CREATE_TAX_RATE_ERROR,
+
     UPDATE_ADDRESS_REQUEST,
     UPDATE_ADDRESS_SUCCESS,
     UPDATE_ADDRESS_ERROR,
@@ -159,6 +163,17 @@ export const fetchTexRates = (data) => async dispatch => {
         // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: GET_TAX_RATE_ERROR, payload: error.message });
+    }
+};
+
+export const createTaxRateAction = (data) => async dispatch => {
+    dispatch({ type: CREATE_TAX_RATE_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/taxrate/create/updat`, data);
+        fetchTexRates();//call tax rate list api after tax crate..
+        dispatch({ type: CREATE_TAX_RATE_SUCCESS, payload: response?.data });
+    } catch (error) {
+        dispatch({ type: CREATE_TAX_RATE_ERROR, payload: error.message });
     }
 };
 

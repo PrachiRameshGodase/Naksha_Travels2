@@ -37,6 +37,7 @@ import {
   autoGenerateIdReducer,
   autoGenerateIdListReducer,
   airportDataReducer,
+  createTaxRateReducer,
 } from "./globalReducers";
 import {
   categoryStatusReducer,
@@ -492,6 +493,7 @@ const reducer = combineReducers({
   customList: customListReducer,
 
   getTaxRate: getTaxRateReducer,
+  crateTaxRate: createTaxRateReducer,
   updateAddress: updateAddressReducer,
 
   // payment receive

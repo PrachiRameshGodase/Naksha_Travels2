@@ -316,6 +316,118 @@ const InsideCusDetails = ({
                   </div>
                 </div>
               </div>
+
+              {/* contact person's */}
+              <div className="accordion-item">
+                <div
+                  className={`accordion-header ${isOpen[4] ? "openedaccordina" : ""
+                    }`}
+                  onClick={() => toggleAccordion(4)}
+                >
+                  <p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width={35}
+                      height={35}
+                      color={"#000000"}
+                      fill={"none"}
+                    >
+                      <path
+                        d="M4.5 10C4.5 6.22876 4.5 4.34315 5.67157 3.17157C6.84315 2 8.72876 2 12.5 2H14C17.7712 2 19.6569 2 20.8284 3.17157C22 4.34315 22 6.22876 22 10V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H12.5C8.72876 22 6.84315 22 5.67157 20.8284C4.5 19.6569 4.5 17.7712 4.5 14V10Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
+                      <path
+                        d="M4.5 6H2M4.5 12H2M4.5 18H2"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M15.2748 8.49261C15.2748 9.59715 14.3794 10.4926 13.2749 10.4926C12.1704 10.4926 11.275 9.59715 11.275 8.49261C11.275 7.38808 12.1704 6.49268 13.2749 6.49268C14.3794 6.49268 15.2748 7.38808 15.2748 8.49261Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M9.31982 15.7161C10.3782 14.0868 12.0589 13.4762 13.2749 13.4774C14.491 13.4787 16.1224 14.0868 17.1807 15.7161C17.2492 15.8215 17.268 15.9512 17.2063 16.0607C16.9588 16.4996 16.1903 17.3705 15.6352 17.4296C14.9975 17.4974 13.3291 17.5069 13.2762 17.5072C13.2232 17.5069 11.5034 17.4974 10.8653 17.4296C10.3103 17.3705 9.5418 16.4996 9.29429 16.0607C9.23254 15.9512 9.25139 15.8215 9.31982 15.7161Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Contact Persons
+                  </p>
+                  <span className="svgico4x5s6">
+                    {isOpen[4] ? <FiChevronUp /> : <FiChevronDown />}
+                  </span>
+                </div>
+
+
+                <div
+                  className={`accordion-content ${isOpen[4] ? "openedaccordina" : ""
+                    }`}
+                >
+                  <div>
+                    {customerDetails?.contact_person?.map((val, index) => (
+                      <div key={index}>
+                        <h3>
+                          {index + 1}
+                          {getOrdinalIndicator(index + 1)} Contact
+                        </h3>
+                        <div className="cusdes1sec">
+                          <div className="cusdes1secchild1">
+                            <ul>
+                              <li>
+                                <span>Full Name</span>
+                                <h1>:</h1>
+                                <p>
+                                  {(val?.salutation || "") +
+                                    " " +
+                                    (val?.first_name || "") +
+                                    " " +
+                                    (val?.last_name || "") || ""}
+                                </p>
+                              </li>
+                              <li>
+                                <span>Mobile</span>
+                                <h1>:</h1>
+                                <p>{val?.mobile_no || ""}</p>
+                              </li>
+                              {/* <li>
+                                <span>Work Phone</span>
+                                <h1>:</h1>
+                                <p>{val?.work_phone || ""}</p>
+                              </li> */}
+                              <li>
+                                <span>Email</span>
+                                <h1>:</h1>
+                                <p>{val?.email || ""}</p>
+                              </li>
+                              {/* <li>
+                                <span>Designation</span>
+                                <h1>:</h1>
+                                <p>{val?.designation || ""}</p>
+                              </li> */}
+                            </ul>
+                          </div>
+                        </div>
+                        <br />
+                        <br />
+                      </div>
+                    ))}
+                    <div className=""></div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
               {(customerDetails?.is_customer == 1 && customerDetails?.customer_type == "Individual") && (
                 <div className="accordion-item">
                   <div

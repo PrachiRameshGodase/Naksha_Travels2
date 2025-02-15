@@ -134,12 +134,15 @@ const UserMasters = () => {
       <div id="middlesection">
         <div id="Anotherbox">
           <div id="leftareax12">
+
             <h1 id="firstheading">All User Masters</h1>
+
             <SearchBox
               placeholder="Search In User Masters"
               onSearch={onSearch}
               section={searchTrigger}
             />
+
           </div>
 
           <div id="buttonsdata">

@@ -21,6 +21,7 @@ import axiosInstance from '../../Configs/axiosInstance';
 import ImageUpload, { MultiImageUpload, MultiImageUploadHelp } from "../Helper/ComponentHelper/ImageUpload";
 import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
 import { ShowMasterData } from "../Helper/HelperFunctions";
+import AudioRecorder from "../Helper/ComponentHelper/AudioRecord";
 const HelpCreate = () => {
   //   const masterData = useSelector((state) => state?.masterData?.masterData);
   const GRNcreates = useSelector((state) => state?.helpCreate);
@@ -41,10 +42,11 @@ const HelpCreate = () => {
     module_name: "",
     page_url: "",
     priority: "",
+    audio_url: "",
     comments: null,
     upload_documents: [],
     id: 0,
-    
+
   });
 
   const params = new URLSearchParams(location.search);
@@ -216,20 +218,26 @@ const HelpCreate = () => {
                       </div>
                     </div>
 
+                  </div>
+                  <div className="f1wrapofcreqx1">
+
+                    <div id="imgurlanddesc" className="calctotalsectionx2">
+                      <MultiImageUploadHelp
+                        formData={formData}
+                        setFormData={setFormData}
+                        setFreezLoadingImg={setFreezLoadingImg}
+                        imgLoader={imgLoader}
+                        setImgeLoader={setImgeLoader}
+                      />
+                    </div>
+
 
                   </div>
+                  <div className="form_commonblock">
+                    <label>Record Audio</label>
+                    <AudioRecorder setFormData={setFormData} formData={formData} />
 
-                  <div id="imgurlanddesc" className="calctotalsectionx2">
-                    <MultiImageUploadHelp
-                      formData={formData}
-                      setFormData={setFormData}
-                      setFreezLoadingImg={setFreezLoadingImg}
-                      imgLoader={imgLoader}
-                      setImgeLoader={setImgeLoader}
-                    />
                   </div>
-
-
                 </div>
               </div>
 

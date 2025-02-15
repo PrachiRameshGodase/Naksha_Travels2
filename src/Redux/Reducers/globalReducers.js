@@ -28,9 +28,16 @@ import {
     GET_CURRENCY_REQUEST,
     GET_CURRENCY_SUCCESS,
     GET_CURRENCY_ERROR,
+
     GET_TAX_RATE_REQUEST,
     GET_TAX_RATE_SUCCESS,
     GET_TAX_RATE_ERROR,
+
+    CREATE_TAX_RATE_REQUEST,
+    CREATE_TAX_RATE_SUCCESS,
+    CREATE_TAX_RATE_ERROR,
+
+
 
     UPDATE_ADDRESS_REQUEST,
     UPDATE_ADDRESS_SUCCESS,
@@ -271,6 +278,31 @@ export const getTaxRateReducer = (state = initialState, action) => {
                 error: null,
             };
         case GET_TAX_RATE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const createTaxRateReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case CREATE_TAX_RATE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case CREATE_TAX_RATE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case CREATE_TAX_RATE_ERROR:
             return {
                 ...state,
                 loading: false,

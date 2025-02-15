@@ -62,6 +62,7 @@ export const ShowMasterData = (type) => {
 
 export const ShowUserMasterData = (type) => {
     const userMasterData = useSelector(state => state?.userMasterList?.data);
+    // console.log(userMasterData)
     const filteredData = userMasterData?.filter(item => item.type == type);
     return filteredData || [];
 };

@@ -27,6 +27,7 @@ const Assit = () => {
   const assistLists = assistData?.data?.data || [];
   const totalItems = assistData?.data?.count || 0;
 
+  // console.log("assistData", assistData)
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTrigger, setSearchTrigger] = useState(0);
@@ -298,13 +299,13 @@ const Assit = () => {
                             >
                               {item?.airport || ""}
                             </div>
+
                             <div
                               onClick={() => handleRowClicked(item)}
                               className="table-cellx12 quotiosalinvlisxs1"
                             >
                               {item?.meeting_type || ""}
                             </div>
-
 
                             <div
                               onClick={() => handleRowClicked(item)}

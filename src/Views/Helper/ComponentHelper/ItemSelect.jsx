@@ -1020,7 +1020,7 @@ const ItemSelect = ({
                   </td>
                 </tr>
 
-                {console.log("itemErrorsitemErrors", itemErrors)}
+                {/* {console.log("itemErrorsitemErrors", itemErrors)} */}
                 {/* Validation Errors */}
                 <tr className="error-row">
                   <td colSpan={9} style={{ textTransform: "capitalize" }}>

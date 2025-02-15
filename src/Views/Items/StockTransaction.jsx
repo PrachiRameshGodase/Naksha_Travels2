@@ -323,7 +323,7 @@ const StockTransaction = ({ itemDetails }) => {
                             <div className="table-cellx12 quotiosalinvlisxs1">
                               <ShowMastersValue
                                 type="11"
-                                id={item?.entity_type}
+                                id={item?.transaction_type}
                               />
                             </div>
                             <div className="table-cellx12 quotiosalinvlisxs1">
@@ -338,7 +338,7 @@ const StockTransaction = ({ itemDetails }) => {
                                 type="7"
                                 id={
                                   item?.reason_type == "0"
-                                    ? ""
+                                    ? null
                                     : item?.reason_type
                                 }
                               />
