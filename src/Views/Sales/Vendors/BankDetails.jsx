@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
+import { CurrencySelect2 } from "../../Helper/ComponentHelper/CurrencySelect";
+import { getCurrencyValue } from "../../Helper/ComponentHelper/ManageStorage/localStorageUtils";
+import TextAreaComponentWithTextLimit, { TextAreaComponentWithTextLimitBank } from "../../Helper/ComponentHelper/TextAreaComponentWithTextLimit";
+import { preventZeroVal } from "../../Helper/HelperFunctions";
 
 
 const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, updateUserData }) => {
@@ -16,6 +20,11 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
       account_no: "",
       re_enter_account_no: "",
       ifsc_code: "",
+      currency: getCurrencyValue(),
+      bank_code: "",
+      branch_name: "",
+      swift_code: "",
+      address: "",
     },
   ]);
 
@@ -35,6 +44,14 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                 account_no: row?.account_no,
                 re_enter_account_no: row?.re_enter_account_no,
                 ifsc_code: row?.ifsc_code,
+                currency: row?.currency,
+                bank_code: row?.bank_code,
+                branch_name: row?.branch_name,
+                swift_code: row?.swift_code,
+                address: row?.address,
+                branch_name: row?.branch_name,
+                swift_code: row?.swift_code,
+                address: row?.address,
                 id: row?.id,
               };
             } else {
@@ -45,6 +62,14 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                 account_no: row?.account_no,
                 re_enter_account_no: row?.re_enter_account_no,
                 ifsc_code: row?.ifsc_code,
+                currency: row?.currency,
+                bank_code: row?.bank_code,
+                branch_name: row?.branch_name,
+                swift_code: row?.swift_code,
+                address: row?.address,
+                branch_name: row?.branch_name,
+                swift_code: row?.swift_code,
+                address: row?.address,
                 id: row?.id,
               };
             }
@@ -78,6 +103,11 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
         account_no: "",
         re_enter_account_no: "",
         ifsc_code: "",
+        currency: "",
+        bank_code: "",
+        branch_name: "",
+        swift_code: "",
+        address: "",
       },
     ]);
   };
@@ -91,6 +121,8 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
       bankDetails[0]?.re_enter_account_no === bankDetails[0]?.account_no &&
       bankDetails[0]?.banks_name !== "" &&
       bankDetails[0]?.ifsc_code !== "";
+    bankDetails[0]?.currency !== "";
+
 
     setTick({
       ...tick,
@@ -147,6 +179,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                   }
                 </div>
                 <div className="insidesectiony1">
+
                   <div id="fcx3s1parent">
                     <div className="form_commonblock">
                       <label>Account Holder Name</label>
@@ -212,6 +245,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
 
 
+
                   <div id="fcx3s1parent">
                     <div className="form_commonblock">
                       <label>Re-Enter Account Number</label>
@@ -249,14 +283,82 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                           <input type="text" autoComplete='off' value={person.ifsc_code} onChange={(e) => handleChange("ifsc_code", index, e.target.value)} placeholder="Enter IBAN Code" name="ifsc_code" />
                         </span>
                       </div>
-                      {/* {ifsc_codeError && <p className="error-message">
-                        {otherIcons.error_svg}
-                        Please Enter IBAN Code.</p>} */}
                     </div>
 
+                    <div className="form_commonblock">
+                      <label className=''>Bank Code</label>
+                      <div id="inputx1">
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                            <path d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M8 9L11 9M8 13L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <input type="text" autoComplete='off' value={person.bank_code} onChange={(e) => handleChange("bank_code", index, e.target.value)} placeholder="Enter Bank Code" name="bank_code" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="fcx3s1parent">
 
+                    <div className="form_commonblock">
+                      <label className=''>Swift Code</label>
+                      <div id="inputx1">
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                            <path d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M8 9L11 9M8 13L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <input type="text" autoComplete='off' value={person.swift_code} onChange={(e) => handleChange("swift_code", index, e.target.value)} placeholder="Enter Swift Code" name="swift_code" />
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="form_commonblock">
+                      <label className=''>Branch Name</label>
+                      <div id="inputx1">
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                            <path d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M8 9L11 9M8 13L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                            <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <input type="text" autoComplete='off' value={person.branch_name} onChange={(e) => handleChange("branch_name", index, e.target.value)} placeholder="Enter Branch Name" name="branch_name" />
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="form_commonblock">
+                      <CurrencySelect2
+                        value={person?.currency}
+                        onChange={(e) => handleChange("currency", index, e.target.value)} />
+                    </div>
                   </div>
 
+                  <div id="fcx3s1parent">
+                    <div className="form_commonblock">
+                      <div className='secondtotalsections485s sxfc546sdfr85234e' style={{ padding: 0, background: "none" }}>
+                        <div className='textareaofcreatqsiform'>
+                          <label>Address</label>
+                          <div className='show_no_of_text_limit_0121'>
+                            <textarea
+                              value={person?.address}
+                              onChange={(e) => handleChange("address", index, e.target.value)}
+                              name="address"
+                              placeholder="Enter address"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="breakerci"></div>

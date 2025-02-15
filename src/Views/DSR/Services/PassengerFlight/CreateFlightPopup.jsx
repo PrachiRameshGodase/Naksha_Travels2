@@ -80,7 +80,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
     destination_code: false,
     guest_ids: false,
     gross_amount: false,
-    supplier_id:false,
+    supplier_id: false,
     // retain: false,
     total_amount: false,
   });
@@ -375,7 +375,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         )}
                       </div>
                       <div
-                       
+
                         className="form_commonblock"
                       >
                         <label>
@@ -390,7 +390,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                               name="air_line_code"
                               placeholder="Enter Airline Code"
                               autoComplete="off"
-                            
+
                             />
                           </span>
                           {errors?.air_line_code && (
@@ -422,7 +422,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             name="destination_code"
                             defaultOption="Select Destination Code"
                             type="masters2"
-                            // disabled={isDisabled}
+                          // disabled={isDisabled}
                           />
                         </span>
                         {errors?.destination_code && (
@@ -537,7 +537,7 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                         </span>
                       </div>
 
-                    <div className="form_commonblock">
+                      <div className="form_commonblock">
                         <label>Supplier<b className="color_red">*</b></label>
                         <div id="sepcifixspanflex">
                           <span id="">
@@ -558,19 +558,19 @@ const CreateFlightPopup = ({ showModal, setShowModal, data, passengerId }) => {
                             />
                           </span>
                           {errors?.supplier_id && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Supplier
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Select Supplier
+                            </p>
+                          )}
                         </div>
-                      </div> 
+                      </div>
                       <div id="imgurlanddesc" className="calctotalsectionx2">
                         <ImageUpload
                           formData={formData}

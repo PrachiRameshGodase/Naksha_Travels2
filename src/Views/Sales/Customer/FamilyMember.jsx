@@ -6,7 +6,7 @@ import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreeze
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import { customersList } from "../../../Redux/Actions/customerActions";
 import { SingleImagePhoto, SingleImageUploadDocument } from "../../Helper/ComponentHelper/ImageUpload";
-import { ShowMasterData } from "../../Helper/HelperFunctions";
+import { ShowMasterData, ShowUserMasterData } from "../../Helper/HelperFunctions";
 import ShowMastersValue from "../../Helper/ShowMastersValue";
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import Swal from "sweetalert2";
@@ -24,8 +24,9 @@ const FamilyMember = ({
   const dispatch = useDispatch();
   const dropdownRef1 = useRef(null);
   const cusList = useSelector((state) => state?.customerList);
-  const relationshipOptions = ShowMasterData("46");
-  const foodTypeOptions = ShowMasterData("47");
+
+  const relationshipOptions = ShowUserMasterData("46");
+  const foodTypeOptions = ShowUserMasterData("47");
 
   const [cusData, setcusData] = useState(null);
   const [employeeDetails, setEmployeeDetails] = useState([]);
@@ -74,8 +75,8 @@ const FamilyMember = ({
         {
           member_id: selectedCustomer.id,
           relationship: "",
-          email:selectedCustomer?.email,
-          display_name:selectedCustomer?.display_name,
+          email: selectedCustomer?.email,
+          display_name: selectedCustomer?.display_name,
           mobile_no: selectedCustomer.mobile_no,
           food_type: "",
           photo: "",
@@ -96,7 +97,7 @@ const FamilyMember = ({
   }, [employeeDetails, setUserData]);
 
   const fetchCustomers = () => {
-    const sendData = {customer_type: "Individual",  active: 1 , status: 1};
+    const sendData = { customer_type: "Individual", active: 1, status: 1 };
     dispatch(customersList(sendData));
   };
 
@@ -121,17 +122,17 @@ const FamilyMember = ({
   useEffect(() => {
     if (customerDetails?.family_members && isEdit) {
       const familyDetails = customerDetails?.family_members || [];
-    
+
       const familyDetail = familyDetails?.map((item) => ({
         member_id: item.id || "",
         food_type: item.food_type || "",
         relationship: item.relationship || null,
         photo: item?.photo ? JSON.parse(item?.photo) : "",
-        email:item?.email ||"",
-        mobile_no:item?.mobile_no ||"",
-        display_name:item?.display_name ||"",
+        email: item?.email || "",
+        mobile_no: item?.mobile_no || "",
+        display_name: item?.display_name || "",
 
-        gender:item?.gender ||""
+        gender: item?.gender || ""
       }));
 
       setEmployeeDetails(familyDetail);
@@ -176,15 +177,15 @@ const FamilyMember = ({
         </thead>
         <tbody>
           {employeeDetails?.length > 0 ? (
-            
+
             employeeDetails?.filter((item) => item?.member_id != customerDetails?.user?.id)?.map((member, index) => {
-             
+
               // const disabledRow =member?.member_id == customerDetails?.user?.id;
               return (
-                 (
+                (
                   <tr
                     key={index}
-                 
+
                   >
                     <td>{index + 1}</td>
                     <td>{member?.display_name}</td>
@@ -202,7 +203,7 @@ const FamilyMember = ({
                         imgLoader={imgLoader}
                         setImgeLoader={setImgeLoader}
                         index={index}
-                        // disabled={disabledRow}
+                      // disabled={disabledRow}
                       />
                     </td>
                     <td style={{ width: "40px" }}>
@@ -237,7 +238,7 @@ const FamilyMember = ({
                         onClick={() => {
                           handleDeleteSelectedMember(index);
                         }}
-                        style={{cursor:"pointer"}}
+                        style={{ cursor: "pointer" }}
                       >
                         {otherIcons.delete_svg}
                       </span>

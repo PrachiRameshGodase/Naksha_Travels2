@@ -68,6 +68,7 @@ const ImagesCrou = ({ images, showModal, closeModal }) => {
                 <Modal.Body>
                     <Container>
                         <div className="row">
+                            <h5>Click on files for preview</h5>
                             <div id="colOfthhs" className="col">
                                 <div className="gallery">
                                     {images?.map((file, index) => {

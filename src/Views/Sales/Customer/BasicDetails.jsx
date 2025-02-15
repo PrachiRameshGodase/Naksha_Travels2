@@ -302,7 +302,7 @@ const BasicDetails = ({
                               name="salutation"
                               defaultOption="Select Salutation"
                               type="masters_salutation"
-                              // extracssclassforscjkls="extracssclassforscjklsSalutation"
+                            // extracssclassforscjkls="extracssclassforscjklsSalutation"
                             />
                           </span>
                         </div>
@@ -585,12 +585,12 @@ const BasicDetails = ({
                   <span>
                     {otherIcons.registration_type_svg}
                     <CustomDropdown04
-                      label="Registation name"
+                      label="Registration name"
                       options={registerationtypes}
                       value={basicDetails?.registration_type}
                       onChange={handleChange}
                       name="registration_type"
-                      defaultOption="Select Registation Types"
+                      defaultOption="Select Registration Types"
                       type="masters"
                     />
                   </span>

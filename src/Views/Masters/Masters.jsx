@@ -32,8 +32,11 @@ const Masters = () => {
   const [showAddPopup, setshowAddPopup] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
+
   const masterList = useSelector((state) => state.masterList);
   const masterLists = masterList?.data?.filter((val) => val.type == 0);
+
+  const [filteredMasterData, setFilteredMasterData] = useState(masterLists);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
@@ -78,11 +81,28 @@ const Masters = () => {
 
   // Handle search term change from child component
   const onSearch = (term) => {
-    setSearchTermFromChild(term);
-    if (term.length > 0 || term === "") {
-      debouncedSearch();
+    setSearchTermFromChild(term); // Update search term
+    // console.log("term", term)
+
+    if (term.length === 0) {
+      // If search term is empty, reset the list
+      setFilteredMasterData(masterLists);
+      return;
     }
+
+    // Filter masterLists based on the search term
+    const filteredSearch = masterLists?.filter((val) =>
+      Object.values(val) // Convert object values to an array
+        .join(" ") // Join them into a string
+        .toLowerCase() // Convert to lowercase
+        .includes(term.toLowerCase()) // Check if term is included
+    );
+
+    setFilteredMasterData(filteredSearch); // Set the filtered list
+
+    // debouncedSearch(); // Execute debounced search if necessary
   };
+
   const fetchMasters = useCallback(async () => {
     try {
       const fy = financialYear();
@@ -176,8 +196,8 @@ const Masters = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {masterLists?.length > 0 ? (
-                      masterLists?.map((master, index) => (
+                    {(filteredMasterData || masterLists)?.length > 0 ? (
+                      (filteredMasterData || masterLists)?.map((master, index) => (
                         <div
                           className={`table-rowx12 ${selectedRows.includes(master.id)
                             ? "selectedresult"

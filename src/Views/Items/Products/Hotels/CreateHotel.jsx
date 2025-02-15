@@ -305,9 +305,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData?.country_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData?.country_id ? "" : "disabledfield"
+                            }`}
                           data-tooltip-content={
                             formData?.country_id
                               ? ""
@@ -352,9 +351,8 @@ const CreateHotel = () => {
                         </div>
 
                         <div
-                          className={`form_commonblock ${
-                            formData.state_id ? "" : "disabledfield"
-                          }`}
+                          className={`form_commonblock ${formData.state_id ? "" : "disabledfield"
+                            }`}
                         >
                           <label>
                             City<b className="color_red">*</b>
@@ -439,14 +437,14 @@ const CreateHotel = () => {
 
                       <div className="form_commonblock">
                         <label>
-                          Pin Code<b className="color_red">*</b>
+                          Postal Code<b className="color_red">*</b>
                         </label>
                         <div id="inputx1">
                           <span>
                             {otherIcons.name_svg}
                             <NumericInput
                               name="pincode"
-                              placeholder="Enter Pin Code"
+                              placeholder="Enter Postal Code"
                               value={formData.pincode}
                               onChange={(e) => handleChange(e)}
                             />
@@ -460,7 +458,7 @@ const CreateHotel = () => {
                               }}
                             >
                               {otherIcons.error_svg}
-                              Please Fill Pin Code
+                              Please Fill Postal Code
                             </p>
                           )}
                         </div>

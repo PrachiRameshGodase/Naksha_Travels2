@@ -501,7 +501,7 @@ const CreateANewOrganization = () => {
                     <span>
                       {otherIcons?.tag_svg}
                       <CustomDropdown04
-                        label="Registation name"
+                        label="Registration name"
                         options={taxTypes}
                         value={formData?.tax_type}
                         onChange={handleChange}

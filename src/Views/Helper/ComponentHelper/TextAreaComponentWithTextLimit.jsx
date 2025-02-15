@@ -21,7 +21,7 @@
 import React from "react";
 
 const TextAreaComponentWithTextLimit = ({
-  formsValues: { handleChange, formData },
+  formsValues: { handleChange },
   placeholder,
   name,
   value,
@@ -55,3 +55,35 @@ const TextAreaComponentWithTextLimit = ({
 };
 
 export default TextAreaComponentWithTextLimit;
+
+
+export const TextAreaComponentWithTextLimitBank = ({
+  formsValues: { handleChange },
+  placeholder,
+  name,
+  value,
+  index = null, // Add index for consistency with input field
+}) => {
+  const charCount = value ? value.length : 0;
+
+  const handleTextChange = (e) => {
+    const inputWithoutSpaces = e.target.value;
+
+    if (inputWithoutSpaces.length <= 250) {
+      handleChange(name, index, inputWithoutSpaces); // Match input field's handleChange pattern
+    }
+  };
+
+  return (
+    <>
+      <textarea
+        placeholder={placeholder}
+        value={value || ""}
+        onChange={handleTextChange}
+        name={name}
+      />
+      <p>{charCount}/250</p>
+    </>
+  );
+};
+

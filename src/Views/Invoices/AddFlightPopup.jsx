@@ -15,7 +15,7 @@ import { CalculationSection2 } from "../DSR/CalculationSection";
 import "../DSR/Services/CreateHotelPopup.scss";
 import useFetchApiData from "../Helper/ComponentHelper/useFetchApiData";
 import { formatDate } from "../Helper/DateFormat";
-import {sendData,ShowUserMasterData} from "../Helper/HelperFunctions";
+import { sendData, ShowUserMasterData } from "../Helper/HelperFunctions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 
 const AddFlightPopup = ({ setShowModal, handleAddService, edit_data, section }) => {
@@ -54,8 +54,8 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data, section }) 
     tax_amount: 0.0,  // Default value for tax_amount
     total_amount: 0.0,  // Default value for total_amount
   });
- 
- const [errors, setErrors] = useState({
+
+  const [errors, setErrors] = useState({
     travel_date: false,
     booking_date: false,
     airline_name: false,
@@ -494,7 +494,7 @@ const AddFlightPopup = ({ setShowModal, handleAddService, edit_data, section }) 
                         </span>
                       </div>
 
-                     {section !="sales" && <div className="form_commonblock">
+                      {section != "sales" && <div className="form_commonblock">
                         <label>Supplier</label>
                         <div id="sepcifixspanflex">
                           <span id="">

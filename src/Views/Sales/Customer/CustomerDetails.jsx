@@ -168,6 +168,8 @@ const CustomerDetails = () => {
     }
   };
 
+  const is_admin = isAdmin();
+
 
   return (
     <>
@@ -188,7 +190,7 @@ const CustomerDetails = () => {
             </div>
             <div id="buttonsdata">
 
-              {isAdmin() && <>
+              {is_admin === true || is_admin === 1 && <>
                 <div className="switchbuttontext">
                   <div className="switches-container">
                     <input

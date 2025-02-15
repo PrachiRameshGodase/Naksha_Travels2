@@ -472,12 +472,12 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                             <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                         </svg>
                                         <CustomDropdown04
-                                            label="Registation name"
+                                            label="Registration name"
                                             options={registerationtypes}
                                             value={basicDetails?.registration_type}
                                             onChange={handleChange}
                                             name="registration_type"
-                                            defaultOption="Select Registation Types"
+                                            defaultOption="Select Registration Types"
                                             type="masters"
                                         />
 

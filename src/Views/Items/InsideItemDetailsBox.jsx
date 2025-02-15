@@ -1034,7 +1034,7 @@ export const InsideWarehouseDetailsBox = ({ itemDetails }) => {
                       <h1>:</h1>
                       <p>{displayValue(itemDetails?.data?.city?.name)}</p>
                     </li>
-                    {/* <li><span>Pincode</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li> */}
+                    {/* <li><span>Postal code</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li> */}
                   </ul>
                 </div>
               </div>

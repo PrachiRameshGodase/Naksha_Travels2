@@ -6,14 +6,18 @@ import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { GoPlus } from "react-icons/go";
 import CreateUserMaster from "./CreateUserMaster";
 import { useDispatch, useSelector } from "react-redux";
+
 import { masterListAction } from "../../Redux/Actions/mastersAction";
+
 import UserMasterDetails from "./UserMasterDetails";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import AddUserMaster from "./AddUserMaster";
+
 import {
   userMasterDeleteActions,
   UserMasterListAction,
 } from "../../Redux/Actions/userMasterActions";
+
 import SearchBox from "../Common/SearchBox/SearchBox";
 import { useDebounceSearch } from "../Helper/HelperFunctions";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
@@ -23,6 +27,7 @@ import "./CreateMasters.scss"
 import { financialYear } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const UserMasters = () => {
+
   const dispatch = useDispatch();
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -38,6 +43,8 @@ const UserMasters = () => {
 
   const userMasterData = useSelector((state) => state?.userMasterList);
   const userMasterList = userMasterData?.data?.filter((val) => val.type == 0);
+
+  const [filteredMasterData, setFilteredMasterData] = useState(userMasterList);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
@@ -102,11 +109,28 @@ const UserMasters = () => {
 
   // Handle search term change from child component
   const onSearch = (term) => {
-    setSearchTermFromChild(term);
-    if (term.length > 0 || term === "") {
-      debouncedSearch();
+    setSearchTermFromChild(term); // Update search term
+    // console.log("term", term)
+
+    if (term.length === 0) {
+      // If search term is empty, reset the list
+      setFilteredMasterData(userMasterList);
+      return;
     }
+
+    // Filter userMasterList based on the search term
+    const filteredSearch = userMasterList?.filter((val) =>
+      Object.values(val) // Convert object values to an array
+        .join(" ") // Join them into a string
+        .toLowerCase() // Convert to lowercase
+        .includes(term.toLowerCase()) // Check if term is included
+    );
+
+    setFilteredMasterData(filteredSearch); // Set the filtered list
+
+    // debouncedSearch(); // Execute debounced search if necessary
   };
+
   //Search/////////////////////////////////////////////////////////////
 
   const fetchMasters = useCallback(async () => {
@@ -174,6 +198,7 @@ const UserMasters = () => {
                       onChange={handleSelectAllChange}
                     />
                     <div className="checkmark"></div>
+
                   </div>
                   <div className="table-cellx12 quotiosalinvlisxs1">
                     {otherIcons.warehouse_name_svg}
@@ -201,8 +226,8 @@ const UserMasters = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {userMasterList?.length > 0 ? (
-                      userMasterList?.map((master, index) => (
+                    {(filteredMasterData || userMasterList)?.length > 0 ? (
+                      (filteredMasterData || userMasterList)?.map((master, index) => (
                         <div
                           className={`table-rowx12 ${selectedRows.includes(master.id)
                             ? "selectedresult"

@@ -42,7 +42,7 @@ const DSRDetails = () => {
   const statusChangeDSR = useSelector((state) => state?.DSRStatus);
   const currencyList1 = useSelector((state) => state?.getCurrency);
   const currencyList = currencyList1?.data?.currency || []
-  
+
   const [cusData1, setcusData1] = useState(null);
   const [passengerData, setPassengerData] = useState({
     dsr_id: UrlId,
@@ -138,6 +138,18 @@ const DSRDetails = () => {
   };
 
   const handleChangeDSRStatus = async (item) => {
+
+    const totalServiceAmount = DSRData?.passengers
+      ?.reduce((acc, item) => acc + parseFloat(item?.service_total || 0), 0)
+      .toFixed(2);
+    const isTotalZero = parseFloat(totalServiceAmount) === 0;
+    console.log("isTotalZero", isTotalZero)
+
+    if (isTotalZero) {
+      toast.error("The zero amount is not converted in invoice")
+      return;
+    }
+
     const result = await Swal.fire({
       text: "Are you sure you want to convert to invoice?",
       showCancelButton: true,
@@ -162,10 +174,10 @@ const DSRDetails = () => {
   }, [dispatch, UrlId]);
 
   const [loading, setLoading] = useState(false);
-    const getCurrency = getCurrencyValue();
-  
-  const handleDownloadPDF =async () => {
-      try {
+  const getCurrency = getCurrencyValue();
+
+  const handleDownloadPDF = async () => {
+    try {
 
       if (DSRData?.transaction_date) {
 
@@ -185,18 +197,18 @@ const DSRDetails = () => {
             return;
           }
           const contentComponent = (
-              <PrintContent2
-                data={DSRData}
-                userMasterData={userMasterData}
-                cusVenData=""
-                moduleId="DSR No"
-                section="DSR"
-                fetchCurrencyData={fetchCurrencyData} currencyList={currencyList}
-              />
-            );
-            generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
-           
-          
+            <PrintContent2
+              data={DSRData}
+              userMasterData={userMasterData}
+              cusVenData=""
+              moduleId="DSR No"
+              section="DSR"
+              fetchCurrencyData={fetchCurrencyData} currencyList={currencyList}
+            />
+          );
+          generatePDF(contentComponent, "DSR_Document.pdf", setLoading, 500);
+
+
         } else {
           // Ask user if they want to create currency exchange rate
           const confirmed = await confirIsCurrencyPDF(getCurrency);
@@ -251,16 +263,16 @@ const DSRDetails = () => {
               onClick={() => {
                 handleChangeDSRStatus(DSRData);
               }}
-              // className="mainx1"
-              // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+            // className="mainx1"
+            // className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
               <p
                 className={
                   DSRData?.is_invoiced == "0"
                     ? "draft"
                     : DSRData?.is_invoiced == "1"
-                    ? "invoiced2"
-                    : ""
+                      ? "invoiced2"
+                      : ""
                 }
                 style={{
                   cursor: "pointer",
@@ -274,11 +286,11 @@ const DSRDetails = () => {
               </p>
             </div>
             <div className="mainx1">
-                <p onClick={()=>Navigate(`/dashboard/dsr-supplier-summary?id=${DSRData?.id}`)} style={{ cursor: "pointer" }}>
-                  Supplier Summary
-                </p>
-              </div>
-            
+              <p onClick={() => Navigate(`/dashboard/dsr-supplier-summary?id=${DSRData?.id}`)} style={{ cursor: "pointer" }}>
+                Supplier Summary
+              </p>
+            </div>
+
             {DSRData?.is_invoiced == "1" && (
               <div className="mainx1">
                 <p onClick={handleDownloadPDF} style={{ cursor: "pointer" }}>

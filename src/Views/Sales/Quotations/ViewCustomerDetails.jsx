@@ -77,7 +77,7 @@ const ViewCustomerDetails = ({ setSwitchCusDatax1, setViewAllCusDetails, cusData
                                         <div className="cuschichildlistd">
                                             <div className='chilscx15s5sx1'> <p className="px1s1">Primary Contact Name</p> <p className="px1s2">:</p> <p className="px1s3">{`${cusData?.salutation || ""} ${cusData?.first_name || ""} ${cusData?.last_name || ""}`}</p></div>
                                             <div className='chilscx15s5sx1'> <p className="px1s1">Display Name</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.display_name || ""}</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Registation Type</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.registration_type || ""}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Registration Type</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.registration_type || ""}</p></div>
                                             <div className='chilscx15s5sx1'> <p className="px1s1">Bussiness Leagal Name</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.business_leagal_name || ""}</p></div>
                                             <div className='chilscx15s5sx1'> <p className="px1s1">Payment Terms</p> <p className="px1s2">:</p> <p className="px1s3"><ShowMastersValue type="8" id={cusData?.payment_terms} /></p></div>
                                             <div className='chilscx15s5sx1'> <p className="px1s1">Remarks</p> <p className="px1s2" >:</p> <p className="px1s3"> {cusData?.remarks || ""}</p></div>

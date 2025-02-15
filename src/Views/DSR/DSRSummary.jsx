@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getCurrencySymbol } from "../Helper/ComponentHelper/ManageStorage/localStorageUtils";
 
 const DSRSummary = ({ customerData }) => {
-   const currencySymbol = getCurrencySymbol()
+  const currencySymbol = getCurrencySymbol()
   return (
     <div className="f1wrapofcreq" id="dsr_summary_x023">
       {/* dsr summary svg's */}
@@ -551,8 +551,8 @@ const DSRSummary = ({ customerData }) => {
               customerData?.is_invoiced == "0"
                 ? "draft"
                 : customerData?.is_invoiced == "1"
-                ? "invoiced2"
-                : ""
+                  ? "invoiced2"
+                  : ""
             }
             style={{
               cursor: "pointer",
@@ -564,8 +564,8 @@ const DSRSummary = ({ customerData }) => {
             {customerData?.is_invoiced == "1"
               ? "Invoiced"
               : customerData?.is_invoiced == "0"
-              ? "Not Invoiced"
-              : ""}
+                ? "Not Invoiced"
+                : ""}
           </p>
           <p>{customerData?.dsr_no || ""}</p>
         </div>
@@ -610,11 +610,11 @@ const DSRSummary = ({ customerData }) => {
             <h3>Service Total:</h3>
 
             <h3>({currencySymbol}) {customerData?.passengers
-                ?.reduce(
-                  (acc, item) => acc + parseFloat(item?.service_total || 0),
-                  0
-                )
-                .toFixed(2)} 
+              ?.reduce(
+                (acc, item) => acc + parseFloat(item?.service_total || 0),
+                0
+              )
+              .toFixed(2)}
             </h3>
           </div>
           {/* ))} */}

@@ -145,7 +145,7 @@ const PassengerCard = ({ passengers, onDelete, disabled }) => {
                 />
               </td>
               <td style={{ textAlign: "right" }}>
-                 {passenger?.service_total || ""}
+                {passenger?.service_total || ""}
               </td>
               <td>
                 <span

@@ -26,7 +26,9 @@ import { financialYear, getCurrencyValue } from '../../Helper/ComponentHelper/Ma
 const CreateAccountChart = () => {
     const dispatch = useDispatch();
     const location = useLocation();
+
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+
     const createAcc = useSelector((state) => state?.createAccount);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
     const AccountListCHart = useSelector(state => state?.accountList);
@@ -339,7 +341,7 @@ const CreateAccountChart = () => {
                                                 </div>
 
                                                 <div className="form_commonblock">
-                                                    <label >IFSC<b className='color_red'>*</b></label>
+                                                    <label >IBAN</label>
                                                     <span >
                                                         {otherIcons.tag_svg}
                                                         <input type="text" value={formData.ifsc}

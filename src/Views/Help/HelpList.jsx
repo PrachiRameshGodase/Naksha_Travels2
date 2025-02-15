@@ -175,6 +175,7 @@ const HelpList = () => {
                           <div
                             //   onClick={() => handleRowClicked(quotation)}
                             className="table-cellx12 quotiosalinvlisxs1"
+                            style={{ width: "100px" }}
                           >
                             {quotation.created_at
                               ? formatDate3(quotation.created_at)
@@ -183,6 +184,7 @@ const HelpList = () => {
                           <div
                             //   onClick={() => handleRowClicked(quotation)}
                             className="table-cellx12 quotiosalinvlisxs2"
+                            style={{ width: "100px" }}
                           >
                             {quotation?.issue_type_name || ""}
                           </div>
@@ -190,19 +192,21 @@ const HelpList = () => {
                           <div
                             className="table-cellx12 quotiosalinvlisxs3"
                             data-tooltip-content={quotation?.page_url} data-tooltip-place="bottom" data-tooltip-id="my-tooltip"
+                            style={{ width: "100px" }}
                           >
                             <Link style={{ color: '#0000EE' }} to={quotation?.page_url}>{quotation?.page_url || ""}</Link>
                           </div>
 
-                          <div className="table-cellx12 quotiosalinvlisxs4">
+                          <div className="table-cellx12 quotiosalinvlisxs4" style={{ width: "100px" }}>
                             {quotation?.priority || ""}
+
                           </div>
 
-                          <div className="table-cellx12 quotiosalinvlisxs5 commentss" data-tooltip-content={quotation?.comments} data-tooltip-place="bottom" data-tooltip-id="my-tooltip">
+                          <div className="table-cellx12 quotiosalinvlisxs5 commentss" data-tooltip-content={quotation?.comments} data-tooltip-place="bottom" data-tooltip-id="my-tooltip" style={{ width: "100px" }}>
                             {quotation?.comments || ""}
                           </div>
 
-                          <div className="table-cellx12 quotiosalinvlisxs5 help_pointer" onClick={() => handleUpdateStatus(quotation)}>
+                          <div className="table-cellx12 quotiosalinvlisxs5 help_pointer" onClick={() => handleUpdateStatus(quotation)} style={{ width: "100px" }}>
                             <p
                               className={
                                 quotation.status == "0"
@@ -221,14 +225,16 @@ const HelpList = () => {
                                   : quotation.status == "2"
                                     ? "Resolved"
                                     : ""}{" "}
+
                               {userData?.is_admin === true && (
                                 <MdArrowOutward
 
                                 />
                               )}
+
                             </p>
                           </div>
-                          <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 help_pointer">
+                          <div className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565 help_pointer" style={{ width: "100px" }}>
                             {JSON?.parse(quotation?.upload_documents)?.length >=
                               1 ? (
                               <span
@@ -260,6 +266,7 @@ const HelpList = () => {
             </div>
           </div>
         </div>
+
         <PaginationComponent
           itemList={helpList?.data?.count}
           setSearchCall={setSearchTrigger}
@@ -280,7 +287,7 @@ const HelpList = () => {
           <ImagesCrou
             showModal={showImagesModal}
             closeModal={setshowImagesModal}
-            attachments={imagesVal?.map((image) => image?.url)}
+            images={imagesVal?.map((image) => image?.url)}
           />
         )}
         {/* <Toaster /> */}

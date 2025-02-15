@@ -610,6 +610,7 @@ const CreateCustomer = () => {
                   setContactTick={setContactTick}
                   text1={text1}
                 /> */}
+
                   <BankDetails
                     switchCusData={switchCusData}
                     customerData={{

@@ -9,6 +9,7 @@ import CustomDropdown04 from "../../../../Components/CustomDropdown/CustomDropdo
 import { ShowMasterData, ShowUserMasterData } from "../../../Helper/HelperFunctions";
 import { SubmitButton6 } from "../../../Common/Pagination/SubmitButton";
 import "../../../DSR/Services/CreateHotelPopup.scss";
+import NumericInput from "../../../Helper/NumericInput";
 const CreateFlight = ({ popupContent }) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -26,19 +27,20 @@ const CreateFlight = ({ popupContent }) => {
   const [formData, setFormData] = useState({
     flight_name: null,
     air_line_code: null,
-    destination_code: null,
+    // destination_code: null,
+    airline_digitcode: null,
   });
   const [errors, setErrors] = useState({
     flight_name: false,
-    // air_line_code: false,
-    // destination_code:false
+    air_line_code: false,
+    airline_digitcode: false
   });
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     let newErrors = {
       flight_name: formData?.flight_name ? false : true,
-      // air_line_code: formData?.air_line_code ? false : true,
-      // destination_code: formData?.destination_code ? false : true,
+      air_line_code: formData?.air_line_code ? false : true,
+      airline_digitcode: formData?.airline_digitcode ? false : true,
 
     };
     setErrors(newErrors);
@@ -83,8 +85,8 @@ const CreateFlight = ({ popupContent }) => {
         ...formData,
         id: selectedItem?.id,
         flight_name: selectedItem?.flight_name,
-        air_line_code:selectedItem?.air_line_code,
-        destination_code:selectedItem?.destination_code
+        air_line_code: selectedItem?.air_line_code,
+        airline_digitcode: selectedItem?.airline_digitcode
       });
     }
   }, [selectedItem, isEditIndividual]);
@@ -92,7 +94,7 @@ const CreateFlight = ({ popupContent }) => {
   return (
     <div id="formofcreateitems">
       <div className="custom-modal" >
-        <div className="modal-content"  style={{ width: "50%" }}>
+        <div className="modal-content" style={{ width: "50%" }}>
           <div className="modal-header">
             <h5>
               {isEditIndividual
@@ -111,7 +113,7 @@ const CreateFlight = ({ popupContent }) => {
             <form>
               {/* Keep your form as it is */}
               <div className="relateivdiv">
-                <div className="itemsformwrap" style={{ paddingBottom: "0px", minHeight:"100px" }}>
+                <div className="itemsformwrap" style={{ paddingBottom: "0px", minHeight: "100px" }}>
                   <div className="f1wrapofcreq">
                     <div className="f1wrapofcreqx1">
                       <div className="form_commonblock">
@@ -141,7 +143,8 @@ const CreateFlight = ({ popupContent }) => {
                           </p>
                         )}
                       </div>
-                      {/* <div className="form_commonblock">
+
+                      <div className="form_commonblock">
                         <label>Airline Code<b className="color_red">*</b></label>
                         <div id="inputx1">
                           <span>
@@ -154,47 +157,49 @@ const CreateFlight = ({ popupContent }) => {
                             />
                           </span>
                           {errors?.air_line_code && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Fill AirLine Code
-                          </p>
-                        )}
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill AirLine Code
+                            </p>
+                          )}
                         </div>
-                      </div> */}
-                      {/* <div className="form_commonblock">
-                        <label>Destination Code<b className="color_red">*</b></label>
+                      </div>
 
-                        <span id="">
-                          {otherIcons.name_svg}
-                          <CustomDropdown04
-                            label="Destination Code"
-                            options={destinationCode}
-                            value={formData?.destination_code}
-                            onChange={handleChange}
-                            name="destination_code"
-                            defaultOption="Select Destination Code"
-                            type="masters2"
-                          />
-                        </span>
-                        {errors?.destination_code && (
-                          <p
-                            className="error_message"
-                            style={{
-                              whiteSpace: "nowrap",
-                              marginBottom: "0px important",
-                            }}
-                          >
-                            {otherIcons.error_svg}
-                            Please Select Destination Code
-                          </p>
-                        )}
-                      </div> */}
+                      <div className="form_commonblock">
+                        <label>Airline Digit Code<b className="color_red">*</b></label>
+                        <div id="inputx1">
+                          <span>
+                            {otherIcons.name_svg}
+                            <NumericInput
+                              value={formData.airline_digitcode}
+                              onChange={handleChange}
+                              name="airline_digitcode"
+                              placeholder="Enter Airline Code"
+                            />
+                          </span>
+
+                          {errors?.airline_digitcode && (
+                            <p
+                              className="error_message"
+                              style={{
+                                whiteSpace: "nowrap",
+                                marginBottom: "0px important",
+                              }}
+                            >
+                              {otherIcons.error_svg}
+                              Please Fill AirLine Digit Code
+                            </p>
+                          )}
+
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
