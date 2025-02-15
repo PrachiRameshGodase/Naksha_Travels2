@@ -260,6 +260,8 @@ const HelpList = () => {
             </div>
           </div>
         </div>
+
+
         <PaginationComponent
           itemList={helpList?.data?.count}
           setSearchCall={setSearchTrigger}
@@ -268,6 +270,7 @@ const HelpList = () => {
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
         />
+
         {showPopup1 && (
           <UpdateStatusPopup
             setShowPopup={setShowPopup1}
@@ -283,6 +286,7 @@ const HelpList = () => {
             images={imagesVal?.map((image) => image?.url)}
           />
         )}
+
         {/* <Toaster /> */}
       </div>
     </div>

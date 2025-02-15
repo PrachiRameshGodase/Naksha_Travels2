@@ -521,9 +521,9 @@ const InsideCusDetails = ({
                     </div>
                   </div>
                 </div>
-
-
               )}
+
+
               {(customerDetails?.is_customer == 1 && customerDetails?.customer_type == "Business") &&
 
                 <div className="accordion-item">
@@ -599,7 +599,11 @@ const InsideCusDetails = ({
                             </div>
                           </div>
                         </div>
-                      </div>   Bank Details
+                      </div>
+
+
+
+                      Bank Details
                     </p>
                     <span className="svgico4x5s6">
                       {isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}
