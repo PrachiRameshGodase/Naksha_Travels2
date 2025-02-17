@@ -258,10 +258,12 @@ const CustomerDetails = () => {
               </div>
 
               <div className="separatorx21"></div>
+
               <div className="mainx1" onClick={handleEditCustomers}>
                 <img src="/Icons/pen-clip.svg" alt="" />
                 <p>Edit</p>
               </div>
+
               {/* <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" data-tooltip-content="More Options" data-tooltip-place='bottom' data-tooltip-id='my-tooltip' />
                 {showDropdown && (

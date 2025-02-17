@@ -223,12 +223,14 @@ const VendorsDetails = () => {
             </div>
 
             <div className="separatorx21"></div>
+
             {user?.status != 1 &&
               <div className="mainx1" onClick={() => handleCustomersActions("edit")}>
                 <img src="/Icons/pen-clip.svg" alt="" />
                 <p>Edit</p>
               </div>
             }
+
             <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
               <img src="/Icons/menu-dots-vertical.svg" alt="" />
               {showDropdown && (
